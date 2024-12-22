@@ -1,7 +1,7 @@
 {
   "advancedEditorSelectedIdentifier" : "ProjectBrowser",
   "openSceneRelativePaths" : [
-
+    "antibodyScene.usda"
   ],
   "recentIdentifiers" : {
     "00353439-B084-4161-BDD3-58325B62FD61" : [
@@ -7182,6 +7182,52 @@
         ]
       }
     ],
+    "F6823F79-E131-4D71-A30C-A15953CF49EC" : [
+      {
+        "date" : 756587446.507124,
+        "title" : "Untitled",
+        "transform" : [
+          0.9999955,
+          8.003587e-11,
+          0.0029819254,
+          0,
+          0.00029598057,
+          0.9950617,
+          -0.09925777,
+          0,
+          -0.0029671998,
+          0.09925825,
+          0.9950572,
+          0,
+          0.015221001,
+          0.046825126,
+          0.32048228,
+          1
+        ]
+      },
+      {
+        "date" : 756587441.16379,
+        "title" : "Untitled",
+        "transform" : [
+          1,
+          0,
+          -0,
+          0,
+          -0,
+          0.7071069,
+          -0.7071067,
+          0,
+          0,
+          0.7071067,
+          0.7071069,
+          0,
+          0.010366678,
+          0.15329409,
+          0.13989186,
+          1
+        ]
+      }
+    ],
     "F72A41BF-2FB7-461B-8C49-6F66C0440EDC" : [
       {
         "date" : 756471640.750411,
@@ -7477,5 +7523,6 @@
   },
   "sceneViewportBackgroundColors" : {
 
-  }
+  },
+  "selectedSceneRelativePath" : "antibodyScene.usda"
 }

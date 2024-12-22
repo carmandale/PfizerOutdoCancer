@@ -125,6 +125,7 @@ struct ADCBuilderView: View {
                 }
                 Spacer()
             }
+            .padding(.top, 30)
             .padding(.bottom, 60)
         }
         .frame(width: 800)

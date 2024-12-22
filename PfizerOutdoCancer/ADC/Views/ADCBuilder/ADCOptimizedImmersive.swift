@@ -53,6 +53,8 @@ struct ADCOptimizedImmersive: View {
     @Environment(\.dismissWindow) private var dismissWindow
     @Environment(\.openWindow) private var openWindow
     
+    private let defaultZPosition: Float = -1.0
+    
     var body: some View {
         RealityView { content, attachments in
             reset()
@@ -62,10 +64,6 @@ struct ADCOptimizedImmersive: View {
             self.mainEntity?.name = "MainEntity"
             content.add(masterEntity)
             
-            self.mainViewEntity.name = "MainViewEntity"
-            masterEntity.addChild(self.mainViewEntity)
-            
-            
             if let antibodyScene = try? await Entity(named: "antibodyScene", in: realityKitContentBundle),
                let antibodyRoot = antibodyScene.findEntity(named: "antibodyProtein_complex_assembled"){
 
@@ -74,6 +72,13 @@ struct ADCOptimizedImmersive: View {
                 // } else {
                 //     os_log(.error, "ITR..ADCOptimizedImmersive.RealityView(): ❌ Error, couldn't find Audio in antibodyScene.usda")
                 // }
+                
+//                if let resource = antibodyRootEntity?.components[AudioLibraryComponent.self],
+//                       let popSound = resource.resources["bubblepop.mp3"] {
+//                        print("ITR..prepareAntibodyEntities(): playing popSound")
+//                    popAudioFileResource = resource
+////                    antibodyRootEntity?.playAudio(popSound)
+//                    }
 
                 self.antibodyRootEntity = antibodyRoot
                 prepareAntibodyEntities()
@@ -100,7 +105,7 @@ struct ADCOptimizedImmersive: View {
             dataModel.adcBuildStep = 0
             
         } update: { content, attachments in
-            updateADC()
+            // updateADC()
             
             
         } attachments: {
@@ -238,39 +243,40 @@ struct ADCOptimizedImmersive: View {
     func prepareAntibodyEntities() {
         guard let antibodyRoot = antibodyRootEntity else { return }
         
-        if let antibody = antibodyRoot.findModelEntity(named: "ADC_complex"){
-            
-            self.antibodyRootEntity = antibodyRoot
-
+        if let antibody = antibodyRoot.findModelEntity(named: "ADC_complex") {
             self.antibodyEntity = antibody
             antibody.isEnabled = false
             
             antibodyRoot.scale *= 2
             self.mainEntity?.addChild(antibodyRoot)
             
+            // Set initial position
+            antibodyRoot.position = [0, 0.5, defaultZPosition]
+            
+            // Add mainViewEntity as child of antibodyRoot
+            mainViewEntity.position = [-0.5, 0, 0]  // 0.5 meters to the left
+            antibodyRoot.addChild(mainViewEntity)
+            
+            // Keep existing components
             let billboard = ADCBillboardComponent(offset: [0,-0.2,-0.6],
                                                axisToFollow: [0,1,0],
                                                initializePositionOnlyOnce: true,
                                                isBillboardEnabled: false)
             antibodyRoot.components.set(billboard)
             antibodyRoot.components.set(createGestureComponent())
-
-//            antibodyRoot.components.set(ProximitySourceComponent())
             
+            // Keep existing orientation
             let angleDegrees: Float = 30
             let angleRadians: Float = angleDegrees * (.pi / 180)
             antibodyRoot.orientation = simd_quatf(angle: angleRadians, axis: [0, 0, 1]) * antibodyRoot.orientation
             
+            // Keep audio setup
             if let resource = popAudioFileResource {
                 self.popAudioPlaybackController = antibody.prepareAudio(resource)
             }
             
             os_log(.info, "ITR..prepareAntibodyEntities(): found all ModelEntities")
-
-        } else {
-            os_log(.error, "ITR..prepareAntibodyEntities(): ❌ Error, not all ModelEntities found")
         }
-
     }
     
     
@@ -582,18 +588,21 @@ struct ADCOptimizedImmersive: View {
     
     // MARK: - Extra stuff
     
-    func calculateMainViewPosition() -> SIMD3<Float>{
-        
+    func calculateMainViewPosition() -> SIMD3<Float> {
         let cameraPosition = cameraEntity.position(relativeTo: nil)
-        let antibodyPosition = antibodyEntity?.position(relativeTo: nil) ??  [0,1.5,-0.5]
+        let antibodyPosition = antibodyEntity?.position(relativeTo: nil) ?? [0, 1.5, defaultZPosition]  
         
-        return calculateRadialPosition(cameraPosition: cameraPosition, antibodyPosition: antibodyPosition, angleDegrees: -35, yOffset: antibodyPosition.y, radiusOffset: 0.1)
+        return calculateRadialPosition(cameraPosition: cameraPosition, 
+                                     antibodyPosition: antibodyPosition, 
+                                     angleDegrees: -35, 
+                                     yOffset: antibodyPosition.y, 
+                                     radiusOffset: 0.1)
     }
     
     func calculateTargetLinkerPosition() -> SIMD3<Float> {
         
         let cameraPosition = cameraEntity.position(relativeTo: nil)
-        let antibodyPosition = antibodyEntity?.position(relativeTo: nil) ??  [0,1.5,-0.5]
+        let antibodyPosition = antibodyEntity?.position(relativeTo: nil) ?? [0, 1.5, defaultZPosition]
         
         return calculateRadialPosition(cameraPosition: cameraPosition, antibodyPosition: antibodyPosition, angleDegrees: 35, yOffset: antibodyPosition.y, radiusOffset: 0.1)
 
@@ -601,7 +610,7 @@ struct ADCOptimizedImmersive: View {
     func calculateTargetPayloadsPosition() -> SIMD3<Float> {
         
         let cameraPosition = cameraEntity.position(relativeTo: nil)
-        let antibodyPosition = antibodyEntity?.position(relativeTo: nil) ??  [0,1.5,-0.5]
+        let antibodyPosition = antibodyEntity?.position(relativeTo: nil) ?? [0, 1.5, defaultZPosition]
         
         return calculateRadialPosition(cameraPosition: cameraPosition, antibodyPosition: antibodyPosition, angleDegrees: 35, yOffset: antibodyPosition.y, radiusOffset: 0.1)
 
@@ -610,7 +619,7 @@ struct ADCOptimizedImmersive: View {
     func setAntibodyAttachmentPosition() {
         
         let cameraPosition = cameraEntity.position(relativeTo: nil)
-        let antibodyPosition = antibodyEntity?.position(relativeTo: nil) ??  [0,1.5,-0.5]
+        let antibodyPosition = antibodyEntity?.position(relativeTo: nil) ?? [0, 1.5, defaultZPosition]
         
         let newPosition = calculateRadialPosition(cameraPosition: cameraPosition, antibodyPosition: antibodyPosition, angleDegrees: 35, yOffset: antibodyPosition.y, radiusOffset: 0.1)
         adcAttachmentEntity?.position = newPosition
