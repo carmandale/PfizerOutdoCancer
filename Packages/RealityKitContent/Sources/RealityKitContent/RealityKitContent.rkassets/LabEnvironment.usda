@@ -705,7 +705,7 @@ def Xform "Root"
     )
     {
         def Xform "MicroscopeViewer" (
-            active = true
+            active = false
         )
         {
             reorder nameChildren = ["MicroscopeReferenceSphere", "AudioLibrary", "SpatialAudio", "RCP_BehaviorsContainer", "diagnosticSphere"]

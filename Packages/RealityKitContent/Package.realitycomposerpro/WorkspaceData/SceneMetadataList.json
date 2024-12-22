@@ -2237,6 +2237,15 @@
       [
         "5A285654-8574-4F5E-8283-AB6C523CABE6",
         "Root",
+        "Attachments"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "5A285654-8574-4F5E-8283-AB6C523CABE6",
+        "Root",
         "people",
         "North",
         "transform18"
@@ -2994,7 +3003,7 @@
         "p5_audio"
       ],
       {
-        "isExpanded" : false,
+        "isExpanded" : true,
         "isLocked" : false,
         "selectedAudioFilePrim" : {
           "string" : "\/Root\/ElderlyWoman_wav"
@@ -3065,6 +3074,20 @@
         "selectedAudioFilePrim" : {
           "string" : "\/Root\/Audio\/Orchestra\/Timpani\/Timpani_wav"
         }
+      },
+      [
+        "7A10AC9D-F4E1-4FB8-A276-43FB7670B088",
+        "Root",
+        "sh0100_v01",
+        "sh0100_v01",
+        "PicturesRoot",
+        "intro",
+        "People_MSR",
+        "p2"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
       },
       [
         "7A10AC9D-F4E1-4FB8-A276-43FB7670B088",
@@ -3186,6 +3209,20 @@
         "selectedAudioFilePrim" : {
           "string" : "\/Root\/Pfizer_Stereo_Playthrough_11_wav"
         }
+      },
+      [
+        "7A10AC9D-F4E1-4FB8-A276-43FB7670B088",
+        "Root",
+        "sh0100_v01",
+        "sh0100_v01",
+        "PicturesRoot",
+        "intro",
+        "People_MSR",
+        "p3"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
       },
       [
         "7A10AC9D-F4E1-4FB8-A276-43FB7670B088",
@@ -3361,6 +3398,20 @@
       [
         "7A10AC9D-F4E1-4FB8-A276-43FB7670B088",
         "Root",
+        "sh0100_v01",
+        "sh0100_v01",
+        "PicturesRoot",
+        "intro",
+        "People_MSR",
+        "p4"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "7A10AC9D-F4E1-4FB8-A276-43FB7670B088",
+        "Root",
         "SFX",
         "Track11"
       ],
@@ -3477,7 +3528,7 @@
         "p3_audio"
       ],
       {
-        "isExpanded" : false,
+        "isExpanded" : true,
         "isLocked" : false,
         "selectedAudioFilePrim" : {
           "string" : "\/Root\/sh0100_v01\/sh0100_v01\/PicturesRoot\/intro\/People_MSR\/p3\/p3_audio\/Mother_wav"
@@ -3722,7 +3773,7 @@
         "p2_audio"
       ],
       {
-        "isExpanded" : false,
+        "isExpanded" : true,
         "isLocked" : false,
         "selectedAudioFilePrim" : {
           "string" : "\/Root\/sh0100_v01\/sh0100_v01\/PicturesRoot\/intro\/People_MSR\/p2\/p2_audio\/Man_wav"
@@ -3819,7 +3870,7 @@
         "p4_audio"
       ],
       {
-        "isExpanded" : false,
+        "isExpanded" : true,
         "isLocked" : false,
         "selectedAudioFilePrim" : {
           "string" : "\/Root\/sh0100_v01\/sh0100_v01\/PicturesRoot\/intro\/People_MSR\/p4\/p4_audio\/YoungMan_wav"
@@ -3915,6 +3966,20 @@
         "Root",
         "Orchestra",
         "Track11"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "7A10AC9D-F4E1-4FB8-A276-43FB7670B088",
+        "Root",
+        "sh0100_v01",
+        "sh0100_v01",
+        "PicturesRoot",
+        "intro",
+        "People_MSR",
+        "p5"
       ],
       {
         "isExpanded" : true,
@@ -4021,7 +4086,7 @@
         "p6_audio"
       ],
       {
-        "isExpanded" : false,
+        "isExpanded" : true,
         "isLocked" : false,
         "selectedAudioFilePrim" : {
           "string" : "\/Root\/TeenageGirl_wav"

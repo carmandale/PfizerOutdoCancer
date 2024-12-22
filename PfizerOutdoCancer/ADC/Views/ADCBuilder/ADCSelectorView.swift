@@ -7,7 +7,7 @@ struct ADCSelectorView: View {
     var body: some View {
         VStack (spacing:30) {
             HStack (spacing: 10) {
-                Text("Select Antibody")
+                Text("Select Antibody Color")
                     .font(.title)
                 Spacer()
                 Button {

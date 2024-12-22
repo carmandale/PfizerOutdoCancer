@@ -1,7 +1,7 @@
 {
-  "advancedEditorSelectedIdentifier" : "BehaviorsPluginID",
+  "advancedEditorSelectedIdentifier" : "ProjectBrowser",
   "openSceneRelativePaths" : [
-    "IntroEnvironment.usda"
+
   ],
   "recentIdentifiers" : {
     "00353439-B084-4161-BDD3-58325B62FD61" : [
@@ -3946,6 +3946,28 @@
     ],
     "7A10AC9D-F4E1-4FB8-A276-43FB7670B088" : [
       {
+        "date" : 756560418.008299,
+        "title" : "Untitled",
+        "transform" : [
+          0.97938,
+          1.23622135e-08,
+          0.20202725,
+          0,
+          0.16130961,
+          0.6020547,
+          -0.7819907,
+          0,
+          -0.12163147,
+          0.7984549,
+          0.58964026,
+          0,
+          -1.8016138,
+          20.75971,
+          8.607409,
+          1
+        ]
+      },
+      {
         "date" : 756557999.834516,
         "title" : "Untitled",
         "transform" : [
@@ -4140,28 +4162,6 @@
           -3.4523876,
           13.790934,
           14.942489,
-          1
-        ]
-      },
-      {
-        "date" : 756481689.939043,
-        "title" : "Untitled",
-        "transform" : [
-          0.9998848,
-          3.74236e-08,
-          0.015181546,
-          0,
-          0.006933277,
-          0.8896259,
-          -0.45663732,
-          0,
-          -0.01350595,
-          0.45669004,
-          0.88952327,
-          0,
-          0.019922256,
-          14.984983,
-          16.663956,
           1
         ]
       }
@@ -7477,6 +7477,5 @@
   },
   "sceneViewportBackgroundColors" : {
 
-  },
-  "selectedSceneRelativePath" : "IntroEnvironment.usda"
+  }
 }

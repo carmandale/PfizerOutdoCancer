@@ -144,7 +144,7 @@ struct PfizerOutdoCancerApp: App {
                     .environment(adcAppModel)
                     .environment(adcDataModel)
             }
-            .defaultSize(CGSize(width: 800, height: 600))
+            // .defaultSize(CGSize(width: 800, height: 600))
             .windowStyle(.plain)
         }
 

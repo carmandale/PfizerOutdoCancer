@@ -67,10 +67,10 @@ struct CompletedView: View {
                 }
             }
         }
-        .padding(48)
-        .glassBackgroundEffect()
-        .frame(maxWidth: 400)
+        .padding(64)
+        .frame(maxWidth: 500)
         .clipShape(RoundedRectangle(cornerRadius: 20))
+        .glassBackgroundEffect()
         .padding(32)
         .onAppear {
             withAnimation(.easeOut) {

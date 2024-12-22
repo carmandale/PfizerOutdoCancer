@@ -7,6 +7,8 @@ struct HitCounterView: View {
     let isDestroyed: Bool
     private let lineWidth: CGFloat = 12
     private let fontSize: CGFloat = 75
+    @State private var isPulsing = false
+    @State private var isHit = false
     
     var progress: CGFloat {
         CGFloat(hits) / CGFloat(requiredHits)
@@ -31,13 +33,16 @@ struct HitCounterView: View {
                     .animation(.linear(duration: 0.5), value: hits)
                     .frame(width: 120, height: 120)
                 
-                // Hit counter
-//                Text("\(hits)")
-//                    .font(.system(size: fontSize))
-//                    .foregroundColor(.white)
-                Text("Hope Meter")
+                Image(systemName: "target")
                     .font(.system(size: fontSize))
                     .foregroundColor(.white)
+                    .scaleEffect(isPulsing ? 1.1 : 1.0)
+                    .scaleEffect(isHit ? 1.3 : 1.0)
+                    .animation(.easeInOut(duration: 0.5), value: isHit)
+                    .animation(.easeInOut(duration: 1.0).repeatForever(autoreverses: true), value: isPulsing)
+                    .onAppear {
+                        isPulsing = true
+                    }
             }
             .frame(width: 160, height: 160)
             .padding(30)
@@ -45,6 +50,14 @@ struct HitCounterView: View {
             .onChange(of: hits) { _, newValue in
                 if newValue >= requiredHits {
                     appModel.gameState.cellsDestroyed += 1
+                } else {
+                    // Trigger hit animation
+                    isHit = true
+                    // Reset after animation
+                    Task {
+                        try? await Task.sleep(for: .milliseconds(500))
+                        isHit = false
+                    }
                 }
             }
         }

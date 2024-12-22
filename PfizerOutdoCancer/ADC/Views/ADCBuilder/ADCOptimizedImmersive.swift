@@ -104,17 +104,9 @@ struct ADCOptimizedImmersive: View {
             
             
         } attachments: {
-            Attachment(id: ADCUIAttachments.adcSelectorView) {
-                ADCSelectorView()
-            }
-            Attachment(id: ADCUIAttachments.linkerSelectorView) {
-                ADCLinkerSelectorView()
-            }
-            Attachment(id: ADCUIAttachments.payloadSelectorView) {
-                ADCPayloadSelectorView()
-            }
             Attachment(id: ADCUIAttachments.mainADCView) {
                 ADCBuilderView()
+//                ContentView()
             }
         }
         .installGestures()
@@ -702,56 +694,9 @@ struct ADCOptimizedImmersive: View {
     }
     
     func setupAttachments(attachments: RealityViewAttachments) {
-        os_log(.debug, "ITR..setupAttachments() called")
-
-        if let viewAttachment = attachments.entity(for: ADCUIAttachments.adcSelectorView) {
-            viewAttachment.name = ADCUIAttachments.adcSelectorView
-            
-            viewAttachment.scale = SIMD3<Float>(0.6, 0.6, 0.6)
-            
-            viewAttachment.components.set(ADCSimpleBillboardComponent())
-//            let billboard = BillboardComponent(offset: [0,0.12,0],
-//                                               axisToFollow: [0,0,0],
-//                                               initializePositionOnlyOnce: true,
-//                                               isBillboardEnabled: true)
-//            viewAttachment.components.set(billboard)
-            adcAttachmentEntity = viewAttachment
-            mainEntity?.addChild(viewAttachment)
-        }
-        
-        if let viewAttachment = attachments.entity(for: ADCUIAttachments.linkerSelectorView) {
-            viewAttachment.name = ADCUIAttachments.linkerSelectorView
-            viewAttachment.scale = SIMD3<Float>(0.6, 0.6, 0.6)
-            viewAttachment.position = SIMD3<Float>(0,0.18,0)
-            
-            let simpleBillboard = ADCSimpleBillboardComponent()
-            viewAttachment.components.set(simpleBillboard)
-            
-            linkerAttachmentEntity = viewAttachment
-            mainEntity?.addChild(viewAttachment)
-        }
-
-        if let viewAttachment = attachments.entity(for: ADCUIAttachments.payloadSelectorView) {
-            viewAttachment.name = ADCUIAttachments.payloadSelectorView
-            viewAttachment.scale = SIMD3<Float>(0.6, 0.6, 0.6)
-            viewAttachment.position = SIMD3<Float>(0,0.18,0)
-            
-            let simpleBillboard = ADCSimpleBillboardComponent()
-            viewAttachment.components.set(simpleBillboard)
-            
-            payloadAttachmentEntity = viewAttachment
-            payloadEntity?.addChild(viewAttachment)
-        }
-        
         if let viewAttachment = attachments.entity(for: ADCUIAttachments.mainADCView) {
             viewAttachment.name = ADCUIAttachments.mainADCView
             viewAttachment.scale = SIMD3<Float>(0.6, 0.6, 0.6)
-//            viewAttachment.position = SIMD3<Float>(0,0,-0.5)
-            
-            let simpleBillboard = ADCSimpleBillboardComponent()
-            viewAttachment.components.set(simpleBillboard)
-            
-//            mainViewEntity.position = SIMD3<Float>(0,1.5,-0.5)
             mainViewEntity.addChild(viewAttachment)
         }
     }
