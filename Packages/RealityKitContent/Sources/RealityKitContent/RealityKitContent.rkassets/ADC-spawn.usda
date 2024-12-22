@@ -1,0 +1,83 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 2.0 (448.0.16.0.3)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root" (
+    customData = {
+        float3 rotationEulerHint = (0, 0, 0)
+    }
+)
+{
+    quatf xformOp:orient = (1, 0, 0, 0)
+    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+    def RealityKitComponent "AudioLibrary"
+    {
+        uniform token info:id = "RealityKit.AudioLibrary"
+
+        def RealityKitDict "resources"
+        {
+            string[] keys = ["Drones_01.wav", "Sonic_Pulse_Hit_01.wav", "SpinBus.wav", "ADC_Attach.wav"]
+            rel values = [
+                </Root/Drones_01_wav>,
+                </Root/Sonic_Pulse_Hit_01_wav>,
+                </Root/SpinBus_wav>,
+                </Root/ADC_Attach_wav>,
+            ]
+        }
+    }
+
+    def RealityKitComponent "SpatialAudio"
+    {
+        float directivityFocus = 0.5001591
+        float directLevel = 0
+        uniform token info:id = "RealityKit.SpatialAudio"
+        float reverbLevel = 0
+        float rolloffFactor = 0.5
+    }
+
+    def RealityKitAudioFile "Drones_01_wav"
+    {
+        uniform asset file = @Audio/Drones_01.wav@
+        uniform bool shouldLoop = 1
+    }
+
+    def RealityKitAudioFile "Sonic_Pulse_Hit_01_wav"
+    {
+        uniform asset file = @Audio/Sonic_Pulse_Hit_01.wav@
+        uniform bool shouldLoop = 0
+    }
+
+    def RealityKitCustomComponent "RealityKitContent_ADCComponent"
+    {
+        uniform token info:id = "RealityKitContent.ADCComponent"
+    }
+
+    def RealityKitAudioFile "SpinBus_wav"
+    {
+        uniform asset file = @Audio/SFX_12042024/SpinBus.wav@
+        uniform bool shouldLoop = 0
+    }
+
+    def RealityKitAudioFile "ADC_Attach_wav"
+    {
+        uniform asset file = @Audio/SFX_12042024/ADC_Attach.wav@
+        uniform bool shouldLoop = 0
+    }
+
+    def "antibodyProtein_complex_assembled" (
+        active = true
+        prepend references = @Assets/ADC/antibodyProtein_complex_assembled.usda@
+    )
+    {
+        float3 xformOp:scale = (1, 1, 1)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+    }
+}
+

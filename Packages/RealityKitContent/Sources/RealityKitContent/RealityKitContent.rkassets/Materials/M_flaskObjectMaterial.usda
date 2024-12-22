@@ -1,0 +1,163 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 2.0 (448.0.16.0.3)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+def Xform "Root"
+{
+    quatf xformOp:orient = (1, 0, 0, 0)
+    float3 xformOp:scale = (1, 1, 1)
+    float3 xformOp:translate = (0, 0, 0)
+    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+    def "M_baseObjectMaterial" (
+        active = true
+        references = @M_baseObjectMaterial.usda@
+    )
+    {
+        float3 xformOp:scale = (1, 1, 1)
+
+        over "M_baseObjectMaterial"
+        {
+            token cullMode = "front" (
+                allowedTokens = ["unspecified", "none", "front", "back"]
+            )
+            asset inputs:ao (
+                customData = {
+                    dictionary realitykit = {
+                        float2 positionInSubgraph = (-743.19617, 693.9848)
+                        int stackingOrderInSubgraph = 419
+                    }
+                }
+            )
+            asset inputs:diffuse = @textures/flasks_mat_BaseColor.png@ (
+                customData = {
+                    dictionary realitykit = {
+                        float2 positionInSubgraph = (-565.5158, -221.40616)
+                        int stackingOrderInSubgraph = 419
+                    }
+                }
+            )
+            asset inputs:emissive (
+                customData = {
+                    dictionary realitykit = {
+                        float2 positionInSubgraph = (-998.94934, -143.22949)
+                        int stackingOrderInSubgraph = 419
+                    }
+                }
+            )
+            float inputs:emissiveAmount (
+                customData = {
+                    dictionary realitykit = {
+                        float2 positionInSubgraph = (-682.28125, -3.0546875)
+                        int stackingOrderInSubgraph = 419
+                    }
+                }
+            )
+            asset inputs:metallic = @textures/flasks_mat_Metallic.png@ (
+                customData = {
+                    dictionary realitykit = {
+                        float2 positionInSubgraph = (-744.3368, 483.15662)
+                        int stackingOrderInSubgraph = 419
+                    }
+                }
+            )
+            asset inputs:normal = @textures/flasks_mat_Normal.png@ (
+                customData = {
+                    dictionary realitykit = {
+                        float2 positionInSubgraph = (-1407.7433, -15.71373)
+                        int stackingOrderInSubgraph = 419
+                    }
+                }
+            )
+            asset inputs:opacity = None (
+                customData = {
+                    dictionary realitykit = {
+                        float2 positionInSubgraph = (-739.329, 900.8363)
+                        int stackingOrderInSubgraph = 419
+                    }
+                }
+            )
+            float inputs:OpacityValue = 0.05 (
+                customData = {
+                    dictionary realitykit = {
+                        float2 positionInSubgraph = (-216.78906, 719.97266)
+                    }
+                }
+            )
+            asset inputs:roughness = @textures/flasks_mat_Roughness.png@ (
+                customData = {
+                    dictionary realitykit = {
+                        float2 positionInSubgraph = (-741.14844, 266.48047)
+                        int stackingOrderInSubgraph = 419
+                    }
+                }
+            )
+
+            over "PBRSurface"
+            {
+                float3 inputs:clearcoatNormal
+                float inputs:opacity = 0.088203125
+                float inputs:opacity.connect = </Root/M_baseObjectMaterial/M_baseObjectMaterial.inputs:OpacityValue>
+                int ui:nodegraph:node:stackingOrder = 419
+                string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["inputs:normal", "inputs:opacity"]
+            }
+
+            over "Image"
+            {
+                int ui:nodegraph:node:stackingOrder = 419
+            }
+
+            over "Image_2"
+            {
+                int ui:nodegraph:node:stackingOrder = 419
+            }
+
+            over "Multiply_1"
+            {
+                int ui:nodegraph:node:stackingOrder = 419
+            }
+
+            over "Image_3"
+            {
+                int ui:nodegraph:node:stackingOrder = 419
+            }
+
+            over "Subtract"
+            {
+                int ui:nodegraph:node:stackingOrder = 419
+            }
+
+            over "Image_4"
+            {
+                int ui:nodegraph:node:stackingOrder = 419
+            }
+
+            over "Image_1"
+            {
+                int ui:nodegraph:node:stackingOrder = 419
+            }
+
+            over "Image_5"
+            {
+                int ui:nodegraph:node:stackingOrder = 419
+            }
+
+            over "Multiply_2"
+            {
+                int ui:nodegraph:node:stackingOrder = 419
+            }
+
+            over "Image_6"
+            {
+                int ui:nodegraph:node:stackingOrder = 419
+            }
+        }
+    }
+}
+

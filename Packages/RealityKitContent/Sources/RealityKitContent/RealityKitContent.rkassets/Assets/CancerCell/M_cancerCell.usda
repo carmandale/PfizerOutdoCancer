@@ -1,0 +1,389 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 2.0 (448.0.16.0.3)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+def Xform "Root"
+{
+    quatf xformOp:orient = (1, 0, 0, 0)
+    float3 xformOp:scale = (1, 1, 1)
+    float3 xformOp:translate = (0, 0, 0)
+    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+    def Material "cancerCell_reusable"
+    {
+        reorder nameChildren = ["Principled_BSDF", "Image_Texture", "UV_Map", "Image_Texture_001", "Image_Texture_002", "Image", "Image_1", "Image_2", "Subtract", "Multiply_2", "PBRSurface", "displace"]
+        asset inputs:diffuseColor = @textures/cancerCell_body_BaseColor.png@ (
+            customData = {
+                dictionary realitykit = {
+                    float2 positionInSubgraph = (-190.9271, -196.50124)
+                    int stackingOrderInSubgraph = 1134
+                }
+            }
+        )
+        asset inputs:Normal = @textures/cancerCell_body_Normal.png@ (
+            customData = {
+                dictionary realitykit = {
+                    float2 positionInSubgraph = (-1037.774, 204.41052)
+                    int stackingOrderInSubgraph = 1134
+                }
+            }
+        )
+        asset inputs:Roughness = @textures/cancerCell_body_Roughness.png@ (
+            customData = {
+                dictionary realitykit = {
+                    float2 positionInSubgraph = (-767.78314, -93.560005)
+                    int stackingOrderInSubgraph = 1134
+                }
+            }
+        )
+        token outputs:mtlx:surface.connect = </Root/cancerCell_reusable/PBRSurface.outputs:out>
+        token outputs:realitykit:vertex.connect = </Root/cancerCell_reusable/displace.outputs:GeometryModifier_out>
+        token outputs:surface.connect = </Root/cancerCell_reusable/Principled_BSDF.outputs:surface>
+        float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (1176.8016, 166.2078)
+        int ui:nodegraph:realitykit:subgraphOutputs:stackingOrder = 1071
+        custom string userProperties:blender:data_name = "cancerCell_body_003"
+
+        def Shader "Principled_BSDF" (
+            active = false
+        )
+        {
+            uniform token info:id = "UsdPreviewSurface"
+            float inputs:clearcoat = 0
+            float inputs:clearcoatRoughness = 0.03
+            color3f inputs:diffuseColor.connect = </Root/cancerCell_body_003/Image_Texture.outputs:rgb>
+            float inputs:ior = 1.5
+            float inputs:metallic = 0
+            normal3f inputs:normal.connect = </Root/cancerCell_body_003/Image_Texture_002.outputs:rgb>
+            float inputs:opacity = 1
+            float inputs:roughness.connect = </Root/cancerCell_body_003/Image_Texture_001.outputs:r>
+            float inputs:specular = 0.5
+            token outputs:surface
+        }
+
+        def Shader "Image_Texture"
+        {
+            uniform token info:id = "UsdUVTexture"
+            asset inputs:file = @./textures/cancerCell_body_BaseColor.png@
+            token inputs:sourceColorSpace = "sRGB"
+            float2 inputs:st.connect = </Root/cancerCell_reusable/UV_Map.outputs:result>
+            token inputs:wrapS = "repeat"
+            token inputs:wrapT = "repeat"
+            float3 outputs:rgb
+        }
+
+        def Shader "UV_Map"
+        {
+            uniform token info:id = "UsdPrimvarReader_float2"
+            string inputs:varname = "st"
+            float2 outputs:result
+        }
+
+        def Shader "Image_Texture_001"
+        {
+            uniform token info:id = "UsdUVTexture"
+            asset inputs:file = @./textures/cancerCell_body_Roughness.png@
+            token inputs:sourceColorSpace = "sRGB"
+            float2 inputs:st.connect = </Root/cancerCell_reusable/UV_Map.outputs:result>
+            token inputs:wrapS = "repeat"
+            token inputs:wrapT = "repeat"
+            float outputs:r
+        }
+
+        def Shader "Image_Texture_002"
+        {
+            uniform token info:id = "UsdUVTexture"
+            float4 inputs:bias = (-1, -1, -1, -1)
+            asset inputs:file = @./textures/cancerCell_body_Normal.png@
+            float4 inputs:scale = (2, 2, 2, 2)
+            token inputs:sourceColorSpace = "raw"
+            float2 inputs:st.connect = </Root/cancerCell_reusable/UV_Map.outputs:result>
+            token inputs:wrapS = "repeat"
+            token inputs:wrapT = "repeat"
+            float3 outputs:rgb
+        }
+
+        def Shader "Image"
+        {
+            uniform token info:id = "ND_image_color3"
+            color3f inputs:default
+            asset inputs:file.connect = </Root/cancerCell_reusable.inputs:diffuseColor>
+            string inputs:filtertype
+            float2 inputs:texcoord
+            string inputs:uaddressmode
+            string inputs:vaddressmode
+            color3f outputs:out
+            float2 ui:nodegraph:node:pos = (96.75373, -208.53503)
+            int ui:nodegraph:node:stackingOrder = 1134
+        }
+
+        def Shader "Image_1"
+        {
+            uniform token info:id = "ND_image_float"
+            asset inputs:file.connect = </Root/cancerCell_reusable.inputs:Roughness>
+            string inputs:filtertype
+            string inputs:vaddressmode
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (-510.82797, -19.642647)
+            int ui:nodegraph:node:stackingOrder = 1134
+        }
+
+        def Shader "Image_2"
+        {
+            uniform token info:id = "ND_image_vector3"
+            float3 inputs:default
+            asset inputs:file.connect = </Root/cancerCell_reusable.inputs:Normal>
+            string inputs:filtertype
+            float3 outputs:out
+            float2 ui:nodegraph:node:pos = (-766.0037, 246.25569)
+            int ui:nodegraph:node:stackingOrder = 1134
+        }
+
+        def Shader "Subtract"
+        {
+            uniform token info:id = "ND_subtract_vector3"
+            float3 inputs:in1.connect = </Root/cancerCell_reusable/Multiply_2.outputs:out>
+            float3 inputs:in2 = (1, 1, 1)
+            float3 outputs:out
+            float2 ui:nodegraph:node:pos = (62.54372, 190.69543)
+            float2 ui:nodegraph:node:size = (61.5, 36)
+            int ui:nodegraph:node:stackingOrder = 1134
+        }
+
+        def Shader "Multiply_2"
+        {
+            uniform token info:id = "ND_multiply_vector3FA"
+            float3 inputs:in1.connect = </Root/cancerCell_reusable/Image_2.outputs:out>
+            float inputs:in2 = 2
+            float3 outputs:out
+            float2 ui:nodegraph:node:pos = (-84.31998, 166.88446)
+            float2 ui:nodegraph:node:size = (60, 36)
+            int ui:nodegraph:node:stackingOrder = 1134
+        }
+
+        def Shader "PBRSurface"
+        {
+            uniform token info:id = "ND_realitykit_pbr_surfaceshader"
+            float inputs:ambientOcclusion
+            color3f inputs:baseColor.connect = </Root/cancerCell_reusable/Image.outputs:out>
+            color3f inputs:emissiveColor
+            bool inputs:hasPremultipliedAlpha
+            float inputs:metallic
+            float3 inputs:normal.connect = </Root/cancerCell_reusable/Subtract.outputs:out>
+            float inputs:roughness.connect = </Root/cancerCell_reusable/Image_1.outputs:out>
+            token outputs:out
+            float2 ui:nodegraph:node:pos = (585.71716, -50.57995)
+            int ui:nodegraph:node:stackingOrder = 1134
+        }
+
+        def NodeGraph "displace"
+        {
+            float inputs:speed = 1 (
+                customData = {
+                    dictionary realitykit = {
+                        float2 positionInSubgraph = (245.73047, 390.53906)
+                        int stackingOrderInSubgraph = 1620
+                    }
+                }
+            )
+            float inputs:X = 8 (
+                customData = {
+                    dictionary realitykit = {
+                        float2 positionInSubgraph = (245.03516, 88.859375)
+                        int stackingOrderInSubgraph = 1618
+                    }
+                }
+            )
+            float inputs:Z = 10 (
+                customData = {
+                    dictionary realitykit = {
+                        float2 positionInSubgraph = (252.1289, 269.33594)
+                        int stackingOrderInSubgraph = 1620
+                    }
+                }
+            )
+            token outputs:GeometryModifier_out.connect = </Root/cancerCell_reusable/displace/GeometryModifier.outputs:out>
+            float2 ui:nodegraph:node:pos = (819.61395, 258.2074)
+            int ui:nodegraph:node:stackingOrder = 1135
+            float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (1678, 154.5)
+
+            def Shader "Multiply_5"
+            {
+                uniform token info:id = "ND_multiply_float"
+                float inputs:in1.connect = </Root/cancerCell_reusable/displace/Time.outputs:out>
+                float inputs:in2 = 1
+                float inputs:in2.connect = </Root/cancerCell_reusable/displace.inputs:speed>
+                float outputs:out
+                float2 ui:nodegraph:node:pos = (386.7422, 342.3672)
+                float2 ui:nodegraph:node:size = (60, 36)
+                int ui:nodegraph:node:stackingOrder = 1619
+            }
+
+            def Shader "Add_2"
+            {
+                uniform token info:id = "ND_add_float"
+                float inputs:in1.connect = </Root/cancerCell_reusable/displace/Multiply_5.outputs:out>
+                float inputs:in2.connect = </Root/cancerCell_reusable/displace/Multiply_7.outputs:out>
+                float outputs:out
+                float2 ui:nodegraph:node:pos = (551.75, 275.5)
+                float2 ui:nodegraph:node:size = (61.5, 36.5)
+                int ui:nodegraph:node:stackingOrder = 1565
+            }
+
+            def Shader "Sin_X"
+            {
+                uniform token info:id = "ND_sin_float"
+                float inputs:in.connect = </Root/cancerCell_reusable/displace/Add_1.outputs:out>
+                float outputs:out
+                float2 ui:nodegraph:node:pos = (702.5, 160.5)
+                float2 ui:nodegraph:node:size = (122.5, 53)
+                int ui:nodegraph:node:stackingOrder = 1565
+            }
+
+            def Shader "GeometryModifier"
+            {
+                uniform token info:id = "ND_realitykit_geometrymodifier_2_0_vertexshader"
+                float3 inputs:bitangent
+                color4f inputs:color
+                float3 inputs:modelPositionOffset.connect = </Root/cancerCell_reusable/displace/Combine3.outputs:out>
+                float3 inputs:normal
+                float2 inputs:uv0
+                float2 inputs:uv1
+                float4 inputs:uv2
+                float4 inputs:uv3
+                float4 inputs:uv4
+                float4 inputs:uv6
+                float4 inputs:uv7
+                token outputs:out
+                float2 ui:nodegraph:node:pos = (1391.25, 154.5)
+                int ui:nodegraph:node:stackingOrder = 1565
+            }
+
+            def Shader "Sin_Z"
+            {
+                uniform token info:id = "ND_sin_float"
+                float inputs:in.connect = </Root/cancerCell_reusable/displace/Add_2.outputs:out>
+                float outputs:out
+                float2 ui:nodegraph:node:pos = (702.5, 275.5)
+                float2 ui:nodegraph:node:size = (122, 53)
+                int ui:nodegraph:node:stackingOrder = 1565
+            }
+
+            def Shader "Multiply_3"
+            {
+                uniform token info:id = "ND_multiply_float"
+                float inputs:in1.connect = </Root/cancerCell_reusable/displace/Separate3.outputs:outx>
+                float inputs:in2 = 8
+                float inputs:in2.connect = </Root/cancerCell_reusable/displace.inputs:X>
+                float outputs:out
+                float2 ui:nodegraph:node:pos = (435, 151.5)
+                float2 ui:nodegraph:node:size = (60, 36)
+                int ui:nodegraph:node:stackingOrder = 1565
+            }
+
+            def Shader "Multiply_7"
+            {
+                uniform token info:id = "ND_multiply_float"
+                float inputs:in1.connect = </Root/cancerCell_reusable/displace/Separate3.outputs:outz>
+                float inputs:in2 = 10
+                float inputs:in2.connect = </Root/cancerCell_reusable/displace.inputs:Z>
+                float outputs:out
+                float2 ui:nodegraph:node:pos = (435, 247.5)
+                float2 ui:nodegraph:node:size = (60, 36)
+                int ui:nodegraph:node:stackingOrder = 1565
+            }
+
+            def Shader "Add_3"
+            {
+                uniform token info:id = "ND_add_float"
+                float inputs:in1.connect = </Root/cancerCell_reusable/displace/Multiply_4.outputs:out>
+                float inputs:in2.connect = </Root/cancerCell_reusable/displace/Multiply_6.outputs:out>
+                float outputs:out
+                float2 ui:nodegraph:node:pos = (969.25, 154.5)
+                float2 ui:nodegraph:node:size = (61.5, 36.5)
+                int ui:nodegraph:node:stackingOrder = 1565
+            }
+
+            def Shader "Multiply_4"
+            {
+                uniform token info:id = "ND_multiply_float"
+                float inputs:in1.connect = </Root/cancerCell_reusable/displace/Sin_X.outputs:out>
+                float inputs:in2 = 0.02
+                float outputs:out
+                float2 ui:nodegraph:node:pos = (852.5, 160.5)
+                float2 ui:nodegraph:node:size = (60, 36)
+                int ui:nodegraph:node:stackingOrder = 1565
+            }
+
+            def Shader "Separate3"
+            {
+                uniform token info:id = "ND_separate3_vector3"
+                float3 inputs:in.connect = </Root/cancerCell_reusable/displace/Position.outputs:out>
+                float outputs:outx
+                float outputs:outy
+                float outputs:outz
+                float2 ui:nodegraph:node:pos = (-30.238281, 158.83203)
+                float2 ui:nodegraph:node:size = (115.5, 145)
+                int ui:nodegraph:node:stackingOrder = 1617
+            }
+
+            def Shader "Time"
+            {
+                uniform token info:id = "ND_time_float"
+                float outputs:out
+                float2 ui:nodegraph:node:pos = (-30.238281, 323.83203)
+                float2 ui:nodegraph:node:size = (122.5, 53)
+                int ui:nodegraph:node:stackingOrder = 1616
+            }
+
+            def Shader "Position"
+            {
+                uniform token info:id = "ND_position_vector3"
+                float3 outputs:out
+                float2 ui:nodegraph:node:pos = (-233.73828, 158.83203)
+                float2 ui:nodegraph:node:size = (133.5, 40)
+                int ui:nodegraph:node:stackingOrder = 1616
+            }
+
+            def Shader "Multiply_6"
+            {
+                uniform token info:id = "ND_multiply_float"
+                float inputs:in1.connect = </Root/cancerCell_reusable/displace/Sin_Z.outputs:out>
+                float inputs:in2 = 0.02
+                float outputs:out
+                float2 ui:nodegraph:node:pos = (852.5, 275.5)
+                float2 ui:nodegraph:node:size = (60, 36)
+                int ui:nodegraph:node:stackingOrder = 1565
+            }
+
+            def Shader "Add_1"
+            {
+                uniform token info:id = "ND_add_float"
+                float inputs:in1.connect = </Root/cancerCell_reusable/displace/Multiply_5.outputs:out>
+                float inputs:in2.connect = </Root/cancerCell_reusable/displace/Multiply_3.outputs:out>
+                float outputs:out
+                float2 ui:nodegraph:node:pos = (551.75, 160.5)
+                float2 ui:nodegraph:node:size = (61.5, 36.5)
+                int ui:nodegraph:node:stackingOrder = 1565
+            }
+
+            def Shader "Combine3"
+            {
+                uniform token info:id = "ND_combine3_vector3"
+                float inputs:in1 = 0
+                float inputs:in2.connect = </Root/cancerCell_reusable/displace/Add_3.outputs:out>
+                float inputs:in3 = 0
+                float3 outputs:out
+                float2 ui:nodegraph:node:pos = (1130.5, 154.5)
+                float2 ui:nodegraph:node:size = (145, 54)
+                int ui:nodegraph:node:stackingOrder = 1565
+            }
+        }
+    }
+}
+

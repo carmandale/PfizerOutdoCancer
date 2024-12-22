@@ -1,0 +1,89 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 2.0 (448.0.16.0.3)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    def Material "M_Spatial"
+    {
+        asset inputs:Left = @textures/F01_Woman40s_B_v02_L.jpg@ (
+            customData = {
+                dictionary realitykit = {
+                    float2 positionInSubgraph = (-1307.1523, -38.39453)
+                    int stackingOrderInSubgraph = 26
+                }
+            }
+        )
+        asset inputs:Right = @textures/F01_Woman40s_B_v02_R.jpg@ (
+            customData = {
+                dictionary realitykit = {
+                    float2 positionInSubgraph = (-1242.1484, 143.05078)
+                    int stackingOrderInSubgraph = 26
+                }
+            }
+        )
+        token outputs:mtlx:surface.connect = </Root/M_Spatial/UnlitSurface.outputs:out>
+        token outputs:realitykit:vertex
+        float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (505.98047, 89.171875)
+        int ui:nodegraph:realitykit:subgraphOutputs:stackingOrder = 2
+
+        def Shader "Image"
+        {
+            uniform token info:id = "ND_image_color3"
+            color3f inputs:default
+            asset inputs:file = @textures/F03_WomanYoungMother_G_v04_L.jpg@
+            asset inputs:file.connect = </Root/M_Spatial.inputs:Left>
+            string inputs:filtertype
+            float2 inputs:texcoord
+            string inputs:uaddressmode
+            string inputs:vaddressmode
+            color3f outputs:out
+            float2 ui:nodegraph:node:pos = (-1017.4414, -147.0039)
+            int ui:nodegraph:node:stackingOrder = 22
+        }
+
+        def Shader "CameraIndexSwitch"
+        {
+            uniform token info:id = "ND_realitykit_geometry_switch_cameraindex_color3"
+            color3f inputs:left.connect = </Root/M_Spatial/Image.outputs:out>
+            color3f inputs:mono.connect = </Root/M_Spatial/Image.outputs:out>
+            color3f inputs:right.connect = </Root/M_Spatial/Image_1.outputs:out>
+            color3f outputs:out
+            float2 ui:nodegraph:node:pos = (-310.67578, -45.523438)
+            int ui:nodegraph:node:stackingOrder = 16
+        }
+
+        def Shader "Image_1"
+        {
+            uniform token info:id = "ND_image_color3"
+            color3f inputs:default
+            asset inputs:file = @textures/F03_WomanYoungMother_G_v04_L.jpg@
+            asset inputs:file.connect = </Root/M_Spatial.inputs:Right>
+            string inputs:filtertype
+            float2 inputs:texcoord
+            string inputs:uaddressmode
+            string inputs:vaddressmode
+            color3f outputs:out
+            float2 ui:nodegraph:node:pos = (-778.35156, 2.7617188)
+            int ui:nodegraph:node:stackingOrder = 25
+        }
+
+        def Shader "UnlitSurface"
+        {
+            uniform token info:id = "ND_realitykit_unlit_surfaceshader"
+            color3f inputs:color.connect = </Root/M_Spatial/CameraIndexSwitch.outputs:out>
+            bool inputs:hasPremultipliedAlpha
+            float inputs:opacity
+            token outputs:out
+            float2 ui:nodegraph:node:pos = (111.30469, 30.125)
+            int ui:nodegraph:node:stackingOrder = 27
+        }
+    }
+}
+

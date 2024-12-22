@@ -1,0 +1,1016 @@
+#usda 1.0
+(
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+reorder rootPrims = ["Root", "GridMaterial"]
+
+def Xform "Root"
+{
+    reorder nameChildren = ["BloodVesselAudio", "RCP_BehaviorsContainer", "OnAddedToScene", "bloodVessel_v004_clean", "SFX", "Colliders"]
+    rel material:binding = None (
+        bindMaterialAs = "weakerThanDescendants"
+    )
+
+    def RealityKitTimeline "BloodVesselAudio"
+    {
+        reorder nameChildren = ["Track", "Track2", "Track3", "Track4", "Track5", "Track6", "Track7", "Track8"]
+        def RealityKitTrack "Track"
+        {
+            def RealityKitAction "Play_Audio_Left"
+            {
+                string actionKind = "audio"
+                string audioResourceName = "Heartbeat.cm.L.wav"
+                bool controlPlayback = 1
+                double duration = 157.78227083333334
+                uniform token info:id = "06E47B31-9ACA-4B2B-B3F9-6B1EFED449DA"
+                double loopCount = 1
+                double startTime = 0
+                rel target = </Root/SFX/Left>
+
+                def RealityKitStruct "handoffType"
+                {
+                }
+            }
+        }
+
+        def RealityKitTrack "Track2"
+        {
+            def RealityKitAction "Play_Audio_Right"
+            {
+                string actionKind = "audio"
+                string audioResourceName = "Heartbeat.cm.R.wav"
+                bool controlPlayback = 1
+                double duration = 157.78227083333334
+                uniform token info:id = "B524334B-AE64-41AB-A050-C2466CE416AB"
+                double startTime = 0
+                rel target = </Root/SFX/Right>
+
+                def RealityKitStruct "handoffType"
+                {
+                }
+            }
+        }
+
+        def RealityKitTrack "Track3"
+        {
+            def RealityKitAction "Play_Audio_Front_Right_Upper"
+            {
+                string actionKind = "audio"
+                string audioResourceName = "Ambience 2.cm.R.wav"
+                bool controlPlayback = 1
+                double duration = 157.78227083333334
+                uniform token info:id = "3FA49A09-9F34-48C9-81A2-B0D795FB12EE"
+                double startTime = 0
+                rel target = </Root/SFX/Front_Right_Upper>
+
+                def RealityKitStruct "handoffType"
+                {
+                }
+            }
+        }
+
+        def RealityKitTrack "Track4"
+        {
+            def RealityKitAction "Play_Audio_Front_Left_Upper"
+            {
+                string actionKind = "audio"
+                string audioResourceName = "Ambience 2.cm.L.wav"
+                bool controlPlayback = 1
+                double duration = 157.78227083333334
+                uniform token info:id = "16BE7026-4956-44B9-AE1D-43C4CD1A2222"
+                double startTime = 0
+                rel target = </Root/SFX/Front_Left_Upper>
+
+                def RealityKitStruct "handoffType"
+                {
+                }
+            }
+        }
+
+        def RealityKitTrack "Track5"
+        {
+            def RealityKitAction "Play_Audio_Rear_Left"
+            {
+                string actionKind = "audio"
+                string audioResourceName = "Ambience 1.cm.L.wav"
+                bool controlPlayback = 1
+                double duration = 157.78227083333334
+                uniform token info:id = "45BE8435-1B89-4BC4-8777-E74CE39CAF9E"
+                double startTime = 0
+                rel target = </Root/SFX/Rear_Left>
+
+                def RealityKitStruct "handoffType"
+                {
+                }
+            }
+        }
+
+        def RealityKitTrack "Track6"
+        {
+            def RealityKitAction "Play_Audio_Rear_Right"
+            {
+                string actionKind = "audio"
+                string audioResourceName = "Ambience 1.cm.R.wav"
+                bool controlPlayback = 1
+                double duration = 157.78227083333334
+                uniform token info:id = "B9F1673E-78E8-4792-8463-7ED27749973F"
+                double startTime = 0
+                rel target = </Root/SFX/Rear_Right>
+
+                def RealityKitStruct "handoffType"
+                {
+                }
+            }
+        }
+
+        def RealityKitTrack "Track7"
+        {
+            def RealityKitAction "Play_Audio_Front_Right_Lower"
+            {
+                string actionKind = "audio"
+                string audioResourceName = "Ambience 3.cm.R.wav"
+                bool controlPlayback = 1
+                double duration = 157.78227083333334
+                uniform token info:id = "D2A29602-6B86-4AE4-8191-4AD312192D73"
+                double startTime = 0
+                rel target = </Root/SFX/Front_Right_Lower>
+
+                def RealityKitStruct "handoffType"
+                {
+                }
+            }
+        }
+
+        def RealityKitTrack "Track8"
+        {
+            def RealityKitAction "Play_Audio_Front_Left_Lower"
+            {
+                string actionKind = "audio"
+                string audioResourceName = "Ambience 3.cm.L.wav"
+                bool controlPlayback = 1
+                double duration = 157.78227083333334
+                uniform token info:id = "A5563B30-C2A0-4189-ABB9-9419EF03E708"
+                double startTime = 0
+                rel target = </Root/SFX/Front_Left_Lower>
+
+                def RealityKitStruct "handoffType"
+                {
+                }
+            }
+        }
+    }
+
+    def RealityKitComponent "RCP_BehaviorsContainer"
+    {
+        rel behaviors = </Root/OnAddedToScene>
+        uniform token info:id = "RCP.BehaviorsContainer"
+    }
+
+    def Preliminary_Behavior "OnAddedToScene"
+    {
+        rel actions = </Root/OnAddedToScene/Action>
+        uniform bool exclusive
+        rel triggers = </Root/OnAddedToScene/Trigger>
+
+        def Preliminary_Trigger "Trigger"
+        {
+            rel affectedObjects = </Root>
+            token info:id = "SceneTransition"
+        }
+
+        def Preliminary_Action "Action"
+        {
+            rel affectedObjects = </Root>
+            rel animationLibraryKey = </Root/BloodVesselAudio>
+            rel animationLibraryKeyOverrideKey = </Root/OnAddedToScene/Trigger>
+            token info:id = "PlayTimeline"
+            int loops = 0
+            int performCount = 1
+            token type = "serial"
+        }
+    }
+
+    def "bloodVessel_v004_clean" (
+        active = true
+        customData = {
+            float3 rotationEulerHint = (-1.5707964, 0, 0)
+        }
+        references = @Assets/Blood Vessel/bloodVessel_v004_clean.usdc@
+    )
+    {
+        float2 ui:nodegraph:node:pos = (20, 20)
+        int ui:nodegraph:node:stackingOrder = 1
+        quatf xformOp:orient = (0.70710677, -0.70710677, 0, 0)
+        float3 xformOp:scale = (4, 4, 4)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "InputTarget"
+        {
+            uniform token info:id = "RealityKit.InputTarget"
+        }
+    }
+
+    def Xform "SFX" (
+        active = true
+    )
+    {
+        def Xform "Left" (
+            active = true
+            customData = {
+                float3 rotationEulerHint = (0.4712389, -1.5707963, 0)
+            }
+        )
+        {
+            quatf xformOp:orient = (0.6875694, -0.1650708, -0.6875693, -0.1650708)
+            float3 xformOp:scale = (1, 0.99999994, 0.99999994)
+            float3 xformOp:translate = (-4, 1.4354758, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            def RealityKitComponent "AudioLibrary"
+            {
+                uniform token info:id = "RealityKit.AudioLibrary"
+
+                def RealityKitDict "resources"
+                {
+                    string[] keys = ["Heartbeat.cm.L.wav"]
+                    rel values = </Root/SFX/Heartbeat_cm_L_wav>
+                }
+            }
+
+            def RealityKitComponent "SpatialAudio"
+            {
+                float directivityFocus = 0
+                uniform token info:id = "RealityKit.SpatialAudio"
+                float rolloffFactor = 1.5183215
+            }
+        }
+
+        def Xform "Right" (
+            active = true
+            customData = {
+                float3 rotationEulerHint = (-0.47123888, 1.5707963, 0)
+            }
+        )
+        {
+            quatf xformOp:orient = (0.6875694, -0.1650708, 0.6875693, 0.1650708)
+            float3 xformOp:scale = (1, 0.99999994, 0.99999994)
+            float3 xformOp:translate = (4, 1.4354758, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            def RealityKitComponent "AudioLibrary"
+            {
+                uniform token info:id = "RealityKit.AudioLibrary"
+
+                def RealityKitDict "resources"
+                {
+                    string[] keys = ["Heartbeat.cm.R.wav"]
+                    rel values = </Root/SFX/Heartbeat_cm_R_wav>
+                }
+            }
+
+            def RealityKitComponent "SpatialAudio"
+            {
+                float directivityFocus = 0
+                uniform token info:id = "RealityKit.SpatialAudio"
+                float rolloffFactor = 1.4846158
+            }
+        }
+
+        def Xform "Front_Right_Upper" (
+            active = true
+            customData = {
+                float3 rotationEulerHint = (-0.4712386, 2.3172734, 0)
+            }
+        )
+        {
+            quatf xformOp:orient = (0.38952065, -0.09351565, 0.89094156, 0.21389613)
+            float3 xformOp:scale = (0.99999994, 0.9999999, 0.99999994)
+            float3 xformOp:translate = (4, 1.4354758, -4)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            def RealityKitComponent "AudioLibrary"
+            {
+                uniform token info:id = "RealityKit.AudioLibrary"
+
+                def RealityKitDict "resources"
+                {
+                    string[] keys = ["Ambience 2.cm.R.wav"]
+                    rel values = </Root/SFX/Ambience_2_cm_R_wav>
+                }
+            }
+
+            def RealityKitComponent "SpatialAudio"
+            {
+                float directivityFocus = 0.67592263
+                uniform token info:id = "RealityKit.SpatialAudio"
+                float rolloffFactor = 1.5
+            }
+        }
+
+        def Xform "Front_Left_Upper" (
+            active = true
+            customData = {
+                float3 rotationEulerHint = (-0.4712389, -2.4085543, 0)
+            }
+        )
+        {
+            quatf xformOp:orient = (-0.34846628, 0.08365935, 0.9077855, 0.21794002)
+            float3 xformOp:scale = (0.9999999, 0.99999994, 0.99999994)
+            float3 xformOp:translate = (-4, 1.4354758, -4)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            def RealityKitComponent "AudioLibrary"
+            {
+                uniform token info:id = "RealityKit.AudioLibrary"
+
+                def RealityKitDict "resources"
+                {
+                    string[] keys = ["Ambience 2.cm.L.wav"]
+                    rel values = </Root/SFX/Ambience_2_cm_L_wav>
+                }
+            }
+
+            def RealityKitComponent "SpatialAudio"
+            {
+                float directivityFocus = 0.7276584
+                uniform token info:id = "RealityKit.SpatialAudio"
+                float rolloffFactor = 1.5
+            }
+        }
+
+        def Xform "Rear_Left" (
+            active = true
+            customData = {
+                float3 rotationEulerHint = (-0.47123894, -0.78539795, 0)
+            }
+        )
+        {
+            quatf xformOp:orient = (0.8983527, -0.21567544, -0.37210983, -0.089335665)
+            float3 xformOp:scale = (1, 1, 1)
+            float3 xformOp:translate = (-4, 1.4354758, 4)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            def RealityKitComponent "AudioLibrary"
+            {
+                uniform token info:id = "RealityKit.AudioLibrary"
+
+                def RealityKitDict "resources"
+                {
+                    string[] keys = ["Ambience 1.cm.L.wav"]
+                    rel values = </Root/SFX/Ambience_1_cm_L_wav>
+                }
+            }
+
+            def RealityKitComponent "SpatialAudio"
+            {
+                float directivityFocus = 0.6796168
+                uniform token info:id = "RealityKit.SpatialAudio"
+                float rolloffFactor = 1.5
+            }
+        }
+
+        def Xform "Rear_Right" (
+            active = true
+            customData = {
+                float3 rotationEulerHint = (-0.47123897, 0.78539807, -2.1073422e-8)
+            }
+        )
+        {
+            quatf xformOp:orient = (0.8983527, -0.21567541, 0.37210983, 0.089335665)
+            float3 xformOp:scale = (1, 1, 1)
+            float3 xformOp:translate = (4, 1.4354758, 4)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            def RealityKitComponent "AudioLibrary"
+            {
+                uniform token info:id = "RealityKit.AudioLibrary"
+
+                def RealityKitDict "resources"
+                {
+                    string[] keys = ["Ambience 1.cm.R.wav"]
+                    rel values = </Root/SFX/Ambience_1_cm_R_wav>
+                }
+            }
+
+            def RealityKitComponent "SpatialAudio"
+            {
+                float directivityFocus = 0.7
+                uniform token info:id = "RealityKit.SpatialAudio"
+                float rolloffFactor = 1.5
+            }
+        }
+
+        def RealityKitAudioFile "Ambience_1_cm_L_wav"
+        {
+            uniform asset file = @Audio/Blood_Vessel_Ambience_11252024/Ambience 1.cm.L.wav@
+            uniform bool shouldLoop = 0
+        }
+
+        def RealityKitAudioFile "Ambience_1_cm_R_wav"
+        {
+            uniform asset file = @Audio/Blood_Vessel_Ambience_11252024/Ambience 1.cm.R.wav@
+            uniform bool shouldLoop = 0
+        }
+
+        def RealityKitAudioFile "Ambience_2_cm_L_wav"
+        {
+            uniform asset file = @Audio/Blood_Vessel_Ambience_11252024/Ambience 2.cm.L.wav@
+            uniform bool shouldLoop = 0
+        }
+
+        def RealityKitAudioFile "Ambience_2_cm_R_wav"
+        {
+            uniform asset file = @Audio/Blood_Vessel_Ambience_11252024/Ambience 2.cm.R.wav@
+            uniform bool shouldLoop = 0
+        }
+
+        def Xform "Front_Right_Lower" (
+            active = true
+            customData = {
+                float3 rotationEulerHint = (0.47123843, 2.3172734, 0)
+            }
+        )
+        {
+            float2 ui:nodegraph:node:pos = (20, 20)
+            int ui:nodegraph:node:stackingOrder = 1
+            quatf xformOp:orient = (0.38952062, 0.09351564, 0.8909416, -0.21389614)
+            float3 xformOp:scale = (0.99999976, 0.99999964, 0.9999997)
+            float3 xformOp:translate = (4, 0, -4)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            def RealityKitComponent "AudioLibrary"
+            {
+                uniform token info:id = "RealityKit.AudioLibrary"
+
+                def RealityKitDict "resources"
+                {
+                    string[] keys = ["Ambience 3.cm.R.wav"]
+                    rel values = </Root/SFX/Ambience_3_cm_R_wav>
+                }
+            }
+
+            def RealityKitComponent "SpatialAudio"
+            {
+                float directivityFocus = 0.67592263
+                uniform token info:id = "RealityKit.SpatialAudio"
+                float rolloffFactor = 1.5
+            }
+        }
+
+        def Xform "Front_Left_Lower" (
+            active = true
+            customData = {
+                float3 rotationEulerHint = (0.47123885, -2.4085543, 0)
+            }
+        )
+        {
+            float2 ui:nodegraph:node:pos = (20, 20)
+            int ui:nodegraph:node:stackingOrder = 1
+            quatf xformOp:orient = (-0.34846628, -0.08365935, 0.9077855, -0.21794003)
+            float3 xformOp:scale = (0.9999998, 0.9999998, 0.9999997)
+            float3 xformOp:translate = (-4, 0, -4)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            def RealityKitComponent "AudioLibrary"
+            {
+                uniform token info:id = "RealityKit.AudioLibrary"
+
+                def RealityKitDict "resources"
+                {
+                    string[] keys = ["Ambience 3.cm.L.wav"]
+                    rel values = </Root/SFX/Ambience_3_cm_L_wav>
+                }
+            }
+
+            def RealityKitComponent "SpatialAudio"
+            {
+                float directivityFocus = 0.7276584
+                uniform token info:id = "RealityKit.SpatialAudio"
+                float rolloffFactor = 1.5
+            }
+        }
+
+        def RealityKitAudioFile "Ambience_3_cm_L_wav"
+        {
+            uniform asset file = @Audio/Blood_Vessel_Ambience_11252024/Ambience 3.cm.L.wav@
+            uniform bool shouldLoop = 0
+        }
+
+        def RealityKitAudioFile "Ambience_3_cm_R_wav"
+        {
+            uniform asset file = @Audio/Blood_Vessel_Ambience_11252024/Ambience 3.cm.R.wav@
+            uniform bool shouldLoop = 0
+        }
+
+        def RealityKitAudioFile "Heartbeat_cm_L_wav"
+        {
+            uniform asset file = @Audio/Blood_Vessel_Ambience_11252024/Heartbeat.cm.L.wav@
+            uniform bool shouldLoop = 0
+        }
+
+        def RealityKitAudioFile "Heartbeat_cm_R_wav"
+        {
+            uniform asset file = @Audio/Blood_Vessel_Ambience_11252024/Heartbeat.cm.R.wav@
+            uniform bool shouldLoop = 0
+        }
+    }
+
+    def Xform "Colliders" (
+        active = true
+    )
+    {
+        def Cube "right" (
+            active = true
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            reorder nameChildren = ["M_wall", "Collider", "RealityKitContent_BloodVesselWallComponent"]
+            rel material:binding = </Root/Colliders/right/M_wall>
+            double size = 4
+            quatf xformOp:orient = (1, 0, 0, 0)
+            float3 xformOp:scale = (0.7796878, 2, 5)
+            float3 xformOp:translate = (5.7153263, 0, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            def Material "M_wall"
+            {
+                token outputs:mtlx:surface
+                token outputs:realitykit:vertex
+                token outputs:surface.connect = </Root/Colliders/right/M_wall/DefaultSurfaceShader.outputs:surface>
+
+                def Shader "DefaultSurfaceShader"
+                {
+                    uniform token info:id = "UsdPreviewSurface"
+                    color3f inputs:diffuseColor = (1, 1, 1)
+                    float inputs:opacity = 0
+                    float inputs:opacityThreshold = 0.5
+                    float inputs:roughness = 1
+                    token outputs:surface
+                }
+            }
+
+            def RealityKitComponent "Collider"
+            {
+                uint group = 1
+                uniform token info:id = "RealityKit.Collider"
+                uint mask = 4294967295
+                token type = "Default"
+
+                def RealityKitStruct "Shape"
+                {
+                    float3 extent = (4, 5, 5)
+                    float height = 4
+                    float radius = 2
+                    token shapeType = "Box"
+
+                    def RealityKitStruct "pose"
+                    {
+                    }
+                }
+            }
+
+            def RealityKitCustomComponent "RealityKitContent_BloodVesselWallComponent"
+            {
+                uniform token info:id = "RealityKitContent.BloodVesselWallComponent"
+            }
+
+            def RealityKitComponent "RigidBody"
+            {
+                bool gravityEnabled = 0
+                uniform token info:id = "RealityKit.RigidBody"
+                token motionType = "Static"
+
+                def RealityKitStruct "massFrame"
+                {
+                    def RealityKitStruct "m_pose"
+                    {
+                    }
+                }
+
+                def RealityKitStruct "material"
+                {
+                }
+            }
+
+            def RealityKitComponent "InputTarget"
+            {
+                uniform token info:id = "RealityKit.InputTarget"
+            }
+        }
+
+        def Cube "left" (
+            active = true
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </Root/Colliders/right/M_wall> (
+                bindMaterialAs = "weakerThanDescendants"
+            )
+            double size = 4
+            float2 ui:nodegraph:node:pos = (20, 20)
+            int ui:nodegraph:node:stackingOrder = 1
+            quatf xformOp:orient = (1, 0, 0, 0)
+            float3 xformOp:scale = (0.7796878, 2, 5)
+            float3 xformOp:translate = (-5.156196, 0, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            def RealityKitComponent "Collider"
+            {
+                uint group = 1
+                uniform token info:id = "RealityKit.Collider"
+                uint mask = 4294967295
+                token type = "Default"
+
+                def RealityKitStruct "Shape"
+                {
+                    float3 extent = (4, 5, 5)
+                    float height = 4
+                    float radius = 2
+                    token shapeType = "Box"
+
+                    def RealityKitStruct "pose"
+                    {
+                    }
+                }
+            }
+
+            def RealityKitCustomComponent "RealityKitContent_BloodVesselWallComponent"
+            {
+                uniform token info:id = "RealityKitContent.BloodVesselWallComponent"
+            }
+
+            def RealityKitComponent "RigidBody"
+            {
+                bool gravityEnabled = 0
+                uniform token info:id = "RealityKit.RigidBody"
+                token motionType = "Static"
+
+                def RealityKitStruct "massFrame"
+                {
+                    def RealityKitStruct "m_pose"
+                    {
+                    }
+                }
+
+                def RealityKitStruct "material"
+                {
+                }
+            }
+
+            def RealityKitComponent "InputTarget"
+            {
+                uniform token info:id = "RealityKit.InputTarget"
+            }
+        }
+
+        def Cube "top" (
+            active = true
+            prepend apiSchemas = ["MaterialBindingAPI"]
+            customData = {
+                float3 rotationEulerHint = (0, 0, -1.5643739)
+            }
+        )
+        {
+            rel material:binding = </Root/Colliders/right/M_wall> (
+                bindMaterialAs = "weakerThanDescendants"
+            )
+            double size = 4
+            float2 ui:nodegraph:node:pos = (40, 40)
+            int ui:nodegraph:node:stackingOrder = 2
+            quatf xformOp:orient = (0.70937383, 0, 0, -0.70483243)
+            float3 xformOp:scale = (1, 4, 5)
+            float3 xformOp:translate = (0.59540546, 4.980757, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            def RealityKitComponent "Collider"
+            {
+                uint group = 1
+                uniform token info:id = "RealityKit.Collider"
+                uint mask = 4294967295
+                token type = "Default"
+
+                def RealityKitStruct "Shape"
+                {
+                    float3 extent = (4, 5, 5)
+                    float height = 4
+                    float radius = 2
+                    token shapeType = "Box"
+
+                    def RealityKitStruct "pose"
+                    {
+                    }
+                }
+            }
+
+            def RealityKitCustomComponent "RealityKitContent_BloodVesselWallComponent"
+            {
+                uniform token info:id = "RealityKitContent.BloodVesselWallComponent"
+            }
+
+            def RealityKitComponent "RigidBody"
+            {
+                bool gravityEnabled = 0
+                uniform token info:id = "RealityKit.RigidBody"
+                token motionType = "Static"
+
+                def RealityKitStruct "massFrame"
+                {
+                    def RealityKitStruct "m_pose"
+                    {
+                    }
+                }
+
+                def RealityKitStruct "material"
+                {
+                }
+            }
+
+            def RealityKitComponent "InputTarget"
+            {
+                uniform token info:id = "RealityKit.InputTarget"
+            }
+        }
+
+        def Cube "bottom" (
+            active = true
+            prepend apiSchemas = ["MaterialBindingAPI"]
+            customData = {
+                float3 rotationEulerHint = (0, 0, -1.5643739)
+            }
+        )
+        {
+            rel material:binding = </Root/Colliders/right/M_wall> (
+                bindMaterialAs = "weakerThanDescendants"
+            )
+            double size = 4
+            float2 ui:nodegraph:node:pos = (60, 60)
+            int ui:nodegraph:node:stackingOrder = 3
+            quatf xformOp:orient = (0.70937383, 0, 0, -0.70483243)
+            float3 xformOp:scale = (1, 4, 5)
+            float3 xformOp:translate = (0.6647155, -5.810588, 0.0000019073486)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            def RealityKitComponent "Collider"
+            {
+                uint group = 1
+                uniform token info:id = "RealityKit.Collider"
+                uint mask = 4294967295
+                token type = "Default"
+
+                def RealityKitStruct "Shape"
+                {
+                    float3 extent = (4, 5, 5)
+                    float height = 4
+                    float radius = 2
+                    token shapeType = "Box"
+
+                    def RealityKitStruct "pose"
+                    {
+                    }
+                }
+            }
+
+            def RealityKitCustomComponent "RealityKitContent_BloodVesselWallComponent"
+            {
+                uniform token info:id = "RealityKitContent.BloodVesselWallComponent"
+            }
+
+            def RealityKitComponent "RigidBody"
+            {
+                bool gravityEnabled = 0
+                uniform token info:id = "RealityKit.RigidBody"
+                token motionType = "Static"
+
+                def RealityKitStruct "massFrame"
+                {
+                    def RealityKitStruct "m_pose"
+                    {
+                    }
+                }
+
+                def RealityKitStruct "material"
+                {
+                }
+            }
+
+            def RealityKitComponent "InputTarget"
+            {
+                uniform token info:id = "RealityKit.InputTarget"
+            }
+        }
+
+        def Capsule "player" (
+            active = true
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Y"
+            double height = 2
+            rel material:binding = </Root/Colliders/player/M_player>
+            double radius = 0.5
+            quatf xformOp:orient = (1, 0, 0, 0)
+            float3 xformOp:scale = (1, 1, 1)
+            float3 xformOp:translate = (0, 0, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            def Material "M_player"
+            {
+                token outputs:mtlx:surface
+                token outputs:realitykit:vertex
+                token outputs:surface.connect = </Root/Colliders/player/M_player/DefaultSurfaceShader.outputs:surface>
+
+                def Shader "DefaultSurfaceShader"
+                {
+                    uniform token info:id = "UsdPreviewSurface"
+                    color3f inputs:diffuseColor = (1, 1, 1)
+                    float inputs:opacity = 0
+                    float inputs:opacityThreshold = 0.5
+                    float inputs:roughness = 0
+                    token outputs:surface
+                }
+            }
+
+            def RealityKitComponent "Collider"
+            {
+                uint group = 1
+                uniform token info:id = "RealityKit.Collider"
+                uint mask = 4294967295
+                token type = "Default"
+
+                def RealityKitStruct "Shape"
+                {
+                    float3 extent = (2, 4, 2)
+                    token shapeType = "Box"
+
+                    def RealityKitStruct "pose"
+                    {
+                        float3 position = (0, 0, -5.9604645e-8)
+                    }
+                }
+            }
+
+            def RealityKitCustomComponent "RealityKitContent_BloodVesselWallComponent"
+            {
+                uniform token info:id = "RealityKitContent.BloodVesselWallComponent"
+            }
+
+            def RealityKitComponent "RigidBody"
+            {
+                bool gravityEnabled = 0
+                uniform token info:id = "RealityKit.RigidBody"
+                token motionType = "Static"
+
+                def RealityKitStruct "massFrame"
+                {
+                    def RealityKitStruct "m_pose"
+                    {
+                    }
+                }
+
+                def RealityKitStruct "material"
+                {
+                }
+            }
+        }
+
+        def Cube "front" (
+            active = true
+            prepend apiSchemas = ["MaterialBindingAPI"]
+            customData = {
+                float3 rotationEulerHint = (1.5584964, 1.5707963, 0)
+            }
+        )
+        {
+            rel material:binding = </Root/Colliders/right/M_wall> (
+                bindMaterialAs = "weakerThanDescendants"
+            )
+            double size = 4
+            float2 ui:nodegraph:node:pos = (60, 60)
+            int ui:nodegraph:node:stackingOrder = 3
+            quatf xformOp:orient = (0.503075, 0.49692488, 0.5001268, -0.4998543)
+            float3 xformOp:scale = (0.99999994, 3.9999995, 5)
+            float3 xformOp:translate = (0.6319224, -0.700407, 11.899526)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            def RealityKitComponent "Collider"
+            {
+                uint group = 1
+                uniform token info:id = "RealityKit.Collider"
+                uint mask = 4294967295
+                token type = "Default"
+
+                def RealityKitStruct "Shape"
+                {
+                    float3 extent = (4, 5, 5)
+                    float height = 4
+                    float radius = 2
+                    token shapeType = "Box"
+
+                    def RealityKitStruct "pose"
+                    {
+                    }
+                }
+            }
+
+            def RealityKitCustomComponent "RealityKitContent_BloodVesselWallComponent"
+            {
+                uniform token info:id = "RealityKitContent.BloodVesselWallComponent"
+            }
+
+            def RealityKitComponent "RigidBody"
+            {
+                bool gravityEnabled = 0
+                uniform token info:id = "RealityKit.RigidBody"
+                token motionType = "Static"
+
+                def RealityKitStruct "massFrame"
+                {
+                    def RealityKitStruct "m_pose"
+                    {
+                    }
+                }
+
+                def RealityKitStruct "material"
+                {
+                }
+            }
+
+            def RealityKitComponent "InputTarget"
+            {
+                uniform token info:id = "RealityKit.InputTarget"
+            }
+        }
+
+        def Cube "back" (
+            active = true
+            prepend apiSchemas = ["MaterialBindingAPI"]
+            customData = {
+                float3 rotationEulerHint = (1.5584964, 1.5707963, 0)
+            }
+        )
+        {
+            rel material:binding = </Root/Colliders/right/M_wall> (
+                bindMaterialAs = "weakerThanDescendants"
+            )
+            double size = 4
+            float2 ui:nodegraph:node:pos = (80, 80)
+            int ui:nodegraph:node:stackingOrder = 4
+            quatf xformOp:orient = (0.503075, 0.49692485, 0.50012684, -0.49985436)
+            float3 xformOp:scale = (0.99999976, 3.9999983, 4.999999)
+            float3 xformOp:translate = (0.63281405, -0.8400459, -11.858301)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            def RealityKitComponent "Collider"
+            {
+                uint group = 1
+                uniform token info:id = "RealityKit.Collider"
+                uint mask = 4294967295
+                token type = "Default"
+
+                def RealityKitStruct "Shape"
+                {
+                    float3 extent = (4, 5, 5)
+                    float height = 4
+                    float radius = 2
+                    token shapeType = "Box"
+
+                    def RealityKitStruct "pose"
+                    {
+                    }
+                }
+            }
+
+            def RealityKitCustomComponent "RealityKitContent_BloodVesselWallComponent"
+            {
+                uniform token info:id = "RealityKitContent.BloodVesselWallComponent"
+            }
+
+            def RealityKitComponent "RigidBody"
+            {
+                bool gravityEnabled = 0
+                uniform token info:id = "RealityKit.RigidBody"
+                token motionType = "Static"
+
+                def RealityKitStruct "massFrame"
+                {
+                    def RealityKitStruct "m_pose"
+                    {
+                    }
+                }
+
+                def RealityKitStruct "material"
+                {
+                }
+            }
+
+            def RealityKitComponent "InputTarget"
+            {
+                uniform token info:id = "RealityKit.InputTarget"
+            }
+        }
+    }
+}
+

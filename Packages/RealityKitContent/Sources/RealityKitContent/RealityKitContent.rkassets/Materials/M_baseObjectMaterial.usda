@@ -1,0 +1,230 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 2.0 (448.0.16.0.3)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+def Xform "Root"
+{
+    quatf xformOp:orient = (1, 0, 0, 0)
+    float3 xformOp:scale = (1, 1, 1)
+    float3 xformOp:translate = (0, 0, 0)
+    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+    def Material "M_baseObjectMaterial"
+    {
+        asset inputs:ao = @@ (
+            customData = {
+                dictionary realitykit = {
+                    float2 positionInSubgraph = (-743.19617, 693.9848)
+                    int stackingOrderInSubgraph = 267
+                }
+            }
+        )
+        asset inputs:diffuse = @@ (
+            customData = {
+                dictionary realitykit = {
+                    float2 positionInSubgraph = (-565.5158, -221.40616)
+                    int stackingOrderInSubgraph = 259
+                }
+            }
+        )
+        asset inputs:emissive = @@ (
+            customData = {
+                dictionary realitykit = {
+                    float2 positionInSubgraph = (-998.94934, -143.22949)
+                    int stackingOrderInSubgraph = 263
+                }
+            }
+        )
+        float inputs:emissiveAmount = 0 (
+            customData = {
+                dictionary realitykit = {
+                    float2 positionInSubgraph = (-682.28125, -3.0546875)
+                    int stackingOrderInSubgraph = 267
+                }
+            }
+        )
+        asset inputs:metallic = @@ (
+            customData = {
+                dictionary realitykit = {
+                    float2 positionInSubgraph = (-744.3368, 483.15662)
+                    int stackingOrderInSubgraph = 267
+                }
+            }
+        )
+        asset inputs:normal = @@ (
+            customData = {
+                dictionary realitykit = {
+                    float2 positionInSubgraph = (-1407.7433, -15.71373)
+                    int stackingOrderInSubgraph = 267
+                }
+            }
+        )
+        asset inputs:opacity = @@ (
+            customData = {
+                dictionary realitykit = {
+                    float2 positionInSubgraph = (-739.329, 900.8363)
+                    int stackingOrderInSubgraph = 267
+                }
+            }
+        )
+        asset inputs:roughness = @@ (
+            customData = {
+                dictionary realitykit = {
+                    float2 positionInSubgraph = (-741.14844, 266.48047)
+                    int stackingOrderInSubgraph = 267
+                }
+            }
+        )
+        token outputs:mtlx:surface.connect = </Root/M_baseObjectMaterial/PBRSurface.outputs:out>
+        token outputs:realitykit:vertex
+        float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (335.25, 100.5)
+
+        def Shader "PBRSurface"
+        {
+            uniform token info:id = "ND_realitykit_pbr_surfaceshader"
+            float inputs:ambientOcclusion.connect = </Root/M_baseObjectMaterial/Image_4.outputs:out>
+            color3f inputs:baseColor.connect = </Root/M_baseObjectMaterial/Image.outputs:out>
+            float inputs:clearcoat
+            float inputs:clearcoatRoughness
+            color3f inputs:emissiveColor.connect = </Root/M_baseObjectMaterial/Multiply_1.outputs:out>
+            bool inputs:hasPremultipliedAlpha
+            float inputs:metallic.connect = </Root/M_baseObjectMaterial/Image_3.outputs:out>
+            float3 inputs:normal.connect = </Root/M_baseObjectMaterial/Subtract.outputs:out>
+            float inputs:opacity.connect = </Root/M_baseObjectMaterial/Image_5.outputs:out>
+            float inputs:opacityThreshold
+            float inputs:roughness.connect = </Root/M_baseObjectMaterial/Image_2.outputs:out>
+            float inputs:specular
+            token outputs:out
+            float2 ui:nodegraph:node:pos = (3.7539062, 494.0703)
+            int ui:nodegraph:node:stackingOrder = 222
+            string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["inputs:normal"]
+        }
+
+        def Shader "Image"
+        {
+            uniform token info:id = "ND_image_color3"
+            color3f inputs:default
+            asset inputs:file.connect = </Root/M_baseObjectMaterial.inputs:diffuse>
+            float2 inputs:texcoord
+            color3f outputs:out
+            float2 ui:nodegraph:node:pos = (-330.58615, -230.41397)
+            int ui:nodegraph:node:stackingOrder = 259
+        }
+
+        def Shader "Image_1"
+        {
+            uniform token info:id = "ND_image_vector3"
+            float3 inputs:default
+            asset inputs:file.connect = </Root/M_baseObjectMaterial.inputs:normal>
+            string inputs:filtertype
+            float2 inputs:texcoord
+            float3 outputs:out
+            float2 ui:nodegraph:node:pos = (-1152.386, 37.105606)
+            int ui:nodegraph:node:stackingOrder = 267
+        }
+
+        def Shader "Image_2"
+        {
+            uniform token info:id = "ND_image_float"
+            float inputs:default
+            asset inputs:file.connect = </Root/M_baseObjectMaterial.inputs:roughness>
+            float2 inputs:texcoord
+            string inputs:uaddressmode
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (-435.90625, 201.1289)
+            int ui:nodegraph:node:stackingOrder = 93
+        }
+
+        def Shader "Image_3"
+        {
+            uniform token info:id = "ND_image_float"
+            float inputs:default
+            asset inputs:file.connect = </Root/M_baseObjectMaterial.inputs:metallic>
+            string inputs:filtertype
+            float2 inputs:texcoord
+            string inputs:vaddressmode
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (-439.0946, 417.80508)
+            int ui:nodegraph:node:stackingOrder = 117
+        }
+
+        def Shader "Image_4"
+        {
+            uniform token info:id = "ND_image_float"
+            float inputs:default
+            asset inputs:file.connect = </Root/M_baseObjectMaterial.inputs:ao>
+            string inputs:filtertype
+            float2 inputs:texcoord
+            string inputs:vaddressmode
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (-437.95398, 628.6333)
+            int ui:nodegraph:node:stackingOrder = 185
+        }
+
+        def Shader "Image_5"
+        {
+            uniform token info:id = "ND_image_float"
+            float inputs:default
+            asset inputs:file.connect = </Root/M_baseObjectMaterial.inputs:opacity>
+            string inputs:filtertype
+            float2 inputs:texcoord
+            string inputs:vaddressmode
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (-434.0868, 835.48486)
+            int ui:nodegraph:node:stackingOrder = 188
+        }
+
+        def Shader "Multiply_2"
+        {
+            uniform token info:id = "ND_multiply_vector3FA"
+            float3 inputs:in1.connect = </Root/M_baseObjectMaterial/Image_1.outputs:out>
+            float inputs:in2 = 2
+            float3 outputs:out
+            float2 ui:nodegraph:node:pos = (-875.8335, 54.017212)
+            float2 ui:nodegraph:node:size = (60, 36)
+            int ui:nodegraph:node:stackingOrder = 268
+        }
+
+        def Shader "Subtract"
+        {
+            uniform token info:id = "ND_subtract_vector3"
+            float3 inputs:in1.connect = </Root/M_baseObjectMaterial/Multiply_2.outputs:out>
+            float3 inputs:in2 = (1, 1, 1)
+            float3 outputs:out
+            float2 ui:nodegraph:node:pos = (-728.96985, 77.82822)
+            float2 ui:nodegraph:node:size = (61.5, 36)
+            int ui:nodegraph:node:stackingOrder = 269
+        }
+
+        def Shader "Image_6"
+        {
+            uniform token info:id = "ND_image_color3"
+            color3f inputs:default
+            asset inputs:file.connect = </Root/M_baseObjectMaterial.inputs:emissive>
+            string inputs:filtertype
+            float2 inputs:texcoord
+            color3f outputs:out
+            float2 ui:nodegraph:node:pos = (-764.01965, -152.2373)
+            int ui:nodegraph:node:stackingOrder = 262
+        }
+
+        def Shader "Multiply_1"
+        {
+            uniform token info:id = "ND_multiply_color3FA"
+            color3f inputs:in1.connect = </Root/M_baseObjectMaterial/Image_6.outputs:out>
+            float inputs:in2 = 0
+            float inputs:in2.connect = </Root/M_baseObjectMaterial.inputs:emissiveAmount>
+            color3f outputs:out
+            float2 ui:nodegraph:node:pos = (-485.71478, -25.011955)
+            float2 ui:nodegraph:node:size = (60, 36)
+            int ui:nodegraph:node:stackingOrder = 265
+        }
+    }
+}
+

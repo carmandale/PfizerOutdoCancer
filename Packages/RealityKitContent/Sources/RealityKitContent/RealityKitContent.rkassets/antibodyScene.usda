@@ -1,0 +1,149 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 2.0 (448.0.16.0.3)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    reorder nameChildren = ["antibodyProtein_complex_assembled", "targetLinker", "targetPayload"]
+    def "antibodyProtein_complex_assembled" (
+        active = true
+        references = @Assets/ADC/antibodyProtein_complex_assembled.usda@
+    )
+    {
+        float3 xformOp:scale = (1, 1, 1)
+        float3 xformOp:translate = (0, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "InputTarget"
+        {
+            uniform token info:id = "RealityKit.InputTarget"
+        }
+
+        def RealityKitComponent "Collider"
+        {
+            uint group = 1
+            uniform token info:id = "RealityKit.Collider"
+            uint mask = 4294967295
+            token type = "Default"
+
+            def RealityKitStruct "Shape"
+            {
+                float3 extent = (0.14831775, 0.15171751, 0.0562565)
+                token shapeType = "Box"
+
+                def RealityKitStruct "pose"
+                {
+                    float3 position = (0.010366622, -0.002161257, 0.0013168342)
+                }
+            }
+        }
+
+        over "antibodyProtein_complex_base"
+        {
+            over "ADC_complex_001"
+            {
+                over "ADC_complex"
+                {
+                    over "ADC_complex"
+                    {
+                        def RealityKitComponent "SpatialAudio"
+                        {
+                            uniform token info:id = "RealityKit.SpatialAudio"
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    def "targetLinker" (
+        active = true
+        references = @Assets/ADC/linker.usdc@
+    )
+    {
+        float3 xformOp:scale = (1, 1, 1)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "InputTarget"
+        {
+            uniform token info:id = "RealityKit.InputTarget"
+        }
+
+        def RealityKitComponent "Collider"
+        {
+            uint group = 1
+            uniform token info:id = "RealityKit.Collider"
+            uint mask = 4294967295
+            token type = "Default"
+
+            def RealityKitStruct "Shape"
+            {
+                float3 extent = (0.16514838, 0.029200405, 0.03070311)
+                token shapeType = "Box"
+
+                def RealityKitStruct "pose"
+                {
+                    float3 position = (0.0763281, 9.313226e-10, 0)
+                }
+            }
+        }
+
+        over "linkerMesh_001"
+        {
+            quatf xformOp:orient = (1, 0, 0, 0)
+            float3 xformOp:scale = (10, 9.999999, 9.999996)
+            double3 xformOp:translate = (0, 0, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+        }
+    }
+
+    def "targetPayload" (
+        active = true
+        references = @Assets/ADC/payload.usda@
+    )
+    {
+        float3 xformOp:scale = (1, 1, 1)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "InputTarget"
+        {
+            uniform token info:id = "RealityKit.InputTarget"
+        }
+
+        def RealityKitComponent "Collider"
+        {
+            uint group = 1
+            uniform token info:id = "RealityKit.Collider"
+            uint mask = 4294967295
+            token type = "Default"
+
+            def RealityKitStruct "Shape"
+            {
+                float3 extent = (0.089999996, 0.089999996, 0.089999996)
+                token shapeType = "Box"
+
+                def RealityKitStruct "pose"
+                {
+                }
+            }
+        }
+
+        over "Transform"
+        {
+            float3 xformOp:scale = (0.02, 0.02, 0.02)
+        }
+    }
+
+    def RealityKitAudioFile "bubblepop_mp3"
+    {
+        uniform asset file = @Audio/bubblepop.mp3@
+        uniform bool shouldLoop = 0
+    }
+}
+

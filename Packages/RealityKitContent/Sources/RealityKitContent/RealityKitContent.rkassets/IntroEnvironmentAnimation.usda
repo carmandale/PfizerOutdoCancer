@@ -1,0 +1,60 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 2.0 (448.0.16.0.3)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    def "sh0100_v01" (
+        active = true
+        customData = {
+            float3 rotationEulerHint = (-1.5707964, 0, 0)
+        }
+        references = @Assets/Intro/animation/sh0100_v01.usdc@
+    )
+    {
+        quatf xformOp:orient = (0.70710677, -0.70710677, 0, 0)
+        float3 xformOp:scale = (1, 1, 1)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "AnimationLibrary"
+        {
+            token info:id = "RealityKit.AnimationLibrary"
+
+            def RealityKitAnimationFile "default_subtree_animation"
+            {
+                uniform bool looping = 1
+                uniform string name = "default subtree animation"
+            }
+        }
+    }
+
+    def RealityKitTimeline "sh0100_animation"
+    {
+        reorder nameChildren = ["Track", "Track2"]
+        def RealityKitTrack "Track2"
+        {
+            def RealityKitAction "Animation"
+            {
+                string actionKind = "animation"
+                string animation = "default subtree animation"
+                int blendLayer = 500
+                double duration = 96.1500015258789
+                uniform token info:id = "2EF2B751-0FB9-43BB-92BE-117E1CCAB7E9"
+                bool separateAnimatedValue = 1
+                double startTime = 0
+                rel target = </Root/sh0100_v01>
+
+                def RealityKitStruct "handoffType"
+                {
+                }
+            }
+        }
+    }
+}
+

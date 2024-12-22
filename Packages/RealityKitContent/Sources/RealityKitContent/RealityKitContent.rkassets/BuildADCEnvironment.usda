@@ -1,0 +1,386 @@
+#usda 1.0
+(
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+reorder rootPrims = ["Root", "GridMaterial"]
+
+def Xform "Root"
+{
+    reorder nameChildren = ["antibodyProtein_complex", "payload", "payload_1", "payload_2", "payload_3", "linker01", "killCell", "killCell_1", "killCell_2", "bloodVessel_v004_clean"]
+    rel material:binding = None (
+        bindMaterialAs = "weakerThanDescendants"
+    )
+    float3 xformOp:translate = (0, 0, -1)
+    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+    def RealityKitTimeline "killCell"
+    {
+        def RealityKitTrack "Track"
+        {
+            def RealityKitAction "Animation"
+            {
+                string actionKind = "animation"
+                string animation = "default subtree animation"
+                int blendLayer = 500
+                double duration = 0.3333333432674408
+                uniform token info:id = "57004F2E-DD54-41E8-A9C5-16228E5BE03F"
+                double loopCount = 1
+                bool separateAnimatedValue = 1
+                double startTime = 0.06596980851870583
+                rel target = </Root/CancerCells/cancerCell_complex>
+
+                def RealityKitStruct "handoffType"
+                {
+                    token type = "defaultHandoffType"
+                }
+            }
+
+            def RealityKitAction "Disable_Entity"
+            {
+                string actionKind = "disable"
+                double duration = 0
+                uniform token info:id = "22751843-390B-4CEF-8FBB-C78255EC2393"
+                double startTime = 0.3993031518861467
+                rel target = </Root/CancerCells/cancerCell_complex>
+            }
+        }
+    }
+
+    def RealityKitTimeline "killCell_1"
+    {
+        float2 ui:nodegraph:node:pos = (20, 20)
+        int ui:nodegraph:node:stackingOrder = 1
+
+        def RealityKitTrack "Track"
+        {
+            def RealityKitAction "Animation"
+            {
+                string actionKind = "animation"
+                string animation = "default subtree animation"
+                int blendLayer = 500
+                double duration = 0.3333333432674408
+                uniform token info:id = "57004F2E-DD54-41E8-A9C5-16228E5BE03F"
+                double loopCount = 1
+                bool separateAnimatedValue = 1
+                double startTime = 0.06596980851870583
+                rel target = </Root/CancerCells/cancerCell_complex_1>
+
+                def RealityKitStruct "handoffType"
+                {
+                    token type = "defaultHandoffType"
+                }
+            }
+
+            def RealityKitAction "Disable_Entity"
+            {
+                string actionKind = "disable"
+                double duration = 0
+                uniform token info:id = "22751843-390B-4CEF-8FBB-C78255EC2393"
+                double startTime = 0.3993031518861467
+                rel target = </Root/CancerCells/cancerCell_complex_1>
+            }
+        }
+    }
+
+    def RealityKitTimeline "killCell_2"
+    {
+        float2 ui:nodegraph:node:pos = (40, 40)
+        int ui:nodegraph:node:stackingOrder = 2
+
+        def RealityKitTrack "Track"
+        {
+            def RealityKitAction "Animation"
+            {
+                string actionKind = "animation"
+                string animation = "default subtree animation"
+                int blendLayer = 500
+                double duration = 0.3333333432674408
+                uniform token info:id = "57004F2E-DD54-41E8-A9C5-16228E5BE03F"
+                double loopCount = 1
+                bool separateAnimatedValue = 1
+                double startTime = 0.06596980851870583
+                rel target = </Root/CancerCells/cancerCell_complex_2>
+
+                def RealityKitStruct "handoffType"
+                {
+                    token type = "defaultHandoffType"
+                }
+            }
+
+            def RealityKitAction "Disable_Entity"
+            {
+                string actionKind = "disable"
+                double duration = 0
+                uniform token info:id = "22751843-390B-4CEF-8FBB-C78255EC2393"
+                double startTime = 0.3993031518861467
+                rel target = </Root/CancerCells/cancerCell_complex_2>
+            }
+        }
+    }
+
+    def "antibodyProtein_complex" (
+        active = true
+        references = @Assets/ADC/antibodyProtein_complex.usdc@
+    )
+    {
+        float3 xformOp:scale = (3, 3, 3)
+        float3 xformOp:translate = (0, 0, -0.5)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "InputTarget"
+        {
+            uniform token info:id = "RealityKit.InputTarget"
+        }
+
+        def RealityKitComponent "Collider"
+        {
+            uint group = 1
+            uniform token info:id = "RealityKit.Collider"
+            uint mask = 4294967295
+            token type = "Default"
+
+            def RealityKitStruct "Shape"
+            {
+                float3 extent = (0.14831775, 0.15171753, 0.056256525)
+                token shapeType = "Box"
+
+                def RealityKitStruct "pose"
+                {
+                    float3 position = (0.010366622, -0.002161257, 0.0013168352)
+                }
+            }
+        }
+
+        def RealityKitCustomComponent "RealityKitContent_GestureComponent"
+        {
+            bool canDrag = 1
+            bool canScale = 0
+            uniform token info:id = "RealityKitContent.GestureComponent"
+            bool pivotOnDrag = 0
+        }
+    }
+
+    def "payload" (
+        active = true
+        references = @Assets/ADC/payload.usda@
+    )
+    {
+        float3 xformOp:scale = (0.25, 0.25, 0.25)
+        float3 xformOp:translate = (-1, -0.14029449, -0.5)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "InputTarget"
+        {
+            uniform token info:id = "RealityKit.InputTarget"
+        }
+
+        def RealityKitComponent "Collider"
+        {
+            uint group = 1
+            uniform token info:id = "RealityKit.Collider"
+            uint mask = 4294967295
+            token type = "Default"
+
+            def RealityKitStruct "Shape"
+            {
+                float3 extent = (0.9, 0.9, 0.9)
+                float radius = 0.35
+                token shapeType = "Sphere"
+
+                def RealityKitStruct "pose"
+                {
+                }
+            }
+        }
+
+        def RealityKitCustomComponent "RealityKitContent_GestureComponent"
+        {
+            bool canRotate = 0
+            bool canScale = 0
+            uniform token info:id = "RealityKitContent.GestureComponent"
+            bool pivotOnDrag = 0
+            bool preserveOrientationOnPivotDrag = 0
+        }
+    }
+
+    def "payload_1" (
+        active = true
+        references = @Assets/ADC/payload.usda@
+    )
+    {
+        float2 ui:nodegraph:node:pos = (20, 20)
+        int ui:nodegraph:node:stackingOrder = 1
+        float3 xformOp:scale = (0.25, 0.25, 0.25)
+        float3 xformOp:translate = (-0.9575341, 0.10831684, -0.5)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "InputTarget"
+        {
+            uniform token info:id = "RealityKit.InputTarget"
+        }
+
+        def RealityKitComponent "Collider"
+        {
+            uint group = 1
+            uniform token info:id = "RealityKit.Collider"
+            uint mask = 4294967295
+            token type = "Default"
+
+            def RealityKitStruct "Shape"
+            {
+                float3 extent = (0.9, 0.9, 0.9)
+                float radius = 0.35
+                token shapeType = "Sphere"
+
+                def RealityKitStruct "pose"
+                {
+                }
+            }
+        }
+
+        def RealityKitCustomComponent "RealityKitContent_GestureComponent"
+        {
+            bool canRotate = 0
+            bool canScale = 0
+            uniform token info:id = "RealityKitContent.GestureComponent"
+            bool pivotOnDrag = 0
+            bool preserveOrientationOnPivotDrag = 0
+        }
+    }
+
+    def "payload_2" (
+        active = true
+        references = @Assets/ADC/payload.usda@
+    )
+    {
+        float2 ui:nodegraph:node:pos = (20, 20)
+        int ui:nodegraph:node:stackingOrder = 1
+        float3 xformOp:scale = (0.25, 0.25, 0.25)
+        float3 xformOp:translate = (0.9881177, -0.14029449, -0.5)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "InputTarget"
+        {
+            uniform token info:id = "RealityKit.InputTarget"
+        }
+
+        def RealityKitComponent "Collider"
+        {
+            uint group = 1
+            uniform token info:id = "RealityKit.Collider"
+            uint mask = 4294967295
+            token type = "Default"
+
+            def RealityKitStruct "Shape"
+            {
+                float3 extent = (0.9, 0.9, 0.9)
+                float radius = 0.35
+                token shapeType = "Sphere"
+
+                def RealityKitStruct "pose"
+                {
+                }
+            }
+        }
+
+        def RealityKitCustomComponent "RealityKitContent_GestureComponent"
+        {
+            bool canRotate = 0
+            bool canScale = 0
+            uniform token info:id = "RealityKitContent.GestureComponent"
+            bool pivotOnDrag = 0
+            bool preserveOrientationOnPivotDrag = 0
+        }
+    }
+
+    def "payload_3" (
+        active = true
+        references = @Assets/ADC/payload.usda@
+    )
+    {
+        float2 ui:nodegraph:node:pos = (40, 40)
+        int ui:nodegraph:node:stackingOrder = 2
+        float3 xformOp:scale = (0.25, 0.25, 0.25)
+        float3 xformOp:translate = (1.0305836, 0.10831684, -0.5)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "InputTarget"
+        {
+            uniform token info:id = "RealityKit.InputTarget"
+        }
+
+        def RealityKitComponent "Collider"
+        {
+            uint group = 1
+            uniform token info:id = "RealityKit.Collider"
+            uint mask = 4294967295
+            token type = "Default"
+
+            def RealityKitStruct "Shape"
+            {
+                float3 extent = (0.9, 0.9, 0.9)
+                float radius = 0.35
+                token shapeType = "Sphere"
+
+                def RealityKitStruct "pose"
+                {
+                }
+            }
+        }
+
+        def RealityKitCustomComponent "RealityKitContent_GestureComponent"
+        {
+            bool canRotate = 0
+            bool canScale = 0
+            uniform token info:id = "RealityKitContent.GestureComponent"
+            bool pivotOnDrag = 0
+            bool preserveOrientationOnPivotDrag = 0
+        }
+    }
+
+    def "linker" (
+        active = true
+        references = @Assets/ADC/linker.usda@
+    )
+    {
+        float3 xformOp:scale = (1, 1, 1)
+        float3 xformOp:translate = (-0.56197906, -0.14029449, -0.509532)
+    }
+
+    def "linker_1" (
+        active = true
+        references = @Assets/ADC/linker.usda@
+    )
+    {
+        float2 ui:nodegraph:node:pos = (20, 20)
+        int ui:nodegraph:node:stackingOrder = 1
+        float3 xformOp:scale = (1, 1, 1)
+        float3 xformOp:translate = (-0.56197906, 0.10026103, -0.509532)
+    }
+
+    def "linker_2" (
+        active = true
+        references = @Assets/ADC/linker.usda@
+    )
+    {
+        float2 ui:nodegraph:node:pos = (20, 20)
+        int ui:nodegraph:node:stackingOrder = 1
+        float3 xformOp:scale = (1, 1, 1)
+        float3 xformOp:translate = (0.5776627, -0.14029449, -0.509532)
+    }
+
+    def "linker_3" (
+        active = true
+        references = @Assets/ADC/linker.usda@
+    )
+    {
+        float2 ui:nodegraph:node:pos = (40, 40)
+        int ui:nodegraph:node:stackingOrder = 2
+        float3 xformOp:scale = (1, 1, 1)
+        float3 xformOp:translate = (0.5776627, 0.10026103, -0.509532)
+    }
+}
+

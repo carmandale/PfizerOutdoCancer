@@ -1,0 +1,680 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 2.0 (448.0.16.0.3)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    reorder nameChildren = ["M_body", "M_veins", "M_stems", "M_antigens", "cancerCell_complex", "Timeline", "Cell_sound"]
+    def "cancerCell_complex" (
+        references = @Assets/CancerCell/cancerCell_complex.usdc@
+    )
+    {
+        reorder nameChildren = ["body", "_materials", "AudioLibrary", "RealityKitContent_CancerCellComponent", "InputTarget", "SpatialAudio", "AnimationLibrary", "particle"]
+        float3 xformOp:scale = (1, 1, 1)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "RCP_BehaviorsContainer"
+        {
+            rel behaviors = </Root/cancerCell_complex/OnAddedToScene2>
+            uniform token info:id = "RCP.BehaviorsContainer"
+        }
+
+        over "body"
+        {
+            over "veins" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = </Root/M_veins/cancerCell_reusable> (
+                    bindMaterialAs = "strongerThanDescendants"
+                )
+            }
+
+            over "cancerCellSurface" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = </Root/M_body/cancerCell_reusable> (
+                    bindMaterialAs = "strongerThanDescendants"
+                )
+            }
+
+            over "Antigens" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = </Root/M_antigens/cancerCell_reusable> (
+                    bindMaterialAs = "strongerThanDescendants"
+                )
+
+                over "antigen_8"
+                {
+                    over "attach_8_offset"
+                    {
+                        over "attach_8"
+                        {
+                            def RealityKitCustomComponent "RealityKitContent_AttachmentPoint"
+                            {
+                                uniform token info:id = "RealityKitContent.AttachmentPoint"
+                            }
+                        }
+
+                        def RealityKitCustomComponent "RealityKitContent_AntigenComponent"
+                        {
+                            uniform token info:id = "RealityKitContent.AntigenComponent"
+                        }
+                    }
+                }
+
+                over "antigen_9"
+                {
+                    over "attach_9_offset"
+                    {
+                        reorder nameChildren = ["particle", "attach_9", "antigen_9_mesh", "RealityKitContent_AntigenComponent"]
+                        over "attach_9"
+                        {
+                            def RealityKitCustomComponent "RealityKitContent_AttachmentPoint"
+                            {
+                                uniform token info:id = "RealityKitContent.AttachmentPoint"
+                            }
+                        }
+
+                        def RealityKitCustomComponent "RealityKitContent_AntigenComponent"
+                        {
+                            uniform token info:id = "RealityKitContent.AntigenComponent"
+                        }
+                    }
+                }
+
+                over "antigen_3"
+                {
+                    over "attach_3_offset"
+                    {
+                        over "attach_3"
+                        {
+                            def RealityKitCustomComponent "RealityKitContent_AttachmentPoint"
+                            {
+                                uniform token info:id = "RealityKitContent.AttachmentPoint"
+                            }
+                        }
+
+                        def RealityKitCustomComponent "RealityKitContent_AntigenComponent"
+                        {
+                            uniform token info:id = "RealityKitContent.AntigenComponent"
+                        }
+                    }
+                }
+
+                over "antigen_4"
+                {
+                    over "attach_4_offset"
+                    {
+                        over "attach_4"
+                        {
+                            def RealityKitCustomComponent "RealityKitContent_AttachmentPoint"
+                            {
+                                uniform token info:id = "RealityKitContent.AttachmentPoint"
+                            }
+                        }
+
+                        def RealityKitCustomComponent "RealityKitContent_AntigenComponent"
+                        {
+                            uniform token info:id = "RealityKitContent.AntigenComponent"
+                        }
+                    }
+                }
+
+                over "antigen_5"
+                {
+                    over "attach_5_offset"
+                    {
+                        over "attach_5"
+                        {
+                            def RealityKitCustomComponent "RealityKitContent_AttachmentPoint"
+                            {
+                                uniform token info:id = "RealityKitContent.AttachmentPoint"
+                            }
+                        }
+
+                        def RealityKitCustomComponent "RealityKitContent_AntigenComponent"
+                        {
+                            uniform token info:id = "RealityKitContent.AntigenComponent"
+                        }
+                    }
+                }
+
+                over "antigen_14"
+                {
+                    over "attach_14_offset"
+                    {
+                        over "attach_14"
+                        {
+                            def RealityKitCustomComponent "RealityKitContent_AttachmentPoint"
+                            {
+                                uniform token info:id = "RealityKitContent.AttachmentPoint"
+                            }
+                        }
+
+                        def RealityKitCustomComponent "RealityKitContent_AntigenComponent"
+                        {
+                            uniform token info:id = "RealityKitContent.AntigenComponent"
+                        }
+                    }
+                }
+
+                over "antigen_2"
+                {
+                    over "attach_2_offset"
+                    {
+                        over "attach_2"
+                        {
+                            def RealityKitCustomComponent "RealityKitContent_AttachmentPoint"
+                            {
+                                uniform token info:id = "RealityKitContent.AttachmentPoint"
+                            }
+                        }
+
+                        def RealityKitCustomComponent "RealityKitContent_AntigenComponent"
+                        {
+                            uniform token info:id = "RealityKitContent.AntigenComponent"
+                        }
+                    }
+                }
+
+                over "antigen_6"
+                {
+                    over "attach_6_offset"
+                    {
+                        over "attach_6"
+                        {
+                            def RealityKitCustomComponent "RealityKitContent_AttachmentPoint"
+                            {
+                                uniform token info:id = "RealityKitContent.AttachmentPoint"
+                            }
+                        }
+
+                        def RealityKitCustomComponent "RealityKitContent_AntigenComponent"
+                        {
+                            uniform token info:id = "RealityKitContent.AntigenComponent"
+                        }
+                    }
+                }
+
+                over "antigen_7"
+                {
+                    over "attach_7_offset"
+                    {
+                        over "attach_7"
+                        {
+                            def RealityKitCustomComponent "RealityKitContent_AttachmentPoint"
+                            {
+                                uniform token info:id = "RealityKitContent.AttachmentPoint"
+                            }
+                        }
+
+                        def RealityKitCustomComponent "RealityKitContent_AntigenComponent"
+                        {
+                            uniform token info:id = "RealityKitContent.AntigenComponent"
+                        }
+                    }
+                }
+
+                over "antigen_15"
+                {
+                    over "attach_15_offset"
+                    {
+                        over "attach_15"
+                        {
+                            def RealityKitCustomComponent "RealityKitContent_AttachmentPoint"
+                            {
+                                uniform token info:id = "RealityKitContent.AttachmentPoint"
+                            }
+                        }
+
+                        def RealityKitCustomComponent "RealityKitContent_AntigenComponent"
+                        {
+                            uniform token info:id = "RealityKitContent.AntigenComponent"
+                        }
+                    }
+                }
+
+                over "antigen_16"
+                {
+                    over "attach_16_offset"
+                    {
+                        over "attach_16"
+                        {
+                            def RealityKitCustomComponent "RealityKitContent_AttachmentPoint"
+                            {
+                                uniform token info:id = "RealityKitContent.AttachmentPoint"
+                            }
+                        }
+
+                        def RealityKitCustomComponent "RealityKitContent_AntigenComponent"
+                        {
+                            uniform token info:id = "RealityKitContent.AntigenComponent"
+                        }
+                    }
+                }
+
+                over "antigen_18"
+                {
+                    over "attach_18_offset"
+                    {
+                        over "attach_18"
+                        {
+                            def RealityKitCustomComponent "RealityKitContent_AttachmentPoint"
+                            {
+                                uniform token info:id = "RealityKitContent.AttachmentPoint"
+                            }
+                        }
+
+                        def RealityKitCustomComponent "RealityKitContent_AntigenComponent"
+                        {
+                            uniform token info:id = "RealityKitContent.AntigenComponent"
+                        }
+                    }
+                }
+
+                over "antigen_13"
+                {
+                    over "attach_13_offset"
+                    {
+                        over "attach_13"
+                        {
+                            def RealityKitCustomComponent "RealityKitContent_AttachmentPoint"
+                            {
+                                uniform token info:id = "RealityKitContent.AttachmentPoint"
+                            }
+                        }
+
+                        def RealityKitCustomComponent "RealityKitContent_AntigenComponent"
+                        {
+                            uniform token info:id = "RealityKitContent.AntigenComponent"
+                        }
+                    }
+                }
+
+                over "antigen_17"
+                {
+                    over "attach_17_offset"
+                    {
+                        over "attach_17"
+                        {
+                            def RealityKitCustomComponent "RealityKitContent_AttachmentPoint"
+                            {
+                                uniform token info:id = "RealityKitContent.AttachmentPoint"
+                            }
+                        }
+
+                        def RealityKitCustomComponent "RealityKitContent_AntigenComponent"
+                        {
+                            uniform token info:id = "RealityKitContent.AntigenComponent"
+                        }
+                    }
+                }
+
+                over "antigen_1"
+                {
+                    over "attach_1_offset"
+                    {
+                        over "attach_1"
+                        {
+                            def RealityKitCustomComponent "RealityKitContent_AttachmentPoint"
+                            {
+                                uniform token info:id = "RealityKitContent.AttachmentPoint"
+                            }
+                        }
+
+                        def RealityKitCustomComponent "RealityKitContent_AntigenComponent"
+                        {
+                            uniform token info:id = "RealityKitContent.AntigenComponent"
+                        }
+                    }
+                }
+
+                over "antigen_11"
+                {
+                    over "attach_11_offset"
+                    {
+                        over "attach_11"
+                        {
+                            def RealityKitCustomComponent "RealityKitContent_AttachmentPoint"
+                            {
+                                uniform token info:id = "RealityKitContent.AttachmentPoint"
+                            }
+                        }
+
+                        def RealityKitCustomComponent "RealityKitContent_AntigenComponent"
+                        {
+                            uniform token info:id = "RealityKitContent.AntigenComponent"
+                        }
+                    }
+                }
+
+                over "antigen_12"
+                {
+                    over "attach_12_offset"
+                    {
+                        over "attach_12"
+                        {
+                            def RealityKitCustomComponent "RealityKitContent_AttachmentPoint"
+                            {
+                                uniform token info:id = "RealityKitContent.AttachmentPoint"
+                            }
+                        }
+
+                        def RealityKitCustomComponent "RealityKitContent_AntigenComponent"
+                        {
+                            uniform token info:id = "RealityKitContent.AntigenComponent"
+                        }
+                    }
+                }
+
+                over "antigen_10"
+                {
+                    over "attach_10_offset"
+                    {
+                        over "attach_10"
+                        {
+                            def RealityKitCustomComponent "RealityKitContent_AttachmentPoint"
+                            {
+                                uniform token info:id = "RealityKitContent.AttachmentPoint"
+                            }
+                        }
+
+                        def RealityKitCustomComponent "RealityKitContent_AntigenComponent"
+                        {
+                            uniform token info:id = "RealityKitContent.AntigenComponent"
+                        }
+                    }
+                }
+            }
+
+            over "Stems" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = </Root/cancerCell_complex/_materials/cancerCell_Stem_204> (
+                    bindMaterialAs = "strongerThanDescendants"
+                )
+            }
+
+            over "CellSurface"
+            {
+                over "Cube" (
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                )
+                {
+                    rel material:binding = </Root/M_body/cancerCell_reusable> (
+                        bindMaterialAs = "weakerThanDescendants"
+                    )
+
+                    over "cancerCell_body_003" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </Root/cancerCell_complex/_materials/cancerCell_body_003> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+
+                    over "cancerCell_Tumor_003" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </Root/cancerCell_complex/_materials/cancerCell_Tumor_003> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+            }
+        }
+
+        def RealityKitCustomComponent "RealityKitContent_CancerCellComponent"
+        {
+            uniform token info:id = "RealityKitContent.CancerCellComponent"
+        }
+
+        def RealityKitComponent "InputTarget"
+        {
+            uniform token info:id = "RealityKit.InputTarget"
+        }
+
+        def RealityKitComponent "SpatialAudio"
+        {
+            float directivityFocus = 0.568545
+            float directLevel = -15.741303
+            uniform token info:id = "RealityKit.SpatialAudio"
+            float reverbLevel = 0
+            float rolloffFactor = 0.9724088
+        }
+
+        def RealityKitComponent "AnimationLibrary"
+        {
+            token info:id = "RealityKit.AnimationLibrary"
+
+            def RealityKitAnimationFile "default_subtree_animation"
+            {
+                uniform bool looping = 1
+                uniform string name = "default subtree animation"
+            }
+        }
+
+        def "particle" (
+            active = true
+            references = @Assets/CancerCell/particle.usda@
+        )
+        {
+            quatf xformOp:orient = (1, 0, 0, 0)
+            float3 xformOp:scale = (1, 1, 1)
+        }
+
+        def RealityKitComponent "AudioLibrary"
+        {
+            uniform token info:id = "RealityKit.AudioLibrary"
+
+            def RealityKitDict "resources"
+            {
+                string[] keys = ["Kill_Cell_5.wav", "Cell_Drone_Clean_1.wav"]
+                rel values = [
+                    </Root/Kill_Cell_5_wav>,
+                    </Root/Cell_Drone_Clean_1_wav>,
+                ]
+            }
+        }
+
+        def Preliminary_Behavior "OnAddedToScene"
+        {
+            rel actions = </Root/cancerCell_complex/OnAddedToScene/Action>
+            uniform bool exclusive
+            rel triggers = </Root/cancerCell_complex/OnAddedToScene/Trigger>
+
+            def Preliminary_Trigger "Trigger"
+            {
+                rel affectedObjects = </Root/cancerCell_complex>
+                token info:id = "SceneTransition"
+            }
+
+            def Preliminary_Action "Action"
+            {
+                rel affectedObjects = None
+                rel animationLibraryKeyOverrideKey = </Root/cancerCell_complex/OnAddedToScene/Trigger>
+                token info:id = "PlayTimeline"
+                int loops = 0
+                int performCount = 1
+                token type = "serial"
+            }
+        }
+
+        def Preliminary_Behavior "OnAddedToScene2"
+        {
+            rel actions = </Root/cancerCell_complex/OnAddedToScene2/Action>
+            uniform bool exclusive
+            rel triggers = </Root/cancerCell_complex/OnAddedToScene2/Trigger>
+
+            def Preliminary_Trigger "Trigger"
+            {
+                rel affectedObjects = </Root/cancerCell_complex>
+                token info:id = "SceneTransition"
+            }
+
+            def Preliminary_Action "Action"
+            {
+                rel affectedObjects = </Root>
+                rel animationLibraryKey = </Root/Cell_sound>
+                rel animationLibraryKeyOverrideKey = </Root/cancerCell_complex/OnAddedToScene2/Trigger>
+                token info:id = "PlayTimeline"
+                int loops = 0
+                int performCount = 1
+                token type = "serial"
+            }
+        }
+    }
+
+    def "M_body" (
+        active = true
+        references = @Assets/CancerCell/M_cancerCell.usda@
+    )
+    {
+        float3 xformOp:scale = (1, 1, 1)
+    }
+
+    def "M_veins" (
+        active = true
+        references = @Assets/CancerCell/M_cancerCell.usda@
+    )
+    {
+        float2 ui:nodegraph:node:pos = (20, 20)
+        int ui:nodegraph:node:stackingOrder = 1
+        float3 xformOp:scale = (1, 1, 1)
+
+        over "cancerCell_reusable"
+        {
+            asset inputs:diffuseColor = @Assets/CancerCell/textures/cancerCell_Tumor_BaseColor.png@
+            asset inputs:Normal = @Assets/CancerCell/textures/cancerCell_Tumor_Normal.png@
+            asset inputs:Roughness = @Assets/CancerCell/textures/cancerCell_Tumor_Roughness.png@
+        }
+    }
+
+    def "M_stems" (
+        active = true
+        references = @Assets/CancerCell/M_cancerCell.usda@
+    )
+    {
+        float2 ui:nodegraph:node:pos = (40, 40)
+        int ui:nodegraph:node:stackingOrder = 2
+        float3 xformOp:scale = (1, 1, 1)
+
+        over "cancerCell_reusable"
+        {
+            asset inputs:diffuseColor = @Assets/CancerCell/textures/cancerCell_Stem.002_BaseColor.png@
+            asset inputs:Normal = @Assets/CancerCell/textures/cancerCell_Stem.002_Normal.png@
+            asset inputs:Roughness = @Assets/CancerCell/textures/cancerCell_Stem.002_Roughness.png@
+
+            over "displace"
+            {
+                float inputs:speed = 1
+            }
+        }
+    }
+
+    def "M_antigens" (
+        active = true
+        references = @Assets/CancerCell/M_cancerCell.usda@
+    )
+    {
+        float2 ui:nodegraph:node:pos = (60, 60)
+        int ui:nodegraph:node:stackingOrder = 3
+        float3 xformOp:scale = (1, 1, 1)
+
+        over "cancerCell_reusable"
+        {
+            asset inputs:diffuseColor = @Assets/CancerCell/textures/cancerCell_Connector_BaseColor.png@
+            asset inputs:Normal = @Assets/CancerCell/textures/cancerCell_Connector_Normal.png@
+            asset inputs:Roughness = @Assets/CancerCell/textures/cancerCell_Connector_Roughness.png@
+
+            over "displace"
+            {
+                float inputs:speed = 2
+                float inputs:X = 80000
+                float inputs:Z = 100000
+            }
+        }
+    }
+
+    def RealityKitTimeline "Timeline"
+    {
+        def RealityKitTrack "Track"
+        {
+            def RealityKitAction "Animation"
+            {
+                string actionKind = "animation"
+                string animation = "default subtree animation"
+                int blendLayer = 500
+                double duration = 0.3333333432674408
+                uniform token info:id = "0AB5D2EE-BB74-4521-80B2-FE19055019F8"
+                double loopCount = 1
+                bool separateAnimatedValue = 1
+                double startTime = 0
+                rel target = </Root/cancerCell_complex>
+
+                def RealityKitStruct "handoffType"
+                {
+                    token type = "stop"
+                }
+            }
+
+            def RealityKitAction "Disable_Entity"
+            {
+                string actionKind = "disable"
+                double duration = 0
+                uniform token info:id = "3348DCDF-5C43-4A5B-96BF-F01F7644EF14"
+                double startTime = 0.3333333433674408
+                rel target = </Root/cancerCell_complex>
+            }
+        }
+    }
+
+    def RealityKitTimeline "Cell_sound"
+    {
+        def RealityKitTrack "Track"
+        {
+            def RealityKitAction "Play_Audio"
+            {
+                string actionKind = "audio"
+                string audioResourceName = "Cell_Drone_Clean_1.wav"
+                bool controlPlayback = 1
+                double duration = 5.057333333333333
+                uniform token info:id = "E59164B5-9159-423E-BE15-C5BFD704545A"
+                double loopCount = 0
+                double startTime = 0
+                rel target = </Root/cancerCell_complex>
+
+                def RealityKitStruct "handoffType"
+                {
+                }
+            }
+        }
+    }
+
+    def RealityKitAudioFile "Kill_Cell_5_wav"
+    {
+        uniform asset file = @Audio/Kill_Cell_5.wav@
+        uniform bool shouldLoop = 0
+    }
+
+    def RealityKitAudioFile "Cell_Drone_Clean_1_wav"
+    {
+        uniform asset file = @Audio/SFX_12042024/Cell_Drone_Clean_1.wav@
+        uniform bool shouldLoop = 1
+        uniform bool shouldRandomizeStartTime = 1
+    }
+}
+

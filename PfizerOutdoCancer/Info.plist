@@ -19,5 +19,9 @@
 			</array>
 		</dict>
 	</dict>
+	<key>NSWorldSensingUsageDescription</key>
+	<string>We need to track your head position to enable interaction with the microscope.</string>
+	<key>NSHandsTrackingUsageDescription</key>
+	<string>Hand tracking is required to spawn ADCs from your hand position</string>
 </dict>
 </plist>

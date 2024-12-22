@@ -1,0 +1,148 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 2.0 (448.0.16.0.3)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    quatf xformOp:orient = (1, 0, 0, 0)
+    float3 xformOp:scale = (1, 1, 1)
+    float3 xformOp:translate = (0, 0, 0)
+    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+    def "M_Spatial_p1" (
+        active = true
+        instanceable = true
+        references = </Root/M_Spatial_p2>
+    )
+    {
+        asset inputs:Left = @Assets/Intro/textures/F2_009_olderWoman_v02.jpg@
+        asset inputs:Right = @Assets/Intro/textures/F2_009_olderWoman_v02.jpg@
+    }
+
+    def "M_Spatial_p2" (
+        active = true
+        instanceable = true
+        references = @../../IntroEnvironment2.usda@</Root/materials/M_Spatial>
+    )
+    {
+        asset inputs:Left = @Assets/Intro/textures/F2_002_AfricanAmerican_Man_v01_L.jpg@
+        asset inputs:Right = @Assets/Intro/textures/F2_002_AfricanAmerican_Man_v01_R.jpg@
+    }
+
+    def "M_Spatial_p3" (
+        active = true
+        instanceable = true
+        references = </Root/M_Spatial_p2>
+    )
+    {
+        asset inputs:Left = @Assets/Intro/textures/F03_WomanYoungMother_G_v04_L.jpg@
+        asset inputs:Right = @Assets/Intro/textures/F03_WomanYoungMother_G_v04_R.jpg@
+    }
+
+    def "M_Spatial_p4" (
+        active = true
+        instanceable = true
+        references = </Root/M_Spatial_p3>
+    )
+    {
+        asset inputs:Left = @Assets/Intro/textures/F2_004_YoungMan_v02.jpg@
+        asset inputs:Right = @Assets/Intro/textures/F2_004_YoungMan_v02.jpg@
+    }
+
+    def "M_Spatial_p5" (
+        active = true
+        instanceable = true
+        references = </Root/M_Spatial_p4>
+    )
+    {
+        asset inputs:Left = @Assets/Intro/textures/F2_005_ElderlyWoman_v02.jpg@
+        asset inputs:Right = @Assets/Intro/textures/F2_005_ElderlyWoman_v02.jpg@
+    }
+
+    def "M_Spatial_p6" (
+        active = true
+        instanceable = true
+        references = </Root/M_Spatial_p5>
+    )
+    {
+        asset inputs:Left = @Assets/Intro/textures/F2_013_AsianTeenager_v02.jpg@
+        asset inputs:Right = @Assets/Intro/textures/F2_013_AsianTeenager_v02.jpg@
+    }
+
+    def "M_Spatial_p7" (
+        active = true
+        instanceable = true
+        references = </Root/M_Spatial_p6>
+    )
+    {
+        asset inputs:Left = @Assets/Intro/textures/CP_11_middleAge_AsianWoman_v01 copy.jpg@
+        asset inputs:Right = @Assets/Intro/textures/CP_11_middleAge_AsianWoman_v01 copy.jpg@
+    }
+
+    def "M_Spatial_p8" (
+        active = true
+        instanceable = true
+        references = </Root/M_Spatial_p7>
+    )
+    {
+        asset inputs:Left = @Assets/Intro/textures/F2_010_AsianElderlyMan_v02.jpg@
+        asset inputs:Right = @Assets/Intro/textures/F2_010_AsianElderlyMan_v02.jpg@
+    }
+
+    def "M_Spatial_p9" (
+        active = true
+        instanceable = true
+        references = </Root/M_Spatial_p8>
+    )
+    {
+        asset inputs:Left = @Assets/Intro/textures/F2_011_IndianElderlyWoman_v01.jpg@
+        asset inputs:Right = @Assets/Intro/textures/F2_011_IndianElderlyWoman_v01.jpg@
+    }
+
+    def "M_Spatial_p10" (
+        active = true
+        instanceable = true
+        references = </Root/M_Spatial_p9>
+    )
+    {
+        asset inputs:Left = @Assets/Intro/textures/F2_012_AfricanAmerican_Woman_v01.jpg@
+        asset inputs:Right = @Assets/Intro/textures/F2_012_AfricanAmerican_Woman_v01.jpg@
+    }
+
+    def "M_Spatial_p11" (
+        active = true
+        instanceable = true
+        references = </Root/M_Spatial_p10>
+    )
+    {
+        asset inputs:Left = @Assets/Intro/textures/F2_008_middleAgeMan_v02.jpg@
+        asset inputs:Right = @Assets/Intro/textures/F2_008_middleAgeMan_v02.jpg@
+    }
+
+    def "M_Spatial_p12" (
+        active = true
+        instanceable = true
+        references = </Root/M_Spatial_p11>
+    )
+    {
+        asset inputs:Left = @Assets/Intro/textures/CP_08_africanAmerican_Woman_v02 copy.jpg@
+        asset inputs:Right = @Assets/Intro/textures/CP_08_africanAmerican_Woman_v02 copy.jpg@
+    }
+
+    def "M_Spatial_p13" (
+        active = true
+        instanceable = true
+        references = </Root/M_Spatial_p12>
+    )
+    {
+        asset inputs:Left = @Assets/Intro/textures/F2_007_ElderlyMan_v02.jpg@
+        asset inputs:Right = @Assets/Intro/textures/F2_007_ElderlyMan_v02.jpg@
+    }
+}
+
