@@ -83,9 +83,16 @@ struct ADCOptimizedImmersive: View {
 
                 self.antibodyRootEntity = antibodyRoot
                 prepareAntibodyEntities()
-                prepareLinkerEntities()
+                await prepareLinkerEntities()
                 preparePayloadEntities()
                 prepareTargetEntities(antibodyScene: antibodyScene)
+                
+                // Ensure linkers start disabled
+                self.adcLinkers.forEach { $0.isEnabled = false }
+                
+                antibodyRootEntity?.isEnabled = true
+                antibodyEntity?.isEnabled = true
+                dataModel.adcBuildStep = 0
             } else {
                 os_log(.error, "ITR..ADCOptimizedImmersive.RealityView(): ❌ Error, couldn't find Entity from RealityKitContent")
             }
@@ -128,26 +135,26 @@ struct ADCOptimizedImmersive: View {
                     self.payloadEntity?.isEnabled = false
                 case 1:
                     os_log(.debug, "ITR.. ✅ ADC build step 1")
-                        self.antibodyRootEntity?.components.remove(ADCGestureComponent.self)
-                        for (index, element) in adcLinkers.enumerated() {
-                            element.isEnabled = index <= dataModel.linkersWorkingIndex
-                            element.components.remove(ADCProximitySourceComponent.self)
-                        }
-                        adcLinkers[dataModel.linkersWorkingIndex].components.set(ADCProximitySourceComponent())
-//                        antibodyRootEntity?.components.remove(ProximitySourceComponent.self)
+                    self.antibodyRootEntity?.components.remove(ADCGestureComponent.self)
+                    for (index, element) in adcLinkers.enumerated() {
+                        element.isEnabled = index <= dataModel.linkersWorkingIndex
+                        element.components.remove(ADCProximitySourceComponent.self)
+                    }
+                    adcLinkers[dataModel.linkersWorkingIndex].components.set(ADCProximitySourceComponent())
+//                    antibodyRootEntity?.components.remove(ProximitySourceComponent.self)
                     
-                        if let linkerEntity = linkerEntity {
-                            linkerEntity.isEnabled = true
-                            linkerEntity.position = calculateTargetLinkerPosition()
-//                            linkerEntity.look(at: cameraEntity.scenePosition,
-//                                              from: linkerEntity.scenePosition,
-//                                              relativeTo: nil,
-//                                              forward: .positiveZ)
-                        }
-                        self.linkerAttachmentEntity?.isEnabled = true
-                        setLinkerAttachmentPosition()
+                    if let linkerEntity = linkerEntity {
+                        linkerEntity.isEnabled = true
+                        linkerEntity.position = calculateTargetLinkerPosition()
+//                        linkerEntity.look(at: cameraEntity.scenePosition,
+//                                          from: linkerEntity.scenePosition,
+//                                          relativeTo: nil,
+//                                          forward: .positiveZ)
+                    }
+                    self.linkerAttachmentEntity?.isEnabled = true
+                    setLinkerAttachmentPosition()
                     
-                        self.payloadEntity?.isEnabled = false
+                    self.payloadEntity?.isEnabled = false
                 case 2:
                     os_log(.debug, "ITR.. ✅ ADC build step 2")
                     self.adcLinkers.forEach { $0.isEnabled = true }
@@ -245,6 +252,8 @@ struct ADCOptimizedImmersive: View {
         dataModel.selectedPayloadType = nil
         dataModel.linkersWorkingIndex = 0
         dataModel.payloadsWorkingIndex = 0
+        dataModel.placedLinkerCount = 0
+        dataModel.placedPayloadCount = 0
     }
     
     func prepareAntibodyEntities() {
@@ -287,7 +296,7 @@ struct ADCOptimizedImmersive: View {
     }
     
     
-    func prepareLinkerEntities() {
+    func prepareLinkerEntities() async {
         guard let antibodyRoot = antibodyRootEntity else { return }
         
         if let linker0 = antibodyRoot.findModelEntity(named: "linker", from: "linker01_offset"),
@@ -297,20 +306,31 @@ struct ADCOptimizedImmersive: View {
             
             self.adcLinkers = [linker0, linker1, linker2, linker3]
             
-            // Load outline material
-            if let outlineMaterial = try? await MaterialResource.load(named: "Materials/M_outline", in: realityKitContentBundle) {
-                // Apply outline material to each target linker
-                self.adcLinkers.forEach {
-                    $0.model?.materials = [outlineMaterial]
-                    $0.updatePBRDiffuseColor(.adcWhite)
-                    $0.isEnabled = false
+            // Load USDA and get material
+            os_log(.debug, "ITR..prepareLinkerEntities(): Attempting to load M_outline material from Materials/M_outline.usda")
+            do {
+                let materialEntity = try await Entity(named: "Materials/M_outline.usda", in: realityKitContentBundle)
+                os_log(.debug, "ITR..prepareLinkerEntities(): ✅ Successfully loaded material entity")
+                
+                if let outlineMaterial = materialEntity.findEntity(named: "M_outline")?.components[ModelComponent.self]?.materials.first {
+                    os_log(.debug, "ITR..prepareLinkerEntities(): ✅ Found M_outline material in entity")
+                    
+                    self.adcLinkers.forEach { linker in
+                        if var modelComponent = linker.components[ModelComponent.self] {
+                            os_log(.debug, "ITR..prepareLinkerEntities(): Applying outline material to linker")
+                            modelComponent.materials = [outlineMaterial]
+                            linker.components[ModelComponent.self] = modelComponent
+                            linker.isEnabled = false
+                        } else {
+                            os_log(.error, "ITR..prepareLinkerEntities(): ❌ Linker missing ModelComponent")
+                        }
+                    }
+                } else {
+                    os_log(.error, "ITR..prepareLinkerEntities(): ❌ Could not find M_outline material in entity")
                 }
+            } catch {
+                os_log(.error, "ITR..prepareLinkerEntities(): ❌ Failed to load M_outline material: \(error)")
             }
-
-            os_log(.info, "ITR..prepareLinkerEntities(): found all ModelEntities")
-
-        } else {
-            os_log(.error, "ITR..prepareLinkerEntities(): ❌ Error, not all ModelEntities found")
         }
     }
     
@@ -478,8 +498,13 @@ struct ADCOptimizedImmersive: View {
                         
                         // If there's a next linker, give it the outline material
                         if dataModel.linkersWorkingIndex < (adcLinkers.count - 1) {
-                            if let outlineMaterial = try? await MaterialResource.load(named: "Materials/M_outline", in: realityKitContentBundle) {
-                                adcLinkers[dataModel.linkersWorkingIndex + 1].model?.materials = [outlineMaterial]
+                            do {
+                                let materialEntity = try await Entity(named: "Materials/M_outline.usda", in: realityKitContentBundle)
+                                if let outlineMaterial = materialEntity.findEntity(named: "M_outline")?.components[ModelComponent.self]?.materials.first {
+                                    adcLinkers[dataModel.linkersWorkingIndex + 1].model?.materials = [outlineMaterial]
+                                }
+                            } catch {
+                                os_log(.error, "ITR..createLinkerGestureComponent(): ❌ Failed to load M_outline material: \(error)")
                             }
                         }
                         

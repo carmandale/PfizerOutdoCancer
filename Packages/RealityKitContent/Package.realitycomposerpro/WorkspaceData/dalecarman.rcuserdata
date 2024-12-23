@@ -1,7 +1,6 @@
 {
   "advancedEditorSelectedIdentifier" : "ProjectBrowser",
   "openSceneRelativePaths" : [
-    "antibodyScene.usda",
     "Materials\/M_outline.usda"
   ],
   "recentIdentifiers" : {
@@ -7211,6 +7210,28 @@
       }
     ],
     "F6823F79-E131-4D71-A30C-A15953CF49EC" : [
+      {
+        "date" : 756643844.845864,
+        "title" : "Untitled",
+        "transform" : [
+          0.99969006,
+          -8.5032204e-11,
+          -0.024893802,
+          0,
+          -0.0035649105,
+          0.9896931,
+          -0.14316036,
+          0,
+          0.024637224,
+          0.14320478,
+          0.9893863,
+          0,
+          0.02408902,
+          0.060962476,
+          0.31754756,
+          1
+        ]
+      },
       {
         "date" : 756643537.79707,
         "title" : "Untitled",
