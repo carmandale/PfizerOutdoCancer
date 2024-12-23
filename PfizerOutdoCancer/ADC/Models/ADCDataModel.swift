@@ -16,6 +16,9 @@ class ADCDataModel {
     
     public var adcBuildStep = 0
     
+    var placedLinkerCount: Int = 0
+    var placedPayloadCount: Int = 0
+    
     func getADCImageName() -> String {
         if let index = selectedADCAntibody {
             return "antibody\(index)"

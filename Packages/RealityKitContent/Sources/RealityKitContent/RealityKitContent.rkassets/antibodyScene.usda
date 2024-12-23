@@ -13,13 +13,9 @@ def Xform "Root"
     reorder nameChildren = ["antibodyProtein_complex_assembled", "targetLinker", "targetPayload"]
     def "antibodyProtein_complex_assembled" (
         active = true
-        customData = {
-            float3 rotationEulerHint = (0, 0, -1.5750934)
-        }
         references = @Assets/ADC/antibodyProtein_complex_assembled.usda@
     )
     {
-        quatf xformOp:orient = (0.7055859, 0, 0, -0.70862436)
         float3 xformOp:scale = (1, 1, 1)
         float3 xformOp:translate = (0, 0, 0)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
@@ -48,10 +44,19 @@ def Xform "Root"
             }
         }
 
-        over "antibodyProtein_complex_base"
+        over "antibodyProtein_complex_base" (
+            customData = {
+                float3 rotationEulerHint = (0, 0, -1.5707964)
+            }
+        )
         {
+            quatf xformOp:orient = (0.70710677, 0, 0, -0.70710677)
+
             over "ADC_complex_001"
             {
+                float3 xformOp:scale = (2, 2, 2)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
                 over "ADC_complex"
                 {
                     over "ADC_complex"

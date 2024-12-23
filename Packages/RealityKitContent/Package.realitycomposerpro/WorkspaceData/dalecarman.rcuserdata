@@ -1,7 +1,8 @@
 {
   "advancedEditorSelectedIdentifier" : "ProjectBrowser",
   "openSceneRelativePaths" : [
-    "antibodyScene.usda"
+    "antibodyScene.usda",
+    "Materials\/M_outline.usda"
   ],
   "recentIdentifiers" : {
     "00353439-B084-4161-BDD3-58325B62FD61" : [
@@ -107,6 +108,9 @@
 
     ],
     "732BFFA5-2E7F-487C-9F77-96943F1ADC77" : [
+
+    ],
+    "750A2E14-AE29-479B-9CAA-4075AD7E0432" : [
 
     ],
     "7A10AC9D-F4E1-4FB8-A276-43FB7670B088" : [
@@ -3944,6 +3948,30 @@
         ]
       }
     ],
+    "750A2E14-AE29-479B-9CAA-4075AD7E0432" : [
+      {
+        "date" : 756643826.379899,
+        "title" : "Untitled",
+        "transform" : [
+          0.9649826,
+          2.6639562e-09,
+          -0.26231372,
+          0,
+          -0.06890702,
+          0.9648805,
+          -0.25349066,
+          0,
+          0.2531014,
+          0.26268938,
+          0.9310929,
+          0,
+          0.6332223,
+          0.65721005,
+          2.329457,
+          1
+        ]
+      }
+    ],
     "7A10AC9D-F4E1-4FB8-A276-43FB7670B088" : [
       {
         "date" : 756560418.008299,
@@ -7184,6 +7212,28 @@
     ],
     "F6823F79-E131-4D71-A30C-A15953CF49EC" : [
       {
+        "date" : 756643537.79707,
+        "title" : "Untitled",
+        "transform" : [
+          0.9989889,
+          -2.1798563e-11,
+          -0.044956416,
+          0,
+          -0.010884685,
+          0.9702472,
+          -0.2418716,
+          0,
+          0.04361884,
+          0.24211642,
+          0.9692662,
+          0,
+          0.030110002,
+          0.09267291,
+          0.30925438,
+          1
+        ]
+      },
+      {
         "date" : 756587446.507124,
         "title" : "Untitled",
         "transform" : [
@@ -7524,5 +7574,5 @@
   "sceneViewportBackgroundColors" : {
 
   },
-  "selectedSceneRelativePath" : "antibodyScene.usda"
+  "selectedSceneRelativePath" : "Materials\/M_outline.usda"
 }

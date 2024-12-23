@@ -7,9 +7,15 @@ struct ADCPayloadSelectorView: View {
     var body: some View {
         VStack (spacing:30) {
             HStack (spacing: 10) {
-                Text("Select Payload")
+                Text("Select Payload color and place Payload")
                     .font(.title)
-                Spacer()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                if dataModel.placedPayloadCount > 0 {
+                    Text("\(dataModel.placedPayloadCount) of 4")
+                        .font(.title2)
+                        .foregroundColor(.gray)
+                        .frame(alignment: .trailing)
+                }
             }
             .padding(.vertical, 30)
             .padding(.horizontal, 30)

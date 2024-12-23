@@ -2926,6 +2926,18 @@
       }
     ]
   },
+  "750A2E14-AE29-479B-9CAA-4075AD7E0432" : {
+    "objectMetadataList" : [
+      [
+        "750A2E14-AE29-479B-9CAA-4075AD7E0432",
+        "Root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      }
+    ]
+  },
   "7A10AC9D-F4E1-4FB8-A276-43FB7670B088" : {
     "objectMetadataList" : [
       [
@@ -7819,7 +7831,65 @@
     "objectMetadataList" : [
       [
         "F6823F79-E131-4D71-A30C-A15953CF49EC",
+        "Root",
+        "antibodyProtein_complex_assembled"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "F6823F79-E131-4D71-A30C-A15953CF49EC",
+        "Root",
+        "antibodyProtein_complex_assembled",
+        "antibodyProtein_complex_base",
+        "ADC_complex_001"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "F6823F79-E131-4D71-A30C-A15953CF49EC",
+        "Root",
+        "targetPayload",
+        "Transform"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "F6823F79-E131-4D71-A30C-A15953CF49EC",
         "Root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "F6823F79-E131-4D71-A30C-A15953CF49EC",
+        "Root",
+        "targetLinker"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "F6823F79-E131-4D71-A30C-A15953CF49EC",
+        "Root",
+        "targetPayload"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "F6823F79-E131-4D71-A30C-A15953CF49EC",
+        "Root",
+        "antibodyProtein_complex_assembled",
+        "antibodyProtein_complex_base"
       ],
       {
         "isExpanded" : true,

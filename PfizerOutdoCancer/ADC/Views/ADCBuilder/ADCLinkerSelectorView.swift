@@ -6,10 +6,16 @@ struct ADCLinkerSelectorView: View {
     
     var body: some View {
         VStack (spacing:30) {
-            HStack (spacing: 10) {
-                Text("Select Linker")
+            HStack(spacing: 10) {
+                Text("Select Linker color and place Linker")
                     .font(.title)
-                Spacer()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                if dataModel.placedLinkerCount > 0 {
+                    Text("\(dataModel.placedLinkerCount) of 4")
+                        .font(.title2)
+                        .foregroundColor(.gray)
+                        .frame(alignment: .trailing)
+                }
             }
             .padding(.vertical, 30)
             .padding(.horizontal, 30)

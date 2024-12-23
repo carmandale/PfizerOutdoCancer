@@ -46,14 +46,15 @@ struct ADCOptimizedImmersive: View {
     @State var timer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
     @State var isCameraInitialized = false
     
-    let antibodyAttachmentOffset: SIMD3<Float> = SIMD3(0.35, 0, 0)
-    let linkerAttachmentOffset: SIMD3<Float> = SIMD3(0.1, 0.1, 0)
-    let payloadAttachmentOffset: SIMD3<Float> = SIMD3(0, 0.1, 0)
+    let antibodyAttachmentOffset: SIMD3<Float> = SIMD3(-0.45, 0, 0)
+    let linkerAttachmentOffset: SIMD3<Float> = SIMD3(0.35, 0, 0)
+    let payloadAttachmentOffset: SIMD3<Float> = SIMD3(0.35, 0, 0)
+    private let defaultZPosition: Float = -1.0
+    let antibodyRootOffset: SIMD3<Float> = SIMD3(0, 1.0, -1.0)
     
     @Environment(\.dismissWindow) private var dismissWindow
     @Environment(\.openWindow) private var openWindow
     
-    private let defaultZPosition: Float = -1.0
     
     var body: some View {
         RealityView { content, attachments in
@@ -67,11 +68,11 @@ struct ADCOptimizedImmersive: View {
             if let antibodyScene = try? await Entity(named: "antibodyScene", in: realityKitContentBundle),
                let antibodyRoot = antibodyScene.findEntity(named: "antibodyProtein_complex_assembled"){
 
-                // if let resource = try? await AudioFileResource(named:"/Root/bubblepop_mp3", from: "antibodyScene.usda", in: realityKitContentBundle) {
-                //     popAudioFileResource = resource
-                // } else {
-                //     os_log(.error, "ITR..ADCOptimizedImmersive.RealityView(): ❌ Error, couldn't find Audio in antibodyScene.usda")
-                // }
+                if let resource = try? await AudioFileResource(named:"/Root/bubblepop_mp3", from: "antibodyScene.usda", in: realityKitContentBundle) {
+                    popAudioFileResource = resource
+                } else {
+                    os_log(.error, "ITR..ADCOptimizedImmersive.RealityView(): ❌ Error, couldn't find Audio in antibodyScene.usda")
+                }
                 
 //                if let resource = antibodyRootEntity?.components[AudioLibraryComponent.self],
 //                       let popSound = resource.resources["bubblepop.mp3"] {
@@ -84,7 +85,7 @@ struct ADCOptimizedImmersive: View {
                 prepareAntibodyEntities()
                 prepareLinkerEntities()
                 preparePayloadEntities()
-                preopareTargetEntities(antibodyScene: antibodyScene)
+                prepareTargetEntities(antibodyScene: antibodyScene)
             } else {
                 os_log(.error, "ITR..ADCOptimizedImmersive.RealityView(): ❌ Error, couldn't find Entity from RealityKitContent")
             }
@@ -93,7 +94,7 @@ struct ADCOptimizedImmersive: View {
                 dataModel.selectedADCAntibody = 0
             }
             
-            content.add(createCamera())
+            // content.add(createCamera())
   
             setupAttachments(attachments: attachments)
 
@@ -120,7 +121,7 @@ struct ADCOptimizedImmersive: View {
                 switch newValue {
                 case 0:
                     os_log(.debug, "ITR.. ✅ ADC build step 0")
-                    setAntibodyAttachmentPosition()
+                    // setAntibodyAttachmentPosition()
                     self.adcLinkers.forEach { $0.isEnabled = false }
                     self.linkerEntity?.isEnabled = false
                     self.linkerAttachmentEntity?.isEnabled = false
@@ -138,10 +139,10 @@ struct ADCOptimizedImmersive: View {
                         if let linkerEntity = linkerEntity {
                             linkerEntity.isEnabled = true
                             linkerEntity.position = calculateTargetLinkerPosition()
-                            linkerEntity.look(at: cameraEntity.scenePosition,
-                                              from: linkerEntity.scenePosition,
-                                              relativeTo: nil,
-                                              forward: .positiveZ)
+//                            linkerEntity.look(at: cameraEntity.scenePosition,
+//                                              from: linkerEntity.scenePosition,
+//                                              relativeTo: nil,
+//                                              forward: .positiveZ)
                         }
                         self.linkerAttachmentEntity?.isEnabled = true
                         setLinkerAttachmentPosition()
@@ -187,9 +188,15 @@ struct ADCOptimizedImmersive: View {
                 return
             }
             Task { @MainActor in
-                if let newValue,
-                   let workingLinker {
-                    workingLinker.updatePBRDiffuseColor(.adc[newValue])
+                if let newValue {
+                    // Change all linkers to the same color
+                    self.adcLinkers.forEach { linker in
+                        linker.updatePBRDiffuseColor(.adc[newValue])
+                    }
+                    // Also update the working linker
+                    if let workingLinker {
+                        workingLinker.updatePBRDiffuseColor(.adc[newValue])
+                    }
                 }
             }
         }
@@ -211,14 +218,14 @@ struct ADCOptimizedImmersive: View {
         .onChange(of: bubblePopSound) { oldValue , newValue in
             self.popAudioPlaybackController?.play()
         }
-        .onReceive(timer) { fireDate in
-            print("ITR..Timer fired at: \(fireDate), camera position: \(cameraEntity.position)")
-            if !isCameraInitialized && cameraEntity.position != .zero {
-                isCameraInitialized = true
-                stopTimer()
-                onCameraInitialized()
-            }
-        }
+        // .onReceive(timer) { fireDate in
+        //     print("ITR..Timer fired at: \(fireDate), camera position: \(cameraEntity.position)")
+        //     if !isCameraInitialized && cameraEntity.position != .zero {
+        //         isCameraInitialized = true
+        //         stopTimer()
+        //         onCameraInitialized()
+        //     }
+        // }
         .task {
             dismissWindow(id: ADCUIViews.mainViewID)
         }
@@ -247,14 +254,14 @@ struct ADCOptimizedImmersive: View {
             self.antibodyEntity = antibody
             antibody.isEnabled = false
             
-            antibodyRoot.scale *= 2
+            // antibodyRoot.scale *= 2
             self.mainEntity?.addChild(antibodyRoot)
             
             // Set initial position
-            antibodyRoot.position = [0, 0.5, defaultZPosition]
+            antibodyRoot.position = antibodyRoot.position + antibodyRootOffset
             
             // Add mainViewEntity as child of antibodyRoot
-            mainViewEntity.position = [-0.5, 0, 0]  // 0.5 meters to the left
+            mainViewEntity.position = mainViewEntity.position + antibodyAttachmentOffset  // 0.5 meters to the left
             antibodyRoot.addChild(mainViewEntity)
             
             // Keep existing components
@@ -262,13 +269,13 @@ struct ADCOptimizedImmersive: View {
                                                axisToFollow: [0,1,0],
                                                initializePositionOnlyOnce: true,
                                                isBillboardEnabled: false)
-            antibodyRoot.components.set(billboard)
+            // antibodyRoot.components.set(billboard)
             antibodyRoot.components.set(createGestureComponent())
             
             // Keep existing orientation
-            let angleDegrees: Float = 30
-            let angleRadians: Float = angleDegrees * (.pi / 180)
-            antibodyRoot.orientation = simd_quatf(angle: angleRadians, axis: [0, 0, 1]) * antibodyRoot.orientation
+            // let angleDegrees: Float = 30
+            // let angleRadians: Float = angleDegrees * (.pi / 180)
+            // antibodyRoot.orientation = simd_quatf(angle: angleRadians, axis: [0, 0, 1]) * antibodyRoot.orientation
             
             // Keep audio setup
             if let resource = popAudioFileResource {
@@ -289,9 +296,15 @@ struct ADCOptimizedImmersive: View {
            let linker3 = antibodyRoot.findModelEntity(named: "linker", from: "linker04_offset"){
             
             self.adcLinkers = [linker0, linker1, linker2, linker3]
-            self.adcLinkers.forEach {
-                $0.updatePBRDiffuseColor(.adcWhite)
-                $0.isEnabled = false
+            
+            // Load outline material
+            if let outlineMaterial = try? await MaterialResource.load(named: "Materials/M_outline", in: realityKitContentBundle) {
+                // Apply outline material to each target linker
+                self.adcLinkers.forEach {
+                    $0.model?.materials = [outlineMaterial]
+                    $0.updatePBRDiffuseColor(.adcWhite)
+                    $0.isEnabled = false
+                }
             }
 
             os_log(.info, "ITR..prepareLinkerEntities(): found all ModelEntities")
@@ -333,14 +346,14 @@ struct ADCOptimizedImmersive: View {
         }
     }
     
-    func preopareTargetEntities(antibodyScene: Entity) {
+    func prepareTargetEntities(antibodyScene: Entity) {
         guard adcLinkers.count > 0 else {
-            os_log(.error, "ITR..preopareTargetEntities(): ❌ Error, self.adcLinkers is empty. It should have content at this point.")
+            os_log(.error, "ITR..prepareTargetEntities(): ❌ Error, self.adcLinkers is empty. It should have content at this point.")
             return
         }
         
         guard !adcPayloadsInner.isEmpty else {
-            os_log(.error, "ITR..preopareTargetEntities(): ❌ Error, self.adcPayloadsInner is empty. It should have content at this point.")
+            os_log(.error, "ITR..prepareTargetEntities(): ❌ Error, self.adcPayloadsInner is empty. It should have content at this point.")
             return
         }
 
@@ -352,11 +365,11 @@ struct ADCOptimizedImmersive: View {
             
             linkerEntity = linker
 
-            let linkerBillboard = ADCBillboardComponent(offset: [0,-0.2,-0.6],
-                                               axisToFollow: [0,1,0],
-                                               initializePositionOnlyOnce: true,
-                                               isBillboardEnabled: false)
-            linker.components.set(linkerBillboard)
+            // let linkerBillboard = ADCBillboardComponent(offset: [0,-0.2,-0.6],
+            //                                    axisToFollow: [0,1,0],
+            //                                    initializePositionOnlyOnce: true,
+            //                                    isBillboardEnabled: false)
+            // linker.components.set(linkerBillboard)
             linker.isEnabled = false
             
             let aLinker = adcLinkers[dataModel.linkersWorkingIndex]
@@ -369,11 +382,11 @@ struct ADCOptimizedImmersive: View {
             
             payloadEntity = payload
             
-            let payloadBillboard = ADCBillboardComponent(offset: [0,-0.2,-0.6],
-                                               axisToFollow: [0,1,0],
-                                               initializePositionOnlyOnce: true,
-                                               isBillboardEnabled: false)
-            payload.components.set(payloadBillboard)
+            // let payloadBillboard = ADCBillboardComponent(offset: [0,-0.2,-0.6],
+            //                                    axisToFollow: [0,1,0],
+            //                                    initializePositionOnlyOnce: true,
+            //                                    isBillboardEnabled: false)
+            // payload.components.set(payloadBillboard)
             payload.components.set(createGestureComponent())
             
             let aPayload = adcPayloadsInner[dataModel.payloadsWorkingIndex]
@@ -390,10 +403,10 @@ struct ADCOptimizedImmersive: View {
             workingPayloadOuter.components.set(ADCProximityComponent(minScale: 2.0, maxScale: 15.0, minProximity: 0.15, maxProximity: 0.6))
             workingPayloadInner.components.set(ADCProximityComponent(minScale: 2.0, maxScale: 15.0, minProximity: 0.15, maxProximity: 0.6))
 
-            os_log(.info, "ITR..preopareTargetEntities(): found all ModelEntities")
+            os_log(.info, "ITR..prepareTargetEntities(): found all ModelEntities")
 
         } else {
-            os_log(.error,"ITR..preopareTargetEntities(): ❌ Error, not all ModelEntities found")
+            os_log(.error,"ITR..prepareTargetEntities(): ❌ Error, not all ModelEntities found")
         }
     }
     
@@ -456,11 +469,19 @@ struct ADCOptimizedImmersive: View {
                 if dist < 0.2 {
                     os_log(.debug, "ITR..createLinkerGestureComponent(): Entity \(finishedEntity.name) is close enough to the target linker, dataModel.linkersWorkingIndex: \(dataModel.linkersWorkingIndex)")
                     dataModel.selectedADCLinker = dataModel.selectedLinkerType
+                    dataModel.placedLinkerCount += 1
                     bubblePopSound.toggle()
                     
                     Task { @MainActor in
-
+                        // Current target gets final color
                         adcLinkers[dataModel.linkersWorkingIndex].updatePBRDiffuseColor(.adc[dataModel.selectedLinkerType ?? 0])
+                        
+                        // If there's a next linker, give it the outline material
+                        if dataModel.linkersWorkingIndex < (adcLinkers.count - 1) {
+                            if let outlineMaterial = try? await MaterialResource.load(named: "Materials/M_outline", in: realityKitContentBundle) {
+                                adcLinkers[dataModel.linkersWorkingIndex + 1].model?.materials = [outlineMaterial]
+                            }
+                        }
                         
                         adcLinkers.forEach {
                             $0.components.remove(ADCProximitySourceComponent.self)
@@ -536,7 +557,7 @@ struct ADCOptimizedImmersive: View {
 
                     Task { @MainActor in
                         adcPayloadsInner[dataModel.payloadsWorkingIndex].updatePBREmissiveColor(.adcEmissive[dataModel.selectedPayloadType ?? 0])
-                        adcPayloadsOuter[dataModel.payloadsWorkingIndex] .updateShaderGraphColor(parameterName: "glowColor", color: .adc[dataModel.selectedPayloadType ?? 0])
+                        adcPayloadsOuter[dataModel.payloadsWorkingIndex].updateShaderGraphColor(parameterName: "glowColor", color: .adc[dataModel.selectedPayloadType ?? 0])
                         
                         adcPayloadsOuter.forEach {
                             $0.components.remove(ADCProximitySourceComponent.self)
@@ -558,6 +579,7 @@ struct ADCOptimizedImmersive: View {
                         }
                         updateADC()
                     }
+                    dataModel.placedPayloadCount += 1
                 } else {
 //                    os_log(.debug, "ITR..createPayloadGestureComponent(): Entity \(finishedEntity.name) distance: \(dist)")
                 }
@@ -589,40 +611,52 @@ struct ADCOptimizedImmersive: View {
     // MARK: - Extra stuff
     
     func calculateMainViewPosition() -> SIMD3<Float> {
-        let cameraPosition = cameraEntity.position(relativeTo: nil)
+//        let cameraPosition = cameraEntity.position(relativeTo: nil)
         let antibodyPosition = antibodyEntity?.position(relativeTo: nil) ?? [0, 1.5, defaultZPosition]  
         
-        return calculateRadialPosition(cameraPosition: cameraPosition, 
-                                     antibodyPosition: antibodyPosition, 
-                                     angleDegrees: -35, 
-                                     yOffset: antibodyPosition.y, 
-                                     radiusOffset: 0.1)
+        return SIMD3<Float>(
+            antibodyPosition.x + -0.5,
+            antibodyPosition.y + 0,
+            antibodyPosition.z + 0
+        )
+        // calculateRadialPosition(cameraPosition: cameraPosition, 
+        //                              antibodyPosition: antibodyPosition, 
+        //                              angleDegrees: -35, 
+        //                              yOffset: antibodyPosition.y, 
+        //                              radiusOffset: 0.1)
     }
     
     func calculateTargetLinkerPosition() -> SIMD3<Float> {
-        
-        let cameraPosition = cameraEntity.position(relativeTo: nil)
         let antibodyPosition = antibodyEntity?.position(relativeTo: nil) ?? [0, 1.5, defaultZPosition]
         
-        return calculateRadialPosition(cameraPosition: cameraPosition, antibodyPosition: antibodyPosition, angleDegrees: 35, yOffset: antibodyPosition.y, radiusOffset: 0.1)
-
+        // Return position 0.5 meters to the right of the antibody
+        return SIMD3<Float>(
+            antibodyPosition.x + linkerAttachmentOffset.x,  // 0.5 meters to the right
+            antibodyPosition.y + linkerAttachmentOffset.y,        // same height
+            antibodyPosition.z + linkerAttachmentOffset.z         // same depth
+        )
     }
     func calculateTargetPayloadsPosition() -> SIMD3<Float> {
         
-        let cameraPosition = cameraEntity.position(relativeTo: nil)
+//        let cameraPosition = cameraEntity.position(relativeTo: nil)
         let antibodyPosition = antibodyEntity?.position(relativeTo: nil) ?? [0, 1.5, defaultZPosition]
         
-        return calculateRadialPosition(cameraPosition: cameraPosition, antibodyPosition: antibodyPosition, angleDegrees: 35, yOffset: antibodyPosition.y, radiusOffset: 0.1)
+        return SIMD3<Float>(
+            antibodyPosition.x + payloadAttachmentOffset.x,  // 0.5 meters to the right
+            antibodyPosition.y + payloadAttachmentOffset.y,        // same height
+            antibodyPosition.z + payloadAttachmentOffset.z         // same depth
+        )
+        // calculateRadialPosition(cameraPosition: cameraPosition, antibodyPosition: antibodyPosition, angleDegrees: 35, yOffset: antibodyPosition.y, radiusOffset: 0.1)
 
     }
     
     func setAntibodyAttachmentPosition() {
         
-        let cameraPosition = cameraEntity.position(relativeTo: nil)
-        let antibodyPosition = antibodyEntity?.position(relativeTo: nil) ?? [0, 1.5, defaultZPosition]
+        // let cameraPosition = cameraEntity.position(relativeTo: nil)
+        // let antibodyPosition = antibodyEntity?.position(relativeTo: nil) ?? [0, 1.5, defaultZPosition]
         
-        let newPosition = calculateRadialPosition(cameraPosition: cameraPosition, antibodyPosition: antibodyPosition, angleDegrees: 35, yOffset: antibodyPosition.y, radiusOffset: 0.1)
-        adcAttachmentEntity?.position = newPosition
+        // let newPosition = calculateRadialPosition(cameraPosition: cameraPosition, antibodyPosition: antibodyPosition, angleDegrees: 35, yOffset: antibodyPosition.y, radiusOffset: 0.1)
+        // adcAttachmentEntity?.position = newPosition
     }
     
     func setLinkerAttachmentPosition() {
@@ -659,7 +693,7 @@ struct ADCOptimizedImmersive: View {
         mainViewEntity.isEnabled = shouldAddMainViewAttachment
         if shouldAddMainViewAttachment {
             //Calculate the new position of mainViewEntity
-            mainViewEntity.position = calculateMainViewPosition()
+            // mainViewEntity.position = calculateMainViewPosition()
         }
         if (dataModel.adcBuildStep == 0) {
             if let adcAttachmentEntity {
@@ -669,7 +703,7 @@ struct ADCOptimizedImmersive: View {
 //                    if let antibodyEntity {
 //                        self.adcAttachmentEntity?.position = antibodyEntity.position(relativeTo: nil) + antibodyAttachmentOffset
 //                    }
-                    setAntibodyAttachmentPosition()
+                    // setAntibodyAttachmentPosition()
                     
                 } else {
                     mainEntity?.removeChild(adcAttachmentEntity)
@@ -679,7 +713,7 @@ struct ADCOptimizedImmersive: View {
             if let payloadAttachmentEntity { payloadEntity?.removeChild(payloadAttachmentEntity) }
         }
         if (dataModel.adcBuildStep == 1) {
-            if let adcAttachmentEntity { mainEntity?.removeChild(adcAttachmentEntity) }
+            // if let adcAttachmentEntity { mainEntity?.removeChild(adcAttachmentEntity) }
             setLinkerAttachmentPosition()
             if shouldAddLinkerAttachment {
                 self.linkerAttachmentEntity?.isEnabled = true
@@ -690,7 +724,7 @@ struct ADCOptimizedImmersive: View {
             if let payloadAttachmentEntity { payloadEntity?.removeChild(payloadAttachmentEntity) }
         }
         if (dataModel.adcBuildStep == 2) {
-            if let adcAttachmentEntity { mainEntity?.removeChild(adcAttachmentEntity) }
+            // if let adcAttachmentEntity { mainEntity?.removeChild(adcAttachmentEntity) }
             self.linkerAttachmentEntity?.isEnabled = false
             if let payloadAttachmentEntity {
                 if shouldAddPayloadAttachment {
@@ -725,12 +759,12 @@ struct ADCOptimizedImmersive: View {
     func onCameraInitialized() {
         os_log(.debug, "ITR..onCameraInitialized() called")
         Task { @MainActor in
-            mainViewEntity.position = calculateMainViewPosition()
-            linkerEntity?.position = calculateTargetLinkerPosition()
-            payloadEntity?.position = calculateTargetPayloadsPosition()
+            // mainViewEntity.position = calculateMainViewPosition()
+            // linkerEntity?.position = calculateTargetLinkerPosition()
+            // payloadEntity?.position = calculateTargetPayloadsPosition()
             
-            setAntibodyAttachmentPosition()
-            setLinkerAttachmentPosition()
+            // setAntibodyAttachmentPosition()
+            // setLinkerAttachmentPosition()
 
         }
     }
