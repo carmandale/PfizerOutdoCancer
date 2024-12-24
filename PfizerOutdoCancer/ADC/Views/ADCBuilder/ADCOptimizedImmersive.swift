@@ -7,10 +7,9 @@ struct ADCOptimizedImmersive: View {
     @Environment(ADCAppModel.self) var appModel
     @Environment(ADCDataModel.self) var dataModel
     
-    @State var mainEntity: Entity?
-    
-    @State var cameraEntity: Entity = Entity()
-    @State var mainViewEntity : Entity = Entity()
+    @State private var mainEntity: Entity? = nil
+    @State private var cameraEntity: RealityKit.Entity = .init()
+    @State private var mainViewEntity: RealityKit.Entity = .init()
     
     @State var antibodyRootEntity: Entity?
     
@@ -22,20 +21,18 @@ struct ADCOptimizedImmersive: View {
     @State var workingPayloadInner: ModelEntity?
     @State var workingPayloadOuter: ModelEntity?
 
-
-    
-    @State var adcLinkers: [ModelEntity] = []
-    @State var adcPayloadsInner: [ModelEntity] = []
-    @State var adcPayloadsOuter: [ModelEntity] = []
+    @State private var adcLinkers: [ModelEntity] = .init()
+    @State private var adcPayloadsInner: [ModelEntity] = .init()
+    @State private var adcPayloadsOuter: [ModelEntity] = .init()
 
     @State var adcAttachmentEntity: ViewAttachmentEntity?
     @State var linkerAttachmentEntity: ViewAttachmentEntity?
     @State var payloadAttachmentEntity: ViewAttachmentEntity?
     
-    @State var shouldAddADCAttachment = false
-    @State var shouldAddLinkerAttachment = false
-    @State var shouldAddPayloadAttachment = false
-    @State var shouldAddMainViewAttachment = false
+    @State private var shouldAddADCAttachment: Bool = false
+    @State private var shouldAddLinkerAttachment: Bool = false
+    @State private var shouldAddPayloadAttachment: Bool = false
+    @State private var shouldAddMainViewAttachment: Bool = false
     
     @State var refreshFlag = false
     @State var bubblePopSound = false
@@ -55,6 +52,9 @@ struct ADCOptimizedImmersive: View {
     @Environment(\.dismissWindow) private var dismissWindow
     @Environment(\.openWindow) private var openWindow
     
+    @State private var originalLinkerMaterial: PhysicallyBasedMaterial?
+    @State private var originalPayloadInnerMaterial: PhysicallyBasedMaterial?
+    @State private var originalPayloadOuterMaterial: ShaderGraphMaterial?
     
     var body: some View {
         RealityView { content, attachments in
@@ -84,7 +84,7 @@ struct ADCOptimizedImmersive: View {
                 self.antibodyRootEntity = antibodyRoot
                 prepareAntibodyEntities()
                 await prepareLinkerEntities()
-                preparePayloadEntities()
+                await preparePayloadEntities()
                 prepareTargetEntities(antibodyScene: antibodyScene)
                 
                 // Ensure linkers start disabled
@@ -180,13 +180,8 @@ struct ADCOptimizedImmersive: View {
             }
         }
         .onChange(of: dataModel.selectedADCAntibody) { oldValue, newValue in
-            os_log(.debug, "ITR..onChange(of: dataModel.selectedADCAntibody): new change selected ADC: \(newValue ?? -1)")
-            Task { @MainActor in
-                if let newValue,
-                   let antibodyEntity {
-                    antibodyEntity.updatePBRDiffuseColor(.adc[newValue])
-                }
-            }
+            os_log(.debug, "ITR..onChange(of: selectedADCAntibody): new value: \(newValue ?? -1)")
+            handleAntibodyColorChange(newValue: newValue)
         }
         .onChange(of: dataModel.selectedLinkerType) { oldValue, newValue in
             os_log(.debug, "ITR..onChange(of: dataModel.selectedLinkerType): new change selected working linker: \(newValue ?? -1)")
@@ -218,7 +213,7 @@ struct ADCOptimizedImmersive: View {
                    let workingPayloadInner,
                    let workingPayloadOuter {
                     workingPayloadInner.updatePBREmissiveColor(.adcEmissive[newValue])
-                    workingPayloadOuter.updateShaderGraphColor(parameterName: "glowColor", color: .adc[newValue])
+                    workingPayloadOuter.updateShaderGraphColor(parameterName: "Constant", color: .adc[newValue])
                 }
             }
         }
@@ -306,27 +301,43 @@ struct ADCOptimizedImmersive: View {
             
             self.adcLinkers = [linker0, linker1, linker2, linker3]
             
-            // Load USDA and get material
+            // Store original material from first linker
+            if let originalMaterial = linker0.components[ModelComponent.self]?.materials.first as? PhysicallyBasedMaterial {
+                self.originalLinkerMaterial = originalMaterial
+                os_log(.debug, "ITR..prepareLinkerEntities(): ✅ Stored original PBR material")
+            } else {
+                os_log(.error, "ITR..prepareLinkerEntities(): ❌ Could not get original PBR material")
+            }
+            
+            // Load outline material and apply...
             os_log(.debug, "ITR..prepareLinkerEntities(): Attempting to load M_outline material from Materials/M_outline.usda")
             do {
                 let materialEntity = try await Entity(named: "Materials/M_outline.usda", in: realityKitContentBundle)
                 os_log(.debug, "ITR..prepareLinkerEntities(): ✅ Successfully loaded material entity")
                 
-                if let outlineMaterial = materialEntity.findEntity(named: "M_outline")?.components[ModelComponent.self]?.materials.first {
-                    os_log(.debug, "ITR..prepareLinkerEntities(): ✅ Found M_outline material in entity")
+                if let sphereEntity = materialEntity.findEntity(named: "Sphere") {
+                    os_log(.debug, "ITR..prepareLinkerEntities(): Found Root entity")
                     
-                    self.adcLinkers.forEach { linker in
-                        if var modelComponent = linker.components[ModelComponent.self] {
-                            os_log(.debug, "ITR..prepareLinkerEntities(): Applying outline material to linker")
-                            modelComponent.materials = [outlineMaterial]
-                            linker.components[ModelComponent.self] = modelComponent
-                            linker.isEnabled = false
-                        } else {
-                            os_log(.error, "ITR..prepareLinkerEntities(): ❌ Linker missing ModelComponent")
+                    let components = sphereEntity.components
+                    guard let modelComponent = components[ModelComponent.self] else { fatalError("Model entity is required.") }
+
+                    // Try to get material directly from Root's materials
+                    if let material = modelComponent.materials.first as? ShaderGraphMaterial {
+                        os_log(.debug, "ITR..prepareLinkerEntities(): ✅ Found M_outline material from Root")
+                        
+                        self.adcLinkers.forEach { linker in
+                            if var modelComponent = linker.components[ModelComponent.self] {
+                                os_log(.debug, "ITR..prepareLinkerEntities(): Applying outline material to linker")
+                                modelComponent.materials = [material]
+                                linker.components[ModelComponent.self] = modelComponent
+                                linker.isEnabled = false
+                            }
                         }
+                    } else {
+                        os_log(.error, "ITR..prepareLinkerEntities(): ❌ Could not find material in Root")
                     }
                 } else {
-                    os_log(.error, "ITR..prepareLinkerEntities(): ❌ Could not find M_outline material in entity")
+                    os_log(.error, "ITR..prepareLinkerEntities(): ❌ Could not find Root entity")
                 }
             } catch {
                 os_log(.error, "ITR..prepareLinkerEntities(): ❌ Failed to load M_outline material: \(error)")
@@ -334,7 +345,7 @@ struct ADCOptimizedImmersive: View {
         }
     }
     
-    func preparePayloadEntities() {
+    func preparePayloadEntities() async {
         guard let antibodyRoot = antibodyRootEntity else { return }
         if let payload0 = antibodyRoot.findModelEntity(named: "InnerSphere", from: "linker01_offset"),
            let payload1 = antibodyRoot.findModelEntity(named: "InnerSphere", from: "linker02_offset"),
@@ -348,9 +359,79 @@ struct ADCOptimizedImmersive: View {
             self.adcPayloadsInner = [payload0, payload1, payload2, payload3]
             self.adcPayloadsOuter = [payloadOuter0, payloadOuter1, payloadOuter2, payloadOuter3]
             
-            self.adcPayloadsInner.forEach {
-                $0.updatePBREmissiveColor(.adcWhiteEmissive)
-                $0.isEnabled = false
+            // Store original materials with better logging
+            if let innerMaterial = payload0.components[ModelComponent.self]?.materials.first as? PhysicallyBasedMaterial {
+                self.originalPayloadInnerMaterial = innerMaterial
+                os_log(.debug, "ITR..preparePayloadEntities(): ✅ Stored original inner PBR material")
+            } else {
+                os_log(.error, "ITR..preparePayloadEntities(): ❌ Failed to store inner PBR material")
+            }
+            
+            if let outerMaterial = payloadOuter0.components[ModelComponent.self]?.materials.first as? ShaderGraphMaterial {
+                self.originalPayloadOuterMaterial = outerMaterial
+                os_log(.debug, "ITR..preparePayloadEntities(): ✅ Stored original outer shader material")
+            } else {
+                os_log(.error, "ITR..preparePayloadEntities(): ❌ Failed to store outer shader material")
+            }
+            
+            // Apply outline material with detailed logging
+            os_log(.debug, "ITR..preparePayloadEntities(): Attempting to load outline material")
+            do {
+                let materialEntity = try await Entity(named: "Materials/M_outline.usda", in: realityKitContentBundle)
+                os_log(.debug, "ITR..preparePayloadEntities(): ✅ Successfully loaded material entity")
+                
+                if let sphereEntity = materialEntity.findEntity(named: "Sphere") {
+                    os_log(.debug, "ITR..preparePayloadEntities(): Found Sphere entity")
+                    
+                    let components = sphereEntity.components
+                    guard let modelComponent = components[ModelComponent.self] else {
+                        os_log(.error, "ITR..preparePayloadEntities(): ❌ No ModelComponent found")
+                        return
+                    }
+
+                    if let material = modelComponent.materials.first as? ShaderGraphMaterial {
+                        os_log(.debug, "ITR..preparePayloadEntities(): ✅ Found outline material")
+                        
+                        // Apply to inner payloads
+                        self.adcPayloadsInner.forEach { payload in
+                            if var modelComponent = payload.components[ModelComponent.self] {
+                                modelComponent.materials = [material]
+                                payload.components[ModelComponent.self] = modelComponent
+                                payload.isEnabled = false
+                                os_log(.debug, "ITR..preparePayloadEntities(): ✅ Applied outline to inner payload")
+                            }
+                        }
+                        
+                        // Apply to outer payloads
+                        self.adcPayloadsOuter.forEach { payload in
+                            if var modelComponent = payload.components[ModelComponent.self] {
+                                modelComponent.materials = [material]
+                                payload.components[ModelComponent.self] = modelComponent
+                                payload.isEnabled = false
+                                os_log(.debug, "ITR..preparePayloadEntities(): ✅ Applied outline to outer payload")
+                            }
+                        }
+                    } else {
+                        os_log(.error, "ITR..preparePayloadEntities(): ❌ No ShaderGraphMaterial found")
+                    }
+                } else {
+                    os_log(.error, "ITR..preparePayloadEntities(): ❌ Could not find Sphere entity")
+                }
+            } catch {
+                os_log(.error, "ITR..preparePayloadEntities(): ❌ Failed to load outline material: \(error)")
+            }
+            
+            if let innerMaterial = payload0.components[ModelComponent.self]?.materials.first as? PhysicallyBasedMaterial {
+                self.originalPayloadInnerMaterial = innerMaterial
+                // Apply to all inner payloads
+                self.adcPayloadsInner.forEach { payload in
+                    if var modelComponent = payload.components[ModelComponent.self] {
+                        modelComponent.materials = [innerMaterial]
+                        payload.components[ModelComponent.self] = modelComponent
+                        payload.updatePBREmissiveColor(.adcWhiteEmissive)  // Now should work
+                        payload.isEnabled = false
+                    }
+                }
             }
 
             self.adcPayloadsOuter.forEach {
@@ -493,7 +574,14 @@ struct ADCOptimizedImmersive: View {
                     bubblePopSound.toggle()
                     
                     Task { @MainActor in
-                        // Current target gets final color
+                        // First restore original material
+                        if let originalMaterial = originalLinkerMaterial {
+                            adcLinkers[dataModel.linkersWorkingIndex].updateMaterials { material in
+                                material = originalMaterial
+                            }
+                        }
+                        
+                        // Then apply the color
                         adcLinkers[dataModel.linkersWorkingIndex].updatePBRDiffuseColor(.adc[dataModel.selectedLinkerType ?? 0])
                         
                         // If there's a next linker, give it the outline material
@@ -581,8 +669,42 @@ struct ADCOptimizedImmersive: View {
                     bubblePopSound.toggle()
 
                     Task { @MainActor in
+                        // First restore original materials
+                        if let innerMaterial = originalPayloadInnerMaterial {
+                            adcPayloadsInner[dataModel.payloadsWorkingIndex].updateMaterials { material in
+                                material = innerMaterial
+                            }
+                        }
+                        if let outerMaterial = originalPayloadOuterMaterial {
+                            adcPayloadsOuter[dataModel.payloadsWorkingIndex].updateMaterials { material in
+                                material = outerMaterial
+                            }
+                        }
+                        
+                        // Then apply selected colors
                         adcPayloadsInner[dataModel.payloadsWorkingIndex].updatePBREmissiveColor(.adcEmissive[dataModel.selectedPayloadType ?? 0])
                         adcPayloadsOuter[dataModel.payloadsWorkingIndex].updateShaderGraphColor(parameterName: "glowColor", color: .adc[dataModel.selectedPayloadType ?? 0])
+                        
+                        // If there's a next payload, give it the outline material
+                        if dataModel.payloadsWorkingIndex < (adcPayloadsInner.count - 1) {
+                            do {
+                                let materialEntity = try await Entity(named: "Materials/M_outline.usda", in: realityKitContentBundle)
+                                if let rootEntity = materialEntity.findEntity(named: "Root"),
+                                   let outlineMaterial = rootEntity.components[ModelComponent.self]?.materials.first {
+                                    // Apply outline to both parts of next payload
+                                    if var modelComponent = adcPayloadsInner[dataModel.payloadsWorkingIndex + 1].components[ModelComponent.self] {
+                                        modelComponent.materials = [outlineMaterial]
+                                        adcPayloadsInner[dataModel.payloadsWorkingIndex + 1].components[ModelComponent.self] = modelComponent
+                                    }
+                                    if var modelComponent = adcPayloadsOuter[dataModel.payloadsWorkingIndex + 1].components[ModelComponent.self] {
+                                        modelComponent.materials = [outlineMaterial]
+                                        adcPayloadsOuter[dataModel.payloadsWorkingIndex + 1].components[ModelComponent.self] = modelComponent
+                                    }
+                                }
+                            } catch {
+                                os_log(.error, "ITR..createPayloadGestureComponent(): ❌ Failed to load M_outline material: \(error)")
+                            }
+                        }
                         
                         adcPayloadsOuter.forEach {
                             $0.components.remove(ADCProximitySourceComponent.self)
@@ -791,6 +913,32 @@ struct ADCOptimizedImmersive: View {
             // setAntibodyAttachmentPosition()
             // setLinkerAttachmentPosition()
 
+        }
+    }
+    
+    private func handleAntibodyColorChange(newValue: Int?) {
+        Task { @MainActor in
+            guard let newValue = newValue,
+                  let antibodyEntity = antibodyEntity else {
+                os_log(.error, "ITR..handleAntibodyColorChange: ❌ Missing newValue or antibodyEntity")
+                return
+            }
+            
+            os_log(.debug, "ITR..handleAntibodyColorChange: Attempting to update color")
+            guard var modelComponent = antibodyEntity.components[ModelComponent.self] else {
+                os_log(.error, "ITR..handleAntibodyColorChange: ❌ No ModelComponent found")
+                return
+            }
+            
+            // Try direct material modification
+            if var material = modelComponent.materials.first as? PhysicallyBasedMaterial {
+                material.baseColor = .init(tint: UIColor.adc[newValue])
+                modelComponent.materials = [material]
+                antibodyEntity.components[ModelComponent.self] = modelComponent
+                os_log(.debug, "ITR..handleAntibodyColorChange: ✅ Updated material directly with color index \(newValue)")
+            } else {
+                os_log(.error, "ITR..handleAntibodyColorChange: ❌ Could not cast to PhysicallyBasedMaterial")
+            }
         }
     }
 }

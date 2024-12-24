@@ -1,0 +1,4 @@
+if you are not sure how to do something, ask the user for the correct way to do it.
+if you do not have an extremely high level of confidence in your answer, ask the user for documentation or reference code.
+never make up an answer.
+never make code changes by random guessing.
