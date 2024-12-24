@@ -24,7 +24,7 @@ def Xform "Root"
             prepend apiSchemas = ["MaterialBindingAPI"]
         )
         {
-            rel material:binding = </Root/M_glow/M_glow> (
+            rel material:binding = </Root/Transform/OuterSphere/M_glow/M_glow> (
                 bindMaterialAs = "weakerThanDescendants"
             )
             double radius = 0.45
@@ -32,6 +32,16 @@ def Xform "Root"
             float3 xformOp:scale = (1, 1, 1)
             float3 xformOp:translate = (0, 0, 0)
             uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            def "M_glow" (
+                active = true
+                references = @M_glow.usda@
+            )
+            {
+                quatf xformOp:orient = (1, 0, 0, 0)
+                float3 xformOp:scale = (50, 50, 50)
+                float3 xformOp:translate = (0, 0, 0)
+            }
         }
 
         def Sphere "InnerSphere" (
@@ -48,20 +58,12 @@ def Xform "Root"
 
             def "M_inner_glow" (
                 active = true
-                prepend references = @M_inner_glow.usda@
+                references = @M_inner_glow.usda@
             )
             {
                 float3 xformOp:scale = (1, 1, 1)
             }
         }
-    }
-
-    def "M_glow" (
-        active = true
-        prepend references = @M_glow.usda@
-    )
-    {
-        float3 xformOp:scale = (1, 1, 1)
     }
 }
 

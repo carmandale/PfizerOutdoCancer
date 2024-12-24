@@ -29,7 +29,18 @@ struct ADCBuilderView: View {
                     }
                     HStack {
                         Spacer()
-                        Text(appModel.immersiveSpaceState == .closed ? "ADC Builder" : "Antibodies")
+                        Text(appModel.immersiveSpaceState == .closed ? "ADC Builder" : {
+                            switch dataModel.adcBuildStep {
+                            case 0:
+                                return "Antibody"
+                            case 1:
+                                return "Antibody + Linker"
+                            case 2:
+                                return "Antibody + Linker + Payload"
+                            default:
+                                return "ADC Ready"
+                            }
+                        }())
                             .font(.largeTitle)
                         Spacer()
                     }

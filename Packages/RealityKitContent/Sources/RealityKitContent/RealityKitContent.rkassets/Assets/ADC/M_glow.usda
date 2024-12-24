@@ -18,6 +18,14 @@ def Xform "Root"
     def Material "M_glow"
     {
         reorder nameChildren = ["UnlitSurface", "ViewDirection", "Normal", "DotProduct", "Range", "glowColor"]
+        color3f inputs:glowColor = (1, 0.80971503, 0.23296414) (
+            colorSpace = "srgb_texture"
+            customData = {
+                dictionary realitykit = {
+                    float2 positionInSubgraph = (-209.59961, -50.98242)
+                }
+            }
+        )
         token outputs:mtlx:surface.connect = </Root/M_glow/UnlitSurface.outputs:out>
         token outputs:realitykit:vertex
         float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (405.0039, 24.082031)
@@ -28,7 +36,7 @@ def Xform "Root"
         {
             uniform token info:id = "ND_realitykit_unlit_surfaceshader"
             bool inputs:applyPostProcessToneMap = 1
-            color3f inputs:color.connect = </Root/M_glow/glowColor.outputs:out>
+            color3f inputs:color.connect = </Root/M_glow.inputs:glowColor>
             bool inputs:hasPremultipliedAlpha
             float inputs:opacity.connect = </Root/M_glow/Range.outputs:out>
             float inputs:opacityThreshold
@@ -82,18 +90,6 @@ def Xform "Root"
             float2 ui:nodegraph:node:pos = (-30.855469, 203.51953)
             float2 ui:nodegraph:node:size = (98, 217)
             int ui:nodegraph:node:stackingOrder = 235
-        }
-
-        def Shader "glowColor"
-        {
-            uniform token info:id = "ND_constant_color3"
-            color3f inputs:value = (1, 0.80971503, 0.23296414) (
-                colorSpace = "srgb_texture"
-            )
-            color3f outputs:out
-            float2 ui:nodegraph:node:pos = (-209.59961, -50.98242)
-            float2 ui:nodegraph:node:size = (151, 53)
-            int ui:nodegraph:node:stackingOrder = 237
         }
     }
 }

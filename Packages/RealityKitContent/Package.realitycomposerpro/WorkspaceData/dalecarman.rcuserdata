@@ -1,7 +1,7 @@
 {
   "advancedEditorSelectedIdentifier" : "ShaderGraphEditorPluginID",
   "openSceneRelativePaths" : [
-    "antibodyScene.usda"
+    "Assets\/ADC\/M_glow.usda"
   ],
   "recentIdentifiers" : {
     "00353439-B084-4161-BDD3-58325B62FD61" : [
@@ -5344,6 +5344,28 @@
     ],
     "A1728E79-0E0E-4FC3-BD0D-65A9BB34AE5F" : [
       {
+        "date" : 756732103.628886,
+        "title" : "Untitled",
+        "transform" : [
+          0.9983929,
+          -1.7278576e-09,
+          0.056672223,
+          0,
+          0.00081610447,
+          0.99989635,
+          -0.014377416,
+          0,
+          -0.05666633,
+          0.014400585,
+          0.9982893,
+          0,
+          0.01362075,
+          0.005993234,
+          0.0868389,
+          1
+        ]
+      },
+      {
         "date" : 755805377.267458,
         "title" : "Untitled",
         "transform" : [
@@ -7708,5 +7730,5 @@
   "sceneViewportBackgroundColors" : {
 
   },
-  "selectedSceneRelativePath" : "antibodyScene.usda"
+  "selectedSceneRelativePath" : "Assets\/ADC\/M_glow.usda"
 }
