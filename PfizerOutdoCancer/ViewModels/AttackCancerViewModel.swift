@@ -44,14 +44,14 @@ final class AttackCancerViewModel {
     var handTracking: HandTrackingViewModel!
     
     // MARK: - Game Stats
-    var maxCancerCells: Int = 3
+    var maxCancerCells: Int = 20
     var cellsDestroyed: Int = 0
     var totalADCsDeployed: Int = 0
     var totalTaps: Int = 0
     var totalHits: Int = 0
     
     // MARK: - Hope Meter
-    let hopeMeterDuration: TimeInterval = 10
+    let hopeMeterDuration: TimeInterval = 30
     var hopeMeterTimeLeft: TimeInterval
     var isHopeMeterRunning = false
     

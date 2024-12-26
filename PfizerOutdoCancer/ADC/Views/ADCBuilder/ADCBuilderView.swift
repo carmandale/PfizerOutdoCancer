@@ -120,14 +120,13 @@ struct ADCBuilderView: View {
             // Move buttons to bottom
             HStack(spacing: 30) {
                 Spacer()
-                ADCStartImmersiveButton()
                 if dataModel.adcBuildStep == 3 {
                     Button {
                         Task {
                             await dacAppModel.transitionToPhase(.playing)
                         }
                     } label: {
-                        Text("Start Game")
+                        Text("Attack Cancer")
                             .font(.headline)
                             .foregroundColor(.white)
                             .frame(width: 300, height: 50)

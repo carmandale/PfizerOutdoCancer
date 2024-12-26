@@ -15,26 +15,33 @@ struct HopeMeterView: View {
     
     var body: some View {
         ZStack {
-            // Background circle
-            Circle()
-                .stroke(lineWidth: lineWidth)
-                .opacity(0.2)
-                .foregroundColor(.gray)
-                .frame(width: 120, height: 120)
-            
-            // Progress circle
-            Circle()
-                .trim(from: 0, to: progress)
-                .stroke(style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
-                .foregroundColor(.blue)
-                .rotationEffect(.degrees(-90))
-                .animation(.linear(duration: 0.5), value: progress)
-                .frame(width: 120, height: 120)
-            
-            // Timer text
-            Text("\(Int(ceil(appModel.gameState.hopeMeterTimeLeft)))")
-                .font(.system(size: fontSize))
-                .foregroundColor(.white)
+            VStack {
+                Text("Hope Meter")
+                    .font(.system(size: fontSize / 4))
+                Spacer()
+                ZStack {
+                    // Background circle
+                    Circle()
+                        .stroke(lineWidth: lineWidth)
+                        .opacity(0.2)
+                        .foregroundColor(.gray)
+                        .frame(width: 120, height: 120)
+                    
+                    // Progress circle
+                    Circle()
+                        .trim(from: 0, to: progress)
+                        .stroke(style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
+                        .foregroundColor(.blue)
+                        .rotationEffect(.degrees(-90))
+                        .animation(.linear(duration: 0.5), value: progress)
+                        .frame(width: 120, height: 120)
+                    
+                    // Timer text
+                    Text("\(Int(ceil(appModel.gameState.hopeMeterTimeLeft)))")
+                        .font(.system(size: fontSize))
+                        .foregroundColor(.white)
+                }
+            }
         }
         .frame(width: 160, height: 160)
         .padding(30)
@@ -51,3 +58,5 @@ struct HopeMeterView: View {
         }
     }
 }
+
+

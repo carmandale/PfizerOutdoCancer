@@ -257,6 +257,10 @@ struct PfizerOutdoCancerApp: App {
                 openWindow(id: AppModel.gameCompletedWindowId)
                 
             case .lab:
+                if appModel.isMainWindowOpen {
+                    dismissWindow(id: AppModel.mainWindowId)
+                    appModel.isMainWindowOpen = false
+                }
                 if !appModel.isLibraryWindowOpen {
                     openWindow(id: AppModel.libraryWindowId)
                     appModel.isLibraryWindowOpen = true
@@ -265,39 +269,35 @@ struct PfizerOutdoCancerApp: App {
                     openWindow(id: AppModel.debugNavigationWindowId)
                     appModel.isDebugWindowOpen = true
                 }
-                if appModel.isMainWindowOpen {
-                    dismissWindow(id: AppModel.mainWindowId)
-                    appModel.isMainWindowOpen = false
-                }
                 
             case .building:
                 // Open ADC window
-                openWindow(id: ADCUIViews.mainViewID)
                 if appModel.isLibraryWindowOpen {
                     dismissWindow(id: AppModel.libraryWindowId)
                     appModel.isLibraryWindowOpen = false
+                }
+                if appModel.isMainWindowOpen {
+                    dismissWindow(id: AppModel.mainWindowId)
+                    appModel.isMainWindowOpen = false
                 }
                 if !appModel.isDebugWindowOpen {
                     openWindow(id: AppModel.debugNavigationWindowId)
                     appModel.isDebugWindowOpen = true
                 }
-                if appModel.isMainWindowOpen {
-                    dismissWindow(id: AppModel.mainWindowId)
-                    appModel.isMainWindowOpen = false
-                }
+                openWindow(id: ADCUIViews.mainViewID)
                 
             default:
                 if appModel.isLibraryWindowOpen {
                     dismissWindow(id: AppModel.libraryWindowId)
                     appModel.isLibraryWindowOpen = false
                 }
-                if !appModel.isDebugWindowOpen {
-                    openWindow(id: AppModel.debugNavigationWindowId)
-                    appModel.isDebugWindowOpen = true
-                }
                 if appModel.isMainWindowOpen {
                     dismissWindow(id: AppModel.mainWindowId)
                     appModel.isMainWindowOpen = false
+                }
+                if !appModel.isDebugWindowOpen {
+                    openWindow(id: AppModel.debugNavigationWindowId)
+                    appModel.isDebugWindowOpen = true
                 }
             }
             

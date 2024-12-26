@@ -1343,6 +1343,18 @@
       [
         "406448A7-0C59-4D68-955C-BBC6143CB9BD",
         "root",
+        "PicturesRoot",
+        "intro",
+        "Portal_and_Lightbeams",
+        "LightBeam_01_005"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "406448A7-0C59-4D68-955C-BBC6143CB9BD",
+        "root",
         "PicturesRoot"
       ],
       {
@@ -2145,6 +2157,15 @@
       [
         "5A285654-8574-4F5E-8283-AB6C523CABE6",
         "Root",
+        "lab"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "5A285654-8574-4F5E-8283-AB6C523CABE6",
+        "Root",
         "people",
         "North",
         "transform12"
@@ -2205,6 +2226,16 @@
         "people",
         "North",
         "transform15"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "5A285654-8574-4F5E-8283-AB6C523CABE6",
+        "Root",
+        "lab",
+        "wall_W"
       ],
       {
         "isExpanded" : true,
@@ -2333,6 +2364,16 @@
         "5A285654-8574-4F5E-8283-AB6C523CABE6",
         "Root",
         "Microscope"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "5A285654-8574-4F5E-8283-AB6C523CABE6",
+        "Root",
+        "lab",
+        "_materials"
       ],
       {
         "isExpanded" : true,

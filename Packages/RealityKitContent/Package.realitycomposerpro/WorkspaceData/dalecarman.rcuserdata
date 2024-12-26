@@ -1,7 +1,7 @@
 {
-  "advancedEditorSelectedIdentifier" : "ShaderGraphEditorPluginID",
+  "advancedEditorSelectedIdentifier" : "ProjectBrowser",
   "openSceneRelativePaths" : [
-    "Assets\/Intro\/sh0100_v01_portal.usdc"
+
   ],
   "recentIdentifiers" : {
     "00353439-B084-4161-BDD3-58325B62FD61" : [
@@ -3105,6 +3105,28 @@
     ],
     "5A285654-8574-4F5E-8283-AB6C523CABE6" : [
       {
+        "date" : 756922053.858186,
+        "title" : "Untitled",
+        "transform" : [
+          0.99496454,
+          5.671262e-09,
+          -0.10022817,
+          0,
+          -0.034155488,
+          0.94014406,
+          -0.33906123,
+          0,
+          0.09422891,
+          0.34077713,
+          0.93540996,
+          0,
+          1.1735758,
+          7.3329806,
+          13.488967,
+          1
+        ]
+      },
+      {
         "date" : 756400906.527218,
         "title" : "Untitled",
         "transform" : [
@@ -3299,28 +3321,6 @@
           -0.60015714,
           1.794371,
           0.7560867,
-          1
-        ]
-      },
-      {
-        "date" : 756334053.515478,
-        "title" : "Untitled",
-        "transform" : [
-          -0.9728037,
-          1.042998e-05,
-          0.23163119,
-          0,
-          0.067417696,
-          0.95671874,
-          0.28309748,
-          0,
-          -0.22160293,
-          0.29101428,
-          -0.9307002,
-          0,
-          -0.5256298,
-          2.8519785,
-          1.0690389,
           1
         ]
       }
@@ -7954,6 +7954,5 @@
   },
   "sceneViewportBackgroundColors" : {
 
-  },
-  "selectedSceneRelativePath" : "Assets\/Intro\/sh0100_v01_portal.usdc"
+  }
 }
