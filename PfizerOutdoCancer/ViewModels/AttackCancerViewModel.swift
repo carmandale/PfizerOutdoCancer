@@ -1,6 +1,7 @@
 import SwiftUI
 import RealityKit
 import RealityKitContent
+import Combine
 
 @Observable
 @MainActor
@@ -36,7 +37,7 @@ final class AttackCancerViewModel {
     var handTrackedEntity: Entity?
     
     // Store subscription to prevent deallocation
-    internal var subscription: EventSubscription?
+    internal var subscription: Cancellable?
     
     // Dependencies
     var appModel: AppModel!
@@ -103,7 +104,7 @@ final class AttackCancerViewModel {
         print("\n=== Validating Cell Alignment ===")
         for (index, parameters) in cellParameters.enumerated() {
             // Validate cellID matches index
-            assert(parameters.cellID == index, "Cell parameter ID mismatch: expected \(index), got \(parameters.cellID)")
+            assert(parameters.cellID == index, "Cell parameter ID mismatch: expected \(index), got \(String(describing: parameters.cellID))")
             
             // Validate entity exists and has matching state
             guard let cell = findCancerCell(withID: index),

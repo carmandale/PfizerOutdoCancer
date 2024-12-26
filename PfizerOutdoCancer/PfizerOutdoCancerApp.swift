@@ -19,23 +19,23 @@ struct PfizerOutdoCancerApp: App {
         
         @Environment(\.openImmersiveSpace) private var openImmersiveSpace
         @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
-        @Environment(\.dismissWindow) private var dismissWindow
         @Environment(\.openWindow) private var openWindow
+        @Environment(\.dismissWindow) private var dismissWindow
         @Environment(\.scenePhase) private var scenePhase
         
         
         var body: some Scene {
             // MARK: - 2D LOADING WINDOW
-                    WindowGroup(id: AppModel.mainWindowId) {
-                        LoadingView()
-                            .environment(appModel)
-                            .task {
-                                await appModel.startLoading()
-                            }
+            WindowGroup(id: AppModel.mainWindowId) {
+                LoadingView()
+                    .environment(appModel)
+                    .task {
+                        await appModel.startLoading()
                     }
-                    .defaultSize(CGSize(width: 800, height: 600))
-                    .windowStyle(.plain)
-                    .windowResizability(.contentSize)
+            }
+            .defaultSize(CGSize(width: 800, height: 600))
+            .windowStyle(.plain)
+            .windowResizability(.contentSize)
 
             WindowGroup(id: AppModel.debugNavigationWindowId) {
                 DebugNavigationWindow()
@@ -119,6 +119,10 @@ struct PfizerOutdoCancerApp: App {
                         if newPhase.needsImmersiveSpace && !newPhase.shouldKeepPreviousSpace {
                             let spaceId = newPhase.spaceId
                             try? await Task.sleep(for: .seconds(0.3))
+
+                            print("📱 Before dismissing main window - isMainWindowOpen: \(appModel.isMainWindowOpen)")
+                            dismissWindow(id: AppModel.mainWindowId)
+                            print("📱 After dismissing main window - isMainWindowOpen: \(appModel.isMainWindowOpen)")
                             
                             switch await openImmersiveSpace(id: spaceId) {
                             case .opened:
@@ -218,6 +222,10 @@ struct PfizerOutdoCancerApp: App {
                     dismissWindow(id: AppModel.libraryWindowId)
                     appModel.isLibraryWindowOpen = false
                 }
+                if appModel.isMainWindowOpen {
+                    dismissWindow(id: AppModel.mainWindowId)
+                    appModel.isMainWindowOpen = false
+                }
                 if !appModel.isDebugWindowOpen {
                     openWindow(id: AppModel.debugNavigationWindowId)
                     appModel.isDebugWindowOpen = true
@@ -272,6 +280,10 @@ struct PfizerOutdoCancerApp: App {
                 if !appModel.isDebugWindowOpen {
                     openWindow(id: AppModel.debugNavigationWindowId)
                     appModel.isDebugWindowOpen = true
+                }
+                if appModel.isMainWindowOpen {
+                    dismissWindow(id: AppModel.mainWindowId)
+                    appModel.isMainWindowOpen = false
                 }
                 
             default:

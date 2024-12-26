@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSHandsTrackingUsageDescription</key>
+	<string>Hand tracking is required to spawn ADCs from your hand position</string>
+	<key>NSWorldSensingUsageDescription</key>
+	<string>We need to track your head position to enable interaction with the microscope.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationPreferredDefaultSceneSessionRole</key>
@@ -19,9 +23,5 @@
 			</array>
 		</dict>
 	</dict>
-	<key>NSWorldSensingUsageDescription</key>
-	<string>We need to track your head position to enable interaction with the microscope.</string>
-	<key>NSHandsTrackingUsageDescription</key>
-	<string>Hand tracking is required to spawn ADCs from your hand position</string>
 </dict>
 </plist>

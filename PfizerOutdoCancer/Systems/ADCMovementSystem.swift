@@ -268,8 +268,8 @@ public class ADCMovementSystem: System {
                     // Calculate banking parameters
                     let flatTangent = SIMD3<Float>(tangent.x, 0, tangent.z)
                     let normalizedFlatTangent = normalize(flatTangent)
-                    let crossProduct = cross(normalizedFlatTangent, tangent)
-                    let verticalComponent = abs(tangent.y)
+                    _ = cross(normalizedFlatTangent, tangent)
+                    _ = abs(tangent.y)
                     
 //                    print("🔄 Rotation State:")
 //                    print("Position: (\(String(format: "%.2f, %.2f, %.2f", position.x, position.y, position.z)))")

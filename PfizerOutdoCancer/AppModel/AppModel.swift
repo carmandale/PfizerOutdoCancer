@@ -68,8 +68,8 @@ final class AppModel {
     var isDebugWindowOpen = false
     var isLibraryWindowOpen = false
     var isIntroWindowOpen = false
-    var isMainWindowOpen = true
-    var isLoadingWindowOpen = true
+    var isMainWindowOpen = false
+    var isLoadingWindowOpen = false
 
     // MARK: - Immersion Style
     var introStyle: ImmersionStyle = .mixed

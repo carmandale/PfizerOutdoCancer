@@ -37,13 +37,13 @@ def Xform "Root"
             uniform token info:id = "ND_realitykit_unlit_surfaceshader"
             bool inputs:applyPostProcessToneMap = 1
             color3f inputs:color.connect = </Root/M_glow.inputs:glowColor>
-            bool inputs:hasPremultipliedAlpha
+            bool inputs:hasPremultipliedAlpha = 0
             float inputs:opacity.connect = </Root/M_glow/Range.outputs:out>
             float inputs:opacityThreshold
             token outputs:out
             float2 ui:nodegraph:node:pos = (166.88281, 44.39453)
             float2 ui:nodegraph:node:size = (194.5, 181)
-            int ui:nodegraph:node:stackingOrder = 235
+            int ui:nodegraph:node:stackingOrder = 239
         }
 
         def Shader "ViewDirection"

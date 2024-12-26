@@ -24,207 +24,215 @@ def Xform "Root"
                 dictionary realitykit = {
                     float2 positionInSubgraph = (-867.4375, 112.02344)
                     float2 sizeInSubgraph = (122, 53)
-                    int stackingOrderInSubgraph = 381
+                    int stackingOrderInSubgraph = 751
                 }
             }
         )
-        token outputs:mtlx:surface.connect = </Root/JetMaterial/UnlitSurface.outputs:out>
+        token outputs:mtlx:surface.connect = </Root/JetMaterial/jetNodeGraph.outputs:UnlitSurface_out>
         token outputs:realitykit:vertex
-        float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (299.25, 99.5)
+        float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (332.77643, 98.06927)
         float2 ui:nodegraph:realitykit:subgraphOutputs:size = (181.5, 99)
-        int ui:nodegraph:realitykit:subgraphOutputs:stackingOrder = 334
+        int ui:nodegraph:realitykit:subgraphOutputs:stackingOrder = 382
 
-        def Shader "UnlitSurface"
+        def NodeGraph "jetNodeGraph"
         {
-            uniform token info:id = "ND_realitykit_unlit_surfaceshader"
-            bool inputs:applyPostProcessToneMap = 0
-            color3f inputs:color.connect = </Root/JetMaterial/Ramptb.outputs:out>
-            bool inputs:hasPremultipliedAlpha = 0
-            float inputs:opacity.connect = </Root/JetMaterial/Add.outputs:out>
-            float inputs:opacityThreshold
-            token outputs:out
-            float2 ui:nodegraph:node:pos = (31.292969, 81.22266)
-            float2 ui:nodegraph:node:size = (194.5, 181)
-            int ui:nodegraph:node:stackingOrder = 335
-        }
+            prepend float inputs:Remap_inlow.connect = </Root/JetMaterial.inputs:Intensity>
+            token outputs:UnlitSurface_out.connect = </Root/JetMaterial/jetNodeGraph/UnlitSurface.outputs:out>
+            float2 ui:nodegraph:node:pos = (-295.20007, 6.4769835)
+            int ui:nodegraph:node:stackingOrder = 2
 
-        def Shader "Texcoord"
-        {
-            uniform token info:id = "ND_texcoord_vector2"
-            float2 outputs:out
-            float2 ui:nodegraph:node:pos = (-1077.5223, 54.516205)
-            float2 ui:nodegraph:node:size = (180.5, 53)
-            int ui:nodegraph:node:stackingOrder = 378
-        }
-
-        def Shader "Extract"
-        {
-            uniform token info:id = "ND_extract_vector2"
-            float2 inputs:in.connect = </Root/JetMaterial/Texcoord.outputs:out>
-            int inputs:index = 1
-            float outputs:out
-            float2 ui:nodegraph:node:pos = (-856.1758, 52.597656)
-            float2 ui:nodegraph:node:size = (129.5, 40)
-            int ui:nodegraph:node:stackingOrder = 379
-        }
-
-        def Shader "Remap"
-        {
-            uniform token info:id = "ND_remap_float"
-            float inputs:in.connect = </Root/JetMaterial/Extract.outputs:out>
-            float inputs:inhigh = 0
-            float inputs:inlow = 0.574
-            float inputs:inlow.connect = </Root/JetMaterial.inputs:Intensity>
-            float inputs:outhigh = 1
-            float inputs:outlow
-            float outputs:out
-            float2 ui:nodegraph:node:pos = (-726.2031, 129.19531)
-            float2 ui:nodegraph:node:size = (94, 181)
-            int ui:nodegraph:node:stackingOrder = 49
-        }
-
-        def Shader "Ramptb" (
-            references = None
-        )
-        {
-            uniform token info:id = "ND_ramptb_color3"
-            float2 inputs:texcoord.connect = </Root/JetMaterial/Combine2.outputs:out>
-            color3f inputs:valueb = (0.37728855, 0.45849583, 1) (
-                colorSpace = "srgb_displayp3"
+            def Shader "Ramptb" (
+                references = None
             )
-            color3f inputs:valuet = (0.53382623, 0.94589096, 1) (
-                colorSpace = "srgb_displayp3"
-            )
-            color3f outputs:out
-            float2 ui:nodegraph:node:pos = (-287.78125, -88.265625)
-            float2 ui:nodegraph:node:size = (148.5, 145)
-            int ui:nodegraph:node:stackingOrder = 380
-        }
+            {
+                uniform token info:id = "ND_ramptb_color3"
+                float2 inputs:texcoord.connect = </Root/JetMaterial/jetNodeGraph/Combine2.outputs:out>
+                color3f inputs:valueb = (0.37728855, 0.45849583, 1) (
+                    colorSpace = "srgb_displayp3"
+                )
+                color3f inputs:valuet = (0.53382623, 0.94589096, 1) (
+                    colorSpace = "srgb_displayp3"
+                )
+                color3f outputs:out
+                float2 ui:nodegraph:node:pos = (-287.78125, -88.265625)
+                float2 ui:nodegraph:node:size = (148.5, 145)
+                int ui:nodegraph:node:stackingOrder = 751
+            }
 
-        def Shader "Constant"
-        {
-            uniform token info:id = "ND_constant_vector2"
-            float2 inputs:value = (0, 0)
-            float2 outputs:out
-            float2 ui:nodegraph:node:pos = (-394.02344, 138.01562)
-            float2 ui:nodegraph:node:size = (154, 53)
-            int ui:nodegraph:node:stackingOrder = 288
-            string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["inputs:value"]
-        }
+            def Shader "Multiply"
+            {
+                uniform token info:id = "ND_multiply_vector3"
+                float3 inputs:in1.connect = </Root/JetMaterial/jetNodeGraph/Add_1.outputs:out>
+                float3 inputs:in2 = (1, 20, 5)
+                float3 outputs:out
+                float2 ui:nodegraph:node:pos = (-889.4844, -272.23828)
+                float2 ui:nodegraph:node:size = (60, 36)
+                int ui:nodegraph:node:stackingOrder = 751
+            }
 
-        def Shader "Combine2"
-        {
-            uniform token info:id = "ND_combine2_vector2"
-            float inputs:in1
-            float inputs:in2.connect = </Root/JetMaterial/Add.outputs:out>
-            float2 outputs:out
-            float2 ui:nodegraph:node:pos = (-467.15234, -53.66797)
-            float2 ui:nodegraph:node:size = (144.5, 53)
-            int ui:nodegraph:node:stackingOrder = 319
-        }
+            def Shader "Flicker_Intensity"
+            {
+                uniform token info:id = "ND_constant_float"
+                float inputs:value = 0.435
+                float outputs:out
+                float2 ui:nodegraph:node:pos = (-739.7344, -180.09766)
+                float2 ui:nodegraph:node:size = (187.5, 53)
+                int ui:nodegraph:node:stackingOrder = 751
+            }
 
-        def Shader "Noise2D"
-        {
-            uniform token info:id = "ND_noise2d_float"
-            float inputs:amplitude
-            float inputs:pivot
-            float2 inputs:texcoord
-            float outputs:out
-            float2 ui:nodegraph:node:pos = (-1002.77344, -75.55469)
-            float2 ui:nodegraph:node:size = (148.5, 145)
-            int ui:nodegraph:node:stackingOrder = 329
-        }
+            def Shader "Texcoord"
+            {
+                uniform token info:id = "ND_texcoord_vector2"
+                float2 outputs:out
+                float2 ui:nodegraph:node:pos = (-1077.5223, 54.516205)
+                float2 ui:nodegraph:node:size = (180.5, 53)
+                int ui:nodegraph:node:stackingOrder = 751
+            }
 
-        def Shader "Add"
-        {
-            uniform token info:id = "ND_add_float"
-            float inputs:in1.connect = </Root/JetMaterial/Multiply_1.outputs:out>
-            float inputs:in2.connect = </Root/JetMaterial/Remap.outputs:out>
-            float outputs:out
-            float2 ui:nodegraph:node:pos = (-601.4922, 3.9023438)
-            float2 ui:nodegraph:node:size = (61.5, 36.5)
-            int ui:nodegraph:node:stackingOrder = 320
-        }
+            def Shader "Remap"
+            {
+                uniform token info:id = "ND_remap_float"
+                float inputs:in.connect = </Root/JetMaterial/jetNodeGraph/Extract.outputs:out>
+                float inputs:inhigh = 0
+                float inputs:inlow = 0.574
+                float inputs:inlow.connect = </Root/JetMaterial/jetNodeGraph.inputs:Remap_inlow>
+                float inputs:outhigh = 1
+                float inputs:outlow
+                float outputs:out
+                float2 ui:nodegraph:node:pos = (-726.2031, 129.19531)
+                float2 ui:nodegraph:node:size = (94, 181)
+                int ui:nodegraph:node:stackingOrder = 751
+            }
 
-        def Shader "TriplanarProjection"
-        {
-            uniform token info:id = "ND_triplanarprojection_float"
-            float2 ui:nodegraph:node:pos = (-1298.1562, -172.91406)
-            float2 ui:nodegraph:node:size = (170, 217)
-            int ui:nodegraph:node:stackingOrder = 311
-        }
+            def Shader "Noise2D"
+            {
+                uniform token info:id = "ND_noise2d_float"
+                float inputs:amplitude
+                float inputs:pivot
+                float2 inputs:texcoord
+                float outputs:out
+                float2 ui:nodegraph:node:pos = (-1002.77344, -75.55469)
+                float2 ui:nodegraph:node:size = (148.5, 145)
+                int ui:nodegraph:node:stackingOrder = 751
+            }
 
-        def Shader "Position"
-        {
-            uniform token info:id = "ND_position_vector3"
-            float3 outputs:out
-            float2 ui:nodegraph:node:pos = (-997.03125, -383.8789)
-            float2 ui:nodegraph:node:size = (133.5, 40)
-            int ui:nodegraph:node:stackingOrder = 302
-        }
+            def Shader "Noise3D"
+            {
+                uniform token info:id = "ND_noise3d_float"
+                float inputs:amplitude
+                float3 inputs:position.connect = </Root/JetMaterial/jetNodeGraph/Multiply.outputs:out>
+                float outputs:out
+                float2 ui:nodegraph:node:pos = (-752.85547, -302.0547)
+                float2 ui:nodegraph:node:size = (105, 145)
+                int ui:nodegraph:node:stackingOrder = 751
+            }
 
-        def Shader "Noise3D"
-        {
-            uniform token info:id = "ND_noise3d_float"
-            float inputs:amplitude
-            float3 inputs:position.connect = </Root/JetMaterial/Multiply.outputs:out>
-            float outputs:out
-            float2 ui:nodegraph:node:pos = (-752.85547, -302.0547)
-            float2 ui:nodegraph:node:size = (105, 145)
-            int ui:nodegraph:node:stackingOrder = 338
-        }
+            def Shader "Add"
+            {
+                uniform token info:id = "ND_add_float"
+                float inputs:in1.connect = </Root/JetMaterial/jetNodeGraph/Multiply_1.outputs:out>
+                float inputs:in2.connect = </Root/JetMaterial/jetNodeGraph/Remap.outputs:out>
+                float outputs:out
+                float2 ui:nodegraph:node:pos = (-601.4922, 3.9023438)
+                float2 ui:nodegraph:node:size = (61.5, 36.5)
+                int ui:nodegraph:node:stackingOrder = 751
+            }
 
-        def Shader "Multiply"
-        {
-            uniform token info:id = "ND_multiply_vector3"
-            float3 inputs:in1.connect = </Root/JetMaterial/Add_1.outputs:out>
-            float3 inputs:in2 = (1, 20, 5)
-            float3 outputs:out
-            float2 ui:nodegraph:node:pos = (-889.4844, -272.23828)
-            float2 ui:nodegraph:node:size = (60, 36)
-            int ui:nodegraph:node:stackingOrder = 374
-        }
+            def Shader "Position"
+            {
+                uniform token info:id = "ND_position_vector3"
+                float3 outputs:out
+                float2 ui:nodegraph:node:pos = (-997.03125, -383.8789)
+                float2 ui:nodegraph:node:size = (133.5, 40)
+                int ui:nodegraph:node:stackingOrder = 751
+            }
 
-        def Shader "Multiply_1"
-        {
-            uniform token info:id = "ND_multiply_float"
-            float inputs:in1.connect = </Root/JetMaterial/Noise3D.outputs:out>
-            float inputs:in2 = 0.295
-            float inputs:in2.connect = </Root/JetMaterial/Flicker_Intensity.outputs:out>
-            float outputs:out
-            float2 ui:nodegraph:node:pos = (-569.2422, -204.16797)
-            float2 ui:nodegraph:node:size = (60, 36)
-            int ui:nodegraph:node:stackingOrder = 340
-        }
+            def Shader "Combine2"
+            {
+                uniform token info:id = "ND_combine2_vector2"
+                float inputs:in1
+                float inputs:in2.connect = </Root/JetMaterial/jetNodeGraph/Add.outputs:out>
+                float2 outputs:out
+                float2 ui:nodegraph:node:pos = (-467.15234, -53.66797)
+                float2 ui:nodegraph:node:size = (144.5, 53)
+                int ui:nodegraph:node:stackingOrder = 751
+            }
 
-        def Shader "Time"
-        {
-            uniform token info:id = "ND_time_float"
-            float outputs:out
-            float2 ui:nodegraph:node:pos = (-1078.7812, -320.22656)
-            float2 ui:nodegraph:node:size = (122.5, 53)
-            int ui:nodegraph:node:stackingOrder = 313
-        }
+            def Shader "TriplanarProjection"
+            {
+                uniform token info:id = "ND_triplanarprojection_float"
+                float2 ui:nodegraph:node:pos = (-1263.7006, -157.42671)
+                float2 ui:nodegraph:node:size = (170, 217)
+                int ui:nodegraph:node:stackingOrder = 751
+            }
 
-        def Shader "Add_1"
-        {
-            uniform token info:id = "ND_add_vector3FA"
-            prepend float3 inputs:in1.connect = </Root/JetMaterial/Position.outputs:out>
-            float inputs:in2.connect = </Root/JetMaterial/Time.outputs:out>
-            float3 outputs:out
-            float2 ui:nodegraph:node:pos = (-931.65234, -330.1328)
-            float2 ui:nodegraph:node:size = (61.5, 36.5)
-            int ui:nodegraph:node:stackingOrder = 308
-        }
+            def Shader "Multiply_1"
+            {
+                uniform token info:id = "ND_multiply_float"
+                float inputs:in1.connect = </Root/JetMaterial/jetNodeGraph/Noise3D.outputs:out>
+                float inputs:in2 = 0.295
+                float inputs:in2.connect = </Root/JetMaterial/jetNodeGraph/Flicker_Intensity.outputs:out>
+                float outputs:out
+                float2 ui:nodegraph:node:pos = (-569.2422, -204.16797)
+                float2 ui:nodegraph:node:size = (60, 36)
+                int ui:nodegraph:node:stackingOrder = 751
+            }
 
-        def Shader "Flicker_Intensity"
-        {
-            uniform token info:id = "ND_constant_float"
-            float inputs:value = 0.435
-            float outputs:out
-            float2 ui:nodegraph:node:pos = (-739.7344, -180.09766)
-            float2 ui:nodegraph:node:size = (187.5, 53)
-            int ui:nodegraph:node:stackingOrder = 341
+            def Shader "UnlitSurface"
+            {
+                uniform token info:id = "ND_realitykit_unlit_surfaceshader"
+                bool inputs:applyPostProcessToneMap = 0
+                color3f inputs:color.connect = </Root/JetMaterial/jetNodeGraph/Ramptb.outputs:out>
+                bool inputs:hasPremultipliedAlpha = 0
+                float inputs:opacity.connect = </Root/JetMaterial/jetNodeGraph/Add.outputs:out>
+                float inputs:opacityThreshold
+                token outputs:out
+                float2 ui:nodegraph:node:pos = (93.52263, 88.848335)
+                float2 ui:nodegraph:node:size = (194.5, 181)
+                int ui:nodegraph:node:stackingOrder = 751
+            }
+
+            def Shader "Constant"
+            {
+                uniform token info:id = "ND_constant_vector2"
+                float2 inputs:value = (0, 0)
+                float2 outputs:out
+                float2 ui:nodegraph:node:pos = (-394.02344, 138.01562)
+                float2 ui:nodegraph:node:size = (154, 53)
+                int ui:nodegraph:node:stackingOrder = 751
+                string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["inputs:value"]
+            }
+
+            def Shader "Extract"
+            {
+                uniform token info:id = "ND_extract_vector2"
+                float2 inputs:in.connect = </Root/JetMaterial/jetNodeGraph/Texcoord.outputs:out>
+                int inputs:index = 1
+                float outputs:out
+                float2 ui:nodegraph:node:pos = (-856.1758, 52.597656)
+                float2 ui:nodegraph:node:size = (129.5, 40)
+                int ui:nodegraph:node:stackingOrder = 751
+            }
+
+            def Shader "Add_1"
+            {
+                uniform token info:id = "ND_add_vector3FA"
+                float3 inputs:in1.connect = </Root/JetMaterial/jetNodeGraph/Position.outputs:out>
+                float inputs:in2.connect = </Root/JetMaterial/jetNodeGraph/Time.outputs:out>
+                float3 outputs:out
+                float2 ui:nodegraph:node:pos = (-931.65234, -330.1328)
+                float2 ui:nodegraph:node:size = (61.5, 36.5)
+                int ui:nodegraph:node:stackingOrder = 751
+            }
+
+            def Shader "Time"
+            {
+                uniform token info:id = "ND_time_float"
+                float outputs:out
+                float2 ui:nodegraph:node:pos = (-1078.7812, -320.22656)
+                float2 ui:nodegraph:node:size = (122.5, 53)
+                int ui:nodegraph:node:stackingOrder = 751
+            }
         }
     }
 }

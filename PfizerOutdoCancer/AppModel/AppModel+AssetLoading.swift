@@ -43,6 +43,7 @@ extension AppModel {
                     
                     // Update state and trigger phase transition
                     loadingState = .completed
+                    print("loadingState: \(loadingState)")
                     await transitionToPhase(.intro)
                     
                 } catch {

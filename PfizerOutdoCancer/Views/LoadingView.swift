@@ -2,7 +2,7 @@ import SwiftUI
 
 struct LoadingView: View {
     @Environment(AppModel.self) private var appModel
-    @Environment(\.dismiss) private var dismiss
+    @Environment(\.dismissWindow) private var dismissWindow
 
     var body: some View {
         Group {
@@ -30,6 +30,15 @@ struct LoadingView: View {
                         .padding()
                 }
                 .frame(width: 800, height: 600)
+                .onChange(of: appModel.loadingState) {
+                    print("Loading state changed")
+                    print("Loading progress: \(appModel.loadingProgress)")
+                    print("Loading state: \(appModel.loadingState)")
+                    dismissWindow()
+                }
+                .onDisappear {
+                    print("🚨 LoadingView disappeared")
+                }
             }
         }
     }

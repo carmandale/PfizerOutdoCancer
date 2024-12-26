@@ -38,10 +38,12 @@ struct ADCBuilderView: View {
                             case 2:
                                 return "Antibody + Linker + Payload"
                             default:
-                                return "ADC Ready"
+                                return "Your ADC is ready"
                             }
                         }())
                             .font(.largeTitle)
+                            .transition(.opacity.combined(with: .move(edge: .top)))
+                            .animation(.easeInOut(duration: 0.3), value: dataModel.adcBuildStep)
                         Spacer()
                     }
                 }

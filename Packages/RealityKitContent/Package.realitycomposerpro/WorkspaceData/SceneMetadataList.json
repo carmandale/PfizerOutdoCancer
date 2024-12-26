@@ -1292,29 +1292,58 @@
     "objectMetadataList" : [
       [
         "406448A7-0C59-4D68-955C-BBC6143CB9BD",
-        "root"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "406448A7-0C59-4D68-955C-BBC6143CB9BD",
-        "root",
-        "PicturesRoot",
-        "intro",
-        "Portal_and_Lightbeams",
-        "LightBeam_01_001"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "406448A7-0C59-4D68-955C-BBC6143CB9BD",
         "root",
         "PicturesRoot",
         "intro"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "406448A7-0C59-4D68-955C-BBC6143CB9BD",
+        "root",
+        "LightBeam"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "406448A7-0C59-4D68-955C-BBC6143CB9BD",
+        "root",
+        "LightBeam",
+        "faster"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "406448A7-0C59-4D68-955C-BBC6143CB9BD",
+        "root",
+        "M_jet",
+        "JetMaterial"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "406448A7-0C59-4D68-955C-BBC6143CB9BD",
+        "root",
+        "M_jet",
+        "JetMaterial",
+        "jetNodeGraph"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "406448A7-0C59-4D68-955C-BBC6143CB9BD",
+        "root",
+        "PicturesRoot"
       ],
       {
         "isExpanded" : true,
@@ -1333,8 +1362,7 @@
       },
       [
         "406448A7-0C59-4D68-955C-BBC6143CB9BD",
-        "root",
-        "PicturesRoot"
+        "root"
       ],
       {
         "isExpanded" : true,
@@ -4460,6 +4488,37 @@
       [
         "83842D5C-198A-4726-B5EE-0B6435583B6A",
         "root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      }
+    ]
+  },
+  "86B0E0A1-EF58-441F-9D7F-B8CF97B8CC1D" : {
+    "objectMetadataList" : [
+      [
+        "86B0E0A1-EF58-441F-9D7F-B8CF97B8CC1D",
+        "Root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "86B0E0A1-EF58-441F-9D7F-B8CF97B8CC1D",
+        "Root",
+        "JetMaterial"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "86B0E0A1-EF58-441F-9D7F-B8CF97B8CC1D",
+        "Root",
+        "JetMaterial",
+        "jetNodeGraph"
       ],
       {
         "isExpanded" : true,
@@ -7624,7 +7683,26 @@
       [
         "E20D5996-7725-4901-B06A-2060E4682C8B",
         "Root",
+        "sh0100_v01_portal"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "E20D5996-7725-4901-B06A-2060E4682C8B",
+        "Root",
         "M_Spatial"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "E20D5996-7725-4901-B06A-2060E4682C8B",
+        "Root",
+        "sh0100_v01_portal",
+        "LightBeam"
       ],
       {
         "isExpanded" : true,
@@ -8078,6 +8156,30 @@
       [
         "F6823F79-E131-4D71-A30C-A15953CF49EC",
         "Root",
+        "antibodyProtein_complex_assembled",
+        "antibodyProtein_complex_base"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "F6823F79-E131-4D71-A30C-A15953CF49EC",
+        "Root",
+        "antibodyProtein_complex_assembled",
+        "antibodyProtein_complex_base",
+        "ADC_complex_001",
+        "linker02_offset",
+        "payload02_xform",
+        "payload"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "F6823F79-E131-4D71-A30C-A15953CF49EC",
+        "Root",
         "targetLinker"
       ],
       {
@@ -8111,8 +8213,85 @@
       [
         "F6823F79-E131-4D71-A30C-A15953CF49EC",
         "Root",
+        "antibodyProtein_complex_assembled",
+        "antibodyProtein_complex_base",
+        "ADC_complex_001",
+        "linker02_offset"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "F6823F79-E131-4D71-A30C-A15953CF49EC",
+        "Root",
         "targetLinker",
         "linkerMesh_001"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "F6823F79-E131-4D71-A30C-A15953CF49EC",
+        "Root",
+        "antibodyProtein_complex_assembled",
+        "antibodyProtein_complex_base",
+        "ADC_complex_001",
+        "linker02_offset",
+        "payload02_xform",
+        "payload",
+        "Transform"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "F6823F79-E131-4D71-A30C-A15953CF49EC",
+        "Root",
+        "antibodyProtein_complex_assembled",
+        "antibodyProtein_complex_base",
+        "ADC_complex_001",
+        "linker02_offset",
+        "payload02_xform",
+        "payload",
+        "Transform",
+        "OuterSphere"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "F6823F79-E131-4D71-A30C-A15953CF49EC",
+        "Root",
+        "antibodyProtein_complex_assembled",
+        "antibodyProtein_complex_base",
+        "ADC_complex_001",
+        "linker02_offset",
+        "payload02_xform",
+        "payload",
+        "Transform",
+        "OuterSphere",
+        "M_glow"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "F6823F79-E131-4D71-A30C-A15953CF49EC",
+        "Root",
+        "antibodyProtein_complex_assembled",
+        "antibodyProtein_complex_base",
+        "ADC_complex_001",
+        "linker02_offset",
+        "payload02_xform",
+        "payload",
+        "Transform",
+        "InnerSphere",
+        "M_inner_glow"
       ],
       {
         "isExpanded" : true,
@@ -8132,7 +8311,74 @@
       [
         "F6823F79-E131-4D71-A30C-A15953CF49EC",
         "Root",
+        "antibodyProtein_complex_assembled",
+        "antibodyProtein_complex_base",
+        "ADC_complex_001",
+        "linker02_offset",
+        "payload02_xform"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "F6823F79-E131-4D71-A30C-A15953CF49EC",
+        "Root",
+        "antibodyProtein_complex_assembled",
+        "antibodyProtein_complex_base",
+        "ADC_complex_001",
+        "linker02_offset",
+        "payload02_xform",
+        "payload",
+        "Transform",
+        "OuterSphere",
+        "M_glow",
+        "M_glow"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "F6823F79-E131-4D71-A30C-A15953CF49EC",
+        "Root",
         "targetPayload"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "F6823F79-E131-4D71-A30C-A15953CF49EC",
+        "Root",
+        "antibodyProtein_complex_assembled",
+        "antibodyProtein_complex_base",
+        "ADC_complex_001",
+        "linker02_offset",
+        "payload02_xform",
+        "payload",
+        "Transform",
+        "InnerSphere"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "F6823F79-E131-4D71-A30C-A15953CF49EC",
+        "Root",
+        "antibodyProtein_complex_assembled",
+        "antibodyProtein_complex_base",
+        "ADC_complex_001"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "F6823F79-E131-4D71-A30C-A15953CF49EC",
+        "Root",
+        "antibodyProtein_complex_assembled"
       ],
       {
         "isExpanded" : true,

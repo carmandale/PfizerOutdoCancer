@@ -137,7 +137,7 @@ struct AttackCancerView: View {
             print("Setting up attachment \(i)")
             if let meter = attachments.entity(for: "\(i)") {
                 print("✅ Found meter entity for \(i)")
-                if let cell = root.findEntity(named: "cancer_cell_\(i)") {
+                if root.findEntity(named: "cancer_cell_\(i)") != nil {
                     print("✅ Found cancer cell \(i)")
                     root.addChild(meter)
                     meter.components[UIAttachmentComponent.self] = UIAttachmentComponent(attachmentID: i)

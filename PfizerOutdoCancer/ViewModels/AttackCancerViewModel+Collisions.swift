@@ -25,11 +25,11 @@ extension AttackCancerViewModel {
     func setupCollisionSubscription() {
         guard let scene = scene else { return }
         
-        // Store the AnyCancellable subscription
+        // Store the SceneEventSubscription
         subscription = scene.subscribe(to: CollisionEvents.Began.self) { [weak self] event in
             guard let self = self else { return }
             self.handleCollisionBegan(event)
-        } as? EventSubscription
+        }
     }
     
     // MARK: - Collision Handling
