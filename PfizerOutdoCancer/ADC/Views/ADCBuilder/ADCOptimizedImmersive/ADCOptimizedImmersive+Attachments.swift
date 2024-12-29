@@ -138,6 +138,7 @@ extension ADCOptimizedImmersive {
         if let viewAttachment = attachments.entity(for: ADCUIAttachments.mainADCView) {
             viewAttachment.name = ADCUIAttachments.mainADCView
             viewAttachment.scale = SIMD3<Float>(0.6, 0.6, 0.6)
+            // viewAttachment.components[BillboardComponent.self] = BillboardComponent()
             mainViewEntity.addChild(viewAttachment)
         }
     }

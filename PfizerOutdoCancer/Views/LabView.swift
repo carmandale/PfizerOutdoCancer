@@ -43,6 +43,17 @@ struct LabView: View {
                 
                 root.addChild(labEnvironment)
                 
+                // Load lab environment audio
+//                print("Loading Lab Audio")
+//                guard let labAudioScene = await
+//                        appModel.assetLoadingManager.loadEntity(named: "LabAudio") else {
+//                    print("Failed to load LabAudio")
+//                    return
+//                }
+//                root.addChild(labAudioScene)
+                
+                
+                
                 
                 // Create head anchor for one-time positioning
                 // let headAnchor = headTracker.getInitialHeadAnchor()
@@ -117,6 +128,9 @@ struct LabView: View {
         }
 //        .installGestures()
         .task {
+        }
+        .onAppear {
+            dismissWindow(id: AppModel.debugNavigationWindowId)
         }
     }
 }

@@ -90,9 +90,9 @@ final class AssetLoadingManager {
 //               loadLabEnvironmentAssets(group: &group, taskCount: &totalAssets)
 //               loadLabEquipmentAssets(group: &group, taskCount: &totalAssets)
 //               loadBuildADCEnvironmentAssets(group: &group, taskCount: &totalAssets)
-//               loadAttackCancerEnvironmentAssets(group: &group, taskCount: &totalAssets)
-//               loadCancerCellAssets(group: &group, taskCount: &totalAssets)
-//               loadTreatmentAssets(group: &group, taskCount: &totalAssets)
+               loadAttackCancerEnvironmentAssets(group: &group, taskCount: &totalAssets)
+               loadCancerCellAssets(group: &group, taskCount: &totalAssets)
+               loadTreatmentAssets(group: &group, taskCount: &totalAssets)
                 
                 // Process results with error handling
                 for try await result in group {

@@ -16,6 +16,22 @@ struct ADCPayloadSelectorView: View {
                         .foregroundColor(.gray)
                         .frame(alignment: .trailing)
                 }
+                
+                Button {
+                    // Fill all remaining payloads with current selection
+                    dataModel.fillAllPayloads()
+                    // Advance to next step
+                    dataModel.adcBuildStep = 3
+                } label: {
+                    Label("", systemImage: "checkmark.circle.fill")
+                        .labelStyle(.iconOnly)
+                        .font(.system(size: 44))
+                        .symbolRenderingMode(.hierarchical)
+                }
+                .frame(width: 60, height: 60)
+                .contentShape(Rectangle())
+                .foregroundStyle(.green)
+                .disabled(dataModel.selectedPayloadType == nil)
             }
             .padding(.vertical, 30)
             .padding(.horizontal, 30)

@@ -19,6 +19,29 @@ class ADCDataModel {
     var placedLinkerCount: Int = 0
     var placedPayloadCount: Int = 0
     
+    // Fill all linker positions with currently selected linker type
+    func fillAllLinkers() {
+        guard let selectedType = selectedLinkerType else { return }
+        selectedADCLinker = selectedType
+        placedLinkerCount = 4
+        linkersWorkingIndex = 4
+        
+        // Move to next step
+        adcBuildStep = 2
+        selectedPayloadType = 0
+    }
+    
+    // Fill all payload positions with currently selected payload type
+    func fillAllPayloads() {
+        guard let selectedType = selectedPayloadType else { return }
+        selectedADCPayload = selectedType
+        placedPayloadCount = 4
+        payloadsWorkingIndex = 4
+        
+        // Move to next step
+        adcBuildStep = 3
+    }
+    
     func getADCImageName() -> String {
         if let index = selectedADCAntibody {
             return "antibody\(index)"
@@ -53,4 +76,3 @@ public enum ADCUIViews {
     static let mainViewID = "MainView"
     static let immersiveSpaceID = "ImmersiveSpace"
 }
-

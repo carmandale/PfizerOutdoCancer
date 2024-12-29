@@ -156,22 +156,30 @@ struct ADCOptimizedImmersive: View {
                         element.components.remove(ADCProximitySourceComponent.self)
                     }
                     adcLinkers[dataModel.linkersWorkingIndex].components.set(ADCProximitySourceComponent())
-//                    antibodyRootEntity?.components.remove(ProximitySourceComponent.self)
                     
                     if let linkerEntity = linkerEntity {
                         linkerEntity.isEnabled = true
-                    //   linkerEntity.position = calculateTargetLinkerPosition()
-//                        linkerEntity.look(at: cameraEntity.scenePosition,
-//                                          from: linkerEntity.scenePosition,
-//                                          relativeTo: nil,
-//                                          forward: .positiveZ)
                     }
                     self.linkerAttachmentEntity?.isEnabled = true
-//                    setLinkerAttachmentPosition()
-                    
                     self.payloadEntity?.isEnabled = false
                 case 2:
                     os_log(.debug, "ITR.. ✅ ADC build step 2")
+                    // If we came from checkmark button (all linkers filled)
+                    if dataModel.linkersWorkingIndex == 4 {
+                        Task { @MainActor in
+                            // Apply original material and selected color to all linkers
+                            for linker in adcLinkers {
+                                if let originalMaterial = originalLinkerMaterial {
+                                    linker.updateMaterials { material in
+                                        material = originalMaterial
+                                    }
+                                }
+                                linker.updatePBRDiffuseColor(.adc[dataModel.selectedLinkerType ?? 0])
+                                linker.isEnabled = true
+                            }
+                        }
+                    }
+                    
                     self.adcLinkers.forEach { $0.isEnabled = true }
                     self.linkerEntity?.isEnabled = false
                     self.linkerAttachmentEntity?.isEnabled = false
@@ -184,6 +192,35 @@ struct ADCOptimizedImmersive: View {
                         element.components.remove(ADCProximitySourceComponent.self)
                     }
                     adcPayloadsOuter[dataModel.payloadsWorkingIndex].components.set(ADCProximitySourceComponent())
+                case 3:
+                    os_log(.debug, "ITR.. ✅ ADC build step 3")
+                    // If we came from checkmark button (all payloads filled)
+                    if dataModel.payloadsWorkingIndex == 4 {
+                        Task { @MainActor in
+                            // Apply original materials and selected color to all payloads
+                            for (inner, outer) in zip(adcPayloadsInner, adcPayloadsOuter) {
+                                if let originalInnerMaterial = originalPayloadInnerMaterial {
+                                    inner.updateMaterials { material in
+                                        material = originalInnerMaterial
+                                    }
+                                }
+                                if let originalOuterMaterial = originalPayloadOuterMaterial {
+                                    outer.model?.materials = [originalOuterMaterial]
+                                }
+                                
+                                inner.updatePBRDiffuseColor(.adc[dataModel.selectedPayloadType ?? 0])
+                                outer.updatePBRDiffuseColor(.adc[dataModel.selectedPayloadType ?? 0])
+                                
+                                inner.isEnabled = true
+                                outer.isEnabled = true
+                            }
+                        }
+                    }
+                    
+                    self.linkerEntity?.isEnabled = false
+                    self.linkerAttachmentEntity?.isEnabled = false
+                    self.payloadEntity?.isEnabled = false
+                    antibodyRootEntity?.components.set(createGestureComponent())
                 default:
                     os_log(.debug, "ITR.. ✅ ADC build step \(newValue)")
                     self.linkerEntity?.isEnabled = false

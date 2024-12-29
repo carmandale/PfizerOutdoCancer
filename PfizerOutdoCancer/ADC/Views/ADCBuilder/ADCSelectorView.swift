@@ -10,28 +10,21 @@ struct ADCSelectorView: View {
                 Text("Select Antibody Color")
                     .font(.title)
                 Spacer()
-                Button {
-                    print("ITR..Trash button pressed")
-                    dataModel.selectedADCAntibody = nil
-                } label: {
-                    Label("", systemImage: "trash")
-                        .labelStyle(.iconOnly)
-                }
-                .padding()
-                .foregroundStyle(.red)
                 
                 Button {
                     print("ITR..Checkmark button pressed")
                     dataModel.adcBuildStep = 1
                     dataModel.selectedLinkerType = 0
                 } label: {
-                    Label("", systemImage: "checkmark")
+                    Label("", systemImage: "checkmark.circle.fill")
                         .labelStyle(.iconOnly)
+                        .font(.system(size: 44))  // visionOS recommended size
+                        .symbolRenderingMode(.hierarchical)
                 }
-                .padding()
+                .frame(width: 60, height: 60)  // visionOS minimum tappable area
+                .contentShape(Rectangle())
                 .foregroundStyle(.green)
                 .disabled(dataModel.selectedADCAntibody == nil)
-
             }
             .padding(.vertical, 30)
             .padding(.horizontal, 30)

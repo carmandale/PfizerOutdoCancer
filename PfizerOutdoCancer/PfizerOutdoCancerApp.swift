@@ -232,10 +232,13 @@ struct PfizerOutdoCancerApp: App {
                 }
                 
             case .playing:
+                // Explicitly dismiss debug window first
                 if appModel.isDebugWindowOpen {
                     dismissWindow(id: AppModel.debugNavigationWindowId)
                     appModel.isDebugWindowOpen = false
                 }
+                
+                // Then handle other windows
                 if appModel.isLibraryWindowOpen {
                     dismissWindow(id: AppModel.libraryWindowId)
                     appModel.isLibraryWindowOpen = false
@@ -245,6 +248,9 @@ struct PfizerOutdoCancerApp: App {
                     appModel.isMainWindowOpen = false
                 }
                 
+                // No need for default case handling
+                return  // Add explicit return to prevent falling through to default
+            
             case .completed:
                 if appModel.isLibraryWindowOpen {
                     dismissWindow(id: AppModel.libraryWindowId)

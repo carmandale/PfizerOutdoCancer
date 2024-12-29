@@ -16,6 +16,23 @@ struct ADCLinkerSelectorView: View {
                         .foregroundColor(.gray)
                         .frame(alignment: .trailing)
                 }
+                
+                Button {
+                    // Fill all remaining linkers with current selection
+                    dataModel.fillAllLinkers()
+                    // Advance to next step
+                    dataModel.adcBuildStep = 2
+                    dataModel.selectedPayloadType = 0
+                } label: {
+                    Label("", systemImage: "checkmark.circle.fill")
+                        .labelStyle(.iconOnly)
+                        .font(.system(size: 44))
+                        .symbolRenderingMode(.hierarchical)
+                }
+                .frame(width: 60, height: 60)
+                .contentShape(Rectangle())
+                .foregroundStyle(.green)
+                .disabled(dataModel.selectedLinkerType == nil)
             }
             .padding(.vertical, 30)
             .padding(.horizontal, 30)

@@ -1,0 +1,64 @@
+ADC Rotation Implementation Plan
+==============================
+
+Current Understanding:
+--------------------
+1. Entity Hierarchy:
+- Draggable "targetLinker" is child of "antibodyProtein_complex_assembled"
+- Target "linker" is the destination
+- Proximity system already handles scaling based on distance
+
+2. Existing Systems:
+- ADCProximitySystem handles scaling interpolation
+- ADCGestureComponent handles drag and rotation gestures
+- Proximity threshold of 0.5 units is working well
+
+Implementation Plan:
+------------------
+1. Extend ADCProximityComponent:
+- Add rotation parameters (e.g., rotationEnabled)
+- Add a "targetOrientation" (in world space) so each entity can rotate toward its own orientation target
+- Add flag to enable/disable rotation interpolation
+
+2. Update ADCProximitySystem:
+- Add rotation interpolation alongside existing scale interpolation
+- Use simd_slerp to move each entity's current orientation toward its "targetOrientation"
+- Optionally disable user rotation (e.g., canRotate = false) if we want to override user gestures
+
+3. Modify Gesture Handling:
+- In onDragStarted: Store and/or set the component's targetOrientation
+- If user rotation is overridden, set gestureComponent.canRotate = false
+- In onDragEnded: Snap to final orientation if within threshold
+
+4. Testing Points:
+- Verify rotation works with parent-child relationships
+- Ensure rotation interpolates smoothly with scaling
+- Test rotation behavior when dragging away/towards target
+- Validate orientation preservation after placement
+- Check that entities with different target orientations adopt the correct final rotation
+
+Code Implementation Order:
+------------------------
+1. Add rotation fields (e.g., rotationEnabled, targetOrientation) to ADCProximityComponent
+2. Implement rotation interpolation in ADCProximitySystem
+3. Add orientation tracking and disable user rotation in gesture handlers if desired
+4. Test and tune interpolation parameters
+
+Questions to Resolve:
+-------------------
+1. Should rotation happen before or after scaling?
+2. Do we need different proximity thresholds for rotation vs scaling?
+3. Confirm if rotation always overrides user rotation or only within thresholds?
+
+Next Steps:
+----------
+1. Review plan with team
+2. Implement basic rotation in ADCProximitySystem
+3. Test with simple drag scenarios
+4. Refine based on testing results
+
+Additional Cautionary Notes:
+1. Ensure the orientation is stored and applied in matching coordinate spaces (e.g., if using orientation(relativeTo: nil), store target orientation in world space).
+2. For continuous rotation updates during drag, confirm onDragUpdate or a per-frame approach is used; relying only on onDragStarted/onDragEnded might skip live updates.
+3. If user rotation is overridden (e.g., canRotate = false), confirm it is disabled at the correct time so gestures don’t unexpectedly conflict with automated rotation.
+4. Pay attention to the single-source logic; if multiple linkers/targets exist simultaneously, ensure each target has its own, correct “targetOrientation.” 

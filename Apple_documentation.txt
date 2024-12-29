@@ -1,0 +1,19 @@
+# Apple Official Documentation Excerpts
+
+## Managing Immersive Spaces
+- "An immersive space is a temporary scene that takes over the entire view, allowing users to focus on a specific task or experience."
+- "Ensure the immersive space is dismissed before initiating a transition to avoid conflicts."
+
+## Best Practices for Dismissing Windows
+- "Dismiss ephemeral windows in the order they were presented to ensure proper teardown."
+- "Use appropriate state management to track the visibility of windows."
+
+## Handling Transitions
+- "Always verify the current state of the immersive space before starting a transition."
+- "Incorporate delays to accommodate teardown processes before launching a new immersive space."
+
+## State Management in visionOS
+- "Utilize custom state properties to track transitions, ensuring a clean handoff between spaces."
+- "Implement onDisappear handlers to confirm that views are completely dismissed before proceeding."
+
+Reference: [Apple Developer Documentation on visionOS](https://developer.apple.com/documentation/visionos)

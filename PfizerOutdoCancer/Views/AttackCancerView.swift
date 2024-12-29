@@ -10,7 +10,9 @@ struct CellState {
 
 struct AttackCancerView: View {
     @Environment(AppModel.self) private var appModel
+    
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.dismissWindow) private var dismissWindow
     @Environment(\.realityKitScene) private var scene
     @State private var cellStates: [CellState] = []
     
@@ -20,13 +22,24 @@ struct AttackCancerView: View {
         return handAnchor
     }()
     
+    // Add simulator check
+    private var isSimulator: Bool {
+        #if targetEnvironment(simulator)
+        return true
+        #else
+        return false
+        #endif
+    }
+    
     var body: some View {
         RealityView { content, attachments in
             let root = appModel.gameState.setupRoot()
             content.add(root)
             
-            // 2. Call setupHandTracking
-            setupHandTracking(in: content, attachments: attachments)
+            // Only setup hand tracking and HopeMeter if not in simulator
+            if !isSimulator {
+                setupHandTracking(in: content, attachments: attachments)
+            }
             
             Task {
                 await setupGameContent(in: root, attachments: attachments)
@@ -101,7 +114,7 @@ struct AttackCancerView: View {
             }
         }
         .gesture(makeTapGesture())
-        .onAppear { appModel.gameState.startGame() }
+        .onAppear { dismissWindow(id: AppModel.debugNavigationWindowId) } // appModel.gameState.startGame()
     }
     
     // 4. Hand tracking setup method
