@@ -72,7 +72,4 @@ public enum ADCUIAttachments {
     static let mainADCView = "mainADCView"
 }
 
-public enum ADCUIViews {
-    static let mainViewID = "MainView"
-    static let immersiveSpaceID = "ImmersiveSpace"
-}
+

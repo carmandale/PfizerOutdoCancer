@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ADCPayloadSelectorView: View {
-    @Environment(ADCAppModel.self) var appModel
+    @Environment(AppModel.self) var appModel
     @Environment(ADCDataModel.self) var dataModel
     
     var body: some View {
@@ -64,8 +64,8 @@ struct ADCPayloadSelectorView: View {
     }
 }
 
-#Preview {
-    ADCPayloadSelectorView()
-        .environment(ADCAppModel())
-        .environment(ADCDataModel())
-}
+//#Preview {
+//    ADCPayloadSelectorView()
+//        .environment(ADCAppModel())
+//        .environment(ADCDataModel())
+//}

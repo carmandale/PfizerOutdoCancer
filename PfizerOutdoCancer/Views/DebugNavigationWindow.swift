@@ -16,10 +16,6 @@ struct DebugNavigationWindow: View {
             }
         }
         .padding(4)
-        // .background {
-        //     RoundedRectangle(cornerRadius: 16, style: .continuous)
-        //         .fill(Color(.secondarySystemBackground))
-        // }
     }
     
     private func phaseFor(_ title: String) -> AppPhase {
@@ -44,8 +40,5 @@ struct NavigationButton: View {
             Text(title)
                 .frame(maxWidth: .infinity)
         }
-//        .padding(8)
-//        .buttonStyle(.bordered)
-//        .controlSize(.regular)
     }
 }

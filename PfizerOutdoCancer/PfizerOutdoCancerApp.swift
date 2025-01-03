@@ -14,7 +14,6 @@ struct PfizerOutdoCancerApp: App {
         @State private var handTracking = HandTrackingViewModel()
         
         // for ADC view
-        @State private var adcAppModel = ADCAppModel()
         @State private var adcDataModel = ADCDataModel()
         
         @Environment(\.openImmersiveSpace) private var openImmersiveSpace
@@ -25,13 +24,11 @@ struct PfizerOutdoCancerApp: App {
         
         
         var body: some Scene {
-            // MARK: - 2D LOADING WINDOW
+            // MARK: - Main Window with ContentView
             WindowGroup(id: AppModel.mainWindowId) {
-                LoadingView()
+                ContentView()
                     .environment(appModel)
-                    .task {
-                        await appModel.startLoading()
-                    }
+                    .environment(adcDataModel)
             }
             .defaultSize(CGSize(width: 800, height: 600))
             .windowStyle(.plain)
@@ -55,10 +52,21 @@ struct PfizerOutdoCancerApp: App {
             .windowResizability(.contentSize)
 
             WindowGroup(id: AppModel.libraryWindowId) {
-                LibraryView()
-                    .environment(appModel)
+                if appModel.currentPhase == .lab {
+                    LibraryView()
+                        .environment(appModel)
+                }
             }
             .defaultSize(CGSize(width: 800, height: 600))
+            .windowStyle(.plain)
+            .onChange(of: appModel.currentPhase) { oldPhase, newPhase in
+                if oldPhase == newPhase { return }
+                if newPhase != .lab {
+                    dismissWindow(id: AppModel.libraryWindowId)
+                }
+            }
+            
+            
             
             
             // MARK: Immersive Views
@@ -67,26 +75,37 @@ struct PfizerOutdoCancerApp: App {
                 ImmersiveSpace(id: "IntroSpace") {
                     IntroView()
                         .environment(appModel)
+                        .onAppear {
+                            appModel.immersiveSpaceState = .open
+                        }
+                        .onDisappear {
+                            appModel.immersiveSpaceState = .closed
+                        }
                 }
                 .immersionStyle(selection: $appModel.introStyle, in: .mixed)
 
                 ImmersiveSpace(id: "LabSpace") {
                     LabView()
                         .environment(appModel)
+                        .onAppear {
+                            appModel.immersiveSpaceState = .open
+                        }
+                        .onDisappear {
+                            appModel.immersiveSpaceState = .closed
+                        }
                 }
                 .immersionStyle(selection: $appModel.labStyle, in: .full)
                 .upperLimbVisibility(.visible)
                 
                 ImmersiveSpace(id: "BuildingSpace") {
                     ADCOptimizedImmersive()
-                        .environment(adcAppModel)
-                        .environment(adcDataModel)
                         .environment(appModel)
+                        .environment(adcDataModel)
                         .onAppear {
-                            adcAppModel.immersiveSpaceState = .open
+                            appModel.immersiveSpaceState = .open
                         }
                         .onDisappear {
-                            adcAppModel.immersiveSpaceState = .closed
+                            appModel.immersiveSpaceState = .closed
                         }
                 }
                 .immersionStyle(selection: $appModel.buildingStyle, in: .mixed)
@@ -95,6 +114,12 @@ struct PfizerOutdoCancerApp: App {
                     AttackCancerView()
                         .environment(appModel)
                         .environment(handTracking)
+                        .onAppear {
+                            appModel.immersiveSpaceState = .open
+                        }
+                        .onDisappear {
+                            appModel.immersiveSpaceState = .closed
+                        }
                 }
                 .immersionStyle(selection: $appModel.attackStyle, in: .progressive)
                 .upperLimbVisibility(.automatic)
@@ -103,13 +128,13 @@ struct PfizerOutdoCancerApp: App {
                 // Single onChange handler for phase transitions
                 .onChange(of: appModel.currentPhase) { oldPhase, newPhase in
                     if oldPhase == newPhase { return }
-                    print("SpawnAndAttrackApp: Phase change from \(oldPhase) to \(newPhase)")
+                    print("PfizerOutdoCancerApp: Phase change from \(oldPhase) to \(newPhase)")
                     
                     Task {
                         // Only dismiss existing space if the new phase doesn't need to keep it
                         if oldPhase.needsImmersiveSpace && !newPhase.shouldKeepPreviousSpace {
                             await dismissImmersiveSpace()
-                            try? await Task.sleep(for: .seconds(0.5))
+//                            try? await Task.sleep(for: .seconds(0.5))
                         }
                         
                         // Handle window management
@@ -117,8 +142,15 @@ struct PfizerOutdoCancerApp: App {
                         
                         // Then open new immersive space if needed
                         if newPhase.needsImmersiveSpace && !newPhase.shouldKeepPreviousSpace {
+                            // Add safety check here
+                            guard appModel.immersiveSpaceState != .inTransition else {
+                                print("⚠️ Cannot open space while in transition")
+                                return
+                            }
+                            
+                            appModel.immersiveSpaceState = .inTransition
                             let spaceId = newPhase.spaceId
-                            try? await Task.sleep(for: .seconds(0.3))
+//                            try? await Task.sleep(for: .seconds(0.3))
 
                             print("📱 Before dismissing main window - isMainWindowOpen: \(appModel.isMainWindowOpen)")
                             dismissWindow(id: AppModel.mainWindowId)
@@ -127,29 +159,24 @@ struct PfizerOutdoCancerApp: App {
                             switch await openImmersiveSpace(id: spaceId) {
                             case .opened:
                                 print("Successfully opened space: \(spaceId)")
+                                // Don't set .open here - let the view's onAppear handle it
                             case .error:
                                 print("Error opening space: \(spaceId)")
+                                appModel.immersiveSpaceState = .closed
                                 appModel.currentPhase = .error
                             case .userCancelled:
                                 print("User cancelled opening space: \(spaceId)")
+                                appModel.immersiveSpaceState = .closed
                                 appModel.currentPhase = .error
                             @unknown default:
                                 print("Unknown result opening space: \(spaceId)")
+                                appModel.immersiveSpaceState = .closed
                                 appModel.currentPhase = .error
                             }
                         }
                     }
                 }
             }
-
-            // Add ADC's main window
-            WindowGroup(id: ADCUIViews.mainViewID) {
-                ADCView()
-                    .environment(adcAppModel)
-                    .environment(adcDataModel)
-            }
-            // .defaultSize(CGSize(width: 800, height: 600))
-            .windowStyle(.plain)
         }
 
         init() {
@@ -179,6 +206,9 @@ struct PfizerOutdoCancerApp: App {
             ADCMovementSystem.registerSystem()
             UIStabilizerSystem.registerSystem()
             AntigenSystem.registerSystem()
+            SwirlingSystem.registerSystem()
+            TraceComponent.registerComponent()
+            TraceSystem.registerSystem()
             
             // Add ClosureSystem registration
             ClosureSystem.registerSystem()
@@ -201,13 +231,13 @@ struct PfizerOutdoCancerApp: App {
         private func handleWindowsForPhase(_ phase: AppPhase) async {
             print("🎯 Managing windows for phase: \(phase)")
             
-            // Always handle loading window first if it's open
-            if appModel.isLoadingWindowOpen && phase != .loading {
-                print("📱 Dismissing loading window")
-                dismissWindow(id: AppModel.mainWindowId)
-                appModel.isLoadingWindowOpen = false
-                try? await Task.sleep(for: .seconds(0.3))
-            }
+             // Always handle loading window first if it's open
+             if appModel.isLoadingWindowOpen && phase != .loading {
+                 print("📱 Dismissing loading window")
+                 dismissWindow(id: AppModel.mainWindowId)
+                 appModel.isLoadingWindowOpen = false
+                 try? await Task.sleep(for: .seconds(0.3))
+             }
             
             switch phase {
             case .loading:
@@ -277,30 +307,34 @@ struct PfizerOutdoCancerApp: App {
                 }
                 
             case .building:
-                // Open ADC window
                 if appModel.isLibraryWindowOpen {
+                    print("closing library window")
                     dismissWindow(id: AppModel.libraryWindowId)
                     appModel.isLibraryWindowOpen = false
                 }
-                if appModel.isMainWindowOpen {
-                    dismissWindow(id: AppModel.mainWindowId)
-                    appModel.isMainWindowOpen = false
+                if appModel.isDebugWindowOpen {
+                    print("closing debug window")
+                    dismissWindow(id: AppModel.debugNavigationWindowId)
+                    appModel.isDebugWindowOpen = false
                 }
-                if !appModel.isDebugWindowOpen {
-                    openWindow(id: AppModel.debugNavigationWindowId)
-                    appModel.isDebugWindowOpen = true
-                }
-                openWindow(id: ADCUIViews.mainViewID)
+//                if appModel.isBuilderWindowOpen {
+//                    print("opening builder window through Main window")
+//                    
+//                    openWindow(id: AppModel.mainWindowId)
+//                    appModel.isBuilderWindowOpen = true
+//                }
+                openWindow(id: AppModel.mainWindowId)
+                print("opening main window to show builder")
                 
             default:
                 if appModel.isLibraryWindowOpen {
                     dismissWindow(id: AppModel.libraryWindowId)
                     appModel.isLibraryWindowOpen = false
                 }
-                if appModel.isMainWindowOpen {
-                    dismissWindow(id: AppModel.mainWindowId)
-                    appModel.isMainWindowOpen = false
-                }
+//                if appModel.isMainWindowOpen {
+//                    dismissWindow(id: AppModel.mainWindowId)
+//                    appModel.isMainWindowOpen = false
+//                }
                 if !appModel.isDebugWindowOpen {
                     openWindow(id: AppModel.debugNavigationWindowId)
                     appModel.isDebugWindowOpen = true

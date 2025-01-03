@@ -10,10 +10,10 @@
 
 def Xform "Root"
 {
-    reorder nameChildren = ["sh0100_v01_portal", "IntroAnimation", "sh0100_v01", "Audio", "sh0100_v01_ref", "RCP_BehaviorsContainer", "OnAddedToScene", "materials", "M_jet", "Orchestra", "BreathRiserL", "BreathRiserR", "SFX", "Voice"]
+    reorder nameChildren = ["sh0100_v01_portal", "IntroAnimation", "sh0100_v01", "Audio", "RCP_BehaviorsContainer", "OnAddedToScene", "materials", "M_jet", "Orchestra", "SFX", "Voice", "Model_Sorting_Group", "card_Transform", "LogoAndType"]
     def RealityKitTimeline "IntroAnimation"
     {
-        reorder nameChildren = ["Track12", "Track2", "Track13", "Track16", "Track14", "Track3", "Track4", "Track", "Track5", "Track6", "Track7", "Track8"]
+        reorder nameChildren = ["Track12", "Track2", "Track13", "Track16", "Track14", "Track3", "Track4", "Track", "Track9", "Track5", "Track10", "Track6", "Track7", "Track8"]
         def RealityKitTrack "Track3"
         {
             reorder nameChildren = ["Show", "Hide2", "Show2", "Hide", "Show3", "Hide3", "Play_Audio"]
@@ -471,6 +471,15 @@ def Xform "Root"
 
         def RealityKitTrack "Track14"
         {
+            def RealityKitAction "Play_Timeline"
+            {
+                string actionKind = "timeline"
+                int blendLayer = 500
+                double duration = 6
+                uniform token info:id = "E4DF8428-AD42-4AC3-A178-B2B72E0520A3"
+                double startTime = 103
+                rel timeline = </Root/LogoAndType>
+            }
         }
 
         def RealityKitTrack "Track16"
@@ -485,6 +494,14 @@ def Xform "Root"
                 double startTime = 0
                 rel timeline = </Root/Orchestra>
             }
+        }
+
+        def RealityKitTrack "Track9"
+        {
+        }
+
+        def RealityKitTrack "Track10"
+        {
         }
     }
 
@@ -505,53 +522,23 @@ def Xform "Root"
 
         over "M_Spatial"
         {
-            asset inputs:Left = @Assets/Intro/textures/F2_009_olderWoman_v02.jpg@ (
-                customData = {
-                    dictionary realitykit = {
-                        float2 positionInSubgraph = (-1896.9872, -81.36982)
-                        int stackingOrderInSubgraph = 434
-                    }
-                }
-            )
             asset inputs:Mask = @Assets/Intro/textures/mask.exr@ (
                 customData = {
                     dictionary realitykit = {
-                        float2 positionInSubgraph = (-1674.5039, 277.62698)
-                    }
-                }
-            )
-            asset inputs:Right = @Assets/Intro/textures/F2_009_olderWoman_v02.jpg@ (
-                customData = {
-                    dictionary realitykit = {
-                        float2 positionInSubgraph = (-1884.108, 117.718254)
-                        int stackingOrderInSubgraph = 434
+                        float2 positionInSubgraph = (-2881.1982, 569.9942)
+                        int stackingOrderInSubgraph = 1106
                     }
                 }
             )
             float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (457.14285, -15.602118)
             int ui:nodegraph:realitykit:subgraphOutputs:stackingOrder = 434
 
-            def Shader "Image_2"
-            {
-                uniform token info:id = "ND_image_float"
-                asset inputs:file.connect = </Root/materials/M_Spatial.inputs:Mask>
-                string inputs:filtertype
-                string inputs:uaddressmode
-                string inputs:vaddressmode
-                float outputs:out
-                float2 ui:nodegraph:node:pos = (-1305.4203, 225.47)
-                int ui:nodegraph:node:stackingOrder = 434
-            }
-
             over "UnlitSurface"
             {
                 bool inputs:applyPostProcessToneMap
-                color3f inputs:color.connect = </Root/materials/M_Spatial/CameraIndexSwitch_1.outputs:out>
-                bool inputs:hasPremultipliedAlpha = 0
-                float inputs:opacity.connect = None
-                float inputs:opacityThreshold.connect = None
+                bool inputs:hasPremultipliedAlpha = 1
                 float2 ui:nodegraph:node:pos = (152.71852, -72.62259)
-                int ui:nodegraph:node:stackingOrder = 434
+                int ui:nodegraph:node:stackingOrder = 1185
             }
 
             over "Image_1"
@@ -574,95 +561,34 @@ def Xform "Root"
                 int ui:nodegraph:node:stackingOrder = 192
             }
 
-            def Shader "CameraIndexSwitch_2"
-            {
-                uniform token info:id = "ND_realitykit_geometry_switch_cameraindex_color4"
-                color4f inputs:left.connect = </Root/materials/M_Spatial/Combine4.outputs:out>
-                color4f inputs:mono.connect = </Root/materials/M_Spatial/Combine4.outputs:out>
-                color4f inputs:right.connect = </Root/materials/M_Spatial/Combine4_1.outputs:out>
-                color4f outputs:out
-                float2 ui:nodegraph:node:pos = (-703.02405, -221.69862)
-                int ui:nodegraph:node:stackingOrder = 470
-            }
-
             def Shader "Separate4"
             {
                 uniform token info:id = "ND_separate4_color4"
-                color4f inputs:in.connect = </Root/materials/M_Spatial/CameraIndexSwitch_2.outputs:out>
                 float outputs:outa
                 float outputs:outb
                 float outputs:outg
                 float outputs:outr
-                float2 ui:nodegraph:node:pos = (-428.27332, -188.85431)
-                int ui:nodegraph:node:stackingOrder = 434
+                float2 ui:nodegraph:node:pos = (-822.2211, 196.72923)
+                int ui:nodegraph:node:stackingOrder = 1183
             }
 
             def Shader "Combine3"
             {
                 uniform token info:id = "ND_combine3_color3"
-                float inputs:in1.connect = </Root/materials/M_Spatial/Separate4.outputs:outr>
-                float inputs:in2.connect = </Root/materials/M_Spatial/Separate4.outputs:outg>
-                float inputs:in3.connect = </Root/materials/M_Spatial/Separate4.outputs:outb>
                 color3f outputs:out
                 float2 ui:nodegraph:node:pos = (-183.57791, -207.47119)
                 int ui:nodegraph:node:stackingOrder = 434
             }
 
-            def Shader "Separate3"
+            over "CameraIndexSwitch_4"
             {
-                uniform token info:id = "ND_separate3_color3"
-                color3f inputs:in.connect = </Root/materials/M_Spatial/Image.outputs:out>
-                float outputs:outb
-                float outputs:outg
-                float outputs:outr
-                float2 ui:nodegraph:node:pos = (-1311.3552, -227.55495)
-                int ui:nodegraph:node:stackingOrder = 434
+                float2 ui:nodegraph:node:pos = (-1737.6461, 233.42986)
+                int ui:nodegraph:node:stackingOrder = 1181
             }
 
-            def Shader "Combine4"
+            over "Image_5"
             {
-                uniform token info:id = "ND_combine4_color4"
-                float inputs:in1.connect = </Root/materials/M_Spatial/Separate3.outputs:outr>
-                float inputs:in2.connect = </Root/materials/M_Spatial/Separate3.outputs:outg>
-                float inputs:in3.connect = </Root/materials/M_Spatial/Separate3.outputs:outb>
-                float inputs:in4.connect = </Root/materials/M_Spatial/Image_2.outputs:out>
-                color4f outputs:out
-                float2 ui:nodegraph:node:pos = (-1006.305, -247.58957)
-                int ui:nodegraph:node:stackingOrder = 469
-            }
-
-            def Shader "Separate3_1"
-            {
-                uniform token info:id = "ND_separate3_color3"
-                color3f inputs:in.connect = </Root/materials/M_Spatial/Image_1.outputs:out>
-                float outputs:outb
-                float outputs:outg
-                float outputs:outr
-                float2 ui:nodegraph:node:pos = (-1262.1434, -73.79153)
-                int ui:nodegraph:node:stackingOrder = 434
-            }
-
-            def Shader "Combine4_1"
-            {
-                uniform token info:id = "ND_combine4_color4"
-                float inputs:in1.connect = </Root/materials/M_Spatial/Separate3_1.outputs:outr>
-                float inputs:in2.connect = </Root/materials/M_Spatial/Separate3_1.outputs:outg>
-                float inputs:in3.connect = </Root/materials/M_Spatial/Separate3_1.outputs:outb>
-                float inputs:in4.connect = </Root/materials/M_Spatial/Image_2.outputs:out>
-                color4f outputs:out
-                float2 ui:nodegraph:node:pos = (-957.0932, -93.826164)
-                int ui:nodegraph:node:stackingOrder = 469
-            }
-
-            def Shader "CameraIndexSwitch_1"
-            {
-                uniform token info:id = "ND_realitykit_geometry_switch_cameraindex_color3"
-                color3f inputs:left.connect = </Root/materials/M_Spatial/Image.outputs:out>
-                color3f inputs:mono.connect = </Root/materials/M_Spatial/Image.outputs:out>
-                color3f inputs:right.connect = </Root/materials/M_Spatial/Image_1.outputs:out>
-                color3f outputs:out
-                float2 ui:nodegraph:node:pos = (-689.6723, 41.405155)
-                int ui:nodegraph:node:stackingOrder = 473
+                int ui:nodegraph:node:stackingOrder = 1178
             }
         }
 
@@ -672,8 +598,8 @@ def Xform "Root"
             references = </Root/materials/M_Spatial>
         )
         {
-            asset inputs:Left = @Assets/Intro/textures/F2_002_AfricanAmerican_Man_v01_L.jpg@
-            asset inputs:Right = @Assets/Intro/textures/F2_002_AfricanAmerican_Man_v01_R.jpg@
+            asset inputs:Left = @Assets/Intro/textures/F2_002_AfricanAmerican_Man_v01_L.png@
+            asset inputs:Right = @Assets/Intro/textures/F2_002_AfricanAmerican_Man_v01_R.png@
         }
 
         def "M_Spatial_p3" (
@@ -682,18 +608,173 @@ def Xform "Root"
             references = </Root/materials/M_Spatial_p2>
         )
         {
-            asset inputs:Left = @Assets/Intro/textures/F03_WomanYoungMother_G_v04_L.jpg@
-            asset inputs:Right = @Assets/Intro/textures/F03_WomanYoungMother_G_v04_R.jpg@
+            asset inputs:Left = @Assets/Intro/textures/F03_WomanYoungMother_G_v04_L.png@
+            asset inputs:Right = @Assets/Intro/textures/F03_WomanYoungMother_G_v04_R.png@
         }
 
         def "M_Spatial_p1" (
             active = true
-            instanceable = true
+            instanceable = false
             references = </Root/materials/M_Spatial_p2>
         )
         {
-            asset inputs:Left = @Assets/Intro/textures/F2_009_olderWoman_v02_L.jpg@
-            asset inputs:Right = @Assets/Intro/textures/F2_009_olderWoman_v02_R.jpg@
+            asset inputs:Left = @Assets/Intro/textures/F2_009_olderWoman_v02_L.png@ (
+                customData = {
+                    dictionary realitykit = {
+                        float2 positionInSubgraph = (-3198.5369, -52.451267)
+                        int stackingOrderInSubgraph = 612
+                    }
+                }
+            )
+            asset inputs:Mask (
+                customData = {
+                    dictionary realitykit = {
+                        float2 positionInSubgraph = (-3082.4836, 633.79144)
+                        int stackingOrderInSubgraph = 865
+                    }
+                }
+            )
+            asset inputs:Right = @Assets/Intro/textures/F2_009_olderWoman_v02_R.png@ (
+                customData = {
+                    dictionary realitykit = {
+                        float2 positionInSubgraph = (-3105.6187, 182.99536)
+                        int stackingOrderInSubgraph = 663
+                    }
+                }
+            )
+
+            over "Image" (
+                active = false
+            )
+            {
+                int ui:nodegraph:node:stackingOrder = 569
+            }
+
+            over "Image_1" (
+                active = false
+            )
+            {
+                int ui:nodegraph:node:stackingOrder = 569
+            }
+
+            over "Separate3" (
+                active = false
+            )
+            {
+                color3f inputs:in
+                int ui:nodegraph:node:stackingOrder = 798
+            }
+
+            over "CameraIndexSwitch_1" (
+                active = false
+            )
+            {
+                color3f inputs:left
+                color3f inputs:mono
+                color3f inputs:right
+                int ui:nodegraph:node:stackingOrder = 732
+            }
+
+            over "Separate3_1" (
+                active = false
+            )
+            {
+                color3f inputs:in
+                int ui:nodegraph:node:stackingOrder = 798
+            }
+
+            over "UnlitSurface"
+            {
+                color3f inputs:color.connect = </Root/materials/M_Spatial_p1/Combine3.outputs:out>
+                bool inputs:hasPremultipliedAlpha = 1
+                float inputs:opacity.connect = </Root/materials/M_Spatial_p1/Separate4.outputs:outa>
+                int ui:nodegraph:node:stackingOrder = 946
+            }
+
+            def Shader "Image_5"
+            {
+                uniform token info:id = "ND_image_color4"
+                color4f inputs:default
+                asset inputs:file = @Assets/Intro/textures/F2_009_olderWoman_v02_L.png@
+                asset inputs:file.connect = </Root/materials/M_Spatial_p1.inputs:Left>
+                string inputs:filtertype
+                float2 inputs:texcoord
+                string inputs:vaddressmode
+                color4f outputs:out
+                float2 ui:nodegraph:node:pos = (-2773.1292, -307.70807)
+                int ui:nodegraph:node:stackingOrder = 946
+            }
+
+            def Shader "Image_6"
+            {
+                uniform token info:id = "ND_image_color4"
+                color4f inputs:default
+                asset inputs:file = @Assets/Intro/textures/F2_009_olderWoman_v02_L.png@
+                asset inputs:file.connect = </Root/materials/M_Spatial_p1.inputs:Right>
+                string inputs:filtertype
+                float2 inputs:texcoord
+                string inputs:vaddressmode
+                color4f outputs:out
+                float2 ui:nodegraph:node:pos = (-2775.016, 268.42834)
+                int ui:nodegraph:node:stackingOrder = 946
+            }
+
+            def Shader "CameraIndexSwitch_4"
+            {
+                uniform token info:id = "ND_realitykit_geometry_switch_cameraindex_color4"
+                color4f inputs:left.connect = </Root/materials/M_Spatial_p1/Image_5.outputs:out>
+                color4f inputs:mono.connect = </Root/materials/M_Spatial_p1/Image_5.outputs:out>
+                color4f inputs:right.connect = </Root/materials/M_Spatial_p1/Image_6.outputs:out>
+                color4f outputs:out
+                float2 ui:nodegraph:node:pos = (-1170.1567, -19.15729)
+                int ui:nodegraph:node:stackingOrder = 946
+            }
+
+            over "Image_2" (
+                active = false
+            )
+            {
+                float inputs:default
+                float2 inputs:texcoord
+                int ui:nodegraph:node:stackingOrder = 781
+            }
+
+            over "Separate4"
+            {
+                color4f inputs:in.connect = </Root/materials/M_Spatial_p1/CameraIndexSwitch_4.outputs:out>
+                int ui:nodegraph:node:stackingOrder = 946
+            }
+
+            over "Combine4_1" (
+                active = false
+            )
+            {
+                float inputs:in1
+                float inputs:in2
+                float inputs:in3
+                int ui:nodegraph:node:stackingOrder = 798
+            }
+
+            over "Combine4" (
+                active = false
+            )
+            {
+                int ui:nodegraph:node:stackingOrder = 798
+            }
+
+            over "CameraIndexSwitch_2" (
+                active = false
+            )
+            {
+                color4f inputs:left
+                color4f inputs:mono
+                int ui:nodegraph:node:stackingOrder = 798
+            }
+
+            over "Combine3"
+            {
+                int ui:nodegraph:node:stackingOrder = 946
+            }
         }
 
         def "M_Spatial_p4" (
@@ -702,8 +783,8 @@ def Xform "Root"
             references = </Root/materials/M_Spatial_p3>
         )
         {
-            asset inputs:Left = @Assets/Intro/textures/F2_004_YoungMan_v02_L.jpg@
-            asset inputs:Right = @Assets/Intro/textures/F2_004_YoungMan_v02_R.jpg@
+            asset inputs:Left = @Assets/Intro/textures/F2_004_YoungMan_v02_L.png@
+            asset inputs:Right = @Assets/Intro/textures/F2_004_YoungMan_v02_R.png@
         }
 
         def "M_Spatial_p5" (
@@ -712,8 +793,8 @@ def Xform "Root"
             references = </Root/materials/M_Spatial_p4>
         )
         {
-            asset inputs:Left = @Assets/Intro/textures/F2_005_ElderlyWoman_v02_L.jpg@
-            asset inputs:Right = @Assets/Intro/textures/F2_005_ElderlyWoman_v02_R.jpg@
+            asset inputs:Left = @Assets/Intro/textures/F2_005_ElderlyWoman_v02_L.png@
+            asset inputs:Right = @Assets/Intro/textures/F2_005_ElderlyWoman_v02_R.png@
         }
 
         def "M_Spatial_p6" (
@@ -722,8 +803,8 @@ def Xform "Root"
             references = </Root/materials/M_Spatial_p5>
         )
         {
-            asset inputs:Left = @Assets/Intro/textures/F2_013_AsianTeenager_v02_L.jpg@
-            asset inputs:Right = @Assets/Intro/textures/F2_013_AsianTeenager_v02_R.jpg@
+            asset inputs:Left = @Assets/Intro/textures/F2_013_AsianTeenager_v02_L.png@
+            asset inputs:Right = @Assets/Intro/textures/F2_013_AsianTeenager_v02_R.png@
         }
 
         def "M_Spatial_p7" (
@@ -732,8 +813,9 @@ def Xform "Root"
             references = </Root/materials/M_Spatial_p6>
         )
         {
-            asset inputs:Left = @Assets/Intro/textures/CP_11_middleAge_AsianWoman_v01 copy_L.jpg@
-            asset inputs:Right = @Assets/Intro/textures/CP_11_middleAge_AsianWoman_v01 copy_R.jpg@
+            asset inputs:Left = @Assets/Intro/textures/CP_11_middleAge_AsianWoman_v01 copy_L.png@
+            asset inputs:Mask = None
+            asset inputs:Right = @Assets/Intro/textures/CP_11_middleAge_AsianWoman_v01 copy_R.png@
         }
 
         def "M_Spatial_p8" (
@@ -742,8 +824,8 @@ def Xform "Root"
             references = </Root/materials/M_Spatial_p7>
         )
         {
-            asset inputs:Left = @Assets/Intro/textures/F2_010_AsianElderlyMan_v02_L.jpg@
-            asset inputs:Right = @Assets/Intro/textures/F2_010_AsianElderlyMan_v02_R.jpg@
+            asset inputs:Left = @Assets/Intro/textures/F2_010_AsianElderlyMan_v02_L.png@
+            asset inputs:Right = @Assets/Intro/textures/F2_010_AsianElderlyMan_v02_R.png@
         }
 
         def "M_Spatial_p9" (
@@ -752,8 +834,8 @@ def Xform "Root"
             references = </Root/materials/M_Spatial_p8>
         )
         {
-            asset inputs:Left = @Assets/Intro/textures/F2_011_IndianElderlyWoman_v01_L.jpg@
-            asset inputs:Right = @Assets/Intro/textures/F2_011_IndianElderlyWoman_v01_R.jpg@
+            asset inputs:Left = @Assets/Intro/textures/F2_011_IndianElderlyWoman_v01_L.png@
+            asset inputs:Right = @Assets/Intro/textures/F2_011_IndianElderlyWoman_v01_R.png@
         }
 
         def "M_Spatial_p10" (
@@ -762,8 +844,8 @@ def Xform "Root"
             references = </Root/materials/M_Spatial_p9>
         )
         {
-            asset inputs:Left = @Assets/Intro/textures/F2_012_AfricanAmerican_Woman_v01_L.jpg@
-            asset inputs:Right = @Assets/Intro/textures/F2_012_AfricanAmerican_Woman_v01_R.jpg@
+            asset inputs:Left = @Assets/Intro/textures/F2_012_AfricanAmerican_Woman_v01_L.png@
+            asset inputs:Right = @Assets/Intro/textures/F2_012_AfricanAmerican_Woman_v01_R.png@
         }
 
         def "M_Spatial_p11" (
@@ -772,8 +854,8 @@ def Xform "Root"
             references = </Root/materials/M_Spatial_p10>
         )
         {
-            asset inputs:Left = @Assets/Intro/textures/F2_008_middleAgeMan_v02_L.jpg@
-            asset inputs:Right = @Assets/Intro/textures/F2_008_middleAgeMan_v02_R.jpg@
+            asset inputs:Left = @Assets/Intro/textures/F2_008_middleAgeMan_v02_L.png@
+            asset inputs:Right = @Assets/Intro/textures/F2_008_middleAgeMan_v02_R.png@
         }
 
         def "M_Spatial_p12" (
@@ -782,8 +864,8 @@ def Xform "Root"
             references = </Root/materials/M_Spatial_p11>
         )
         {
-            asset inputs:Left = @Assets/Intro/textures/CP_08_africanAmerican_Woman_v02 copy_L.jpg@
-            asset inputs:Right = @Assets/Intro/textures/CP_08_africanAmerican_Woman_v02 copy_R.jpg@
+            asset inputs:Left = @Assets/Intro/textures/CP_08_africanAmerican_Woman_v02 copy_L.png@
+            asset inputs:Right = @Assets/Intro/textures/CP_08_africanAmerican_Woman_v02 copy_R.png@
         }
 
         def "M_Spatial_p13" (
@@ -792,8 +874,8 @@ def Xform "Root"
             references = </Root/materials/M_Spatial_p12>
         )
         {
-            asset inputs:Left = @Assets/Intro/textures/F2_007_ElderlyMan_v02_L.jpg@
-            asset inputs:Right = @Assets/Intro/textures/F2_007_ElderlyMan_v02_R.jpg@
+            asset inputs:Left = @Assets/Intro/textures/F2_007_ElderlyMan_v02_L.png@
+            asset inputs:Right = @Assets/Intro/textures/F2_007_ElderlyMan_v02_R.png@
         }
     }
 
@@ -866,6 +948,16 @@ def Xform "Root"
                                     string[] keys = ["Andrew_Narrator_wav"]
                                     rel values = </Root/sh0100_v01_portal/PicturesRoot/intro/Portal_and_Lightbeams/PortalPlane/portal_audio/Andrew_Narrator_wav>
                                 }
+                            }
+                        }
+
+                        over "Plane_001"
+                        {
+                            def RealityKitComponent "MeshSorting"
+                            {
+                                rel group = </Root/Model_Sorting_Group>
+                                token info:id = "RealityKit.MeshSorting"
+                                int priorityInGroup = 13
                             }
                         }
                     }
@@ -3255,6 +3347,175 @@ def Xform "Root"
     )
     {
         token depthPass = "postPass"
+    }
+
+    def Xform "card_Transform" (
+        active = true
+    )
+    {
+        reorder nameChildren = ["card_logo", "card_type"]
+        float3 xformOp:translate = (0, 0, -8)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def "card_logo" (
+            active = true
+            customData = {
+                float3 rotationEulerHint = (-1.5707964, 0, 0)
+            }
+            references = @Assets/Intro/card.usdc@
+        )
+        {
+            quatf xformOp:orient = (0.70710677, -0.7071067, 0, 0)
+            float3 xformOp:scale = (0.99999994, 0.99999994, 0.99999994)
+            float3 xformOp:translate = (0, 1.5, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            def RealityKitComponent "HierarchicalFade"
+            {
+                uniform token info:id = "RealityKit.HierarchicalFade"
+                float opacity = 0
+            }
+
+            over "Plane"
+            {
+                over "Plane"
+                {
+                    def RealityKitComponent "MeshSorting"
+                    {
+                        rel group = </Root/Model_Sorting_Group>
+                        token info:id = "RealityKit.MeshSorting"
+                        int priorityInGroup = 15
+                    }
+                }
+            }
+        }
+
+        def "card_type" (
+            active = true
+            customData = {
+                float3 rotationEulerHint = (-1.5707964, 0, 0)
+            }
+            references = @Assets/Intro/card.usdc@
+        )
+        {
+            float2 ui:nodegraph:node:pos = (20, 20)
+            int ui:nodegraph:node:stackingOrder = 1
+            quatf xformOp:orient = (0.70710677, -0.7071067, 0, 0)
+            float3 xformOp:scale = (0.99999994, 0.99999994, 0.99999994)
+            float3 xformOp:translate = (0, 1, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            def RealityKitComponent "HierarchicalFade"
+            {
+                uniform token info:id = "RealityKit.HierarchicalFade"
+                float opacity = 0
+            }
+
+            over "M_card"
+            {
+                asset inputs:TextureWithAlpha = @Assets/Intro/textures/OutdoCancer.png@
+            }
+
+            over "Plane"
+            {
+                over "Plane"
+                {
+                    def RealityKitComponent "MeshSorting"
+                    {
+                        rel group = </Root/Model_Sorting_Group>
+                        token info:id = "RealityKit.MeshSorting"
+                        int priorityInGroup = 14
+                    }
+                }
+            }
+        }
+    }
+
+    def RealityKitTimeline "LogoAndType"
+    {
+        reorder nameChildren = ["Track", "Track_2", "Track_1", "Track2"]
+        def RealityKitTrack "Track"
+        {
+            reorder nameChildren = ["Transform_By", "Transform_By_1", "Show32", "Show3_1"]
+            def RealityKitAction "Show32"
+            {
+                string actionKind = "show"
+                int blendLayer = 300
+                double duration = 1
+                uniform token info:id = "DC75F671-8F6B-4779-AE6E-8755FB5836AF"
+                double startTime = 1
+                rel target = </Root/card_Transform/card_logo>
+                float2 ui:nodegraph:node:pos = (-75.9082, 30.15039)
+                int ui:nodegraph:node:stackingOrder = 1
+
+                def RealityKitStruct "timingFunction"
+                {
+                }
+            }
+        }
+
+        def RealityKitTrack "Track2"
+        {
+            def RealityKitAction "Transform_By"
+            {
+                string actionKind = "moveBy"
+                int blendLayer = 300
+                double duration = 5
+                uniform token info:id = "EE77A97C-871C-4752-A392-E5AFD1B80A59"
+                float3 position = (0, 0, 4.2)
+                double startTime = 1
+                rel target = </Root/card_Transform>
+                float2 ui:nodegraph:node:pos = (-75.9082, 30.15039)
+                int ui:nodegraph:node:stackingOrder = 1
+
+                def RealityKitStruct "timingFunction"
+                {
+                    float2 controlPoint1 = (0, 1)
+                    token type = "cubicBezier"
+                }
+            }
+        }
+
+        def RealityKitTrack "Track_1"
+        {
+            def RealityKitAction "Transform_By_1"
+            {
+                string actionKind = "moveBy"
+                int blendLayer = 300
+                double duration = 5
+                uniform token info:id = "EE77A97C-871C-4752-A392-E5AFD1B80A59"
+                float3 position = (0, -1.2, 0)
+                double startTime = 1
+                rel target = </Root/card_Transform/card_type>
+                float2 ui:nodegraph:node:pos = (-55.908203, 50.15039)
+                int ui:nodegraph:node:stackingOrder = 2
+
+                def RealityKitStruct "timingFunction"
+                {
+                    float2 controlPoint1 = (0, 1)
+                    token type = "cubicBezier"
+                }
+            }
+        }
+
+        def RealityKitTrack "Track_2"
+        {
+            def RealityKitAction "Show3_1"
+            {
+                string actionKind = "show"
+                int blendLayer = 300
+                double duration = 1
+                uniform token info:id = "DC75F671-8F6B-4779-AE6E-8755FB5836AF"
+                double startTime = 1
+                rel target = </Root/card_Transform/card_type>
+                float2 ui:nodegraph:node:pos = (-55.908203, 50.15039)
+                int ui:nodegraph:node:stackingOrder = 2
+
+                def RealityKitStruct "timingFunction"
+                {
+                }
+            }
+        }
     }
 }
 

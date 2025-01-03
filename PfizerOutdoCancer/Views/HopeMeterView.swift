@@ -3,8 +3,7 @@ import RealityKit
 import RealityKitContent
 
 struct HopeMeterView: View {
-    @Environment(AppModel.self) private var appModel: AppModel
-    @State private var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    @Environment(AppModel.self) private var appModel
     
     private let lineWidth: CGFloat = 12
     private let fontSize: CGFloat = 75
@@ -46,16 +45,6 @@ struct HopeMeterView: View {
         .frame(width: 160, height: 160)
         .padding(30)
         .background(.clear)
-        .onReceive(timer) { _ in
-            if appModel.gameState.isHopeMeterRunning {
-                if appModel.gameState.hopeMeterTimeLeft > 0 {
-                    appModel.gameState.hopeMeterTimeLeft -= 1
-                } else {
-                    appModel.gameState.isHopeMeterRunning = false
-                    appModel.currentPhase = .completed
-                }
-            }
-        }
     }
 }
 

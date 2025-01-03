@@ -12,7 +12,7 @@ struct ADCOptimizedImmersive: View {
     let headPositioner: Entity = Entity()
 
 
-    @Environment(ADCAppModel.self) var appModel
+    @Environment(AppModel.self) var appModel
     @Environment(ADCDataModel.self) var dataModel
     
     @State var mainEntity: Entity? = nil
@@ -138,6 +138,9 @@ struct ADCOptimizedImmersive: View {
             }
         }
         .installGestures()
+        .onAppear {
+            dismissWindow(id: AppModel.debugNavigationWindowId)
+        }
         .onChange(of: dataModel.adcBuildStep) { oldValue, newValue in
             Task { @MainActor in
                 switch newValue {
@@ -280,7 +283,7 @@ struct ADCOptimizedImmersive: View {
             self.popAudioPlaybackController?.play()
         }
         .task {
-            dismissWindow(id: ADCUIViews.mainViewID)
+            dismissWindow(id: AppModel.mainWindowId)
         }
 
 
@@ -331,12 +334,7 @@ struct ADCOptimizedImmersive: View {
     }
 }
 
-//#Preview {
-//    ADCOptimizedImmersive()
-//        .glassBackgroundEffect()
-//        .environment(ADCAppModel())
-//        .environment(ADCDataModel())
-//}
+
 extension ADCOptimizedImmersive {
     /// Sets up the follow mode by removing the headPositioner and adding the hummingbird.
     func startFollowMode() {

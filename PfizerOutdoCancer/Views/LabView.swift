@@ -132,5 +132,8 @@ struct LabView: View {
         .onAppear {
             dismissWindow(id: AppModel.debugNavigationWindowId)
         }
+        .onDisappear {
+            dismissWindow(id: AppModel.libraryWindowId)
+        }
     }
 }

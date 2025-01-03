@@ -1,9 +1,12 @@
 import SwiftUI
 
 struct ADCBuilderView: View {
-    @Environment(ADCAppModel.self) private var appModel
+    @Environment(AppModel.self) private var appModel
     @Environment(ADCDataModel.self) var dataModel
-    @Environment(AppModel.self) private var dacAppModel
+    @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
+    @Environment(\.openImmersiveSpace) private var openImmersiveSpace
+    @Environment(\.openWindow) private var openWindow
+    @Environment(\.dismissWindow) private var dismissWindow
     
     let titles = ["Antibodies", "Linker", "Payload", "ADC Ready"]
     
@@ -123,7 +126,9 @@ struct ADCBuilderView: View {
                 if dataModel.adcBuildStep == 3 {
                     Button {
                         Task {
-                            await dacAppModel.transitionToPhase(.playing)
+                            openWindow(id: AppModel.debugNavigationWindowId)
+                            await dismissImmersiveSpace()
+                            await appModel.transitionToPhase(.playing)
                         }
                     } label: {
                         Text("Attack Cancer")
@@ -146,8 +151,3 @@ struct ADCBuilderView: View {
     }
 }
 
-//#Preview {
-//    ADCBuilderView()
-//        .environment(ADCAppModel())
-//        .environment(ADCDataModel())
-//}

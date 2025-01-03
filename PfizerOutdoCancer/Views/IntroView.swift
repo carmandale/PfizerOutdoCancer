@@ -16,6 +16,8 @@ import RealityKitContent
 /// A RealityView that creates an immersive lab environment with spatial audio and IBL lighting
 struct IntroView: View {
     @Environment(AppModel.self) private var appModel
+    @Environment(\.dismissWindow) private var dismissWindow
+
     
     /// The root entities for the intro scene.
     let immersiveSceneRoot: Entity = Entity()
@@ -72,6 +74,7 @@ struct IntroView: View {
         }
         .onAppear {
             // Start timer when view appears
+            dismissWindow(id: AppModel.mainWindowId)
             transitionTimer = Timer.scheduledTimer(withTimeInterval: 144, repeats: false) { _ in
                 Task {
                     await appModel.transitionToPhase(.lab)

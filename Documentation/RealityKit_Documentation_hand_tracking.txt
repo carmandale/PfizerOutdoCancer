@@ -1,0 +1,281 @@
+Tracking and visualizing hand movement
+Display the visual representation of the joints of both hands in visionOS.
+Download
+visionOS 2.0+
+Xcode 16.0+
+Overview
+This sample app uses HandTrackingProvider to track hand transforms in visionOS with ARKit. The sample displays a series of white spheres that affix themselves to a person’s hands and remain attached as the hands move, like in the following video:
+
+Play
+The app achieves this effect by creating a hand entity and placing white spheres on each joint, then tracking the person’s hand to update the position and orientation of the hand entity.
+Update entities over time
+The sample uses a custom system and component to handle updates for entities over time:
+import SwiftUI
+import RealityKit
+
+
+struct ClosureComponent: Component {
+    /// The closure that takes the time interval since the last update.
+    let closure: (TimeInterval) -> Void
+
+
+    init (closure: @escaping (TimeInterval) -> Void) {
+        self.closure = closure
+        ClosureSystem.registerSystem()
+    }
+}
+The component contains the closure variable to track the time. On initialization, it registers ClosureSystem into the reality view.
+The ClosureSystem constructs a query using the EntityQuery to retrieve all entities with the ClosureComponent from the scene. Then it passes the delta time, which is the elapsed time since the last update, to the closure variable for each entity:
+import SwiftUI
+import RealityKit
+
+
+struct ClosureSystem: System {
+    /// The query to find entities that contain `ClosureComponent`.
+    static let query = EntityQuery(where: .has(ClosureComponent.self))
+
+
+    init(scene: RealityKit.Scene) {}
+
+
+    // Update entities with `ClosureComponent` at each render frame.
+    func update(context: SceneUpdateContext) {
+        for entity in context.entities(matching: Self.query, updatingSystemWhen: .rendering) {
+            guard let comp = entity.components[ClosureComponent.self] else { continue }
+            comp.closure(context.deltaTime)
+        }
+    }
+}
+Visualize the hand-tracking anchors
+There are a total of 26 hand-tracking anchors for each hand. To identify these anchors, the sample creates a series of Finger and Bone enumerations:
+enum Finger: Int, CaseIterable {
+    case forearm
+    case thumb
+    case index
+    case middle
+    case ring
+    case little
+}
+
+
+enum Bone: Int, CaseIterable {
+    case arm
+    case wrist
+    case metacarpal
+    case knuckle
+    case intermediateBase
+    case intermediateTip
+    case tip
+}
+After setting up the Finger and Bone enumerations, the app creates a Hand structure that initializes by creating a sphere entity for every entry in joints:
+struct Hand {
+    // ...
+
+
+    /// The collection of joints in a hand.
+    static let joints: [(HandSkeleton.JointName, Finger, Bone)] = [
+        // Define the thumb bones.
+        (.thumbKnuckle, .thumb, .knuckle),
+        (.thumbIntermediateBase, .thumb, .intermediateBase),
+        (.thumbIntermediateTip, .thumb, .intermediateTip),
+        (.thumbTip, .thumb, .tip),
+    
+        // ...
+    ]
+
+
+    init() {
+        /// The size of the sphere mesh.
+        let radius: Float = 0.01
+
+
+        /// The material to apply to the sphere entity.
+        let material = SimpleMaterial(color: .white, isMetallic: false)
+
+
+        // For each joint, create a sphere and attach it to the finger.
+        for bone in Self.joints {
+            /// The model entity representation of a hand anchor.
+            let sphere = ModelEntity(
+                mesh: .generateSphere(radius: radius),
+                materials: [material]
+            )
+
+
+            // Add the sphere to the `handRoot` entity.
+            handRoot.addChild(sphere)
+
+
+            // Attach the sphere to the finger.
+            fingers[bone.0] = sphere
+        }
+    }
+}
+Set up the hand tracker
+The sample implements a custom view that tracks a person’s left and right hand with ARKit and HandTrackingProvider and stores them in the latestLeftHand and latestRightHand instance:
+struct HandTrackingView: View {
+    /// The ARKit session for hand tracking.
+    private let arSession = ARKitSession()
+
+
+    /// The provider instance for hand tracking.
+    private let handTracking = HandTrackingProvider()
+
+
+    /// The most recent anchor that the provider detects on the left hand.
+    @State var latestLeftHand: HandAnchor?
+
+
+    /// The most recent anchor that the provider detects on the right hand.
+    @State var latestRightHand: HandAnchor?
+
+
+    // ...
+}
+Create the runSession() function to start an ARKitSession with the HandTrackingProvider:
+func runSession() {
+    Task {
+        do {
+            // Attempt to run the ARKit session with the hand-tracking provider.
+            try await arSession.run([handTracking])
+        } catch let error as ARKitSession.Error {
+            print("The App has encountered an error while running providers: \(error.localizedDescription)")
+        } catch let error {
+            print("The App has encountered an unexpected error: \(error.localizedDescription)")
+        }
+
+
+        // Start collecting each hand-tracking anchor.
+        for await anchorUpdate in handTracking.anchorUpdates {
+            // Check if the anchor is on the left or right hand.
+            switch anchorUpdate.anchor.chirality {
+            case .left:
+                self.latestLeftHand = anchorUpdate.anchor
+            case .right:
+                self.latestRightHand = anchorUpdate.anchor
+            }
+        }
+    }
+}
+After the ARKit session starts, runSession() updates the latestLeftHand and latestRightHand property by checking the anchor updates accordingly.
+The makeHandEntities() function calls runSession() and creates a left and right hand-tracking entity with the Hand structure:
+func makeHandEntities() -> Entity {
+    /// The entity to contain all hand-tracking meshes.
+    let root = Entity()
+
+
+    // Start collecting delta time values to update each sphere transform.
+    ClosureSystem.registerSystem()
+
+
+    // Start the ARKit session.
+    runSession()
+
+
+    /// The left hand.
+    let leftHand = Hand()
+
+
+    /// The right hand.
+    let rightHand = Hand()
+
+
+    // Add the left hand to the root entity.
+    root.addChild(leftHand.handRoot)
+
+
+    // Add the right hand to the root entity.
+    root.addChild(rightHand.handRoot)
+
+
+    // ...
+}
+The app uses anchorFromJointTransform to obtain the current transform of the person’s hand and smoothly apply the transform to the hand entity:
+func makeHandEntities() -> Entity {
+    // ...
+
+
+    root.components.set(ClosureComponent(closure: { deltaTime in
+        // Iterate through all of the anchors on the left hand.
+        if let leftAnchor = self.latestLeftHand, let leftHandSkeleton = leftAnchor.handSkeleton {
+            for (jointName, jointEntity) in leftHand.fingers {
+                /// The current transform of the person's left hand joint.
+                let anchorFromJointTransform = leftHandSkeleton.joint(jointName).anchorFromJointTransform
+
+
+                // Update the joint entity to match the transform of the person's left hand joint.
+                jointEntity.setTransformMatrix(leftAnchor.originFromAnchorTransform * anchorFromJointTransform, relativeTo: nil)
+            }
+        }
+
+
+        // Iterate through all of the anchors on the right hand.
+        if let rightAnchor = self.latestRightHand, let rightHandSkeleton = rightAnchor.handSkeleton {
+            for (jointName, jointEntity) in rightHand.fingers {
+                /// The current transform of the person's right hand joint.
+                let anchorFromJointTransform = rightHandSkeleton.joint(jointName).anchorFromJointTransform
+
+
+                // Update the joint entity to match the transform of the person's right hand joint.
+                jointEntity.setTransformMatrix(rightAnchor.originFromAnchorTransform * anchorFromJointTransform, relativeTo: nil)
+            }
+        }
+    }))
+
+
+    return root
+}
+The function returns the root entity that contains all of the hand-tracking data.
+The sample creates a reality view that calls makeHandEntities() to add hand-tracking entities to the RealityKit content:
+import SwiftUI
+import RealityKit
+import ARKit
+
+
+struct HandTrackingView: View {
+    // ...
+
+
+    /// The main body of the view.
+    var body: some View {
+        RealityView { content in
+            content.add(makeHandEntities())
+        }
+    }
+}
+Add the immersive scene
+The sample app creates a new immersive scene in the app’s entry point:
+import SwiftUI
+
+
+@main
+struct HandTracking: App {
+    var body: some Scene {
+        WindowGroup {
+            MainView()
+        }
+
+
+        // The immersive space that defines `HeadPositionView`.
+        ImmersiveSpace(id: "HandTrackingScene") {
+            HandTrackingEntities()
+        }
+    }
+}
+The MainView launches the immersive space with openImmersiveSpace after it appears:
+import SwiftUI
+
+
+struct MainView: View {
+    /// The environment value to get the instance of the `OpenImmersiveSpaceAction` instance.
+    @Environment(\.openImmersiveSpace) var openImmersiveSpace
+    
+    var body: some View {
+        Text("Hand Tracking Example")
+            .onAppear {
+                Task {
+                    await openImmersiveSpace(id: "HandTrackingScene")
+                }
+            }
+    }
+}

@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ADCLinkerSelectorView: View {
-    @Environment(ADCAppModel.self) var appModel
+    @Environment(AppModel.self) var appModel
     @Environment(ADCDataModel.self) var dataModel
     
     var body: some View {
@@ -76,8 +76,8 @@ struct ADCLinkerSelectorView: View {
         .glassBackgroundEffect()
     }
 }
-#Preview {
-    ADCLinkerSelectorView()
-        .environment(ADCAppModel())
-        .environment(ADCDataModel())
-}
+//#Preview {
+//    ADCLinkerSelectorView()
+//        .environment(ADCAppModel())
+//        .environment(ADCDataModel())
+//}

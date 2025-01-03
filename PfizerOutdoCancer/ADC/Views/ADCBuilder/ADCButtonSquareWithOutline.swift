@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ADCButtonSquareWithOutline: View {
-    @Environment(ADCAppModel.self) var appModel
+    @Environment(AppModel.self) var appModel
     @Environment(ADCDataModel.self) var dataModel
     
     let imageName: String
@@ -43,22 +43,3 @@ struct ADCButtonSquareWithOutline: View {
     
 }
 
-#Preview {
-    VStack {
-        ADCButtonSquareWithOutline(imageName: "CancerImage1", outlineColor: Color.white, description: "A", index: 0, isSelected: {
-            return true
-        }) {
-            print("something")
-        }
-        ADCButtonSquareWithOutline(imageName: "CancerImage1", outlineColor: Color.blue, description: "Moderately stable for the lung's vascular and air-filled environment", index: 1, isSelected: {
-            return false
-        }) {
-            print("something")
-        }
-    }
-    .padding()
-    .frame(width: 400, height: 400)
-    .glassBackgroundEffect()
-    .environment(ADCAppModel())
-    .environment(ADCDataModel())
-}

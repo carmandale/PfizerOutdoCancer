@@ -1,0 +1,413 @@
+AnimationLibraryComponent
+A component that represents a collection of animations that an entity can play.
+iOS 18.0+
+iPadOS 18.0+
+Mac Catalyst 18.0+
+macOS 15.0+
+visionOS 2.0+
+struct AnimationLibraryComponent
+Overview
+You use an AnimationLibraryComponent to access an entity’s animation resources. You can store animations with an entity by packaging them together into a .reality file. You can do this with Reality Composer Pro or by building a custom tool.
+Create an animation library with Reality Composer Pro
+Follow these steps to create an animation library for an entity:
+In the hierarchy view, select the entity you want to add animations to.
+In the inspector, click Add Component and select Animation Library from the list of components.
+Click the Add button (+) and select the USD files with animations.
+A screenshot of Reality Composer Pro showing the Animation Library in the Inspector. It contains two elements representing animations that have been added to the animation library. The animations are named walk and idle.
+Tip
+See Designing RealityKit content with Reality Composer Pro for more details on working with components in Reality Composer Pro.
+At runtime, your app can access and play the animations that the entity stores.
+// Load the entity you want to animate.
+let robot = try await Entity(named: "robot")
+
+
+// Access the animation library associated with the entity.
+let animationLibrary = robot.components[AnimationLibraryComponent.self]
+
+
+// Play the walk animation.
+if let walkAnimation = animationLibrary.animations["walk"] {
+    robot.playAnimation(walkAnimation)
+}
+Create an animation library by building your own tool
+If you need to build a custom tool to create .reality files, you can use RealityKit to programmatically create an animation library by following these steps:
+Load an animation entity with init(named:in:).
+Retrieve the entity’s animation resources from its availableAnimations property.
+Add the animations to an animation library.
+The following example shows how you can set up an animation library:
+// Create an empty animation library component.
+var animationLibrary = AnimationLibraryComponent()
+
+
+// Load the entities containing the animations.
+let entityIdleAnimation = try await Entity(named: "idle")
+let entityWalkAnimation = try await Entity(named: "walk")
+
+
+// Assign the animations to the library by name.
+animationLibrary.animations["idle"] = entityIdleAnimation.availableAnimations.first
+animationLibrary.animations["walk"] = entityWalkAnimation.availableAnimations.first
+After you configure the animation library, you can assign it to an entity and serialize the entity to a file. RealityKit packages the animations for that entity when you save it to a .reality file.
+// Load the entity you want to animate.
+let robot = try! await Entity(named: "robot")
+
+
+// Assign the animation library to the entity.
+robot.components.set(animationLibrary)
+
+
+// Write the entity with its animations to a file.
+robot.write(to: fileURL)
+To play one of the animations in your app, create an entity from the .reality file and then call its playAnimation(_:transitionDuration:startsPaused:) method.
+Topics
+Creating an animation library component
+init()
+Creates an empty animation library.
+init(animations: [String : AnimationResource])
+Creates an animation library from a dictionary that associates an animation’s data with its name.
+init(dictionaryLiteral: (String, AnimationResource)...)
+Creates an animation library from a variadic list of key-value pairs.
+Accessing animations
+var animations: AnimationLibraryComponent.AnimationCollection
+The collection of animations an entity can play.
+var unkeyedResources: [AnimationResource]?
+The library’s animation resources that don’t have a queryable name.
+var defaultAnimation: AnimationResource?
+The default animation resource.
+var defaultKey: String?
+The name of the default animation resource.
+Managing references to animations
+func removeAll(resource: AnimationResource)
+Removes all the component’s references to an animation resource.
+Type Aliases
+typealias Key
+The key type of a dictionary literal.
+typealias Value
+The value type of a dictionary literal.
+Default Implementations
+Component Implementations
+Relationships
+Conforms To
+Component
+ExpressibleByDictionaryLiteral
+See Also
+Animation playback
+class AnimationResource
+An animation for the properties of scenes or entities.
+struct AnimationCollection
+A collection of animations an entity can play.
+enum AnimationEvents
+Notable milestones that the framework signals during animation playback.
+class AnimationPlaybackController
+A controller that manages animation playback.
+enum AnimationRepeatMode
+Options that determine whether an animation replays after completion.
+
+AnimationLibraryComponent.AnimationCollection
+A collection of animations an entity can play.
+iOS 18.0+
+iPadOS 18.0+
+Mac Catalyst 18.0+
+macOS 15.0+
+visionOS 2.0+
+struct AnimationCollection
+Overview
+You use AnimationCollection to access animations in an AnimationLibraryComponent.
+The initializers for AnimationLibraryComponent create an AnimationCollection, so you don’t need to create one directly. You can access the collection with the animations property.
+Topics
+Creating an animation collection
+init(dictionaryLiteral: (String, AnimationResource)...)
+Creates an animation collection from a dictionary literal.
+Inspecting an animation collection
+var count: Int
+The number of animations in the collection.
+var isEmpty: Bool
+A Boolean value that indicates whether the collection is empty.
+Accessing animations
+subscript(String) -> AnimationResource?
+Accesses a single animation in the collection with a key.
+subscript(Range<AnimationLibraryComponent.AnimationCollection.Index>) -> AnimationLibraryComponent.AnimationCollection.SubSequence
+Accesses animations in the collection within an index range.
+subscript(AnimationLibraryComponent.AnimationCollection.Index) -> AnimationLibraryComponent.AnimationCollection.Element
+Accesses a single animation in the collection at an index.
+typealias SubSequence
+A sequence that represents a contiguous subrange of animations in the collection.
+typealias Element
+A key-value pair from the collection consisting of the name of an animation and the animation itself.
+Manipulating indices
+var startIndex: AnimationLibraryComponent.AnimationCollection.Index
+An index to the first animation in the collection.
+var endIndex: AnimationLibraryComponent.AnimationCollection.Index
+An index to the last animation in the collection.
+func index(after: AnimationLibraryComponent.AnimationCollection.Index) -> AnimationLibraryComponent.AnimationCollection.Index
+Returns the position in the collection that follows an index.
+func formIndex(after: inout AnimationLibraryComponent.AnimationCollection.Index)
+Replaces the index with its successor.
+struct Index
+An object that represents a position in the collection.
+Iterating over animations
+func makeIterator() -> AnimationLibraryComponent.AnimationCollection.Iterator
+Returns an iterator over the animations in the collection.
+struct Iterator
+An object to iterate over all animations in the collection.
+Type Aliases
+typealias Indices
+A type that represents the indices that are valid for subscripting the collection, in ascending order.
+Default Implementations
+Collection Implementations
+Sequence Implementations
+Relationships
+Conforms To
+Collection
+Sequence
+See Also
+Animation playback
+class AnimationResource
+An animation for the properties of scenes or entities.
+struct AnimationLibraryComponent
+A component that represents a collection of animations that an entity can play.
+enum AnimationEvents
+Notable milestones that the framework signals during animation playback.
+class AnimationPlaybackController
+A controller that manages animation playback.
+enum AnimationRepeatMode
+Options that determine whether an animation replays after completion.
+
+SampledAnimation
+An animation that cycles through a series of frames at a constant interval.
+iOS 15.0+
+iPadOS 15.0+
+Mac Catalyst 15.0+
+macOS 12.0+
+visionOS
+struct SampledAnimation<Value> where Value : AnimatableData
+Overview
+To specify the data that the animation samples, set one of the frames properties that matches the animated property’s type. For example, set the frames property to interpolate Float values.
+The following code designates a SampledAnimation to animate a propery of type Float by specifying the generic typed syntax. The code queues an array of values: 1.0, 2.0, and 3.0.
+// Define the animation type.
+typealias SampledAnimationType = SampledAnimation<Float>
+
+
+// Define the animated property values.
+let frameArray: [Float] = [1.0, 2.0, 3.0]
+To determine how fast the animation progresses from frame to frame, define this structure’s frameInterval property. The following code specifies a one-second delay between value changes before initializing the animation object.
+// Define a one-second frame interval.
+let interval: TimeInterval = 1
+
+
+// Create the animation.
+let sampleAnim = SampledAnimationType(
+    frames: frameArray,
+    name: "sampledAnim1",
+    frameInterval: interval
+    isAdditive: true,
+    bindTarget: .transform,
+    blendLayer: 100,
+    repeatMode: .autoReverse,
+    fillMode: .backwards,
+    trimStart: 1.0,
+    trimEnd: 10.0,
+    trimDuration: 9.0,
+    offset: 2.0,
+    delay: 1.0,
+    speed: 2.0
+)
+Topics
+Creating an animation
+init(frames: [Value], name: String, tweenMode: TweenMode, frameInterval: Float, isAdditive: Bool, bindTarget: BindTarget?, blendLayer: Int32, repeatMode: AnimationRepeatMode, fillMode: AnimationFillMode, trimStart: TimeInterval?, trimEnd: TimeInterval?, trimDuration: TimeInterval?, offset: TimeInterval, delay: TimeInterval, speed: Float)
+Creates an animation with a collection of frames that represent incremental steps in the overall timeline.
+init(jointNames: [String], frames: [Value], name: String, tweenMode: TweenMode, frameInterval: Float, isAdditive: Bool, isScaleAnimated: Bool, isRotationAnimated: Bool, isTranslationAnimated: Bool, bindTarget: BindTarget?, blendLayer: Int32, repeatMode: AnimationRepeatMode, fillMode: AnimationFillMode, trimStart: TimeInterval?, trimEnd: TimeInterval?, trimDuration: TimeInterval?, offset: TimeInterval, delay: TimeInterval, speed: Float)
+Creates an animation that interpolates between two configurations of the given joints.
+Configuring the animation
+var name: String
+A textual name for the animation.
+var bindTarget: BindTarget
+A textual name that identifies the particular property that animates.
+var blendLayer: Int32
+The order in which the framework composites the animation.
+var jointNames: [String]
+The names of the joints to animate.
+var isRotationAnimated: Bool
+A Boolean value that indicates whether the animation observes rotational changes in the entity’s transform.
+var isScaleAnimated: Bool
+A Boolean value that indicates whether the animation observes changes in the entity’s size.
+var isTranslationAnimated: Bool
+A Boolean value that indicates whether the animation observes translational changes in the entity’s transform.
+var additive: Bool
+A Boolean value that indicates whether the animation builds on the current state of the target entity or resets the state before running.
+var tweenMode: TweenMode
+An option that determines how animation frames transition.
+Defining frames data
+var frames: [JointTransforms]
+An array of joint transforms in which each element represents a discrete state of the target entity at a given point in the animation’s timeline.
+var frames: [Transform]
+An array of transforms in which each element represents a discrete state of the target entity at a given point in the animation’s timeline.
+var frames: [Double]
+An array of double-precision values in which each element represents a discrete state of the animated property at a given point in the animation’s timeline.
+var frames: [Float]
+An array of floating-point values in which each element represents a discrete state of the animated property at a given point in the animation’s timeline.
+var frames: [simd_quatf]
+An array of quaternions in which each element represents a discrete state of the animated property at a given point in the animation’s timeline.
+var frames: [SIMD2<Float>]
+An array of floating-point pairs in which each element represents a discrete state of the animated property at a given point in the animation’s timeline.
+var frames: [SIMD3<Float>]
+An array of floating-point triplets in which each element represents a discrete state of the animated property at a given point in the animation’s timeline.
+var frames: [SIMD4<Float>]
+An array of floating-point quadruples in which each element represents a discrete state of the animated property at a given point in the animation’s timeline.
+Timing the animation
+var frameInterval: Float
+The duration within the animation timeline for each frame in the frames array.
+var start: TimeInterval
+An integer multiple of the frame interval at which the animation plays.
+var end: TimeInterval
+An integer multiple of the frame interval at which the animation stops.
+var speed: Float
+A factor that changes the animation’s rate of playback.
+var delay: TimeInterval
+An amount of time that elapses before the animation plays.
+var duration: TimeInterval
+The total playback time of the animation.
+var offset: TimeInterval
+The time, in seconds, at which the animation begins within the duration.
+var trimDuration: TimeInterval?
+An optional duration that overrides the calculated duration.
+var trimStart: TimeInterval?
+The optional time, in seconds, at which the animation plays.
+var trimEnd: TimeInterval?
+The optional time, in seconds, at which the animation stops.
+func trimmed(start: TimeInterval?, end: TimeInterval?, duration: TimeInterval?) -> Self
+Edits the animation duration according to the specified time.
+Repeating animation playback
+var repeatMode: AnimationRepeatMode
+An option that determines how the animation repeats.
+var fillMode: AnimationFillMode
+An option that determines which data displays outside of the normal duration.
+func repeated(count: TimeInterval) -> Self
+Repeats an animation the number of times specified by an irrational number.
+func repeated(count: Int) -> Self
+Repeats an animation the number of times specified by a whole number.
+func repeatingForever() -> Self
+Repeats the animation infinitely.
+Initializers
+init(weightNames: [String], frames: [Value], name: String, tweenMode: TweenMode, frameInterval: Float, isAdditive: Bool, bindTarget: BindTarget?, blendLayer: Int32, repeatMode: AnimationRepeatMode, fillMode: AnimationFillMode, trimStart: TimeInterval?, trimEnd: TimeInterval?, trimDuration: TimeInterval?, offset: TimeInterval, delay: TimeInterval, speed: Float)
+Creates an animation that blends between a configuration of blend targets.
+Instance Properties
+var frames: [BlendShapeWeights]
+An array of weights in which each element represents a discrete state of the target entity at a given point in the animation’s timeline.
+var weightNames: [String]
+The names of the weights to animate.
+Default Implementations
+AnimationDefinition Implementations
+Relationships
+Conforms To
+AnimationDefinition
+See Also
+Animation definitions
+enum TweenMode
+Options that determine whether an animation switches between frames gradually or abruptly.
+struct FromToByAnimation
+An animation that starts, stops, or increments by a specific value.
+struct AnimationTimingFunction
+The pacing of an animation transition.
+struct AnimationView
+An animation that represents a variation of another animation.
+struct OrbitAnimation
+An animation that revolves an entity around its origin.
+protocol AnimationDefinition
+The configuration, including target object, timeframe, and visual semantics, of an animation.
+struct AnimationFillMode
+Options that determine which animation frames display outside of the normal duration.
+struct AnimationGroup
+A collection of animations that play simultaneously.
+struct AnimationHandoffType
+The type of handoff the play animation method performs between a current animation and a new animation.
+
+OrbitAnimation
+An animation that revolves an entity around its origin.
+iOS 15.0+
+iPadOS 15.0+
+Mac Catalyst 15.0+
+macOS 12.0+
+visionOS
+struct OrbitAnimation
+Overview
+This class moves an entity in a circular path by gradually adjusting its local transform. The animation sets the entity’s initial position with startTransform and rotates it around the point (0, 0, 0). The axis specifies which cartesian axis around which to rotate. The full orbit completes after duration lapses.
+If the target entity contains child entities, the target entity orbits the children.
+Revolve an entity around its origin
+The following code creates an animation that orbits an entity around the y-axis 3 times over 6 seconds.
+let yAxis: SIMD3<Float> = [0, 1, 0]
+let startingPosition: SIMD3<Float> = [0.25, 0, 0]
+
+
+let orbit = OrbitAnimation(
+    name: "orbit",
+    duration: 6,
+    axis: yAxis,
+    startTransform: Transform(translation: startingPosition),
+    spinClockwise: false,
+    orientToPath: true,
+    rotationCount: 3,
+    bindTarget: .transform
+)
+The newly created animation can be trimmed after creation, to last only 4 seconds.
+// Create an animation clip that skips the first two seconds.
+let trimmed = orbit.trimmed(start: 2)
+Use generate(with:) to convert OrbitAnimation to an AnimationResource that can be applied to your entity with playAnimation(_:transitionDuration:blendLayerOffset:separateAnimatedValue:startsPaused:clock:).
+
+Play
+Topics
+Creating an animation
+init(name: String, duration: TimeInterval, axis: SIMD3<Float>, startTransform: Transform, spinClockwise: Bool, orientToPath: Bool, rotationCount: Float, bindTarget: BindTarget?, blendLayer: Int32, repeatMode: AnimationRepeatMode, fillMode: AnimationFillMode, isAdditive: Bool, trimStart: TimeInterval?, trimEnd: TimeInterval?, trimDuration: TimeInterval?, offset: TimeInterval, delay: TimeInterval, speed: Float)
+Creates an animation that revolves an entity around its origin.
+Configuring the animation
+var startTransform: Transform
+The pose of the orbiting object at the start of the animation.
+var axis: SIMD3<Float>
+A 3D vector that points in the direction of the axis around which to rotate.
+var name: String
+A textual name for the animation.
+var bindTarget: BindTarget
+A textual name that identifies the particular property that animates.
+var blendLayer: Int32
+The order in which the framework composites the animation.
+var rotationCount: Float
+The number of times to rotate the target entity before stopping.
+var spinClockwise: Bool
+A Boolean value that indicates whether the object orbits the center point in the clockwise direction.
+var orientToPath: Bool
+A Boolean value that indicates whether the orbiting object updates its orientation during the animation to orient itself along the rotation path.
+var additive: Bool
+A Boolean value that indicates whether the animation builds on the current state of the target entity or resets the state before running.
+Timing the animation
+var speed: Float
+A factor that changes the animation’s rate of playback.
+var delay: TimeInterval
+An amount of time that lapses before the animation plays.
+var duration: TimeInterval
+The elapsed time for one complete rotation.
+var offset: TimeInterval
+The time, in seconds, at which the animation begins within the duration.
+var trimDuration: TimeInterval?
+An optional duration that overrides the calculated duration.
+var trimStart: TimeInterval?
+The optional time, in seconds, at which the animation plays.
+var trimEnd: TimeInterval?
+The optional time, in seconds, at which the animation stops.
+func trimmed(start: TimeInterval?, end: TimeInterval?, duration: TimeInterval?) -> Self
+Edits the animation duration according to the specified time.
+Repeating animation playback
+var repeatMode: AnimationRepeatMode
+An option that determines how the animation repeats.
+var fillMode: AnimationFillMode
+An option that determines which data displays outside of the normal duration.
+func repeated(count: TimeInterval) -> Self
+Repeats an animation the number of times specified by an irrational number.
+func repeated(count: Int) -> Self
+Repeats an animation the number of times specified by a whole number.
+func repeatingForever() -> Self
+Repeats the animation infinitely.
+Default Implementations
+AnimationDefinition Implementations
+Relationships
+Conforms To
+AnimationDefinition

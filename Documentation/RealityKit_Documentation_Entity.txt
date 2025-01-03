@@ -1,0 +1,211 @@
+Class
+Entity
+An element of a RealityKit scene to which you attach components that provide appearance and behavior characteristics for the entity.
+iOS 13.0+
+iPadOS 13.0+
+Mac Catalyst 13.0+
+macOS 10.15+
+visionOS
+@MainActor @preconcurrency
+class Entity
+Mentioned in
+Loading Reality Composer files manually without generated code
+Improving the Accessibility of RealityKit Apps
+Adding interactivity to behaviors
+Manipulating Reality Composer scenes from code
+Arranging elements in a scene
+Overview
+You create and configure entities to embody objects that you want to place in the real world in an AR app. You do this by adding Entity instances to the Scene instance associated with an ARView.
+RealityKit defines a few concrete subclasses of Entity that provide commonly used functionality. For example, you typically start by creating an instance of AnchorEntity to anchor your content, and add the anchor to a scene’s anchors collection. You might then instantiate a ModelEntity to represent a physical object in the scene, and add that as a child entity to the anchor. You can also create custom entities, and add them either to an anchor, or as children of another entity.
+Block diagram showing how entity hierarchies, composed of different kinds
+You can load predefined entities or a hierarchy of entities from your app’s bundle, or from a file on disk, using the methods in Stored entities. Alternatively, you can create entities programmatically.
+Entities contain components (instances conforming to the Component protocol) that provide appearance and behaviors for the entity. For example, the Transform component contains the scale, rotation, and translation information needed to position an entity in space. You store components in the entity’s components collection, which can hold exactly one of any component type. It makes sense to have only a single Transform component, one ModelComponent (specifying the visual appearance of the entity), and so on.
+Diagram showing the components present in the base entity class, as well
+All entities inherit a few common components from the Entity base class: the Transform component for spatial positioning, and SynchronizationComponent, which enables synchronization of the entity among networked peers. Specific types of entities define additional behaviors. For example, the model entity has components for visual appearance (ModelComponent), collision detection (CollisionComponent), and physics simulations (PhysicsBodyComponent and PhysicsMotionComponent).
+
+
+init()
+Creates a new entity.
+iOS 13.0+
+iPadOS 13.0+
+Mac Catalyst 13.0+
+macOS 10.15+
+visionOS
+@MainActor @preconcurrency
+required init()
+
+Initializer
+init(components:)
+Creates an entity with one or multiple components.
+iOS 13.0+
+iPadOS 13.0+
+Mac Catalyst 13.0+
+macOS 10.15+
+visionOS 1.0+
+@MainActor @preconcurrency
+convenience init<each T>(components: repeat each T) where repeat each T : Component
+Parameters
+components
+A comma-delimited list of components to add to the entity.
+Discussion
+The components you specify in this initializer override any default components of the same type that RealityKit creates the entity with, such as Transform.
+For example, you can use this initializer to create an entity that has a SpotLightComponent:
+let spotlightEntity = Entity(components: SpotLightComponent())
+You can also create an entity with multiple initial components, such as a ModelComponent and a Transform:
+let sphereEntity = Entity(
+    components: ModelComponent(mesh: .generateBox(size: 1), materials: []),
+                Transform(translation: [0, 0.5, 0])
+)
+Note
+You can change any of the entity’s components at any time by modifying the entity’s components set.
+
+
+Initializer
+init(components:)
+Creates an entity with multiple components.
+iOS 13.0+
+iPadOS 13.0+
+Mac Catalyst 13.0+
+macOS 10.15+
+visionOS 1.0+
+@MainActor @preconcurrency
+convenience init(components: [any Component])
+Parameters
+components
+The components to add to the entity.
+Discussion
+This initializer adds the contents of components to the new Entity. The components you specify in this initializer override any default components of the same type that RealityKit creates the entity with, such as Transform.
+For example, you can use this initializer to create an entity that anchors to the floor, displays a 1x1x1m box, and has a y-position of 0.5:
+let floorCubeComponents = [
+    AnchoringComponent(.plane(.horizontal, classification: .floor, minimumBounds: [1, 1])),
+    ModelComponent(mesh: .generateBox(size: 1), materials: []),
+    Transform(translation: [0, 0.5, 0])
+]
+
+
+let floorCubeEntity = Entity(components: floorCubeComponents)
+Note
+You can change any of the entity’s components at any time by modifying the entity’s components set.
+
+
+Instance Method
+clone(recursive:)
+Duplicates an entity to create a new entity.
+iOS 13.0+
+iPadOS 13.0+
+Mac Catalyst 13.0+
+macOS 10.15+
+visionOS
+@MainActor @preconcurrency
+func clone(recursive: Bool) -> Self
+Parameters
+recursive
+A Boolean that you set to true to recursively copy all the children of the entity. Otherwise, no descendants are copied.
+Return Value
+The duplicate.
+Mentioned in
+Manipulating Reality Composer scenes from code
+Discussion
+All component data is cloned automatically. If you clone an entity that stores custom data that’s not part of a component, override the didClone(from:) method to copy that data manually.
+
+Instance Method
+didClone(from:)
+Tells a newly cloned entity that cloning is complete.
+iOS 13.0+
+iPadOS 13.0+
+Mac Catalyst 13.0+
+macOS 10.15+
+visionOS
+@MainActor @preconcurrency
+func didClone(from source: Entity)
+Parameters
+source
+The entity from which the cloned entity was copied.
+Discussion
+This method clones all component data automatically. When you clone an entity that stores custom data that’s not part of a component, override the didClone(from:) method to copy that data manually after the clone finishes.
+
+Article
+Loading entities from a file
+Retrieve an entity from storage on disk using a synchronous or an asynchronous load operation.
+Overview
+Use a load method to bring an entity stored in a file into your app. You can load USD files (.usd, .usda, .usdc, .usdz) and Reality files (.reality) this way. You get a Reality file by exporting a project from the Reality Composer app, as described in Creating 3D Content with Reality Composer.
+Load an entity hierarchy synchronously
+Use the load(named:in:) method to load an entity hierarchy from a USD or Reality file stored in a bundle. This method returns only after the operation completes. Omit the bundle parameter from the method call to load from the app’s main bundle:
+let entity = try? Entity.load(named: "MyEntity") 
+To load an entity stored at a specific location in the file system, create a file URL and use the load(contentsOf:withName:) method instead:
+let url = URL(fileURLWithPath: "path/to/MyEntity.usdz")
+let entity = try? Entity.load(contentsOf: url)
+The load methods preserve the entity hierarchy in the loaded file and return the root entity in the scene that the USD or Reality file contains. The entity can have any number of descendant entities that you access using the methods of the HasHierarchy protocol. Accessing entities this way enables you to store and import sophisticated compositions from a single asset.
+Load an entity hierarchy asynchronously
+Synchronous load operations block the thread on which you call them. To maintain a smooth user interface, use an asynchronous load instead. The entity initializer has an asynchronous overload. For example, load from a bundle asynchronously by calling the method:
+_ = try! await Entity(named: "MyEntity")   // From the app's main bundle.
+Call the asynchronous version of these initializers by prefacing the call with the await keyword from asynchronous methods or from inside of a Task These overloads give you access to the full set of features Concurrency provides.
+Load an anchor entity
+When you want to load a composition rooted by an anchor entity, you can instead use the loadAnchor(named:in:) method, or one of its siblings. These methods behave like the related load methods, except that they specifically return an AnchorEntity instance that you can add to your scene:
+if let anchor = try? Entity.loadAnchor(named: "MyEntity") {
+    arView.scene.addAnchor(anchor)
+}
+As with the load methods, the load anchor methods preserve the entity hierarchy.
+Note
+The load anchor methods work only for Reality files.
+Load a flattened model or body-tracked entity
+To load a model or body-tracked entity with internal structure that you don’t need to access, use the loadModel(named:in:) or the loadBodyTracked(named:in:) method, respectively. These methods and their siblings flatten the entity hierarchy into a single entity cast either as a ModelEntity or BodyTrackedEntity. A flattened entity can be easier to work with when you don’t need access to the entity’s details.
+Note
+The load model and body-tracked methods work only for USD files.
+
+API Collection
+Stored entities
+Manage entities that you store as assets on disk.
+Overview
+If you bundle 3D assets with your app, or download them from the network into local file storage, you need a way to load them at runtime. RealityKit provides a collection of methods that you use to load USD and Reality files into Entity instances.
+Topics
+Essentials
+Loading entities from a file
+Retrieve an entity from storage on disk using a synchronous or an asynchronous load operation.
+class LoadRequest
+A resource loader that acts as a publisher.
+Deprecated
+Loading an entity hierarchy
+static func load(named: String, in: Bundle?) throws -> Entity
+Returns an entity by synchronously loading it from a bundle.
+static func load(contentsOf: URL, withName: String?) throws -> Entity
+Returns an entity by synchronously loading it from a file URL.
+static func loadAsync(named: String, in: Bundle?) -> LoadRequest<Entity>
+Returns a load request that creates an entity by asynchronously loading it from a bundle.
+Deprecated
+static func loadAsync(contentsOf: URL, withName: String?) -> LoadRequest<Entity>
+Returns a load request that creates an entity by asynchronously loading it from a file URL and preserving the entity’s hierarchy.
+Deprecated
+Loading an anchor entity
+static func loadAnchor(named: String, in: Bundle?) throws -> AnchorEntity
+Synchronously loads an anchor entity from a bundle.
+static func loadAnchor(contentsOf: URL, withName: String?) throws -> AnchorEntity
+Synchronously loads an anchor entity from a file URL.
+static func loadAnchorAsync(named: String, in: Bundle?) -> LoadRequest<AnchorEntity>
+Asynchronously loads an anchor entity from a bundle.
+Deprecated
+static func loadAnchorAsync(contentsOf: URL, withName: String?) -> LoadRequest<AnchorEntity>
+Asynchronously loads an anchor entity from a file URL.
+Deprecated
+Loading a flattened model entity
+static func loadModel(named: String, in: Bundle?) throws -> ModelEntity
+Synchronously loads a model entity from a bundle.
+static func loadModel(contentsOf: URL, withName: String?) throws -> ModelEntity
+Synchronously loads a model entity from a file URL.
+static func loadModelAsync(named: String, in: Bundle?) -> LoadRequest<ModelEntity>
+Asynchronously loads a model entity from a bundle.
+Deprecated
+static func loadModelAsync(contentsOf: URL, withName: String?) -> LoadRequest<ModelEntity>
+Returns a load request that creates a model entity by asynchronously loading it from a file URL and flattening the model entity’s hierarchy.
+Deprecated
+Loading a flattened body-tracked entity
+static func loadBodyTracked(named: String, in: Bundle?) throws -> BodyTrackedEntity
+Synchronously loads a body-tracked entity from a bundle.
+static func loadBodyTracked(contentsOf: URL, withName: String?) throws -> BodyTrackedEntity
+Synchronously loads a body-tracked entity from a file URL.
+static func loadBodyTrackedAsync(contentsOf: URL, withName: String?) -> LoadRequest<BodyTrackedEntity>
+Asynchronously loads a body-tracked entity from a file URL .
+static func loadBodyTrackedAsync(named: String, in: Bundle?) -> LoadRequest<BodyTrackedEntity>
+Asynchronously loads a body-tracked entity from a bundle.
+Deprecated
+

@@ -7,7 +7,8 @@ import ARKit
 extension AppModel {
     nonisolated static let mainWindowId = "main"
     nonisolated static let introWindowId = "intro"
-    nonisolated static let libraryWindowId = "Library"
+    nonisolated static let libraryWindowId = "library"
+    nonisolated static let builderWindowId = "builder"
     nonisolated static let debugNavigationWindowId = "DebugNavigation"
     nonisolated static let gameCompletedWindowId = "Completed"
     
@@ -27,7 +28,7 @@ enum AppPhase: String, CaseIterable, Codable, Sendable, Equatable {
     case error
     
     var needsImmersiveSpace: Bool {
-        return self != .loading && self != .error
+        return self != .loading && self != .error && self != .building
     }
     
     var shouldKeepPreviousSpace: Bool {
@@ -51,7 +52,8 @@ enum AppPhase: String, CaseIterable, Codable, Sendable, Equatable {
         case .intro: return AppModel.introWindowId
         case .completed: return AppModel.gameCompletedWindowId
         case .lab: return AppModel.libraryWindowId
-        case .building, .playing, .error: return ""
+        case .building: return AppModel.builderWindowId
+        case .playing, .error: return ""
         }
     }
 }
@@ -69,6 +71,7 @@ final class AppModel {
     var isLibraryWindowOpen = false
     var isIntroWindowOpen = false
     var isMainWindowOpen = false
+    var isBuilderWindowOpen = false
     var isLoadingWindowOpen = false
 
     // MARK: - Immersion Style
@@ -115,6 +118,51 @@ final class AppModel {
         return currentImmersiveSpace != nil
     }
     
+    enum ImmersiveSpaceState {
+        case closed
+        case inTransition
+        case open
+    }
+    
+    var immersiveSpaceState: ImmersiveSpaceState = .closed
+    
+    // MARK: - Hope Meter Management
+    @ObservationIgnored private var hopeMeterTimer: Timer?
+    
+    func startHopeMeter() {
+        print("🕒 Starting Hope Meter")
+        stopHopeMeter() // Ensure any existing timer is cleaned up
+        
+        gameState.hopeMeterTimeLeft = gameState.hopeMeterDuration // Reset timer
+        gameState.isHopeMeterRunning = true
+        
+        hopeMeterTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+            guard let self = self else { return }
+            
+            Task { @MainActor in
+                if self.gameState.hopeMeterTimeLeft > 0 {
+                    self.gameState.hopeMeterTimeLeft -= 1
+                } else {
+                    self.stopHopeMeter()
+                    await self.transitionToPhase(.completed)
+                }
+            }
+        }
+    }
+    
+    func stopHopeMeter() {
+        print("🛑 Stopping Hope Meter")
+        hopeMeterTimer?.invalidate()
+        hopeMeterTimer = nil
+        gameState.isHopeMeterRunning = false
+    }
+    
+    deinit {
+        // Since we're on MainActor, we can directly invalidate the timer
+        hopeMeterTimer?.invalidate()
+        hopeMeterTimer = nil
+    }
+    
     // MARK: - Initialization
     init() {
         self.handTracking = HandTrackingViewModel()
@@ -142,7 +190,7 @@ final class AppModel {
         
         currentImmersiveSpace = newPhase.spaceId
         // Add delay to ensure space is loaded before allowing another transition
-        try? await Task.sleep(for: .seconds(0.5))
+//        try? await Task.sleep(for: .seconds(0.5))
         isTransitioning = false
     }
 }

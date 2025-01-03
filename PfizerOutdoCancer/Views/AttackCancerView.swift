@@ -139,6 +139,10 @@ struct AttackCancerView: View {
             let maxCells = appModel.gameState.maxCancerCells
             appModel.gameState.spawnCancerCells(in: root, from: cancerCellTemplate, count: maxCells)
             setupUIAttachments(in: root, attachments: attachments, count: maxCells)
+            
+            // Start the hope meter once everything is set up
+            print("🎮 Game Content Setup Complete - Starting Hope Meter")
+            appModel.startHopeMeter()
         }
     }
     

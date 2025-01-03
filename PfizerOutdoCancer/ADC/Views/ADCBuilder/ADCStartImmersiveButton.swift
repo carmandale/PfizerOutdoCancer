@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ADCStartImmersiveButton: View {
-    @Environment(ADCAppModel.self) private var appModel
+    @Environment(AppModel.self) private var appModel
     @Environment(ADCDataModel.self) var dataModel
     
     @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
@@ -15,7 +15,7 @@ struct ADCStartImmersiveButton: View {
                     case .open:
 //                        dataModel.status = .bloodVessel
                         appModel.immersiveSpaceState = .inTransition
-                        openWindow(id: ADCUIViews.mainViewID)
+                        openWindow(id: AppModel.builderWindowId)
                         await dismissImmersiveSpace()
                         // Don't set immersiveSpaceState to .closed because there
                         // are multiple paths to ImmersiveView.onDisappear().
@@ -24,7 +24,7 @@ struct ADCStartImmersiveButton: View {
                     case .closed:
                         appModel.immersiveSpaceState = .inTransition
 //                        dataModel.status = .bloodVesselGame
-                        switch await openImmersiveSpace(id: ADCUIViews.immersiveSpaceID) {
+                    switch await openImmersiveSpace(id: AppModel.buildingSpaceId) {
                             case .opened:
                                 // Don't set immersiveSpaceState to .open because there
                                 // may be multiple paths to ImmersiveView.onAppear().

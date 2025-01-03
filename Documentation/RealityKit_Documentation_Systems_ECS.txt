@@ -1,0 +1,303 @@
+Systems
+Apply behaviors and physical effects to the entities in a RealityKit scene.
+Overview
+In the Entity-Component-System (ECS) paradigm, the behavior of entities is often implemented using systems. A System has an update(context:) method that fires every frame and applies its logic to all entities that meet certain criteria. For example, a game might have a system that controls applying damage to entities from different sources. The same system might make changes to the player’s character, non-player characters, and even inanimate objects that can be damaged or broken. Systems typically work together with one or more components. The system’s component both identifies which entities the system effects and also stores any per-entity data the system needs to work. A damage system, for example, might work with a damage component that stores health or hit points. To make an entity damageable, all you have to do is add the damage component to it, which can be done at runtime. The damage system queries for entities that contain the damage component and applies the appropriate health or hit point change to each of them.
+In traditional object-oriented design, the behavior of an object is usually implemented by writing methods on each object. Using that approach, the code to apply damage to an entity would reside on the entity subclasses. There are two drawbacks to the traditional approach when it comes to the design of games and other immersive experiences.
+First, if multiple objects require the same behavior, but are implemented as different entity classes without a common ancestor other than Entity, that logic has to be duplicated on all the objects and the duplicated code has to be kept in sync as it changes.
+Second, having to call behavior methods individually on every relevant entity in the scene can negatively impact performance. By placing logic that potentially effects multiple types of entities into a single System, we reduce the overhead required to implement the logic. It also allows us to do any per-frame calculations that are the same for all entities only once per frame, eliminating the need to do those calculations for every entity in the scene that can be damaged.
+
+Implementing systems for entities in a scene
+Apply behaviors and physical effects to the objects and characters in a RealityKit scene with the Entity Component System (ECS).
+Overview
+You can use RealityKit’s Entity Component System (ECS) to define and apply logic for entities in a scene. Systems are especially useful for implementing behavior that affects multiple entities in your scene, like the flocking behavior for a swarm of entities representing birds. In a traditional object-oriented approach, you implement an entity’s behavior by writing code on the entity class, which runs on every instance of that class on every update. That approach can be inefficient for scene with many entities, because RealityKit calls each entity’s update method on every rendering engine tick. That is especially true if the logic for one entity depends on a state contained in other entities.
+With systems, RealityKit calls only one update method as often as defined by the updatingSystemWhen parameter of entities(matching:updatingSystemWhen:), rather than calling an update method every scene update for each entity. A system iterates through all relevant entities every scene update and makes updates to their state as needed. Here’s how to implement your own systems.
+Create a system class
+Create a system by a creating a class that conforms to the System protocol and implements two methods: init(scene:) and update(context:). Perform the setup for your system in init(scene:), or add an empty implementation if your system doesn’t need any setup. Add the logic needed to run your system in update(context:), which RealityKit calls every frame automatically.
+class MySystem: System {
+    required init(scene: Scene) { 
+        // Perform required initialization or setup.
+    }
+
+
+    func update(context: SceneUpdateContext) {
+        // RealityKit automatically calls this on
+        // every update for every scene.
+    }
+}
+Warning
+Don’t do any unnecessary work in the update method, as it is called very frequently. If your update(context:) method takes a long time to return, it can negatively impact your app’s frame rate.
+Retrieve entities with an entity query
+To efficiently retrieve entities from a scene, use an EntityQuery, which you can use to fetch all entities, or just a subset of entities relevant to your system. While some systems operate on every entity in the scene, most only operate on a defined subset, often based on the entities’ components. A physics simulation system, for example, only needs to operate on entities that participate in the scene’s physics simulation and a rendering system only needs to operate on entities that are visible. To retrieve a subset of your scene’s entities, create a QueryPredicate with your criteria and pass the predicate into the initializer when creating your entity query.
+Create your query as a static property of your system unless your query criteria changes between update calls. If the criteria changes between update calls, create the query in your update method. Use the entity query with entities(matching:updatingSystemWhen:) in your update(context:) method to iterate over all the entities that your system depends on.
+struct MyComponent: Component {
+    // Optionally, put any needed state here.
+}
+
+
+class MySystem: System {
+
+
+    // Define a query to return all entities with a MyComponent.
+    private static let query = EntityQuery(where: .has(MyComponent.self))
+
+
+    // Initializer is required. Use an empty implementation if there's no setup needed.
+    required init(scene: Scene) { }
+
+
+    // Iterate through all entities containing a MyComponent.
+    func update(context: SceneUpdateContext) {
+        for entity in context.entities(
+            matching: Self.query,
+            updatingSystemWhen: .rendering
+        ) {
+            // Make per-update changes to each entity here.
+        }
+    }
+}
+Create and add components in Reality Composer Pro
+If you use a Reality Composer Pro package in your project, you can create new components within the editor by selecting an entity, clicking the Add Component button, and then selecting the New Component option. This creates a Swift template for the new component, which you can then edit in Xcode.
+To add a custom component onto an entity, define the custom component in a file in your Reality Composer Pro package. Select the entity you want to add the custom component to, click the Add Component button, then select the name of your custom component. This entity then responds and behaves according to the same systems that you wrote to query for the custom component.
+Specify system dependencies
+If a system relies on another system to function, or if you need to specify the update order for multiple systems, declare a dependencies array in your system. To tell RealityKit that a dependency must update before your system, use the SystemDependency.before(_:) enumeration case, passing the other system as a parameter. For dependencies that must update after your system, use SystemDependency.after(_:), instead.
+class SystemB: RealityKit.System {
+    static var dependencies: [SystemDependency] { 
+        [.after(SystemA.self),        // Run SystemB after SystemA.
+         .before(SystemC.self)]       // Run SystemB before SystemC.
+     }
+    // ... 
+}
+Register the system
+You don’t create System instances manually. RealityKit creates them for you, but only if you tell RealityKit about your system by calling its registerSystem() method before displaying your app’s ARView. Once you’ve registered your system, RealityKit automatically creates an instance on your system for every active scene, then repeatedly calls its update(context:) method every scene update.
+MySystem.registerSystem()
+
+RealityKit is a powerful framework for creating spatial experiences in visionOS apps, utilizing an Entity Component System (ECS) architecture. Here's an overview of key concepts and patterns for RealityKit and visionOS app development:
+
+## RealityKit Overview
+
+RealityKit is designed specifically for augmented reality and 3D content, offering features like photo-realistic rendering, animations, physics simulations, and spatial audio[3]. It integrates seamlessly with visionOS, allowing developers to create immersive experiences across windows, volumes, and spaces[7].
+
+## Entity Component System (ECS)
+
+The core of RealityKit's architecture is the Entity Component System:
+
+### Entities
+
+Entities are unique identifiers that represent objects in 3D space[5]. They can:
+- Be positioned in the scene
+- Have parent-child relationships
+- Contain multiple components
+
+### Components
+
+Components are plain data types without behavior[6]. They store state and configuration data for entities. Key points about components:
+- Entities can have multiple components
+- Only one component of each type per entity
+- Components can be added or removed dynamically
+
+### Systems
+
+Systems are functions that operate on entities with specific sets of components[6]. They:
+- Run on every frame
+- Use EntityQuery to find relevant entities
+- Apply behavior based on component data
+
+## RealityView
+
+RealityView is a SwiftUI view for integrating 3D content in visionOS apps[4]. It allows you to:
+- Load and display 3D models
+- Add and manipulate entities
+- Update the scene in response to state changes
+
+Example usage:
+
+```swift
+RealityView { content in
+    if let model = try? await ModelEntity(named: "GlassCube") {
+        content.add(model)
+        model.position = [0, -0.2, 0]
+    }
+} update: { content in
+    if let model = content.entities.first {
+        model.transform.scale = [scale, scale, scale]
+    }
+}
+```
+
+## State Management
+
+For state management in visionOS apps:
+
+1. Use SwiftUI's state management tools (@State, @Binding, ObservableObject) for UI-related state[7].
+
+2. For RealityKit-specific state:
+   - Store data in components
+   - Use systems to update state and apply behavior
+   - Leverage RealityView's update closure for state-driven scene updates
+
+## Best Practices
+
+1. Separate data (components) from behavior (systems) for better reusability[6].
+
+2. Use EntityQuery to efficiently find and operate on relevant entities[5].
+
+3. Leverage RealityKit's built-in components and systems for common functionality like physics and animations[3].
+
+4. Create custom components and systems for app-specific behavior[7].
+
+5. Combine RealityKit with SwiftUI for a seamless blend of 2D and 3D content[7].
+
+By following these patterns and leveraging RealityKit's ECS architecture, you can create efficient, modular, and immersive visionOS apps. Remember to explore Apple's documentation and WWDC sessions for more in-depth information on specific topics[1][2][3][7].
+
+Citations:
+[1] https://developer.apple.com/documentation/realitykit
+[2] https://github.com/divalue/Awesome-RealityKit
+[3] https://developer.apple.com/augmented-reality/realitykit/
+[4] https://www.createwithswift.com/introduction-to-realityview/
+[5] https://github.com/daniloc/MyFirstECS
+[6] https://github.com/SanderMertens/ecs-faq
+[7] https://developer.apple.com/videos/play/wwdc2023/10080/
+
+
+RealityKit's Entity Component System (ECS) architecture provides a robust framework for handling state in visionOS apps. Here's an overview of the key concepts and mechanisms for state handling in RealityKit ECS:
+
+## Components for State Storage
+
+Components are the primary means of storing state in RealityKit's ECS:
+
+- Components are plain data types that store state and configuration data for entities[1].
+- They can be added or removed from entities dynamically, allowing for flexible state management[1].
+- Each entity can have multiple components, but only one component of each type[1].
+
+## Custom Components
+
+You can create custom components to store app-specific state:
+
+```swift
+struct CustomStateComponent: Component {
+    var someState: Int
+    var anotherState: String
+}
+```
+
+## Transient Components
+
+RealityKit 2 introduced TransientComponent for temporary state:
+
+- Useful for state that shouldn't be inherited when cloning entities[1].
+- Still included in network sync if it conforms to Codable[1].
+
+## Systems for State Manipulation
+
+Systems are responsible for manipulating state stored in components:
+
+- Systems are functions that operate on entities with specific sets of components[1].
+- They run on every frame, allowing for continuous state updates[1].
+- Custom systems can be created to implement specific behavior and state changes[1].
+
+Example of a custom system:
+
+```swift
+class CustomSystem: System {
+    static let query = EntityQuery(where: .has(CustomStateComponent.self))
+    
+    func update(context: SceneUpdateContext) {
+        context.scene.performQuery(Self.query).forEach { entity in
+            if var customState = entity.components[CustomStateComponent.self] {
+                // Update state here
+                entity.components[CustomStateComponent.self] = customState
+            }
+        }
+    }
+}
+```
+
+## State Synchronization
+
+RealityKit provides automatic state synchronization for multiplayer experiences:
+
+- Components conforming to Codable are automatically synced over the network[1].
+- Systems' data is not automatically synced, so state should generally be stored in components[1].
+
+## Event-Based State Changes
+
+RealityKit offers an event system for handling state changes:
+
+- Use the `storeWhileEntityActive` method to manage event subscriptions automatically[1].
+
+```swift
+entity.subscribe(to: SomeEvent.self) { event in
+    // Handle state change based on event
+}.storeWhileEntityActive(on: entity)
+```
+
+By leveraging these state handling mechanisms in RealityKit's ECS architecture, you can create efficient and modular state management systems for your visionOS apps. Remember to store state in components, use systems for state manipulation, and utilize events for reactive state changes.
+
+Citations:
+[1] https://developer.apple.com/videos/play/wwdc2021/10074/
+[2] https://developer.apple.com/documentation/realitykit/system
+[3] https://developer.apple.com/documentation/realitykit/implementing-systems-for-entities-in-a-scene
+[4] https://developer.apple.com/documentation/visionos/understanding-the-realitykit-modular-architecture
+
+events
+
+Events
+Respond to things happening in your RealityKit scene by subscribing to specific event types.
+Overview
+You can receive notifications to specific RealityKit events — all of which conform to the Event protocol — by subscribing to specific events. The kinds of events you can subscribe to include the following:
+Two entities colliding
+An entity receiving a new component
+Audio playback reaching the end of its content
+For example, you can receive a notification:
+When two objects begin colliding by subscribing to CollisionEvents.Began event
+When the scene redraws by subscribing to the SceneEvents.Update event
+
+SceneEvents.Update
+An event invoked once per frame interval that you can use to execute custom logic for each frame.
+iOS 13.0+
+iPadOS 13.0+
+Mac Catalyst 13.0+
+macOS 10.15+
+visionOS
+struct Update
+Topics
+Characterizing an update
+let scene: Scene
+The updated scene.
+let deltaTime: TimeInterval
+The elapsed time since the last update.
+Relationships
+Conforms To
+Event
+Sendable
+
+CollisionEvents.Began
+An event raised when two objects collide.
+iOS 13.0+
+iPadOS 13.0+
+Mac Catalyst 13.0+
+macOS 10.15+
+visionOS
+struct Began
+Topics
+Getting the involved entities
+let entityA: Entity
+The first entity involved in the collision.
+let entityB: Entity
+The second entity involved in the collision.
+Characterizing the collision
+let impulse: Float
+The total impulse in this collision pair obtained by adding up all the individual impulses applied at each contact point.
+let position: SIMD3<Float>
+A position representing the estimated point of contact.
+Instance Properties
+var contacts: [Contact]
+All contacts between the collision pair. Empty if all contact information is not requested.
+var impulseDirection: SIMD3<Float>
+The direction of the total impulse in scene coordinate space.
+var penetrationDistance: Float
+The estimated distance of overlap between the two colliding entities in scene coordinate space.
+Relationships
+Conforms To
+Event
+Sendable
