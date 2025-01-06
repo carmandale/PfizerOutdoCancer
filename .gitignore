@@ -33,3 +33,5 @@ Package.resolved
 # Backup files
 *.swp
 *~.nib
+
+Documentation/REFERENCE_PROJECTS/

@@ -44,7 +44,7 @@ extension ModelEntity {
                 try shaderMaterial.setParameter(name: parameterName, value: .color(color))
                 materials[0] = shaderMaterial
                 self.model?.materials = materials
-                os_log(.debug, "ITR..updateShaderGraphColor(): ✅ Successfully updated shader parameter")
+                os_log(.debug, "ITR..updateShaderGraphColor(): ✅ Successfully updated \(parameterName) with color: \(String(describing: color))")
             } catch {
                 os_log(.error, "ITR..updateShaderGraphColor(): ❌ Error setting parameter: \(error)")
             }

@@ -65,12 +65,14 @@ final class AppModel {
     /// Current phase of the app
     var currentPhase: AppPhase = .loading
     
+    // var adcDataModel: ADCDataModel
     var gameState: AttackCancerViewModel
     var handTracking: HandTrackingViewModel
     var isDebugWindowOpen = false
     var isLibraryWindowOpen = false
     var isIntroWindowOpen = false
     var isMainWindowOpen = false
+    var isBuilderInstructionsOpen = false
     var isBuilderWindowOpen = false
     var isLoadingWindowOpen = false
 
@@ -165,6 +167,7 @@ final class AppModel {
     
     // MARK: - Initialization
     init() {
+        // self.adcDataModel = ADCDataModel()
         self.handTracking = HandTrackingViewModel()
         self.gameState = AttackCancerViewModel()
         self.gameState.appModel = self
@@ -172,25 +175,43 @@ final class AppModel {
     }
     
     // MARK: - Phase Management
-    func transitionToPhase(_ newPhase: AppPhase) async {
-        guard !isTransitioning else { return }
+    func transitionToPhase(_ newPhase: AppPhase, adcDataModel: ADCDataModel? = nil) async {
+        guard !isTransitioning else { 
+            print("⚠️ Skipping transition - already in transition")
+            return 
+        }
+        
         isTransitioning = true
-        print("Transitioning to phase: \(newPhase)")
+        print("Transitioning from \(currentPhase) to \(newPhase)")
         
         let oldPhase = currentPhase
+        
+        // Validate transition
+        if oldPhase == .completed && newPhase == .playing {
+            print("⚠️ Invalid transition from completed to playing")
+            isTransitioning = false
+            return
+        }
+        
+        // Clean up if leaving a game phase
+        if oldPhase == .completed {
+            // First cleanup hand tracking
+            // await handTracking.cleanup()
+            // Then tear down game
+            gameState.tearDownGame()
+            
+            // Add extra delay between phases
+            try? await Task.sleep(for: .milliseconds(500))
+        }
+        
+        // If transitioning to playing phase, set up ADC template
+        if newPhase == .playing {
+            if let adcEntity = await assetLoadingManager.instantiateEntity("adc") {
+                gameState.setADCTemplate(adcEntity, dataModel: adcDataModel!)
+            }
+        }
+        
         currentPhase = newPhase
-        
-        // Handle window transitions
-        if !oldPhase.windowId.isEmpty {
-            // Removed window management implementation
-        }
-        if !newPhase.windowId.isEmpty {
-            // Removed window management implementation
-        }
-        
-        currentImmersiveSpace = newPhase.spaceId
-        // Add delay to ensure space is loaded before allowing another transition
-//        try? await Task.sleep(for: .seconds(0.5))
         isTransitioning = false
     }
 }

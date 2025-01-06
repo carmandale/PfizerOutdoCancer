@@ -54,7 +54,6 @@ struct CompletedView: View {
                     .frame(width: 180)
                     
                     Button(action: {
-                        resetAndStartNew()
                         Task {
                             await appModel.transitionToPhase(.lab)
                         }
@@ -73,6 +72,8 @@ struct CompletedView: View {
         .glassBackgroundEffect()
         .padding(32)
         .onAppear {
+            dismissWindow(id: AppModel.debugNavigationWindowId)
+            
             withAnimation(.easeOut) {
                 animateStats = true
             }
@@ -95,7 +96,10 @@ struct CompletedView: View {
     
     private func resetAndStartNew() {
         animateStats = false
-        appModel.gameState.resetGameState()
+        
+        // Don't call tearDownGame here since we want to preserve the environment
+        // for the completion view
+        appModel.gameState.resetGameState()  // This should only reset counters and stats
     }
 }
 

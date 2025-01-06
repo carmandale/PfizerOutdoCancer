@@ -1,7 +1,7 @@
 import SwiftUI
 import RealityKitContent
 
-struct DebugNavigationWindow: View {
+struct NavigationView: View {
     @Environment(AppModel.self) private var appModel
     
     private let buttonTitles = ["Intro", "Lab", "Building", "Attack"]

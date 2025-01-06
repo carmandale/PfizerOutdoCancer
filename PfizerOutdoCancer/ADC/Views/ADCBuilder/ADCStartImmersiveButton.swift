@@ -7,6 +7,7 @@ struct ADCStartImmersiveButton: View {
     @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
     @Environment(\.openImmersiveSpace) private var openImmersiveSpace
     @Environment(\.openWindow) private var openWindow
+    @Environment(\.dismissWindow) private var dismissWindow
     
     var body: some View {
         Button {
@@ -16,6 +17,8 @@ struct ADCStartImmersiveButton: View {
 //                        dataModel.status = .bloodVessel
                         appModel.immersiveSpaceState = .inTransition
                         openWindow(id: AppModel.builderWindowId)
+                        
+                    
                         await dismissImmersiveSpace()
                         // Don't set immersiveSpaceState to .closed because there
                         // are multiple paths to ImmersiveView.onDisappear().
@@ -26,9 +29,11 @@ struct ADCStartImmersiveButton: View {
 //                        dataModel.status = .bloodVesselGame
                     switch await openImmersiveSpace(id: AppModel.buildingSpaceId) {
                             case .opened:
+                                appModel.isBuilderInstructionsOpen = false
                                 // Don't set immersiveSpaceState to .open because there
                                 // may be multiple paths to ImmersiveView.onAppear().
                                 // Only set .open in ImmersiveView.onAppear().
+                                dismissWindow(id: AppModel.mainWindowId)
                                 break
 
                             case .userCancelled, .error:

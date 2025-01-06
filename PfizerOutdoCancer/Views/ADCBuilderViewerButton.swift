@@ -14,6 +14,7 @@ struct ADCBuilderViewerButton: View {
         Button {
             Task {
                 await appModel.transitionToPhase(.building)
+                appModel.isBuilderInstructionsOpen = true
             }
         } label: {
             Text("ADC Builder")

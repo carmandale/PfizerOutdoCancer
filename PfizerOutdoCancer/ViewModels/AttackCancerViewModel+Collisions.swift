@@ -6,6 +6,10 @@ import Combine
 extension AttackCancerViewModel {
     // MARK: - Collision Setup
     func setupCollisions(in entity: Entity) {
+        // Cancel any existing subscription first
+        subscription?.cancel()
+        subscription = nil
+        
         if let scene = entity.scene {
             let query = EntityQuery(where: .has(BloodVesselWallComponent.self))
             let objectsToModify = scene.performQuery(query)
@@ -17,8 +21,8 @@ extension AttackCancerViewModel {
                     object.components[CollisionComponent.self] = collision
                 }
             }
+            setupCollisionSubscription()
         }
-        setupCollisionSubscription()
     }
     
     // MARK: - Collision Subscription

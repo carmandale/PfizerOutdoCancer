@@ -1,0 +1,671 @@
+nw_socket_initialize_socket [C1:2] setsockopt SO_NECP_CLIENTUUID failed [22: Invalid argument]
+nw_socket_initialize_socket setsockopt SO_NECP_CLIENTUUID failed [22: Invalid argument]
+nw_socket_copy_info [C1:2] getsockopt TCP_INFO failed [102: Operation not supported on socket]
+nw_socket_copy_info getsockopt TCP_INFO failed [102: Operation not supported on socket]
+cannot add handler to 0 from 1 - dropping
+Starting asset loading...
+Starting to load and assemble LabEnvironment
+Starting to load IntroEnvironment
+Starting to load asset: Assets/Lab/Objects/autoclave
+Starting to load asset: Assets/Lab/Objects/beaker
+Starting to load asset: Assets/Lab/Objects/beaker_tall
+Starting to load asset: Assets/Lab/Objects/bottle_liquid
+Starting to load asset: Assets/Lab/Objects/bin
+Starting to load asset: Assets/Lab/Objects/bottle_pill
+Starting to load asset: Assets/Lab/Objects/bottle_squat
+Starting to load asset: Assets/Lab/Objects/bottle_square
+Loading state changed
+Loading progress: 0.0
+Starting to load asset: Assets/Lab/Objects/centrifuge
+Starting to load asset: Assets/Lab/Objects/deskShelf_single
+Starting to load asset: Assets/Lab/Objects/chair
+Starting to load asset: Assets/Lab/Objects/flask_flatBottom_lg
+Starting to load asset: Assets/Lab/Objects/flask_conical
+Starting to load asset: Assets/Lab/Objects/fridge_sm
+Starting to load asset: Assets/Lab/Objects/glovesBox_B
+Starting to load asset: Assets/Lab/Objects/jar_pill
+Starting to load asset: Assets/Lab/Objects/flask_flatBottom
+Starting to load asset: Assets/Lab/Objects/jar_pill_sm
+Starting to load asset: Assets/Lab/Objects/laptop
+Starting to load asset: Assets/Lab/Objects/mettlerBalance
+Starting to load asset: Assets/Lab/Objects/mettlerBalance_box
+Starting to load asset: Assets/Lab/Objects/deskShelf_double
+Starting to load asset: Assets/Lab/Objects/dryingRack
+Starting to load asset: Assets/Lab/Objects/pcMonitor
+Starting to load asset: Assets/Lab/Objects/flask_conical_lg
+Starting to load asset: Assets/Lab/Objects/pcMouse
+Starting to load asset: Assets/Lab/Objects/pcTower
+Starting to load asset: Assets/Lab/Objects/microscope
+Starting to load asset: Assets/Lab/Objects/flask_volumetric_lg
+Starting to load asset: Assets/Lab/Objects/pcKeyboard
+Starting to load asset: Assets/Lab/Objects/shaker
+Starting to load asset: Assets/Lab/Objects/testTubes_sm_set
+Starting to load asset: Assets/Lab/Objects/tester
+Starting to load asset: Assets/Lab/Objects/vortex
+Starting to load asset: Assets/Lab/Objects/wasteBasket
+Starting to load and assemble AttackCancerEnvironment
+Starting to load CancerCell-spawn
+Starting to load ADC-spawn
+Starting to load asset: Assets/Lab/Objects/glovesBox_A
+Starting to load asset: Assets/Lab/Objects/stool
+Starting to load asset: Assets/Lab/Objects/flask_volumetric
+Starting to load asset: Assets/Lab/Objects/squirter
+Starting to load asset: Assets/Lab/Objects/testTubes_lg_set
+Starting to load asset: Assets/Lab/Objects/uvBox
+Starting to load asset: Assets/Lab/Objects/oven
+Loading state: loading
+Loading state changed
+Loading progress: 0.0
+Loading state: loading
+Loading base LabEnvironment
+Loading base IntroEnvironment
+cannot add handler to 0 from 1 - dropping
+Registering library (/System/Library/PrivateFrameworks/CoreRE.framework/default.metallib) that already exists in shader manager. Library will be overwritten.
+Successfully loaded asset: Assets/Lab/Objects/autoclave
+Successfully loaded asset: Assets/Lab/Objects/beaker
+Successfully loaded asset: Assets/Lab/Objects/beaker_tall
+Successfully loaded asset: Assets/Lab/Objects/bottle_square
+Successfully loaded asset: Assets/Lab/Objects/centrifuge
+Successfully loaded asset: Assets/Lab/Objects/bottle_liquid
+Successfully loaded asset: Assets/Lab/Objects/bottle_pill
+Successfully loaded asset: Assets/Lab/Objects/bottle_squat
+Successfully loaded asset: Assets/Lab/Objects/bin
+Successfully loaded asset: Assets/Lab/Objects/chair
+Successfully loaded asset: Assets/Lab/Objects/flask_flatBottom_lg
+Successfully loaded asset: Assets/Lab/Objects/deskShelf_single
+Successfully loaded asset: Assets/Lab/Objects/flask_conical
+Successfully loaded asset: Assets/Lab/Objects/fridge_sm
+Successfully loaded asset: Assets/Lab/Objects/glovesBox_B
+Successfully loaded asset: Assets/Lab/Objects/jar_pill
+Successfully loaded asset: Assets/Lab/Objects/flask_flatBottom
+Successfully loaded asset: Assets/Lab/Objects/jar_pill_sm
+Successfully loaded asset: Assets/Lab/Objects/laptop
+Successfully loaded asset: Assets/Lab/Objects/mettlerBalance
+Successfully loaded asset: Assets/Lab/Objects/mettlerBalance_box
+Successfully loaded asset: Assets/Lab/Objects/deskShelf_double
+Successfully loaded asset: Assets/Lab/Objects/dryingRack
+Successfully loaded asset: Assets/Lab/Objects/pcMonitor
+Successfully loaded asset: Assets/Lab/Objects/flask_conical_lg
+Successfully loaded asset: Assets/Lab/Objects/pcMouse
+Successfully loaded asset: Assets/Lab/Objects/pcTower
+Successfully loaded asset: Assets/Lab/Objects/microscope
+Successfully loaded asset: Assets/Lab/Objects/flask_volumetric_lg
+Successfully loaded asset: Assets/Lab/Objects/pcKeyboard
+Successfully loaded asset: Assets/Lab/Objects/shaker
+Successfully loaded asset: Assets/Lab/Objects/testTubes_sm_set
+Successfully loaded asset: Assets/Lab/Objects/tester
+Successfully loaded asset: Assets/Lab/Objects/vortex
+Successfully loaded asset: Assets/Lab/Objects/wasteBasket
+Successfully loaded CancerCell-spawn
+Successfully loaded ADC-spawn
+ADC template loaded (using inner Root with audio)
+Successfully loaded asset: Assets/Lab/Objects/glovesBox_A
+Successfully loaded asset: Assets/Lab/Objects/stool
+Successfully loaded asset: Assets/Lab/Objects/flask_volumetric
+Successfully loaded asset: Assets/Lab/Objects/squirter
+Successfully loaded asset: Assets/Lab/Objects/testTubes_lg_set
+Successfully loaded asset: Assets/Lab/Objects/uvBox
+Successfully loaded asset: Assets/Lab/Objects/oven
+Assembling lab equipment
+Successfully assembled complete IntroEnvironment
+Successfully assembled AttackCancerEnvironment
+Setting up IBL lighting
+Successfully assembled complete LabEnvironment
+Assets loaded successfully
+loadingState: completed
+Transitioning from loading to intro
+Loading state changed
+Loading progress: 0.9787234
+Loading state: completed
+PfizerOutdoCancerApp: Phase change from loading to intro
+🚨 LoadingView disappeared
+🎯 Managing windows for phase: intro
+📱 Before dismissing main window - isMainWindowOpen: false
+📱 After dismissing main window - isMainWindowOpen: false
+cannot add handler to 0 from 1 - dropping
+cannot add handler to 0 from 1 - dropping
+Successfully opened space: IntroSpace
+cannot add handler to 0 from 1 - dropping
+
+Cloned entity for key: intro_environment
+cannot add handler to 0 from 1 - dropping
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", ""
+Transitioning from intro to building
+PfizerOutdoCancerApp: Phase change from intro to building
+ARPredictorRemoteService <0x158734ec0>: Query queue is not running.
+ARPredictorRemoteService <0x1018ce9c0>: Query queue is not running.
+ARPredictorRemoteService <0x14600abd0>: Query queue is not running.
+ARPredictorRemoteService <0x107a33550>: Query queue is not running.
+🎯 Managing windows for phase: building
+closing debug window
+opening main window to show builder
+[NetworkComponent] Trying to process with outdated syncable that has already been unbound, guid=14047857056189184990
+cannot add handler to 0 from 1 - dropping
+Initializing hosting entity without a context
+cannot add handler to 0 from 1 - dropping
+ITR..reset() called
+ITR..prepareAntibodyEntities(): found all ModelEntities
+ITR..prepareLinkerEntities(): ✅ Stored original PBR material
+ITR..prepareLinkerEntities(): Attempting to load M_outline material from Materials/M_outline.usda
+ITR..prepareLinkerEntities(): ✅ Successfully loaded material entity
+ITR..prepareLinkerEntities(): Found Root entity
+ITR..prepareLinkerEntities(): ✅ Found M_outline material from Root
+ITR..prepareLinkerEntities(): Applying outline material to linker
+ITR..prepareLinkerEntities(): Applying outline material to linker
+ITR..prepareLinkerEntities(): Applying outline material to linker
+ITR..prepareLinkerEntities(): Applying outline material to linker
+ITR..preparePayloadEntities(): Found OuterSphere: ▿ 'OuterSphere' : ModelEntity, children: 1
+  ⟐ SynchronizationComponent
+  ⟐ ModelComponent
+  ⟐ Transform
+  ▿ 'M_glow' : Entity
+    ⟐ SynchronizationComponent
+    ⟐ Transform
+ITR..preparePayloadEntities(): OuterSphere materials: [RealityFoundation.ShaderGraphMaterial]
+ITR..preparePayloadEntities(): Inspecting OuterSphere entity:
+Entity: OuterSphere
+Components: [RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityKit.Transform]
+  Entity: M_glow
+  Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
+ITR..preparePayloadEntities(): ✅ Stored original inner PBR material
+ITR..preparePayloadEntities(): Found outer shader material: RealityFoundation.ShaderGraphMaterial
+ITR..preparePayloadEntities(): Available parameters: ["glowColor"]
+ITR..preparePayloadEntities(): Material name: Optional("M_glow")
+ITR..preparePayloadEntities(): ✅ Stored original outer shader material
+ITR..preparePayloadEntities(): found all ModelEntities
+ITR..onChange(of: selectedADCAntibody): new value: 0
+ITR..handleAntibodyColorChange: Attempting to update color
+ITR..handleAntibodyColorChange: ✅ Updated material directly with color index 0
+ITR..Button 1 antibody pressed
+ITR..onChange(of: selectedADCAntibody): new value: 1
+ITR..handleAntibodyColorChange: Attempting to update color
+ITR..handleAntibodyColorChange: ✅ Updated material directly with color index 1
+ITR..Button 2 antibody pressed
+ITR..onChange(of: selectedADCAntibody): new value: 2
+ITR..handleAntibodyColorChange: Attempting to update color
+ITR..handleAntibodyColorChange: ✅ Updated material directly with color index 2
+ITR..Button 1 antibody pressed
+ITR..onChange(of: selectedADCAntibody): new value: 1
+ITR..handleAntibodyColorChange: Attempting to update color
+ITR..handleAntibodyColorChange: ✅ Updated material directly with color index 1
+ITR..Button 0 antibody pressed
+ITR..onChange(of: selectedADCAntibody): new value: 0
+ITR..handleAntibodyColorChange: Attempting to update color
+ITR..handleAntibodyColorChange: ✅ Updated material directly with color index 0
+ITR..Button 2 antibody pressed
+ITR..onChange(of: selectedADCAntibody): new value: 2
+ITR..handleAntibodyColorChange: Attempting to update color
+ITR..handleAntibodyColorChange: ✅ Updated material directly with color index 2
+ITR..Checkmark button pressed
+ITR..onChange(of: dataModel.selectedLinkerType): new change selected working linker: 0
+ITR.. ✅ ADC build step 1
+ITR..updatePBRDiffuseColor(): ❌ materials array is empty
+ITR..updatePBRDiffuseColor(): ❌ materials array is empty
+ITR..updatePBRDiffuseColor(): ❌ materials array is empty
+ITR..updatePBRDiffuseColor(): ❌ materials array is empty
+ITR..updatePBRDiffuseColor(): ✅ Updated baseColor.tint to: kCGColorSpaceModelRGB 0 0 0.584078 1
+ITR..createLinkerGestureComponent(): Entity targetLinker is close enough to the target linker, dataModel.linkersWorkingIndex: 0
+ITR..updatePBRDiffuseColor(): ✅ Updated baseColor.tint to: kCGColorSpaceModelRGB 0 0 0.584078 1
+ITR..Button 1 pressed
+ITR..onChange(of: dataModel.selectedLinkerType): new change selected working linker: 1
+ITR..updatePBRDiffuseColor(): ✅ Updated baseColor.tint to: kCGColorSpaceModelRGB 0.0528606 0.187821 0.564712 1
+ITR..updatePBRDiffuseColor(): ❌ materials array is empty
+ITR..updatePBRDiffuseColor(): ❌ materials array is empty
+ITR..updatePBRDiffuseColor(): ❌ materials array is empty
+ITR..updatePBRDiffuseColor(): ✅ Updated baseColor.tint to: kCGColorSpaceModelRGB 0.0528606 0.187821 0.564712 1
+ITR..Button 2 pressed
+ITR..onChange(of: dataModel.selectedLinkerType): new change selected working linker: 2
+ITR..updatePBRDiffuseColor(): ✅ Updated baseColor.tint to: kCGColorSpaceModelRGB 0.445201 0.270498 0.0343398 1
+ITR..updatePBRDiffuseColor(): ❌ materials array is empty
+ITR..updatePBRDiffuseColor(): ❌ materials array is empty
+ITR..updatePBRDiffuseColor(): ❌ materials array is empty
+ITR..updatePBRDiffuseColor(): ✅ Updated baseColor.tint to: kCGColorSpaceModelRGB 0.445201 0.270498 0.0343398 1
+ITR..createLinkerGestureComponent(): Entity targetLinker is close enough to the target linker, dataModel.linkersWorkingIndex: 1
+ITR..updatePBRDiffuseColor(): ✅ Updated baseColor.tint to: kCGColorSpaceModelRGB 0.445201 0.270498 0.0343398 1
+ITR..createLinkerGestureComponent(): Entity targetLinker is close enough to the target linker, dataModel.linkersWorkingIndex: 2
+ITR..updatePBRDiffuseColor(): ✅ Updated baseColor.tint to: kCGColorSpaceModelRGB 0.445201 0.270498 0.0343398 1
+ITR..createLinkerGestureComponent(): Entity targetLinker is close enough to the target linker, dataModel.linkersWorkingIndex: 3
+ITR..updatePBRDiffuseColor(): ✅ Updated baseColor.tint to: kCGColorSpaceModelRGB 0.445201 0.270498 0.0343398 1
+ITR..onChange(of: dataModel.selectedPayloadType): New change selected working payload: 0
+ITR.. ✅ ADC build step 2
+ITR..updatePBREmissiveColor(): ❌ materials array is empty
+ITR..updateShaderGraphColor(): ❌ Error setting parameter: RealityFoundation.ShaderGraphMaterial.Error.parameterNameNotFound
+ITR..updatePBREmissiveColor(): ❌ materials array is empty
+ITR..updateShaderGraphColor(): ❌ Error setting parameter: RealityFoundation.ShaderGraphMaterial.Error.parameterNameNotFound
+ITR..updatePBREmissiveColor(): ❌ materials array is empty
+ITR..updateShaderGraphColor(): ❌ Error setting parameter: RealityFoundation.ShaderGraphMaterial.Error.parameterNameNotFound
+ITR..updatePBREmissiveColor(): ❌ materials array is empty
+ITR..updateShaderGraphColor(): ❌ Error setting parameter: RealityFoundation.ShaderGraphMaterial.Error.parameterNameNotFound
+ITR..updatePBREmissiveColor(): ✅ Updated emissiveColor to: kCGColorSpaceModelRGB 0.412543 0.391572 1 1
+ITR..updateShaderGraphColor(): ✅ Successfully updated shader parameter
+ITR..Button 0 pressed
+ITR..Button 1 pressed
+ITR..onChange(of: dataModel.selectedPayloadType): New change selected working payload: 1
+ITR..updatePBREmissiveColor(): ❌ materials array is empty
+ITR..updateShaderGraphColor(): ❌ Error setting parameter: RealityFoundation.ShaderGraphMaterial.Error.parameterNameNotFound
+ITR..updatePBREmissiveColor(): ❌ materials array is empty
+ITR..updateShaderGraphColor(): ❌ Error setting parameter: RealityFoundation.ShaderGraphMaterial.Error.parameterNameNotFound
+ITR..updatePBREmissiveColor(): ❌ materials array is empty
+ITR..updateShaderGraphColor(): ❌ Error setting parameter: RealityFoundation.ShaderGraphMaterial.Error.parameterNameNotFound
+ITR..updatePBREmissiveColor(): ❌ materials array is empty
+ITR..updateShaderGraphColor(): ❌ Error setting parameter: RealityFoundation.ShaderGraphMaterial.Error.parameterNameNotFound
+ITR..updatePBREmissiveColor(): ✅ Updated emissiveColor to: kCGColorSpaceModelRGB 0.391572 0.603827 1 1
+ITR..updateShaderGraphColor(): ✅ Successfully updated shader parameter
+ITR..Button 2 pressed
+ITR..onChange(of: dataModel.selectedPayloadType): New change selected working payload: 2
+ITR..updatePBREmissiveColor(): ❌ materials array is empty
+ITR..updateShaderGraphColor(): ❌ Error setting parameter: RealityFoundation.ShaderGraphMaterial.Error.parameterNameNotFound
+ITR..updatePBREmissiveColor(): ❌ materials array is empty
+ITR..updateShaderGraphColor(): ❌ Error setting parameter: RealityFoundation.ShaderGraphMaterial.Error.parameterNameNotFound
+ITR..updatePBREmissiveColor(): ❌ materials array is empty
+ITR..updateShaderGraphColor(): ❌ Error setting parameter: RealityFoundation.ShaderGraphMaterial.Error.parameterNameNotFound
+ITR..updatePBREmissiveColor(): ❌ materials array is empty
+ITR..updateShaderGraphColor(): ❌ Error setting parameter: RealityFoundation.ShaderGraphMaterial.Error.parameterNameNotFound
+ITR..updatePBREmissiveColor(): ✅ Updated emissiveColor to: kCGColorSpaceModelRGB 1 0.791298 0.396755 1
+ITR..updateShaderGraphColor(): ✅ Successfully updated shader parameter
+ITR..Button 0 pressed
+ITR..onChange(of: dataModel.selectedPayloadType): New change selected working payload: 0
+ITR..updatePBREmissiveColor(): ❌ materials array is empty
+ITR..updateShaderGraphColor(): ❌ Error setting parameter: RealityFoundation.ShaderGraphMaterial.Error.parameterNameNotFound
+ITR..updatePBREmissiveColor(): ❌ materials array is empty
+ITR..updateShaderGraphColor(): ❌ Error setting parameter: RealityFoundation.ShaderGraphMaterial.Error.parameterNameNotFound
+ITR..updatePBREmissiveColor(): ❌ materials array is empty
+ITR..updateShaderGraphColor(): ❌ Error setting parameter: RealityFoundation.ShaderGraphMaterial.Error.parameterNameNotFound
+ITR..updatePBREmissiveColor(): ❌ materials array is empty
+ITR..updateShaderGraphColor(): ❌ Error setting parameter: RealityFoundation.ShaderGraphMaterial.Error.parameterNameNotFound
+ITR..updatePBREmissiveColor(): ✅ Updated emissiveColor to: kCGColorSpaceModelRGB 0.412543 0.391572 1 1
+ITR..updateShaderGraphColor(): ✅ Successfully updated shader parameter
+ITR..createPayloadGestureComponent(): Entity targetPayload is close enough to the target payload, dataModel.payloadsWorkingIndex: 0
+ITR..createPayloadGestureComponent(): Attempting to restore outer material: RealityFoundation.ShaderGraphMaterial
+ITR..createPayloadGestureComponent(): Available parameters: ["glowColor"]
+ITR..createPayloadGestureComponent(): Material name: Optional("M_glow")
+ITR..createPayloadGestureComponent(): Current materials before restore: [RealityFoundation.ShaderGraphMaterial]
+ITR..createPayloadGestureComponent(): Materials after restore: [RealityFoundation.ShaderGraphMaterial]
+ITR..updatePBREmissiveColor(): ✅ Updated emissiveColor to: kCGColorSpaceModelRGB 0.412543 0.391572 1 1
+ITR..updateShaderGraphColor(): ✅ Successfully updated shader parameter
+ITR..updatePBREmissiveColor(): ❌ materials array is empty
+ITR..updateShaderGraphColor(): ❌ Error setting parameter: RealityFoundation.ShaderGraphMaterial.Error.parameterNameNotFound
+ITR..updatePBREmissiveColor(): ❌ materials array is empty
+ITR..updateShaderGraphColor(): ❌ Error setting parameter: RealityFoundation.ShaderGraphMaterial.Error.parameterNameNotFound
+ITR..updatePBREmissiveColor(): ❌ materials array is empty
+ITR..updateShaderGraphColor(): ❌ Error setting parameter: RealityFoundation.ShaderGraphMaterial.Error.parameterNameNotFound
+ITR..createPayloadGestureComponent(): Entity targetPayload is close enough to the target payload, dataModel.payloadsWorkingIndex: 1
+ITR..createPayloadGestureComponent(): Attempting to restore outer material: RealityFoundation.ShaderGraphMaterial
+ITR..createPayloadGestureComponent(): Available parameters: ["glowColor"]
+ITR..createPayloadGestureComponent(): Material name: Optional("M_glow")
+ITR..createPayloadGestureComponent(): Current materials before restore: [RealityFoundation.ShaderGraphMaterial]
+ITR..createPayloadGestureComponent(): Materials after restore: [RealityFoundation.ShaderGraphMaterial]
+ITR..updatePBREmissiveColor(): ✅ Updated emissiveColor to: kCGColorSpaceModelRGB 0.412543 0.391572 1 1
+ITR..updateShaderGraphColor(): ✅ Successfully updated shader parameter
+ITR..updatePBREmissiveColor(): ✅ Updated emissiveColor to: kCGColorSpaceModelRGB 0.412543 0.391572 1 1
+ITR..updateShaderGraphColor(): ✅ Successfully updated shader parameter
+ITR..updatePBREmissiveColor(): ❌ materials array is empty
+ITR..updateShaderGraphColor(): ❌ Error setting parameter: RealityFoundation.ShaderGraphMaterial.Error.parameterNameNotFound
+ITR..updatePBREmissiveColor(): ❌ materials array is empty
+ITR..updateShaderGraphColor(): ❌ Error setting parameter: RealityFoundation.ShaderGraphMaterial.Error.parameterNameNotFound
+ITR..createPayloadGestureComponent(): Entity targetPayload is close enough to the target payload, dataModel.payloadsWorkingIndex: 2
+ITR..createPayloadGestureComponent(): Attempting to restore outer material: RealityFoundation.ShaderGraphMaterial
+ITR..createPayloadGestureComponent(): Available parameters: ["glowColor"]
+ITR..createPayloadGestureComponent(): Material name: Optional("M_glow")
+ITR..createPayloadGestureComponent(): Current materials before restore: [RealityFoundation.ShaderGraphMaterial]
+ITR..createPayloadGestureComponent(): Materials after restore: [RealityFoundation.ShaderGraphMaterial]
+ITR..updatePBREmissiveColor(): ✅ Updated emissiveColor to: kCGColorSpaceModelRGB 0.412543 0.391572 1 1
+ITR..updateShaderGraphColor(): ✅ Successfully updated shader parameter
+ITR..updatePBREmissiveColor(): ✅ Updated emissiveColor to: kCGColorSpaceModelRGB 0.412543 0.391572 1 1
+ITR..updateShaderGraphColor(): ✅ Successfully updated shader parameter
+ITR..updatePBREmissiveColor(): ✅ Updated emissiveColor to: kCGColorSpaceModelRGB 0.412543 0.391572 1 1
+ITR..updateShaderGraphColor(): ✅ Successfully updated shader parameter
+ITR..updatePBREmissiveColor(): ❌ materials array is empty
+ITR..updateShaderGraphColor(): ❌ Error setting parameter: RealityFoundation.ShaderGraphMaterial.Error.parameterNameNotFound
+ITR..createPayloadGestureComponent(): Entity targetPayload is close enough to the target payload, dataModel.payloadsWorkingIndex: 3
+ITR..createPayloadGestureComponent(): Attempting to restore outer material: RealityFoundation.ShaderGraphMaterial
+ITR..createPayloadGestureComponent(): Available parameters: ["glowColor"]
+ITR..createPayloadGestureComponent(): Material name: Optional("M_glow")
+ITR..createPayloadGestureComponent(): Current materials before restore: [RealityFoundation.ShaderGraphMaterial]
+ITR..createPayloadGestureComponent(): Materials after restore: [RealityFoundation.ShaderGraphMaterial]
+ITR..updatePBREmissiveColor(): ✅ Updated emissiveColor to: kCGColorSpaceModelRGB 0.412543 0.391572 1 1
+ITR..updateShaderGraphColor(): ✅ Successfully updated shader parameter
+ITR..updatePBREmissiveColor(): ✅ Updated emissiveColor to: kCGColorSpaceModelRGB 0.412543 0.391572 1 1
+ITR..updateShaderGraphColor(): ✅ Successfully updated shader parameter
+ITR..updatePBREmissiveColor(): ✅ Updated emissiveColor to: kCGColorSpaceModelRGB 0.412543 0.391572 1 1
+ITR..updateShaderGraphColor(): ✅ Successfully updated shader parameter
+ITR..updatePBREmissiveColor(): ✅ Updated emissiveColor to: kCGColorSpaceModelRGB 0.412543 0.391572 1 1
+ITR..updateShaderGraphColor(): ✅ Successfully updated shader parameter
+ITR.. ✅ ADC build step 3
+cannot add handler to 0 from 1 - dropping
+ARPredictorRemoteService <0x1018d2e10>: Query queue is not running.
+ARPredictorRemoteService <0x14600d410>: Query queue is not running.
+Transitioning from building to playing
+
+Cloned entity for key: adc
+✅ ADC template set successfully with color recipe applied
+PfizerOutdoCancerApp: Phase change from building to playing
+🎯 Managing windows for phase: playing
+opening main window to show instructions
+📱 Before dismissing main window - isMainWindowOpen: false
+📱 After dismissing main window - isMainWindowOpen: false
+Trying to convert coordinates between views that are in different UIWindows, which isn't supported. Use convertRect:fromCoordinateSpace: instead.
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+cannot add handler to 0 from 1 - dropping
+Successfully opened space: AttackSpace
+Hand tracking session started successfully
+
+=== Initializing Cell States ===
+cannot add handler to 0 from 1 - dropping
+
+Cloned entity for key: attack_cancer_environment
+
+Cloned entity for key: cancer_cell
+
+=== Starting Cancer Cell Spawning ===
+Target count: 20
+
+=== Spawning Cancer Cell 0 ===
+Creating parameters for cell 0
+Required hits: 5
+Total parameters after append: 1
+Added CancerCellStateComponent with parameters
+Added ClosureComponent for state updates
+✅ Successfully spawned cell 0
+
+=== Spawning Cancer Cell 1 ===
+Creating parameters for cell 1
+Required hits: 6
+Total parameters after append: 2
+Added CancerCellStateComponent with parameters
+Added ClosureComponent for state updates
+✅ Successfully spawned cell 1
+
+=== Spawning Cancer Cell 2 ===
+Creating parameters for cell 2
+Required hits: 5
+Total parameters after append: 3
+Added CancerCellStateComponent with parameters
+Added ClosureComponent for state updates
+✅ Successfully spawned cell 2
+
+=== Spawning Cancer Cell 3 ===
+Creating parameters for cell 3
+Required hits: 6
+Total parameters after append: 4
+Added CancerCellStateComponent with parameters
+Added ClosureComponent for state updates
+✅ Successfully spawned cell 3
+
+=== Spawning Cancer Cell 4 ===
+Creating parameters for cell 4
+Required hits: 8
+Total parameters after append: 5
+Added CancerCellStateComponent with parameters
+Added ClosureComponent for state updates
+✅ Successfully spawned cell 4
+
+=== Spawning Cancer Cell 5 ===
+Creating parameters for cell 5
+Required hits: 8
+Total parameters after append: 6
+Added CancerCellStateComponent with parameters
+Added ClosureComponent for state updates
+✅ Successfully spawned cell 5
+
+=== Spawning Cancer Cell 6 ===
+Creating parameters for cell 6
+Required hits: 6
+Total parameters after append: 7
+Added CancerCellStateComponent with parameters
+Added ClosureComponent for state updates
+✅ Successfully spawned cell 6
+
+=== Spawning Cancer Cell 7 ===
+Creating parameters for cell 7
+Required hits: 8
+Total parameters after append: 8
+Added CancerCellStateComponent with parameters
+Added ClosureComponent for state updates
+✅ Successfully spawned cell 7
+
+=== Spawning Cancer Cell 8 ===
+Creating parameters for cell 8
+Required hits: 7
+Total parameters after append: 9
+Added CancerCellStateComponent with parameters
+Added ClosureComponent for state updates
+✅ Successfully spawned cell 8
+
+=== Spawning Cancer Cell 9 ===
+Creating parameters for cell 9
+Required hits: 5
+Total parameters after append: 10
+Added CancerCellStateComponent with parameters
+Added ClosureComponent for state updates
+✅ Successfully spawned cell 9
+
+=== Spawning Cancer Cell 10 ===
+Creating parameters for cell 10
+Required hits: 8
+Total parameters after append: 11
+Added CancerCellStateComponent with parameters
+Added ClosureComponent for state updates
+✅ Successfully spawned cell 10
+
+=== Spawning Cancer Cell 11 ===
+Creating parameters for cell 11
+Required hits: 6
+Total parameters after append: 12
+Added CancerCellStateComponent with parameters
+Added ClosureComponent for state updates
+✅ Successfully spawned cell 11
+
+=== Spawning Cancer Cell 12 ===
+Creating parameters for cell 12
+Required hits: 8
+Total parameters after append: 13
+Added CancerCellStateComponent with parameters
+Added ClosureComponent for state updates
+✅ Successfully spawned cell 12
+
+=== Spawning Cancer Cell 13 ===
+Creating parameters for cell 13
+Required hits: 8
+Total parameters after append: 14
+Added CancerCellStateComponent with parameters
+Added ClosureComponent for state updates
+✅ Successfully spawned cell 13
+
+=== Spawning Cancer Cell 14 ===
+Creating parameters for cell 14
+Required hits: 7
+Total parameters after append: 15
+Added CancerCellStateComponent with parameters
+Added ClosureComponent for state updates
+✅ Successfully spawned cell 14
+
+=== Spawning Cancer Cell 15 ===
+Creating parameters for cell 15
+Required hits: 4
+Total parameters after append: 16
+Added CancerCellStateComponent with parameters
+Added ClosureComponent for state updates
+✅ Successfully spawned cell 15
+
+=== Spawning Cancer Cell 16 ===
+Creating parameters for cell 16
+Required hits: 6
+Total parameters after append: 17
+Added CancerCellStateComponent with parameters
+Added ClosureComponent for state updates
+✅ Successfully spawned cell 16
+
+=== Spawning Cancer Cell 17 ===
+Creating parameters for cell 17
+Required hits: 7
+Total parameters after append: 18
+Added CancerCellStateComponent with parameters
+Added ClosureComponent for state updates
+✅ Successfully spawned cell 17
+
+=== Spawning Cancer Cell 18 ===
+Creating parameters for cell 18
+Required hits: 5
+Total parameters after append: 19
+Added CancerCellStateComponent with parameters
+Added ClosureComponent for state updates
+✅ Successfully spawned cell 18
+
+=== Spawning Cancer Cell 19 ===
+Creating parameters for cell 19
+Required hits: 4
+Total parameters after append: 20
+Added CancerCellStateComponent with parameters
+Added ClosureComponent for state updates
+✅ Successfully spawned cell 19
+=== Finished Spawning ===
+Total parameters created: 20
+
+=== Setting up UI Attachments ===
+Total attachments to create: 20
+Setting up attachment 0
+✅ Found meter entity for 0
+✅ Found cancer cell 0
+✅ Added meter to cancer_cell_0 with components
+Setting up attachment 1
+✅ Found meter entity for 1
+✅ Found cancer cell 1
+✅ Added meter to cancer_cell_1 with components
+Setting up attachment 2
+✅ Found meter entity for 2
+✅ Found cancer cell 2
+✅ Added meter to cancer_cell_2 with components
+Setting up attachment 3
+✅ Found meter entity for 3
+✅ Found cancer cell 3
+✅ Added meter to cancer_cell_3 with components
+Setting up attachment 4
+✅ Found meter entity for 4
+✅ Found cancer cell 4
+✅ Added meter to cancer_cell_4 with components
+Setting up attachment 5
+✅ Found meter entity for 5
+✅ Found cancer cell 5
+✅ Added meter to cancer_cell_5 with components
+Setting up attachment 6
+✅ Found meter entity for 6
+✅ Found cancer cell 6
+✅ Added meter to cancer_cell_6 with components
+Setting up attachment 7
+✅ Found meter entity for 7
+✅ Found cancer cell 7
+✅ Added meter to cancer_cell_7 with components
+Setting up attachment 8
+✅ Found meter entity for 8
+✅ Found cancer cell 8
+✅ Added meter to cancer_cell_8 with components
+Setting up attachment 9
+✅ Found meter entity for 9
+✅ Found cancer cell 9
+✅ Added meter to cancer_cell_9 with components
+Setting up attachment 10
+✅ Found meter entity for 10
+✅ Found cancer cell 10
+✅ Added meter to cancer_cell_10 with components
+Setting up attachment 11
+✅ Found meter entity for 11
+✅ Found cancer cell 11
+✅ Added meter to cancer_cell_11 with components
+Setting up attachment 12
+✅ Found meter entity for 12
+✅ Found cancer cell 12
+✅ Added meter to cancer_cell_12 with components
+Setting up attachment 13
+✅ Found meter entity for 13
+✅ Found cancer cell 13
+✅ Added meter to cancer_cell_13 with components
+Setting up attachment 14
+✅ Found meter entity for 14
+✅ Found cancer cell 14
+✅ Added meter to cancer_cell_14 with components
+Setting up attachment 15
+✅ Found meter entity for 15
+✅ Found cancer cell 15
+✅ Added meter to cancer_cell_15 with components
+Setting up attachment 16
+✅ Found meter entity for 16
+✅ Found cancer cell 16
+✅ Added meter to cancer_cell_16 with components
+Setting up attachment 17
+✅ Found meter entity for 17
+✅ Found cancer cell 17
+✅ Added meter to cancer_cell_17 with components
+Setting up attachment 18
+✅ Found meter entity for 18
+✅ Found cancer cell 18
+✅ Added meter to cancer_cell_18 with components
+Setting up attachment 19
+✅ Found meter entity for 19
+✅ Found cancer cell 19
+✅ Added meter to cancer_cell_19 with components
+🎯 Counter 0 ready: 0/6
+🎯 Counter 1 ready: 0/6
+🎯 Counter 2 ready: 0/6
+🎯 Counter 3 ready: 0/6
+🎯 Counter 4 ready: 0/4
+🎯 Counter 5 ready: 0/8
+🎯 Counter 6 ready: 0/7
+🎯 Counter 7 ready: 0/4
+🎯 Counter 8 ready: 0/7
+🎯 Counter 9 ready: 0/5
+🎯 Counter 10 ready: 0/4
+🎯 Counter 11 ready: 0/6
+🎯 Counter 12 ready: 0/5
+🎯 Counter 13 ready: 0/4
+🎯 Counter 14 ready: 0/7
+🎯 Counter 15 ready: 0/8
+🎯 Counter 16 ready: 0/8
+🎯 Counter 17 ready: 0/5
+🎯 Counter 18 ready: 0/8
+🎯 Counter 19 ready: 0/7
+Cannot find a BindPoint for any bind path: "", "", ""
+Cannot find a BindPoint for any bind path: "", "", ""
+Cannot find a BindPoint for any bind path: "", "", ""
+Cannot find a BindPoint for any bind path: "", "", ""
+Cannot find a BindPoint for any bind path: "", "", ""
+Cannot find a BindPoint for any bind path: "", "", ""
+Cannot find a BindPoint for any bind path: "", "", ""
+Cannot find a BindPoint for any bind path: "", "", ""
+Cannot find a BindPoint for any bind path: "", "", ""
+Cannot find a BindPoint for any bind path: "", "", ""
+Cannot find a BindPoint for any bind path: "", "", ""
+Cannot find a BindPoint for any bind path: "", "", ""
+Cannot find a BindPoint for any bind path: "", "", ""
+Cannot find a BindPoint for any bind path: "", "", ""
+Cannot find a BindPoint for any bind path: "", "", ""
+Cannot find a BindPoint for any bind path: "", "", ""
+Cannot find a BindPoint for any bind path: "", "", ""
+Cannot find a BindPoint for any bind path: "", "", ""
+Cannot find a BindPoint for any bind path: "", "", ""
+Cannot find a BindPoint for any bind path: "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+Message from debugger: killed

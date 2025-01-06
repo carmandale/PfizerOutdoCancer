@@ -24,4 +24,12 @@ extension AttackCancerViewModel {
             setupCollisions(in: attackCancerScene)  // Restore to match backup
         }
     }
+    
+    func setupIBL(in root: Entity) async {
+        do {
+            try await IBLUtility.addImageBasedLighting(to: root, imageName: "metro_noord_2k")
+        } catch {
+            print("Failed to setup IBL: \(error)")
+        }
+    }
 }

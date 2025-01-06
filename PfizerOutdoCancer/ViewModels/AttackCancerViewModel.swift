@@ -42,6 +42,7 @@ final class AttackCancerViewModel {
     // Dependencies
     var appModel: AppModel!
     var handTracking: HandTrackingViewModel!
+//    var dataModel: ADCDataModel!
     
     // MARK: - Game Stats
     var maxCancerCells: Int = 20
@@ -120,5 +121,53 @@ final class AttackCancerViewModel {
             print("✅ Cell \(index) alignment validated")
         }
         print("=== Alignment Validation Complete ===\n")
+    }
+
+    func tearDownGame() {
+        print("\n=== Tearing Down Game ===")
+        
+        // Stop any running timers/systems
+        appModel.stopHopeMeter()
+        
+        // Stop hand tracking session
+        Task {
+            await handTracking.stopSession()
+        }
+        
+        // Clear collision subscriptions
+        subscription?.cancel()
+        subscription = nil
+        
+        // Clear all cell parameters
+        cellParameters.removeAll()
+        
+        // Remove only gameplay entities from root
+        if let root = rootEntity {
+            // Remove all cancer cells
+            for i in 0..<maxCancerCells {
+                if let cell = root.findEntity(named: "cancer_cell_\(i)") {
+                    cell.removeFromParent()
+                }
+            }
+            
+            // Remove any remaining ADCs using scene query
+            if let scene = root.scene {
+                let adcQuery = EntityQuery(where: .has(ADCComponent.self))
+                scene.performQuery(adcQuery).forEach { entity in
+                    entity.removeFromParent()
+                }
+            }
+        }
+        
+        // Reset game stats
+        cellsDestroyed = 0
+        totalADCsDeployed = 0
+        totalTaps = 0
+        totalHits = 0
+        
+        // Reset flags
+        hasFirstADCBeenFired = false
+        
+        print("✅ Game tear down complete")
     }
 }

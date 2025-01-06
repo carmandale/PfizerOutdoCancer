@@ -9,9 +9,17 @@ import SwiftUI
 import WebKit
 
 struct LibraryView: View {
+    @Environment(AppModel.self) private var appModel
+    @Environment(\.pushWindow) private var pushWindow
+    
     var body: some View {
         WebView(url: URL(string: "https://cancer.pfizer.com/")!)
+//            .onAppear {
+//                pushWindow(id: AppModel.mainWindowId)
+//            }
     }
+        
+        
 }
 
 struct WebView: UIViewRepresentable {
@@ -24,8 +32,9 @@ struct WebView: UIViewRepresentable {
     func updateUIView(_ uiView: WKWebView, context: Context) {
         uiView.load(URLRequest(url: url))
     }
+    
 }
 
-#Preview {
-    LibraryView()
-}
+//#Preview {
+//    LibraryView()
+//}

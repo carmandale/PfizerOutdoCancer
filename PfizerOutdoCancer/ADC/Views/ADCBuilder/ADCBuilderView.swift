@@ -1,4 +1,5 @@
 import SwiftUI
+import OSLog
 
 struct ADCBuilderView: View {
     @Environment(AppModel.self) private var appModel
@@ -126,9 +127,15 @@ struct ADCBuilderView: View {
                 if dataModel.adcBuildStep == 3 {
                     Button {
                         Task {
-                            openWindow(id: AppModel.debugNavigationWindowId)
+                            // Log final color summary before attack
+                            os_log(.debug, "ADC Final Color Summary (Attack Button Pressed):")
+                            os_log(.debug, "- Antibody Color: \(dataModel.selectedADCAntibody ?? -1)")
+                            os_log(.debug, "- Linker Color: \(dataModel.selectedLinkerType ?? -1)")
+                            os_log(.debug, "- Payload Color: \(dataModel.selectedPayloadType ?? -1)")
+                            
+                            openWindow(id: AppModel.mainWindowId)
                             await dismissImmersiveSpace()
-                            await appModel.transitionToPhase(.playing)
+                            await appModel.transitionToPhase(.playing, adcDataModel: dataModel)
                         }
                     } label: {
                         Text("Attack Cancer")
@@ -150,4 +157,3 @@ struct ADCBuilderView: View {
         .clipShape(RoundedRectangle(cornerRadius: 20))
     }
 }
-

@@ -107,7 +107,7 @@ def Xform "Root"
                 int blendLayer = 300
                 double duration = 15
                 uniform token info:id = "E4B8F722-1A4D-48E3-B0C8-10A1B57A392E"
-                double startTime = 90.57958399842644
+                double startTime = 0
                 rel target = </Root/sh0100_v01_portal>
 
                 def RealityKitStruct "timingFunction"

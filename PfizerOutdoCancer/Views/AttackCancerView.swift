@@ -15,12 +15,10 @@ struct AttackCancerView: View {
     @Environment(\.dismissWindow) private var dismissWindow
     @Environment(\.realityKitScene) private var scene
     @State private var cellStates: [CellState] = []
+    @State var immersionAmount: Float = 0
     
     // 1. Hand tracking entity setup
-    @State private var handTrackedEntity: Entity = {
-        let handAnchor = AnchorEntity(.hand(.left, location: .aboveHand))
-        return handAnchor
-    }()
+    @State private var handTrackedEntity: Entity? = nil
     
     // Add simulator check
     private var isSimulator: Bool {
@@ -36,69 +34,20 @@ struct AttackCancerView: View {
             let root = appModel.gameState.setupRoot()
             content.add(root)
             
-            // Only setup hand tracking and HopeMeter if not in simulator
             if !isSimulator {
                 setupHandTracking(in: content, attachments: attachments)
             }
             
             Task {
                 await setupGameContent(in: root, attachments: attachments)
-                
-                print("\n=== Initializing Cell States ===")
-                // Initialize with actual required hits from state components
-                cellStates = Array(repeating: CellState(), count: appModel.gameState.maxCancerCells)
-                
-                // Update required hits from existing cell states
-                for i in 0..<appModel.gameState.maxCancerCells {
-                    if let cell = root.findEntity(named: "cancer_cell_\(i)")?.findEntity(named: "cancerCell_complex"),
-                       let state = cell.components[CancerCellStateComponent.self] {
-                        cellStates[i].requiredHits = state.parameters.requiredHits
-                    }
-                }
-                
-                print("✅ Created \(cellStates.count) cell states")
-                
-                // Log initial states with correct required hits
-                for i in 0..<cellStates.count {
-                    print("🎯 Counter \(i) ready: 0/\(cellStates[i].requiredHits)")
-                }
-                
-                // Setup hit tracking
-                for i in 0..<appModel.gameState.maxCancerCells {
-                    if let cell = root.findEntity(named: "cancer_cell_\(i)")?.findEntity(named: "cancerCell_complex") {
-                        cell.components.set(
-                            ClosureComponent { [self] _ in
-                                if let state = cell.components[CancerCellStateComponent.self] {
-                                    let oldHits = cellStates[i].hits
-                                    let wasDestroyed = cellStates[i].isDestroyed
-                                    
-                                    // Update state
-                                    cellStates[i].hits = state.parameters.hitCount
-                                    cellStates[i].isDestroyed = state.parameters.isDestroyed
-                                    
-                                    // Track stats
-                                    if !wasDestroyed && state.parameters.isDestroyed {
-                                        appModel.gameState.cellsDestroyed += 1
-                                        print("💀 Cell \(i) destroyed - Total destroyed: \(appModel.gameState.cellsDestroyed)")
-                                    }
-                                    
-                                    // Only log actual changes
-                                    if oldHits != state.parameters.hitCount {
-                                        print("📊 Cell \(i): \(state.parameters.hitCount)/\(state.parameters.requiredHits) hits")
-                                    }
-                                }
-                            }
-                        )
-                    }
-                }
             }
         } attachments: {
-            // 3. HopeMeter attachment
+            // HopeMeter attachment
             Attachment(id: "HopeMeter") {
                 HopeMeterView()
             }
             
-            // Keep existing cell counter attachments
+            // Cell counter attachments
             ForEach(0..<appModel.gameState.maxCancerCells, id: \.self) { i in
                 Attachment(id: "\(i)") {
                     if i < cellStates.count {
@@ -114,35 +63,88 @@ struct AttackCancerView: View {
             }
         }
         .gesture(makeTapGesture())
-        .onAppear { dismissWindow(id: AppModel.debugNavigationWindowId) } // appModel.gameState.startGame()
+        .onChange(of: scenePhase) { _, newPhase in
+            if newPhase == .inactive {
+                appModel.gameState.tearDownGame()
+            }
+        }
+        .onAppear {
+            dismissWindow(id: AppModel.debugNavigationWindowId)
+        }
     }
     
     // 4. Hand tracking setup method
     private func setupHandTracking(in content: RealityViewContent, attachments: RealityViewAttachments) {
+        // Remove any existing hand tracking
+        // if let existing = handTrackedEntity {
+        //     existing.removeFromParent()
+        // }
+        
+        // Create fresh hand anchor
+        let handAnchor = AnchorEntity(.hand(.left, location: .aboveHand))
+        handTrackedEntity = handAnchor
+        
         content.add(appModel.handTracking.setupContentEntity())
-        content.add(handTrackedEntity)
+        content.add(handAnchor)
+        
         if let attachmentEntity = attachments.entity(for: "HopeMeter") {
             attachmentEntity.components[BillboardComponent.self] = BillboardComponent()
-            handTrackedEntity.addChild(attachmentEntity)
+            handAnchor.addChild(attachmentEntity)
         }
     }
     
     @MainActor
     private func setupGameContent(in root: Entity, attachments: RealityViewAttachments) async {
+        print("\n=== Initializing Cell States ===")
+        cellStates = Array(repeating: CellState(), count: appModel.gameState.maxCancerCells)
+        
         await appModel.gameState.setupEnvironment(in: root)
         
-        if let adcEntity = await appModel.assetLoadingManager.instantiateEntity("adc") {
-            appModel.gameState.setADCTemplate(adcEntity)
-        }
+        // ADC template is already set up during phase transition
         
         if let cancerCellTemplate = await appModel.assetLoadingManager.instantiateEntity("cancer_cell") {
             let maxCells = appModel.gameState.maxCancerCells
             appModel.gameState.spawnCancerCells(in: root, from: cancerCellTemplate, count: maxCells)
             setupUIAttachments(in: root, attachments: attachments, count: maxCells)
             
-            // Start the hope meter once everything is set up
-            print("🎮 Game Content Setup Complete - Starting Hope Meter")
-            appModel.startHopeMeter()
+            // Update required hits and setup hit tracking
+            for i in 0..<maxCells {
+                if let cell = root.findEntity(named: "cancer_cell_\(i)")?.findEntity(named: "cancerCell_complex") {
+                    // Set initial required hits
+                    if let state = cell.components[CancerCellStateComponent.self] {
+                        cellStates[i].requiredHits = state.parameters.requiredHits
+                        print("🎯 Counter \(i) ready: \(cellStates[i].hits)/\(cellStates[i].requiredHits)")
+                    }
+                    
+                    // Setup hit tracking closure
+                    cell.components.set(
+                        ClosureComponent { [self] _ in
+                            if let state = cell.components[CancerCellStateComponent.self] {
+                                let oldHits = cellStates[i].hits
+                                let wasDestroyed = cellStates[i].isDestroyed
+                                
+                                // Update state
+                                cellStates[i].hits = state.parameters.hitCount
+                                cellStates[i].isDestroyed = state.parameters.isDestroyed
+                                
+                                // Track stats
+                                if !wasDestroyed && state.parameters.isDestroyed {
+                                    appModel.gameState.cellsDestroyed += 1
+                                    print("💀 Cell \(i) destroyed - Total destroyed: \(appModel.gameState.cellsDestroyed)")
+                                }
+                                
+                                // Only log actual changes
+                                if oldHits != state.parameters.hitCount {
+                                    print("📊 Cell \(i): \(state.parameters.hitCount)/\(state.parameters.requiredHits) hits")
+                                }
+                            }
+                        }
+                    )
+                }
+            }
+            
+            // print("🎮 Game Content Setup Complete - Starting Hope Meter")
+            // appModel.startHopeMeter()
         }
     }
     

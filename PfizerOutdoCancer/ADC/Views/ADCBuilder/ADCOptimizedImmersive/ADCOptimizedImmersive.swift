@@ -115,8 +115,6 @@ struct ADCOptimizedImmersive: View {
             dataModel.adcBuildStep = 0
 
             /// Head positioning
-
-                
             // MARK: - Load the headPositioner and use `AnchorEntity` to position it.
             // Load the headPositioner.
             headPositioner.addChild(masterEntity)
@@ -129,12 +127,9 @@ struct ADCOptimizedImmersive: View {
             
         } update: { content, attachments in
             // updateADC()
-            
-            
         } attachments: {
             Attachment(id: ADCUIAttachments.mainADCView) {
                 ADCBuilderView()
-//                ContentView()
             }
         }
         .installGestures()
@@ -143,8 +138,15 @@ struct ADCOptimizedImmersive: View {
         }
         .onChange(of: dataModel.adcBuildStep) { oldValue, newValue in
             Task { @MainActor in
+                // Log color summary at each step
+                os_log(.debug, "ADC Build Step \(newValue) - Color Summary:")
+                os_log(.debug, "- Antibody Color: \(dataModel.selectedADCAntibody ?? -1)")
+                os_log(.debug, "- Linker Color: \(dataModel.selectedLinkerType ?? -1)")
+                os_log(.debug, "- Payload Color: \(dataModel.selectedPayloadType ?? -1)")
+                
                 switch newValue {
                 case 0:
+                    // Starting case - select the antibody color
                     os_log(.debug, "ITR.. ✅ ADC build step 0")
                     // setAntibodyAttachmentPosition()
                     self.adcLinkers.forEach { $0.isEnabled = false }
@@ -152,7 +154,7 @@ struct ADCOptimizedImmersive: View {
                     self.linkerAttachmentEntity?.isEnabled = false
                     self.payloadEntity?.isEnabled = false
                 case 1:
-                    os_log(.debug, "ITR.. ✅ ADC build step 1")
+                    os_log(.debug, "ITR.. ✅ ADC build step 1 - checkmark to move past antibody to linker")
                     self.antibodyRootEntity?.components.remove(ADCGestureComponent.self)
                     for (index, element) in adcLinkers.enumerated() {
                         element.isEnabled = index <= dataModel.linkersWorkingIndex
@@ -166,7 +168,8 @@ struct ADCOptimizedImmersive: View {
                     self.linkerAttachmentEntity?.isEnabled = true
                     self.payloadEntity?.isEnabled = false
                 case 2:
-                    os_log(.debug, "ITR.. ✅ ADC build step 2")
+                    // clicked checkmark to apply the material to all of the linkers
+                    os_log(.debug, "ITR.. ✅ ADC build step 2 - checkmark to fill all linkers")
                     // If we came from checkmark button (all linkers filled)
                     if dataModel.linkersWorkingIndex == 4 {
                         Task { @MainActor in
@@ -196,7 +199,8 @@ struct ADCOptimizedImmersive: View {
                     }
                     adcPayloadsOuter[dataModel.payloadsWorkingIndex].components.set(ADCProximitySourceComponent())
                 case 3:
-                    os_log(.debug, "ITR.. ✅ ADC build step 3")
+                    // clicked checkmark to apply the material to all of the payloads
+                    os_log(.debug, "ITR.. ✅ ADC build step 3 - checkmark to fill all payloads")
                     // If we came from checkmark button (all payloads filled)
                     if dataModel.payloadsWorkingIndex == 4 {
                         Task { @MainActor in
@@ -211,9 +215,12 @@ struct ADCOptimizedImmersive: View {
                                     outer.model?.materials = [originalOuterMaterial]
                                 }
                                 
-                                inner.updatePBRDiffuseColor(.adc[dataModel.selectedPayloadType ?? 0])
-                                outer.updatePBRDiffuseColor(.adc[dataModel.selectedPayloadType ?? 0])
-                                
+//                                 inner.updatePBRDiffuseColor(.adc[dataModel.selectedPayloadType ?? 0])
+//                                 outer.updatePBRDiffuseColor(.adc[dataModel.selectedPayloadType ?? 0])
+
+                                inner.updatePBREmissiveColor(.adcEmissive[dataModel.selectedPayloadType ?? 0])
+                                outer.updateShaderGraphColor(parameterName: "glowColor", color: .adc[dataModel.selectedPayloadType ?? 0])
+
                                 inner.isEnabled = true
                                 outer.isEnabled = true
                             }
@@ -233,10 +240,12 @@ struct ADCOptimizedImmersive: View {
                 }
             }
         }
+        // Change the Antibody 3D model material color to the selected color
         .onChange(of: dataModel.selectedADCAntibody) { oldValue, newValue in
             os_log(.debug, "ITR..onChange(of: selectedADCAntibody): new value: \(newValue ?? -1)")
             handleAntibodyColorChange(newValue: newValue)
         }
+        // Change the linker 3D model material color to the selected color
         .onChange(of: dataModel.selectedLinkerType) { oldValue, newValue in
             os_log(.debug, "ITR..onChange(of: dataModel.selectedLinkerType): new change selected working linker: \(newValue ?? -1)")
             guard dataModel.adcBuildStep == 1  else {
@@ -256,6 +265,7 @@ struct ADCOptimizedImmersive: View {
                 }
             }
         }
+        // Change the payload inner and outer 3D model material color to the selected color
         .onChange(of: dataModel.selectedPayloadType) { oldValue, newValue in
             os_log(.debug, "ITR..onChange(of: dataModel.selectedPayloadType): New change selected working payload: \(newValue ?? -1)")
             guard dataModel.adcBuildStep == 2  else {
@@ -283,7 +293,7 @@ struct ADCOptimizedImmersive: View {
             self.popAudioPlaybackController?.play()
         }
         .task {
-            dismissWindow(id: AppModel.mainWindowId)
+//            dismissWindow(id: AppModel.mainWindowId)
         }
 
 

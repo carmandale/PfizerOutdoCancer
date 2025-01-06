@@ -4,9 +4,52 @@ import RealityKitContent
 
 extension AttackCancerViewModel {
     // MARK: - ADC Setup
-    func setADCTemplate(_ template: Entity) {
+    func setADCTemplate(_ template: Entity, dataModel: ADCDataModel) {
+        print("\n=== Setting ADC Template ===")
+        print("Current ADC Recipe:")
+        print("- Antibody Color: \(String(describing: dataModel.selectedADCAntibody ?? -1))")
+        print("- Linker Color: \(String(describing: dataModel.selectedLinkerType ?? -1))")
+        print("- Payload Color: \(String(describing: dataModel.selectedPayloadType ?? -1))")
+        
+        // Find and apply antibody color
+        if let antibody = template.findModelEntity(named: "ADC_complex") {
+            if let antibodyColor = dataModel.selectedADCAntibody,
+               var modelComponent = antibody.components[ModelComponent.self] {
+                if var material = modelComponent.materials.first as? PhysicallyBasedMaterial {
+                    material.baseColor = .init(tint: UIColor.adc[antibodyColor])
+                    modelComponent.materials = [material]
+                    antibody.components[ModelComponent.self] = modelComponent
+                    print("✅ Applied antibody color: \(antibodyColor)")
+                }
+            }
+        }
+        
+        // Find and apply linker colors (all 4)
+        for i in 1...4 {
+            let offsetName = "linker0\(i)_offset"
+            if let linker = template.findModelEntity(named: "linker", from: offsetName) {
+                if let linkerColor = dataModel.selectedLinkerType {
+                    linker.updatePBRDiffuseColor(.adc[linkerColor])
+                    print("✅ Applied linker color \(linkerColor) to \(offsetName)")
+                }
+            }
+        }
+        
+        // Find and apply payload colors (all 4 sets of inner/outer)
+        for i in 1...4 {
+            let offsetName = "linker0\(i)_offset"
+            if let inner = template.findModelEntity(named: "InnerSphere", from: offsetName),
+               let outer = template.findModelEntity(named: "OuterSphere", from: offsetName) {
+                if let payloadColor = dataModel.selectedPayloadType {
+                    inner.updatePBREmissiveColor(.adcEmissive[payloadColor])
+                    outer.updateShaderGraphColor(parameterName: "glowColor", color: .adc[payloadColor])
+                    print("✅ Applied payload color \(payloadColor) to \(offsetName)")
+                }
+            }
+        }
+        
         adcTemplate = template
-        print("✅ ADC template set successfully")
+        print("✅ ADC template set successfully with color recipe applied")
     }
     
     // MARK: - ADC Spawning
@@ -24,7 +67,7 @@ extension AttackCancerViewModel {
             hasFirstADCBeenFired = true
         }
         
-        // Clone the template
+        // Clone the template (colors will be cloned with it)
         let adc = template.clone(recursive: true)
         
         // Update ADCComponent properties

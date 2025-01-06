@@ -19,6 +19,10 @@ struct ContentView: View {
             case .building:
                 ADCView()
                     .environment(adcDataModel)
+            case .playing:
+                AttackCancerInstructionsView()
+                    .environment(appModel)
+                    .environment(adcDataModel)
             default:
                 EmptyView()
             }

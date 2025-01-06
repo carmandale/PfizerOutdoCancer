@@ -73,9 +73,13 @@ def Xform "Root" (
 
     def "antibodyProtein_complex_assembled" (
         active = true
+        customData = {
+            float3 rotationEulerHint = (0, 0, -1.5705142)
+        }
         prepend references = @Assets/ADC/antibodyProtein_complex_assembled.usda@
     )
     {
+        quatf xformOp:orient = (0.7072065, 0, 0, -0.707007)
         float3 xformOp:scale = (1, 1, 1)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }

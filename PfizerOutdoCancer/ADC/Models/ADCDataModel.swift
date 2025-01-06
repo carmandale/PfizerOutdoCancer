@@ -4,12 +4,13 @@ import SwiftUI
 
 @Observable
 class ADCDataModel {
-    public var selectedADCAntibody: Int? = nil
+    // Color selections for ADC components
+    var selectedADCAntibody: Int? = nil
     public var selectedADCLinker: Int? = nil
     public var selectedADCPayload: Int? = nil
     
-    public var selectedLinkerType: Int? = nil
-    public var selectedPayloadType: Int? = nil
+    var selectedLinkerType: Int? = nil
+    var selectedPayloadType: Int? = nil
     
     public var linkersWorkingIndex: Int = 0
     public var payloadsWorkingIndex: Int = 0
@@ -71,5 +72,3 @@ public enum ADCUIAttachments {
     static let payloadSelectorView = "payloadSelectorAttachment"
     static let mainADCView = "mainADCView"
 }
-
-

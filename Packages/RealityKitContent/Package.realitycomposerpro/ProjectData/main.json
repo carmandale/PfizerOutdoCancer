@@ -20,6 +20,7 @@
     "RealityKitContent\/Sources\/RealityKitContent\/RealityKitContent.rkassets\/Assets\/CancerCell\/cancerCell_complex.usd" : "1EBF1622-190B-43A7-845E-9B82B5A7A908",
     "RealityKitContent\/Sources\/RealityKitContent\/RealityKitContent.rkassets\/Assets\/CancerCell\/cancerCell_complex.usdc" : "44F0F50C-ED11-4E8D-8923-F81E82193C26",
     "RealityKitContent\/Sources\/RealityKitContent\/RealityKitContent.rkassets\/Assets\/CancerCell\/particle.usda" : "9DB37E77-A61D-482C-BE47-C5B3229CFA97",
+    "RealityKitContent\/Sources\/RealityKitContent\/RealityKitContent.rkassets\/Assets\/Intro\/LightBeams\/lightbeams.usdc" : "706605BE-FBD0-43F4-AB2C-3BD965A1F37F",
     "RealityKitContent\/Sources\/RealityKitContent\/RealityKitContent.rkassets\/Assets\/Intro\/M_intro_people.usda" : "697592C5-4B52-461C-B85C-EF586F401040",
     "RealityKitContent\/Sources\/RealityKitContent\/RealityKitContent.rkassets\/Assets\/Intro\/M_jet.usda" : "86B0E0A1-EF58-441F-9D7F-B8CF97B8CC1D",
     "RealityKitContent\/Sources\/RealityKitContent\/RealityKitContent.rkassets\/Assets\/Intro\/Untitled%20Scene.usda" : "E20D5996-7725-4901-B06A-2060E4682C8B",
@@ -117,6 +118,7 @@
     "RealityKitContent\/Sources\/RealityKitContent\/RealityKitContent.rkassets\/Scene.usda" : "D66134B1-3681-4A8E-AFE5-29F257229F3B",
     "RealityKitContent\/Sources\/RealityKitContent\/RealityKitContent.rkassets\/Untitled%20Scene%201.usda" : "12B1BFDE-D45B-4A19-958C-624E0EE55CAE",
     "RealityKitContent\/Sources\/RealityKitContent\/RealityKitContent.rkassets\/Untitled%20Scene.usda" : "220C04E5-242E-4BBB-82A0-77AFE2744F74",
-    "RealityKitContent\/Sources\/RealityKitContent\/RealityKitContent.rkassets\/antibodyScene.usda" : "F6823F79-E131-4D71-A30C-A15953CF49EC"
+    "RealityKitContent\/Sources\/RealityKitContent\/RealityKitContent.rkassets\/antibodyScene.usda" : "F6823F79-E131-4D71-A30C-A15953CF49EC",
+    "RealityKitContent\/Sources\/RealityKitContent\/RealityKitContent.rkassets\/outdoCancer.usda" : "6C5F81F5-B741-42CA-BE6E-B4E2AD588221"
   }
 }

@@ -10,7 +10,7 @@ class HandTrackingViewModel {
     private let session = ARKitSession()
     
     /// The provider instance for hand tracking
-    private let handTracking = HandTrackingProvider()
+    private var handTracking: HandTrackingProvider!
     
     /// Root entity containing all hand-tracked content
     private var contentEntity = Entity()
@@ -29,6 +29,9 @@ class HandTrackingViewModel {
     
     /// Sets up and returns the content entity with finger visualization
     func setupContentEntity() -> Entity {
+        // Initialize a new hand tracking provider
+        handTracking = HandTrackingProvider()
+        
         // Add finger entities to content
         for entity in fingerEntities.values {
             contentEntity.addChild(entity)
@@ -89,6 +92,12 @@ class HandTrackingViewModel {
                 print("Failed to start hand tracking session: \(error)")
             }
         }
+    }
+    
+    /// Stops the ARKit session
+    func stopSession() async {
+        await session.stop()
+        print("Hand tracking session stopped")
     }
     
     // MARK: - Helper Methods

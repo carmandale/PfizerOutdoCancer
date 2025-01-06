@@ -8,49 +8,76 @@ final class PortalManager {
         let root = Entity()
         
         // Try to find the portal plane in the environment
-        let portalPlane: Entity
-        if let existingPlane = environment.findEntity(named: portalPlaneName) {
-            print("✅ Found existing portal plane: \(portalPlaneName)")
-            portalPlane = existingPlane
-            // Add portal material to existing plane
-            if let modelEntity = portalPlane as? ModelEntity {
-                modelEntity.model?.materials = [PortalMaterial()]
-            } else {
-                print("⚠️ Portal plane is not a ModelEntity, materials not updated")
-            }
-        } else {
-            print("⚠️ Could not find portal plane '\(portalPlaneName)', creating fallback plane")
-            portalPlane = ModelEntity(
-                mesh: .generatePlane(width: 1.0, height: 2.0),
-                materials: [PortalMaterial()]
-            )
+//        let portalPlane: Entity
+//        if let existingPlane = environment.findEntity(named: portalPlaneName) {
+//            print("✅ Found existing portal plane: \(portalPlaneName)")
+//            portalPlane = existingPlane
+//            // Add portal material to existing plane
+//            if let modelEntity = portalPlane as? ModelEntity {
+//                modelEntity.model?.materials = [PortalMaterial()]
+//                print("Adding portal material to \(modelEntity.name)")
+//            } else {
+//                print("⚠️ Portal plane is not a ModelEntity, materials not updated")
+//            }
+//        } else {
+//            print("⚠️ Could not find portal plane '\(portalPlaneName)', creating fallback plane")
+//            portalPlane = ModelEntity(
+//                mesh: .generatePlane(width: 1.0, height: 2.0),
+//                materials: [PortalMaterial()]
+//            )
+//        }
+        
+        let portalRoot = Entity()
+        portalRoot.position.y = 1.5
+        portalRoot.position.z = -1.5
+        
+        let titleRoot = Entity()
+        titleRoot.scale *= 0.5
+        titleRoot.position.z = 0.1
+        
+        portalRoot.addChild(titleRoot)
+        
+        let portalPlane = ModelEntity(
+            mesh: .generatePlane(width: 2.0, height: 1.0, cornerRadius: 0.3),
+            materials: [PortalMaterial()]
+        )
+        
+        if let logo = await appModel.assetLoadingManager.instantiateEntity("pfizer_logo") {
+            titleRoot.addChild(logo)
         }
         
+//        if let title = await appModel.assetLoadingManager.instantiateEntity("title_card") {
+//            titleRoot.addChild(title)
+//        }
+        
+
         // Create the entity that stores the content within the portal.
         let world = Entity()
 
         // Shrink the portal world and update the position
         // to make it fit into the portal view.
-        world.scale *= 0.35
-        world.position.y -= 0.5
-        world.position.z -= 1.5
+        world.scale *= 0.55
+        world.position.y -= 0.25
+        world.position.z -= 4.5
 
         // Allow the entity to be visible only through a portal.
         world.components.set(WorldComponent())
         
-        // Create the box environment and add it to the root.
-        guard let labEnvironment = await appModel.assetLoadingManager.instantiateEntity("lab_environment") else {
-            print("❌ Failed to load LabEnvironment from asset manager")
-            return root
+        // Create the lab environment and add it to the world.
+        if let labEnvironment = await appModel.assetLoadingManager.instantiateEntity("lab_environment") {
+            world.addChild(labEnvironment)
         }
         
-        world.addChild(labEnvironment)
+        root.addChild(world)
 
         // Set up the portal to show the content in the `world`.
         portalPlane.components.set(PortalComponent(target: world))
-        root.addChild(portalPlane)
-        root.addChild(world)
+        
+        portalRoot.addChild(portalPlane)
+        root.addChild(portalRoot)
 
-        return root 
+        return root
     }
 }
+
+
