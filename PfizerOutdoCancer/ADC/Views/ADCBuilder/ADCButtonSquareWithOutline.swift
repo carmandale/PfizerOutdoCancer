@@ -26,7 +26,7 @@ struct ADCButtonSquareWithOutline: View {
                    .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
                    .overlay {
                        RoundedRectangle(cornerRadius: cornerRadius)
-                           .stroke(isSelected() ? Color.blue : Color.white, lineWidth: 2)
+                           .stroke(isSelected() ? Color.white : Color.clear, lineWidth: 4)
                    }
            }
            .frame(width: buttonSize, height: buttonSize)

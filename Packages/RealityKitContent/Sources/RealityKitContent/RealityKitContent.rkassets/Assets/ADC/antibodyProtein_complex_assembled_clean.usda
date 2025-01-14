@@ -1,0 +1,268 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 2.0 (448.60.4)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    reorder nameChildren = ["antibodyProtein_complex_base_clean", "M_antibody", "M_linker"]
+    def "M_antibody" (
+        active = true
+        references = @../../Materials/M_antibody.usdz@
+    )
+    {
+        color3f inputs:Basecolor_Tint = (0, 0.0030352701, 0.64447963) (
+            colorSpace = "lin_srgb"
+        )
+        float2 inputs:UV_Scale = (5, 5)
+    }
+
+    def "M_linker" (
+        active = true
+        instanceable = true
+        references = </Root/M_antibody>
+    )
+    {
+        color3f inputs:Basecolor_Tint = (0.53382623, 0.94589096, 1) (
+            colorSpace = "srgb_displayp3"
+        )
+        float2 inputs:UV_Scale = (50, 50)
+    }
+
+    def "antibodyProtein_complex_base_clean" (
+        active = true
+        prepend references = @antibodyProtein_complex_base_clean.usdc@
+    )
+    {
+        float3 xformOp:scale = (1, 1, 1)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "ADC_complex_001"
+        {
+            over "linker02_offset"
+            {
+                over "payload02_xform"
+                {
+                    def "payload" (
+                        active = true
+                        customData = {
+                            float3 rotationEulerHint = (1.5707964, 0, 0)
+                        }
+                        prepend references = @payload.usda@
+                    )
+                    {
+                        quatf xformOp:orient = (0.70710677, 0.7071068, 0, 0)
+                        float3 xformOp:scale = (2.9758632, 2.9758632, 2.9758632)
+                        float3 xformOp:translate = (7.450581e-9, 0, -3.7252903e-9)
+                        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                    }
+                }
+
+                over "linker02_xform" (
+                    customData = {
+                        float3 rotationEulerHint = (0, 0, 0)
+                    }
+                )
+                {
+                    reorder nameChildren = ["linker", "linkerMesh"]
+                    quatf xformOp:orient = (1, 0, 0, 0)
+                    float3 xformOp:scale = (1, 1, 1)
+                    double3 xformOp:translate = (0.02441035583615303, 0, 0)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                    def "linker" (
+                        active = true
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                        customData = {
+                            float3 rotationEulerHint = (1.5707963, 0, 0)
+                        }
+                        prepend references = @linker.usdc@
+                    )
+                    {
+                        rel material:binding = </Root/M_linker> (
+                            bindMaterialAs = "strongerThanDescendants"
+                        )
+                        quatf xformOp:orient = (0.70710677, 0.7071067, 0, 0)
+                        float3 xformOp:scale = (3.57992, 3.57992, 3.57992)
+                        float3 xformOp:translate = (-0.0277023, 5.197354e-11, -4.0233138e-7)
+                        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                    }
+
+                    over "linkerMesh" (
+                        active = false
+                    )
+                    {
+                    }
+                }
+            }
+
+            over "linker03_offset"
+            {
+                over "payload03_xform"
+                {
+                    def "payload" (
+                        active = true
+                        customData = {
+                            float3 rotationEulerHint = (1.5707964, 0, 0)
+                        }
+                        prepend references = @payload.usda@
+                    )
+                    {
+                        float2 ui:nodegraph:node:pos = (20, 20)
+                        int ui:nodegraph:node:stackingOrder = 1
+                        quatf xformOp:orient = (0.70710677, 0.7071068, 0, 0)
+                        float3 xformOp:scale = (2.9758632, 2.9758632, 2.9758632)
+                        float3 xformOp:translate = (7.450581e-9, 0, -3.7252903e-9)
+                        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                    }
+                }
+
+                over "linker03_xform"
+                {
+                    def "linker" (
+                        active = true
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                        customData = {
+                            float3 rotationEulerHint = (1.5707963, 0, 0)
+                        }
+                        prepend references = @linker.usdc@
+                    )
+                    {
+                        rel material:binding = </Root/M_linker> (
+                            bindMaterialAs = "strongerThanDescendants"
+                        )
+                        float2 ui:nodegraph:node:pos = (20, 20)
+                        int ui:nodegraph:node:stackingOrder = 1
+                        quatf xformOp:orient = (0.70710677, 0.7071067, 0, 0)
+                        float3 xformOp:scale = (3.57992, 3.57992, 3.57992)
+                        float3 xformOp:translate = (-0.0277023, 5.197354e-11, -4.0233138e-7)
+                        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                    }
+
+                    over "linkerMesh" (
+                        active = false
+                    )
+                    {
+                    }
+                }
+            }
+
+            over "linker01_offset"
+            {
+                over "payload01_xform"
+                {
+                    def "payload" (
+                        active = true
+                        customData = {
+                            float3 rotationEulerHint = (1.5707964, 0, 0)
+                        }
+                        prepend references = @payload.usda@
+                    )
+                    {
+                        float2 ui:nodegraph:node:pos = (20, 20)
+                        int ui:nodegraph:node:stackingOrder = 1
+                        quatf xformOp:orient = (0.70710677, 0.7071068, 0, 0)
+                        float3 xformOp:scale = (2.9758632, 2.9758632, 2.9758632)
+                        float3 xformOp:translate = (7.450581e-9, 0, -3.7252903e-9)
+                        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                    }
+                }
+
+                over "linker01_xform"
+                {
+                    def "linker" (
+                        active = true
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                        customData = {
+                            float3 rotationEulerHint = (1.5707963, 0, 0)
+                        }
+                        prepend references = @linker.usdc@
+                    )
+                    {
+                        rel material:binding = </Root/M_linker> (
+                            bindMaterialAs = "strongerThanDescendants"
+                        )
+                        float2 ui:nodegraph:node:pos = (20, 20)
+                        int ui:nodegraph:node:stackingOrder = 1
+                        quatf xformOp:orient = (0.70710677, 0.7071067, 0, 0)
+                        float3 xformOp:scale = (3.57992, 3.57992, 3.57992)
+                        float3 xformOp:translate = (-0.0277023, 5.197354e-11, -4.0233138e-7)
+                        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                    }
+
+                    over "linkerMesh" (
+                        active = false
+                    )
+                    {
+                    }
+                }
+            }
+
+            over "linker04_offset"
+            {
+                over "payload04_xform"
+                {
+                    def "payload" (
+                        active = true
+                        customData = {
+                            float3 rotationEulerHint = (1.5707964, 0, 0)
+                        }
+                        prepend references = @payload.usda@
+                    )
+                    {
+                        float2 ui:nodegraph:node:pos = (20, 20)
+                        int ui:nodegraph:node:stackingOrder = 1
+                        quatf xformOp:orient = (0.70710677, 0.7071068, 0, 0)
+                        float3 xformOp:scale = (2.9758632, 2.9758632, 2.9758632)
+                        float3 xformOp:translate = (7.450581e-9, 0, -3.7252903e-9)
+                        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                    }
+                }
+
+                over "linker04_xform"
+                {
+                    def "linker" (
+                        active = true
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                        customData = {
+                            float3 rotationEulerHint = (1.5707963, 0, 0)
+                        }
+                        prepend references = @linker.usdc@
+                    )
+                    {
+                        rel material:binding = </Root/M_linker> (
+                            bindMaterialAs = "strongerThanDescendants"
+                        )
+                        float2 ui:nodegraph:node:pos = (20, 20)
+                        int ui:nodegraph:node:stackingOrder = 1
+                        quatf xformOp:orient = (0.70710677, 0.7071067, 0, 0)
+                        float3 xformOp:scale = (3.57992, 3.57992, 3.57992)
+                        float3 xformOp:translate = (-0.0277023, 5.197354e-11, -4.0233138e-7)
+                        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                    }
+
+                    over "linkerMesh" (
+                        active = false
+                    )
+                    {
+                    }
+                }
+            }
+
+            over "ADC_complex" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = </Root/M_antibody> (
+                    bindMaterialAs = "strongerThanDescendants"
+                )
+            }
+        }
+    }
+}
+

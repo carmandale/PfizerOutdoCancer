@@ -22,7 +22,6 @@ struct PfizerOutdoCancerApp: App {
         @Environment(\.dismissWindow) private var dismissWindow
         @Environment(\.scenePhase) private var scenePhase
         
-        
         var body: some Scene {
             // MARK: - Main Window with ContentView
             WindowGroup(id: AppModel.mainWindowId) {
@@ -39,6 +38,7 @@ struct PfizerOutdoCancerApp: App {
                 if appModel.currentPhase == .lab {
                     LibraryView()
                         .environment(appModel)
+                        .environment(adcDataModel)
                 }
             }
             .defaultSize(CGSize(width: 800, height: 600))
@@ -52,8 +52,9 @@ struct PfizerOutdoCancerApp: App {
             WindowGroup(id: AppModel.debugNavigationWindowId) {
                 NavigationView()
                     .environment(appModel)
-                    .frame(minWidth: 500, maxWidth: 1000, minHeight: 50, maxHeight: 100)
+                    .environment(adcDataModel)
             }
+            .windowStyle(.plain)
             .windowResizability(.contentSize)
             .defaultWindowPlacement { _, context in
                 return WindowPlacement(.utilityPanel)
@@ -62,6 +63,7 @@ struct PfizerOutdoCancerApp: App {
             WindowGroup(id: AppModel.gameCompletedWindowId) {
                 CompletedView()
                     .environment(appModel)
+                    .environment(adcDataModel)
             }
             .windowStyle(.plain)
             .windowResizability(.contentSize)
@@ -83,6 +85,7 @@ struct PfizerOutdoCancerApp: App {
                 ImmersiveSpace(id: "IntroSpace") {
                     IntroView()
                         .environment(appModel)
+                        .environment(adcDataModel)
                         .onAppear {
                             appModel.immersiveSpaceState = .open
                         }
@@ -92,9 +95,22 @@ struct PfizerOutdoCancerApp: App {
                 }
                 .immersionStyle(selection: $appModel.introStyle, in: .mixed)
 
+                ImmersiveSpace(id: "OutroSpace") {
+                    OutroView()
+                        .environment(appModel)
+                        .onAppear {
+                            appModel.immersiveSpaceState = .open
+                        }
+                        .onDisappear {
+                            appModel.immersiveSpaceState = .closed
+                        }
+                }
+                .immersionStyle(selection: $appModel.outroStyle, in: .mixed)
+
                 ImmersiveSpace(id: "LabSpace") {
                     LabView()
                         .environment(appModel)
+                        .environment(adcDataModel)
                         .onAppear {
                             appModel.immersiveSpaceState = .open
                         }
@@ -131,7 +147,7 @@ struct PfizerOutdoCancerApp: App {
                         }
                 }
                 .immersionStyle(selection: $appModel.attackStyle, in: .progressive)
-                .upperLimbVisibility(.automatic)
+                .upperLimbVisibility(.visible)
                 
                 // MARK: PHASE CHANGE
                 // Single onChange handler for phase transitions
@@ -242,14 +258,6 @@ struct PfizerOutdoCancerApp: App {
         private func handleWindowsForPhase(_ phase: AppPhase) async {
             print("🎯 Managing windows for phase: \(phase)")
             
-             // Always handle loading window first if it's open
-//             if appModel.isLoadingWindowOpen && phase != .loading {
-//                 print("📱 Dismissing loading window")
-//                 dismissWindow(id: AppModel.mainWindowId)
-//                 appModel.isLoadingWindowOpen = false
-//                 try? await Task.sleep(for: .seconds(0.3))
-//             }
-            
             switch phase {
             case .loading:
                 // Make sure loading window is open
@@ -263,34 +271,21 @@ struct PfizerOutdoCancerApp: App {
                     dismissWindow(id: AppModel.libraryWindowId)
                     appModel.isLibraryWindowOpen = false
                 }
-//                if appModel.isMainWindowOpen {
-//                    dismissWindow(id: AppModel.mainWindowId)
-//                    appModel.isMainWindowOpen = false
-//                }
                 if !appModel.isDebugWindowOpen {
                     openWindow(id: AppModel.debugNavigationWindowId)
                     appModel.isDebugWindowOpen = true
                 }
-                
             case .playing:
                 // Explicitly dismiss debug window first
                 if appModel.isDebugWindowOpen {
                     dismissWindow(id: AppModel.debugNavigationWindowId)
                     appModel.isDebugWindowOpen = false
                 }
-                
                 // Then handle other windows
                 if appModel.isLibraryWindowOpen {
                     dismissWindow(id: AppModel.libraryWindowId)
                     appModel.isLibraryWindowOpen = false
                 }
-//                if appModel.isMainWindowOpen {
-//                    dismissWindow(id: AppModel.mainWindowId)
-//                    appModel.isMainWindowOpen = false
-//                }
-//                openWindow(id: AppModel.mainWindowId)
-//                print("opening main window to show instructions")
-                
                 // No need for default case handling
                 return  // Add explicit return to prevent falling through to default
             
@@ -306,10 +301,6 @@ struct PfizerOutdoCancerApp: App {
                 openWindow(id: AppModel.gameCompletedWindowId)
                 
             case .lab:
-//                if appModel.isMainWindowOpen {
-//                    dismissWindow(id: AppModel.mainWindowId)
-//                    appModel.isMainWindowOpen = false
-//                }
                 if !appModel.isLibraryWindowOpen {
                     openWindow(id: AppModel.libraryWindowId)
                     appModel.isLibraryWindowOpen = true
@@ -318,7 +309,6 @@ struct PfizerOutdoCancerApp: App {
                     openWindow(id: AppModel.debugNavigationWindowId)
                     appModel.isDebugWindowOpen = true
                 }
-                
             case .building:
                 if appModel.isLibraryWindowOpen {
                     print("closing library window")
@@ -330,28 +320,11 @@ struct PfizerOutdoCancerApp: App {
                     dismissWindow(id: AppModel.debugNavigationWindowId)
                     appModel.isDebugWindowOpen = false
                 }
-//                if appModel.isBuilderWindowOpen {
-//                    print("opening builder window through Main window")
-//                    
-//                    openWindow(id: AppModel.mainWindowId)
-//                    appModel.isBuilderWindowOpen = true
-//                }
-//                openWindow(id: AppModel.mainWindowId)
-//                print("opening main window to show builder")
-                
             default:
                 if appModel.isLibraryWindowOpen {
                     dismissWindow(id: AppModel.libraryWindowId)
                     appModel.isLibraryWindowOpen = false
                 }
-//                if appModel.isMainWindowOpen {
-//                    dismissWindow(id: AppModel.mainWindowId)
-//                    appModel.isMainWindowOpen = false
-//                }
-//                if !appModel.isDebugWindowOpen {
-//                    openWindow(id: AppModel.debugNavigationWindowId)
-//                    appModel.isDebugWindowOpen = true
-//                }
             }
             
             // Always dismiss the completed window if not in completed phase

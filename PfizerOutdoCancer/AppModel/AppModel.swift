@@ -13,6 +13,7 @@ extension AppModel {
     nonisolated static let gameCompletedWindowId = "Completed"
     
     nonisolated static let introSpaceId = "IntroSpace"
+    nonisolated static let outroSpaceId = "OutroSpace"
     nonisolated static let labSpaceId = "LabSpace"
     nonisolated static let buildingSpaceId = "BuildingSpace"
     nonisolated static let attackSpaceId = "AttackSpace"
@@ -25,6 +26,7 @@ enum AppPhase: String, CaseIterable, Codable, Sendable, Equatable {
     case building
     case playing
     case completed
+    case outro
     case error
     
     var needsImmersiveSpace: Bool {
@@ -42,6 +44,7 @@ enum AppPhase: String, CaseIterable, Codable, Sendable, Equatable {
         case .lab: return AppModel.labSpaceId
         case .building: return AppModel.buildingSpaceId
         case .playing, .completed: return AppModel.attackSpaceId
+        case .outro: return AppModel.outroSpaceId
         case .loading, .error: return ""
         }
     }
@@ -53,7 +56,7 @@ enum AppPhase: String, CaseIterable, Codable, Sendable, Equatable {
         case .completed: return AppModel.gameCompletedWindowId
         case .lab: return AppModel.libraryWindowId
         case .building: return AppModel.builderWindowId
-        case .playing, .error: return ""
+        case .playing, .outro, .error: return ""
         }
     }
 }
@@ -78,6 +81,7 @@ final class AppModel {
 
     // MARK: - Immersion Style
     var introStyle: ImmersionStyle = .mixed
+    var outroStyle: ImmersionStyle = .mixed
     var labStyle: ImmersionStyle = .full
     var buildingStyle: ImmersionStyle = .mixed
     var attackStyle: ImmersionStyle = .progressive(

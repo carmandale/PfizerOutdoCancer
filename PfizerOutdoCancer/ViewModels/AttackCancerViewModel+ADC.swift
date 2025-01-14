@@ -14,11 +14,9 @@ extension AttackCancerViewModel {
         // Find and apply antibody color
         if let antibody = template.findModelEntity(named: "ADC_complex") {
             if let antibodyColor = dataModel.selectedADCAntibody,
-               var modelComponent = antibody.components[ModelComponent.self] {
-                if var material = modelComponent.materials.first as? PhysicallyBasedMaterial {
-                    material.baseColor = .init(tint: UIColor.adc[antibodyColor])
-                    modelComponent.materials = [material]
-                    antibody.components[ModelComponent.self] = modelComponent
+               let modelComponent = antibody.components[ModelComponent.self] {
+                if modelComponent.materials.first is ShaderGraphMaterial {
+                    antibody.updateShaderGraphColor(parameterName: "Basecolor_Tint", color: .adc[antibodyColor])
                     print("✅ Applied antibody color: \(antibodyColor)")
                 }
             }
@@ -29,7 +27,10 @@ extension AttackCancerViewModel {
             let offsetName = "linker0\(i)_offset"
             if let linker = template.findModelEntity(named: "linker", from: offsetName) {
                 if let linkerColor = dataModel.selectedLinkerType {
+                    // old PBR shader
                     linker.updatePBRDiffuseColor(.adc[linkerColor])
+                    // new shaderGraph material
+                    linker.updateShaderGraphColor(parameterName: "Basecolor_Tint", color: .adc[linkerColor])
                     print("✅ Applied linker color \(linkerColor) to \(offsetName)")
                 }
             }

@@ -9,11 +9,15 @@ import SwiftUI
 
 struct AttackCancerViewerButton: View {
     @Environment(AppModel.self) private var appModel
+    @Environment(ADCDataModel.self) var dataModel
+    @Environment(\.openWindow) private var openWindow
     
     var body: some View {
         Button {
             Task {
-                await appModel.transitionToPhase(.playing)
+                openWindow(id: AppModel.mainWindowId)
+                appModel.isMainWindowOpen = true
+                await appModel.transitionToPhase(.playing, adcDataModel: dataModel)
             }
         } label: {
             Text("Attack Cancer")
@@ -22,8 +26,10 @@ struct AttackCancerViewerButton: View {
                 .padding()
                 .frame(minWidth: 200)
         }
-        .padding()
+//        .padding()
         .glassBackgroundEffect()
+        .controlSize(.extraLarge)
+        .buttonStyle(.plain)
     }
 }
 

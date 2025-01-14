@@ -9,12 +9,25 @@ import SwiftUI
 
 struct ADCBuilderViewerButton: View {
     @Environment(AppModel.self) private var appModel
+    @Environment(\.openWindow) private var openWindow
+    @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
     
     var body: some View {
         Button {
             Task {
-                await appModel.transitionToPhase(.building)
+                print("main window status: \(appModel.isMainWindowOpen)")
+                if !appModel.isMainWindowOpen {
+                    print("opening builder window")
+                    print("current phase: \(appModel.currentPhase)")
+                    print("opening main window")
+                    openWindow(id: AppModel.mainWindowId)
+                    appModel.isMainWindowOpen = true
+                }
+                print("builder window status: \(appModel.isBuilderInstructionsOpen)")
+                print("setting builder window status to true")
                 appModel.isBuilderInstructionsOpen = true
+//                await dismissImmersiveSpace()
+                await appModel.transitionToPhase(.building)
             }
         } label: {
             Text("ADC Builder")
@@ -23,14 +36,13 @@ struct ADCBuilderViewerButton: View {
                 .padding()
                 .frame(minWidth: 200)
         }
-        .padding()
         .glassBackgroundEffect()
+        .controlSize(.extraLarge)
+        .buttonStyle(.plain)
     }
-    
-       
-
 }
 
-//#Preview {
-//    ADCBuilderViewerButton()
-//}
+#Preview {
+    ADCBuilderViewerButton()
+        .environment(AppModel())
+}

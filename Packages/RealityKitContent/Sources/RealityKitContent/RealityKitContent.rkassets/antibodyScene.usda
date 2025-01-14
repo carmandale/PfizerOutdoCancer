@@ -59,13 +59,77 @@ def Xform "Root"
 
                 over "ADC_complex"
                 {
-                    over "ADC_complex"
+                    over "ADC_complex" (
+                        active = false
+                    )
                     {
                         def RealityKitComponent "SpatialAudio"
                         {
                             uniform token info:id = "RealityKit.SpatialAudio"
                         }
                     }
+
+                    over "antibodyProtein_complex_assembled_clean"
+                    {
+                        over "antibodyProtein_complex_base_clean"
+                        {
+                            over "ADC_complex_001"
+                            {
+                                over "linker02_offset"
+                                {
+                                    over "linker02_xform"
+                                    {
+                                        over "linker"
+                                        {
+                                            over "linkerMesh_001"
+                                            {
+                                                over "linker"
+                                                {
+                                                    over "linker" (
+                                                        prepend apiSchemas = ["MaterialBindingAPI"]
+                                                    )
+                                                    {
+                                                        rel material:binding = </Root/antibodyProtein_complex_assembled/antibodyProtein_complex_base/ADC_complex_001/ADC_complex/antibodyProtein_complex_assembled_clean/M_linker> (
+                                                            bindMaterialAs = "weakerThanDescendants"
+                                                        )
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        over "M_linker"
+                        {
+                            float2 inputs:UV_Scale = (50, 50)
+                        }
+                    }
+                }
+
+                over "linker02_offset" (
+                    active = false
+                )
+                {
+                }
+
+                over "linker03_offset" (
+                    active = false
+                )
+                {
+                }
+
+                over "linker01_offset" (
+                    active = false
+                )
+                {
+                }
+
+                over "linker04_offset" (
+                    active = false
+                )
+                {
                 }
             }
         }
@@ -84,9 +148,13 @@ def Xform "Root"
 
     def "targetLinker" (
         active = true
+        prepend apiSchemas = ["MaterialBindingAPI"]
         references = @Assets/ADC/linker.usdc@
     )
     {
+        rel material:binding = </Root/antibodyProtein_complex_assembled/antibodyProtein_complex_base/ADC_complex_001/ADC_complex/antibodyProtein_complex_assembled_clean/M_linker> (
+            bindMaterialAs = "strongerThanDescendants"
+        )
         float3 xformOp:scale = (1, 1, 1)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 

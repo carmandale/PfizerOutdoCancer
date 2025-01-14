@@ -34,6 +34,7 @@ struct ADCStartImmersiveButton: View {
                                 // may be multiple paths to ImmersiveView.onAppear().
                                 // Only set .open in ImmersiveView.onAppear().
                                 dismissWindow(id: AppModel.mainWindowId)
+                                appModel.isMainWindowOpen = false
                                 break
 
                             case .userCancelled, .error:
@@ -55,9 +56,10 @@ struct ADCStartImmersiveButton: View {
             Text(appModel.immersiveSpaceState == .open ? "Exit builder" : "Start Building")
                 .font(.headline)
                 .foregroundColor(.white)
-                .frame(width: 300, height: 50)
-                .background(Color(hex: 0x0000c9))
-                .clipShape(Capsule())
+                .frame(width: 200, height: 50)
+                .glassBackgroundEffect()
+//                .background(Color(hex: 0x0000c9))
+//                .clipShape(Capsule())
         }
         .buttonStyle(.plain)
     }

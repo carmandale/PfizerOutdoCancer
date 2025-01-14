@@ -89,6 +89,8 @@ struct AttackCancerView: View {
         
         if let attachmentEntity = attachments.entity(for: "HopeMeter") {
             attachmentEntity.components[BillboardComponent.self] = BillboardComponent()
+            attachmentEntity.scale *= 0.6
+            attachmentEntity.position.z -= 0.02
             handAnchor.addChild(attachmentEntity)
         }
     }
@@ -161,6 +163,9 @@ struct AttackCancerView: View {
                     root.addChild(meter)
                     meter.components[UIAttachmentComponent.self] = UIAttachmentComponent(attachmentID: i)
                     meter.components.set(BillboardComponent())
+//                    meter.scale *= 0.4
+//                    meter.position.y += 0.3
+                    
                     print("✅ Added meter to cancer_cell_\(i) with components")
                 } else {
                     print("❌ Could not find cancer cell \(i)")
@@ -175,6 +180,14 @@ struct AttackCancerView: View {
         SpatialTapGesture()
             .targetedToAnyEntity()
             .onEnded { value in
+                // Check if this is first tap and hope meter hasn't started
+                if appModel.gameState.totalTaps == 0 && !appModel.gameState.isHopeMeterRunning {
+                    dismissWindow(id: AppModel.mainWindowId)
+                    appModel.isMainWindowOpen = false
+                    appModel.startHopeMeter()
+                }
+                
+                // Existing tap handling code
                 let location3D = value.convert(value.location3D, from: .local, to: .scene)
                 appModel.gameState.totalTaps += 1
                 print("\n👆 TAP #\(appModel.gameState.totalTaps) on \(value.entity.name)")

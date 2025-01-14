@@ -55,43 +55,43 @@ struct ADCBuilderView: View {
                 // .padding(.vertical, 30)
                 // .padding(.horizontal, 30)
                 .background(.black.opacity(0.4))
-                HStack (alignment: .top, spacing: 50){
-                    Group {
-                        ADCButtonSquareWithOutline(imageName: dataModel.getADCImageName(),
-                                                outlineColor: Color.white,
-                                                description: "Antibody",
-                                                index: 0,
-                                                isSelected: {
-                            false
-                        }) {
-                            print("ITR..Button 0 antibody pressed")
-                        }
-                        
-                        ADCButtonSquareWithOutline(imageName: dataModel.getLinkerImageName(),
-                                                outlineColor: Color.white,
-                                                description: "Linkers",
-                                                index: 1,
-                                                isSelected: {
-                            false
-                        }) {
-                            print("ITR..Button 1 linkers pressed")
-                        }
-                        
-                        ADCButtonSquareWithOutline(imageName: dataModel.getPayloadImageName(),
-                                                outlineColor: Color.white,
-                                                description: "Payload",
-                                                index: 2,
-                                                isSelected: {
-                            false
-                        }) {
-                            print("ITR..Button 2 payload pressed")
-                        }
-                    }
-                    .disabled(appModel.immersiveSpaceState == .closed)
-                }
-                // .padding(30)
-                .padding(.horizontal,30)
-                .padding(.top, 30)
+//                HStack (alignment: .top, spacing: 50){
+//                    Group {
+//                        ADCButtonSquareWithOutline(imageName: dataModel.getADCImageName(),
+//                                                outlineColor: Color.white,
+//                                                description: "Antibody",
+//                                                index: 0,
+//                                                isSelected: {
+//                            false
+//                        }) {
+//                            print("ITR..Button 0 antibody pressed")
+//                        }
+//                        
+//                        ADCButtonSquareWithOutline(imageName: dataModel.getLinkerImageName(),
+//                                                outlineColor: Color.white,
+//                                                description: "Linkers",
+//                                                index: 1,
+//                                                isSelected: {
+//                            false
+//                        }) {
+//                            print("ITR..Button 1 linkers pressed")
+//                        }
+//                        
+//                        ADCButtonSquareWithOutline(imageName: dataModel.getPayloadImageName(),
+//                                                outlineColor: Color.white,
+//                                                description: "Payload",
+//                                                index: 2,
+//                                                isSelected: {
+//                            false
+//                        }) {
+//                            print("ITR..Button 2 payload pressed")
+//                        }
+//                    }
+//                    .disabled(appModel.immersiveSpaceState == .closed)
+//                }
+//                // .padding(30)
+//                .padding(.horizontal,30)
+//                .padding(.top, 30)
 
                 HStack {
                     Text(appModel.immersiveSpaceState == .closed ? "We'll start building the ADC.\n\nTap into the `Start building` button." : descriptions[dataModel.adcBuildStep])
@@ -134,6 +134,7 @@ struct ADCBuilderView: View {
                             os_log(.debug, "- Payload Color: \(dataModel.selectedPayloadType ?? -1)")
                             
                             openWindow(id: AppModel.mainWindowId)
+                            appModel.isMainWindowOpen = true
                             await dismissImmersiveSpace()
                             await appModel.transitionToPhase(.playing, adcDataModel: dataModel)
                         }
@@ -141,9 +142,10 @@ struct ADCBuilderView: View {
                         Text("Attack Cancer")
                             .font(.headline)
                             .foregroundColor(.white)
-                            .frame(width: 300, height: 50)
-                            .background(Color(hex: 0x0000c9))
-                            .clipShape(Capsule())
+                            .frame(width: 200, height: 50)
+                            .glassBackgroundEffect()
+//                            .background(Color(hex: 0x0000c9))
+//                            .clipShape(Capsule())
                     }
                     .buttonStyle(.plain)
                 }
@@ -157,3 +159,10 @@ struct ADCBuilderView: View {
         .clipShape(RoundedRectangle(cornerRadius: 20))
     }
 }
+
+//#Preview {
+//    
+//    ADCBuilderView()
+//        .environment(AppModel())
+//        .environment(ADCDataModel())
+//}

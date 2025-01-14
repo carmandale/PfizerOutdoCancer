@@ -4,6 +4,8 @@ import RealityKitContent
 
 struct CompletedView: View {
     @Environment(AppModel.self) private var appModel
+    @Environment(ADCDataModel.self) var dataModel
+    @Environment(\.openWindow) private var openWindow
     @Environment(\.dismissWindow) private var dismissWindow
     @State private var animateStats = false
     
@@ -32,38 +34,57 @@ struct CompletedView: View {
             
             // Stats
             VStack(spacing: 16) {
-                statRow("Cancer Cells Destroyed", value: stats.destroyed, icon: "target")
+//                statRow("Cancer Cells Destroyed", value: stats.destroyed, icon: "target")
                 statRow("ADCs Deployed", value: stats.deployed, icon: "arrow.up.forward")
-                statRow("Final Score", value: stats.score, icon: "star.fill")
+//                statRow("Final Score", value: stats.score, icon: "star.fill")
             }
             .padding(.vertical, 20)
             
             // Buttons
             VStack(spacing: 12) {
                 HStack(spacing: 12) {
-                    Button(action: {
-                        resetAndStartNew()
-                        Task {
-                            await appModel.transitionToPhase(.playing)
-                        }
-                    }) {
-                        Label("Replay", systemImage: "arrow.clockwise")
-                            .frame(maxWidth: .infinity)
-                    }
-                    .buttonStyle(.bordered)
-                    .frame(width: 180)
+                   Button(action: {
+                       resetAndStartNew()
+                       Task {
+                           dismissWindow(id: AppModel.gameCompletedWindowId)
+                           openWindow(id: AppModel.mainWindowId)
+                           appModel.isMainWindowOpen = true
+                           await appModel.transitionToPhase(.playing, adcDataModel: dataModel)
+                       }
+                   }) {
+                       Label("Replay", systemImage: "arrow.clockwise")
+                           .frame(maxWidth: .infinity)
+                   }
+                   .glassBackgroundEffect()
+                   .frame(width: 180)
                     
                     Button(action: {
                         Task {
+                            print("main window status: \(appModel.isMainWindowOpen)")
+                            dismissWindow(id: AppModel.gameCompletedWindowId)
+                            openWindow(id: AppModel.mainWindowId)
+                            appModel.isMainWindowOpen = true
                             await appModel.transitionToPhase(.lab)
                         }
                     }) {
                         Label("Return to Lab", systemImage: "building.2")
                             .frame(maxWidth: .infinity)
                     }
-                    .buttonStyle(.bordered)
+                    .glassBackgroundEffect()
                     .frame(width: 180)
                 }
+                
+                Button(action: {
+                    Task {
+                        dismissWindow(id: AppModel.gameCompletedWindowId)
+                        await appModel.transitionToPhase(.outro)
+                    }
+                }) {
+                    Label("Finished", systemImage: "checkmark.circle")
+                        .frame(maxWidth: .infinity)
+                }
+                .glassBackgroundEffect()
+//                .frame(width: 372)
             }
         }
         .padding(64)
@@ -83,9 +104,12 @@ struct CompletedView: View {
     private func statRow(_ title: String, value: Int, icon: String) -> some View {
         HStack {
             Label(title, systemImage: icon)
+                .font(.title2)
+                .bold()
                 .foregroundStyle(.secondary)
             Spacer()
             Text("\(value)")
+                .font(.title)
                 .bold()
                 .monospacedDigit()
         }
@@ -107,4 +131,5 @@ struct CompletedView: View {
 //#Preview {
 //    CompletedView()
 //        .environment(AppModel())  // Using your existing AppModel
+//        .environment(ADCDataModel())
 //}

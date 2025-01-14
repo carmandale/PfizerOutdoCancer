@@ -53,4 +53,24 @@ extension ModelEntity {
         }
     }
     
+    func updateShaderGraphValue(parameterName: String, value: Float) {
+        if var materials = self.model?.materials {
+            guard var shaderMaterial = materials[0] as? ShaderGraphMaterial else {
+                os_log(.error, "ITR..updateShaderGraphColor(): ❌ Material is not ShaderGraphMaterial")
+                return
+            }
+            
+            do {
+                try shaderMaterial.setParameter(name: parameterName, value: .float(value))
+                materials[0] = shaderMaterial
+                self.model?.materials = materials
+                os_log(.debug, "ITR..updateShaderGraphColor(): ✅ Successfully updated \(parameterName) with color: \(String(describing: value))")
+            } catch {
+                os_log(.error, "ITR..updateShaderGraphColor(): ❌ Error setting parameter: \(error)")
+            }
+        } else {
+            os_log(.error, "ITR..updateShaderGraphColor(): ❌ No materials found")
+        }
+    }
+    
 }

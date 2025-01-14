@@ -52,7 +52,7 @@ final class AttackCancerViewModel {
     var totalHits: Int = 0
     
     // MARK: - Hope Meter
-    let hopeMeterDuration: TimeInterval = 30
+    let hopeMeterDuration: TimeInterval = 60
     var hopeMeterTimeLeft: TimeInterval
     var isHopeMeterRunning = false
     

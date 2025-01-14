@@ -29,7 +29,7 @@ class ADCDataModel {
         
         // Move to next step
         adcBuildStep = 2
-        selectedPayloadType = 0
+        // selectedPayloadType = nil
     }
     
     // Fill all payload positions with currently selected payload type

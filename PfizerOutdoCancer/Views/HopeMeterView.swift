@@ -6,10 +6,14 @@ struct HopeMeterView: View {
     @Environment(AppModel.self) private var appModel
     
     private let lineWidth: CGFloat = 12
-    private let fontSize: CGFloat = 75
+    private let fontSize: CGFloat = 65
     
     var progress: CGFloat {
-        CGFloat(appModel.gameState.hopeMeterTimeLeft) / CGFloat(appModel.gameState.hopeMeterDuration)
+        1.0 - (CGFloat(appModel.gameState.hopeMeterTimeLeft) / CGFloat(appModel.gameState.hopeMeterDuration))
+    }
+    
+    var percentage: Int {
+        Int(progress * 100)
     }
     
     var body: some View {
@@ -17,6 +21,7 @@ struct HopeMeterView: View {
             VStack {
                 Text("Hope Meter")
                     .font(.system(size: fontSize / 4))
+                    .bold()
                 Spacer()
                 ZStack {
                     // Background circle
@@ -35,9 +40,12 @@ struct HopeMeterView: View {
                         .animation(.linear(duration: 0.5), value: progress)
                         .frame(width: 120, height: 120)
                     
-                    // Timer text
-                    Text("\(Int(ceil(appModel.gameState.hopeMeterTimeLeft)))")
-                        .font(.system(size: fontSize))
+                    // Percentage text
+                    Text("\(percentage)%")
+                        .font(.system(size: fontSize / 2))
+                        .bold()
+                        .shadow(color: .black, radius: 10, x: 0, y: 0)
+                        .monospacedDigit()
                         .foregroundColor(.white)
                 }
             }
@@ -49,3 +57,8 @@ struct HopeMeterView: View {
 }
 
 
+#Preview {
+    
+    HopeMeterView()
+        .environment(AppModel())
+}

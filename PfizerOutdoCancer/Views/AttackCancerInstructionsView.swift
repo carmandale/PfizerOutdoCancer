@@ -31,11 +31,6 @@ struct AttackCancerInstructionsView: View {
 
                         // Use the template from gameState (already has colors applied)
                         if let template = appModel.gameState.adcTemplate {
-                            // Debug summary of selected colors
-                            os_log(.debug, "ADC Color Summary:")
-                            os_log(.debug, "- Antibody Color: \(dataModel.selectedADCAntibody ?? -1)")
-                            os_log(.debug, "- Linker Color: \(dataModel.selectedLinkerType ?? -1)")
-                            os_log(.debug, "- Payload Color: \(dataModel.selectedPayloadType ?? -1)")
                             
                             adcEntity = template.clone(recursive: true)
                             adcEntity.components.set(RotationComponent())
@@ -43,7 +38,6 @@ struct AttackCancerInstructionsView: View {
                         }
                     }
                 }
-//                Spacer()
                 VStack(spacing: 0) {
                     // Title
                     Text("Attack Cancer Instructions")
@@ -77,9 +71,8 @@ struct AttackCancerInstructionsView: View {
                             systemImage: "trophy.fill"
                         )
                     }
+                    .padding(.bottom, 60)
                     .padding(.horizontal, 120)
-//                    .frame(maxWidth: 800)
-                    
                     // Start button
                     Button(action: {
                         // Navigate to the game
@@ -92,22 +85,17 @@ struct AttackCancerInstructionsView: View {
                             .fontWeight(.bold)
                             .padding()
                             .frame(width: 200)
-    //                        .background(.blue)
                             .foregroundColor(.white)
-                            // .clipShape(RoundedRectangle(cornerRadius: 15))
                     }
-                    .padding(60)
-                    
+//                    .padding(60)
+                    .glassBackgroundEffect()
+                    .controlSize(.extraLarge)
                 }
-//                .padding(120)
-//                .frame(maxWidth: 800)
+                .padding(.bottom, 100)
             }
-//            .frame(maxWidth: 800)
-            
-            
         }
         .frame(minWidth: 800)
-        .frame(minHeight: 800)
+        .frame(minHeight: 900)
 
     }
     
@@ -127,6 +115,7 @@ struct AttackCancerInstructionsView: View {
                 Text(description)
                     .font(.body)
                     .foregroundColor(.secondary)
+                    .opacity(0.7)
                     .fixedSize(horizontal: false, vertical: true)
                     .lineLimit(nil)
             }
@@ -135,7 +124,25 @@ struct AttackCancerInstructionsView: View {
     }
 }
 
-//#Preview {
-//    AttackCancerInstructionsView()
-//        .environment(AppModel())
+//#Preview("Instruction View") {
+//    @Previewable @State var isVisible: Bool = true
+//    
+//    VStack {
+//        GroupBox {
+//            Toggle("Visible", isOn: $isVisible.animation())
+//        }
+//        Spacer()
+//        
+//        if isVisible {
+//            AttackCancerInstructionsView()
+//                .environment(AppModel())
+//                .environment(ADCDataModel())
+//                .transition(Appear())
+//        }
+//        Spacer()
+//    }
+//    .padding()
+//    
 //}
+
+

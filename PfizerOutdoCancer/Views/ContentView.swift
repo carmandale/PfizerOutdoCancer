@@ -32,6 +32,9 @@ struct ContentView: View {
                 await appModel.startLoading()
             }
         }
+        .onAppear {
+            appModel.isMainWindowOpen = true
+        }
         .onChange(of: appModel.loadingState) {
             print("Loading state changed")
             print("Loading progress: \(appModel.loadingProgress)")

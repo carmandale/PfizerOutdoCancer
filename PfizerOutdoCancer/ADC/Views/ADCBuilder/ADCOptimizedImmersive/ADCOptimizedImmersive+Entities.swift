@@ -40,6 +40,21 @@ extension ADCOptimizedImmersive {
                 self.popAudioPlaybackController = antibody.prepareAudio(resource)
             }
             
+            // Store original material
+            if let originalMaterial = antibody.components[ModelComponent.self]?.materials.first as? ShaderGraphMaterial {
+                self.originalAntibodyMaterial = originalMaterial
+                os_log(.debug, "ITR..prepareAntibodyEntities(): ✅ Stored original antibody material")
+            }
+            
+            // Apply outline material
+            if let material = outlineMaterial {
+                if var modelComponent = antibody.components[ModelComponent.self] {
+                    modelComponent.materials = [material]
+                    antibody.components[ModelComponent.self] = modelComponent
+                    os_log(.debug, "ITR..prepareAntibodyEntities(): ✅ Applied outline material to antibody")
+                }
+            }
+            
             os_log(.info, "ITR..prepareAntibodyEntities(): found all ModelEntities")
         }
     }
@@ -51,50 +66,28 @@ extension ADCOptimizedImmersive {
         if let linker0 = antibodyRoot.findModelEntity(named: "linker", from: "linker01_offset"),
            let linker1 = antibodyRoot.findModelEntity(named: "linker", from: "linker02_offset"),
            let linker2 = antibodyRoot.findModelEntity(named: "linker", from: "linker03_offset"),
-           let linker3 = antibodyRoot.findModelEntity(named: "linker", from: "linker04_offset"){
+           let linker3 = antibodyRoot.findModelEntity(named: "linker", from: "linker04_offset") {
             
             self.adcLinkers = [linker0, linker1, linker2, linker3]
             
             // Store original material from first linker
-            if let originalMaterial = linker0.components[ModelComponent.self]?.materials.first as? PhysicallyBasedMaterial {
+            if let originalMaterial = linker0.components[ModelComponent.self]?.materials.first as? ShaderGraphMaterial {
                 self.originalLinkerMaterial = originalMaterial
-                os_log(.debug, "ITR..prepareLinkerEntities(): ✅ Stored original PBR material")
-            } else {
-                os_log(.error, "ITR..prepareLinkerEntities(): ❌ Could not get original PBR material")
+                os_log(.debug, "ITR..prepareLinkerEntities(): ✅ Stored original ShaderGraphMaterial")
             }
             
-            // Load outline material and apply...
-            os_log(.debug, "ITR..prepareLinkerEntities(): Attempting to load M_outline material from Materials/M_outline.usda")
-            do {
-                let materialEntity = try await Entity(named: "Materials/M_outline.usda", in: realityKitContentBundle)
-                os_log(.debug, "ITR..prepareLinkerEntities(): ✅ Successfully loaded material entity")
-                
-                if let sphereEntity = materialEntity.findEntity(named: "Sphere") {
-                    os_log(.debug, "ITR..prepareLinkerEntities(): Found Root entity")
-                    
-                    let components = sphereEntity.components
-                    guard let modelComponent = components[ModelComponent.self] else { fatalError("Model entity is required.") }
-
-                    // Try to get material directly from Root's materials
-                    if let material = modelComponent.materials.first as? ShaderGraphMaterial {
-                        os_log(.debug, "ITR..prepareLinkerEntities(): ✅ Found M_outline material from Root")
-                        
-                        self.adcLinkers.forEach { linker in
-                            if var modelComponent = linker.components[ModelComponent.self] {
-                                os_log(.debug, "ITR..prepareLinkerEntities(): Applying outline material to linker")
-                                modelComponent.materials = [material]
-                                linker.components[ModelComponent.self] = modelComponent
-                                linker.isEnabled = false
-                            }
-                        }
-                    } else {
-                        os_log(.error, "ITR..prepareLinkerEntities(): ❌ Could not find material in Root")
+            // Apply stored outline material to all linkers
+            if let material = outlineMaterial {
+                self.adcLinkers.forEach { linker in
+                    if var modelComponent = linker.components[ModelComponent.self] {
+                        os_log(.debug, "ITR..prepareLinkerEntities(): Applying outline material to linker")
+                        modelComponent.materials = [material]
+                        linker.components[ModelComponent.self] = modelComponent
+                        linker.isEnabled = false
                     }
-                } else {
-                    os_log(.error, "ITR..prepareLinkerEntities(): ❌ Could not find Root entity")
                 }
-            } catch {
-                os_log(.error, "ITR..prepareLinkerEntities(): ❌ Failed to load M_outline material: \(error)")
+            } else {
+                os_log(.error, "ITR..prepareLinkerEntities(): ❌ No outline material available")
             }
         }
     }
@@ -108,60 +101,43 @@ extension ADCOptimizedImmersive {
            let payloadOuter0 = antibodyRoot.findModelEntity(named: "OuterSphere", from: "linker01_offset"),
            let payloadOuter1 = antibodyRoot.findModelEntity(named: "OuterSphere", from: "linker02_offset"),
            let payloadOuter2 = antibodyRoot.findModelEntity(named: "OuterSphere", from: "linker03_offset"),
-           let payloadOuter3 = antibodyRoot.findModelEntity(named: "OuterSphere", from: "linker04_offset"){
+           let payloadOuter3 = antibodyRoot.findModelEntity(named: "OuterSphere", from: "linker04_offset") {
             
             self.adcPayloadsInner = [payload0, payload1, payload2, payload3]
-            os_log(.debug, "ITR..preparePayloadEntities(): Found OuterSphere: \(String(describing: payloadOuter0))")
-            os_log(.debug, "ITR..preparePayloadEntities(): OuterSphere materials: \(payloadOuter0.model?.materials ?? [])")
-            
-            // Debug the OuterSphere entity structure
-            os_log(.debug, "ITR..preparePayloadEntities(): Inspecting OuterSphere entity:")
-            AssetLoadingManager.shared.inspectEntityHierarchy(payloadOuter0)
-            
             self.adcPayloadsOuter = [payloadOuter0, payloadOuter1, payloadOuter2, payloadOuter3]
             
-            // Store original materials first
-            guard let innerMaterial = payload0.components[ModelComponent.self]?.materials.first as? PhysicallyBasedMaterial else {
-                os_log(.error, "ITR..preparePayloadEntities(): ❌ Could not get original PBR material")
-                return
+            // Store original materials
+            if let innerMaterial = payload0.components[ModelComponent.self]?.materials.first as? PhysicallyBasedMaterial {
+                self.originalPayloadInnerMaterial = innerMaterial
+                os_log(.debug, "ITR..preparePayloadEntities(): ✅ Stored original inner PBR material")
             }
-            self.originalPayloadInnerMaterial = innerMaterial
-            os_log(.debug, "ITR..preparePayloadEntities(): ✅ Stored original inner PBR material")
             
-            guard let outerMaterial = payloadOuter0.components[ModelComponent.self]?.materials.first as? ShaderGraphMaterial else {
-                os_log(.error, "ITR..preparePayloadEntities(): ❌ Could not get ShaderGraphMaterial")
-                return
+            if let outerMaterial = payloadOuter0.components[ModelComponent.self]?.materials.first as? ShaderGraphMaterial {
+                self.originalPayloadOuterMaterial = outerMaterial
+                os_log(.debug, "ITR..preparePayloadEntities(): ✅ Stored original outer shader material")
             }
-            os_log(.debug, "ITR..preparePayloadEntities(): Found outer shader material: \(String(describing: outerMaterial))")
-            os_log(.debug, "ITR..preparePayloadEntities(): Available parameters: \(String(describing: outerMaterial.parameterNames))")
-            os_log(.debug, "ITR..preparePayloadEntities(): Material name: \(String(describing: outerMaterial.name))")
-            self.originalPayloadOuterMaterial = outerMaterial
-            os_log(.debug, "ITR..preparePayloadEntities(): ✅ Stored original outer shader material")
             
-            // Apply outline material to both spheres
-            do {
-                let materialEntity = try await Entity(named: "Materials/M_outline.usda", in: realityKitContentBundle)
-                if let outlineMaterial = materialEntity.findEntity(named: "Sphere")?.components[ModelComponent.self]?.materials.first {
-                    // Apply to inner payloads
-                    self.adcPayloadsInner.forEach { payload in
-                        if var modelComponent = payload.components[ModelComponent.self] {
-                            modelComponent.materials = [outlineMaterial]
-                            payload.components[ModelComponent.self] = modelComponent
-                            payload.isEnabled = false
-                        }
-                    }
-                    
-                    // Apply to outer payloads
-                    self.adcPayloadsOuter.forEach { payload in
-                        if var modelComponent = payload.components[ModelComponent.self] {
-                            modelComponent.materials = [outlineMaterial]
-                            payload.components[ModelComponent.self] = modelComponent
-                            payload.isEnabled = false
-                        }
+            // Apply stored outline material to all payloads
+            if let material = outlineMaterial {
+                // Apply to inner payloads
+                self.adcPayloadsInner.forEach { payload in
+                    if var modelComponent = payload.components[ModelComponent.self] {
+                        modelComponent.materials = [material]
+                        payload.components[ModelComponent.self] = modelComponent
+                        payload.isEnabled = false
                     }
                 }
-            } catch {
-                os_log(.error, "ITR..preparePayloadEntities(): ❌ Failed to load outline material: \(error)")
+                
+                // Apply to outer payloads
+                self.adcPayloadsOuter.forEach { payload in
+                    if var modelComponent = payload.components[ModelComponent.self] {
+                        modelComponent.materials = [material]
+                        payload.components[ModelComponent.self] = modelComponent
+                        payload.isEnabled = false
+                    }
+                }
+            } else {
+                os_log(.error, "ITR..preparePayloadEntities(): ❌ No outline material available")
             }
             
             os_log(.info, "ITR..preparePayloadEntities(): found all ModelEntities")
@@ -204,6 +180,25 @@ extension ADCOptimizedImmersive {
             antibodyRootEntity?.addChild(payload)
             payload.position = payload.position + payloadAttachmentOffset
             initialPayloadPosition = payload.position  // Save initial position
+            
+            // Apply outline material to draggable linker
+            if let material = outlineMaterial {
+                if var modelComponent = workingLinker.components[ModelComponent.self] {
+                    modelComponent.materials = [material]
+                    workingLinker.components[ModelComponent.self] = modelComponent
+                    os_log(.debug, "ITR..prepareTargetEntities(): ✅ Applied outline material to draggable linker")
+                }
+                
+                // Apply to both inner and outer payload
+                if var innerComponent = workingPayloadInner.components[ModelComponent.self],
+                   var outerComponent = workingPayloadOuter.components[ModelComponent.self] {
+                    innerComponent.materials = [material]
+                    outerComponent.materials = [material]
+                    workingPayloadInner.components[ModelComponent.self] = innerComponent
+                    workingPayloadOuter.components[ModelComponent.self] = outerComponent
+                    os_log(.debug, "ITR..prepareTargetEntities(): ✅ Applied outline material to draggable payload")
+                }
+            }
             
             // Rest stays the same...
             self.workingLinker = workingLinker

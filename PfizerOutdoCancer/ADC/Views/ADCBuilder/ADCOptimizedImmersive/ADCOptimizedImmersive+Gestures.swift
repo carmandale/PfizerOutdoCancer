@@ -43,7 +43,7 @@ extension ADCOptimizedImmersive {
         var gestureComponent = ADCGestureComponent(canDrag: true,
                                                 pivotOnDrag: false,
                                                 canScale: false,
-                                                canRotate: true)
+                                                canRotate: false)
         gestureComponent.onDragStarted = { entity in
             shouldAddADCAttachment = false
             shouldAddLinkerAttachment = false
@@ -61,32 +61,39 @@ extension ADCOptimizedImmersive {
                 let dist = distance(currentPosition, targetPosition)
                 
 //                os_log(.debug, "ITR..createLinkerGestureComponent(): LinkerEntity Position: \(currentPosition), \n     LinkerTargetPosition: \(targetPosition),    Distance: \(dist)")
-                if dist < 0.5 {
+                if dist < 0.2 {
                     os_log(.debug, "ITR..createLinkerGestureComponent(): Entity \(finishedEntity.name) is close enough to the target linker, dataModel.linkersWorkingIndex: \(dataModel.linkersWorkingIndex)")
                     dataModel.selectedADCLinker = dataModel.selectedLinkerType
                     dataModel.placedLinkerCount += 1
                     bubblePopSound.toggle()
                     
                     Task { @MainActor in
-                        // First restore original material
-                        if let originalMaterial = originalLinkerMaterial {
-                            adcLinkers[dataModel.linkersWorkingIndex].updateMaterials { material in
-                                material = originalMaterial
+                        // Only apply color if one has been chosen
+                        if let selectedType = dataModel.selectedLinkerType {
+                            // Update all previously placed linkers
+                            for index in 0..<dataModel.linkersWorkingIndex {
+                                if let originalMaterial = originalLinkerMaterial {
+                                    if var modelComponent = adcLinkers[index].components[ModelComponent.self] {
+                                        modelComponent.materials = [originalMaterial]
+                                        adcLinkers[index].components[ModelComponent.self] = modelComponent
+                                    }
+                                }
+                                adcLinkers[index].updateShaderGraphColor(parameterName: "Basecolor_Tint", color: .adc[selectedType])
                             }
+                            
+                            // Update current linker
+                            if let originalMaterial = originalLinkerMaterial {
+                                adcLinkers[dataModel.linkersWorkingIndex].updateMaterials { material in
+                                    material = originalMaterial
+                                }
+                            }
+                            adcLinkers[dataModel.linkersWorkingIndex].updateShaderGraphColor(parameterName: "Basecolor_Tint", color: .adc[selectedType])
                         }
-                        
-                        // Then apply the color
-                        adcLinkers[dataModel.linkersWorkingIndex].updatePBRDiffuseColor(.adc[dataModel.selectedLinkerType ?? 0])
                         
                         // If there's a next linker, give it the outline material
                         if dataModel.linkersWorkingIndex < (adcLinkers.count - 1) {
-                            do {
-                                let materialEntity = try await Entity(named: "Materials/M_outline.usda", in: realityKitContentBundle)
-                                if let outlineMaterial = materialEntity.findEntity(named: "Sphere")?.components[ModelComponent.self]?.materials.first {
-                                    adcLinkers[dataModel.linkersWorkingIndex + 1].model?.materials = [outlineMaterial]
-                                }
-                            } catch {
-                                os_log(.error, "ITR..createLinkerGestureComponent(): ❌ Failed to load M_outline material: \(error)")
+                            if let material = outlineMaterial {
+                                adcLinkers[dataModel.linkersWorkingIndex + 1].model?.materials = [material]
                             }
                         }
                         
@@ -139,7 +146,7 @@ extension ADCOptimizedImmersive {
         var gestureComponent = ADCGestureComponent(canDrag: true,
                                                 pivotOnDrag: false,
                                                 canScale: false,
-                                                canRotate: true)
+                                                canRotate: false)
         gestureComponent.onDragStarted = { entity in
             shouldAddADCAttachment = false
             shouldAddLinkerAttachment = false
@@ -164,36 +171,50 @@ extension ADCOptimizedImmersive {
                     bubblePopSound.toggle()
 
                     Task { @MainActor in
-                        // First restore original materials
-                        if let innerMaterial = originalPayloadInnerMaterial {
-                            adcPayloadsInner[dataModel.payloadsWorkingIndex].updateMaterials { material in
-                                material = innerMaterial
+                        // Only apply color if one has been chosen
+                        if let selectedType = dataModel.selectedPayloadType {
+                            // Update all previously placed payloads
+                            for index in 0..<dataModel.payloadsWorkingIndex {
+                                // Inner sphere
+                                if let originalInnerMaterial = originalPayloadInnerMaterial {
+                                    if var modelComponent = adcPayloadsInner[index].components[ModelComponent.self] {
+                                        modelComponent.materials = [originalInnerMaterial]
+                                        adcPayloadsInner[index].components[ModelComponent.self] = modelComponent
+                                    }
+                                }
+                                adcPayloadsInner[index].updatePBREmissiveColor(.adcEmissive[selectedType])
+                                
+                                // Outer sphere
+                                if let originalOuterMaterial = originalPayloadOuterMaterial {
+                                    if var modelComponent = adcPayloadsOuter[index].components[ModelComponent.self] {
+                                        modelComponent.materials = [originalOuterMaterial]
+                                        adcPayloadsOuter[index].components[ModelComponent.self] = modelComponent
+                                    }
+                                }
+                                adcPayloadsOuter[index].updateShaderGraphColor(parameterName: "glowColor", color: .adc[selectedType])
                             }
-                        }
-                        if let outerMaterial = originalPayloadOuterMaterial {
-                            os_log(.debug, "ITR..createPayloadGestureComponent(): Attempting to restore outer material: \(String(describing: outerMaterial))")
-                            os_log(.debug, "ITR..createPayloadGestureComponent(): Available parameters: \(String(describing: outerMaterial.parameterNames))")
-                            os_log(.debug, "ITR..createPayloadGestureComponent(): Material name: \(String(describing: outerMaterial.name))")
-                            os_log(.debug, "ITR..createPayloadGestureComponent(): Current materials before restore: \(adcPayloadsOuter[dataModel.payloadsWorkingIndex].model?.materials ?? [])")
-                            // Properly restore the M_glow shader material to the outer sphere
-                            if var modelComponent = adcPayloadsOuter[dataModel.payloadsWorkingIndex].components[ModelComponent.self] {
-                                modelComponent.materials = [outerMaterial]
-                                adcPayloadsOuter[dataModel.payloadsWorkingIndex].components[ModelComponent.self] = modelComponent
-                                os_log(.debug, "ITR..createPayloadGestureComponent(): Materials after restore: \(modelComponent.materials)")
+                            
+                            // Update current payload
+                            if let originalInnerMaterial = originalPayloadInnerMaterial {
+                                adcPayloadsInner[dataModel.payloadsWorkingIndex].updateMaterials { material in
+                                    material = originalInnerMaterial
+                                }
                             }
-                        }
-                        
-                        // Change all payloads to the same color, just like linkers
-                        for (inner, outer) in zip(adcPayloadsInner, adcPayloadsOuter) {
-                            inner.updatePBREmissiveColor(.adcEmissive[dataModel.selectedPayloadType ?? 0])
-                            outer.updateShaderGraphColor(parameterName: "glowColor", color: .adc[dataModel.selectedPayloadType ?? 0])
+                            if let originalOuterMaterial = originalPayloadOuterMaterial {
+                                adcPayloadsOuter[dataModel.payloadsWorkingIndex].updateMaterials { material in
+                                    material = originalOuterMaterial
+                                }
+                            }
+                            adcPayloadsInner[dataModel.payloadsWorkingIndex].updatePBREmissiveColor(.adcEmissive[selectedType])
+                            adcPayloadsOuter[dataModel.payloadsWorkingIndex].updateShaderGraphColor(parameterName: "glowColor", color: .adc[selectedType])
                         }
                         
                         // If there's a next payload, give it the outline material
                         if dataModel.payloadsWorkingIndex < (adcPayloadsInner.count - 1) {
-                            // Enable and show outline on next payload
-                            adcPayloadsInner[dataModel.payloadsWorkingIndex + 1].isEnabled = true
-                            adcPayloadsOuter[dataModel.payloadsWorkingIndex + 1].isEnabled = true
+                            if let material = outlineMaterial {
+                                adcPayloadsInner[dataModel.payloadsWorkingIndex + 1].model?.materials = [material]
+                                adcPayloadsOuter[dataModel.payloadsWorkingIndex + 1].model?.materials = [material]
+                            }
                         }
                         
                         adcPayloadsOuter.forEach {

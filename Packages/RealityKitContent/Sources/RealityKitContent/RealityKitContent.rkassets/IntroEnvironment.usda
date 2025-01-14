@@ -10,10 +10,10 @@
 
 def Xform "Root"
 {
-    reorder nameChildren = ["sh0100_v01_portal", "IntroAnimation", "sh0100_v01", "Audio", "RCP_BehaviorsContainer", "OnAddedToScene", "materials", "M_jet", "Orchestra", "SFX", "Voice", "Model_Sorting_Group", "card_Transform", "LogoAndType"]
+    reorder nameChildren = ["IntroAnimation", "sh0100_v01", "Audio", "RCP_BehaviorsContainer", "OnAddedToScene", "materials", "M_jet", "Orchestra", "SFX", "Voice", "Model_Sorting_Group", "card_Transform", "IntroParticles", "Narrator"]
     def RealityKitTimeline "IntroAnimation"
     {
-        reorder nameChildren = ["Track12", "Track2", "Track13", "Track16", "Track14", "Track3", "Track4", "Track", "Track9", "Track5", "Track10", "Track6", "Track7", "Track8"]
+        reorder nameChildren = ["Track12", "Track2", "Track13", "Track16", "Track3", "Track4", "Track", "Track5", "Track6", "Track7", "Track8"]
         def RealityKitTrack "Track3"
         {
             reorder nameChildren = ["Show", "Hide2", "Show2", "Hide", "Show3", "Hide3", "Play_Audio"]
@@ -23,7 +23,7 @@ def Xform "Root"
                 int blendLayer = 300
                 double duration = 3
                 uniform token info:id = "D62E63EB-E6D0-440F-8FD5-EA57A4DB5626"
-                double startTime = 19.62644964832975
+                double startTime = 21.283197075669186
                 rel target = </Root/sh0100_v01/sh0100_v01/PicturesRoot/intro/People_MSR/p2>
 
                 def RealityKitStruct "timingFunction"
@@ -95,20 +95,6 @@ def Xform "Root"
                 uniform token info:id = "040DF980-E559-40E1-8575-384E8AD941D1"
                 double startTime = 79.94960137911805
                 rel target = </Root/sh0100_v01/sh0100_v01/PicturesRoot/intro/People_MSR/p11>
-
-                def RealityKitStruct "timingFunction"
-                {
-                }
-            }
-
-            def RealityKitAction "Show32"
-            {
-                string actionKind = "show"
-                int blendLayer = 300
-                double duration = 15
-                uniform token info:id = "E4B8F722-1A4D-48E3-B0C8-10A1B57A392E"
-                double startTime = 0
-                rel target = </Root/sh0100_v01_portal>
 
                 def RealityKitStruct "timingFunction"
                 {
@@ -325,7 +311,7 @@ def Xform "Root"
                 int blendLayer = 300
                 double duration = 3
                 uniform token info:id = "56564929-CF78-481C-B878-E76C8DF308F0"
-                double startTime = 87.60115983149619
+                double startTime = 86.0222914126292
                 rel target = </Root/sh0100_v01/sh0100_v01/PicturesRoot/intro/People_MSR/p12>
 
                 def RealityKitStruct "timingFunction"
@@ -395,6 +381,22 @@ def Xform "Root"
                 {
                 }
             }
+
+            def RealityKitAction "Enable_Entity"
+            {
+                string actionKind = "enable"
+                uniform token info:id = "E5BC426A-E24A-41E3-86F1-418A20853BBF"
+                double startTime = 43.34341064393558
+                rel target = </Root/ADC_particles>
+            }
+
+            def RealityKitAction "Disable_Entity"
+            {
+                string actionKind = "disable"
+                uniform token info:id = "2F0F359B-F611-461A-A0E5-B92233AC2EC5"
+                double startTime = 0
+                rel target = </Root/ADC_particles>
+            }
         }
 
         def RealityKitTrack "Track8"
@@ -425,6 +427,22 @@ def Xform "Root"
                 def RealityKitStruct "timingFunction"
                 {
                 }
+            }
+
+            def RealityKitAction "Disable_Entity"
+            {
+                string actionKind = "disable"
+                uniform token info:id = "607C0987-1A4E-494D-BC7E-59E6431D4BC2"
+                double startTime = 0
+                rel target = </Root/ADC_particles2>
+            }
+
+            def RealityKitAction "Enable_Entity"
+            {
+                string actionKind = "enable"
+                uniform token info:id = "A9745344-D273-4CCF-B72C-F4BB08DBC230"
+                double startTime = 80
+                rel target = </Root/ADC_particles2>
             }
         }
 
@@ -469,19 +487,6 @@ def Xform "Root"
             }
         }
 
-        def RealityKitTrack "Track14"
-        {
-            def RealityKitAction "Play_Timeline"
-            {
-                string actionKind = "timeline"
-                int blendLayer = 500
-                double duration = 6
-                uniform token info:id = "E4DF8428-AD42-4AC3-A178-B2B72E0520A3"
-                double startTime = 103
-                rel timeline = </Root/LogoAndType>
-            }
-        }
-
         def RealityKitTrack "Track16"
         {
             def RealityKitAction "Play_Timeline"
@@ -494,14 +499,6 @@ def Xform "Root"
                 double startTime = 0
                 rel timeline = </Root/Orchestra>
             }
-        }
-
-        def RealityKitTrack "Track9"
-        {
-        }
-
-        def RealityKitTrack "Track10"
-        {
         }
     }
 
@@ -879,173 +876,6 @@ def Xform "Root"
         }
     }
 
-    def "sh0100_v01_portal" (
-        customData = {
-            float3 rotationEulerHint = (-1.5707964, 0, 0)
-        }
-        references = @Assets/Intro/sh0100_v01_portal.usdc@
-    )
-    {
-        quatf xformOp:orient = (0.70710677, -0.70710677, 0, 0)
-        float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (0, 2.4214387e-8, -10)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-        over "PicturesRoot"
-        {
-            over "intro" (
-                prepend apiSchemas = ["MaterialBindingAPI"]
-            )
-            {
-                rel material:binding = </Root/M_jet/JetMaterial> (
-                    bindMaterialAs = "weakerThanDescendants"
-                )
-
-                over "Portal_and_Lightbeams"
-                {
-                    over "PortalPlane" (
-                        customData = {
-                            float3 rotationEulerHint = (1.5707957, 0, 0)
-                        }
-                    )
-                    {
-                        reorder nameChildren = ["Andrew_Narrator_wav", "Plane_001", "SpatialAudio", "AudioLibrary", "portal_audio"]
-                        quatf xformOp:orient = (0.707107, 0.70710653, 0, 0)
-                        float3 xformOp:scale = (0.5, 1, 1)
-                        double3 xformOp:translate = (0, 0, 1.0000005960464478)
-                        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-                        def Xform "portal_audio" (
-                            active = true
-                            customData = {
-                                float3 rotationEulerHint = (6.650003e-7, 3.1415927, 0)
-                            }
-                        )
-                        {
-                            quatf xformOp:orient = (-4.371139e-8, -1.4534044e-14, 1, -3.3250015e-7)
-                            float3 xformOp:translate = (-1.192093e-7, 0.0000030994415, 7.7103977)
-                            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-                            def RealityKitAudioFile "Andrew_Narrator_wav"
-                            {
-                                uniform asset file = @Assets/Intro/SpatialStems12122024/Andrew_Narrator.wav@
-                                uniform bool shouldLoop = 0
-                            }
-
-                            def RealityKitComponent "SpatialAudio"
-                            {
-                                float directivityFocus = 0.6726687
-                                uniform token info:id = "RealityKit.SpatialAudio"
-                                float rolloffFactor = 0
-                            }
-
-                            def RealityKitComponent "AudioLibrary"
-                            {
-                                uniform token info:id = "RealityKit.AudioLibrary"
-
-                                def RealityKitDict "resources"
-                                {
-                                    string[] keys = ["Andrew_Narrator_wav"]
-                                    rel values = </Root/sh0100_v01_portal/PicturesRoot/intro/Portal_and_Lightbeams/PortalPlane/portal_audio/Andrew_Narrator_wav>
-                                }
-                            }
-                        }
-
-                        over "Plane_001"
-                        {
-                            def RealityKitComponent "MeshSorting"
-                            {
-                                rel group = </Root/Model_Sorting_Group>
-                                token info:id = "RealityKit.MeshSorting"
-                                int priorityInGroup = 13
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        def RealityKitComponent "HierarchicalFade"
-        {
-            uniform token info:id = "RealityKit.HierarchicalFade"
-            float opacity = 0
-        }
-    }
-
-    def "M_jet" (
-        active = true
-        references = @Assets/Intro/M_jet.usda@
-    )
-    {
-        float3 xformOp:scale = (1, 1, 1)
-
-        over "JetMaterial"
-        {
-            float inputs:Intensity (
-                customData = {
-                    dictionary realitykit = {
-                        float2 positionInSubgraph = (-979.09766, 170.8125)
-                        float2 sizeInSubgraph = (122, 53)
-                        int stackingOrderInSubgraph = 401
-                    }
-                }
-            )
-
-            over "Texcoord"
-            {
-                int inputs:index = 0
-                float2 ui:nodegraph:node:pos = (-1224.2762, 77.00058)
-                int ui:nodegraph:node:stackingOrder = 441
-            }
-
-            over "TriplanarProjection"
-            {
-                float3 inputs:position = (0, 0, 0)
-                int ui:nodegraph:node:stackingOrder = 384
-            }
-
-            over "Position"
-            {
-                string inputs:space = "tangent"
-                int ui:nodegraph:node:stackingOrder = 391
-            }
-
-            over "Ramptb"
-            {
-                float2 inputs:texcoord.connect = </Root/M_jet/JetMaterial/Combine2.outputs:out>
-                int ui:nodegraph:node:stackingOrder = 387
-                string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["inputs:texcoord"]
-            }
-
-            over "Constant"
-            {
-                float2 inputs:value = (0, 0)
-                int ui:nodegraph:node:stackingOrder = 388
-            }
-
-            over "UnlitSurface"
-            {
-                bool inputs:hasPremultipliedAlpha = 1
-                float inputs:opacity = 0
-                delete float inputs:opacity.connect = </Root/M_jet/JetMaterial/Add.outputs:out>
-                float inputs:opacityThreshold.connect = None
-                int ui:nodegraph:node:stackingOrder = 448
-            }
-
-            over "Multiply"
-            {
-                float3 inputs:in2 = (1, 20, 5)
-                int ui:nodegraph:node:stackingOrder = 398
-            }
-
-            over "Extract"
-            {
-                float2 ui:nodegraph:node:pos = (-1002.9297, 75.08203)
-                int ui:nodegraph:node:stackingOrder = 439
-            }
-        }
-    }
-
     def Preliminary_Behavior "OnAddedToScene"
     {
         rel actions = </Root/OnAddedToScene/Action>
@@ -1265,6 +1095,7 @@ def Xform "Root"
                                 def RealityKitAudioFile "TeenageGirl_wav"
                                 {
                                     uniform asset file = @Assets/Intro/SpatialStems12122024/TeenageGirl.wav@
+                                    rel mixGroup = </Root/AudioMixGroups/Voices>
                                     uniform bool shouldLoop = 0
                                 }
                             }
@@ -1277,7 +1108,7 @@ def Xform "Root"
                                     {
                                         rel group = </Root/Model_Sorting_Group>
                                         token info:id = "RealityKit.MeshSorting"
-                                        int priorityInGroup = 5
+                                        int priorityInGroup = 8
                                     }
                                 }
                             }
@@ -1331,6 +1162,7 @@ def Xform "Root"
                                 def RealityKitAudioFile "YoungMan_wav"
                                 {
                                     uniform asset file = @Assets/Intro/SpatialStems12122024/YoungMan.wav@
+                                    rel mixGroup = </Root/AudioMixGroups/Voices>
                                     uniform bool shouldLoop = 0
                                 }
                             }
@@ -1343,7 +1175,7 @@ def Xform "Root"
                                     {
                                         rel group = </Root/Model_Sorting_Group>
                                         token info:id = "RealityKit.MeshSorting"
-                                        int priorityInGroup = 3
+                                        int priorityInGroup = 6
                                     }
                                 }
                             }
@@ -1397,6 +1229,7 @@ def Xform "Root"
                                 def RealityKitAudioFile "ElderlyWoman_wav"
                                 {
                                     uniform asset file = @Assets/Intro/SpatialStems12122024/ElderlyWoman.wav@
+                                    rel mixGroup = </Root/AudioMixGroups/Voices>
                                     uniform bool shouldLoop = 0
                                 }
                             }
@@ -1409,7 +1242,7 @@ def Xform "Root"
                                     {
                                         rel group = </Root/Model_Sorting_Group>
                                         token info:id = "RealityKit.MeshSorting"
-                                        int priorityInGroup = 4
+                                        int priorityInGroup = 7
                                     }
                                 }
                             }
@@ -1437,7 +1270,7 @@ def Xform "Root"
                                     {
                                         rel group = </Root/Model_Sorting_Group>
                                         token info:id = "RealityKit.MeshSorting"
-                                        int priorityInGroup = 7
+                                        int priorityInGroup = 10
                                     }
                                 }
                             }
@@ -1465,7 +1298,7 @@ def Xform "Root"
                                     {
                                         rel group = </Root/Model_Sorting_Group>
                                         token info:id = "RealityKit.MeshSorting"
-                                        int priorityInGroup = 8
+                                        int priorityInGroup = 11
                                     }
                                 }
                             }
@@ -1493,7 +1326,7 @@ def Xform "Root"
                                     {
                                         rel group = </Root/Model_Sorting_Group>
                                         token info:id = "RealityKit.MeshSorting"
-                                        int priorityInGroup = 9
+                                        int priorityInGroup = 12
                                     }
                                 }
                             }
@@ -1521,7 +1354,7 @@ def Xform "Root"
                                     {
                                         rel group = </Root/Model_Sorting_Group>
                                         token info:id = "RealityKit.MeshSorting"
-                                        int priorityInGroup = 10
+                                        int priorityInGroup = 13
                                     }
                                 }
                             }
@@ -1549,7 +1382,7 @@ def Xform "Root"
                                     {
                                         rel group = </Root/Model_Sorting_Group>
                                         token info:id = "RealityKit.MeshSorting"
-                                        int priorityInGroup = 11
+                                        int priorityInGroup = 15
                                     }
                                 }
                             }
@@ -1577,7 +1410,7 @@ def Xform "Root"
                                     {
                                         rel group = </Root/Model_Sorting_Group>
                                         token info:id = "RealityKit.MeshSorting"
-                                        int priorityInGroup = 12
+                                        int priorityInGroup = 14
                                     }
                                 }
                             }
@@ -1631,6 +1464,7 @@ def Xform "Root"
                                 def RealityKitAudioFile "Woman_wav"
                                 {
                                     uniform asset file = @Assets/Intro/SpatialStems12122024/Woman.wav@
+                                    rel mixGroup = </Root/AudioMixGroups/Voices>
                                     uniform bool shouldLoop = 0
                                 }
                             }
@@ -1649,7 +1483,7 @@ def Xform "Root"
                                     {
                                         rel group = </Root/Model_Sorting_Group>
                                         token info:id = "RealityKit.MeshSorting"
-                                        int priorityInGroup = 0
+                                        int priorityInGroup = 3
                                     }
                                 }
                             }
@@ -1702,6 +1536,7 @@ def Xform "Root"
                                 def RealityKitAudioFile "Man_wav"
                                 {
                                     uniform asset file = @Assets/Intro/SpatialStems12122024/Man.wav@
+                                    rel mixGroup = </Root/AudioMixGroups/Voices>
                                     uniform bool shouldLoop = 0
                                 }
                             }
@@ -1720,7 +1555,7 @@ def Xform "Root"
                                     {
                                         rel group = </Root/Model_Sorting_Group>
                                         token info:id = "RealityKit.MeshSorting"
-                                        int priorityInGroup = 1
+                                        int priorityInGroup = 4
                                     }
                                 }
                             }
@@ -1773,6 +1608,7 @@ def Xform "Root"
                                 def RealityKitAudioFile "Mother_wav"
                                 {
                                     uniform asset file = @Assets/Intro/SpatialStems12122024/Mother.wav@
+                                    rel mixGroup = </Root/AudioMixGroups/Voices>
                                     uniform bool shouldLoop = 0
                                 }
                             }
@@ -1785,7 +1621,7 @@ def Xform "Root"
                                     {
                                         rel group = </Root/Model_Sorting_Group>
                                         token info:id = "RealityKit.MeshSorting"
-                                        int priorityInGroup = 2
+                                        int priorityInGroup = 5
                                     }
                                 }
                             }
@@ -1813,24 +1649,13 @@ def Xform "Root"
                                     {
                                         rel group = </Root/Model_Sorting_Group>
                                         token info:id = "RealityKit.MeshSorting"
-                                        int priorityInGroup = 6
+                                        int priorityInGroup = 9
                                     }
                                 }
                             }
                         }
                     }
                 }
-            }
-        }
-
-        def RealityKitComponent "AudioLibrary"
-        {
-            uniform token info:id = "RealityKit.AudioLibrary"
-
-            def RealityKitDict "resources"
-            {
-                string[] keys = ["Pfizer_Stereo_Playthrough_11.wav"]
-                rel values = </Root/Pfizer_Stereo_Playthrough_11_wav>
             }
         }
     }
@@ -1853,6 +1678,7 @@ def Xform "Root"
             )
             {
                 reorder nameChildren = ["PianoBusL_wav", "SpatialAudio", "AudioLibrary"]
+                rel mixGroup = </Root/AudioMixGroups/MixGroup>
                 quatf xformOp:orient = (-0.37780976, 0, 0.92588323, 0)
                 float3 xformOp:scale = (0.99999994, 1, 0.99999994)
                 float3 xformOp:translate = (-3.949879, 1, -4.7263765)
@@ -1879,6 +1705,7 @@ def Xform "Root"
                 def RealityKitAudioFile "PianoBusL_wav"
                 {
                     uniform asset file = @Assets/Intro/SpatialStems12122024/PianoBusL.wav@
+                    rel mixGroup = </Root/AudioMixGroups/Piano>
                     uniform bool shouldLoop = 0
                 }
             }
@@ -1891,6 +1718,7 @@ def Xform "Root"
             )
             {
                 reorder nameChildren = ["PianoBusR_wav", "SpatialAudio", "AudioLibrary"]
+                rel mixGroup = </Root/AudioMixGroups/MixGroup>
                 float2 ui:nodegraph:node:pos = (20, 20)
                 int ui:nodegraph:node:stackingOrder = 1
                 quatf xformOp:orient = (0.37784076, 0, 0.9258706, 0)
@@ -1919,6 +1747,7 @@ def Xform "Root"
                 def RealityKitAudioFile "PianoBusR_wav"
                 {
                     uniform asset file = @Assets/Intro/SpatialStems12122024/PianoBusR.wav@
+                    rel mixGroup = </Root/AudioMixGroups/Piano>
                     uniform bool shouldLoop = 0
                 }
             }
@@ -1957,6 +1786,7 @@ def Xform "Root"
                 def RealityKitAudioFile "Violin2_wav"
                 {
                     uniform asset file = @Assets/Intro/SpatialStems12122024/Violin2.wav@
+                    rel mixGroup = </Root/AudioMixGroups/Strings>
                     uniform bool shouldLoop = 0
                 }
             }
@@ -1997,6 +1827,7 @@ def Xform "Root"
                 def RealityKitAudioFile "Violin1_wav"
                 {
                     uniform asset file = @Assets/Intro/SpatialStems12122024/Violin1.wav@
+                    rel mixGroup = </Root/AudioMixGroups/Strings>
                     uniform bool shouldLoop = 0
                 }
             }
@@ -2037,6 +1868,7 @@ def Xform "Root"
                 def RealityKitAudioFile "Viola_wav"
                 {
                     uniform asset file = @Assets/Intro/SpatialStems12122024/Viola.wav@
+                    rel mixGroup = </Root/AudioMixGroups/Strings>
                     uniform bool shouldLoop = 0
                 }
             }
@@ -2077,6 +1909,7 @@ def Xform "Root"
                 def RealityKitAudioFile "Xylophone_wav"
                 {
                     uniform asset file = @Assets/Intro/SpatialStems12122024/Xylophone.wav@
+                    rel mixGroup = </Root/AudioMixGroups/Percussion>
                     uniform bool shouldLoop = 0
                 }
             }
@@ -2116,6 +1949,7 @@ def Xform "Root"
                 def RealityKitAudioFile "Bell_wav"
                 {
                     uniform asset file = @Assets/Intro/SpatialStems12122024/Bell.wav@
+                    rel mixGroup = </Root/AudioMixGroups/Percussion>
                     uniform bool shouldLoop = 0
                 }
             }
@@ -2156,6 +1990,7 @@ def Xform "Root"
                 def RealityKitAudioFile "Cello_wav"
                 {
                     uniform asset file = @Assets/Intro/SpatialStems12122024/Cello.wav@
+                    rel mixGroup = </Root/AudioMixGroups/Strings>
                     uniform bool shouldLoop = 0
                 }
             }
@@ -2195,6 +2030,7 @@ def Xform "Root"
                 def RealityKitAudioFile "Cymbal_wav"
                 {
                     uniform asset file = @Assets/Intro/SpatialStems12122024/Cymbal.wav@
+                    rel mixGroup = </Root/AudioMixGroups/Percussion>
                     uniform bool shouldLoop = 0
                 }
             }
@@ -2214,6 +2050,7 @@ def Xform "Root"
                 def RealityKitAudioFile "BreathRiser_L_wav"
                 {
                     uniform asset file = @Assets/Intro/SpatialStems12122024/BreathRiser.L.wav@
+                    rel mixGroup = </Root/AudioMixGroups/SFX>
                     uniform bool shouldLoop = 0
                 }
 
@@ -2270,6 +2107,7 @@ def Xform "Root"
                 def RealityKitAudioFile "BreathRiser_cm_cm_cm_cm_R_wav"
                 {
                     uniform asset file = @Assets/Intro/SpatialStems12122024/BreathRiser.cm.cm.cm.cm.R.wav@
+                    rel mixGroup = </Root/AudioMixGroups/SFX>
                     uniform bool shouldLoop = 0
                 }
             }
@@ -2310,6 +2148,7 @@ def Xform "Root"
                 def RealityKitAudioFile "Timpani_wav"
                 {
                     uniform asset file = @Assets/Intro/SpatialStems12122024/Timpani.wav@
+                    rel mixGroup = </Root/AudioMixGroups/Percussion>
                     uniform bool shouldLoop = 0
                 }
             }
@@ -2361,6 +2200,7 @@ def Xform "Root"
                 def RealityKitAudioFile "LightBeam2_wav"
                 {
                     uniform asset file = @Assets/Intro/SpatialStems12122024/LightBeam2.wav@
+                    rel mixGroup = </Root/AudioMixGroups/SFX>
                     uniform bool shouldLoop = 0
                 }
             }
@@ -2380,6 +2220,7 @@ def Xform "Root"
                 def RealityKitAudioFile "LightBeam1_wav"
                 {
                     uniform asset file = @Assets/Intro/SpatialStems12122024/LightBeam1.wav@
+                    rel mixGroup = </Root/AudioMixGroups/SFX>
                     uniform bool shouldLoop = 0
                 }
 
@@ -2437,6 +2278,7 @@ def Xform "Root"
                 def RealityKitAudioFile "Reverb1L_wav"
                 {
                     uniform asset file = @Assets/Intro/SpatialStems12122024/Reverb1L.wav@
+                    rel mixGroup = </Root/AudioMixGroups/SFX>
                     uniform bool shouldLoop = 0
                 }
             }
@@ -2476,6 +2318,7 @@ def Xform "Root"
                 def RealityKitAudioFile "Reverb1R_wav"
                 {
                     uniform asset file = @Assets/Intro/SpatialStems12122024/Reverb1R.wav@
+                    rel mixGroup = </Root/AudioMixGroups/SFX>
                     uniform bool shouldLoop = 0
                 }
             }
@@ -2515,6 +2358,7 @@ def Xform "Root"
                 def RealityKitAudioFile "Reverb2L_wav"
                 {
                     uniform asset file = @Assets/Intro/SpatialStems12122024/Reverb2L.wav@
+                    rel mixGroup = </Root/AudioMixGroups/SFX>
                     uniform bool shouldLoop = 0
                 }
             }
@@ -2554,6 +2398,7 @@ def Xform "Root"
                 def RealityKitAudioFile "Reverb2R_wav"
                 {
                     uniform asset file = @Assets/Intro/SpatialStems12122024/Reverb2R.wav@
+                    rel mixGroup = </Root/AudioMixGroups/SFX>
                     uniform bool shouldLoop = 0
                 }
             }
@@ -2593,6 +2438,7 @@ def Xform "Root"
                 def RealityKitAudioFile "Reverb3L_wav"
                 {
                     uniform asset file = @Assets/Intro/SpatialStems12122024/Reverb3L.wav@
+                    rel mixGroup = </Root/AudioMixGroups/SFX>
                     uniform bool shouldLoop = 0
                 }
             }
@@ -2632,6 +2478,7 @@ def Xform "Root"
                 def RealityKitAudioFile "Reverb3R_wav"
                 {
                     uniform asset file = @Assets/Intro/SpatialStems12122024/Reverb3R.wav@
+                    rel mixGroup = </Root/AudioMixGroups/SFX>
                     uniform bool shouldLoop = 0
                 }
             }
@@ -2671,6 +2518,7 @@ def Xform "Root"
                 def RealityKitAudioFile "SpinFX1_wav"
                 {
                     uniform asset file = @Assets/Intro/SpatialStems12122024/SpinFX1.wav@
+                    rel mixGroup = </Root/AudioMixGroups/SFX>
                     uniform bool shouldLoop = 0
                 }
             }
@@ -2710,6 +2558,7 @@ def Xform "Root"
                 def RealityKitAudioFile "SpinFX2_wav"
                 {
                     uniform asset file = @Assets/Intro/SpatialStems12122024/SpinFX2.wav@
+                    rel mixGroup = </Root/AudioMixGroups/SFX>
                     uniform bool shouldLoop = 0
                 }
             }
@@ -2749,6 +2598,7 @@ def Xform "Root"
                 def RealityKitAudioFile "SpinFX3_wav"
                 {
                     uniform asset file = @Assets/Intro/SpatialStems12122024/SpinFX3.wav@
+                    rel mixGroup = </Root/AudioMixGroups/SFX>
                     uniform bool shouldLoop = 0
                 }
             }
@@ -3331,13 +3181,50 @@ def Xform "Root"
                 double duration = 144
                 uniform token info:id = "C2574DA6-6DED-482F-ABCD-6588270D72D2"
                 double startTime = 0
-                rel target = </Root/sh0100_v01_portal/PicturesRoot/intro/Portal_and_Lightbeams/PortalPlane/portal_audio>
+                rel target = </Root/Narrator>
                 float2 ui:nodegraph:node:pos = (20, 20)
                 int ui:nodegraph:node:stackingOrder = 1
 
                 def RealityKitStruct "handoffType"
                 {
                 }
+            }
+        }
+    }
+
+    def Xform "Narrator" (
+        active = true
+        customData = {
+            float3 rotationEulerHint = (0, 3.1415927, 0)
+        }
+    )
+    {
+        quatf xformOp:orient = (-4.371139e-8, 0, 1, 0)
+        float3 xformOp:translate = (1.2665987e-7, 1, -1.9362881)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitAudioFile "Andrew_Narrator_wav"
+        {
+            uniform asset file = @Assets/Intro/SpatialStems12122024/Andrew_Narrator.wav@
+            rel mixGroup = </Root/AudioMixGroups/Voices>
+            uniform bool shouldLoop = 0
+        }
+
+        def RealityKitComponent "SpatialAudio"
+        {
+            float directivityFocus = 1
+            uniform token info:id = "RealityKit.SpatialAudio"
+            float rolloffFactor = 0
+        }
+
+        def RealityKitComponent "AudioLibrary"
+        {
+            uniform token info:id = "RealityKit.AudioLibrary"
+
+            def RealityKitDict "resources"
+            {
+                string[] keys = ["Andrew_Narrator_wav"]
+                rel values = </Root/Narrator/Andrew_Narrator_wav>
             }
         }
     }
@@ -3349,171 +3236,176 @@ def Xform "Root"
         token depthPass = "postPass"
     }
 
-    def Xform "card_Transform" (
+    def "IntroWarp" (
         active = true
+        prepend references = @IntroWarp.usda@
     )
     {
-        reorder nameChildren = ["card_logo", "card_type"]
-        float3 xformOp:translate = (0, 0, -8)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+        float3 xformOp:scale = (1, 1, 1)
 
-        def "card_logo" (
-            active = true
-            customData = {
-                float3 rotationEulerHint = (-1.5707964, 0, 0)
-            }
-            references = @Assets/Intro/card.usdc@
-        )
+        over "sh0100_v01_portalWarp2"
         {
-            quatf xformOp:orient = (0.70710677, -0.7071067, 0, 0)
-            float3 xformOp:scale = (0.99999994, 0.99999994, 0.99999994)
-            float3 xformOp:translate = (0, 1.5, 0)
-            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            rel material:binding (
+                bindMaterialAs = "strongerThanDescendants"
+            )
 
-            def RealityKitComponent "HierarchicalFade"
+            over "PortalWarp_MSR"
             {
-                uniform token info:id = "RealityKit.HierarchicalFade"
-                float opacity = 0
-            }
-
-            over "Plane"
-            {
-                over "Plane"
+                over "PortalWarp2_endCap"
                 {
-                    def RealityKitComponent "MeshSorting"
+                    over "Cylinder_002" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
                     {
-                        rel group = </Root/Model_Sorting_Group>
-                        token info:id = "RealityKit.MeshSorting"
-                        int priorityInGroup = 15
+                        rel material:binding = </Root/IntroWarp/M_jet/JetMaterial> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+
+                        def RealityKitComponent "MeshSorting"
+                        {
+                            rel group = </Root/Model_Sorting_Group>
+                            token info:id = "RealityKit.MeshSorting"
+                            int priorityInGroup = 1
+                        }
+                    }
+                }
+
+                over "PortalWarp2"
+                {
+                    over "Cylinder" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </Root/IntroWarp/M_jet/JetMaterial> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+
+                        def RealityKitComponent "MeshSorting"
+                        {
+                            rel group = </Root/Model_Sorting_Group>
+                            token info:id = "RealityKit.MeshSorting"
+                            int priorityInGroup = 2
+                        }
                     }
                 }
             }
         }
 
-        def "card_type" (
-            active = true
-            customData = {
-                float3 rotationEulerHint = (-1.5707964, 0, 0)
-            }
-            references = @Assets/Intro/card.usdc@
-        )
+        def RealityKitComponent "HierarchicalFade"
         {
-            float2 ui:nodegraph:node:pos = (20, 20)
-            int ui:nodegraph:node:stackingOrder = 1
-            quatf xformOp:orient = (0.70710677, -0.7071067, 0, 0)
-            float3 xformOp:scale = (0.99999994, 0.99999994, 0.99999994)
-            float3 xformOp:translate = (0, 1, 0)
-            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            uniform token info:id = "RealityKit.HierarchicalFade"
+            float opacity = 1
+        }
 
-            def RealityKitComponent "HierarchicalFade"
+        over "M_jet"
+        {
+            over "JetMaterial"
             {
-                uniform token info:id = "RealityKit.HierarchicalFade"
-                float opacity = 0
+                float inputs:TunnelMapAmount = 0
             }
+        }
 
-            over "M_card"
+        over "sh0100_v01_portalWarp3"
+        {
+            over "PortalWarp3"
             {
-                asset inputs:TextureWithAlpha = @Assets/Intro/textures/OutdoCancer.png@
-            }
-
-            over "Plane"
-            {
-                over "Plane"
+                over "Sphere"
                 {
                     def RealityKitComponent "MeshSorting"
                     {
                         rel group = </Root/Model_Sorting_Group>
                         token info:id = "RealityKit.MeshSorting"
-                        int priorityInGroup = 14
+                        int priorityInGroup = 2
+                    }
+                }
+
+                over "portalMesh"
+                {
+                    def RealityKitComponent "MeshSorting"
+                    {
+                        rel group = </Root/Model_Sorting_Group>
+                        token info:id = "RealityKit.MeshSorting"
+                        int priorityInGroup = 2
                     }
                 }
             }
         }
     }
 
-    def RealityKitTimeline "LogoAndType"
+    def RealityKitComponent "AudioMixGroups"
     {
-        reorder nameChildren = ["Track", "Track_2", "Track_1", "Track2"]
-        def RealityKitTrack "Track"
-        {
-            reorder nameChildren = ["Transform_By", "Transform_By_1", "Show32", "Show3_1"]
-            def RealityKitAction "Show32"
-            {
-                string actionKind = "show"
-                int blendLayer = 300
-                double duration = 1
-                uniform token info:id = "DC75F671-8F6B-4779-AE6E-8755FB5836AF"
-                double startTime = 1
-                rel target = </Root/card_Transform/card_logo>
-                float2 ui:nodegraph:node:pos = (-75.9082, 30.15039)
-                int ui:nodegraph:node:stackingOrder = 1
+        uniform token info:id = "RealityKit.AudioMixGroups"
 
-                def RealityKitStruct "timingFunction"
-                {
-                }
-            }
+        def RealityKitAudioMixGroup "Piano"
+        {
+            float gain = -10
+            bool mute = 0
+            float speed = 1
         }
 
-        def RealityKitTrack "Track2"
+        def RealityKitAudioMixGroup "Strings"
         {
-            def RealityKitAction "Transform_By"
-            {
-                string actionKind = "moveBy"
-                int blendLayer = 300
-                double duration = 5
-                uniform token info:id = "EE77A97C-871C-4752-A392-E5AFD1B80A59"
-                float3 position = (0, 0, 4.2)
-                double startTime = 1
-                rel target = </Root/card_Transform>
-                float2 ui:nodegraph:node:pos = (-75.9082, 30.15039)
-                int ui:nodegraph:node:stackingOrder = 1
-
-                def RealityKitStruct "timingFunction"
-                {
-                    float2 controlPoint1 = (0, 1)
-                    token type = "cubicBezier"
-                }
-            }
+            float gain = -10
+            bool mute = 0
+            float speed = 1
         }
 
-        def RealityKitTrack "Track_1"
+        def RealityKitAudioMixGroup "Voices"
         {
-            def RealityKitAction "Transform_By_1"
-            {
-                string actionKind = "moveBy"
-                int blendLayer = 300
-                double duration = 5
-                uniform token info:id = "EE77A97C-871C-4752-A392-E5AFD1B80A59"
-                float3 position = (0, -1.2, 0)
-                double startTime = 1
-                rel target = </Root/card_Transform/card_type>
-                float2 ui:nodegraph:node:pos = (-55.908203, 50.15039)
-                int ui:nodegraph:node:stackingOrder = 2
-
-                def RealityKitStruct "timingFunction"
-                {
-                    float2 controlPoint1 = (0, 1)
-                    token type = "cubicBezier"
-                }
-            }
+            float gain = 0
+            bool mute = 0
+            float speed = 1
         }
 
-        def RealityKitTrack "Track_2"
+        def RealityKitAudioMixGroup "SFX"
         {
-            def RealityKitAction "Show3_1"
-            {
-                string actionKind = "show"
-                int blendLayer = 300
-                double duration = 1
-                uniform token info:id = "DC75F671-8F6B-4779-AE6E-8755FB5836AF"
-                double startTime = 1
-                rel target = </Root/card_Transform/card_type>
-                float2 ui:nodegraph:node:pos = (-55.908203, 50.15039)
-                int ui:nodegraph:node:stackingOrder = 2
+            float gain = -10
+            bool mute = 0
+            float speed = 1
+        }
 
-                def RealityKitStruct "timingFunction"
-                {
-                }
+        def RealityKitAudioMixGroup "Percussion"
+        {
+            float gain = -10
+            bool mute = 0
+            float speed = 1
+        }
+    }
+
+    def "ADC_particles" (
+        active = true
+        prepend references = @Assets/Intro/ADC_particles.usda@
+    )
+    {
+        float3 xformOp:scale = (1, 1, 1)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "ParticleEmitter"
+        {
+            def RealityKitComponent "MeshSorting"
+            {
+                rel group = </Root/Model_Sorting_Group>
+                token info:id = "RealityKit.MeshSorting"
+                int priorityInGroup = 0
+            }
+        }
+    }
+
+    def "ADC_particles2" (
+        active = true
+        prepend references = @Assets/Intro/ADC_particles2.usda@
+    )
+    {
+        float3 xformOp:scale = (1, 1, 1)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "ParticleEmitter"
+        {
+            def RealityKitComponent "MeshSorting"
+            {
+                rel group = </Root/Model_Sorting_Group>
+                token info:id = "RealityKit.MeshSorting"
+                int priorityInGroup = 1
             }
         }
     }

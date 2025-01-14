@@ -15,6 +15,10 @@ extension AssetLoadingManager {
                 let introEnvironmentScene = try await self.loadEntity(named: "IntroEnvironment")
                 await assetRoot.addChild(introEnvironmentScene)
                 
+                // print("Loading intro ADC particles")
+                // let introADCparticles = try await self.loadEntity(named: "Assets/Intro/ADC_particles")
+                // await assetRoot.addChild(introADCparticles)
+                
                 // Load and add intro audio
 //                print("Assembling audio scene")
 //                let introAudioScene = try await self.loadEntity(named: "IntroAudio")
@@ -25,6 +29,21 @@ extension AssetLoadingManager {
             } catch {
                 print("Failed to load IntroEnvironment: \(error)")
                 return .failure(key: "intro_environment", category: .introEnvironment, error: error)
+            }
+        }
+        taskCount += 1
+    }
+    
+    internal func loadIntroWarpAssets(group: inout ThrowingTaskGroup<LoadResult, Error>, taskCount: inout Int) {
+        group.addTask {
+            print("Starting to load Pfizer logo")
+            do {
+                let entity = try await Entity(named: "IntroWarp", in: realityKitContentBundle)
+                print("Successfully loaded Intro Warp")
+                return .success(entity: entity, key: "intro_warp", category: .cancerCell)
+            } catch {
+                print("Failed to load Intro Warp: \(error)")
+                return .failure(key: "intro_warp", category: .cancerCell, error: error)
             }
         }
         taskCount += 1

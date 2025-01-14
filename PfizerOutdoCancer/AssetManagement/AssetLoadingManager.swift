@@ -18,6 +18,7 @@ struct FailedAsset {
 /// Categories of assets in the lab environment
 enum AssetCategory {
     case introEnvironment
+    case outroEnvironment
     case labEnvironment
     case labEquipment
     case buildADCEnvironment
@@ -87,6 +88,7 @@ final class AssetLoadingManager {
             try await withThrowingTaskGroup(of: LoadResult.self) { group in
                 // Load different categories in parallel, updating totalAssets
                loadIntroEnvironmentAssets(group: &group, taskCount: &totalAssets)
+               loadIntroWarpAssets(group: &group, taskCount: &totalAssets)
                loadLogoAssets(group: &group, taskCount: &totalAssets)
                loadTitleAssets(group: &group, taskCount: &totalAssets)
                loadLabEnvironmentAssets(group: &group, taskCount: &totalAssets)
@@ -95,6 +97,7 @@ final class AssetLoadingManager {
                loadAttackCancerEnvironmentAssets(group: &group, taskCount: &totalAssets)
                loadCancerCellAssets(group: &group, taskCount: &totalAssets)
                loadTreatmentAssets(group: &group, taskCount: &totalAssets)
+               loadOutroEnvironmentAssets(group: &group, taskCount: &totalAssets)
                 
                 // Process results with error handling
                 for try await result in group {

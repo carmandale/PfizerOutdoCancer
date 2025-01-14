@@ -82,6 +82,45 @@ def Xform "Root" (
         quatf xformOp:orient = (0.7072065, 0, 0, -0.707007)
         float3 xformOp:scale = (1, 1, 1)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "antibodyProtein_complex_base"
+        {
+            over "ADC_complex_001"
+            {
+                over "ADC_complex"
+                {
+                    over "ADC_complex" (
+                        active = false
+                    )
+                    {
+                    }
+                }
+
+                over "linker02_offset" (
+                    active = false
+                )
+                {
+                }
+
+                over "linker03_offset" (
+                    active = false
+                )
+                {
+                }
+
+                over "linker01_offset" (
+                    active = false
+                )
+                {
+                }
+
+                over "linker04_offset" (
+                    active = false
+                )
+                {
+                }
+            }
+        }
     }
 }
 

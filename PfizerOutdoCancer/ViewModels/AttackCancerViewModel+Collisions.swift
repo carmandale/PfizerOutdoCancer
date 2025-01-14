@@ -52,11 +52,11 @@ extension AttackCancerViewModel {
         let entities = UnorderedPair(event.entityA, event.entityB)
         
         // Handle ADC-to-cell collisions
-        if let adcComponent = entities.itemA.components[ADCComponent.self],
-           let cellComponent = entities.itemB.components[CancerCellStateComponent.self] {
+        if let _ = entities.itemA.components[ADCComponent.self],
+           let _ = entities.itemB.components[CancerCellStateComponent.self] {
             handleADCToCellCollision(adc: entities.itemA, cell: entities.itemB)
-        } else if let adcComponent = entities.itemB.components[ADCComponent.self],
-                  let cellComponent = entities.itemA.components[CancerCellStateComponent.self] {
+        } else if let _ = entities.itemB.components[ADCComponent.self],
+                  let _ = entities.itemA.components[CancerCellStateComponent.self] {
             handleADCToCellCollision(adc: entities.itemB, cell: entities.itemA)
         }
     }

@@ -27,10 +27,12 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		883ED1752D15E5CA0015B5FD /* Exceptions for "PfizerOutdoCancer" folder in "PfizerOutdoCancer" target */ = {
+		8834F16E2D349ED800379788 /* Exceptions for "PfizerOutdoCancer" folder in "PfizerOutdoCancer" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				ADC/ECS/log,
 				Info.plist,
+				"Preview Content/Preview Assets.xcassets",
 			);
 			target = 883ED1532D15E5C80015B5FD /* PfizerOutdoCancer */;
 		};
@@ -40,7 +42,7 @@
 		883ED1562D15E5C80015B5FD /* PfizerOutdoCancer */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				883ED1752D15E5CA0015B5FD /* Exceptions for "PfizerOutdoCancer" folder in "PfizerOutdoCancer" target */,
+				8834F16E2D349ED800379788 /* Exceptions for "PfizerOutdoCancer" folder in "PfizerOutdoCancer" target */,
 			);
 			path = PfizerOutdoCancer;
 			sourceTree = "<group>";
@@ -107,7 +109,7 @@
 			buildPhases = (
 				883ED1502D15E5C80015B5FD /* Sources */,
 				883ED1512D15E5C80015B5FD /* Frameworks */,
-				883ED1522D15E5C80015B5FD /* Resources */,
+				8834F16D2D349ED800379788 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -187,7 +189,7 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		883ED1522D15E5C80015B5FD /* Resources */ = {
+		8834F16D2D349ED800379788 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -235,7 +237,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 36;
+				CURRENT_PROJECT_VERSION = 38;
 				DEVELOPMENT_ASSET_PATHS = "\"PfizerOutdoCancer/Preview Content\"";
 				DEVELOPMENT_TEAM = UTK59YE75G;
 				ENABLE_PREVIEWS = YES;
@@ -262,7 +264,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 36;
+				CURRENT_PROJECT_VERSION = 38;
 				DEVELOPMENT_ASSET_PATHS = "\"PfizerOutdoCancer/Preview Content\"";
 				DEVELOPMENT_TEAM = UTK59YE75G;
 				ENABLE_PREVIEWS = YES;

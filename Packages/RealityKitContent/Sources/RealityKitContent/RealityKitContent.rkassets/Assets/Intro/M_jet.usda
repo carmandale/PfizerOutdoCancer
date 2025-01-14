@@ -19,12 +19,12 @@ def Xform "Root"
         references = None
     )
     {
-        float inputs:Intensity = 0.829 (
+        float inputs:TunnelMapAmount = 1 (
             customData = {
                 dictionary realitykit = {
-                    float2 positionInSubgraph = (-867.4375, 112.02344)
+                    float2 positionInSubgraph = (-812.66797, 85.41406)
                     float2 sizeInSubgraph = (122, 53)
-                    int stackingOrderInSubgraph = 751
+                    int stackingOrderInSubgraph = 15
                 }
             }
         )
@@ -36,10 +36,28 @@ def Xform "Root"
 
         def NodeGraph "jetNodeGraph"
         {
-            prepend float inputs:Remap_inlow.connect = </Root/JetMaterial.inputs:Intensity>
+            float inputs:Dissolve = 1 (
+                customData = {
+                    dictionary realitykit = {
+                        float2 positionInSubgraph = (1625.6788, 310.45245)
+                        int stackingOrderInSubgraph = 2161
+                    }
+                }
+            )
+            float inputs:Dissolve.connect = </Root/JetMaterial/Divide.outputs:out>
+            float inputs:Remap_inlow (
+                customData = {
+                    dictionary realitykit = {
+                        float2 positionInSubgraph = (655.25, 184.75)
+                    }
+                }
+            )
+            float inputs:Remap_inlow.connect = </Root/JetMaterial.inputs:TunnelMapAmount>
             token outputs:UnlitSurface_out.connect = </Root/JetMaterial/jetNodeGraph/UnlitSurface.outputs:out>
             float2 ui:nodegraph:node:pos = (-295.20007, 6.4769835)
             int ui:nodegraph:node:stackingOrder = 2
+            float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (2507.726, 86.360596)
+            int ui:nodegraph:realitykit:subgraphOutputs:stackingOrder = 792
 
             def Shader "Ramptb" (
                 references = None
@@ -54,9 +72,9 @@ def Xform "Root"
                     colorSpace = "srgb_displayp3"
                 )
                 color3f outputs:out
-                float2 ui:nodegraph:node:pos = (-287.78125, -88.265625)
+                float2 ui:nodegraph:node:pos = (1378.9088, 4.28778)
                 float2 ui:nodegraph:node:size = (148.5, 145)
-                int ui:nodegraph:node:stackingOrder = 751
+                int ui:nodegraph:node:stackingOrder = 755
             }
 
             def Shader "Multiply"
@@ -65,7 +83,7 @@ def Xform "Root"
                 float3 inputs:in1.connect = </Root/JetMaterial/jetNodeGraph/Add_1.outputs:out>
                 float3 inputs:in2 = (1, 20, 5)
                 float3 outputs:out
-                float2 ui:nodegraph:node:pos = (-889.4844, -272.23828)
+                float2 ui:nodegraph:node:pos = (406.25, 480.25)
                 float2 ui:nodegraph:node:size = (60, 36)
                 int ui:nodegraph:node:stackingOrder = 751
             }
@@ -75,7 +93,7 @@ def Xform "Root"
                 uniform token info:id = "ND_constant_float"
                 float inputs:value = 0.435
                 float outputs:out
-                float2 ui:nodegraph:node:pos = (-739.7344, -180.09766)
+                float2 ui:nodegraph:node:pos = (655.25, 319.25)
                 float2 ui:nodegraph:node:size = (187.5, 53)
                 int ui:nodegraph:node:stackingOrder = 751
             }
@@ -84,7 +102,7 @@ def Xform "Root"
             {
                 uniform token info:id = "ND_texcoord_vector2"
                 float2 outputs:out
-                float2 ui:nodegraph:node:pos = (-1077.5223, 54.516205)
+                float2 ui:nodegraph:node:pos = (406.25, 48.75)
                 float2 ui:nodegraph:node:size = (180.5, 53)
                 int ui:nodegraph:node:stackingOrder = 751
             }
@@ -99,7 +117,7 @@ def Xform "Root"
                 float inputs:outhigh = 1
                 float inputs:outlow
                 float outputs:out
-                float2 ui:nodegraph:node:pos = (-726.2031, 129.19531)
+                float2 ui:nodegraph:node:pos = (872.5, 92.5)
                 float2 ui:nodegraph:node:size = (94, 181)
                 int ui:nodegraph:node:stackingOrder = 751
             }
@@ -111,7 +129,7 @@ def Xform "Root"
                 float inputs:pivot
                 float2 inputs:texcoord
                 float outputs:out
-                float2 ui:nodegraph:node:pos = (-1002.77344, -75.55469)
+                float2 ui:nodegraph:node:pos = (979.5, 687.25)
                 float2 ui:nodegraph:node:size = (148.5, 145)
                 int ui:nodegraph:node:stackingOrder = 751
             }
@@ -122,7 +140,7 @@ def Xform "Root"
                 float inputs:amplitude
                 float3 inputs:position.connect = </Root/JetMaterial/jetNodeGraph/Multiply.outputs:out>
                 float outputs:out
-                float2 ui:nodegraph:node:pos = (-752.85547, -302.0547)
+                float2 ui:nodegraph:node:pos = (655.25, 480.25)
                 float2 ui:nodegraph:node:size = (105, 145)
                 int ui:nodegraph:node:stackingOrder = 751
             }
@@ -133,7 +151,7 @@ def Xform "Root"
                 float inputs:in1.connect = </Root/JetMaterial/jetNodeGraph/Multiply_1.outputs:out>
                 float inputs:in2.connect = </Root/JetMaterial/jetNodeGraph/Remap.outputs:out>
                 float outputs:out
-                float2 ui:nodegraph:node:pos = (-601.4922, 3.9023438)
+                float2 ui:nodegraph:node:pos = (1020.75, 166.125)
                 float2 ui:nodegraph:node:size = (61.5, 36.5)
                 int ui:nodegraph:node:stackingOrder = 751
             }
@@ -142,7 +160,7 @@ def Xform "Root"
             {
                 uniform token info:id = "ND_position_vector3"
                 float3 outputs:out
-                float2 ui:nodegraph:node:pos = (-997.03125, -383.8789)
+                float2 ui:nodegraph:node:pos = (68.75, 479.25)
                 float2 ui:nodegraph:node:size = (133.5, 40)
                 int ui:nodegraph:node:stackingOrder = 751
             }
@@ -153,15 +171,15 @@ def Xform "Root"
                 float inputs:in1
                 float inputs:in2.connect = </Root/JetMaterial/jetNodeGraph/Add.outputs:out>
                 float2 outputs:out
-                float2 ui:nodegraph:node:pos = (-467.15234, -53.66797)
+                float2 ui:nodegraph:node:pos = (1180.2783, 29.236221)
                 float2 ui:nodegraph:node:size = (144.5, 53)
-                int ui:nodegraph:node:stackingOrder = 751
+                int ui:nodegraph:node:stackingOrder = 753
             }
 
             def Shader "TriplanarProjection"
             {
                 uniform token info:id = "ND_triplanarprojection_float"
-                float2 ui:nodegraph:node:pos = (-1263.7006, -157.42671)
+                float2 ui:nodegraph:node:pos = (776, 723.25)
                 float2 ui:nodegraph:node:size = (170, 217)
                 int ui:nodegraph:node:stackingOrder = 751
             }
@@ -173,7 +191,7 @@ def Xform "Root"
                 float inputs:in2 = 0.295
                 float inputs:in2.connect = </Root/JetMaterial/jetNodeGraph/Flicker_Intensity.outputs:out>
                 float outputs:out
-                float2 ui:nodegraph:node:pos = (-569.2422, -204.16797)
+                float2 ui:nodegraph:node:pos = (872.5, 349.25)
                 float2 ui:nodegraph:node:size = (60, 36)
                 int ui:nodegraph:node:stackingOrder = 751
             }
@@ -182,14 +200,14 @@ def Xform "Root"
             {
                 uniform token info:id = "ND_realitykit_unlit_surfaceshader"
                 bool inputs:applyPostProcessToneMap = 0
-                color3f inputs:color.connect = </Root/JetMaterial/jetNodeGraph/Ramptb.outputs:out>
+                color3f inputs:color.connect = </Root/JetMaterial/jetNodeGraph/Multiply_3.outputs:out>
                 bool inputs:hasPremultipliedAlpha = 0
-                float inputs:opacity.connect = </Root/JetMaterial/jetNodeGraph/Add.outputs:out>
+                float inputs:opacity.connect = </Root/JetMaterial/jetNodeGraph/Multiply_2.outputs:out>
                 float inputs:opacityThreshold
                 token outputs:out
-                float2 ui:nodegraph:node:pos = (93.52263, 88.848335)
+                float2 ui:nodegraph:node:pos = (2261.976, 86.360596)
                 float2 ui:nodegraph:node:size = (194.5, 181)
-                int ui:nodegraph:node:stackingOrder = 751
+                int ui:nodegraph:node:stackingOrder = 792
             }
 
             def Shader "Constant"
@@ -197,7 +215,7 @@ def Xform "Root"
                 uniform token info:id = "ND_constant_vector2"
                 float2 inputs:value = (0, 0)
                 float2 outputs:out
-                float2 ui:nodegraph:node:pos = (-394.02344, 138.01562)
+                float2 ui:nodegraph:node:pos = (1194.5, 641.25)
                 float2 ui:nodegraph:node:size = (154, 53)
                 int ui:nodegraph:node:stackingOrder = 751
                 string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["inputs:value"]
@@ -209,7 +227,7 @@ def Xform "Root"
                 float2 inputs:in.connect = </Root/JetMaterial/jetNodeGraph/Texcoord.outputs:out>
                 int inputs:index = 1
                 float outputs:out
-                float2 ui:nodegraph:node:pos = (-856.1758, 52.597656)
+                float2 ui:nodegraph:node:pos = (655.25, 48.75)
                 float2 ui:nodegraph:node:size = (129.5, 40)
                 int ui:nodegraph:node:stackingOrder = 751
             }
@@ -220,7 +238,7 @@ def Xform "Root"
                 float3 inputs:in1.connect = </Root/JetMaterial/jetNodeGraph/Position.outputs:out>
                 float inputs:in2.connect = </Root/JetMaterial/jetNodeGraph/Time.outputs:out>
                 float3 outputs:out
-                float2 ui:nodegraph:node:pos = (-931.65234, -330.1328)
+                float2 ui:nodegraph:node:pos = (226.25, 480.25)
                 float2 ui:nodegraph:node:size = (61.5, 36.5)
                 int ui:nodegraph:node:stackingOrder = 751
             }
@@ -229,10 +247,65 @@ def Xform "Root"
             {
                 uniform token info:id = "ND_time_float"
                 float outputs:out
-                float2 ui:nodegraph:node:pos = (-1078.7812, -320.22656)
+                float2 ui:nodegraph:node:pos = (68.75, 370.75)
                 float2 ui:nodegraph:node:size = (122.5, 53)
                 int ui:nodegraph:node:stackingOrder = 751
             }
+
+            def Shader "Multiply_2"
+            {
+                uniform token info:id = "ND_multiply_float"
+                float inputs:in1.connect = </Root/JetMaterial/jetNodeGraph/Dot.outputs:out>
+                float inputs:in2 = 1
+                float inputs:in2.connect = </Root/JetMaterial/jetNodeGraph.inputs:Dissolve>
+                float outputs:out
+                float2 ui:nodegraph:node:pos = (1902.0165, 173.01231)
+                int ui:nodegraph:node:stackingOrder = 2153
+            }
+
+            def Shader "Dot"
+            {
+                uniform token info:id = "ND_dot_float"
+                float inputs:in.connect = </Root/JetMaterial/jetNodeGraph/Range.outputs:out>
+                float outputs:out
+                float2 ui:nodegraph:node:pos = (1556.9902, 219.65814)
+                int ui:nodegraph:node:stackingOrder = 2159
+            }
+
+            def Shader "Range"
+            {
+                uniform token info:id = "ND_range_float"
+                bool inputs:doclamp
+                float inputs:gamma = 0.34101564
+                float inputs:in.connect = </Root/JetMaterial/jetNodeGraph/Add.outputs:out>
+                float inputs:inhigh
+                float inputs:inlow = 0
+                float inputs:outhigh = 0.5
+                float inputs:outlow = 0
+                float outputs:out
+                float2 ui:nodegraph:node:pos = (1298.6599, 253.78938)
+                int ui:nodegraph:node:stackingOrder = 2163
+            }
+
+            def Shader "Multiply_3"
+            {
+                uniform token info:id = "ND_multiply_color3FA"
+                color3f inputs:in1.connect = </Root/JetMaterial/jetNodeGraph/Ramptb.outputs:out>
+                float inputs:in2 = 1
+                prepend float inputs:in2.connect = </Root/JetMaterial/jetNodeGraph/Dot.outputs:out>
+                color3f outputs:out
+                float2 ui:nodegraph:node:pos = (1821.5719, 88.063965)
+                int ui:nodegraph:node:stackingOrder = 2151
+            }
+        }
+
+        def Shader "Divide"
+        {
+            uniform token info:id = "ND_divide_float"
+            float inputs:in1.connect = </Root/JetMaterial.inputs:TunnelMapAmount>
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (-544.53516, -46.597656)
+            int ui:nodegraph:node:stackingOrder = 14
         }
     }
 }

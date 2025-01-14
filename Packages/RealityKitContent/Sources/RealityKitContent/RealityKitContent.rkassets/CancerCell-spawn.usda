@@ -474,6 +474,28 @@ def Xform "Root"
         {
             quatf xformOp:orient = (1, 0, 0, 0)
             float3 xformOp:scale = (1, 1, 1)
+
+            over "ParticleEmitter"
+            {
+                over "VFXEmitter"
+                {
+                    over "currentState"
+                    {
+                        over "mainEmitter"
+                        {
+                            token blendMode = "Alpha"
+                            float4 endColorA = (0.365, 0.10084365, 0.07099587, 1)
+                            float4 endColorB = (0.28048274, 0.06327071, 0.040950753, 1)
+                            float radialGravityStrength = 1
+                            float4 startColorA = (0.1757912, 0.012298079, 0.0014100897, 1)
+                            float4 startColorB = (0.04663075, 0.014146382, 0.012258345, 1)
+                            bool useEndColor = 1
+                            bool useEndColorRange = 1
+                            bool useStartColorRange = 1
+                        }
+                    }
+                }
+            }
         }
 
         def RealityKitComponent "AudioLibrary"

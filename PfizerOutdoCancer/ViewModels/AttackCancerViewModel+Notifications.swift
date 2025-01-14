@@ -15,8 +15,7 @@ extension AttackCancerViewModel {
     
     @objc func handleCancerCellUpdate(_ notification: Notification) {
         guard let entity = notification.userInfo?["entity"] as? Entity,
-              let stateComponent = entity.components[CancerCellStateComponent.self],
-              let cellID = stateComponent.parameters.cellID else {
+              let _ = entity.components[CancerCellStateComponent.self] else {
             print("⚠️ Failed to unwrap required values in handleCancerCellUpdate")
             return
         }

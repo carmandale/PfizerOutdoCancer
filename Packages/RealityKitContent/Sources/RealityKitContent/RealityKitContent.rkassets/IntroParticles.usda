@@ -1,0 +1,165 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 2.0 (448.60.4)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    reorder nameChildren = ["sh0100_v01_portalWarp", "Transform", "swoop", "sh0100_v01_portalWarp2", "M_jet", "Timeline"]
+    quatf xformOp:orient = (1, 0, 0, 0)
+    float3 xformOp:scale = (1, 1, 1)
+    float3 xformOp:translate = (0, 0, 0)
+    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+    def Xform "Transform" (
+        active = true
+    )
+    {
+        reorder nameChildren = ["rot", "offset"]
+        float3 xformOp:translate = (0, 10, -20)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def Xform "rot" (
+            active = true
+        )
+        {
+            quatf xformOp:orient = (1, 0, 0, 0)
+            float3 xformOp:scale = (1, 1, 1)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            def Xform "offset" (
+                active = true
+            )
+            {
+                reorder nameChildren = ["Sphere", "ParticleEmitter"]
+                quatf xformOp:orient = (1, 0, 0, 0)
+                float3 xformOp:scale = (1, 1, 1)
+                float3 xformOp:translate = (1, 0, 0)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                def Sphere "Sphere" (
+                    active = true
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                )
+                {
+                    reorder nameChildren = ["Particles", "DefaultMaterial"]
+                    rel material:binding = </Root/Transform/rot/offset/Sphere/DefaultMaterial>
+                    double radius = 0.1
+                    quatf xformOp:orient = (1, 0, 0, 0)
+                    float3 xformOp:scale = (1, 1, 1)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                    def Material "DefaultMaterial"
+                    {
+                        token outputs:surface.connect = </Root/Transform/rot/offset/Sphere/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
+
+                        def Shader "DefaultSurfaceShader"
+                        {
+                            uniform token info:id = "UsdPreviewSurface"
+                            color3f inputs:diffuseColor = (1, 1, 1)
+                            float inputs:roughness = 0.75
+                            token outputs:surface
+                        }
+                    }
+
+                    def "Particles" (
+                        active = true
+                        references = @Assets/Intro/LightBeams/Particles.usda@
+                    )
+                    {
+                        float3 xformOp:scale = (1, 1, 1)
+                        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                    }
+                }
+            }
+        }
+    }
+
+    def RealityKitTimeline "swoop"
+    {
+        reorder nameChildren = ["Track", "Track2", "Track3"]
+        def RealityKitTrack "Track"
+        {
+            reorder nameChildren = ["Orbit", "Transform_By2"]
+            def RealityKitAction "Transform_By2"
+            {
+                string actionKind = "moveBy"
+                int blendLayer = 300
+                double duration = 10
+                uniform token info:id = "9964A231-1E4F-4177-AFA2-F83B4FA52CAC"
+                float3 position = (0, 0, 20)
+                double startTime = 0
+                rel target = </Root/Transform>
+                float2 ui:nodegraph:node:pos = (20, 20)
+                int ui:nodegraph:node:stackingOrder = 1
+
+                def RealityKitStruct "timingFunction"
+                {
+                    float2 controlPoint1 = (0, 1)
+                    float2 controlPoint2 = (0, 0)
+                    token type = "easeIn"
+                }
+            }
+        }
+
+        def RealityKitTrack "Track2"
+        {
+            def RealityKitAction "Orbit"
+            {
+                string actionKind = "orbit"
+                float3 axis = (0, 0, 1)
+                int blendLayer = 300
+                double duration = 10
+                uniform token info:id = "A08C3BCC-DA60-40E8-A1C8-0704D32FD414"
+                rel pivotEntity = </Root/Transform/rot>
+                float revolutions = 2
+                double startTime = 0
+                rel target = </Root/Transform/rot/offset>
+                float2 ui:nodegraph:node:pos = (20, 20)
+                int ui:nodegraph:node:stackingOrder = 1
+            }
+        }
+
+        def RealityKitTrack "Track3"
+        {
+            def RealityKitAction "Transform_By"
+            {
+                string actionKind = "moveBy"
+                int blendLayer = 300
+                double duration = 10
+                uniform token info:id = "F3534EE6-97DB-4476-83D3-346ECF4DA647"
+                float3 position = (0, -10, 0)
+                double startTime = 0
+                rel target = </Root/Transform>
+
+                def RealityKitStruct "timingFunction"
+                {
+                    float2 controlPoint1 = (0, 1)
+                    token type = "cubicBezier"
+                }
+            }
+        }
+    }
+
+    def RealityKitTimeline "Timeline"
+    {
+        def RealityKitTrack "Track"
+        {
+            def RealityKitAction "Play_Timeline"
+            {
+                string actionKind = "timeline"
+                int blendLayer = 500
+                double duration = 10
+                uniform token info:id = "9153ABEB-5E0D-40D1-8262-82C5B113803F"
+                double startTime = 0
+                rel timeline = </Root/swoop>
+            }
+        }
+    }
+}
+

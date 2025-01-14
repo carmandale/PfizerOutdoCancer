@@ -1,0 +1,457 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 2.0 (448.60.4)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    reorder nameChildren = ["M_text", "hope_MSR", "Outro", "logo_MSR"]
+    def Material "M_text"
+    {
+        token outputs:mtlx:surface.connect = </Root/M_text/PBRSurface.outputs:out>
+        token outputs:realitykit:vertex
+        float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (335.25, 100.5)
+
+        def Shader "PBRSurface"
+        {
+            uniform token info:id = "ND_realitykit_pbr_surfaceshader"
+            float inputs:clearcoat = 1
+            float3 inputs:clearcoatNormal
+            float inputs:clearcoatRoughness = 0.3
+            bool inputs:hasPremultipliedAlpha
+            token outputs:out
+            float2 ui:nodegraph:node:pos = (87.36719, 19.101562)
+            int ui:nodegraph:node:stackingOrder = 5
+        }
+    }
+
+    def Xform "hope_MSR" (
+        active = true
+    )
+    {
+        float3 xformOp:translate = (0, 1.5, -2)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def "hope_v01" (
+            active = true
+            prepend apiSchemas = ["MaterialBindingAPI"]
+            customData = {
+                float3 rotationEulerHint = (-1.5707964, 0, 0)
+            }
+            references = @Assets/Outro/hope_v01.usdc@
+        )
+        {
+            reorder nameChildren = ["Text", "HierarchicalFade", "spatial_audio", "logo_MSR", "change_v01"]
+            rel material:binding = </Root/M_text> (
+                bindMaterialAs = "weakerThanDescendants"
+            )
+            quatf xformOp:orient = (0.70710677, -0.7071067, 0, 0)
+            float3 xformOp:scale = (0.99999994, 0.99999994, 0.99999994)
+            float3 xformOp:translate = (0, 0, -10)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            def RealityKitComponent "HierarchicalFade"
+            {
+                uniform token info:id = "RealityKit.HierarchicalFade"
+                float opacity = 1
+            }
+
+            def Xform "spatial_audio" (
+                active = true
+                customData = {
+                    float3 rotationEulerHint = (-1.5707964, 0, 0)
+                }
+            )
+            {
+                quatf xformOp:orient = (0.70710677, -0.70710677, 0, 0)
+                float3 xformOp:scale = (1.0000002, 1.0000002, 1.0000002)
+                float3 xformOp:translate = (-3.9860615e-7, -0.12792313, 0.14237225)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                def RealityKitAudioFile "Pfizer_LODC_Outro_Stereo_1_wav"
+                {
+                    uniform asset file = @Assets/Outro/Pfizer_LODC_Outro_Stereo_1.wav@
+                    uniform bool shouldLoop = 0
+                }
+
+                def RealityKitComponent "HierarchicalFade"
+                {
+                    uniform token info:id = "RealityKit.HierarchicalFade"
+                }
+
+                def RealityKitComponent "AudioLibrary"
+                {
+                    uniform token info:id = "RealityKit.AudioLibrary"
+
+                    def RealityKitDict "resources"
+                    {
+                        string[] keys = ["Pfizer_LODC_Outro_Stereo_1.wav"]
+                        rel values = </Root/hope_MSR/hope_v01/spatial_audio/Pfizer_LODC_Outro_Stereo_1_wav>
+                    }
+                }
+
+                def RealityKitComponent "SpatialAudio"
+                {
+                    float directivityFocus = 0.23858173
+                    uniform token info:id = "RealityKit.SpatialAudio"
+                }
+            }
+
+            def Xform "logo_MSR" (
+                active = true
+                customData = {
+                    float3 rotationEulerHint = (-3.894297e-15, 0, 0)
+                }
+            )
+            {
+                quatf xformOp:orient = (1, -1.9471485e-15, 0, 0)
+                float3 xformOp:scale = (0.36525586, 0.36525586, 0.36525586)
+                float3 xformOp:translate = (0, 0.14464378, 0.5319809)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                def "card" (
+                    active = true
+                    references = @Assets/Intro/card.usdc@
+                )
+                {
+                    float3 xformOp:scale = (1, 1, 1)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                    over "Plane"
+                    {
+                        over "Plane"
+                        {
+                            def RealityKitComponent "MeshSorting"
+                            {
+                                rel group = </Root/Model_Sorting_Group>
+                                token info:id = "RealityKit.MeshSorting"
+                                int priorityInGroup = 3
+                            }
+                        }
+                    }
+                }
+
+                def RealityKitComponent "HierarchicalFade"
+                {
+                    uniform token info:id = "RealityKit.HierarchicalFade"
+                    float opacity = 0
+                }
+            }
+
+            over "Text"
+            {
+                def RealityKitComponent "HierarchicalFade"
+                {
+                    uniform token info:id = "RealityKit.HierarchicalFade"
+                    float opacity = 0
+                }
+
+                over "Text"
+                {
+                    def RealityKitComponent "MeshSorting"
+                    {
+                        rel group = </Root/Model_Sorting_Group>
+                        token info:id = "RealityKit.MeshSorting"
+                        int priorityInGroup = 5
+                    }
+                }
+            }
+
+            def "change_v01" (
+                active = true
+                references = @Assets/Outro/change_v01.usdc@
+            )
+            {
+                float3 xformOp:scale = (1.0000002, 0.5, 1.0000002)
+                float3 xformOp:translate = (0, 0, 0.14)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                def RealityKitComponent "HierarchicalFade"
+                {
+                    uniform token info:id = "RealityKit.HierarchicalFade"
+                    float opacity = 0
+                }
+
+                over "Change"
+                {
+                    over "Text_002"
+                    {
+                        def RealityKitComponent "MeshSorting"
+                        {
+                            rel group = </Root/Model_Sorting_Group>
+                            token info:id = "RealityKit.MeshSorting"
+                            int priorityInGroup = 4
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    def RealityKitTimeline "Outro"
+    {
+        reorder nameChildren = ["Track", "Track2", "Track3", "Track4", "Track5"]
+        def RealityKitTrack "Track"
+        {
+            def RealityKitAction "Play_Audio"
+            {
+                string actionKind = "audio"
+                string audioResourceName = "Pfizer_LODC_Outro_Stereo_1.wav"
+                bool controlPlayback = 1
+                double duration = 92.72
+                uniform token info:id = "D5280CE4-C378-4D9E-B3E7-5E25770F5C14"
+                double startTime = 0
+                rel target = </Root/hope_MSR/hope_v01/spatial_audio>
+
+                def RealityKitStruct "handoffType"
+                {
+                }
+            }
+        }
+
+        def RealityKitTrack "Track2"
+        {
+            def RealityKitAction "Transform_By"
+            {
+                string actionKind = "moveBy"
+                int blendLayer = 300
+                double duration = 92.74532880299512
+                uniform token info:id = "03CD62AD-E2C8-4D55-8818-94C2FFBB7686"
+                float3 position = (0, -10, -0.000007693392)
+                double startTime = 0
+                rel target = </Root/hope_MSR/hope_v01>
+
+                def RealityKitStruct "timingFunction"
+                {
+                    token type = "easeInOut"
+                }
+            }
+        }
+
+        def RealityKitTrack "Track3"
+        {
+            def RealityKitAction "Show"
+            {
+                string actionKind = "show"
+                int blendLayer = 300
+                double duration = 10
+                uniform token info:id = "FB746422-5791-4357-82E4-D50B8DEB7C12"
+                double startTime = 55.179839233994784
+                rel target = </Root/hope_MSR/hope_v01/Text>
+
+                def RealityKitStruct "timingFunction"
+                {
+                }
+            }
+        }
+
+        def RealityKitTrack "Track4"
+        {
+            def RealityKitAction "Show"
+            {
+                string actionKind = "show"
+                int blendLayer = 300
+                double duration = 5
+                uniform token info:id = "CF790808-9228-4A63-841A-561C8D24B5D4"
+                double startTime = 5.1169945681684
+                rel target = </Root/hope_MSR/hope_v01/logo_MSR>
+
+                def RealityKitStruct "timingFunction"
+                {
+                }
+            }
+        }
+
+        def RealityKitTrack "Track5"
+        {
+            def RealityKitAction "Show"
+            {
+                string actionKind = "show"
+                int blendLayer = 300
+                double duration = 3
+                uniform token info:id = "B9909091-242F-45E0-8950-944DE56ED7D2"
+                double startTime = 42
+                rel target = </Root/hope_MSR/hope_v01/change_v01>
+
+                def RealityKitStruct "timingFunction"
+                {
+                }
+            }
+
+            def RealityKitAction "Hide"
+            {
+                string actionKind = "hide"
+                int blendLayer = 300
+                double duration = 5
+                uniform token info:id = "9061809B-17C1-4C50-AAAB-47873BEBF1F0"
+                double startTime = 47
+                rel target = </Root/hope_MSR/hope_v01/change_v01>
+
+                def RealityKitStruct "timingFunction"
+                {
+                }
+            }
+
+            def RealityKitAction "Enable_Entity"
+            {
+                string actionKind = "enable"
+                uniform token info:id = "3129523B-A3EF-41FA-AB14-5CCE95698E64"
+                double startTime = 5.17459649924352
+                rel target = </Root/ADC_particles2>
+            }
+
+            def RealityKitAction "Disable_Entity"
+            {
+                string actionKind = "disable"
+                uniform token info:id = "ED7C3300-BCF0-47E1-83DE-72117B58ED14"
+                double startTime = 0
+                rel target = </Root/ADC_particles2>
+            }
+        }
+    }
+
+    def RealityKitComponent "RCP_BehaviorsContainer"
+    {
+        rel behaviors = </Root/OnAddedToScene>
+        uniform token info:id = "RCP.BehaviorsContainer"
+    }
+
+    def Preliminary_Behavior "OnAddedToScene"
+    {
+        rel actions = </Root/OnAddedToScene/Action>
+        uniform bool exclusive
+        rel triggers = </Root/OnAddedToScene/Trigger>
+
+        def Preliminary_Trigger "Trigger"
+        {
+            rel affectedObjects = </Root>
+            token info:id = "SceneTransition"
+        }
+
+        def Preliminary_Action "Action"
+        {
+            rel affectedObjects = </Root>
+            rel animationLibraryKey = </Root/Outro>
+            rel animationLibraryKeyOverrideKey = </Root/OnAddedToScene/Trigger>
+            token info:id = "PlayTimeline"
+            int loops = 0
+            int performCount = 1
+            token type = "serial"
+        }
+    }
+
+    def "IntroWarp" (
+        active = true
+        prepend references = @IntroWarp.usda@
+    )
+    {
+        float3 xformOp:scale = (1, 1, 1)
+        float3 xformOp:translate = (0, 0.2, 0)
+
+        over "sh0100_v01_portalWarp2"
+        {
+            over "PortalWarp_MSR"
+            {
+                over "PortalWarp2_endCap"
+                {
+                    over "Cylinder_002"
+                    {
+                        def RealityKitComponent "MeshSorting"
+                        {
+                            rel group = </Root/Model_Sorting_Group>
+                            token info:id = "RealityKit.MeshSorting"
+                            int priorityInGroup = 0
+                        }
+                    }
+                }
+
+                over "PortalWarp2"
+                {
+                    over "Cylinder"
+                    {
+                        def RealityKitComponent "MeshSorting"
+                        {
+                            rel group = </Root/Model_Sorting_Group>
+                            token info:id = "RealityKit.MeshSorting"
+                            int priorityInGroup = 1
+                        }
+                    }
+                }
+            }
+        }
+
+        over "sh0100_v01_portalWarp3"
+        {
+            over "PortalWarp3"
+            {
+                over "portalMesh"
+                {
+                    def RealityKitComponent "MeshSorting"
+                    {
+                        rel group = </Root/Model_Sorting_Group>
+                        token info:id = "RealityKit.MeshSorting"
+                        int priorityInGroup = 2
+                    }
+                }
+            }
+        }
+
+        over "M_jet"
+        {
+            over "JetMaterial"
+            {
+                float inputs:TunnelMapAmount = 0.8
+            }
+        }
+    }
+
+    def RealityKitMeshSortingGroup "Model_Sorting_Group" (
+        active = true
+    )
+    {
+    }
+
+    def "ADC_particles" (
+        active = true
+        prepend references = @Assets/Intro/ADC_particles.usda@
+    )
+    {
+        float3 xformOp:scale = (1, 1, 1)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "ParticleEmitter"
+        {
+            def RealityKitComponent "MeshSorting"
+            {
+                rel group = </Root/Model_Sorting_Group>
+                token info:id = "RealityKit.MeshSorting"
+                int priorityInGroup = 0
+            }
+        }
+    }
+
+    def "ADC_particles2" (
+        active = true
+        prepend references = @Assets/Intro/ADC_particles2.usda@
+    )
+    {
+        float3 xformOp:scale = (1, 1, 1)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "ParticleEmitter"
+        {
+            def RealityKitComponent "MeshSorting"
+            {
+                rel group = </Root/Model_Sorting_Group>
+                token info:id = "RealityKit.MeshSorting"
+                int priorityInGroup = 1
+            }
+        }
+    }
+}
+

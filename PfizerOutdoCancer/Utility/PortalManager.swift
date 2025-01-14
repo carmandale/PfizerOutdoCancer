@@ -32,6 +32,7 @@ final class PortalManager {
         portalRoot.position.z = -1.5
         
         let titleRoot = Entity()
+        titleRoot.name = "titleRoot"
         titleRoot.scale *= 0.5
         titleRoot.position.z = 0.1
         
@@ -43,6 +44,7 @@ final class PortalManager {
         )
         
         if let logo = await appModel.assetLoadingManager.instantiateEntity("pfizer_logo") {
+            logo.position.y += 0.25
             titleRoot.addChild(logo)
         }
         
