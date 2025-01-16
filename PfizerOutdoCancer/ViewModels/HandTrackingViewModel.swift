@@ -76,6 +76,12 @@ class HandTrackingViewModel {
     private func runSession() {
         Task {
             do {
+                // Check if provider is already running
+                if handTracking.state == .running {
+                    print("⚠️ Hand tracking provider already running, skipping session start")
+                    return
+                }
+                
                 try await session.run([handTracking])
                 print("Hand tracking session started successfully")
                 
@@ -95,10 +101,10 @@ class HandTrackingViewModel {
     }
     
     /// Stops the ARKit session
-    func stopSession() async {
-        await session.stop()
-        print("Hand tracking session stopped")
-    }
+    // func stopSession() async {
+    //      session.stop()
+    //     print("Hand tracking session stopped")
+    // }
     
     // MARK: - Helper Methods
     

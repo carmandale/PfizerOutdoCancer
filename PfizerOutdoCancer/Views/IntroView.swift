@@ -50,12 +50,12 @@ struct IntroView: View {
         return SurroundingsEffect.colorMultiply(tintColor)
     }
     
-    @State private var headTracker = HeadPositionTracker()
+    // @State private var headTracker = HeadPositionTracker()
     @State private var mainEntity: Entity? = nil
 
-    private func positionMainEntity() {
-        headTracker.positionEntityRelativeToUser(mainEntity, offset: [0, -1.5, -1.0])
-    }
+    // private func positionMainEntity() {
+    //     headTracker.positionEntityRelativeToUser(mainEntity, offset: [0, -1.5, -1.0])
+    // }
     
     var body: some View {
         VStack {
@@ -66,8 +66,19 @@ struct IntroView: View {
                     
                     Task {
                         do {
-                            try await headTracker.ensureInitialized()
-                            print("✅ Head tracking initialized")
+                            // Create lab root
+                            let root = Entity()
+                            self.mainEntity = root
+
+                            // Add PositioningComponent with desired offsets
+                            root.components.set(PositioningComponent(
+                                offsetX: 0,
+                                offsetY: -1.5,  // Same offset they were using
+                                offsetZ: -1.0   // Same offset they were using
+                            ))
+                            contentRef.add(root)
+                            // try await headTracker.ensureInitialized()
+                            // print("✅ Head tracking initialized")
                             
                             // Then do the rest of the setup
                             guard let introEnvironmentEntity = await appModel.assetLoadingManager.instantiateEntity("intro_environment") else {
@@ -129,16 +140,13 @@ struct IntroView: View {
                             immersiveSceneRoot.addChild(portal)
                             immersiveSceneRoot.addChild(introEnvironmentEntity)
                             
-                            // Create lab root
-                            let root = Entity()
-                            self.mainEntity = root
+                            
                             
                             root.addChild(immersiveSceneRoot)
-                            contentRef.add(root)
                             
-                            // Position after everything is ready and tracking is initialized
-                            print("🎯 Positioning main entity")
-                            positionMainEntity()
+                            // // Position after everything is ready and tracking is initialized
+                            // print("🎯 Positioning main entity")
+                            // positionMainEntity()
                         } catch {
                             print("❌ Error initializing head tracking: \(error)")
                         }
@@ -163,7 +171,7 @@ struct IntroView: View {
                     // Start portal warp fade at 42 seconds
                     if elapsed >= startDelay && elapsed <= (startDelay + 0.1) {  // Small window to trigger
                         if let portalWarp = content.entities.first?.findEntity(named: "sh0100_v01_portalWarp2") {
-                            portalWarp.setOpacity(0.08, animated: true, duration: duration)
+                            portalWarp.setOpacity(0.3, animated: true, duration: duration)
                         }
                     }
                     
@@ -201,7 +209,7 @@ struct IntroView: View {
 
                 // Portal fade-in (103s)
                 portalFadeTimer = Timer.scheduledTimer(withTimeInterval: 103, repeats: false) { _ in
-                    self.portal?.setOpacity(1.0, animated: true, duration: 10.0)
+                    self.portal?.setOpacity(1.0, animated: true, duration: 5.0)
                 }
 
                 // Title text animation (110s)
@@ -228,6 +236,12 @@ struct IntroView: View {
                 portalFadeTimer = nil
                 titleTextTimer = nil
             }
+        }
+        .task {
+            await appModel.monitorSessionEvents()
+        }
+        .task {
+            try? await appModel.runARKitSession()
         }
     }
 }

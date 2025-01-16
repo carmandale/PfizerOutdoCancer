@@ -32,6 +32,15 @@ struct AttackCancerView: View {
     var body: some View {
         RealityView { content, attachments in
             let root = appModel.gameState.setupRoot()
+            root.name = "AttackCancerRoot"
+            
+            // Add PositioningComponent to keep world tracking active
+            root.components.set(PositioningComponent(
+                offsetX: 0,
+                offsetY: 0,
+                offsetZ: 0
+            ))
+            
             content.add(root)
             
             if !isSimulator {
@@ -71,21 +80,21 @@ struct AttackCancerView: View {
         .onAppear {
             dismissWindow(id: AppModel.debugNavigationWindowId)
         }
+        .task {
+            await appModel.monitorSessionEvents()
+        }
+        .task {
+            try? await appModel.runARKitSession()
+        }
     }
     
     // 4. Hand tracking setup method
     private func setupHandTracking(in content: RealityViewContent, attachments: RealityViewAttachments) {
-        // Remove any existing hand tracking
-        // if let existing = handTrackedEntity {
-        //     existing.removeFromParent()
-        // }
-        
-        // Create fresh hand anchor
         let handAnchor = AnchorEntity(.hand(.left, location: .aboveHand))
         handTrackedEntity = handAnchor
+        content.add(handAnchor)
         
         content.add(appModel.handTracking.setupContentEntity())
-        content.add(handAnchor)
         
         if let attachmentEntity = attachments.entity(for: "HopeMeter") {
             attachmentEntity.components[BillboardComponent.self] = BillboardComponent()

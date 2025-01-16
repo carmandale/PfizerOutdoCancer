@@ -52,7 +52,7 @@ final class AttackCancerViewModel {
     var totalHits: Int = 0
     
     // MARK: - Hope Meter
-    let hopeMeterDuration: TimeInterval = 60
+    let hopeMeterDuration: TimeInterval = 10
     var hopeMeterTimeLeft: TimeInterval
     var isHopeMeterRunning = false
     
@@ -129,10 +129,10 @@ final class AttackCancerViewModel {
         // Stop any running timers/systems
         appModel.stopHopeMeter()
         
-        // Stop hand tracking session
-        Task {
-            await handTracking.stopSession()
-        }
+        // // Stop hand tracking session
+        // Task {
+        //     await handTracking.stopSession()
+        // }
         
         // Clear collision subscriptions
         subscription?.cancel()

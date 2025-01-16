@@ -33,6 +33,15 @@ enum AppPhase: String, CaseIterable, Codable, Sendable, Equatable {
         return self != .loading && self != .error && self != .building
     }
     
+    var needsHandTracking: Bool {
+        switch self {
+        case .playing:
+            return true
+        case .loading, .intro, .lab, .building, .completed, .outro, .error:
+            return false
+        }
+    }
+    
     var shouldKeepPreviousSpace: Bool {
         if self == .completed { return true }
         return false
@@ -171,6 +180,7 @@ final class AppModel {
     
     // MARK: - Initialization
     init() {
+        print("📱 AppModel created with ARKitSession ID: \(arkitSessionId)")
         // self.adcDataModel = ADCDataModel()
         self.handTracking = HandTrackingViewModel()
         self.gameState = AttackCancerViewModel()
@@ -179,6 +189,7 @@ final class AppModel {
     }
     
     // MARK: - Phase Management
+    @MainActor
     func transitionToPhase(_ newPhase: AppPhase, adcDataModel: ADCDataModel? = nil) async {
         guard !isTransitioning else { 
             print("⚠️ Skipping transition - already in transition")
@@ -186,36 +197,128 @@ final class AppModel {
         }
         
         isTransitioning = true
-        print("Transitioning from \(currentPhase) to \(newPhase)")
         
-        let oldPhase = currentPhase
-        
-        // Validate transition
-        if oldPhase == .completed && newPhase == .playing {
-            print("⚠️ Invalid transition from completed to playing")
-            isTransitioning = false
-            return
-        }
-        
-        // Clean up if leaving a game phase
-        if oldPhase == .completed {
-            // First cleanup hand tracking
-            // await handTracking.cleanup()
-            // Then tear down game
-            gameState.tearDownGame()
-            
-            // Add extra delay between phases
-            try? await Task.sleep(for: .milliseconds(500))
-        }
-        
-        // If transitioning to playing phase, set up ADC template
-        if newPhase == .playing {
+        // Handle setup if needed
+        if newPhase == .playing, let adcDataModel = adcDataModel {
             if let adcEntity = await assetLoadingManager.instantiateEntity("adc") {
-                gameState.setADCTemplate(adcEntity, dataModel: adcDataModel!)
+                gameState.setADCTemplate(adcEntity, dataModel: adcDataModel)
             }
         }
         
         currentPhase = newPhase
         isTransitioning = false
+    }
+    
+    let trackingManager = TrackingSessionManager()
+    
+    // Initialize tracking when needed
+    @MainActor
+    func initializeTracking(content: RealityViewContent) async throws {
+        try await trackingManager.initialize(content: content)
+    }
+    
+    // Track if app is active
+    var isActive: Bool = true
+    
+    @MainActor
+    func handleScenePhaseChange(_ newPhase: ScenePhase) async {
+        switch newPhase {
+        case .background, .inactive:
+            isActive = false
+            if immersiveSpaceState == .open {
+                immersiveSpaceState = .inTransition
+                currentPhase = .loading
+            }
+            // await handTracking.stopSession()
+            
+        case .active:
+            isActive = true
+            // Show navigation view when returning to foreground
+            if !isDebugWindowOpen {
+                isDebugWindowOpen = true
+                // Note: Actual window opening happens in PfizerOutdoCancerApp 
+                // through window binding
+            }
+            
+        @unknown default:
+            break
+        }
+    }
+    
+    // ARKit Session Management
+    let arkitSessionId = UUID()
+    let arkitSession = ARKitSession()
+    var worldTrackingProvider = WorldTrackingProvider()
+    var handTrackingProvider = HandTrackingProvider()
+    
+    @MainActor
+    func runARKitSession() async throws {
+        let providers: [any DataProvider] = currentPhase.needsHandTracking ? 
+            [worldTrackingProvider, handTrackingProvider] :
+            [worldTrackingProvider]
+        
+        // Run each provider separately
+        for provider in providers {
+            switch provider.state {
+            case .running:
+                print("⚠️ Provider \(provider) already running, skipping")
+                continue
+            case .stopped:
+                print("⚠️ Provider \(provider) is stopped, creating new instance")
+                // Create new provider instance
+                if provider is WorldTrackingProvider {
+                    worldTrackingProvider = WorldTrackingProvider()
+                    try await arkitSession.run([worldTrackingProvider])
+                } else if provider is HandTrackingProvider {
+                    handTrackingProvider = HandTrackingProvider()
+                    try await arkitSession.run([handTrackingProvider])
+                }
+            default:
+                try await arkitSession.run([provider])
+            }
+            print("✅ Started provider: \(provider)")
+        }
+    }
+    
+    // func stopARKitSession() {
+    //     arkitSession.stop()
+    //     print("🛑 ARKit session stopped")
+    // }
+    
+    // Monitor session state
+    var providersStoppedWithError = false
+    
+    func monitorSessionEvents() async {
+        for await event in arkitSession.events {
+            switch event {
+            case .dataProviderStateChanged(let provider, let newState, let error):
+                print("🔄 Provider \(provider) state changed to: \(newState)")
+                switch newState {
+                case .initialized:
+                    print("ℹ️ Provider initialized")
+                case .running:
+                    print("✅ Provider running")
+                case .paused:
+                    print("⏸️ Provider paused")
+                    if immersiveSpaceState == .open {
+                        providersStoppedWithError = true
+                    }
+                case .stopped:
+                    print("⚠️ Provider \(provider) stopped - Error: \(String(describing: error))")
+                    print("📍 Stack trace:")
+                    Thread.callStackSymbols.forEach { print($0) }
+                    if let error {
+                        print("❌ Provider error: \(error)")
+                        providersStoppedWithError = true
+                    } else {
+                        print("⚠️ Provider stopped without error")
+                    }
+                @unknown default:
+                    break
+                }
+            default:
+                break
+            }
+        }
     }
 }

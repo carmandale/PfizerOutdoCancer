@@ -1,0 +1,133 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 2.0 (448.0.16.0.3)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    def "antibodyProtein_complex_base" (
+        active = true
+        prepend references = @antibodyProtein_complex_base.usdc@
+    )
+    {
+        float3 xformOp:scale = (1, 1, 1)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "ADC_complex_001"
+        {
+            over "linker02_offset"
+            {
+                over "linker02_xform"
+                {
+                    def "linker" (
+                        active = true
+                        prepend references = @linker.usdc@
+                    )
+                    {
+                        float3 xformOp:scale = (0.9999999, 1.0000001, 0.99999976)
+                        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                    }
+                }
+
+                over "payload02_xform"
+                {
+                    def "payload" (
+                        active = true
+                        prepend references = @payload.usda@
+                    )
+                    {
+                        float3 xformOp:scale = (0.9999999, 1.0000001, 0.99999976)
+                        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                    }
+                }
+            }
+
+            over "linker03_offset"
+            {
+                over "linker03_xform"
+                {
+                    def "linker" (
+                        active = true
+                        prepend references = @linker.usdc@
+                    )
+                    {
+                        float3 xformOp:scale = (0.99999994, 0.99999994, 0.99999994)
+                        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                    }
+                }
+
+                over "payload03_xform"
+                {
+                    def "payload" (
+                        active = true
+                        prepend references = @payload.usda@
+                    )
+                    {
+                        float3 xformOp:scale = (0.99999994, 0.99999994, 0.9999999)
+                        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                    }
+                }
+            }
+
+            over "linker01_offset"
+            {
+                over "linker01_xform"
+                {
+                    def "linker" (
+                        active = true
+                        prepend references = @linker.usdc@
+                    )
+                    {
+                        float3 xformOp:scale = (0.99999994, 1, 1)
+                        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                    }
+                }
+
+                over "payload01_xform"
+                {
+                    def "payload" (
+                        active = true
+                        prepend references = @payload.usda@
+                    )
+                    {
+                        float3 xformOp:scale = (0.9999999, 0.9999999, 0.99999994)
+                        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                    }
+                }
+            }
+
+            over "linker04_offset"
+            {
+                over "linker04_xform"
+                {
+                    def "linker" (
+                        active = true
+                        prepend references = @linker.usdc@
+                    )
+                    {
+                        float3 xformOp:scale = (1, 1, 0.99999994)
+                        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                    }
+                }
+
+                over "payload04_xform"
+                {
+                    def "payload" (
+                        active = true
+                        prepend references = @payload.usda@
+                    )
+                    {
+                        float3 xformOp:scale = (1, 1, 0.99999994)
+                        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                    }
+                }
+            }
+        }
+    }
+}
+

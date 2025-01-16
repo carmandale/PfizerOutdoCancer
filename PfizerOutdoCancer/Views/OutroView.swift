@@ -23,31 +23,23 @@ struct OutroView: View {
     let immersiveSceneRoot: Entity = Entity()
     
     /// Head position tracker for positioning entities
-    @State private var headTracker = HeadPositionTracker()
+
     @State private var mainEntity: Entity?
     
     // Timer for auto-transition
     @State private var transitionTimer: Timer?
-    @State private var tintIntensity: Double = 0.08
+    @State private var tintIntensity: Double = 0.02
     
     var surroundingsEffect: SurroundingsEffect? {
         let tintColor = Color(red: tintIntensity, green: tintIntensity, blue: tintIntensity)
         return SurroundingsEffect.colorMultiply(tintColor)
     }
     
-    private func positionMainEntity() {
-        headTracker.positionEntityRelativeToUser(mainEntity, offset: [0, -1.5, -1.0])
-    }
-    
     var body: some View {
         RealityView { content in
             // Capture content reference
             let contentRef = content
-            
-            Task {
-                do {
-                    try await headTracker.ensureInitialized()
-                    print("✅ Head tracking initialized")
+
                     
                     if let outroEnvironmentEntity = await appModel.assetLoadingManager.instantiateEntity("outro_environment") {
                         immersiveSceneRoot.addChild(outroEnvironmentEntity)
@@ -56,16 +48,18 @@ struct OutroView: View {
                     // Create root entity and store reference
                     let root = Entity()
                     self.mainEntity = root
+                    
+                    // Add PositioningComponent with desired offsets
+                    root.components.set(PositioningComponent(
+                        offsetX: 0,
+                        offsetY: -1.5,  // Same offset they were using
+                        offsetZ: -1.0   // Same offset they were using
+                    ))
+                    
                     root.addChild(immersiveSceneRoot)
                     contentRef.add(root)
-                    
-                    // Position after everything is ready
-                    print("🎯 Positioning main entity")
-                    positionMainEntity()
-                } catch {
-                    print("❌ Error initializing head tracking: \(error)")
-                }
-            }
+
+            
         }
         .preferredSurroundingsEffect(surroundingsEffect)
         .onAppear {
@@ -79,12 +73,18 @@ struct OutroView: View {
             
             // Add tint animation
             withAnimation(.linear(duration: 30.0)) {
-                tintIntensity = 0.8
+                tintIntensity = 0.02
             }
         }
         .onDisappear {
             transitionTimer?.invalidate()
             transitionTimer = nil
+        }
+        .task {
+            await appModel.monitorSessionEvents()
+        }
+        .task {
+            try? await appModel.runARKitSession()
         }
     }
 }

@@ -16,9 +16,6 @@ struct ADCOptimizedImmersive: View {
     // let arSession = ARKitSession()
     // let worldTracking = WorldTrackingProvider()
 
-    @State private var headTracker = HeadPositionTracker()
-
-
     @Environment(AppModel.self) var appModel
     @Environment(ADCDataModel.self) var dataModel
     
@@ -78,16 +75,16 @@ struct ADCOptimizedImmersive: View {
     
     @State var originalAntibodyMaterial: ShaderGraphMaterial?
 
-    private func positionMainEntity() {
-        headTracker.positionEntityRelativeToUser(mainEntity, offset: [0.125, 0, -1.0])
-    }
+    // private func positionMainEntity() {
+    //     headTracker.positionEntityRelativeToUser(mainEntity, offset: [0.125, 0, -1.0])
+    // }
     
     var body: some View {
         RealityView { content, attachments in
         // start the arkit session
-            Task {
-                try? await headTracker.ensureInitialized()
-            }
+            // Task {
+            //     try? await headTracker.ensureInitialized()
+            // }
             reset()
             
             // Load outline material first
@@ -104,6 +101,12 @@ struct ADCOptimizedImmersive: View {
             
             let masterEntity = Entity()
             self.mainEntity = masterEntity
+            // Add PositioningComponent with desired offsets
+            masterEntity.components.set(PositioningComponent(
+                offsetX: 0.125,
+                offsetY: 0,
+                offsetZ: -0.5
+            ))
             self.mainEntity?.name = "MainEntity"
             content.add(masterEntity)
             
@@ -142,7 +145,7 @@ struct ADCOptimizedImmersive: View {
             dataModel.adcBuildStep = 0
 
             /// Head positioning
-            positionMainEntity()
+            // positionMainEntity()
 
             
         } update: { content, attachments in
@@ -156,6 +159,12 @@ struct ADCOptimizedImmersive: View {
         .onAppear {
             dismissWindow(id: AppModel.debugNavigationWindowId)
         }
+        .task {
+            await appModel.monitorSessionEvents()
+        }
+        .task {
+            try? await appModel.runARKitSession()
+        } 
         .onChange(of: dataModel.adcBuildStep) { oldValue, newValue in
             Task { @MainActor in
                 // Log color summary at each step
