@@ -1,0 +1,170 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 2.0 (448.60.4)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    reorder nameChildren = ["Lab_VO_3_wav", "Lab_VO_3_2_wav", "Lab_VO_2_wav", "Lab_VO_1_wav", "BloodStream_VO_1_wav", "LabEnvironment_clean", "VO_1", "Lab_VO", "VO_2"]
+    def RealityKitAudioFile "Lab_VO_3_wav"
+    {
+        uniform asset file = @Audio/VO/Lab_VO_3.wav@
+        uniform bool shouldLoop = 0
+    }
+
+    def RealityKitAudioFile "Lab_VO_2_wav"
+    {
+        uniform asset file = @Audio/VO/Lab_VO_2.wav@
+        uniform bool shouldLoop = 0
+    }
+
+    def RealityKitAudioFile "Lab_VO_1_wav"
+    {
+        uniform asset file = @Audio/VO/Lab_VO_1.wav@
+        uniform bool shouldLoop = 0
+    }
+
+    def Xform "VO_1" (
+        active = true
+        customData = {
+            float3 rotationEulerHint = (0, 3.1415927, 0)
+        }
+    )
+    {
+        quatf xformOp:orient = (-4.371139e-8, 0, 1, 0)
+        float3 xformOp:translate = (-1, 1.4, -1)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "AudioLibrary"
+        {
+            uniform token info:id = "RealityKit.AudioLibrary"
+
+            def RealityKitDict "resources"
+            {
+                string[] keys = ["Lab_VO_1_wav"]
+                rel values = </Root/Lab_VO_1_wav>
+            }
+        }
+
+        def RealityKitComponent "SpatialAudio"
+        {
+            float directivityFocus = 1
+            uniform token info:id = "RealityKit.SpatialAudio"
+            float reverbLevel = -5.824684
+        }
+
+        def RealityKitComponent "Billboard"
+        {
+            float blendFactor = 1
+            uniform token info:id = "RealityKit.Billboard"
+        }
+    }
+
+    def RealityKitTimeline "Lab_VO"
+    {
+        def RealityKitTrack "Track"
+        {
+            def RealityKitAction "Play_Audio"
+            {
+                string actionKind = "audio"
+                string audioResourceName = "Lab_VO_1_wav"
+                bool controlPlayback = 1
+                double duration = 11.5
+                uniform token info:id = "62F00E0F-5A07-49E8-A878-2752F6B075F6"
+                double startTime = 0.19057299123120974
+                rel target = </Root/VO_1>
+
+                def RealityKitStruct "handoffType"
+                {
+                }
+            }
+
+            def RealityKitAction "Play_Audio2"
+            {
+                string actionKind = "audio"
+                string audioResourceName = "Lab_VO_2_wav"
+                bool controlPlayback = 1
+                double duration = 8.2
+                uniform token info:id = "BED53400-6967-4121-9A68-0423A10BF756"
+                double startTime = 15.642195592049701
+                rel target = </Root/VO_2>
+
+                def RealityKitStruct "handoffType"
+                {
+                }
+            }
+        }
+    }
+
+    def Xform "VO_2" (
+        active = true
+        customData = {
+            float3 rotationEulerHint = (0, 3.1415927, 0)
+        }
+    )
+    {
+        quatf xformOp:orient = (-4.371139e-8, 0, 1, 0)
+        float3 xformOp:translate = (0.445, 1.5, -0.5)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "AudioLibrary"
+        {
+            uniform token info:id = "RealityKit.AudioLibrary"
+
+            def RealityKitDict "resources"
+            {
+                string[] keys = ["Lab_VO_2_wav"]
+                rel values = </Root/Lab_VO_2_wav>
+            }
+        }
+
+        def RealityKitComponent "SpatialAudio"
+        {
+            float directivityFocus = 1
+            uniform token info:id = "RealityKit.SpatialAudio"
+            float reverbLevel = -9.9985895
+        }
+
+        def RealityKitComponent "Billboard"
+        {
+            float blendFactor = 1
+            uniform token info:id = "RealityKit.Billboard"
+        }
+    }
+
+    def RealityKitComponent "RCP_BehaviorsContainer"
+    {
+        rel behaviors = </Root/OnAddedToScene>
+        uniform token info:id = "RCP.BehaviorsContainer"
+    }
+
+    def Preliminary_Behavior "OnAddedToScene"
+    {
+        rel actions = </Root/OnAddedToScene/Action>
+        uniform bool exclusive
+        rel triggers = </Root/OnAddedToScene/Trigger>
+
+        def Preliminary_Trigger "Trigger"
+        {
+            rel affectedObjects = </Root>
+            token info:id = "SceneTransition"
+        }
+
+        def Preliminary_Action "Action"
+        {
+            rel affectedObjects = </Root>
+            rel animationLibraryKey = </Root/Lab_VO>
+            rel animationLibraryKeyOverrideKey = </Root/OnAddedToScene/Trigger>
+            token info:id = "PlayTimeline"
+            int loops = 0
+            int performCount = 1
+            token type = "serial"
+        }
+    }
+}
+

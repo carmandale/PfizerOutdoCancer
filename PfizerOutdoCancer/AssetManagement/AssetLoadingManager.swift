@@ -39,6 +39,7 @@ enum LoadingState {
 enum AssetError: Error {
     case resourceNotFound
     case criticalAssetsMissing(String)
+    case materialNotFound
     // Add other asset-related errors as needed
 }
 
@@ -93,8 +94,12 @@ final class AssetLoadingManager {
                loadTitleAssets(group: &group, taskCount: &totalAssets)
                loadLabEnvironmentAssets(group: &group, taskCount: &totalAssets)
                loadLabEquipmentAssets(group: &group, taskCount: &totalAssets)
-////               loadBuildADCEnvironmentAssets(group: &group, taskCount: &totalAssets)
+               loadLabVO(group: &group, taskCount: &totalAssets)
+//               loadBuildADCEnvironmentAssets(group: &group, taskCount: &totalAssets)
+               loadBuildADCAssets(group: &group, taskCount: &totalAssets)
+            //    loadBuildADCAudio(group: &group, taskCount: &totalAssets)
                loadAttackCancerEnvironmentAssets(group: &group, taskCount: &totalAssets)
+               loadAttackCancerGameStartVO(group: &group, taskCount: &totalAssets)
                loadCancerCellAssets(group: &group, taskCount: &totalAssets)
                loadTreatmentAssets(group: &group, taskCount: &totalAssets)
                loadOutroEnvironmentAssets(group: &group, taskCount: &totalAssets)

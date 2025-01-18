@@ -42,11 +42,9 @@ def Xform "Root"
                     float noiseScale = 5
                     float noiseStrength = 4
                     token opacityOverLife = "GradualFadeInOut"
-                    float particleAngle = 6.2831855
-                    float particleAngleVariation = 1.5707964
                     asset particleImage = @textures/pfizer-logo-color-small.png@
                     double particleLifeSpan = 10
-                    float particleSize = 0.1
+                    float particleSize = 0.2
                     float particleSizeVariation = 0.1
                     float radialGravityStrength = 0
                     float sizeMultiplierAtEndOfLifespanPower = 2
@@ -73,6 +71,15 @@ def Xform "Root"
                     asset particleImage = @../../ParticleEmitterPresetTextures/twinkle.exr@
                     float spreadingAngle = 0
                 }
+            }
+        }
+
+        def RealityKitComponent "Anchoring"
+        {
+            uniform token info:id = "RealityKit.Anchoring"
+
+            def RealityKitStruct "descriptor"
+            {
             }
         }
     }

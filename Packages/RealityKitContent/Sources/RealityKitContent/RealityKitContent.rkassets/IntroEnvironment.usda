@@ -605,8 +605,8 @@ def Xform "Root"
             references = </Root/materials/M_Spatial_p2>
         )
         {
-            asset inputs:Left = @Assets/Intro/textures/F03_WomanYoungMother_G_v04_L.png@
-            asset inputs:Right = @Assets/Intro/textures/F03_WomanYoungMother_G_v04_R.png@
+            asset inputs:Left = @Assets/Intro/textures/F2_001_Woman40s_v02_L.png@
+            asset inputs:Right = @Assets/Intro/textures/F2_001_Woman40s_v02_R.png@
         }
 
         def "M_Spatial_p1" (
@@ -3338,14 +3338,14 @@ def Xform "Root"
 
         def RealityKitAudioMixGroup "Piano"
         {
-            float gain = -10
+            float gain = -12.169633
             bool mute = 0
             float speed = 1
         }
 
         def RealityKitAudioMixGroup "Strings"
         {
-            float gain = -10
+            float gain = -11.971113
             bool mute = 0
             float speed = 1
         }
@@ -3359,7 +3359,7 @@ def Xform "Root"
 
         def RealityKitAudioMixGroup "SFX"
         {
-            float gain = -10
+            float gain = -11.820244
             bool mute = 0
             float speed = 1
         }

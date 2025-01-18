@@ -15,8 +15,10 @@ struct AttackCancerViewerButton: View {
     var body: some View {
         Button {
             Task {
-                openWindow(id: AppModel.mainWindowId)
-                appModel.isMainWindowOpen = true
+                if !appModel.isMainWindowOpen {
+                    openWindow(id: AppModel.mainWindowId)
+                    appModel.isMainWindowOpen = true
+                }
                 await appModel.transitionToPhase(.playing, adcDataModel: dataModel)
             }
         } label: {

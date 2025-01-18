@@ -25,6 +25,7 @@ struct OutroView: View {
     /// Head position tracker for positioning entities
 
     @State private var mainEntity: Entity?
+    @State private var outroRoot: Entity?
     
     // Timer for auto-transition
     @State private var transitionTimer: Timer?
@@ -48,6 +49,7 @@ struct OutroView: View {
                     // Create root entity and store reference
                     let root = Entity()
                     self.mainEntity = root
+                    self.outroRoot = root
                     
                     // Add PositioningComponent with desired offsets
                     root.components.set(PositioningComponent(
@@ -63,7 +65,7 @@ struct OutroView: View {
         }
         .preferredSurroundingsEffect(surroundingsEffect)
         .onAppear {
-            transitionTimer = Timer.scheduledTimer(withTimeInterval: 93, repeats: false) { _ in
+            transitionTimer = Timer.scheduledTimer(withTimeInterval: 42, repeats: false) { _ in
                 Task { @MainActor in
                     openWindow(id: AppModel.debugNavigationWindowId)
                     appModel.isDebugWindowOpen = true
@@ -77,14 +79,18 @@ struct OutroView: View {
             }
         }
         .onDisappear {
+            outroRoot?.removeFromParent()
+            outroRoot = nil
+            
+            // Clean up timer
             transitionTimer?.invalidate()
             transitionTimer = nil
         }
         .task {
-            await appModel.monitorSessionEvents()
+            await appModel.trackingManager.processWorldTrackingUpdates()
         }
         .task {
-            try? await appModel.runARKitSession()
+            await appModel.trackingManager.monitorTrackingEvents()
         }
     }
 }

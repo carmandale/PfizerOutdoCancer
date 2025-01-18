@@ -29,11 +29,33 @@ struct PfizerOutdoCancerApp: App {
             ContentView()
                 .environment(appModel)
                 .environment(adcDataModel)
+                .onChange(of: scenePhase) { _, newPhase in
+                    Task {
+                        switch newPhase {
+                        case .background:
+                            // Save state if needed
+                            if appModel.immersiveSpaceState == .open {
+                                await dismissImmersiveSpace()
+                            }
+                            appModel.immersiveSpaceState = .closed
+                            
+                        case .active:
+                            // If we're coming back from background, show debug navigation
+//                            openWindow(id: AppModel.debugNavigationWindowId)
+//                            appModel.isDebugWindowOpen = true
+                            // Reset to a known good state
+                            await appModel.transitionToPhase(.ready)
+                            
+                        default:
+                            break
+                        }
+                    }
+                }
         }
         .defaultSize(width: 800, height: 800)
         .windowStyle(.plain)
+        .persistentSystemOverlays(appModel.currentPhase == .loading || appModel.currentPhase == .ready || appModel.currentPhase == .building ? .visible : .hidden)
         .windowResizability(.contentSize)
-        .persistentSystemOverlays(.hidden)
         
         WindowGroup(id: AppModel.libraryWindowId) {
             if appModel.currentPhase == .lab {
@@ -60,21 +82,22 @@ struct PfizerOutdoCancerApp: App {
         .defaultWindowPlacement { _, context in
             return WindowPlacement(.utilityPanel)
         }
-        .onChange(of: appModel.isDebugWindowOpen) { wasOpen, isDebugWindowOpen in
-            if isDebugWindowOpen {
-                openWindow(id: AppModel.debugNavigationWindowId)
-            } else {
-                dismissWindow(id: AppModel.debugNavigationWindowId)
-            }
-        }
+//        .onChange(of: appModel.isDebugWindowOpen) { wasOpen, isDebugWindowOpen in
+//            print("🪟 Debug window state changed: \(wasOpen) -> \(isDebugWindowOpen)")
+//            if isDebugWindowOpen {
+//                openWindow(id: AppModel.debugNavigationWindowId)
+//            } else {
+//                dismissWindow(id: AppModel.debugNavigationWindowId)
+//            }
+//        }
 
-        WindowGroup(id: AppModel.gameCompletedWindowId) {
-            CompletedView()
-                .environment(appModel)
-                .environment(adcDataModel)
-        }
-        .windowStyle(.plain)
-        .windowResizability(.contentSize)
+//        WindowGroup(id: AppModel.gameCompletedWindowId) {
+//            CompletedView()
+//                .environment(appModel)
+//                .environment(adcDataModel)
+//        }
+//        .windowStyle(.plain)
+//        .windowResizability(.contentSize)
 
 
         .onChange(of: appModel.currentPhase) { oldPhase, newPhase in
@@ -83,6 +106,7 @@ struct PfizerOutdoCancerApp: App {
                 dismissWindow(id: AppModel.libraryWindowId)
             }
         }
+        
         
         
         
@@ -164,8 +188,9 @@ struct PfizerOutdoCancerApp: App {
                 
                 Task {
                     if oldPhase.needsImmersiveSpace && !newPhase.shouldKeepPreviousSpace {
-                        await dismissImmersiveSpace()
-                        // appModel.stopARKitSession()  // Stop session when dismissing space
+                        if appModel.immersiveSpaceState == .open {
+                            await dismissImmersiveSpace()
+                        }
                     }
                     
                     await handleWindowsForPhase(newPhase)
@@ -245,12 +270,14 @@ struct PfizerOutdoCancerApp: App {
     @MainActor
     private func handleWindowsForPhase(_ phase: AppPhase) async {
         print("🎯 Managing windows for phase: \(phase)")
+        print("📊 Before state update - Debug window open: \(appModel.isDebugWindowOpen)")
         
+        // First, update model state
         switch phase {
         case .loading:
             // Make sure loading window is open
             if !appModel.isLoadingWindowOpen {
-                appModel.isLoadingWindowOpen = true
+            appModel.isLoadingWindowOpen = true
             }
             
         case .intro:
@@ -261,7 +288,7 @@ struct PfizerOutdoCancerApp: App {
             }
             if !appModel.isDebugWindowOpen {
                 openWindow(id: AppModel.debugNavigationWindowId)
-                appModel.isDebugWindowOpen = true
+            appModel.isDebugWindowOpen = true
             }
         case .playing:
             // Explicitly dismiss debug window first
@@ -272,32 +299,33 @@ struct PfizerOutdoCancerApp: App {
             // Then handle other windows
             if appModel.isLibraryWindowOpen {
                 dismissWindow(id: AppModel.libraryWindowId)
-                appModel.isLibraryWindowOpen = false
+            appModel.isLibraryWindowOpen = false
             }
             // No need for default case handling
             return  // Add explicit return to prevent falling through to default
-        
+            
         case .completed:
             if appModel.isLibraryWindowOpen {
                 dismissWindow(id: AppModel.libraryWindowId)
-                appModel.isLibraryWindowOpen = false
+            appModel.isLibraryWindowOpen = false
             }
             if !appModel.isDebugWindowOpen {
                 openWindow(id: AppModel.debugNavigationWindowId)
                 appModel.isDebugWindowOpen = true
             }
-            openWindow(id: AppModel.gameCompletedWindowId)
+            openWindow(id: AppModel.mainWindowId)
             
         case .lab:
             if !appModel.isLibraryWindowOpen {
                 openWindow(id: AppModel.libraryWindowId)
-                appModel.isLibraryWindowOpen = true
+            appModel.isLibraryWindowOpen = true
             }
             if !appModel.isDebugWindowOpen {
                 openWindow(id: AppModel.debugNavigationWindowId)
                 appModel.isDebugWindowOpen = true
             }
         case .building:
+            // Close library and debug windows if open
             if appModel.isLibraryWindowOpen {
                 print("closing library window")
                 dismissWindow(id: AppModel.libraryWindowId)
@@ -308,17 +336,18 @@ struct PfizerOutdoCancerApp: App {
                 dismissWindow(id: AppModel.debugNavigationWindowId)
                 appModel.isDebugWindowOpen = false
             }
+            // Don't open main window here - it's handled by ADCBuilderViewerButton
         default:
-            if appModel.isLibraryWindowOpen {
-                dismissWindow(id: AppModel.libraryWindowId)
+        if appModel.isLibraryWindowOpen {
+            dismissWindow(id: AppModel.libraryWindowId)
                 appModel.isLibraryWindowOpen = false
             }
         }
         
         // Always dismiss the completed window if not in completed phase
-        if phase != .completed {
-            dismissWindow(id: AppModel.gameCompletedWindowId)
-        }
+//        if phase != .completed {
+//            dismissWindow(id: AppModel.gameCompletedWindowId)
+//        }
     }
 
 }

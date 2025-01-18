@@ -6,18 +6,17 @@ struct NavigationView: View {
     @Environment(ADCDataModel.self) private var dataModel
     @Environment(\.openWindow) private var openWindow
     
-    private let buttonTitles = ["Intro", "Lab", "Building", "Attack"]
+    private let buttonTitles = ["Intro", "Lab", "Building", "Attack", "Outro"]
     
     var body: some View {
         HStack(spacing: 16) {
-            ForEach(buttonTitles, id: \.self) { title in
+            ForEach(buttonTitles.filter { phaseFor($0) != appModel.currentPhase }, id: \.self) { title in
                 NavigationButton(title: title) {
                     await handleNavigation(for: title)
                 }
                 .frame(width: 150)
                 .glassBackgroundEffect()
             }
-            
         }
         .padding(20)
         .glassBackgroundEffect()
@@ -42,6 +41,7 @@ struct NavigationView: View {
         case "Lab": return .lab
         case "Building": return .building
         case "Attack": return .playing
+        case "Outro": return .outro
         default: return .intro
         }
     }

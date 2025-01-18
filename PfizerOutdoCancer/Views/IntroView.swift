@@ -9,9 +9,6 @@ import SwiftUI
 import RealityKit
 import RealityKitContent
 
-//extension Notification.Name {
-//    static let changeToLabNotification = Notification.Name("ChangeToLab")
-//}
 
 /// A RealityView that creates an immersive lab environment with spatial audio and IBL lighting
 struct IntroView: View {
@@ -30,6 +27,7 @@ struct IntroView: View {
     // Timer management
     @State private var transitionTimer: Timer?
     @State private var portalFadeTimer: Timer?
+    @State private var portalScaleTimer: Timer?
     @State private var titleTextTimer: Timer?
     
     // Animation states
@@ -45,17 +43,14 @@ struct IntroView: View {
     //    @State private var tunnelMapAmount: Float = 0.0
     let start = Date()
     
+    let portalStart: Double = 103.0
+    
     var surroundingsEffect: SurroundingsEffect? {
         let tintColor = Color(red: tintIntensity, green: tintIntensity, blue: tintIntensity)
         return SurroundingsEffect.colorMultiply(tintColor)
     }
-    
-    // @State private var headTracker = HeadPositionTracker()
-    @State private var mainEntity: Entity? = nil
 
-    // private func positionMainEntity() {
-    //     headTracker.positionEntityRelativeToUser(mainEntity, offset: [0, -1.5, -1.0])
-    // }
+    @State private var mainEntity: Entity? = nil
     
     var body: some View {
         VStack {
@@ -66,6 +61,25 @@ struct IntroView: View {
                     
                     Task {
                         do {
+                            // Create a ModelEntity, for example a box
+//                            let box = ModelEntity(
+//                                mesh: .generateBox(size: 0.1),
+//                                materials: [SimpleMaterial(color: .blue, roughness: 0.5, isMetallic: false)]
+//                            )
+//                            
+//                            // Position the box so we can see it
+//                            box.position = [0, 1, -1]
+//
+//                            // Add the box to the scene
+//                            contentRef.add(box)
+//
+//                            // Set the initial transform scale (optional, here it's [1, 1, 1])
+//                            box.transform.scale = [1, 1, 1]
+//
+//                            box.fadeOpacity(from: 0, to: 1, duration: 2.0)
+//                            // box.animateZPosition(to: 0.5, duration: 10.0)
+//                            box.animateZPositionClosure(to: 0.5, duration: 10.0)
+
                             // Create lab root
                             let root = Entity()
                             self.mainEntity = root
@@ -77,9 +91,7 @@ struct IntroView: View {
                                 offsetZ: -1.0   // Same offset they were using
                             ))
                             contentRef.add(root)
-                            // try await headTracker.ensureInitialized()
-                            // print("✅ Head tracking initialized")
-                            
+
                             // Then do the rest of the setup
                             guard let introEnvironmentEntity = await appModel.assetLoadingManager.instantiateEntity("intro_environment") else {
                                 fatalError()
@@ -89,7 +101,10 @@ struct IntroView: View {
                             if let portalWarp = introEnvironmentEntity.findEntity(named: "sh0100_v01_portalWarp2") {
                                 print("🎯 Found portal warp entity")
                                 portalWarp.opacity = 0.0  // Set initial opacity
+                                await portalWarp.fadeOpacity(to: 1, duration: 10.0, delay: 24.0)
                             }
+                            
+                            
 
                             // Create portal and add to immersiveSceneRoot
                             let portal = await PortalManager.createPortal(
@@ -102,6 +117,11 @@ struct IntroView: View {
                             // Set initial opacity to 0
                             portal.opacity = 0.0
                             
+                            // Set initial x-scale to 0
+                            var transform = portal.transform
+                            transform.scale.x = 1.0
+                            portal.transform = transform
+                            
                             // Store reference to portal 
                             self.portal = portal
                             
@@ -113,6 +133,7 @@ struct IntroView: View {
                                     titleEntity.position = [0, -0.25, 0.1]  // Position below logo
                                     titleEntity.scale *= 5.0
                                     titleRoot.addChild(titleEntity)
+//                                    titleRoot.animateZPositionClosure(to: 1, duration: 20.0, delay: portalStart)
                                     print("📎 Added titleText to titleRoot")
                                 } else {
                                     print("❌ Failed to find titleRoot in portal")
@@ -139,23 +160,15 @@ struct IntroView: View {
                             
                             immersiveSceneRoot.addChild(portal)
                             immersiveSceneRoot.addChild(introEnvironmentEntity)
-                            
-                            
-                            
+
                             root.addChild(immersiveSceneRoot)
-                            
-                            // // Position after everything is ready and tracking is initialized
-                            // print("🎯 Positioning main entity")
-                            // positionMainEntity()
-                        } catch {
-                            print("❌ Error initializing head tracking: \(error)")
                         }
                     }
                 } update: { content, attachments in
                     // Find both cylinders for tunnel animation
                     guard let root = content.entities.first,
                           let tube = root.findEntity(named: "portalMesh") as? ModelEntity else {
-                        print("⚠️ Portal mesh not found yet")
+//                        print("⚠️ Portal mesh not found yet")
                         return
                     }
                     
@@ -164,23 +177,19 @@ struct IntroView: View {
                         fatalError()
                     }
 
+                    // Start portal warp fade at 24 seconds
                     let elapsed = context.date.timeIntervalSince(start)
                     let startDelay: Double = 24.0
                     let duration: Double = 8.0
                     
-                    // Start portal warp fade at 42 seconds
-                    if elapsed >= startDelay && elapsed <= (startDelay + 0.1) {  // Small window to trigger
-                        if let portalWarp = content.entities.first?.findEntity(named: "sh0100_v01_portalWarp2") {
-                            portalWarp.setOpacity(0.3, animated: true, duration: duration)
-                        }
-                    }
+
                     
                     // Only start tunnel animation after delay
                     if elapsed >= startDelay {
                         // Adjust elapsed time by removing the delay
                         let animationTime = elapsed - startDelay
                         // Normalize to 0-1, then multiply by 0.5 to get 0-0.5 range
-                        let normalizedTime = min(1.0, max(0.0, Float(animationTime / duration))) * 0.5
+                        let normalizedTime = min(1.0, max(0.0, Float(animationTime / duration))) * 0.6
                         
                         // Update material
                         try! material1.setParameter(name: "TunnelMapAmount", value: .float(normalizedTime))
@@ -208,12 +217,22 @@ struct IntroView: View {
                 }
 
                 // Portal fade-in (103s)
-                portalFadeTimer = Timer.scheduledTimer(withTimeInterval: 103, repeats: false) { _ in
-                    self.portal?.setOpacity(1.0, animated: true, duration: 5.0)
+//                await self.portal?.fadeOpacity(to: 1.0, duration: 10.0, delay: portalStart)
+
+                // Portal scale animation (103s + 7s)
+                if let portal = self.portal {
+                    if let portalPlane = portal.findEntity(named: "portalPlane") {
+                        // Set initial scale
+                        let transform = portalPlane.transform
+                        portalPlane.transform = transform
+                        
+                        // Start scale animation
+//                        portalPlane.animateXScale(from: 0, to: 1.0, duration: 15.0, delay: portalStart + 7.0)
+                    }
                 }
 
                 // Title text animation (110s)
-                titleTextTimer = Timer.scheduledTimer(withTimeInterval: 110, repeats: false) { _ in
+                titleTextTimer = Timer.scheduledTimer(withTimeInterval: portalStart + 7.0, repeats: false) { _ in
                     print("⏰ Timer fired - setting showTitleText to true")
                     withAnimation {
                         showTitleText = true
@@ -222,7 +241,7 @@ struct IntroView: View {
 
                 // Dim surroundings at 5 seconds
                 Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { _ in
-                    withAnimation(.easeInOut(duration: 15.0)) {
+                    withAnimation(.easeInOut(duration: 20.0)) {
                         shouldDimSurroundings = true
                     }
                 }
@@ -236,12 +255,6 @@ struct IntroView: View {
                 portalFadeTimer = nil
                 titleTextTimer = nil
             }
-        }
-        .task {
-            await appModel.monitorSessionEvents()
-        }
-        .task {
-            try? await appModel.runARKitSession()
         }
     }
 }

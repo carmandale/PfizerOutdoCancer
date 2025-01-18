@@ -44,7 +44,7 @@ extension AppModel {
                     // Update state and trigger phase transition
                     loadingState = .completed
                     print("loadingState: \(loadingState)")
-                    await transitionToPhase(.intro)
+                    await transitionToPhase(.ready)
                     
                 } catch {
                     print("Error loading assets: \(error)")

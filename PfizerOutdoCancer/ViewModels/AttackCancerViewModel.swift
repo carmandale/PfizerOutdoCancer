@@ -41,7 +41,7 @@ final class AttackCancerViewModel {
     
     // Dependencies
     var appModel: AppModel!
-    var handTracking: HandTrackingViewModel!
+    var handTracking: HandTrackingManager!
 //    var dataModel: ADCDataModel!
     
     // MARK: - Game Stats

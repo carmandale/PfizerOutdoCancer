@@ -73,7 +73,7 @@ struct ADCView: View {
                             switch appModel.immersiveSpaceState {
                                 case .open:
                                     appModel.immersiveSpaceState = .inTransition
-                                    openWindow(id: AppModel.builderWindowId)
+//                                    openWindow(id: AppModel.builderWindowId)
                                     
                                     await dismissImmersiveSpace()
                                     // Don't set immersiveSpaceState to .closed because there

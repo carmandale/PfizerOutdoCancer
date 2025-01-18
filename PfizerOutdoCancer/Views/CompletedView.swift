@@ -46,9 +46,10 @@ struct CompletedView: View {
                    Button(action: {
                        resetAndStartNew()
                        Task {
-                           dismissWindow(id: AppModel.gameCompletedWindowId)
-                           openWindow(id: AppModel.mainWindowId)
-                           appModel.isMainWindowOpen = true
+                           if !appModel.isMainWindowOpen {
+                               openWindow(id: AppModel.mainWindowId)
+                               appModel.isMainWindowOpen = true
+                           }
                            await appModel.transitionToPhase(.playing, adcDataModel: dataModel)
                        }
                    }) {
@@ -61,9 +62,10 @@ struct CompletedView: View {
                     Button(action: {
                         Task {
                             print("main window status: \(appModel.isMainWindowOpen)")
-                            dismissWindow(id: AppModel.gameCompletedWindowId)
-                            openWindow(id: AppModel.mainWindowId)
-                            appModel.isMainWindowOpen = true
+                            if !appModel.isMainWindowOpen {
+                                openWindow(id: AppModel.mainWindowId)
+                                appModel.isMainWindowOpen = true
+                            }
                             await appModel.transitionToPhase(.lab)
                         }
                     }) {
@@ -76,7 +78,7 @@ struct CompletedView: View {
                 
                 Button(action: {
                     Task {
-                        dismissWindow(id: AppModel.gameCompletedWindowId)
+                        dismissWindow(id: AppModel.mainWindowId)
                         await appModel.transitionToPhase(.outro)
                     }
                 }) {

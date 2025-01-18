@@ -21,6 +21,7 @@ extension AppModel {
 
 enum AppPhase: String, CaseIterable, Codable, Sendable, Equatable {
     case loading
+    case ready
     case intro
     case lab
     case building
@@ -30,14 +31,14 @@ enum AppPhase: String, CaseIterable, Codable, Sendable, Equatable {
     case error
     
     var needsImmersiveSpace: Bool {
-        return self != .loading && self != .error && self != .building
+        return self != .loading && self != .error && self != .building && self != .ready
     }
     
     var needsHandTracking: Bool {
         switch self {
-        case .playing:
+        case .intro, .lab, .building, .playing:
             return true
-        case .loading, .intro, .lab, .building, .completed, .outro, .error:
+        case .loading, .completed, .outro, .ready, .error:
             return false
         }
     }
@@ -54,15 +55,14 @@ enum AppPhase: String, CaseIterable, Codable, Sendable, Equatable {
         case .building: return AppModel.buildingSpaceId
         case .playing, .completed: return AppModel.attackSpaceId
         case .outro: return AppModel.outroSpaceId
-        case .loading, .error: return ""
+        case .loading, .ready, .error: return ""
         }
     }
     
     var windowId: String {
         switch self {
-        case .loading: return AppModel.mainWindowId
+        case .loading, .ready, .completed: return AppModel.mainWindowId 
         case .intro: return AppModel.introWindowId
-        case .completed: return AppModel.gameCompletedWindowId
         case .lab: return AppModel.libraryWindowId
         case .building: return AppModel.builderWindowId
         case .playing, .outro, .error: return ""
@@ -74,13 +74,13 @@ enum AppPhase: String, CaseIterable, Codable, Sendable, Equatable {
 @MainActor
 final class AppModel {
     // MARK: - Properties
+    let trackingManager = TrackingSessionManager()
+    
     /// Current phase of the app
     var currentPhase: AppPhase = .loading
     
-    // var adcDataModel: ADCDataModel
     var gameState: AttackCancerViewModel
-    var handTracking: HandTrackingViewModel
-    var isDebugWindowOpen = false
+    var isDebugWindowOpen = true
     var isLibraryWindowOpen = false
     var isIntroWindowOpen = false
     var isMainWindowOpen = false
@@ -115,15 +115,7 @@ final class AppModel {
         }
     }
 
-    var headTrackState: HeadTrackState = .headPosition
 
-    /// Track the state of the toggle.
-    /// Follow: Uses `queryDeviceAnchor` to follow the device's position.
-    /// HeadPosition: Uses `AnchorEntity` to launch at the head position in front of the wearer.
-    enum HeadTrackState: String, CaseIterable {
-        case follow
-        case headPosition = "head-position"
-    }
     
     // MARK: - Space Management
     @ObservationIgnored private var currentImmersiveSpace: String?
@@ -180,145 +172,45 @@ final class AppModel {
     
     // MARK: - Initialization
     init() {
-        print("📱 AppModel created with ARKitSession ID: \(arkitSessionId)")
-        // self.adcDataModel = ADCDataModel()
-        self.handTracking = HandTrackingViewModel()
         self.gameState = AttackCancerViewModel()
         self.gameState.appModel = self
-        self.gameState.handTracking = self.handTracking
+        self.gameState.handTracking = self.trackingManager.handTrackingManager
     }
     
     // MARK: - Phase Management
     @MainActor
     func transitionToPhase(_ newPhase: AppPhase, adcDataModel: ADCDataModel? = nil) async {
-        guard !isTransitioning else { 
-            print("⚠️ Skipping transition - already in transition")
-            return 
+        guard !isTransitioning else { return }
+        isTransitioning = true
+        defer { isTransitioning = false }
+        
+        // First stop tracking if we're in a phase that uses it
+        if currentPhase.needsHandTracking {
+            trackingManager.stopTracking()
         }
         
-        isTransitioning = true
+        // Set the new phase
+        currentPhase = newPhase
         
-        // Handle setup if needed
+        // Then start tracking if the new phase needs it
+        if newPhase.needsHandTracking {
+            // Add a small delay to ensure ARKit has time to clean up
+            try? await Task.sleep(for: .milliseconds(100))
+            try? await trackingManager.startTracking(needsHandTracking: newPhase.needsHandTracking)
+        }
+        
+        // Handle ADC setup for playing phase
         if newPhase == .playing, let adcDataModel = adcDataModel {
             if let adcEntity = await assetLoadingManager.instantiateEntity("adc") {
                 gameState.setADCTemplate(adcEntity, dataModel: adcDataModel)
             }
         }
-        
-        currentPhase = newPhase
-        isTransitioning = false
     }
     
-    let trackingManager = TrackingSessionManager()
+    // Keep all other existing methods...
     
-    // Initialize tracking when needed
-    @MainActor
-    func initializeTracking(content: RealityViewContent) async throws {
-        try await trackingManager.initialize(content: content)
-    }
-    
-    // Track if app is active
-    var isActive: Bool = true
-    
-    @MainActor
-    func handleScenePhaseChange(_ newPhase: ScenePhase) async {
-        switch newPhase {
-        case .background, .inactive:
-            isActive = false
-            if immersiveSpaceState == .open {
-                immersiveSpaceState = .inTransition
-                currentPhase = .loading
-            }
-            // await handTracking.stopSession()
-            
-        case .active:
-            isActive = true
-            // Show navigation view when returning to foreground
-            if !isDebugWindowOpen {
-                isDebugWindowOpen = true
-                // Note: Actual window opening happens in PfizerOutdoCancerApp 
-                // through window binding
-            }
-            
-        @unknown default:
-            break
-        }
-    }
-    
-    // ARKit Session Management
-    let arkitSessionId = UUID()
-    let arkitSession = ARKitSession()
-    var worldTrackingProvider = WorldTrackingProvider()
-    var handTrackingProvider = HandTrackingProvider()
-    
-    @MainActor
-    func runARKitSession() async throws {
-        let providers: [any DataProvider] = currentPhase.needsHandTracking ? 
-            [worldTrackingProvider, handTrackingProvider] :
-            [worldTrackingProvider]
-        
-        // Run each provider separately
-        for provider in providers {
-            switch provider.state {
-            case .running:
-                print("⚠️ Provider \(provider) already running, skipping")
-                continue
-            case .stopped:
-                print("⚠️ Provider \(provider) is stopped, creating new instance")
-                // Create new provider instance
-                if provider is WorldTrackingProvider {
-                    worldTrackingProvider = WorldTrackingProvider()
-                    try await arkitSession.run([worldTrackingProvider])
-                } else if provider is HandTrackingProvider {
-                    handTrackingProvider = HandTrackingProvider()
-                    try await arkitSession.run([handTrackingProvider])
-                }
-            default:
-                try await arkitSession.run([provider])
-            }
-            print("✅ Started provider: \(provider)")
-        }
-    }
-    
-    // func stopARKitSession() {
-    //     arkitSession.stop()
-    //     print("🛑 ARKit session stopped")
-    // }
-    
-    // Monitor session state
-    var providersStoppedWithError = false
-    
-    func monitorSessionEvents() async {
-        for await event in arkitSession.events {
-            switch event {
-            case .dataProviderStateChanged(let provider, let newState, let error):
-                print("🔄 Provider \(provider) state changed to: \(newState)")
-                switch newState {
-                case .initialized:
-                    print("ℹ️ Provider initialized")
-                case .running:
-                    print("✅ Provider running")
-                case .paused:
-                    print("⏸️ Provider paused")
-                    if immersiveSpaceState == .open {
-                        providersStoppedWithError = true
-                    }
-                case .stopped:
-                    print("⚠️ Provider \(provider) stopped - Error: \(String(describing: error))")
-                    print("📍 Stack trace:")
-                    Thread.callStackSymbols.forEach { print($0) }
-                    if let error {
-                        print("❌ Provider error: \(error)")
-                        providersStoppedWithError = true
-                    } else {
-                        print("⚠️ Provider stopped without error")
-                    }
-                @unknown default:
-                    break
-                }
-            default:
-                break
-            }
-        }
-    }
+    // Remove ARKit session management code that's moved to TrackingSessionManager:
+    // - runARKitSession()
+    // - monitorSessionEvents()
+    // - arkitSession and provider properties
 }

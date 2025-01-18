@@ -16,18 +16,19 @@ struct ADCBuilderViewerButton: View {
         Button {
             Task {
                 print("main window status: \(appModel.isMainWindowOpen)")
-                if !appModel.isMainWindowOpen {
-                    print("opening builder window")
-                    print("current phase: \(appModel.currentPhase)")
-                    print("opening main window")
-                    openWindow(id: AppModel.mainWindowId)
-                    appModel.isMainWindowOpen = true
-                }
+                // if !appModel.isMainWindowOpen {
+                //     print("opening builder window")
+                //     print("current phase: \(appModel.currentPhase)")
+                //     print("opening main window")
+                //     openWindow(id: AppModel.mainWindowId)
+                //     appModel.isMainWindowOpen = true
+                // } else {
+                //     print("main window already open")
+                // }
                 print("builder window status: \(appModel.isBuilderInstructionsOpen)")
                 print("setting builder window status to true")
-                appModel.isBuilderInstructionsOpen = true
-//                await dismissImmersiveSpace()
                 await appModel.transitionToPhase(.building)
+                appModel.isBuilderInstructionsOpen = true
             }
         } label: {
             Text("ADC Builder")
@@ -42,7 +43,7 @@ struct ADCBuilderViewerButton: View {
     }
 }
 
-#Preview {
-    ADCBuilderViewerButton()
-        .environment(AppModel())
-}
+//#Preview {
+//    ADCBuilderViewerButton()
+//        .environment(AppModel())
+//}

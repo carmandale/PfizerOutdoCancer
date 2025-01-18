@@ -2,7 +2,6 @@ import Foundation
 import RealityKit
 
 extension Entity {
-    
     /// The opacity value applied to the entity and its descendants.
     ///
     /// `OpacityComponent` is assigned to the entity if it doesn't already exist.
@@ -19,34 +18,53 @@ extension Entity {
         }
     }
     
-    /// Sets the opacity value applied to the entity and its descendants with optional animation.
+    /// Fades the entity's opacity to a target value with optional animation.
+    /// Returns after the animation completes, including any delay.
     ///
-    /// `OpacityComponent` is assigned to the entity if it doesn't already exist.
-    func setOpacity(_ opacity: Float, animated: Bool, duration: TimeInterval = 10.0, delay: TimeInterval = 0) {
-        guard animated else {
-            self.opacity = opacity
+    /// - Parameters:
+    ///   - targetOpacity: Target opacity value (0.0 to 1.0)
+    ///   - duration: Animation duration in seconds (default: 1.0)
+    ///   - delay: Optional delay before starting the animation (in seconds)
+    ///   - timing: Animation timing curve (default: .easeInOut)
+    ///   - waitForCompletion: If true, waits for the animation to complete before returning
+    func fadeOpacity(to targetOpacity: Float,
+                    duration: TimeInterval = 1.0,
+                    delay: TimeInterval = 0,
+                    timing: RealityKit.AnimationTimingFunction = .easeInOut,
+                    waitForCompletion: Bool = false) async {
+        // Handle delay first, even for immediate changes
+        if delay > 0 {
+            try? await Task.sleep(for: .seconds(delay))
+        }
+        
+        // For non-animated changes (duration = 0), set immediately
+        guard duration > 0 else {
+            self.opacity = targetOpacity
             return
         }
-
-        if !components.has(OpacityComponent.self) {
-            components[OpacityComponent.self] = OpacityComponent(opacity: 1)
-        }
-
-        let animation = FromToByAnimation(
-            name: "Entity/setOpacity",
-            to: opacity,
+        
+        // Build and play the animation
+        let startOpacity = self.opacity
+        let fadeAnimation = FromToByAnimation(
+            from: startOpacity,
+            to: targetOpacity,
             duration: duration,
-            timing: .linear,
-            isAdditive: false,
-            bindTarget: .opacity,
-            delay: delay
+            timing: timing,
+            bindTarget: .opacity
         )
         
         do {
-            let animationResource: AnimationResource = try .generate(with: animation)
+            let animationResource = try AnimationResource.generate(with: fadeAnimation)
             playAnimation(animationResource)
+            
+            // Optionally wait for the animation to complete
+            if waitForCompletion {
+                try? await Task.sleep(for: .seconds(duration))
+            }
         } catch {
-            assertionFailure("Could not generate animation: \(error.localizedDescription)")
+            print("⚠️ Could not generate opacity animation: \(error.localizedDescription)")
+            // Fall back to immediate change
+            self.opacity = targetOpacity
         }
     }
-} 
+}

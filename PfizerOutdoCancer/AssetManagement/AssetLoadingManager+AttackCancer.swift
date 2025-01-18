@@ -32,6 +32,21 @@ extension AssetLoadingManager {
         taskCount += 1
     }
     
+    internal func loadAttackCancerGameStartVO(group: inout ThrowingTaskGroup<LoadResult, Error>, taskCount: inout Int) {
+        group.addTask {
+            print("Starting to load Attack Cancer Game Start VO")
+            do {
+                let entity = try await Entity(named: "AttackCancerGameStart_VO", in: realityKitContentBundle)
+                print("Successfully loaded AttackCancerGameStart_VO")
+                return .success(entity: entity, key: "game_start_vo", category: .cancerCell)
+            } catch {
+                print("Failed to load AttackCancerGameStart_VO: \(error)")
+                return .failure(key: "game_start_vo", category: .cancerCell, error: error)
+            }
+        }
+        taskCount += 1
+    }
+    
     internal func loadCancerCellAssets(group: inout ThrowingTaskGroup<LoadResult, Error>, taskCount: inout Int) {
         group.addTask {
             print("Starting to load CancerCell-spawn")

@@ -9,7 +9,7 @@ reorder rootPrims = ["Root", "GridMaterial"]
 
 def Xform "Root"
 {
-    reorder nameChildren = ["BloodVesselAudio", "RCP_BehaviorsContainer", "OnAddedToScene", "bloodVessel_v004_clean", "SFX", "Colliders"]
+    reorder nameChildren = ["BloodVesselAudio", "RCP_BehaviorsContainer", "OnAddedToScene", "bloodVessel_v004_clean", "SFX", "Colliders", "VO"]
     rel material:binding = None (
         bindMaterialAs = "weakerThanDescendants"
     )

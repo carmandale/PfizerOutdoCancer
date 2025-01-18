@@ -65,7 +65,9 @@ extension ADCOptimizedImmersive {
                     os_log(.debug, "ITR..createLinkerGestureComponent(): Entity \(finishedEntity.name) is close enough to the target linker, dataModel.linkersWorkingIndex: \(dataModel.linkersWorkingIndex)")
                     dataModel.selectedADCLinker = dataModel.selectedLinkerType
                     dataModel.placedLinkerCount += 1
-                    bubblePopSound.toggle()
+                    Task { @MainActor in
+                        await playPopSound()
+                    }
                     
                     Task { @MainActor in
                         // Only apply color if one has been chosen
@@ -168,7 +170,10 @@ extension ADCOptimizedImmersive {
                 if dist < 0.2 {
                     os_log(.debug, "ITR..createPayloadGestureComponent(): Entity \(finishedEntity.name) is close enough to the target payload, dataModel.payloadsWorkingIndex: \(dataModel.payloadsWorkingIndex)")
                     dataModel.selectedADCPayload = dataModel.selectedPayloadType
-                    bubblePopSound.toggle()
+                    Task { @MainActor in
+                        await playPopSound()
+                    }
+                    dataModel.placedPayloadCount += 1
 
                     Task { @MainActor in
                         // Only apply color if one has been chosen
@@ -242,7 +247,6 @@ extension ADCOptimizedImmersive {
                         }
                         updateADC()
                     }
-                    dataModel.placedPayloadCount += 1
                 } else {
 //                    os_log(.debug, "ITR..createPayloadGestureComponent(): Entity \(finishedEntity.name) distance: \(dist)")
                 }

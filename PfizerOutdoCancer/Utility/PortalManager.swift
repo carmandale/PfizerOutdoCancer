@@ -42,6 +42,17 @@ final class PortalManager {
             mesh: .generatePlane(width: 2.0, height: 1.0, cornerRadius: 0.3),
             materials: [PortalMaterial()]
         )
+        portalPlane.name = "portalPlane"
+        
+        // Set initial x-scale to 0
+        var transform = portalPlane.transform
+        transform.scale.x = 0
+        portalPlane.transform = transform
+        
+        // Start scale animation
+        portalPlane.animateScale(duration: 5.0)
+        
+        print("🎯 Created portal plane with name: \(portalPlane.name) and scale: \(portalPlane.transform.scale)")
         
         if let logo = await appModel.assetLoadingManager.instantiateEntity("pfizer_logo") {
             logo.position.y += 0.25
@@ -81,5 +92,3 @@ final class PortalManager {
         return root
     }
 }
-
-

@@ -37,7 +37,7 @@ extension ADCOptimizedImmersive {
             
             // Keep audio setup
             if let resource = popAudioFileResource {
-                self.popAudioPlaybackController = antibody.prepareAudio(resource)
+                self.popAudioPlaybackController = popAudioEntity?.prepareAudio(resource)
             }
             
             // Store original material
@@ -59,6 +59,7 @@ extension ADCOptimizedImmersive {
         }
     }
     
+
     
     func prepareLinkerEntities() async {
         guard let antibodyRoot = antibodyRootEntity else { return }
@@ -152,7 +153,7 @@ extension ADCOptimizedImmersive {
             os_log(.error, "ITR..prepareTargetEntities(): ❌ Error, self.adcLinkers is empty. It should have content at this point.")
             return
         }
-        
+
         guard !adcPayloadsInner.isEmpty else {
             os_log(.error, "ITR..prepareTargetEntities(): ❌ Error, self.adcPayloadsInner is empty. It should have content at this point.")
             return
@@ -163,6 +164,10 @@ extension ADCOptimizedImmersive {
            let workingLinker = linker.findModelEntity(named: "linker"),
            let workingPayloadInner = payload.findModelEntity(named: "InnerSphere"),
            let workingPayloadOuter = payload.findModelEntity(named: "OuterSphere") {
+            
+            // Attach audio to target entities
+            attachPopSoundToTarget(linker)
+            attachPopSoundToTarget(payload)
             
             linkerEntity = linker
             antibodyRootEntity?.addChild(linker)

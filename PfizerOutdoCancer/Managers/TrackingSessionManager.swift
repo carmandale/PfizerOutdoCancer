@@ -1,52 +1,164 @@
-import SwiftUI
+import ARKit
 import RealityKit
+import SwiftUI
 
 @Observable
 @MainActor
 final class TrackingSessionManager {
-    private let session = SpatialTrackingSession()
-    private(set) var isInitialized = false
-    private var headAnchor: AnchorEntity?
-    private var markerEntity: ModelEntity?
+    // MARK: - Properties
+    let arkitSession = ARKitSession()
+    var worldTrackingProvider = WorldTrackingProvider()
+    var handTrackingProvider: HandTrackingProvider!
     
-    func initialize(content: RealityViewContent) async throws {
-        guard !isInitialized else { return }
-        
-        let configuration = SpatialTrackingSession.Configuration(
-            tracking: [.world]
-        )
-        
-        if let unavailableCapabilities = await session.run(configuration) {
-            print("Warning: Some tracking capabilities unavailable - \(unavailableCapabilities)")
-            throw TrackingError.capabilitiesUnavailable(unavailableCapabilities)
-        }
-        
-        headAnchor = AnchorEntity(.head)
-        headAnchor?.anchoring.trackingMode = .continuous
-        content.add(headAnchor!) // Add to scene
-        
-        // Store the marker reference
-        markerEntity = ModelEntity(mesh: .generateSphere(radius: 0.1))
-        markerEntity?.model?.materials = [SimpleMaterial(color: .red, isMetallic: false)]
-        headAnchor?.addChild(markerEntity!)
-        
-        isInitialized = true
-        print("✅ Spatial tracking session initialized with head anchor added to scene")
+    private(set) var providersStoppedWithError = false
+    private(set) var worldSensingAuthorizationStatus = ARKitSession.AuthorizationStatus.notDetermined
+    private var isTracking = false
+    
+    // Hand tracking state
+    private(set) var leftHandAnchor: HandAnchor?
+    private(set) var rightHandAnchor: HandAnchor?
+    var shouldProcessHandTracking: Bool = false
+    
+    // Add HandTrackingManager
+    let handTrackingManager: HandTrackingManager
+    
+    init() {
+        handTrackingManager = HandTrackingManager(trackingManager: nil)
+        handTrackingManager.configure(with: self)
     }
     
-    func getHeadPosition() -> SIMD3<Float>? {
-        let position = headAnchor?.position(relativeTo: nil)
-        let markerPosition = markerEntity?.position(relativeTo: nil)
-        print("📏 Head Position from anchor: \(String(describing: position))")
-        print("📏 Marker Position from anchor: \(String(describing: markerPosition))")
-        return position
+    // MARK: - Session Management
+    func startTracking(needsHandTracking: Bool = false) async throws {
+        // If already tracking with the same hand tracking state, do nothing
+        if isTracking && shouldProcessHandTracking == needsHandTracking {
+            return
+        }
+        
+        // Wait for previous session to fully stop
+        if isTracking {
+            stopTracking()
+            // Wait for the provider to enter stopped state via monitorTrackingEvents
+            for _ in 0..<10 { // Maximum 1 second wait
+                if !isTracking {
+                    break
+                }
+                try await Task.sleep(for: .milliseconds(100))
+            }
+        }
+        
+        // Create new providers for this session
+        worldTrackingProvider = WorldTrackingProvider()
+        
+        let providers: [any DataProvider]
+        if needsHandTracking {
+            shouldProcessHandTracking = true
+            handTrackingProvider = HandTrackingProvider()
+            providers = [worldTrackingProvider, handTrackingProvider]
+            print("🖐️ Starting hand tracking session")
+        } else {
+            shouldProcessHandTracking = false
+            providers = [worldTrackingProvider]
+        }
+        
+        providersStoppedWithError = false
+        try await arkitSession.run(providers)
+        isTracking = true
+        print("✅ Started tracking providers")
+    }
+    
+    func stopTracking() {
+        arkitSession.stop()
+        isTracking = false
+        print("⏹️ Stopped tracking providers")
+    }
+    
+    // MARK: - Update Processing
+    func processWorldTrackingUpdates() async {
+        for await _ in worldTrackingProvider.anchorUpdates {
+            // Process world tracking updates
+        }
+    }
+    
+    func processHandTrackingUpdates() async {
+        guard shouldProcessHandTracking else { return }
+        
+        print("🖐️ Starting hand tracking updates")
+        for await update in handTrackingProvider.anchorUpdates {
+            let handAnchor = update.anchor
+            switch update.event {
+            case .added, .updated:
+                switch handAnchor.chirality {
+                case .left:
+                    leftHandAnchor = handAnchor
+//                    print("👈 Left hand updated")
+                case .right:
+                    rightHandAnchor = handAnchor
+//                    print("👉 Right hand updated")
+                }
+                // Update the HandTrackingManager with the new anchors
+                handTrackingManager.updateHandAnchors(left: leftHandAnchor, right: rightHandAnchor)
+                
+            case .removed:
+                switch handAnchor.chirality {
+                case .left:
+                    leftHandAnchor = nil
+                    print("❌ Left hand removed")
+                case .right:
+                    rightHandAnchor = nil
+                    print("❌ Right hand removed")
+                }
+                // Update the HandTrackingManager with the removed anchors
+                handTrackingManager.updateHandAnchors(left: leftHandAnchor, right: rightHandAnchor)
+            }
+        }
+    }
+    
+    // MARK: - Event Monitoring
+    func monitorTrackingEvents() async {
+        for await event in arkitSession.events {
+            switch event {
+            case .dataProviderStateChanged(_, let newState, let error):
+                print("🔄 Provider state changed to: \(newState)")
+                switch newState {
+                case .initialized:
+                    print("ℹ️ Provider initialized")
+                case .running:
+                    print("✅ Provider running")
+                    isTracking = true
+                case .paused:
+                    print("⏸️ Provider paused")
+                case .stopped:
+                    print("⚠️ Provider stopped - Error: \(String(describing: error))")
+                    isTracking = false
+                    if let error {
+                        print("❌ Provider error: \(error)")
+                        providersStoppedWithError = true
+                    }
+                @unknown default:
+                    break
+                }
+            case .authorizationChanged(let type, let status):
+                if type == .worldSensing {
+                    worldSensingAuthorizationStatus = status
+                }
+            default:
+                break
+            }
+        }
+    }
+    
+    // MARK: - Authorization
+    func requestWorldSensingAuthorization() async {
+        let authorizationResult = await arkitSession.requestAuthorization(for: [.worldSensing])
+        worldSensingAuthorizationStatus = authorizationResult[.worldSensing]!
     }
 }
 
 // MARK: - Errors
 extension TrackingSessionManager {
     enum TrackingError: Error {
-        case capabilitiesUnavailable(SpatialTrackingSession.UnavailableCapabilities)
-        case notInitialized
+        case capabilitiesUnavailable(String)
+        case providerError(Error)
+        case authorizationDenied
     }
 } 

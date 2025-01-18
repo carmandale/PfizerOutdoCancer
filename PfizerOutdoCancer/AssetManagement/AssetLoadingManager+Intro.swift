@@ -36,7 +36,7 @@ extension AssetLoadingManager {
     
     internal func loadIntroWarpAssets(group: inout ThrowingTaskGroup<LoadResult, Error>, taskCount: inout Int) {
         group.addTask {
-            print("Starting to load Pfizer logo")
+            print("Starting to load Intro Warp")
             do {
                 let entity = try await Entity(named: "IntroWarp", in: realityKitContentBundle)
                 print("Successfully loaded Intro Warp")

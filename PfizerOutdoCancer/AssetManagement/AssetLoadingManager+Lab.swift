@@ -13,6 +13,11 @@ extension AssetLoadingManager {
                 print("Loading base LabEnvironment")
                 let labEnvironmentScene = try await self.loadEntity(named: "LabEnvironment")
                 await assetRoot.addChild(labEnvironmentScene)
+
+                // Load lab environment audio
+//                print("Loading base LabEnvironment audio")
+//                let labEnvironmentAudioScene = try await self.loadEntity(named: "LabAudio")
+//                await assetRoot.addChild(labEnvironmentAudioScene)
                 
                 // Load and add lab equipment
                 print("Assembling lab equipment")
@@ -28,6 +33,21 @@ extension AssetLoadingManager {
             } catch {
                 print("Failed to load LabEnvironment: \(error)")
                 return .failure(key: "lab_environment", category: .labEnvironment, error: error)
+            }
+        }
+        taskCount += 1
+    }
+    
+    internal func loadLabVO(group: inout ThrowingTaskGroup<LoadResult, Error>, taskCount: inout Int) {
+        group.addTask {
+            print("Starting to load Lab VO")
+            do {
+                let entity = try await Entity(named: "LabVO", in: realityKitContentBundle)
+                print("Successfully loaded Lab VO")
+                return .success(entity: entity, key: "lab_vo", category: .labEnvironment)
+            } catch {
+                print("Failed to load Lab VO: \(error)")
+                return .failure(key: "lab_vo", category: .labEnvironment, error: error)
             }
         }
         taskCount += 1

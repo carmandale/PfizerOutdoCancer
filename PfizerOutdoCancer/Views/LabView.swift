@@ -53,6 +53,8 @@ struct LabView: View {
         print("📍 DebugCube initial position: \(debugCube.position)")
     }
     
+    // MARK: Environment Setup
+    
     private func setupEnvironment() async throws {
         // Load lab environment
         guard let labEnvironment = await appModel.assetLoadingManager.instantiateEntity("lab_environment") else {
@@ -61,6 +63,12 @@ struct LabView: View {
         }
         mainEntity?.addChild(labEnvironment)
         
+        if let labVO = await appModel.assetLoadingManager.instantiateEntity("lab_vo") {
+            mainEntity?.addChild(labVO)
+            print(">>> Lab VO added to MainEntity")
+        }
+        
+        
         // Debug logging
         print("🏢 Lab Environment added to MainEntity")
         print("📍 MainEntity position after adding lab: \(String(describing: mainEntity?.position))")
@@ -68,6 +76,7 @@ struct LabView: View {
     }
     
     // MARK: - Attachment Setup
+    ///
     private func setupAttachments(attachments: RealityViewAttachments) {
         // Setup ADC Builder Button
         if let adbBuilderView = attachments.entity(for: "ADCBuilderViewerButton") {
@@ -91,6 +100,8 @@ struct LabView: View {
             }
         }
     }
+    
+    // MARK: - View
     
     var body: some View {
         RealityView { content, attachments in
@@ -120,18 +131,16 @@ struct LabView: View {
             dismissWindow(id: AppModel.debugNavigationWindowId)
         }
         .onDisappear {
-            dismissWindow(id: AppModel.libraryWindowId)
-            // Cleanup
+            mainEntity?.removeFromParent()
             mainEntity = nil
+            dismissWindow(id: AppModel.libraryWindowId)
             isSetupComplete = false
         }
         .task {
-            // Monitor session events
-            await appModel.monitorSessionEvents()
+            await appModel.trackingManager.processWorldTrackingUpdates()
         }
         .task {
-            // Start ARKit session when view appears
-            try? await appModel.runARKitSession()
+            await appModel.trackingManager.monitorTrackingEvents()
         }
     }
 }

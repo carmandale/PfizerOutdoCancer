@@ -33,9 +33,13 @@ struct AttackCancerView: View {
         RealityView { content, attachments in
             let root = appModel.gameState.setupRoot()
             root.name = "AttackCancerRoot"
+
+            let decoy = Entity()
+            decoy.name = "Decoy"
+            root.addChild(decoy)    
             
             // Add PositioningComponent to keep world tracking active
-            root.components.set(PositioningComponent(
+            decoy.components.set(PositioningComponent(
                 offsetX: 0,
                 offsetY: 0,
                 offsetZ: 0
@@ -80,27 +84,34 @@ struct AttackCancerView: View {
         .onAppear {
             dismissWindow(id: AppModel.debugNavigationWindowId)
         }
-        .task {
-            await appModel.monitorSessionEvents()
+        .onDisappear {
+            appModel.gameState.tearDownGame()
         }
         .task {
-            try? await appModel.runARKitSession()
+            await appModel.trackingManager.processWorldTrackingUpdates()
+        }
+        .task {
+            await appModel.trackingManager.processHandTrackingUpdates()
+        }
+        .task {
+            await appModel.trackingManager.monitorTrackingEvents()
         }
     }
     
     // 4. Hand tracking setup method
     private func setupHandTracking(in content: RealityViewContent, attachments: RealityViewAttachments) {
-        let handAnchor = AnchorEntity(.hand(.left, location: .aboveHand))
-        handTrackedEntity = handAnchor
-        content.add(handAnchor)
+        // Add the hand tracking content entity which includes the debug spheres
+        content.add(appModel.trackingManager.handTrackingManager.setupContentEntity())
         
-        content.add(appModel.handTracking.setupContentEntity())
+        // Create a separate anchor for the HopeMeter UI
+        let uiAnchor = AnchorEntity(.hand(.left, location: .aboveHand))
+        content.add(uiAnchor)
         
         if let attachmentEntity = attachments.entity(for: "HopeMeter") {
             attachmentEntity.components[BillboardComponent.self] = BillboardComponent()
             attachmentEntity.scale *= 0.6
             attachmentEntity.position.z -= 0.02
-            handAnchor.addChild(attachmentEntity)
+            uiAnchor.addChild(attachmentEntity)
         }
     }
     
@@ -110,6 +121,10 @@ struct AttackCancerView: View {
         cellStates = Array(repeating: CellState(), count: appModel.gameState.maxCancerCells)
         
         await appModel.gameState.setupEnvironment(in: root)
+        
+        if let gameStartVO = await appModel.assetLoadingManager.instantiateEntity("game_start_vo") {
+            root.addChild(gameStartVO)
+        }
         
         // ADC template is already set up during phase transition
         
@@ -196,10 +211,8 @@ struct AttackCancerView: View {
                     appModel.startHopeMeter()
                 }
                 
-                // Existing tap handling code
                 let location3D = value.convert(value.location3D, from: .local, to: .scene)
                 appModel.gameState.totalTaps += 1
-                print("\n👆 TAP #\(appModel.gameState.totalTaps) on \(value.entity.name)")
                 
                 Task {
                     await appModel.gameState.handleTap(on: value.entity, location: location3D, in: scene)

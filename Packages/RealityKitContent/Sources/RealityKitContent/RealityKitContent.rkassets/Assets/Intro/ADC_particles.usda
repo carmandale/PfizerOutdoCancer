@@ -40,11 +40,9 @@ def Xform "Root"
                     float4 endColorB = (0.18205251, 0.31924036, 1, 1)
                     float noiseStrength = 2
                     token opacityOverLife = "GradualFadeInOut"
-                    float particleAngle = 6.2831855
-                    float particleAngleVariation = 1.5707964
                     asset particleImage = @textures/pfizer-logo-color-small.png@
                     double particleLifeSpan = 20
-                    float particleSize = 0.1
+                    float particleSize = 0.2
                     float particleSizeVariation = 0.1
                     float radialGravityStrength = 0
                     float sizeMultiplierAtEndOfLifespanPower = 2

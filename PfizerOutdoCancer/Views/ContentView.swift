@@ -14,15 +14,27 @@ struct ContentView: View {
     var body: some View {
         Group {
             switch appModel.currentPhase {
-            case .loading:
+            case .loading, .ready:
                 LoadingView()
+                    .onAppear { print("ContentView: Showing LoadingView") }
             case .building:
                 ADCView()
                     .environment(adcDataModel)
+                    .onAppear {
+                        print("ContentView: About to show ADCView")
+                        print("ContentView: isMainWindowOpen = \(appModel.isMainWindowOpen)")
+                        print("ContentView: isBuilderInstructionsOpen = \(appModel.isBuilderInstructionsOpen)")
+                    }
             case .playing:
                 AttackCancerInstructionsView()
                     .environment(appModel)
                     .environment(adcDataModel)
+                    .onAppear { print("ContentView: Showing AttackCancerInstructionsView") }
+            case .completed:
+                CompletedView()
+                    .environment(appModel)
+                    .environment(adcDataModel)
+                    .onAppear { print("ContentView: Showing CompletedView") }
             default:
                 EmptyView()
             }
@@ -34,12 +46,6 @@ struct ContentView: View {
         }
         .onAppear {
             appModel.isMainWindowOpen = true
-        }
-        .onChange(of: appModel.loadingState) {
-            print("Loading state changed")
-            print("Loading progress: \(appModel.loadingProgress)")
-            print("Loading state: \(appModel.loadingState)")
-            dismissWindow()
         }
     }
 }

@@ -1,0 +1,77 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 2.0 (448.60.4)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    reorder nameChildren = ["BuildADC_VO_1_mp3", "BuildADC_VO_2_mp3", "BuildADC_VO_3_mp3", "BuildADC_VO_4_mp3", "BuildADC_VO"]
+    def RealityKitAudioFile "BuildADC_VO_1_mp3"
+    {
+        uniform asset file = @Audio/BuildADC_VO/BuildADC_VO_1.mp3@
+        uniform bool shouldLoop = 0
+    }
+
+    def RealityKitAudioFile "BuildADC_VO_2_mp3"
+    {
+        uniform asset file = @Audio/BuildADC_VO/BuildADC_VO_2.mp3@
+        uniform bool shouldLoop = 0
+    }
+
+    def RealityKitAudioFile "BuildADC_VO_3_mp3"
+    {
+        uniform asset file = @Audio/BuildADC_VO/BuildADC_VO_3.mp3@
+        uniform bool shouldLoop = 0
+    }
+
+    def RealityKitAudioFile "BuildADC_VO_4_mp3"
+    {
+        uniform asset file = @Audio/BuildADC_VO/BuildADC_VO_4.mp3@
+        uniform bool shouldLoop = 0
+    }
+
+    def Xform "BuildADC_VO" (
+        active = true
+        customData = {
+            float3 rotationEulerHint = (0, 3.1415927, 0)
+        }
+    )
+    {
+        quatf xformOp:orient = (-4.371139e-8, 0, 1, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "AudioLibrary"
+        {
+            uniform token info:id = "RealityKit.AudioLibrary"
+
+            def RealityKitDict "resources"
+            {
+                string[] keys = ["BuildADC_VO_1_mp3", "BuildADC_VO_2_mp3", "BuildADC_VO_3_mp3", "BuildADC_VO_4_mp3"]
+                rel values = [
+                    </Root/BuildADC_VO_1_mp3>,
+                    </Root/BuildADC_VO_2_mp3>,
+                    </Root/BuildADC_VO_3_mp3>,
+                    </Root/BuildADC_VO_4_mp3>,
+                ]
+            }
+        }
+
+        def RealityKitComponent "SpatialAudio"
+        {
+            float directivityFocus = 1
+            uniform token info:id = "RealityKit.SpatialAudio"
+        }
+
+        def RealityKitComponent "Billboard"
+        {
+            float blendFactor = 1
+            uniform token info:id = "RealityKit.Billboard"
+        }
+    }
+}
+

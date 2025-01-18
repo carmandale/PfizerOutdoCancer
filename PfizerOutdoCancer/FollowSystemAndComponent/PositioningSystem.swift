@@ -15,105 +15,37 @@ public class PositioningSystem: System {
     // MARK: - Static Properties
     static let query = EntityQuery(where: .has(PositioningComponent.self))
     private static var sharedAppModel: AppModel?
-    
-    // Add system instance identifier
     private let systemId = UUID()
+    
+    // Instance state tracking
+    private var isInitialized = false
+    private var hasPositioned = false
     
     // Static method to set AppModel
     static func setAppModel(_ appModel: AppModel) {
-        print("🔄 PositioningSystem.setAppModel called with ARKitSession ID: \(appModel.arkitSessionId)")
+        print("🔄 PositioningSystem.setAppModel called")
         sharedAppModel = appModel
     }
-    
-    // MARK: - Tracking Properties
-    private var arkitSession: ARKitSession
-    private var worldTrackingProvider: WorldTrackingProvider
-    private var hasPositioned = false
-    private var isInitialized = false
     
     // MARK: - System Initialization
     public required init(scene: RealityKit.Scene) {
         print("🎯 PositioningSystem \(systemId) initializing...")
-        
-        if let appModel = Self.sharedAppModel {
-            print("✅ Using AppModel's ARKitSession (ID: \(appModel.arkitSessionId))")
-            self.arkitSession = appModel.arkitSession
-            self.worldTrackingProvider = appModel.worldTrackingProvider
-        } else {
-            print("⚠️ No AppModel available, creating new ARKitSession")
-            self.arkitSession = ARKitSession()
-            self.worldTrackingProvider = WorldTrackingProvider()
-        }
-        
-        initializeTracking()
     }
     
-    private func initializeTracking() {
-        Task {
-            guard WorldTrackingProvider.isSupported else {
-                print("❌ WorldTrackingProvider not supported")
-                return
-            }
-            
-            do {
-                // Check provider state
-                switch worldTrackingProvider.state {
-                case .running:
-                    print("⚠️ World tracking provider already running, skipping session start")
-                    isInitialized = true
-                    return
-                case .stopped:
-                    print("⚠️ World tracking provider is stopped, cannot restart")
-                    return
-                default:
-                    break
-                }
-                
-                print("🚀 Starting tracking with ARKitSession...")
-                try await arkitSession.run([worldTrackingProvider])
-                isInitialized = true
-                
-                // Check if we're using AppModel's session
-                if let appModel = Self.sharedAppModel,
-                   arkitSession === appModel.arkitSession {
-                    print("✅ Confirmed using AppModel's ARKitSession")
-                } else {
-                    print("⚠️ Using different ARKitSession than AppModel")
-                }
-                
-                print("✅ World tracking initialized successfully")
-            } catch {
-                print("❌ ARKit error: \(error.localizedDescription)")
-            }
-        }
-    }
+    // Remove initializeTracking() - tracking is handled by TrackingSessionManager
     
     // MARK: - System Update
     public func update(context: SceneUpdateContext) {
-        // Only log first successful positioning
-        if !hasPositioned && isInitialized {
-            if case .running = worldTrackingProvider.state {
-                if worldTrackingProvider.queryDeviceAnchor(atTimestamp: CACurrentMediaTime()) != nil {
-                    // print("📍 PositioningSystem \(systemId) first positioning attempt with ARKitSession")
-                }
-            }
-        }
+        guard !hasPositioned else { return }
         
-        guard !hasPositioned, isInitialized else { return }
-        
-        // First verify world tracking is running
-        guard case .running = worldTrackingProvider.state else {
-            print("⚠️ World tracking state: \(worldTrackingProvider.state)")
+        // Get device anchor from TrackingSessionManager's worldTrackingProvider
+        guard let appModel = Self.sharedAppModel,
+              case .running = appModel.trackingManager.worldTrackingProvider.state,
+              let deviceAnchor = appModel.trackingManager.worldTrackingProvider.queryDeviceAnchor(atTimestamp: CACurrentMediaTime()) else {
             return
         }
         
-        // Then try to get device anchor
-        guard let deviceAnchor = worldTrackingProvider.queryDeviceAnchor(atTimestamp: CACurrentMediaTime()) else {
-            print("⏳ Waiting for device anchor...")
-            return
-        }
-        
-        // Position entities only once we have everything we need
+        // Position entities
         if tryPositionEntities(deviceAnchor: deviceAnchor, context: context) {
             hasPositioned = true
             print("✅ Successfully positioned entities")

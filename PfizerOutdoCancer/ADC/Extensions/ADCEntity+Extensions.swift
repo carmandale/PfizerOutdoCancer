@@ -79,17 +79,5 @@ extension Entity {
         return nil
     }
     
-    func fadeOpacity(from start: Float? = nil, to end: Float, duration: Double) {
-        let start = start ?? components[OpacityComponent.self]?.opacity ?? 0
-        let fadeInAnimationDefinition = FromToByAnimation(
-            from: Float(start),
-            to: Float(end),
-            duration: duration,
-            timing: .easeInOut,
-            bindTarget: .opacity
-        )
-        let fadeInAnimation = try! AnimationResource.generate(with: fadeInAnimationDefinition)
-        components.set(OpacityComponent(opacity: start))
-        playAnimation(fadeInAnimation)
-    }
+
 }
