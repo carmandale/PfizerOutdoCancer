@@ -209,6 +209,13 @@ public class ADCMovementSystem: System {
                 entity.stopAllAudio()
                 if let audioComponent = entity.components[AudioLibraryComponent.self],
                    let attachSound = audioComponent.resources["ADC_Attach.wav"] {
+                    // Configure spatial audio characteristics
+                    if var spatialAudio = entity.components[SpatialAudioComponent.self] {
+                        spatialAudio.directivity = .beam(focus: 1.0)
+                        entity.components[SpatialAudioComponent.self] = spatialAudio
+                    }
+                    
+                    // Play audio through entity
                     entity.playAudio(attachSound)
                 }
                 
@@ -294,6 +301,23 @@ public class ADCMovementSystem: System {
             
             // Update component
             entity.components[ADCComponent.self] = adcComponent
+            
+            // Start drone sound
+            // if let audioComponent = entity.components[AudioLibraryComponent.self],
+            //    let droneSound = audioComponent.resources["Drones_01.wav"] {
+            //     // Play audio through entity (will automatically use spatial audio component)
+            //     entity.playAudio(droneSound)
+                
+            //     // Configure spatial audio characteristics if needed
+            //     if var spatialAudio = entity.components[SpatialAudioComponent.self] {
+            //         spatialAudio.directivity = .beam(focus: 1.0)  // Following the same pattern as ADCOptimizedImmersive
+            //         entity.components[SpatialAudioComponent.self] = spatialAudio
+                    
+            //         // Debug: Inspect entity to verify spatial audio setup
+            //         // print("🔊 Inspecting ADC entity for spatial audio setup:")
+            //         // AssetLoadingManager.shared.inspectEntityHierarchy(entity)
+            //     }
+            // }
         }
     }
     
@@ -368,7 +392,18 @@ public class ADCMovementSystem: System {
         // Start drone sound
         if let audioComponent = entity.components[AudioLibraryComponent.self],
            let droneSound = audioComponent.resources["Drones_01.wav"] {
+            // Play audio through entity (will automatically use spatial audio component)
             entity.playAudio(droneSound)
+            
+            // Configure spatial audio characteristics if needed
+            if var spatialAudio = entity.components[SpatialAudioComponent.self] {
+                spatialAudio.directivity = .beam(focus: 1.0)  // Following the same pattern as ADCOptimizedImmersive
+                entity.components[SpatialAudioComponent.self] = spatialAudio
+                
+                // // Debug: Inspect entity to verify spatial audio setup
+                // print("🔊 Inspecting ADC entity for spatial audio setup:")
+                // AssetLoadingManager.shared.inspectEntityHierarchy(entity)
+            }
         }
     }
 }

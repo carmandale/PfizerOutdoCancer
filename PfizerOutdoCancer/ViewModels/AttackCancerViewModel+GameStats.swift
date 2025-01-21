@@ -6,6 +6,7 @@ extension AttackCancerViewModel {
     // MARK: - Game Methods
     func startGame() {
         appModel.currentPhase = .playing
+        appModel.isInstructionsWindowOpen = true
         cellsDestroyed = 0
         totalADCsDeployed = 0
         totalTaps = 0
@@ -15,6 +16,7 @@ extension AttackCancerViewModel {
     }
     
     func endGame() {
+        appModel.isHopeMeterUtilityWindowOpen = false
         appModel.currentPhase = .completed
         isHopeMeterRunning = false
     }
@@ -31,6 +33,7 @@ extension AttackCancerViewModel {
         isHopeMeterRunning = false
         
         appModel.currentPhase = .playing
+        appModel.isInstructionsWindowOpen = true
     }
     
     // MARK: - ADC Tracking

@@ -21,6 +21,8 @@ final class AttackCancerViewModel {
         let microscopeMask = CollisionGroup.all
         return CollisionFilter(group: microscopeGroup, mask: microscopeMask)
     }
+
+    var tutorialComplete: Bool = false
     
     // MARK: - Collision Groups
     static let adcGroup = CollisionGroup(rawValue: 1 << 0)
@@ -52,7 +54,7 @@ final class AttackCancerViewModel {
     var totalHits: Int = 0
     
     // MARK: - Hope Meter
-    let hopeMeterDuration: TimeInterval = 10
+    let hopeMeterDuration: TimeInterval = 30
     var hopeMeterTimeLeft: TimeInterval
     var isHopeMeterRunning = false
     
@@ -128,6 +130,7 @@ final class AttackCancerViewModel {
         
         // Stop any running timers/systems
         appModel.stopHopeMeter()
+        appModel.isTutorialStarted = false
         
         // // Stop hand tracking session
         // Task {

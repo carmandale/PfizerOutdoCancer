@@ -1,5 +1,7 @@
 *** VERY IMPORTANT ***
-If you do not know 100% how to do something for visionOS development for RealityKit, or SwiftUI, as for documentation, reference code, or help.
+This app is for VisionOS 2 development for RealityKit, or SwiftUI. Everything should be done with Apple's best practices and patterns.
+
+If you do not know 100% how to do something for visionOS 2 development for RealityKit, or SwiftUI, as for documentation, reference code, or help.
 
 When provided with documentation or example code:
 1. STOP and read it completely

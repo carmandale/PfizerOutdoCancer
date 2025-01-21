@@ -10,7 +10,6 @@ struct CellState {
 
 struct AttackCancerView: View {
     @Environment(AppModel.self) private var appModel
-    
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.dismissWindow) private var dismissWindow
     @Environment(\.realityKitScene) private var scene
@@ -20,6 +19,11 @@ struct AttackCancerView: View {
     // 1. Hand tracking entity setup
     @State private var handTrackedEntity: Entity? = nil
     
+    @State private var rootEntity: Entity?
+    @State private var storedAttachments: RealityViewAttachments?  // Store attachments reference
+    
+    @Environment(\.openWindow) private var openWindow
+    
     // Add simulator check
     private var isSimulator: Bool {
         #if targetEnvironment(simulator)
@@ -28,6 +32,23 @@ struct AttackCancerView: View {
         return false
         #endif
     }
+    
+    // Add near other @State properties
+    @State private var tutorialCancerCell: Entity?
+    
+    // Add after other private properties
+    private let tutorialADCDelays: [TimeInterval] = [
+        2.0,  // First ADC at 2s
+        1.9,  // Second ADC at 3.9s
+        1.9,  // Third ADC at 5.8s
+        1.9,  // Fourth ADC at 7.7s
+        1.9,  // Fifth ADC at 9.6s
+        1.9,  // Sixth ADC at 11.5s
+        1.9,  // Seventh ADC at 13.4s
+        1.9,  // Eighth ADC at 15.3s
+        1.9,  // Ninth ADC at 17.2s
+        1.8   // Tenth ADC at 19s
+    ]
     
     var body: some View {
         RealityView { content, attachments in
@@ -42,23 +63,29 @@ struct AttackCancerView: View {
             decoy.components.set(PositioningComponent(
                 offsetX: 0,
                 offsetY: 0,
-                offsetZ: 0
+                offsetZ: -1.0
             ))
             
             content.add(root)
+            rootEntity = root
+            storedAttachments = attachments  // Store attachments for later use
             
             if !isSimulator {
                 setupHandTracking(in: content, attachments: attachments)
             }
-            
+
+            // Initial environment setup only
             Task {
-                await setupGameContent(in: root, attachments: attachments)
+                print("🎯 Setting up AttackCancerView environment...")
+                await setupEnvironment(in: root)
+                print("✅ Environment setup complete")
             }
+            
         } attachments: {
             // HopeMeter attachment
-            Attachment(id: "HopeMeter") {
-                HopeMeterView()
-            }
+            // Attachment(id: "HopeMeter") {
+            //     HopeMeterView()
+            // }
             
             // Cell counter attachments
             ForEach(0..<appModel.gameState.maxCancerCells, id: \.self) { i in
@@ -96,6 +123,34 @@ struct AttackCancerView: View {
         .task {
             await appModel.trackingManager.monitorTrackingEvents()
         }
+        .onChange(of: appModel.isTutorialStarted) { _, started in
+            if started, let root = rootEntity {
+                print("🎓 Tutorial state changed - Starting tutorial...")
+                Task {
+                    await startTutorial(in: root)
+                    
+                    // Start 43s timer after tutorial starts
+                    // print("⏱️ Starting 43 second timer for instructions...")
+                    // try? await Task.sleep(for: .seconds(43))
+                    // print("⏱️ Timer complete - Reopening instructions window")
+                    // openWindow(id: AppModel.mainWindowId)
+                    // appModel.isMainWindowOpen = true
+                }
+            }
+        }
+        .onChange(of: appModel.shouldStartGame) { _, shouldStart in
+            if shouldStart, 
+               let root = rootEntity,
+               let attachments = storedAttachments {
+                // Fade out tutorial
+                if let tutorialContent = root.findEntity(named: "Decoy") {
+                    Task {
+                        await tutorialContent.fadeOpacity(to: 0, duration: 1)
+                        // await setupGameContent(in: root, attachments: attachments)
+                    }
+                }
+            }
+        }
     }
     
     // 4. Hand tracking setup method
@@ -107,12 +162,12 @@ struct AttackCancerView: View {
         let uiAnchor = AnchorEntity(.hand(.left, location: .aboveHand))
         content.add(uiAnchor)
         
-        if let attachmentEntity = attachments.entity(for: "HopeMeter") {
-            attachmentEntity.components[BillboardComponent.self] = BillboardComponent()
-            attachmentEntity.scale *= 0.6
-            attachmentEntity.position.z -= 0.02
-            uiAnchor.addChild(attachmentEntity)
-        }
+        // if let attachmentEntity = attachments.entity(for: "HopeMeter") {
+        //     attachmentEntity.components[BillboardComponent.self] = BillboardComponent()
+        //     attachmentEntity.scale *= 0.6
+        //     attachmentEntity.position.z -= 0.02
+        //     uiAnchor.addChild(attachmentEntity)
+        // }
     }
     
     @MainActor
@@ -120,12 +175,7 @@ struct AttackCancerView: View {
         print("\n=== Initializing Cell States ===")
         cellStates = Array(repeating: CellState(), count: appModel.gameState.maxCancerCells)
         
-        await appModel.gameState.setupEnvironment(in: root)
-        
-        if let gameStartVO = await appModel.assetLoadingManager.instantiateEntity("game_start_vo") {
-            root.addChild(gameStartVO)
-        }
-        
+
         // ADC template is already set up during phase transition
         
         if let cancerCellTemplate = await appModel.assetLoadingManager.instantiateEntity("cancer_cell") {
@@ -174,6 +224,73 @@ struct AttackCancerView: View {
         }
     }
     
+    @MainActor
+    private func setupEnvironment(in root: Entity) async {
+        await appModel.gameState.setupEnvironment(in: root)
+    }
+
+    @MainActor
+    private func startTutorial(in root: Entity) async {
+        print("\n=== Starting Tutorial Sequence ===")
+        
+        if let gameStartVO = await appModel.assetLoadingManager.instantiateEntity("game_start_vo") {
+            if let VO_parent = root.findEntity(named: "Decoy") {
+                print("🎯 Found tutorial VO parent")
+                VO_parent.addChild(gameStartVO)
+                root.addChild(VO_parent)
+                
+                // Find tutorial cancer cell using existing pattern
+                if let cell = gameStartVO.findEntity(named: "CancerCell_spawn") {
+                    print("✅ Found tutorial cancer cell")
+                    tutorialCancerCell = cell
+                    
+                    // Set up tutorial cell using ViewModel
+                    appModel.gameState.setupTutorialCancerCell(cell)
+                    
+                    // Start ADC firing sequence
+                    Task {
+                        await fireTutorialADCs()
+                    }
+                } else {
+                    print("❌ Could not find tutorial cancer cell")
+                }
+            }
+        }
+    }
+    
+    @MainActor
+    private func fireTutorialADCs() async {
+        print("\n=== Starting Tutorial ADC Sequence ===")
+        let launchPosition = SIMD3<Float>(0.25, 0.5, -0.25)
+        
+        for (index, delay) in tutorialADCDelays.enumerated() {
+            try? await Task.sleep(for: .seconds(delay))
+            print("🚀 Firing tutorial ADC \(index + 1)/10")
+            await appModel.gameState.handleTap(
+                on: tutorialCancerCell!,
+                location: launchPosition,
+                in: scene
+            )
+        }
+        print("✅ Tutorial ADC sequence complete")
+        
+        // Wait until 24s mark
+        print("⏱️ Waiting for 24s mark...")
+        try? await Task.sleep(for: .seconds(5))  // 19s + 5s = 24s
+        
+        print("🎯 Opening hope meter utility window")
+        if !appModel.isHopeMeterUtilityWindowOpen {
+            openWindow(id: AppModel.hopeMeterUtilityWindowId)
+            appModel.isHopeMeterUtilityWindowOpen = true
+        }
+        
+        print("🎮 Setting up cancer cells")
+        if let root = rootEntity, let attachments = storedAttachments {
+            await setupGameContent(in: root, attachments: attachments)
+        }
+    }
+    
+    @MainActor
     private func setupUIAttachments(in root: Entity, attachments: RealityViewAttachments, count: Int) {
         print("\n=== Setting up UI Attachments ===")
         print("Total attachments to create: \(count)")
@@ -206,16 +323,26 @@ struct AttackCancerView: View {
             .onEnded { value in
                 // Check if this is first tap and hope meter hasn't started
                 if appModel.gameState.totalTaps == 0 && !appModel.gameState.isHopeMeterRunning {
-                    dismissWindow(id: AppModel.mainWindowId)
-                    appModel.isMainWindowOpen = false
-                    appModel.startHopeMeter()
+                    // check this window dismissal
+//                    dismissWindow(id: AppModel.mainWindowId)
+//                    appModel.isMainWindowOpen = false
+                    
+                    appModel.startAttackCancerGame()
+//                    openWindow(id: AppModel.mainWindowId)
+                    if !appModel.isHopeMeterUtilityWindowOpen {
+                        openWindow(id: AppModel.hopeMeterUtilityWindowId)
+                        appModel.isHopeMeterUtilityWindowOpen = true
+                    }
                 }
                 
-                let location3D = value.convert(value.location3D, from: .local, to: .scene)
-                appModel.gameState.totalTaps += 1
-                
-                Task {
-                    await appModel.gameState.handleTap(on: value.entity, location: location3D, in: scene)
+                // Only handle taps if game is running
+                if appModel.gameState.isHopeMeterRunning {
+                    let location3D = value.convert(value.location3D, from: .local, to: .scene)
+                    appModel.gameState.totalTaps += 1
+                    
+                    Task {
+                        await appModel.gameState.handleTap(on: value.entity, location: location3D, in: scene)
+                    }
                 }
             }
     }

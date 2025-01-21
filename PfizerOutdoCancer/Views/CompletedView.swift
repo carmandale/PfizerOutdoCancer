@@ -78,7 +78,7 @@ struct CompletedView: View {
                 
                 Button(action: {
                     Task {
-                        dismissWindow(id: AppModel.mainWindowId)
+                        // dismissWindow(id: AppModel.mainWindowId)
                         await appModel.transitionToPhase(.outro)
                     }
                 }) {

@@ -16,7 +16,7 @@ extension ADCOptimizedImmersive {
             // Create pop sound entity with spatial audio
             let popSource = Entity()
             popSource.name = "PopSource"
-            popSource.components.set(SpatialAudioComponent(directivity: .beam(focus: 1.0)))  // Changed to omni for testing
+            popSource.components.set(SpatialAudioComponent(directivity: .beam(focus: 1.0))) 
             if let popAudioFileResource = popAudioFileResource {
                 popAudioPlaybackController = popSource.prepareAudio(popAudioFileResource)
                 if popAudioPlaybackController != nil {

@@ -4,65 +4,29 @@ struct LoadingView: View {
     @Environment(AppModel.self) private var appModel
     @Environment(\.dismissWindow) private var dismissWindow
     @State private var showTitle = false
+    @Namespace private var logoNamespace
     
     var body: some View {
-        VStack {
-            Image("Pfizer_Logo_Color_RGB")
-                .resizable()
-                .scaledToFit()
-                .padding(80)
-                .transition(.opacity)
-            
-            if case .completed = appModel.loadingState {
-                Text("Let's Outdo Cancer")
-                    .font(.extraLargeTitle)
-                    .transition(WordByWordTransition(
-                        totalDuration: 2.0,    // Total animation duration
-                        elementDuration: 0.8,   // Duration for each word
-                        extraBounce: 0.2       // More bounce in the spring animation
-                    ))
-            }
-            
+        ZStack {
             if case .loading = appModel.loadingState {
-                VStack {
-                    Text("Loading Assets...")
-                        .font(.title)
-                        .padding()
-                    
-                    ProgressView(value: Double(appModel.loadingProgress))
-                        .progressViewStyle(.linear)
-                        .padding()
-                    
-                    Text("Please wait while we prepare your experience...")
-                        .foregroundStyle(.secondary)
-                        .padding()
-                }
-                .transition(.opacity.combined(with: .move(edge: .bottom)))
+                LoadingBlock(namespace: logoNamespace)
+                    .environment(appModel)
             }
-            
             if case .completed = appModel.loadingState {
-                StartButton()
-                    .transition(.opacity.combined(with: .scale))
+                CompletedBlock(namespace: logoNamespace)
+                    .environment(appModel)
             }
         }
         .frame(width: 800, height: 600)
+        .animation(.easeInOut(duration: 0.5), value: appModel.loadingState)
         .onChange(of: appModel.loadingState) { oldState, newState in
             print("Loading state changed from \(oldState) to \(newState)")
             print("Loading progress: \(appModel.loadingProgress)")
-            
-            if case .completed = newState {
-//                dismissWindow()
-            } else {
-                withAnimation(.easeInOut(duration: 0.5)) {
-                    // Let the state change drive the view updates
-                }
-            }
         }
         .onDisappear {
             print("🚨 LoadingView disappeared")
         }
         .onAppear {
-            // Add 2 second delay before starting animation
             Task { @MainActor in
                 try? await Task.sleep(for: .seconds(2))
                 withAnimation {
@@ -73,8 +37,95 @@ struct LoadingView: View {
     }
 }
 
+private struct LoadingBlock: View {
+    @Environment(AppModel.self) private var appModel
+    let namespace: Namespace.ID
+    
+    var body: some View {
+        VStack {
+            Image("Pfizer_Logo_Color_RGB")
+                .resizable()
+                .scaledToFit()
+                .matchedGeometryEffect(id: "PfizerLogo", in: namespace)
+                .frame(width: 400)
+                .padding(80)
+            
+            VStack {
+                Text("Loading Assets...")
+                    .font(.title)
+                    .padding()
+                    .transition(.opacity.combined(with: .scale))
+                
+                ProgressView(value: Double(appModel.loadingProgress))
+                    .progressViewStyle(.linear)
+                    .padding()
+                    .transition(.opacity)
+                
+                Text("Please wait while we prepare your experience...")
+                    .foregroundStyle(.secondary)
+                    .padding()
+                    .transition(.opacity)
+                
+                Text("build v39 - 1.18.25")
+                    .foregroundStyle(.secondary)
+                    .font(.caption)
+                    .padding()
+                    .transition(.opacity)
+            }
+        }
+    }
+}
 
-//#Preview(windowStyle: .automatic) {
-//    LoadingView()
-//        .environment(AppModel())
-//}
+private struct CompletedBlock: View {
+    @Environment(AppModel.self) private var appModel
+    let namespace: Namespace.ID
+    @State private var showTitle = false
+    
+    var body: some View {
+        VStack {
+            Image("Pfizer_Logo_Color_RGB")
+                .resizable()
+                .scaledToFit()
+                .matchedGeometryEffect(id: "PfizerLogo", in: namespace)
+                .frame(width: 400)
+                .padding(40)
+            
+            // Add a fixed height container for the title
+            ZStack {
+                // Invisible placeholder text to maintain consistent layout
+                Text("Let's Outdo Cancer")
+                    .font(.extraLargeTitle)
+                    .opacity(0)
+                
+                if showTitle {
+                    Text("Let's Outdo Cancer")
+                        .font(.extraLargeTitle)
+                        .transition(WordByWordTransition(
+                            totalDuration: 2.0,
+                            elementDuration: 0.8,
+                            extraBounce: 0.2
+                        ))
+                }
+            }
+            .padding()
+            
+            StartButton()
+                .padding(.top, 50)
+                .transition(.opacity.combined(with: .scale))
+        }
+        .onAppear {
+            // Delay the title animation slightly to let the logo transition complete
+            Task { @MainActor in
+                try? await Task.sleep(for: .seconds(0.3))
+                withAnimation {
+                    showTitle = true
+                }
+            }
+        }
+    }
+}
+
+#Preview(windowStyle: .automatic) {
+    LoadingView()
+        .environment(AppModel())
+}

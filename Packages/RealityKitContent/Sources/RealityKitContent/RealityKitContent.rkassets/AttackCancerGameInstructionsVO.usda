@@ -27,12 +27,13 @@ def Xform "Root"
 
             def RealityKitDict "resources"
             {
-                string[] keys = ["AttackCancer_01_mp3", "AttackCancer_02_mp3", "AttackCancer_03_mp3", "AttackCancer_04_mp3"]
+                string[] keys = ["AttackCancer_01_mp3", "AttackCancer_02_mp3", "AttackCancer_03_mp3", "AttackCancer_04_mp3", "AttackCancer_05_mp3"]
                 rel values = [
                     </Root/AttackCancer_01_mp3>,
                     </Root/AttackCancer_02_mp3>,
                     </Root/AttackCancer_03_mp3>,
                     </Root/AttackCancer_04_mp3>,
+                    </Root/AttackCancer_05_mp3>,
                 ]
             }
         }
@@ -94,7 +95,7 @@ def Xform "Root"
                 bool controlPlayback = 1
                 double duration = 6.5828541666666665
                 uniform token info:id = "F48AF6D1-AF40-4519-B4DE-A516FC011D38"
-                double startTime = 4.99568651920067
+                double startTime = 3.718040446538077
                 rel target = </Root/Transform>
 
                 def RealityKitStruct "handoffType"
@@ -109,7 +110,7 @@ def Xform "Root"
                 bool controlPlayback = 1
                 double duration = 5.5640625
                 uniform token info:id = "39EF7420-23C3-4C47-ADA2-1536AE859DD4"
-                double startTime = 13.201620920596667
+                double startTime = 11.215158041098341
                 rel target = </Root/Transform>
 
                 def RealityKitStruct "handoffType"
@@ -124,7 +125,22 @@ def Xform "Root"
                 bool controlPlayback = 1
                 double duration = 5.093875
                 uniform token info:id = "A0833D86-5887-4AE3-8004-EE1534CF0755"
-                double startTime = 20.934195742544922
+                double startTime = 17.51983475581488
+                rel target = </Root/Transform>
+
+                def RealityKitStruct "handoffType"
+                {
+                }
+            }
+
+            def RealityKitAction "Play_Audio5"
+            {
+                string actionKind = "audio"
+                string audioResourceName = "AttackCancer_05_mp3"
+                bool controlPlayback = 1
+                double duration = 4.597541666666666
+                uniform token info:id = "6CD3523D-2414-4BE2-B826-1D56207E3B93"
+                double startTime = 23.271952638325487
                 rel target = </Root/Transform>
 
                 def RealityKitStruct "handoffType"
@@ -154,14 +170,20 @@ def Xform "Root"
 
         def Preliminary_Action "Action"
         {
-            rel affectedObjects = </Root>
-            rel animationLibraryKey = </Root/AttackCancerGameInstructions>
+            rel affectedObjects = None
+            rel animationLibraryKey = None
             rel animationLibraryKeyOverrideKey = </Root/OnAddedToScene/Trigger>
             token info:id = "PlayTimeline"
             int loops = 0
             int performCount = 1
             token type = "serial"
         }
+    }
+
+    def RealityKitAudioFile "AttackCancer_05_mp3"
+    {
+        uniform asset file = @Audio/AttackCancerGameInstructions/AttackCancer_05.mp3@
+        uniform bool shouldLoop = 0
     }
 }
 

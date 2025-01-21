@@ -11,30 +11,31 @@ import WebKit
 struct LibraryView: View {
     @Environment(AppModel.self) private var appModel
     @Environment(\.pushWindow) private var pushWindow
+    @Environment(\.openWindow) private var openWindow
+    @Environment(\.dismissWindow) private var dismissWindow
     
     var body: some View {
-        WebView(url: URL(string: "https://cancer.pfizer.com/")!)
-//            .onAppear {
-//                pushWindow(id: AppModel.mainWindowId)
-//            }
-    }
-        
-        
-}
-
-struct WebView: UIViewRepresentable {
-    let url: URL
-
-    func makeUIView(context: Context) -> WKWebView {
-        WKWebView()
+        if appModel.isLibraryWindowOpen {
+            
+            WebView(url: URL(string: "https://cancer.pfizer.com/")!)
+        }
+            
     }
 
-    func updateUIView(_ uiView: WKWebView, context: Context) {
-        uiView.load(URLRequest(url: url))
-    }
     
+    struct WebView: UIViewRepresentable {
+        let url: URL
+        
+        func makeUIView(context: Context) -> WKWebView {
+            WKWebView()
+        }
+        
+        func updateUIView(_ uiView: WKWebView, context: Context) {
+            uiView.load(URLRequest(url: url))
+        }
+    }
 }
+    //#Preview {
+    //    LibraryView()
+    //}
 
-//#Preview {
-//    LibraryView()
-//}

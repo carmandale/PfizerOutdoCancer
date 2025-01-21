@@ -26,6 +26,12 @@ def Xform "Root"
         {
             asset inputs:SkySphere_Texture = @Assets/Lab/AdobeStock_496286979.jpeg@
         }
+
+        def RealityKitComponent "MeshSorting"
+        {
+            token info:id = "RealityKit.MeshSorting"
+            int priorityInGroup = 0
+        }
     }
 
     def "lab" (
@@ -46,6 +52,42 @@ def Xform "Root"
             {
                 token outputs:mtlx:surface
                 token outputs:realitykit:vertex
+            }
+        }
+
+        over "wall_N"
+        {
+            over "wall_N"
+            {
+                def RealityKitComponent "MeshSorting"
+                {
+                    token info:id = "RealityKit.MeshSorting"
+                    int priorityInGroup = 0
+                }
+            }
+        }
+
+        over "wall_N_cabinets"
+        {
+            over "wall_N_cabinets"
+            {
+                def RealityKitComponent "MeshSorting"
+                {
+                    token info:id = "RealityKit.MeshSorting"
+                    int priorityInGroup = 0
+                }
+            }
+        }
+
+        over "deskRows"
+        {
+            over "deskRows"
+            {
+                def RealityKitComponent "MeshSorting"
+                {
+                    token info:id = "RealityKit.MeshSorting"
+                    int priorityInGroup = 0
+                }
             }
         }
     }

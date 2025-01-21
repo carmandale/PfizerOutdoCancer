@@ -11,6 +11,7 @@ extension AppModel {
     nonisolated static let builderWindowId = "builder"
     nonisolated static let debugNavigationWindowId = "DebugNavigation"
     nonisolated static let gameCompletedWindowId = "Completed"
+    nonisolated static let hopeMeterUtilityWindowId = "HopeMeterUtility"
     
     nonisolated static let introSpaceId = "IntroSpace"
     nonisolated static let outroSpaceId = "OutroSpace"
@@ -76,11 +77,14 @@ final class AppModel {
     // MARK: - Properties
     let trackingManager = TrackingSessionManager()
     
+    var shouldDimSurroundings: Bool = false
+    
     /// Current phase of the app
     var currentPhase: AppPhase = .loading
     
     var gameState: AttackCancerViewModel
     var isDebugWindowOpen = true
+    var isHopeMeterUtilityWindowOpen = false
     var isLibraryWindowOpen = false
     var isIntroWindowOpen = false
     var isMainWindowOpen = false
@@ -115,7 +119,13 @@ final class AppModel {
         }
     }
 
-
+    func toggleLibrary() {
+        if isLibraryWindowOpen {
+            isLibraryWindowOpen = false
+        } else {
+            isLibraryWindowOpen = true
+        }
+    }
     
     // MARK: - Space Management
     @ObservationIgnored private var currentImmersiveSpace: String?
@@ -132,6 +142,18 @@ final class AppModel {
     }
     
     var immersiveSpaceState: ImmersiveSpaceState = .closed
+    
+    // MARK: Start the Attack Cancer Game
+    
+    
+    var shouldStartGame: Bool {
+        gameState.tutorialComplete && gameState.isHopeMeterRunning
+    }
+    
+    func startAttackCancerGame() {
+        gameState.tutorialComplete = true
+        startHopeMeter()
+    }
     
     // MARK: - Hope Meter Management
     @ObservationIgnored private var hopeMeterTimer: Timer?
@@ -180,6 +202,7 @@ final class AppModel {
     // MARK: - Phase Management
     @MainActor
     func transitionToPhase(_ newPhase: AppPhase, adcDataModel: ADCDataModel? = nil) async {
+        print("🔄 Phase transition: \(currentPhase) -> \(newPhase)")
         guard !isTransitioning else { return }
         isTransitioning = true
         defer { isTransitioning = false }
@@ -205,6 +228,7 @@ final class AppModel {
                 gameState.setADCTemplate(adcEntity, dataModel: adcDataModel)
             }
         }
+        print("✅ Phase transition complete: \(newPhase)")
     }
     
     // Keep all other existing methods...
@@ -213,4 +237,14 @@ final class AppModel {
     // - runARKitSession()
     // - monitorSessionEvents()
     // - arkitSession and provider properties
+    
+    var isTutorialStarted: Bool = false
+    
+    // Track instruction window state
+    var isInstructionsWindowOpen = false
+    
+    func startTutorial() {
+        isTutorialStarted = true
+        
+    }
 }

@@ -136,6 +136,7 @@ struct ADCBuilderView: View {
                             if !appModel.isMainWindowOpen {
                                 openWindow(id: AppModel.mainWindowId)
                                 appModel.isMainWindowOpen = true
+                                appModel.isInstructionsWindowOpen = true
                             }
                             await dismissImmersiveSpace()
                             await appModel.transitionToPhase(.playing, adcDataModel: dataModel)

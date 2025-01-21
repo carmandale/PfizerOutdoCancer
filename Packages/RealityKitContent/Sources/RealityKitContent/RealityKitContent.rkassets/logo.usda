@@ -22,6 +22,42 @@ def Xform "Root"
         float3 xformOp:scale = (1, 1, 1)
         float3 xformOp:translate = (0, 0, 0)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "M_card"
+        {
+            float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (828.2031, 104.40625)
+            int ui:nodegraph:realitykit:subgraphOutputs:stackingOrder = 132
+
+            over "UnlitSurface"
+            {
+                color3f inputs:color.connect = </Root/card/M_card/Multiply.outputs:out>
+                bool inputs:hasPremultipliedAlpha = 1
+                float2 ui:nodegraph:node:pos = (581.9961, 74.30078)
+                int ui:nodegraph:node:stackingOrder = 132
+            }
+
+            over "Image"
+            {
+                float2 ui:nodegraph:node:pos = (-450.10156, -25.871094)
+                int ui:nodegraph:node:stackingOrder = 101
+            }
+
+            over "Combine3"
+            {
+                float2 ui:nodegraph:node:pos = (29.621094, -95.36719)
+                int ui:nodegraph:node:stackingOrder = 135
+            }
+
+            def Shader "Multiply"
+            {
+                uniform token info:id = "ND_multiply_color3FA"
+                prepend color3f inputs:in1.connect = </Root/card/M_card/Combine3.outputs:out>
+                float inputs:in2.connect = </Root/card/M_card/Separate4.outputs:outa>
+                color3f outputs:out
+                float2 ui:nodegraph:node:pos = (317.66797, -106.125)
+                int ui:nodegraph:node:stackingOrder = 136
+            }
+        }
     }
 }
 

@@ -29,6 +29,7 @@ struct NavigationView: View {
             await appModel.transitionToPhase(.building)
         case "Attack":
 //            openWindow(id: AppModel.mainWindowId)
+            appModel.isInstructionsWindowOpen = true
             await appModel.transitionToPhase(.playing, adcDataModel: dataModel)
         default:
             await appModel.transitionToPhase(phaseFor(title))

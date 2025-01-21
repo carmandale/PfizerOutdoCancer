@@ -14,6 +14,9 @@ final class TrackingSessionManager {
     private(set) var worldSensingAuthorizationStatus = ARKitSession.AuthorizationStatus.notDetermined
     private var isTracking = false
     
+    // Track current provider state
+    private(set) var currentState: DataProviderState = .initialized
+    
     // Hand tracking state
     private(set) var leftHandAnchor: HandAnchor?
     private(set) var rightHandAnchor: HandAnchor?
@@ -119,6 +122,7 @@ final class TrackingSessionManager {
             switch event {
             case .dataProviderStateChanged(_, let newState, let error):
                 print("🔄 Provider state changed to: \(newState)")
+                currentState = newState  // Track the current state
                 switch newState {
                 case .initialized:
                     print("ℹ️ Provider initialized")

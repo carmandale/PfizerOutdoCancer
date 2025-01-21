@@ -33,6 +33,8 @@
 				ADC/ECS/log,
 				Info.plist,
 				"Preview Content/Preview Assets.xcassets",
+				"Views/IntroView 2.swift",
+				Views/IntroView.backup.swift,
 			);
 			target = 883ED1532D15E5C80015B5FD /* PfizerOutdoCancer */;
 		};
@@ -237,7 +239,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 38;
+				CURRENT_PROJECT_VERSION = 39;
 				DEVELOPMENT_ASSET_PATHS = "\"PfizerOutdoCancer/Preview Content\"";
 				DEVELOPMENT_TEAM = UTK59YE75G;
 				ENABLE_PREVIEWS = YES;
@@ -264,7 +266,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 38;
+				CURRENT_PROJECT_VERSION = 39;
 				DEVELOPMENT_ASSET_PATHS = "\"PfizerOutdoCancer/Preview Content\"";
 				DEVELOPMENT_TEAM = UTK59YE75G;
 				ENABLE_PREVIEWS = YES;

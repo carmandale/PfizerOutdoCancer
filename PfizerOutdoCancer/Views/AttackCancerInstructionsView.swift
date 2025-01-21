@@ -15,6 +15,7 @@ struct AttackCancerInstructionsView: View {
     @Environment(ADCDataModel.self) var dataModel
 
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.openWindow) private var openWindow
     
     var body: some View {
         var adcEntity = Entity()
@@ -75,12 +76,22 @@ struct AttackCancerInstructionsView: View {
                     .padding(.horizontal, 120)
                     // Start button
                     Button(action: {
-                        // Navigate to the game
-                        dismiss()
-                        print("🎮 Game Content Setup Complete - Starting Hope Meter")
-                        appModel.startHopeMeter()
+                        if !appModel.isTutorialStarted {
+                            print("🎓 Starting tutorial sequence...")
+                            appModel.startTutorial()
+                            appModel.isInstructionsWindowOpen = false
+                            dismiss()
+                        } else {
+                            print("🎮 Tutorial complete - Starting game...")
+                            appModel.startAttackCancerGame()
+                            appModel.isInstructionsWindowOpen = false
+                            if !appModel.isHopeMeterUtilityWindowOpen {
+                                openWindow(id: AppModel.hopeMeterUtilityWindowId)
+                            }
+                            dismiss()
+                        }
                     }) {
-                        Text("Attack Cancer!")
+                        Text(appModel.isTutorialStarted ? "Attack Cancer!" : "Start Tutorial")
                             .font(.title2)
                             .fontWeight(.bold)
                             .padding()
@@ -144,5 +155,3 @@ struct AttackCancerInstructionsView: View {
 //    .padding()
 //    
 //}
-
-

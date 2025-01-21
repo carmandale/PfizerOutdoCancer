@@ -17,6 +17,7 @@ struct LabView: View {
     
     @State private var mainEntity: Entity? = nil
     @State private var isSetupComplete = false
+    @State private var isLibraryOpen = false
     
     // MARK: - Scene Setup
     private func setupScenePosition(in content: RealityViewContent) async throws {
@@ -57,22 +58,21 @@ struct LabView: View {
     
     private func setupEnvironment() async throws {
         // Load lab environment
-        guard let labEnvironment = await appModel.assetLoadingManager.instantiateEntity("lab_environment") else {
-            print("Failed to load LabEnvironment from asset manager")
-            return
+        if let labEnvironment = await appModel.assetLoadingManager.instantiateEntity("lab_environment") {
+            mainEntity?.addChild(labEnvironment)
+            // Configure the interactive devices
+            // configureInteractiveDevices(in: labEnvironment)
+            
+            // Debug logging - moved inside if let scope
+            print("🏢 Lab Environment added to MainEntity")
+            print("📍 MainEntity position after adding lab: \(String(describing: mainEntity?.position))")
+            print("📍 Lab Environment position: \(labEnvironment.position)")
         }
-        mainEntity?.addChild(labEnvironment)
         
         if let labVO = await appModel.assetLoadingManager.instantiateEntity("lab_vo") {
             mainEntity?.addChild(labVO)
             print(">>> Lab VO added to MainEntity")
         }
-        
-        
-        // Debug logging
-        print("🏢 Lab Environment added to MainEntity")
-        print("📍 MainEntity position after adding lab: \(String(describing: mainEntity?.position))")
-        print("📍 Lab Environment position: \(labEnvironment.position)")
     }
     
     // MARK: - Attachment Setup
@@ -99,6 +99,41 @@ struct LabView: View {
                 attackCancerView.components.set(BillboardComponent())
             }
         }
+    }
+    
+    // MARK: Configure Interactive Devices
+    private func findInteractiveDevices(in root: Entity) -> [Entity] {
+        var results = [Entity]()
+        
+        // Check root itself
+        if root.name.lowercased().contains("laptop") || 
+           root.name.lowercased().contains("pcmonitor") {
+            results.append(root)
+        }
+        
+        // Search children
+        for child in root.children {
+            results.append(contentsOf: findInteractiveDevices(in: child))
+        }
+        
+        return results
+    }
+
+    private func configureInteractiveDevices(in entity: Entity) {
+        // Find and configure all interactive devices
+        let devices = findInteractiveDevices(in: entity)
+        print("\n=== Configuring Interactive Devices ===")
+        print("🔍 Found \(devices.count) potential interactive devices")
+        
+        for device in devices {
+            print("⚙️ Configuring device: \(device.name)")
+            device.components[CollisionComponent.self] = CollisionComponent(shapes: [.generateBox(width: 0.1, height: 0.1, depth: 0.1)])
+            device.components[InputTargetComponent.self] = InputTargetComponent()
+            device.components[InteractiveDeviceComponent.self] = InteractiveDeviceComponent()
+            print("✅ Added components to: \(device.name)")
+        }
+        
+        print("🎯 Configured \(devices.count) interactive devices")
     }
     
     // MARK: - View
@@ -129,11 +164,12 @@ struct LabView: View {
         }
         .onAppear {
             dismissWindow(id: AppModel.debugNavigationWindowId)
+            // Ensure library window starts closed
         }
         .onDisappear {
             mainEntity?.removeFromParent()
             mainEntity = nil
-            dismissWindow(id: AppModel.libraryWindowId)
+//            dismissWindow(id: AppModel.libraryWindowId)
             isSetupComplete = false
         }
         .task {
@@ -142,5 +178,28 @@ struct LabView: View {
         .task {
             await appModel.trackingManager.monitorTrackingEvents()
         }
+        .gesture(makeTapGesture())
+    }
+    
+    private func makeTapGesture() -> some Gesture {
+        SpatialTapGesture()
+            .targetedToAnyEntity()
+            .onEnded { value in
+                let tappedEntity = value.entity
+                print("🎯 Tap detected on entity: \(tappedEntity.name)")
+
+                if tappedEntity.components[InteractiveDeviceComponent.self] != nil {
+                    print("📱 Found InteractiveDeviceComponent, toggling library...")
+//                    appModel.toggleLibrary()
+                    if !appModel.isLibraryWindowOpen {
+                        openWindow(id: AppModel.libraryWindowId)
+                        appModel.isLibraryWindowOpen = true
+                    } else {
+                        dismissWindow(id: AppModel.libraryWindowId)
+                        appModel.isLibraryWindowOpen = false
+                    }
+                }
+                
+            }
     }
 }

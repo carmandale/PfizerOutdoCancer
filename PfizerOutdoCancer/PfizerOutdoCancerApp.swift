@@ -30,27 +30,43 @@ struct PfizerOutdoCancerApp: App {
                 .environment(appModel)
                 .environment(adcDataModel)
                 .onChange(of: scenePhase) { _, newPhase in
-                    Task {
                         switch newPhase {
                         case .background:
-                            // Save state if needed
-                            if appModel.immersiveSpaceState == .open {
-                                await dismissImmersiveSpace()
+                            Task {
+                                print("→ .background")
+                                // Stop tracking and close immersive space
+                                await cleanupAppState()
+                                // await handleWindowsForPhase(.ready)
                             }
-                            appModel.immersiveSpaceState = .closed
-                            
+                        case .inactive:
+                            Task {
+                                print("→ .inactive")
+                                // Wait for cleanup to complete
+                                try? await Task.sleep(nanoseconds: 100_000_000) // 100ms delay
+                                await cleanupAppState()
+                                if appModel.trackingManager.currentState == .paused {
+                                    appModel.trackingManager.stopTracking()
+                                }
+                            }
                         case .active:
-                            // If we're coming back from background, show debug navigation
-//                            openWindow(id: AppModel.debugNavigationWindowId)
-//                            appModel.isDebugWindowOpen = true
-                            // Reset to a known good state
-                            await appModel.transitionToPhase(.ready)
-                            
+                            Task {
+                                print("→ .active")
+                                // Add small delay to ensure cleanup completes
+                                try? await Task.sleep(nanoseconds: 200_000_000) // 200ms delay
+                                if appModel.trackingManager.currentState == .paused {
+                                    appModel.trackingManager.stopTracking()
+                                }
+                                await appModel.transitionToPhase(.ready)
+                                // if !appModel.isMainWindowOpen {
+                                //     openWindow(id: AppModel.mainWindowId)
+                                //     appModel.isMainWindowOpen = true
+                                // }
+                            }
                         default:
                             break
                         }
                     }
-                }
+                
         }
         .defaultSize(width: 800, height: 800)
         .windowStyle(.plain)
@@ -59,18 +75,20 @@ struct PfizerOutdoCancerApp: App {
         
         WindowGroup(id: AppModel.libraryWindowId) {
             if appModel.currentPhase == .lab {
-                LibraryView()
-                    .environment(appModel)
-                    .environment(adcDataModel)
+            LibraryView()
+                .environment(appModel)
+                .environment(adcDataModel)
             }
         }
         .defaultSize(CGSize(width: 800, height: 600))
-        .defaultWindowPlacement { _, context in
-            if let mainWindow = context.windows.first {
-                return WindowPlacement(.leading(mainWindow))
-            }
-            return WindowPlacement(.none)
-        }
+//        .defaultWindowPlacement { _, context in
+//            if let mainWindow = context.windows.first {
+//                return WindowPlacement(.leading(mainWindow))
+//            }
+//            return WindowPlacement(.none)
+//        }
+        .persistentSystemOverlays(appModel.isLibraryWindowOpen ? .visible : .hidden)
+
 
         WindowGroup(id: AppModel.debugNavigationWindowId) {
             NavigationView()
@@ -82,22 +100,17 @@ struct PfizerOutdoCancerApp: App {
         .defaultWindowPlacement { _, context in
             return WindowPlacement(.utilityPanel)
         }
-//        .onChange(of: appModel.isDebugWindowOpen) { wasOpen, isDebugWindowOpen in
-//            print("🪟 Debug window state changed: \(wasOpen) -> \(isDebugWindowOpen)")
-//            if isDebugWindowOpen {
-//                openWindow(id: AppModel.debugNavigationWindowId)
-//            } else {
-//                dismissWindow(id: AppModel.debugNavigationWindowId)
-//            }
-//        }
 
-//        WindowGroup(id: AppModel.gameCompletedWindowId) {
-//            CompletedView()
-//                .environment(appModel)
-//                .environment(adcDataModel)
-//        }
-//        .windowStyle(.plain)
-//        .windowResizability(.contentSize)
+        WindowGroup(id: AppModel.hopeMeterUtilityWindowId) {
+            HopeMeterUtilityView()
+                .environment(appModel)
+                .environment(adcDataModel)
+        }
+        .windowStyle(.plain)
+        .windowResizability(.contentSize)
+        .defaultWindowPlacement { _, context in
+            return WindowPlacement(.utilityPanel)
+        }
 
 
         .onChange(of: appModel.currentPhase) { oldPhase, newPhase in
@@ -201,6 +214,8 @@ struct PfizerOutdoCancerApp: App {
                 }
             }
         }
+        
+        
     }
 
     init() {
@@ -223,6 +238,7 @@ struct PfizerOutdoCancerApp: App {
         RealityKitContent.MicroscopeViewerComponent.registerComponent()
     //        RealityKitContent.GestureComponent.registerComponent()
         RealityKitContent.AntigenComponent.registerComponent()
+        RealityKitContent.InteractiveDeviceComponent.registerComponent()
         
         // Register UI sync components and system
         HitCountComponent.registerComponent()
@@ -256,6 +272,8 @@ struct PfizerOutdoCancerApp: App {
         FollowSystem.registerSystem()
         FollowComponent.registerComponent()
         
+        
+        
         // for ADC Builder
         ADCGestureComponent.registerComponent()
         ADCCameraSystem.registerSystem()
@@ -276,19 +294,26 @@ struct PfizerOutdoCancerApp: App {
         switch phase {
         case .loading:
             // Make sure loading window is open
-            if !appModel.isLoadingWindowOpen {
-            appModel.isLoadingWindowOpen = true
+            if !appModel.isMainWindowOpen {
+                openWindow(id: AppModel.mainWindowId)
+                appModel.isMainWindowOpen = true
+            }
+            
+        case .ready:
+            if !appModel.isMainWindowOpen {
+                openWindow(id: AppModel.mainWindowId)
+                appModel.isMainWindowOpen = true
+            }
+            if appModel.isDebugWindowOpen {
+                dismissWindow(id: AppModel.debugNavigationWindowId)
+                appModel.isDebugWindowOpen = false
             }
             
         case .intro:
             // Handle other windows
-            if appModel.isLibraryWindowOpen {
-                dismissWindow(id: AppModel.libraryWindowId)
-                appModel.isLibraryWindowOpen = false
-            }
             if !appModel.isDebugWindowOpen {
                 openWindow(id: AppModel.debugNavigationWindowId)
-            appModel.isDebugWindowOpen = true
+                appModel.isDebugWindowOpen = true
             }
         case .playing:
             // Explicitly dismiss debug window first
@@ -296,58 +321,80 @@ struct PfizerOutdoCancerApp: App {
                 dismissWindow(id: AppModel.debugNavigationWindowId)
                 appModel.isDebugWindowOpen = false
             }
-            // Then handle other windows
-            if appModel.isLibraryWindowOpen {
-                dismissWindow(id: AppModel.libraryWindowId)
-            appModel.isLibraryWindowOpen = false
-            }
             // No need for default case handling
             return  // Add explicit return to prevent falling through to default
             
         case .completed:
-            if appModel.isLibraryWindowOpen {
-                dismissWindow(id: AppModel.libraryWindowId)
-            appModel.isLibraryWindowOpen = false
-            }
             if !appModel.isDebugWindowOpen {
                 openWindow(id: AppModel.debugNavigationWindowId)
                 appModel.isDebugWindowOpen = true
             }
+            dismissWindow(id: AppModel.hopeMeterUtilityWindowId)
             openWindow(id: AppModel.mainWindowId)
             
         case .lab:
-            if !appModel.isLibraryWindowOpen {
-                openWindow(id: AppModel.libraryWindowId)
-            appModel.isLibraryWindowOpen = true
-            }
+
             if !appModel.isDebugWindowOpen {
                 openWindow(id: AppModel.debugNavigationWindowId)
                 appModel.isDebugWindowOpen = true
             }
         case .building:
-            // Close library and debug windows if open
-            if appModel.isLibraryWindowOpen {
-                print("closing library window")
-                dismissWindow(id: AppModel.libraryWindowId)
-                appModel.isLibraryWindowOpen = false
-            }
             if appModel.isDebugWindowOpen {
                 print("closing debug window")
                 dismissWindow(id: AppModel.debugNavigationWindowId)
                 appModel.isDebugWindowOpen = false
             }
-            // Don't open main window here - it's handled by ADCBuilderViewerButton
         default:
-        if appModel.isLibraryWindowOpen {
-            dismissWindow(id: AppModel.libraryWindowId)
-                appModel.isLibraryWindowOpen = false
+            if !appModel.isMainWindowOpen {
+                openWindow(id: AppModel.mainWindowId)
+                appModel.isMainWindowOpen = true
+            }
+            if appModel.isDebugWindowOpen {
+                dismissWindow(id: AppModel.debugNavigationWindowId)
+                appModel.isDebugWindowOpen = false
             }
         }
+        
+        // Show/hide hope meter utility window based on phase
+        if phase == .playing {
+            openWindow(id: AppModel.hopeMeterUtilityWindowId)
+        } else {
+            dismissWindow(id: AppModel.hopeMeterUtilityWindowId)
+        }
+
         
         // Always dismiss the completed window if not in completed phase
 //        if phase != .completed {
 //            dismissWindow(id: AppModel.gameCompletedWindowId)
 //        }
+        
+        print("📊 Window states after update:")
+        print("  Main: \(appModel.isMainWindowOpen)")
+        print("  Debug: \(appModel.isDebugWindowOpen)")
+        print("  Library: \(appModel.isLibraryWindowOpen)")
+        print("  Builder: \(appModel.isBuilderWindowOpen)")
+        print("  Phases:")
+        print("    AppPhase: \(appModel.currentPhase)")
+        print("    ScenePhase: \(scenePhase)")
+        print("    LoadingPhase: \(appModel.loadingState)")
     }
-
+    
+    // MARK: - App State Management
+    private func cleanupAppState() async {
+        print("🧹 Cleaning up app state")
+        
+        // 1. Close immersive space if open
+        if appModel.immersiveSpaceState == .open {
+            await dismissImmersiveSpace()
+            appModel.immersiveSpaceState = .closed
+        }
+        
+        // 2. Stop tracking
+        appModel.trackingManager.stopTracking()
+        
+        // 3. Reset phase to ready
+        await appModel.transitionToPhase(.ready)
+        
+        print("✅ App state cleanup completed")
+    }
 }

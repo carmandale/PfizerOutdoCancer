@@ -1108,7 +1108,7 @@ def Xform "Root"
                                     {
                                         rel group = </Root/Model_Sorting_Group>
                                         token info:id = "RealityKit.MeshSorting"
-                                        int priorityInGroup = 8
+                                        int priorityInGroup = 9
                                     }
                                 }
                             }
@@ -1175,7 +1175,7 @@ def Xform "Root"
                                     {
                                         rel group = </Root/Model_Sorting_Group>
                                         token info:id = "RealityKit.MeshSorting"
-                                        int priorityInGroup = 6
+                                        int priorityInGroup = 7
                                     }
                                 }
                             }
@@ -1242,7 +1242,7 @@ def Xform "Root"
                                     {
                                         rel group = </Root/Model_Sorting_Group>
                                         token info:id = "RealityKit.MeshSorting"
-                                        int priorityInGroup = 7
+                                        int priorityInGroup = 8
                                     }
                                 }
                             }
@@ -1270,7 +1270,7 @@ def Xform "Root"
                                     {
                                         rel group = </Root/Model_Sorting_Group>
                                         token info:id = "RealityKit.MeshSorting"
-                                        int priorityInGroup = 10
+                                        int priorityInGroup = 11
                                     }
                                 }
                             }
@@ -1298,7 +1298,7 @@ def Xform "Root"
                                     {
                                         rel group = </Root/Model_Sorting_Group>
                                         token info:id = "RealityKit.MeshSorting"
-                                        int priorityInGroup = 11
+                                        int priorityInGroup = 12
                                     }
                                 }
                             }
@@ -1326,7 +1326,7 @@ def Xform "Root"
                                     {
                                         rel group = </Root/Model_Sorting_Group>
                                         token info:id = "RealityKit.MeshSorting"
-                                        int priorityInGroup = 12
+                                        int priorityInGroup = 13
                                     }
                                 }
                             }
@@ -1354,7 +1354,7 @@ def Xform "Root"
                                     {
                                         rel group = </Root/Model_Sorting_Group>
                                         token info:id = "RealityKit.MeshSorting"
-                                        int priorityInGroup = 13
+                                        int priorityInGroup = 14
                                     }
                                 }
                             }
@@ -1382,7 +1382,7 @@ def Xform "Root"
                                     {
                                         rel group = </Root/Model_Sorting_Group>
                                         token info:id = "RealityKit.MeshSorting"
-                                        int priorityInGroup = 15
+                                        int priorityInGroup = 16
                                     }
                                 }
                             }
@@ -1410,7 +1410,7 @@ def Xform "Root"
                                     {
                                         rel group = </Root/Model_Sorting_Group>
                                         token info:id = "RealityKit.MeshSorting"
-                                        int priorityInGroup = 14
+                                        int priorityInGroup = 15
                                     }
                                 }
                             }
@@ -1483,7 +1483,7 @@ def Xform "Root"
                                     {
                                         rel group = </Root/Model_Sorting_Group>
                                         token info:id = "RealityKit.MeshSorting"
-                                        int priorityInGroup = 3
+                                        int priorityInGroup = 4
                                     }
                                 }
                             }
@@ -1555,7 +1555,7 @@ def Xform "Root"
                                     {
                                         rel group = </Root/Model_Sorting_Group>
                                         token info:id = "RealityKit.MeshSorting"
-                                        int priorityInGroup = 4
+                                        int priorityInGroup = 5
                                     }
                                 }
                             }
@@ -1621,7 +1621,7 @@ def Xform "Root"
                                     {
                                         rel group = </Root/Model_Sorting_Group>
                                         token info:id = "RealityKit.MeshSorting"
-                                        int priorityInGroup = 5
+                                        int priorityInGroup = 6
                                     }
                                 }
                             }
@@ -1649,7 +1649,7 @@ def Xform "Root"
                                     {
                                         rel group = </Root/Model_Sorting_Group>
                                         token info:id = "RealityKit.MeshSorting"
-                                        int priorityInGroup = 9
+                                        int priorityInGroup = 10
                                     }
                                 }
                             }
@@ -3325,7 +3325,7 @@ def Xform "Root"
                     {
                         rel group = </Root/Model_Sorting_Group>
                         token info:id = "RealityKit.MeshSorting"
-                        int priorityInGroup = 2
+                        int priorityInGroup = 3
                     }
                 }
             }
@@ -3386,7 +3386,7 @@ def Xform "Root"
             {
                 rel group = </Root/Model_Sorting_Group>
                 token info:id = "RealityKit.MeshSorting"
-                int priorityInGroup = 0
+                int priorityInGroup = 1
             }
         }
     }
@@ -3405,8 +3405,74 @@ def Xform "Root"
             {
                 rel group = </Root/Model_Sorting_Group>
                 token info:id = "RealityKit.MeshSorting"
-                int priorityInGroup = 1
+                int priorityInGroup = 2
             }
+        }
+    }
+
+    def "SkySphere" (
+        active = true
+        prepend references = @SkySphere.usdz@
+    )
+    {
+        float3 xformOp:scale = (1, 1, 1)
+
+        over "SkySphere_mat"
+        {
+            asset inputs:SkySphere_Texture = None
+
+            over "UnlitSurface"
+            {
+                color3f inputs:color = (0, 0, 0) (
+                    colorSpace = "lin_srgb"
+                )
+                delete color3f inputs:color.connect = </Root/SkySphere/SkySphere_mat/Ifgreater.outputs:out>
+                int ui:nodegraph:node:stackingOrder = 388
+            }
+        }
+
+        def RealityKitComponent "HierarchicalFade"
+        {
+            uniform token info:id = "RealityKit.HierarchicalFade"
+            float opacity = 0.80006206
+        }
+
+        def RealityKitComponent "MeshSorting"
+        {
+            rel group = </Root/Model_Sorting_Group>
+            token info:id = "RealityKit.MeshSorting"
+            int priorityInGroup = 0
+        }
+    }
+
+    def "logo" (
+        active = true
+        prepend references = @logo.usda@
+    )
+    {
+        float3 xformOp:scale = (1, 1, 1)
+        float3 xformOp:translate = (0, 1.5, -1.45)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "card"
+        {
+            over "Plane"
+            {
+                over "Plane"
+                {
+                    def RealityKitComponent "MeshSorting"
+                    {
+                        rel group = </Root/Model_Sorting_Group>
+                        token info:id = "RealityKit.MeshSorting"
+                        int priorityInGroup = 17
+                    }
+                }
+            }
+        }
+
+        def RealityKitComponent "HierarchicalFade"
+        {
+            uniform token info:id = "RealityKit.HierarchicalFade"
         }
     }
 }

@@ -167,6 +167,7 @@ extension AttackCancerViewModel {
         if cell.components.has(CancerCellComponent.self) {
             // Add our state component if not present
             let parameters = CancerCellParameters(cellID: cellID)
+            parameters.requiredHits = 10  // Update to 10 hits for tutorial
             let stateComponent = CancerCellStateComponent(parameters: parameters)
             cell.components.set(stateComponent)
         }
@@ -189,6 +190,47 @@ extension AttackCancerViewModel {
                     current = parent.parent
                 }
             }
+        }
+    }
+    
+    func setupTutorialCancerCell(_ cell: Entity) {
+        print("\n=== Setting up Tutorial Cancer Cell ===")
+        
+        if let complexCell = cell.findEntity(named: "cancerCell_complex") {
+            // Setup all the physical aspects first (minus position and movement)
+            configureCellPhysics(complexCell)
+            setupCellIdentification(complexCell, cellID: 0)
+            
+            // Create parameters on-demand
+            let parameters = CancerCellParameters(cellID: 0)
+            print("Creating parameters for cell 0")
+            print("Required hits: \(parameters.requiredHits)")
+            cellParameters.append(parameters)
+            print("Total parameters after append: \(cellParameters.count)")
+            
+            // Add state component with reference to parameters
+            cell.components.set(CancerCellStateComponent(parameters: parameters))
+            print("Added CancerCellStateComponent with parameters")
+            
+            // Add ClosureComponent for state updates
+            cell.components.set(
+                ClosureComponent { [weak self] _ in
+                    guard let stateComponent = cell.components[CancerCellStateComponent.self],
+                          let cellID = stateComponent.parameters.cellID,
+                          cellID < self?.cellParameters.count ?? 0 else { return }
+                    
+                    // Get reference to the correct parameters instance
+                    let parameters = self?.cellParameters[cellID]
+                    
+                    // Update state
+                    parameters?.hitCount = stateComponent.parameters.hitCount
+                    parameters?.isDestroyed = stateComponent.parameters.isDestroyed
+                }
+            )
+            print("Added ClosureComponent for state updates")
+            
+            setupAttachmentPoints(for: cell, complexCell: complexCell, cellID: 0)
+            print("✅ Successfully configured tutorial cell")
         }
     }
 }

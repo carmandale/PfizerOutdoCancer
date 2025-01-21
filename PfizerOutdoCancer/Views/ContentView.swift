@@ -10,6 +10,7 @@ struct ContentView: View {
     @Environment(AppModel.self) private var appModel
     @Environment(ADCDataModel.self) var adcDataModel
     @Environment(\.dismissWindow) private var dismissWindow
+    @Environment(\.openWindow) private var openWindow
 
     var body: some View {
         Group {
@@ -26,10 +27,12 @@ struct ContentView: View {
                         print("ContentView: isBuilderInstructionsOpen = \(appModel.isBuilderInstructionsOpen)")
                     }
             case .playing:
-                AttackCancerInstructionsView()
-                    .environment(appModel)
-                    .environment(adcDataModel)
-                    .onAppear { print("ContentView: Showing AttackCancerInstructionsView") }
+                if appModel.isInstructionsWindowOpen {
+                    AttackCancerInstructionsView()
+                        .environment(appModel)
+                        .environment(adcDataModel)
+                        .onAppear { print("ContentView: Showing AttackCancerInstructionsView") }
+                }
             case .completed:
                 CompletedView()
                     .environment(appModel)
