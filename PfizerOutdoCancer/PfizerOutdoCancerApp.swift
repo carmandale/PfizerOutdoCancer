@@ -43,10 +43,10 @@ struct PfizerOutdoCancerApp: App {
                                 print("→ .inactive")
                                 // Wait for cleanup to complete
                                 try? await Task.sleep(nanoseconds: 100_000_000) // 100ms delay
-                                await cleanupAppState()
-                                if appModel.trackingManager.currentState == .paused {
-                                    appModel.trackingManager.stopTracking()
-                                }
+                                // await cleanupAppState()
+                                // if appModel.trackingManager.currentState == .paused {
+                                //     appModel.trackingManager.stopTracking()
+                                // }
                             }
                         case .active:
                             Task {

@@ -22,8 +22,7 @@ struct IntroView: View {
     // MARK: - Animation States
     @State private var showTitleText = false
     @State private var shouldDimSurroundings = false
-    
-    
+    @State private var isSetupComplete = false
     
     let start = Date()
     let portalStart: Double = 103.0
@@ -86,31 +85,8 @@ struct IntroView: View {
             }
             
             root.addChild(immersiveSceneRoot)
+            isSetupComplete = true
             
-        } update: { content, attachments in
-//             Find both cylinders for tunnel animation
-//                                guard let root = content.entities.first,
-//                                      let tube = root.findEntity(named: "portalMesh") as? ModelEntity else {
-//                                    return
-//                                }
-//            
-//                                // Get material for cylinder
-//                                guard var material1 = tube.model?.materials.first as? ShaderGraphMaterial else {
-//                                    return
-//                                }
-//            
-//                                let elapsed = context.date.timeIntervalSince(start)
-//                                let startDelay: Double = 24.0
-//                                let duration: Double = 8.0
-//            
-//                                if elapsed >= startDelay {
-//                                    let animationTime = elapsed - startDelay
-//                                    let normalizedTime = min(1.0, max(0.0, Float(animationTime / duration))) * 0.6
-//                                    try? material1.setParameter(name: "TunnelMapAmount", value: .float(normalizedTime))
-//            
-//                                    // Apply materials back to cylinder
-//                                    tube.model?.materials = [material1]
-//                                }
         } attachments: {
             Attachment(id: "titleText") {
                 OutdoCancer(showTitle: $showTitleText)
@@ -119,118 +95,122 @@ struct IntroView: View {
                 LabViewerButton()
             }
         }
-         
-//        .preferredSurroundingsEffect(.ultraDark)
-        .task {
-            await loadAndSetupEntities()
-            await runAnimationSequence()
+        .onChange(of: isSetupComplete) { _, isComplete in
+            if isComplete {
+                Task {
+                    await setupAnimationSequence()
+                }
+            }
         }
-    
-}
-     }
-    
+        .task {
+            print("🔄 Starting intro asset loading sequence")
+            await setupEntities()
+        }
+    }
     
     // MARK: - Private Methods
-    private extension IntroView {
-        func loadAndSetupEntities() async {
-            // Load intro environment
-            guard let environment = await appModel.assetLoadingManager.instantiateEntity("intro_environment") else {
-                print("Failed to load intro environment")
-                return
-            }
-            introEnvironment = environment
-            
-            // Find the sky
-            if let sky = environment.findEntity(named: "SkySphere") {
-                skyDome = sky
-                sky.opacity = 0
-            }
-            
-            // Find the logo
-            if let l = environment.findEntity(named: "logo") {
-                logo = l
-                l.scale = SIMD3<Float>(0.5, 0.5, 0.5)
-                l.opacity = 0
-            }
-            
-//             Find and setup portal warp
-                    if let warp = environment.findEntity(named: "sh0100_v01_portalWarp2") {
-                        portalWarp = warp
-                        warp.opacity = 0.6
-            
-                        // Find and store shader material
-                        if let component = warp.components[ModelComponent.self],
-                           let material = component.materials.first as? ShaderGraphMaterial {
-                            self.material = material
-                        }
-                    }
-            
-            // Create and setup portal
-            let p = await PortalManager.createPortal(
-                appModel: appModel,
-                environment: environment,
-                portalPlaneName: "Plane_001"
-            )
-            portal = p
-            p.opacity = 0.0
-            p.position = [0, -0.25, 0]
-
+    
+    private func setupEntities() async {
+        // Load intro environment
+        guard let environment = await appModel.assetLoadingManager.instantiateEntity("intro_environment") else {
+            print("Failed to load intro environment")
+            return
+        }
+        introEnvironment = environment
+        
+        // Find the sky
+        if let sky = environment.findEntity(named: "SkySphere") {
+            skyDome = sky
+            sky.opacity = 0
         }
         
-        func runAnimationSequence() async {
-            // Dim surroundings at 5 seconds
+        // Find the logo
+        if let l = environment.findEntity(named: "logo") {
+            logo = l
+            l.scale = SIMD3<Float>(0.5, 0.5, 0.5)
+            l.opacity = 0
+        }
+        
+        // Find and setup portal warp
+        if let warp = environment.findEntity(named: "sh0100_v01_portalWarp2") {
+            portalWarp = warp
+            warp.opacity = 0.6
+            
+            // Find and store shader material
+            if let component = warp.components[ModelComponent.self],
+               let material = component.materials.first as? ShaderGraphMaterial {
+                self.material = material
+            }
+        }
+        
+        // Create and setup portal
+        let p = await PortalManager.createPortal(
+            appModel: appModel,
+            environment: environment,
+            portalPlaneName: "Plane_001"
+        )
+        portal = p
+        p.opacity = 0.0
+        p.position = [0, -0.25, 0]
+    }
+    
+    private func setupAnimationSequence() async {
+        // Dim surroundings at 5 seconds
         //    try? await Task.sleep(for: .seconds(5))
         //    withAnimation(.easeInOut(duration: 20.0)) {
         //        appModel.shouldDimSurroundings = true
         //    }
-            
-            if let s = skyDome {
-                await s.fadeOpacity(to: 0.9, duration: 10.0, delay: 2.0)
+        
+        if let s = skyDome {
+            await s.fadeOpacity(to: 0.9, duration: 10.0, delay: 2.0)
+        }
+        
+        // Portal warp fade (24s)
+        try? await Task.sleep(for: .seconds(19))
+        if let warp = portalWarp {
+            await warp.fadeOpacity(to: 0.8, duration: 10.0)
+        }
+        
+        try? await Task.sleep(for: .seconds(75))
+        if let l = logo {
+            await l.fadeOpacity(to: 1.0, duration: 10.0)
+            //                await l.animateZPosition(to: 0.5, duration: 20.0)
+            try? await Task.sleep(for: .seconds(5))
+            // Show title text
+            withAnimation {
+                showTitleText = true
             }
-            // Portal warp fade (24s)
-            try? await Task.sleep(for: .seconds(19)) // (24 - 5)
-            if let warp = portalWarp {
-                await warp.fadeOpacity(to: 0.8, duration: 10.0)
+        }
+        
+        // Portal fade (103s)
+        try? await Task.sleep(for: .seconds(5))
+        if let p = portal {
+            await p.fadeOpacity(to: 1.0, duration: 5.0)
+            
+            // Portal scale and title text (110s)
+            try? await Task.sleep(for: .seconds(10))
+            if let portalPlane = p.findEntity(named: "portalPlane") {
+                await portalPlane.animateXScale(from: 0, to: 1.0, duration: 1.0)
             }
             
-            try? await Task.sleep(for: .seconds(75))
-            if let l = logo {
-                await l.fadeOpacity(to: 1.0, duration: 10.0)
-//                await l.animateZPosition(to: 0.5, duration: 20.0)
-                try? await Task.sleep(for: .seconds(5))
-                // Show title text
-                withAnimation {
-                    showTitleText = true
-                }
-            }
             
-
-            // Portal fade (103s)
-           try? await Task.sleep(for: .seconds(5)) // (103 - 24)
-           if let p = portal {
-               await p.fadeOpacity(to: 1.0, duration: 5.0)
-
-               // Portal scale and title text (110s)
-                try? await Task.sleep(for: .seconds(10))
-                if let p = portal, let portalPlane = p.findEntity(named: "portalPlane") {
-                    await portalPlane.animateXScale(from: 0, to: 1.0, duration: 1.0)
-                }
-
+            
+            // Animate title root forward
+            if let titleRoot = p.findEntity(named: "titleRoot") {
+                //                   titleRoot.position.y += 0.2
+                //                   await titleRoot.animateZPosition(to: 0.5, duration: 20.0)
                 
-               
-               // Animate title root forward
-               if let titleRoot = p.findEntity(named: "titleRoot") {
-//                   titleRoot.position.y += 0.2
-//                   await titleRoot.animateZPosition(to: 0.5, duration: 20.0)
-                   
-               }
-           }
+            }
+            
             
             
             
             // Transition to lab phase (134s)
-//            try? await Task.sleep(for: .seconds(40)) // (134 - 110)
-//            await appModel.transitionToPhase(.lab)
+            //            try? await Task.sleep(for: .seconds(40)) // (134 - 110)
+            //            await appModel.transitionToPhase(.lab)
+            
         }
     }
+}
+        
 

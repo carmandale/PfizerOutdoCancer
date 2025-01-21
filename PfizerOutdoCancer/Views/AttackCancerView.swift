@@ -322,17 +322,22 @@ struct AttackCancerView: View {
             .targetedToAnyEntity()
             .onEnded { value in
                 // Check if this is first tap and hope meter hasn't started
-                if appModel.gameState.totalTaps == 0 && !appModel.gameState.isHopeMeterRunning {
-                    // check this window dismissal
-//                    dismissWindow(id: AppModel.mainWindowId)
-//                    appModel.isMainWindowOpen = false
+//                 if appModel.gameState.totalTaps == 0 && !appModel.gameState.isHopeMeterRunning {
+//                     // check this window dismissal
+// //                    dismissWindow(id: AppModel.mainWindowId)
+// //                    appModel.isMainWindowOpen = false
                     
+//                     appModel.startAttackCancerGame()
+// //                    openWindow(id: AppModel.mainWindowId)
+//                     if !appModel.isHopeMeterUtilityWindowOpen {
+//                         openWindow(id: AppModel.hopeMeterUtilityWindowId)
+//                         appModel.isHopeMeterUtilityWindowOpen = true
+//                     }
+//                 }
+                
+                // Check if this is first tap and hope meter hasn't started
+                if appModel.gameState.totalTaps == 0 && appModel.isHopeMeterUtilityWindowOpen {
                     appModel.startAttackCancerGame()
-//                    openWindow(id: AppModel.mainWindowId)
-                    if !appModel.isHopeMeterUtilityWindowOpen {
-                        openWindow(id: AppModel.hopeMeterUtilityWindowId)
-                        appModel.isHopeMeterUtilityWindowOpen = true
-                    }
                 }
                 
                 // Only handle taps if game is running
