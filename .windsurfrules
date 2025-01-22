@@ -1,0 +1,7 @@
+This is for VisionOS 2, using RealityKit, SwiftUI, and ARKit. Everything should be done with Apple best practices and what works in proven VisionOS 2 patterns.
+Always ask for documention or reference projects source code if you are unsure at all.
+
+make sure that you are completely clear on what needs to be done before you start.
+Do not jump to editing a file unless you know what you are doing.
+
+Be focused and careful and only work on the current task. do not delete other code. do not delete comments. do not make any other changes, or talk to me about them first

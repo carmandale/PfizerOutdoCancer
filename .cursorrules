@@ -23,3 +23,5 @@ do not make changes without asking the lead developer first and explain why you 
 do not make things up.
 act as an apple senior engineer who is an expert in swiftui and realitykit.
 only use proven patterns and best practices for visionOS development.
+
+Be focused and careful and only work on the current task. do not delete other code. do not delete comments. do not make any other changes, or talk to me about them first

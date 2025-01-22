@@ -13,22 +13,24 @@ struct LabViewerButton: View {
     @Environment(\.openWindow) private var openWindow
     
     var body: some View {
-        Button {
-            Task {
-//                openWindow(id: AppModel.mainWindowId)
-                await appModel.transitionToPhase(.lab, adcDataModel: dataModel)
-            }
-        } label: {
-            Text("Enter The Lab")
-                .font(.title)
-                .fontWeight(.bold)
-                .padding()
-                .frame(minWidth: 200)
-        }
-//        .padding()
+        NavigationButton(
+            title: "Enter The Lab",
+            action: {
+                Task {
+                    await appModel.transitionToPhase(.lab, adcDataModel: dataModel)
+                }
+            },
+            font: .title,
+            scaleEffect: 1.1,
+            width: 250
+        )
+        .fontWeight(.bold)
         .glassBackgroundEffect()
         .controlSize(.extraLarge)
-        .buttonStyle(.plain)
+        .hoverEffect(.highlight)
+        .hoverEffect { effect, isActive, proxy in
+            effect.scaleEffect(!isActive ? 1.0 : 1.05)
+        }
     }
 }
 

@@ -316,7 +316,7 @@ def Xform "Root"
     }
 
     def "ADC_spawn" (
-        active = true
+        active = false
         references = @ADC-spawn.usda@
     )
     {

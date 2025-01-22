@@ -58,9 +58,9 @@ def Xform "Root" (
         token outputs:mtlx:surface.connect = </Root/M_outline/PreviewSurface.outputs:out>
         token outputs:realitykit:vertex
         token outputs:surface.connect = </Root/M_outline/mat_glow.outputs:surface>
-        float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (1379.962, 349.28983)
+        float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (2471.9978, 237.42552)
         float2 ui:nodegraph:realitykit:subgraphOutputs:size = (181.5, 99)
-        int ui:nodegraph:realitykit:subgraphOutputs:stackingOrder = 5206
+        int ui:nodegraph:realitykit:subgraphOutputs:stackingOrder = 5568
 
         def Shader "mat_glow" (
             active = false
@@ -89,19 +89,20 @@ def Xform "Root" (
             color3f inputs:emissiveColor = (0.5877874, 1, 0.99867344) (
                 colorSpace = "Input - Texture - sRGB - Display P3"
             )
-            color3f inputs:emissiveColor.connect = </Root/M_outline/Multiply.outputs:out>
+            color3f inputs:emissiveColor.connect = </Root/M_outline/Mix_1.outputs:out>
             float inputs:ior
             float inputs:metallic
             float3 inputs:normal
             float inputs:occlusion
             float inputs:opacity = 0.1
-            float inputs:opacity.connect = </Root/M_outline/Separate3.outputs:outr>
+            float inputs:opacity.connect = </Root/M_outline/Mix_2.outputs:out>
             float inputs:opacityThreshold
             float inputs:roughness = 0.5
+            float inputs:roughness.connect = None
             token outputs:out
-            float2 ui:nodegraph:node:pos = (1072.1251, 302.98972)
+            float2 ui:nodegraph:node:pos = (2224.1636, 185.46931)
             float2 ui:nodegraph:node:size = (159.5, 307)
-            int ui:nodegraph:node:stackingOrder = 5356
+            int ui:nodegraph:node:stackingOrder = 5570
             string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["Advanced", "inputs:emissiveColor"]
         }
 
@@ -213,7 +214,7 @@ def Xform "Root" (
             color3f outputs:out
             float2 ui:nodegraph:node:pos = (264.97314, 29.152777)
             float2 ui:nodegraph:node:size = (151, 53)
-            int ui:nodegraph:node:stackingOrder = 5356
+            int ui:nodegraph:node:stackingOrder = 5372
         }
 
         def Shader "Normalize_1"
@@ -245,7 +246,7 @@ def Xform "Root" (
             color3f outputs:out
             float2 ui:nodegraph:node:pos = (542.17975, 278.30176)
             float2 ui:nodegraph:node:size = (109, 145)
-            int ui:nodegraph:node:stackingOrder = 5356
+            int ui:nodegraph:node:stackingOrder = 5370
         }
 
         def Shader "Power"
@@ -269,7 +270,7 @@ def Xform "Root" (
             color3f outputs:out
             float2 ui:nodegraph:node:pos = (312.20392, 257.53937)
             float2 ui:nodegraph:node:size = (155, 53)
-            int ui:nodegraph:node:stackingOrder = 5356
+            int ui:nodegraph:node:stackingOrder = 5371
         }
 
         def Shader "Power_1"
@@ -317,10 +318,11 @@ def Xform "Root" (
         {
             uniform token info:id = "ND_separate3_color3"
             color3f inputs:in.connect = </Root/M_outline/Mix.outputs:out>
+            float outputs:outg
             float outputs:outr
             float2 ui:nodegraph:node:pos = (776.9059, 302.7391)
             float2 ui:nodegraph:node:size = (115.5, 145)
-            int ui:nodegraph:node:stackingOrder = 5356
+            int ui:nodegraph:node:stackingOrder = 5369
         }
 
         def Shader "Multiply"
@@ -329,10 +331,72 @@ def Xform "Root" (
             color3f inputs:in1.connect = </Root/M_outline/Power_1.outputs:out>
             float inputs:in2 = 3
             color3f outputs:out
-            float2 ui:nodegraph:node:pos = (899.0971, -126.946815)
+            float2 ui:nodegraph:node:pos = (852.51215, -50.999866)
             float2 ui:nodegraph:node:size = (60, 36)
-            int ui:nodegraph:node:stackingOrder = 5361
+            int ui:nodegraph:node:stackingOrder = 5368
             string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["inputs:in1"]
+        }
+
+        def Shader "HoverState"
+        {
+            uniform token info:id = "ND_realitykit_hover_state"
+            float outputs:intensity
+            bool outputs:isActive
+            float3 outputs:position
+            float outputs:timeSinceHoverStart
+            float2 ui:nodegraph:node:pos = (516.0144, 17.759789)
+            int ui:nodegraph:node:stackingOrder = 5558
+            string[] ui:nodegraph:realitykit:node:attributesShowingChildren = []
+        }
+
+        def Shader "Sin"
+        {
+            uniform token info:id = "ND_sin_float"
+            float inputs:in.connect = </Root/M_outline/HoverState.outputs:timeSinceHoverStart>
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (855.1406, 170.6875)
+            int ui:nodegraph:node:stackingOrder = 5527
+        }
+
+        def Shader "Abs"
+        {
+            uniform token info:id = "ND_absval_float"
+            float inputs:in.connect = </Root/M_outline/Sin.outputs:out>
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (979.04297, 165.90234)
+            int ui:nodegraph:node:stackingOrder = 5527
+        }
+
+        def Shader "Mix_1"
+        {
+            uniform token info:id = "ND_mix_color3"
+            color3f inputs:bg.connect = </Root/M_outline/Multiply.outputs:out>
+            color3f inputs:fg.connect = None
+            float inputs:mix.connect = </Root/M_outline/Multiply_1.outputs:out>
+            color3f outputs:out
+            float2 ui:nodegraph:node:pos = (1545.7031, 120.03516)
+            int ui:nodegraph:node:stackingOrder = 5566
+        }
+
+        def Shader "Multiply_1"
+        {
+            uniform token info:id = "ND_multiply_float"
+            float inputs:in1.connect = </Root/M_outline/HoverState.outputs:intensity>
+            float inputs:in2.connect = </Root/M_outline/Abs.outputs:out>
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (1122.6211, 131.44531)
+            int ui:nodegraph:node:stackingOrder = 5527
+        }
+
+        def Shader "Mix_2"
+        {
+            uniform token info:id = "ND_mix_float"
+            float inputs:bg.connect = </Root/M_outline/Separate3.outputs:outr>
+            float inputs:fg.connect = None
+            float inputs:mix.connect = </Root/M_outline/Multiply_1.outputs:out>
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (1330.125, 276.19922)
+            int ui:nodegraph:node:stackingOrder = 5533
         }
     }
 

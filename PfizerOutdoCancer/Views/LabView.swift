@@ -61,7 +61,7 @@ struct LabView: View {
         if let labEnvironment = await appModel.assetLoadingManager.instantiateEntity("lab_environment") {
             mainEntity?.addChild(labEnvironment)
             // Configure the interactive devices
-            // configureInteractiveDevices(in: labEnvironment)
+            configureInteractiveDevices(in: labEnvironment)
             
             // Debug logging - moved inside if let scope
             print("🏢 Lab Environment added to MainEntity")
@@ -102,13 +102,24 @@ struct LabView: View {
     }
     
     // MARK: Configure Interactive Devices
-    private func findInteractiveDevices(in root: Entity) -> [Entity] {
-        var results = [Entity]()
+    private func findInteractiveDevices(in root: Entity) -> [(entity: Entity, meshEntity: Entity)] {
+        var results: [(Entity, Entity)] = []
         
-        // Check root itself
-        if root.name.lowercased().contains("laptop") || 
-           root.name.lowercased().contains("pcmonitor") {
-            results.append(root)
+        // Check if this is a mesh entity with M_screen material
+        if root.name.hasSuffix("_mesh") {
+            if let modelComponent = root.components[ModelComponent.self],
+               modelComponent.materials.contains(where: { $0.name == "M_screen" }) {
+                // Find parent that contains "laptop" or "pcmonitor"
+                var current = root.parent
+                while let parent = current {
+                    if parent.name.lowercased().contains("laptop") || 
+                       parent.name.lowercased().contains("pcmonitor") {
+                        results.append((parent, root))
+                        break
+                    }
+                    current = parent.parent
+                }
+            }
         }
         
         // Search children
@@ -125,12 +136,26 @@ struct LabView: View {
         print("\n=== Configuring Interactive Devices ===")
         print("🔍 Found \(devices.count) potential interactive devices")
         
-        for device in devices {
-            print("⚙️ Configuring device: \(device.name)")
-            device.components[CollisionComponent.self] = CollisionComponent(shapes: [.generateBox(width: 0.1, height: 0.1, depth: 0.1)])
-            device.components[InputTargetComponent.self] = InputTargetComponent()
-            device.components[InteractiveDeviceComponent.self] = InteractiveDeviceComponent()
-            print("✅ Added components to: \(device.name)")
+        for (device, meshEntity) in devices {
+            print("⚙️ Adding hover effect to: \(device.name) with mesh: \(meshEntity.name)")
+            
+            // Find M_screen material in the mesh entity
+            if let modelComponent = meshEntity.components[ModelComponent.self],
+               modelComponent.materials.contains(where: { $0.name == "M_screen" }) {
+                
+                // Add hover effect with shader inputs
+                let hoverEffect = HoverEffectComponent(.shader(
+                    HoverEffectComponent.ShaderHoverEffectInputs(
+                        fadeInDuration: 0.3,
+                        fadeOutDuration: 0.2
+                    )
+                ))
+                device.components.set(hoverEffect)
+                
+                print("✅ Added hover effect to: \(device.name) using existing M_screen material")
+            } else {
+                print("⚠️ No M_screen material found in: \(meshEntity.name)")
+            }
         }
         
         print("🎯 Configured \(devices.count) interactive devices")
@@ -167,9 +192,15 @@ struct LabView: View {
             // Ensure library window starts closed
         }
         .onDisappear {
+            // Reset positioning when leaving view
+            if let entity = mainEntity,
+               var positioningComponent = entity.components[PositioningComponent.self] {
+                positioningComponent.needsPositioning = true
+                entity.components[PositioningComponent.self] = positioningComponent
+                print("🔄 Reset positioning for next lab entry")
+            }
             mainEntity?.removeFromParent()
             mainEntity = nil
-//            dismissWindow(id: AppModel.libraryWindowId)
             isSetupComplete = false
         }
         .task {

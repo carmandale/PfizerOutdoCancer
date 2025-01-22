@@ -212,6 +212,7 @@ public class ADCMovementSystem: System {
                     // Configure spatial audio characteristics
                     if var spatialAudio = entity.components[SpatialAudioComponent.self] {
                         spatialAudio.directivity = .beam(focus: 1.0)
+                        spatialAudio.gain = -3.0
                         entity.components[SpatialAudioComponent.self] = spatialAudio
                     }
                     

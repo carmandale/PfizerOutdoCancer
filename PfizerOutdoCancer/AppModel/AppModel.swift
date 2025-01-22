@@ -82,6 +82,22 @@ final class AppModel {
     /// Current phase of the app
     var currentPhase: AppPhase = .loading
     
+    // MARK: - Immersive Space Management
+    enum ImmersiveSpaceState {
+        case closed
+        case inTransition
+        case open
+    }
+    
+    enum DismissReason {
+        case manual    // Our code dismissed it
+        case system    // Digital Crown or system dismissed it
+    }
+    
+    var immersiveSpaceState: ImmersiveSpaceState = .closed
+    var immersiveSpaceDismissReason: DismissReason?
+    var triggerImmersiveSpace = false
+    
     var gameState: AttackCancerViewModel
     var isDebugWindowOpen = true
     var isHopeMeterUtilityWindowOpen = false
@@ -134,14 +150,6 @@ final class AppModel {
     var hasImmersiveSpace: Bool {
         return currentImmersiveSpace != nil
     }
-    
-    enum ImmersiveSpaceState {
-        case closed
-        case inTransition
-        case open
-    }
-    
-    var immersiveSpaceState: ImmersiveSpaceState = .closed
     
     // MARK: Start the Attack Cancer Game
     

@@ -17,10 +17,6 @@ public class PositioningSystem: System {
     private static var sharedAppModel: AppModel?
     private let systemId = UUID()
     
-    // Instance state tracking
-    private var isInitialized = false
-    private var hasPositioned = false
-    
     // Static method to set AppModel
     static func setAppModel(_ appModel: AppModel) {
         print("🔄 PositioningSystem.setAppModel called")
@@ -32,12 +28,8 @@ public class PositioningSystem: System {
         print("🎯 PositioningSystem \(systemId) initializing...")
     }
     
-    // Remove initializeTracking() - tracking is handled by TrackingSessionManager
-    
     // MARK: - System Update
     public func update(context: SceneUpdateContext) {
-        guard !hasPositioned else { return }
-        
         // Get device anchor from TrackingSessionManager's worldTrackingProvider
         guard let appModel = Self.sharedAppModel,
               case .running = appModel.trackingManager.worldTrackingProvider.state,
@@ -45,36 +37,35 @@ public class PositioningSystem: System {
             return
         }
         
-        // Position entities
-        if tryPositionEntities(deviceAnchor: deviceAnchor, context: context) {
-            hasPositioned = true
-            print("✅ Successfully positioned entities")
+        // Position entities that need positioning
+        for entity in context.entities(matching: Self.query, updatingSystemWhen: .rendering) {
+            guard var positioningComponent = entity.components[PositioningComponent.self],
+                  positioningComponent.needsPositioning else { continue }
+            
+            // Position the entity
+            if tryPositionEntity(entity: entity, component: &positioningComponent, deviceAnchor: deviceAnchor) {
+                // Mark as positioned
+                positioningComponent.needsPositioning = false
+                entity.components[PositioningComponent.self] = positioningComponent
+                print("✅ Successfully positioned entity: \(entity.name)")
+            }
         }
     }
     
     // MARK: - Entity Positioning
-    private func tryPositionEntities(deviceAnchor: DeviceAnchor, context: SceneUpdateContext) -> Bool {
+    private func tryPositionEntity(entity: Entity, component: inout PositioningComponent, deviceAnchor: DeviceAnchor) -> Bool {
         let deviceTransform = deviceAnchor.originFromAnchorTransform
         let translation = deviceTransform.translation()
         
-        var didPositionAny = false
+        let finalPosition = SIMD3<Float>(
+            translation.x + component.offsetX,
+            translation.y + component.offsetY,
+            translation.z + component.offsetZ
+        )
         
-        // Update all entities with PositioningComponent
-        for entity in context.entities(matching: Self.query, updatingSystemWhen: .rendering) {
-            guard let positioningComponent = entity.components[PositioningComponent.self] else { continue }
-            
-            let finalPosition = SIMD3<Float>(
-                translation.x + positioningComponent.offsetX,
-                translation.y + positioningComponent.offsetY,
-                translation.z + positioningComponent.offsetZ
-            )
-            
-            entity.setPosition(finalPosition, relativeTo: nil)
-            print("📍 Positioned entity '\(entity.name)' at \(finalPosition)")
-            didPositionAny = true
-        }
-        
-        return didPositionAny
+        entity.setPosition(finalPosition, relativeTo: nil)
+        print("📍 Positioned entity '\(entity.name)' at \(finalPosition)")
+        return true
     }
 }
 

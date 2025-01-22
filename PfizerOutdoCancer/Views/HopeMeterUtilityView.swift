@@ -17,50 +17,51 @@ struct HopeMeterUtilityView: View {
     }
     
     var body: some View {
-        VStack(spacing: 4) {
-            if !appModel.gameState.isHopeMeterRunning {
-                Button("Attack Cancer") {
-                    appModel.startAttackCancerGame()
-                }
-                .font(.title2)
-                .fontWeight(.bold)
-                .padding()
-                .glassBackgroundEffect()
-            } else {
-                Text("Hope Meter")
-                    .font(.system(size: fontSize))
-                    .bold()
-                
-                ZStack(alignment: .leading) {
-                    // Background rectangle
-                    RoundedRectangle(cornerRadius: height / 2)
-                        .fill(Color.gray.opacity(0.2))
-                        .frame(height: height)
-                    
-                    // Progress rectangle
-                    RoundedRectangle(cornerRadius: height / 2)
-                        .fill(Color.blue)
-                        .frame(width: 300 * progress, height: height)
-                        .animation(.linear(duration: 0.5), value: progress)
-                    
-                    // Percentage text
-                    Text("\(percentage)%")
+        if appModel.currentPhase == .playing {
+            VStack(spacing: 4) {
+                if !appModel.gameState.isHopeMeterRunning {
+                    Button("Start") {
+                        appModel.startAttackCancerGame()
+                    }
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .frame(width: 648)
+                    .padding()
+                } else {
+                    Text("Hope Meter")
                         .font(.system(size: fontSize))
                         .bold()
-                        .foregroundColor(.white)
-                        .shadow(color: .black, radius: 5)
-                        .frame(maxWidth: .infinity)
+                    
+                    ZStack(alignment: .leading) {
+                        // Background rectangle
+                        RoundedRectangle(cornerRadius: height / 2)
+                            .fill(Color.gray.opacity(0.2))
+                            .frame(height: height)
+                        
+                        // Progress rectangle
+                        RoundedRectangle(cornerRadius: height / 2)
+                            .fill(Color.blue)
+                            .frame(width: 648 * progress, height: height)
+                            .animation(.linear(duration: 0.5), value: progress)
+                        
+                        // Percentage text
+                        Text("\(percentage)%")
+                            .font(.system(size: fontSize))
+                            .bold()
+                            .foregroundColor(.white)
+//                            .shadow(color: .black, radius: 5)
+                            .frame(maxWidth: .infinity)
+                    }
+                    .frame(width: 648)
                 }
-                .frame(width: 300)
-                // .frame(width: 150)
-                .glassBackgroundEffect()
             }
+            .padding(20)
+            .glassBackgroundEffect()
         }
-        .padding()
     }
 }
 
-#Preview {
-    HopeMeterUtilityView()
-        .environment(AppModel())
-}
+//#Preview {
+//    HopeMeterUtilityView()
+//        .environment(AppModel())
+//}

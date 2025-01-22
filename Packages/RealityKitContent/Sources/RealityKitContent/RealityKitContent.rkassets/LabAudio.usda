@@ -804,15 +804,6 @@ def Xform "Root"
         }
     }
 
-    def "LabEnvironment_clean" (
-        active = false
-        references = @LabEnvironment.clean.usda@
-    )
-    {
-        float3 xformOp:scale = (1, 1, 1)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-    }
-
     def RealityKitAudioFile "Keyboard_1_wav"
     {
         uniform asset file = @Audio/Lab_Ambience/Keyboard_1.wav@

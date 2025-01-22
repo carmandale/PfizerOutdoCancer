@@ -135,7 +135,17 @@ struct PfizerOutdoCancerApp: App {
                         appModel.immersiveSpaceState = .open
                     }
                     .onDisappear {
-                        appModel.immersiveSpaceState = .closed
+                        if appModel.immersiveSpaceDismissReason == .manual {
+                            // We dismissed it, just update state
+                            appModel.immersiveSpaceState = .closed
+                        } else {
+                            // System dismissed it (Digital Crown), clean up
+                            Task {
+                                await cleanupAppState()
+                            }
+                        }
+                        // Reset for next time
+                        appModel.immersiveSpaceDismissReason = nil
                     }
             }
             .immersionStyle(selection: $appModel.introStyle, in: .mixed)
@@ -147,7 +157,17 @@ struct PfizerOutdoCancerApp: App {
                         appModel.immersiveSpaceState = .open
                     }
                     .onDisappear {
-                        appModel.immersiveSpaceState = .closed
+                        if appModel.immersiveSpaceDismissReason == .manual {
+                            // We dismissed it, just update state
+                            appModel.immersiveSpaceState = .closed
+                        } else {
+                            // System dismissed it (Digital Crown), clean up
+                            Task {
+                                await cleanupAppState()
+                            }
+                        }
+                        // Reset for next time
+                        appModel.immersiveSpaceDismissReason = nil
                     }
             }
             .immersionStyle(selection: $appModel.outroStyle, in: .mixed)
@@ -160,7 +180,17 @@ struct PfizerOutdoCancerApp: App {
                         appModel.immersiveSpaceState = .open
                     }
                     .onDisappear {
-                        appModel.immersiveSpaceState = .closed
+                        if appModel.immersiveSpaceDismissReason == .manual {
+                            // We dismissed it, just update state
+                            appModel.immersiveSpaceState = .closed
+                        } else {
+                            // System dismissed it (Digital Crown), clean up
+                            Task {
+                                await cleanupAppState()
+                            }
+                        }
+                        // Reset for next time
+                        appModel.immersiveSpaceDismissReason = nil
                     }
             }
             .immersionStyle(selection: $appModel.labStyle, in: .full)
@@ -174,7 +204,19 @@ struct PfizerOutdoCancerApp: App {
                         appModel.immersiveSpaceState = .open
                     }
                     .onDisappear {
-                        appModel.immersiveSpaceState = .closed
+                        if appModel.immersiveSpaceDismissReason == .manual {
+                            // We dismissed it, just update state
+                            appModel.immersiveSpaceState = .closed
+                        } else {
+                            // System dismissed it (Digital Crown), clean up
+                            Task {
+                                // Ensure builder instructions are closed first
+                                // appModel.isBuilderInstructionsOpen = false
+                                await cleanupAppState()
+                            }
+                        }
+                        // Reset for next time
+                        appModel.immersiveSpaceDismissReason = nil
                     }
             }
             .immersionStyle(selection: $appModel.buildingStyle, in: .mixed)
@@ -182,13 +224,22 @@ struct PfizerOutdoCancerApp: App {
             ImmersiveSpace(id: "AttackSpace") {
                 AttackCancerView()
                     .environment(appModel)
-//                    .environment(handTracking)
                     .environment(adcDataModel)
                     .onAppear {
                         appModel.immersiveSpaceState = .open
                     }
                     .onDisappear {
-                        appModel.immersiveSpaceState = .closed
+                        if appModel.immersiveSpaceDismissReason == .manual {
+                            // We dismissed it, just update state
+                            appModel.immersiveSpaceState = .closed
+                        } else {
+                            // System dismissed it (Digital Crown), clean up
+                            Task {
+                                await cleanupAppState()
+                            }
+                        }
+                        // Reset for next time
+                        appModel.immersiveSpaceDismissReason = nil
                     }
             }
             .immersionStyle(selection: $appModel.attackStyle, in: .progressive)
@@ -202,6 +253,7 @@ struct PfizerOutdoCancerApp: App {
                 Task {
                     if oldPhase.needsImmersiveSpace && !newPhase.shouldKeepPreviousSpace {
                         if appModel.immersiveSpaceState == .open {
+                            appModel.immersiveSpaceDismissReason = .manual
                             await dismissImmersiveSpace()
                         }
                     }
@@ -355,12 +407,12 @@ struct PfizerOutdoCancerApp: App {
             }
         }
         
-        // Show/hide hope meter utility window based on phase
-        if phase == .playing {
-            openWindow(id: AppModel.hopeMeterUtilityWindowId)
-        } else {
-            dismissWindow(id: AppModel.hopeMeterUtilityWindowId)
-        }
+        // // Show/hide hope meter utility window based on phase
+        // if phase == .playing {
+        //     openWindow(id: AppModel.hopeMeterUtilityWindowId)
+        // } else {
+        //     dismissWindow(id: AppModel.hopeMeterUtilityWindowId)
+        // }
 
         
         // Always dismiss the completed window if not in completed phase
@@ -385,6 +437,7 @@ struct PfizerOutdoCancerApp: App {
         
         // 1. Close immersive space if open
         if appModel.immersiveSpaceState == .open {
+            appModel.immersiveSpaceDismissReason = .manual
             await dismissImmersiveSpace()
             appModel.immersiveSpaceState = .closed
         }

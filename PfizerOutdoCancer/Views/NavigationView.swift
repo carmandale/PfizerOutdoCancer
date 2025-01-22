@@ -11,10 +11,11 @@ struct NavigationView: View {
     var body: some View {
         HStack(spacing: 16) {
             ForEach(buttonTitles.filter { phaseFor($0) != appModel.currentPhase }, id: \.self) { title in
-                NavigationButton(title: title) {
-                    await handleNavigation(for: title)
-                }
-                .frame(width: 150)
+                NavigationButton(
+                    title: title,
+                    action: { await handleNavigation(for: title) },
+                    width: 150
+                )
                 .glassBackgroundEffect()
             }
         }
@@ -48,26 +49,11 @@ struct NavigationView: View {
     }
 }
 
-struct NavigationButton: View {
-    let title: String
-    let action: () async -> Void
-    
-    var body: some View {
-        Button {
-            Task { await action() }
-        } label: {
-            Text(title)
-                .frame(maxWidth: .infinity)
-                .padding(16)
-        }
-//        .padding(16)
-        .buttonStyle(.plain)
-    }
-}
 
 
-#Preview {
-    NavigationView()
-        .environment(AppModel())
-        .environment(ADCDataModel())
-}
+
+//#Preview {
+//    NavigationView()
+//        .environment(AppModel())
+//        .environment(ADCDataModel())
+//}

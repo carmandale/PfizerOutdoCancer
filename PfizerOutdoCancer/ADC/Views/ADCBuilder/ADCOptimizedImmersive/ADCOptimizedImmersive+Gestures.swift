@@ -110,7 +110,7 @@ extension ADCOptimizedImmersive {
                         
                         if dataModel.linkersWorkingIndex >= (adcLinkers.count - 1) {
                             dataModel.adcBuildStep = 2
-                            dataModel.selectedPayloadType = 0
+                            dataModel.selectedPayloadType = nil
                         } else {
                             if let linkerEntity = self.linkerEntity,
                                let savedPosition = initialLinkerPosition {

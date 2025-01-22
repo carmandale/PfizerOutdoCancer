@@ -14,28 +14,28 @@ struct StartButton: View {
     @Environment(\.dismissWindow) private var dismissWindow
     
     var body: some View {
-        Button {
-            Task {
-                // Dismiss any open windows first
-                dismissWindow(id: AppModel.debugNavigationWindowId)
-                appModel.isDebugWindowOpen = false
-                
-                if !appModel.isMainWindowOpen {
-                    openWindow(id: AppModel.mainWindowId)
-                    appModel.isMainWindowOpen = true
+        NavigationButton(
+            title: "Start",
+            action: {
+                Task {
+                    // Dismiss any open windows first
+                    dismissWindow(id: AppModel.debugNavigationWindowId)
+                    appModel.isDebugWindowOpen = false
+                    
+                    if !appModel.isMainWindowOpen {
+                        openWindow(id: AppModel.mainWindowId)
+                        appModel.isMainWindowOpen = true
+                    }
+                    await appModel.transitionToPhase(.intro)
                 }
-                await appModel.transitionToPhase(.intro)
-            }
-        } label: {
-            Text("Start")
-                .font(.title)
-                .fontWeight(.bold)
-                .padding()
-                .frame(minWidth: 200)
-        }
+            },
+            font: .title,
+            scaleEffect: 1.2,
+            width: 200
+        )
+        .fontWeight(.bold)
         .glassBackgroundEffect()
         .controlSize(.extraLarge)
-        .buttonStyle(.plain)
     }
 }
 //#Preview {

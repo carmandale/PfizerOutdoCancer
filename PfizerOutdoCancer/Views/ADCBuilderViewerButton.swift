@@ -13,33 +13,28 @@ struct ADCBuilderViewerButton: View {
     @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
     
     var body: some View {
-        Button {
-            Task {
-                print("main window status: \(appModel.isMainWindowOpen)")
-                // if !appModel.isMainWindowOpen {
-                //     print("opening builder window")
-                //     print("current phase: \(appModel.currentPhase)")
-                //     print("opening main window")
-                //     openWindow(id: AppModel.mainWindowId)
-                //     appModel.isMainWindowOpen = true
-                // } else {
-                //     print("main window already open")
-                // }
-                print("builder window status: \(appModel.isBuilderInstructionsOpen)")
-                print("setting builder window status to true")
-                await appModel.transitionToPhase(.building)
-                appModel.isBuilderInstructionsOpen = true
-            }
-        } label: {
-            Text("ADC Builder")
-                .font(.title)
-                .fontWeight(.bold)
-                .padding()
-                .frame(minWidth: 200)
-        }
+        NavigationButton(
+            title: "ADC Builder",
+            action: {
+                Task {
+                    print("builder window status: \(appModel.isBuilderInstructionsOpen)")
+                    print("setting builder window status to true")
+                    await appModel.transitionToPhase(.building)
+                    appModel.isBuilderInstructionsOpen = true
+                }
+            },
+            font: .title,
+            scaleEffect: 1.1,
+            width: 200
+
+        )
+        .fontWeight(.bold)
         .glassBackgroundEffect()
         .controlSize(.extraLarge)
-        .buttonStyle(.plain)
+        .hoverEffect(.highlight)
+        .hoverEffect { effect, isActive, proxy in
+            effect.scaleEffect(!isActive ? 1.0 : 1.05)
+        }
     }
 }
 

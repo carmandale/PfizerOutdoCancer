@@ -4,10 +4,9 @@ import OSLog
 struct ADCBuilderView: View {
     @Environment(AppModel.self) private var appModel
     @Environment(ADCDataModel.self) var dataModel
-    @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
-    @Environment(\.openImmersiveSpace) private var openImmersiveSpace
     @Environment(\.openWindow) private var openWindow
     @Environment(\.dismissWindow) private var dismissWindow
+    @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
     
     let titles = ["Antibodies", "Linker", "Payload", "ADC Ready"]
     
@@ -125,32 +124,31 @@ struct ADCBuilderView: View {
             HStack(spacing: 30) {
                 Spacer()
                 if dataModel.adcBuildStep == 3 {
-                    Button {
-                        Task {
-                            // Log final color summary before attack
-                            os_log(.debug, "ADC Final Color Summary (Attack Button Pressed):")
-                            os_log(.debug, "- Antibody Color: \(dataModel.selectedADCAntibody ?? -1)")
-                            os_log(.debug, "- Linker Color: \(dataModel.selectedLinkerType ?? -1)")
-                            os_log(.debug, "- Payload Color: \(dataModel.selectedPayloadType ?? -1)")
-                            
-                            if !appModel.isMainWindowOpen {
-                                openWindow(id: AppModel.mainWindowId)
-                                appModel.isMainWindowOpen = true
-                                appModel.isInstructionsWindowOpen = true
+                    NavigationButton(
+                        title: "Attack Cancer",
+                        action: {
+                            Task {
+                                // Log final color summary before attack
+                                os_log(.debug, "ADC Final Color Summary (Attack Button Pressed):")
+                                os_log(.debug, "- Antibody Color: \(dataModel.selectedADCAntibody ?? -1)")
+                                os_log(.debug, "- Linker Color: \(dataModel.selectedLinkerType ?? -1)")
+                                os_log(.debug, "- Payload Color: \(dataModel.selectedPayloadType ?? -1)")
+                                
+                                if !appModel.isMainWindowOpen {
+                                    openWindow(id: AppModel.mainWindowId)
+                                    appModel.isMainWindowOpen = true
+                                    appModel.isInstructionsWindowOpen = true
+                                }
+                                await dismissImmersiveSpace()
+                                await appModel.transitionToPhase(.playing, adcDataModel: dataModel)
                             }
-                            await dismissImmersiveSpace()
-                            await appModel.transitionToPhase(.playing, adcDataModel: dataModel)
-                        }
-                    } label: {
-                        Text("Attack Cancer")
-                            .font(.headline)
-                            .foregroundColor(.white)
-                            .frame(width: 200, height: 50)
-                            .glassBackgroundEffect()
-//                            .background(Color(hex: 0x0000c9))
-//                            .clipShape(Capsule())
-                    }
-                    .buttonStyle(.plain)
+                        },
+                        font: .headline,
+                        scaleEffect: 1.1,
+                        width: 200
+                    )
+                    .fontWeight(.bold)
+                    .glassBackgroundEffect()
                 }
                 Spacer()
             }

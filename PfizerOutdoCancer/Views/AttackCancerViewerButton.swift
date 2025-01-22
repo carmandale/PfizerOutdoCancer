@@ -13,26 +13,29 @@ struct AttackCancerViewerButton: View {
     @Environment(\.openWindow) private var openWindow
     
     var body: some View {
-        Button {
-            Task {
-                if !appModel.isMainWindowOpen {
-                    openWindow(id: AppModel.mainWindowId)
-                    appModel.isMainWindowOpen = true
+        NavigationButton(
+            title: "Attack Cancer",
+            action: {
+                Task {
+                    if !appModel.isMainWindowOpen {
+                        openWindow(id: AppModel.mainWindowId)
+                        appModel.isMainWindowOpen = true
+                    }
+                    appModel.isInstructionsWindowOpen = true
+                    await appModel.transitionToPhase(.playing, adcDataModel: dataModel)
                 }
-                appModel.isInstructionsWindowOpen = true
-                await appModel.transitionToPhase(.playing, adcDataModel: dataModel)
-            }
-        } label: {
-            Text("Attack Cancer")
-                .font(.title)
-                .fontWeight(.bold)
-                .padding()
-                .frame(minWidth: 200)
-        }
-//        .padding()
+            },
+            font: .title,
+            scaleEffect: 1.1,
+            width: 250
+        )
+        .fontWeight(.bold)
         .glassBackgroundEffect()
         .controlSize(.extraLarge)
-        .buttonStyle(.plain)
+        .hoverEffect(.highlight)
+        .hoverEffect { effect, isActive, proxy in
+            effect.scaleEffect(!isActive ? 1.0 : 1.05)
+        }
     }
 }
 
