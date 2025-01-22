@@ -176,7 +176,7 @@ extension ADCOptimizedImmersive {
             
             linker.isEnabled = false
             linker.components.set(createLinkerGestureComponent(linkerEntity: linker, linkerTarget: adcLinkers[dataModel.linkersWorkingIndex]))
-            workingLinker.components.set(ADCProximityComponent(minScale: 0.2, maxScale: 1.0, minProximity: 0.1, maxProximity: 0.5))
+            workingLinker.components.set(ADCProximityComponent(minScale: 0.3, maxScale: 1.0, minProximity: 0.1, maxProximity: 0.5))
             
             payloadEntity = payload
             payload.isEnabled = false

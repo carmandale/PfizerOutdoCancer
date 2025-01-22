@@ -63,6 +63,10 @@ extension ADCOptimizedImmersive {
 //                os_log(.debug, "ITR..createLinkerGestureComponent(): LinkerEntity Position: \(currentPosition), \n     LinkerTargetPosition: \(targetPosition),    Distance: \(dist)")
                 if dist < 0.2 {
                     os_log(.debug, "ITR..createLinkerGestureComponent(): Entity \(finishedEntity.name) is close enough to the target linker, dataModel.linkersWorkingIndex: \(dataModel.linkersWorkingIndex)")
+                    // Set default color to 0 if none selected
+                    if dataModel.selectedLinkerType == nil {
+                        dataModel.selectedLinkerType = 0
+                    }
                     dataModel.selectedADCLinker = dataModel.selectedLinkerType
                     dataModel.placedLinkerCount += 1
                     Task { @MainActor in
@@ -169,6 +173,10 @@ extension ADCOptimizedImmersive {
 //                os_log(.debug, "ITR..createPayloadGestureComponent(): PayloadEntity Position: \(currentPosition), \n     PayloadTargetPosition: \(targetPosition),    Distance: \(dist)")
                 if dist < 0.2 {
                     os_log(.debug, "ITR..createPayloadGestureComponent(): Entity \(finishedEntity.name) is close enough to the target payload, dataModel.payloadsWorkingIndex: \(dataModel.payloadsWorkingIndex)")
+                    // Set default color to 0 if none selected
+                    if dataModel.selectedPayloadType == nil {
+                        dataModel.selectedPayloadType = 0
+                    }
                     dataModel.selectedADCPayload = dataModel.selectedPayloadType
                     Task { @MainActor in
                         await playPopSound()

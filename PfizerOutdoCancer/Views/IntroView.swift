@@ -183,12 +183,12 @@ struct IntroView: View {
         }
         
         // Portal fade (103s)
-        try? await Task.sleep(for: .seconds(5))
+        try? await Task.sleep(for: .seconds(0.0))
         if let p = portal {
             await p.fadeOpacity(to: 1.0, duration: 5.0)
             
             // Portal scale and title text (110s)
-            try? await Task.sleep(for: .seconds(10))
+            try? await Task.sleep(for: .seconds(5.0))
             if let portalPlane = p.findEntity(named: "portalPlane") {
                 await portalPlane.animateXScale(from: 0, to: 1.0, duration: 1.0)
             }
