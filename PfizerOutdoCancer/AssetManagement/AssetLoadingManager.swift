@@ -40,6 +40,7 @@ enum AssetError: Error {
     case resourceNotFound
     case criticalAssetsMissing(String)
     case materialNotFound
+    case protobufError(String)  // Add protobuf error case
     // Add other asset-related errors as needed
 }
 
@@ -206,12 +207,22 @@ final class AssetLoadingManager {
     
     /// Load an entity by name, using caching to avoid redundant loads
     func loadEntity(named name: String) async throws -> Entity {
+        // First attempt: Check cache and clone to ensure each usage gets its own instance
         if let cachedEntity = entityTemplates[name] {
             return cachedEntity.clone(recursive: true)
         }
 
-        // Only load, don't cache - caching should be handled by the caller
-        let entity = try await Entity(named: name, in: realityKitContentBundle)
-        return entity.clone(recursive: true)
+        do {
+            // Second attempt: Load from bundle and handle protobuf errors
+            let entity = try await Entity(named: name, in: realityKitContentBundle)
+            // Clone again to ensure the loaded entity is independent and can be used multiple times
+            return entity.clone(recursive: true)
+        } catch {
+            if error.localizedDescription.contains("protobuf") {
+                print("❌ Protobuf error loading \(name): \(error)")
+                throw AssetError.protobufError(name)
+            }
+            throw error
+        }
     }
 }
