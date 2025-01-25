@@ -19,8 +19,8 @@ struct StartButton: View {
             action: {
                 Task {
                     // Dismiss any open windows first
-                    dismissWindow(id: AppModel.debugNavigationWindowId)
-                    appModel.isDebugWindowOpen = false
+                    dismissWindow(id: AppModel.navWindowId)
+                    appModel.isNavWindowOpen = false
                     
                     if !appModel.isMainWindowOpen {
                         openWindow(id: AppModel.mainWindowId)

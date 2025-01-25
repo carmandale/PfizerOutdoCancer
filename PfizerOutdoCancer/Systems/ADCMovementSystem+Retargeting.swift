@@ -76,9 +76,9 @@ extension ADCMovementSystem {
         let parameters = stateComponent.parameters
         
         // Only log state changes
-        if parameters.hitCount > 0 {
-            print("📊 Cell \(cellID): \(parameters.hitCount)/\(parameters.requiredHits) hits")
-        }
+//        if parameters.hitCount > 0 {
+//            print("📊 Cell \(cellID): \(parameters.hitCount)/\(parameters.requiredHits) hits")
+//        }
         
         // Check if this is still our target cell and it's valid
         if parameters.cellID == cellID &&

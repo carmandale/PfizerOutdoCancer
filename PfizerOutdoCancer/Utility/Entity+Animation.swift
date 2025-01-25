@@ -64,6 +64,63 @@ extension Entity {
         }
     }
     
+    /// Animates uniform scale of an entity from a starting value to an end value over a duration
+    /// - Parameters:
+    ///   - from: Starting scale value (optional - uses current scale if nil)
+    ///   - to: Target scale value 
+    ///   - duration: Animation duration in seconds
+    ///   - delay: Optional delay before starting the animation (in seconds)
+    ///   - timing: Animation timing curve (default: cubicBezier with ease-in-out control points)
+    ///   - waitForCompletion: If true, waits for the animation to complete before returning
+    func animateScale(from start: Float? = nil,
+                     to end: Float,
+                     duration: TimeInterval,
+                     delay: TimeInterval = 0,
+                     timing: RealityKit.AnimationTimingFunction = .cubicBezier(controlPoint1: SIMD2<Float>(1.0, 0), controlPoint2: SIMD2<Float>(0.6, 1)),
+                     waitForCompletion: Bool = false) async {
+        // Handle delay first, even for immediate changes
+        if delay > 0 {
+            try? await Task.sleep(for: .seconds(delay))
+        }
+        
+        // For non-animated changes (duration = 0), set immediately
+        guard duration > 0 else {
+            var newTransform = transform
+            newTransform.scale = .init(repeating: end)
+            transform = newTransform
+            return
+        }
+        
+        // Build and play the animation
+        let startTransform = transform
+        var endTransform = transform
+        endTransform.scale = .init(repeating: end)
+        
+        let scaleAnimation = FromToByAnimation(
+            from: startTransform,
+            to: endTransform,
+            duration: duration,
+            timing: timing,
+            bindTarget: .transform
+        )
+        
+        do {
+            let resource = try AnimationResource.generate(with: scaleAnimation)
+            playAnimation(resource)
+            
+            // Optionally wait for the animation to complete
+            if waitForCompletion {
+                try? await Task.sleep(for: .seconds(duration))
+            }
+        } catch {
+            print("⚠️ Could not generate scale animation: \(error.localizedDescription)")
+            // Fall back to immediate change
+            var newTransform = transform
+            newTransform.scale = .init(repeating: end)
+            transform = newTransform
+        }
+    }
+    
     /// Animates the z-position of an entity relative to its current position
     /// - Parameters:
     ///   - to: Distance to move in z direction (positive = forward, negative = backward)

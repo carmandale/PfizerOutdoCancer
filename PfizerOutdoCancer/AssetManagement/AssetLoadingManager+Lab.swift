@@ -13,11 +13,6 @@ extension AssetLoadingManager {
                 print("Loading base LabEnvironment")
                 let labEnvironmentScene = try await self.loadEntity(named: "LabEnvironment")
                 await assetRoot.addChild(labEnvironmentScene)
-
-                // Load lab environment audio
-//                print("Loading base LabEnvironment audio")
-//                let labEnvironmentAudioScene = try await self.loadEntity(named: "LabAudio")
-//                await assetRoot.addChild(labEnvironmentAudioScene)
                 
                 // Load and add lab equipment
                 print("Assembling lab equipment")
@@ -27,6 +22,9 @@ extension AssetLoadingManager {
                 // Setup IBL lighting
                 print("Setting up IBL lighting")
                 try await IBLUtility.addImageBasedLighting(to: assetRoot, imageName: "lab_v005")
+                
+                // Store the actual environment
+                await self.setLaboratory(assetRoot)
                 
                 print("Successfully assembled complete LabEnvironment")
                 return .success(entity: assetRoot, key: "lab_environment", category: .labEnvironment)
@@ -48,6 +46,21 @@ extension AssetLoadingManager {
             } catch {
                 print("Failed to load Lab VO: \(error)")
                 return .failure(key: "lab_vo", category: .labEnvironment, error: error)
+            }
+        }
+        taskCount += 1
+    }
+    
+    internal func loadLabAudio(group: inout ThrowingTaskGroup<LoadResult, Error>, taskCount: inout Int) {
+        group.addTask {
+            print("Starting to load Lab Audio")
+            do {
+                let entity = try await Entity(named: "LabAudio", in: realityKitContentBundle)
+                print("Successfully loaded Lab Audio")
+                return .success(entity: entity, key: "lab_audio", category: .labEnvironment)
+            } catch {
+                print("Failed to load Lab Audio: \(error)")
+                return .failure(key: "lab_audio", category: .labEnvironment, error: error)
             }
         }
         taskCount += 1

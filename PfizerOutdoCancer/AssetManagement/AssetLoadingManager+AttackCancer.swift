@@ -19,8 +19,8 @@ extension AssetLoadingManager {
                 let attackCancerScene = try await self.loadEntity(named: "AttackCancerEnvironment")
                 await assetRoot.addChild(attackCancerScene)
                 
-                // Add IBL
-//                try await IBLUtility.addImageBasedLighting(to: assetRoot, imageName: "metro_noord_2k")
+                // Store the actual environment
+                await self.setAttackCancerEnvironment(assetRoot)
                 
                 print("Successfully assembled AttackCancerEnvironment")
                 return .success(entity: assetRoot, key: "attack_cancer_environment", category: .attackCancerEnvironment)

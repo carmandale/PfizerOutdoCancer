@@ -15,6 +15,9 @@ extension AssetLoadingManager {
                 let introEnvironmentScene = try await self.loadEntity(named: "IntroEnvironment")
                 await assetRoot.addChild(introEnvironmentScene)
                 
+                // Store the actual environment
+                await self.setIntroEnvironment(assetRoot)
+                
                 // print("Loading intro ADC particles")
                 // let introADCparticles = try await self.loadEntity(named: "Assets/Intro/ADC_particles")
                 // await assetRoot.addChild(introADCparticles)

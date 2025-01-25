@@ -102,7 +102,9 @@ def Xform "Root"
                 }
             }
 
-            over "Text"
+            over "Text" (
+                active = false
+            )
             {
                 quatf xformOp:orient = (0.7071068, 0.7071067, 0, 0)
                 float3 xformOp:scale = (0.6, 0.6, 0.2)
@@ -320,7 +322,7 @@ def Xform "Root"
                 double duration = 3
                 uniform token info:id = "B9909091-242F-45E0-8950-944DE56ED7D2"
                 double startTime = 17.649022548317813
-                rel target = </Root/hope_MSR/hope_v01/change_v01>
+                rel target = </Root/change_v02>
 
                 def RealityKitStruct "timingFunction"
                 {
@@ -334,7 +336,7 @@ def Xform "Root"
                 double duration = 5
                 uniform token info:id = "9061809B-17C1-4C50-AAAB-47873BEBF1F0"
                 double startTime = 21.22208992483894
-                rel target = </Root/hope_MSR/hope_v01/change_v01>
+                rel target = </Root/change_v02>
 
                 def RealityKitStruct "timingFunction"
                 {
@@ -363,7 +365,7 @@ def Xform "Root"
                 int blendLayer = 300
                 double duration = 3
                 uniform token info:id = "1C9603F0-26E1-4251-93A9-63998D4566C6"
-                double startTime = 34.04010171857037
+                double startTime = 31.477796600460124
                 rel target = </Root/hope_MSR/hope_v01/sh0200_tagline_v01>
 
                 def RealityKitStruct "timingFunction"
@@ -568,8 +570,16 @@ def Xform "Root"
             }
         }
 
-        over "sh0100_v01_portalWarp3"
+        over "sh0100_v01_portalWarp3" (
+            customData = {
+                float3 rotationEulerHint = (-1.5707964, 0, 0)
+            }
+        )
         {
+            quatf xformOp:orient = (0.70710677, -0.70710677, 0, 0)
+            float3 xformOp:scale = (3.075441, 3.075441, 3.075441)
+            float3 xformOp:translate = (0, 1.4999999, 1.7763568e-15)
+
             over "PortalWarp3"
             {
                 over "portalMesh"
@@ -627,9 +637,10 @@ def Xform "Root"
     }
 
     def RealityKitMeshSortingGroup "Model_Sorting_Group" (
-        active = true
+        active = false
     )
     {
+        token depthPass = "prePass"
     }
 
     def "ADC_particles" (
@@ -947,6 +958,68 @@ def Xform "Root"
             float gain = 0
             bool mute = 0
             float speed = 1
+        }
+    }
+
+    def "change_v02" (
+        active = true
+        customData = {
+            float3 rotationEulerHint = (-1.5707964, 0, 0)
+        }
+        references = @Assets/Outro/change_v03.usdc@
+    )
+    {
+        quatf xformOp:orient = (0.70710677, -0.7071068, 0, 0)
+        float3 xformOp:scale = (1.45, 1.45, 1.45)
+        float3 xformOp:translate = (-0.0000017862767, -8.698553e-7, -11.545573)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "HierarchicalFade"
+        {
+            uniform token info:id = "RealityKit.HierarchicalFade"
+            float opacity = 1
+        }
+
+        over "change_MSR"
+        {
+            over "Text_006"
+            {
+                over "Text_005"
+                {
+                    def RealityKitComponent "MeshSorting"
+                    {
+                        rel group = </Root/Model_Sorting_Group>
+                        token info:id = "RealityKit.MeshSorting"
+                        int priorityInGroup = 7
+                    }
+                }
+            }
+
+            over "Text_007"
+            {
+                over "Text_006"
+                {
+                    def RealityKitComponent "MeshSorting"
+                    {
+                        rel group = </Root/Model_Sorting_Group>
+                        token info:id = "RealityKit.MeshSorting"
+                        int priorityInGroup = 8
+                    }
+                }
+            }
+
+            over "Text_008"
+            {
+                over "Text_007"
+                {
+                    def RealityKitComponent "MeshSorting"
+                    {
+                        rel group = </Root/Model_Sorting_Group>
+                        token info:id = "RealityKit.MeshSorting"
+                        int priorityInGroup = 9
+                    }
+                }
+            }
         }
     }
 }

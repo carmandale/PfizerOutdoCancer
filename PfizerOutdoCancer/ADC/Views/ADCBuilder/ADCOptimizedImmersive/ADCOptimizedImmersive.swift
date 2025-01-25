@@ -9,6 +9,11 @@ struct ADCOptimizedImmersive: View {
     @Environment(AppModel.self) var appModel
     @Environment(ADCDataModel.self) var dataModel
     
+    // Audio system
+    @State internal var bubblePopSound = false
+    // System 2 (disabled)
+    //@State internal var audioStorage: ADCAudioStorage?
+    
     @State var mainEntity: Entity?
     @State var mainViewEntity = Entity()
     @State var antibodyRootEntity: Entity?
@@ -37,18 +42,16 @@ struct ADCOptimizedImmersive: View {
     @State var shouldAddMainViewAttachment: Bool = false
     
     @State var refreshFlag = false
-    @State var bubblePopSound = false
     
     @State var popAudioFileResource: AudioFileResource?
+    @State var audioEntity: Entity = Entity()
+    @State var currentVOController: AudioPlaybackController?
     @State var popAudioPlaybackController: AudioPlaybackController?
     
     @State var vo1Audio: AudioFileResource?
     @State var vo2Audio: AudioFileResource?
     @State var vo3Audio: AudioFileResource?
     @State var vo4Audio: AudioFileResource?
-    
-    @State var audioEntity: Entity = Entity()
-    @State var currentVOController: AudioPlaybackController?
     
     @State var timer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
     @State var isCameraInitialized = false
@@ -81,14 +84,18 @@ struct ADCOptimizedImmersive: View {
         let contentRef = content
             Task { @MainActor in
                 reset()
-
+                
                 let masterEntity = Entity()
                 self.mainEntity = masterEntity
+                #if targetEnvironment(simulator)
+                masterEntity.position = SIMD3<Float>(0.125, 1.5, -1.0)
+                #else
                 masterEntity.components.set(PositioningComponent(
                     offsetX: 0.125,
                     offsetY: 0,
                     offsetZ: -1.0
                 ))
+                #endif
                 masterEntity.name = "MainEntity"
                 contentRef.add(masterEntity)
                 
@@ -102,7 +109,18 @@ struct ADCOptimizedImmersive: View {
                 // Now that attachments are set up, prepare audio
                 await prepareAudioEntities()
                 
-                // Play initial VO immediately after preparing audio
+                // Initialize new audio system (disabled)
+                /*do {
+                    let storage = ADCAudioStorage()
+                    try await storage.prepareAudio(for: masterEntity)
+                    self.audioStorage = storage
+                    
+                    // Play initial VO
+                    await storage.playVoiceOver(.voiceOver1)
+                } catch {
+                    os_log(.error, "ITR..ADCOptimizedImmersive: ❌ Failed to setup audio: \(error)")
+                }*/
+                
                 playSpatialAudio(step: 0)
                 
                 shouldAddADCAttachment = true
@@ -121,9 +139,10 @@ struct ADCOptimizedImmersive: View {
         }
         .installGestures()
         .onAppear {
-            dismissWindow(id: AppModel.debugNavigationWindowId)
+            dismissWindow(id: AppModel.navWindowId)
         }
         .onDisappear {
+            //audioStorage?.cleanup() // Clean up new audio system (disabled)
             mainEntity?.removeFromParent()
             mainEntity = nil
         }
@@ -155,6 +174,9 @@ struct ADCOptimizedImmersive: View {
                     self.linkerEntity?.isEnabled = false
                     self.linkerAttachmentEntity?.isEnabled = false
                     self.payloadEntity?.isEnabled = false
+                    // Ensure all payloads are disabled in step 0
+                    self.adcPayloadsInner.forEach { $0.isEnabled = false }
+                    self.adcPayloadsOuter.forEach { $0.isEnabled = false }
                 case 1:
                     os_log(.debug, "ITR.. ✅ ADC build step 1 - checkmark to move past antibody to linker")
                     self.antibodyRootEntity?.components.remove(ADCGestureComponent.self)
@@ -320,28 +342,13 @@ struct ADCOptimizedImmersive: View {
             }
         }
         .onChange(of: bubblePopSound) { oldValue, newValue in
+            os_log(.debug, "ITR..onChange(bubblePopSound): 🔊 SYSTEM 1 - Playing through popAudioPlaybackController")
             self.popAudioPlaybackController?.play()
         }
 
     }
     
     // MARK: - Preparation
-    
-    
-    func reset() {
-        os_log(.debug, "ITR..reset() called")
-        dataModel.selectedADCAntibody = nil
-        dataModel.selectedADCLinker = nil
-        dataModel.selectedADCPayload = nil
-        dataModel.selectedLinkerType = nil
-        dataModel.selectedPayloadType = nil
-        dataModel.linkersWorkingIndex = 0
-        dataModel.payloadsWorkingIndex = 0
-        dataModel.placedLinkerCount = 0
-        dataModel.placedPayloadCount = 0
-    }
-    
-    
     
     private func handleAntibodyColorChange(newValue: Int?) {
         Task { @MainActor in

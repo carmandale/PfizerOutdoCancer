@@ -23,9 +23,6 @@ public class ADCMovementSystem: System {
     static let maxBankAngle: Float = .pi / 8  // Reduced maximum banking angle
     static let bankingSmoothingFactor: Float = 6.0  // New parameter for banking smoothing
     
-    // Spin configuration
-    static let proteinSpinSpeed: Float = Float.random(in: 8.0...10.0)  // Random spin speed between 8-15
-    
     // Acceleration parameters
     static let accelerationPhase: Float = 0.2  // First 20% of movement
     static let decelerationPhase: Float = 0.2  // Last 20% of movement
@@ -124,11 +121,11 @@ public class ADCMovementSystem: System {
 //                    print("Initial velocity: \(cellPhysics.linearVelocity)")
                     
                     // Apply impulse
-                    cellPhysics.linearVelocity += impactDirection * 0.05
+                    cellPhysics.linearVelocity += impactDirection * 2.0 // 0.05
                     
                     // Add random angular velocity around Y axis
                     let randomSign: Float = Bool.random() ? 1.0 : -1.0
-                    cellPhysics.angularVelocity += SIMD3<Float>(0, randomSign * 0.1, 0)
+                    cellPhysics.angularVelocity += SIMD3<Float>(0, randomSign * 2.1, 0)
                     
 //                    print("New velocity: \(cellPhysics.linearVelocity)")
 //                    print("New angular velocity: \(cellPhysics.angularVelocity)")
@@ -212,7 +209,7 @@ public class ADCMovementSystem: System {
                     // Configure spatial audio characteristics
                     if var spatialAudio = entity.components[SpatialAudioComponent.self] {
                         spatialAudio.directivity = .beam(focus: 1.0)
-                        spatialAudio.gain = -3.0
+                        spatialAudio.gain = -6.0
                         entity.components[SpatialAudioComponent.self] = spatialAudio
                     }
                     
@@ -233,7 +230,7 @@ public class ADCMovementSystem: System {
                     stateComponent.parameters.hitCount += 1
                     stateComponent.parameters.wasJustHit = true
                     
-                    print("Incremented hit count for cell \(cellID) to \(stateComponent.parameters.hitCount)")
+//                    print("Incremented hit count for cell \(cellID) to \(stateComponent.parameters.hitCount)")
                 }
             } else {
                 // Calculate current position on curve using Bezier curve
@@ -306,18 +303,14 @@ public class ADCMovementSystem: System {
             // Start drone sound
             // if let audioComponent = entity.components[AudioLibraryComponent.self],
             //    let droneSound = audioComponent.resources["Drones_01.wav"] {
-            //     // Play audio through entity (will automatically use spatial audio component)
-            //     entity.playAudio(droneSound)
-                
-            //     // Configure spatial audio characteristics if needed
+            //     // Configure spatial audio characteristics before playing
             //     if var spatialAudio = entity.components[SpatialAudioComponent.self] {
-            //         spatialAudio.directivity = .beam(focus: 1.0)  // Following the same pattern as ADCOptimizedImmersive
+            //         spatialAudio.directivity = .beam(focus: 1.0)
             //         entity.components[SpatialAudioComponent.self] = spatialAudio
-                    
-            //         // Debug: Inspect entity to verify spatial audio setup
-            //         // print("🔊 Inspecting ADC entity for spatial audio setup:")
-            //         // AssetLoadingManager.shared.inspectEntityHierarchy(entity)
             //     }
+                
+            //     // Play audio through entity
+            //     entity.playAudio(droneSound)
             // }
         }
     }
@@ -328,8 +321,9 @@ public class ADCMovementSystem: System {
     }
     
     private static func updateProteinSpin(entity: Entity, deltaTime: TimeInterval) {
-        if let proteinComplex = entity.findEntity(named: "antibodyProtein_complex") {
-            let spinRotation = simd_quatf(angle: Float(deltaTime) * proteinSpinSpeed, axis: [-1, 0, 0])
+        if let proteinComplex = entity.findEntity(named: "antibodyProtein_complex"),
+           let adcComponent = entity.components[ADCComponent.self] {
+            let spinRotation = simd_quatf(angle: Float(deltaTime) * adcComponent.proteinSpinSpeed, axis: [-1, 0, 0])
             proteinComplex.orientation = proteinComplex.orientation * spinRotation
         }
     }
@@ -337,24 +331,20 @@ public class ADCMovementSystem: System {
     /// Finds the parent cancer cell entity for an attachment point by querying all cancer cells
     /// and checking if any are ancestors of the given entity
     static func findParentCancerCell(for attachmentPoint: Entity, in scene: Scene) -> Entity? {
-        print("\n=== Finding Parent Cancer Cell ===")
-        print("Starting from attachment point: \(attachmentPoint.name)")
+//        print("\n=== Finding Parent Cancer Cell ===")
+//        print("Starting from attachment point: \(attachmentPoint.name)")
         
         var current = attachmentPoint
         while let parent = current.parent {
-            print("Checking parent: \(parent.name)")
+//            print("Checking parent: \(parent.name)")
             
-            if let stateComponent = parent.components[CancerCellStateComponent.self] {
-                print("✅ Found cancer cell with state component")
-                print("Cell ID: \(String(describing: stateComponent.parameters.cellID))")
-                print("Hit Count: \(stateComponent.parameters.hitCount)")
-                print("Is Destroyed: \(stateComponent.parameters.isDestroyed)")
+            if parent.components[CancerCellStateComponent.self] != nil {
                 return parent
             }
             current = parent
         }
         
-        print("❌ No parent cancer cell found")
+//        print("❌ No parent cancer cell found")
         return nil
     }
     
@@ -393,18 +383,14 @@ public class ADCMovementSystem: System {
         // Start drone sound
         if let audioComponent = entity.components[AudioLibraryComponent.self],
            let droneSound = audioComponent.resources["Drones_01.wav"] {
-            // Play audio through entity (will automatically use spatial audio component)
-            entity.playAudio(droneSound)
-            
-            // Configure spatial audio characteristics if needed
+            // Configure spatial audio characteristics before playing
             if var spatialAudio = entity.components[SpatialAudioComponent.self] {
-                spatialAudio.directivity = .beam(focus: 1.0)  // Following the same pattern as ADCOptimizedImmersive
+                spatialAudio.directivity = .beam(focus: 1.0)
                 entity.components[SpatialAudioComponent.self] = spatialAudio
-                
-                // // Debug: Inspect entity to verify spatial audio setup
-                // print("🔊 Inspecting ADC entity for spatial audio setup:")
-                // AssetLoadingManager.shared.inspectEntityHierarchy(entity)
             }
+            
+            // Play audio through entity
+            entity.playAudio(droneSound)
         }
     }
 }

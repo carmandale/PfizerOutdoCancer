@@ -33,8 +33,6 @@
 				ADC/ECS/log,
 				Info.plist,
 				"Preview Content/Preview Assets.xcassets",
-				"Views/IntroView 2.swift",
-				Views/IntroView.backup.swift,
 			);
 			target = 883ED1532D15E5C80015B5FD /* PfizerOutdoCancer */;
 		};

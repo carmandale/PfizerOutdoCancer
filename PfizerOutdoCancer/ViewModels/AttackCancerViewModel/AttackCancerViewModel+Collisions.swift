@@ -54,14 +54,14 @@ extension AttackCancerViewModel {
         // Handle ADC-to-cell collisions
         if let _ = entities.itemA.components[ADCComponent.self],
            let _ = entities.itemB.components[CancerCellStateComponent.self] {
-            handleADCToCellCollision(adc: entities.itemA, cell: entities.itemB)
+            handleADCToCellCollision(adc: entities.itemA, cell: entities.itemB, collision: event)
         } else if let _ = entities.itemB.components[ADCComponent.self],
                   let _ = entities.itemA.components[CancerCellStateComponent.self] {
-            handleADCToCellCollision(adc: entities.itemB, cell: entities.itemA)
+            handleADCToCellCollision(adc: entities.itemB, cell: entities.itemA, collision: event)
         }
     }
     
-    private func handleADCToCellCollision(adc: Entity, cell: Entity) {
+    private func handleADCToCellCollision(adc: Entity, cell: Entity, collision: CollisionEvents.Began) {
         guard let stateComponent = cell.components[CancerCellStateComponent.self],
               let cellID = stateComponent.parameters.cellID,
               let parameters = cellParameters.first(where: { $0.cellID == cellID }) else {
@@ -75,6 +75,33 @@ extension AttackCancerViewModel {
         // Update parameters (source of truth)
         parameters.hitCount += 1
         parameters.wasJustHit = true
+        
+        // Apply scaled physics impact if enabled
+        if parameters.physicsEnabled {
+            // Scale the collision impulse based on the cell's impact scale, then reduce to 10%
+            let scaledImpulse = collision.impulse * parameters.impactScale * 0.1
+            
+            // Store impact values in parameters for reference (logging, analytics, etc.)
+            parameters.linearVelocity = collision.impulseDirection * scaledImpulse
+            
+            // Calculate angular velocity based on impulse
+            let randomRotation = SIMD3<Float>(
+                Float.random(in: -1...1),
+                Float.random(in: -1...1),
+                Float.random(in: -1...1)
+            )
+            parameters.angularVelocity = normalize(randomRotation) * (scaledImpulse * 2.0)
+            
+            // NEW: actually apply the impulse to the cell's PhysicsMotionComponent
+            var motion = cell.components[PhysicsMotionComponent.self] ?? PhysicsMotionComponent()
+            motion.linearVelocity += collision.impulseDirection * scaledImpulse
+            motion.angularVelocity += normalize(randomRotation) * (scaledImpulse * 2.0)
+            cell.components.set(motion)
+            
+            if parameters.isTutorialCell {
+                print("Tutorial cell impact - using scale: \(parameters.impactScale), impulse: \(scaledImpulse)")
+            }
+        }
         
         print("New hit count: \(parameters.hitCount)")
         print("Required hits: \(parameters.requiredHits)")

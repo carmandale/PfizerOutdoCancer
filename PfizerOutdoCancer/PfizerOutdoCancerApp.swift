@@ -90,7 +90,7 @@ struct PfizerOutdoCancerApp: App {
         .persistentSystemOverlays(appModel.isLibraryWindowOpen ? .visible : .hidden)
 
 
-        WindowGroup(id: AppModel.debugNavigationWindowId) {
+        WindowGroup(id: AppModel.navWindowId) {
             NavigationView()
                 .environment(appModel)
                 .environment(adcDataModel)
@@ -340,7 +340,7 @@ struct PfizerOutdoCancerApp: App {
     @MainActor
     private func handleWindowsForPhase(_ phase: AppPhase) async {
         print("🎯 Managing windows for phase: \(phase)")
-        print("📊 Before state update - Debug window open: \(appModel.isDebugWindowOpen)")
+        print("📊 Before state update - nav window open: \(appModel.isNavWindowOpen)")
         
         // First, update model state
         switch phase {
@@ -356,54 +356,54 @@ struct PfizerOutdoCancerApp: App {
                 openWindow(id: AppModel.mainWindowId)
                 appModel.isMainWindowOpen = true
             }
-            if appModel.isDebugWindowOpen {
-                dismissWindow(id: AppModel.debugNavigationWindowId)
-                appModel.isDebugWindowOpen = false
+            if appModel.isNavWindowOpen {
+                dismissWindow(id: AppModel.navWindowId)
+                appModel.isNavWindowOpen = false
             }
             
         case .intro:
             // Handle other windows
-            if !appModel.isDebugWindowOpen {
-                openWindow(id: AppModel.debugNavigationWindowId)
-                appModel.isDebugWindowOpen = true
+            if !appModel.isNavWindowOpen {
+                openWindow(id: AppModel.navWindowId)
+                appModel.isNavWindowOpen = true
             }
         case .playing:
-            // Explicitly dismiss debug window first
-            if appModel.isDebugWindowOpen {
-                dismissWindow(id: AppModel.debugNavigationWindowId)
-                appModel.isDebugWindowOpen = false
+            // Explicitly dismiss nav window first
+            if appModel.isNavWindowOpen {
+                dismissWindow(id: AppModel.navWindowId)
+                appModel.isNavWindowOpen = false
             }
             // No need for default case handling
             return  // Add explicit return to prevent falling through to default
             
         case .completed:
-            if !appModel.isDebugWindowOpen {
-                openWindow(id: AppModel.debugNavigationWindowId)
-                appModel.isDebugWindowOpen = true
+            if !appModel.isNavWindowOpen {
+                openWindow(id: AppModel.navWindowId)
+                appModel.isNavWindowOpen = true
             }
             dismissWindow(id: AppModel.hopeMeterUtilityWindowId)
             openWindow(id: AppModel.mainWindowId)
             
         case .lab:
 
-            if !appModel.isDebugWindowOpen {
-                openWindow(id: AppModel.debugNavigationWindowId)
-                appModel.isDebugWindowOpen = true
+            if !appModel.isNavWindowOpen {
+                openWindow(id: AppModel.navWindowId)
+                appModel.isNavWindowOpen = true
             }
         case .building:
-            if appModel.isDebugWindowOpen {
-                print("closing debug window")
-                dismissWindow(id: AppModel.debugNavigationWindowId)
-                appModel.isDebugWindowOpen = false
+            if appModel.isNavWindowOpen {
+                print("closing nav window")
+                dismissWindow(id: AppModel.navWindowId)
+                appModel.isNavWindowOpen = false
             }
         default:
             if !appModel.isMainWindowOpen {
                 openWindow(id: AppModel.mainWindowId)
                 appModel.isMainWindowOpen = true
             }
-            if appModel.isDebugWindowOpen {
-                dismissWindow(id: AppModel.debugNavigationWindowId)
-                appModel.isDebugWindowOpen = false
+            if appModel.isNavWindowOpen {
+                dismissWindow(id: AppModel.navWindowId)
+                appModel.isNavWindowOpen = false
             }
         }
         
@@ -422,7 +422,7 @@ struct PfizerOutdoCancerApp: App {
         
         print("📊 Window states after update:")
         print("  Main: \(appModel.isMainWindowOpen)")
-        print("  Debug: \(appModel.isDebugWindowOpen)")
+        print("  Debug: \(appModel.isNavWindowOpen)")
         print("  Library: \(appModel.isLibraryWindowOpen)")
         print("  Builder: \(appModel.isBuilderWindowOpen)")
         print("  Phases:")

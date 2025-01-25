@@ -78,7 +78,7 @@ struct AttackCancerInstructionsView: View {
                     Button(action: {
                         if !appModel.isTutorialStarted {
                             print("🎓 Starting tutorial sequence...")
-                            appModel.startTutorial()
+                            appModel.isTutorialStarted = true
                             appModel.isInstructionsWindowOpen = false
                             dismiss()
                         } else {

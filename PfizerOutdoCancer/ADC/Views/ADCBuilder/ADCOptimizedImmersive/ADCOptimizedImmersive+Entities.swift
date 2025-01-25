@@ -6,56 +6,65 @@ import OSLog
 
 extension ADCOptimizedImmersive {
     func prepareAntibodyEntities() {
-        guard let antibodyRoot = antibodyRootEntity else { return }
+        guard let antibodyRoot = antibodyRootEntity else { 
+            os_log(.error, "ITR..prepareAntibodyEntities(): ❌ No antibody root entity")
+            return 
+        }
         
         if let antibody = antibodyRoot.findModelEntity(named: "ADC_complex") {
             self.antibodyEntity = antibody
             antibody.isEnabled = false
             
-            // antibodyRoot.scale *= 2
-            self.mainEntity?.addChild(antibodyRoot)
-            
-            // Set initial position
-            antibodyRoot.position = antibodyRoot.position + antibodyRootOffset
-            
-            // Add mainViewEntity as child of antibodyRoot
-            mainViewEntity.position = mainViewEntity.position + antibodyAttachmentOffset  // 0.5 meters to the left
-            antibodyRoot.addChild(mainViewEntity)
-            
-            // Keep existing components
-//            let billboard = ADCBillboardComponent(offset: [0,-0.2,-0.6],
-//                                               axisToFollow: [0,1,0],
-//                                               initializePositionOnlyOnce: true,
-//                                               isBillboardEnabled: false)
-            // antibodyRoot.components.set(billboard)
-            antibodyRoot.components.set(createGestureComponent())
-            
-            // Keep existing orientation
-            // let angleDegrees: Float = 30
-            // let angleRadians: Float = angleDegrees * (.pi / 180)
-            // antibodyRoot.orientation = simd_quatf(angle: angleRadians, axis: [0, 0, 1]) * antibodyRoot.orientation
-            
-            // Keep audio setup
-            if let resource = popAudioFileResource {
-                self.popAudioPlaybackController = popAudioEntity?.prepareAudio(resource)
-            }
-            
-            // Store original material
-            if let originalMaterial = antibody.components[ModelComponent.self]?.materials.first as? ShaderGraphMaterial {
-                self.originalAntibodyMaterial = originalMaterial
-                os_log(.debug, "ITR..prepareAntibodyEntities(): ✅ Stored original antibody material")
-            }
-            
-            // Apply outline material
-            if let material = outlineMaterial {
-                if var modelComponent = antibody.components[ModelComponent.self] {
+            // Add to main entity with proper hierarchy
+            if let mainEntity = self.mainEntity {
+                mainEntity.addChild(antibodyRoot)
+                
+                // Set initial position with proper transform
+                antibodyRoot.position = antibodyRoot.position + antibodyRootOffset
+                antibodyRoot.transform.translation = [antibodyRoot.transform.translation.x,
+                                                   antibodyRoot.transform.translation.y,
+                                                   antibodyRoot.transform.translation.z]
+                
+                // Add mainViewEntity as child with proper transform
+                mainViewEntity.position = mainViewEntity.position + antibodyAttachmentOffset
+                mainViewEntity.transform.translation = [mainViewEntity.transform.translation.x,
+                                                     mainViewEntity.transform.translation.y,
+                                                     mainViewEntity.transform.translation.z]
+                antibodyRoot.addChild(mainViewEntity)
+                
+                // Set up gesture component with proper configuration
+                let gestureComponent = createGestureComponent()
+                antibodyRoot.components.set(gestureComponent)
+                
+                // Set up audio with proper resource handling
+                if let resource = popAudioFileResource {
+                    do {
+                        self.popAudioPlaybackController = try popAudioEntity?.prepareAudio(resource)
+                        os_log(.debug, "ITR..prepareAntibodyEntities(): ✅ Audio prepared successfully")
+                    } catch {
+                        os_log(.error, "ITR..prepareAntibodyEntities(): ❌ Failed to prepare audio: \(error)")
+                    }
+                }
+                
+                // Store original material with proper type checking
+                if let modelComponent = antibody.components[ModelComponent.self],
+                   let originalMaterial = modelComponent.materials.first as? ShaderGraphMaterial {
+                    self.originalAntibodyMaterial = originalMaterial
+                    os_log(.debug, "ITR..prepareAntibodyEntities(): ✅ Stored original antibody material")
+                }
+                
+                // Apply outline material with proper component handling
+                if let material = outlineMaterial,
+                   var modelComponent = antibody.components[ModelComponent.self] {
                     modelComponent.materials = [material]
                     antibody.components[ModelComponent.self] = modelComponent
-                    os_log(.debug, "ITR..prepareAntibodyEntities(): ✅ Applied outline material to antibody")
+                    os_log(.debug, "ITR..prepareAntibodyEntities(): ✅ Applied outline material")
                 }
+            } else {
+                os_log(.error, "ITR..prepareAntibodyEntities(): ❌ No main entity to attach to")
             }
-            
-            os_log(.info, "ITR..prepareAntibodyEntities(): found all ModelEntities")
+        } else {
+            os_log(.error, "ITR..prepareAntibodyEntities(): ❌ Could not find ADC_complex entity")
         }
     }
     
@@ -94,58 +103,55 @@ extension ADCOptimizedImmersive {
     }
     
     func preparePayloadEntities() async {
-        guard let antibodyRoot = antibodyRootEntity else { return }
-        if let payload0 = antibodyRoot.findModelEntity(named: "InnerSphere", from: "linker01_offset"),
-           let payload1 = antibodyRoot.findModelEntity(named: "InnerSphere", from: "linker02_offset"),
-           let payload2 = antibodyRoot.findModelEntity(named: "InnerSphere", from: "linker03_offset"),
-           let payload3 = antibodyRoot.findModelEntity(named: "InnerSphere", from: "linker04_offset"),
-           let payloadOuter0 = antibodyRoot.findModelEntity(named: "OuterSphere", from: "linker01_offset"),
-           let payloadOuter1 = antibodyRoot.findModelEntity(named: "OuterSphere", from: "linker02_offset"),
-           let payloadOuter2 = antibodyRoot.findModelEntity(named: "OuterSphere", from: "linker03_offset"),
-           let payloadOuter3 = antibodyRoot.findModelEntity(named: "OuterSphere", from: "linker04_offset") {
-            
-            self.adcPayloadsInner = [payload0, payload1, payload2, payload3]
-            self.adcPayloadsOuter = [payloadOuter0, payloadOuter1, payloadOuter2, payloadOuter3]
-            
-            // Store original materials
-            if let innerMaterial = payload0.components[ModelComponent.self]?.materials.first as? PhysicallyBasedMaterial {
-                self.originalPayloadInnerMaterial = innerMaterial
-                os_log(.debug, "ITR..preparePayloadEntities(): ✅ Stored original inner PBR material")
-            }
-            
-            if let outerMaterial = payloadOuter0.components[ModelComponent.self]?.materials.first as? ShaderGraphMaterial {
-                self.originalPayloadOuterMaterial = outerMaterial
-                os_log(.debug, "ITR..preparePayloadEntities(): ✅ Stored original outer shader material")
-            }
-            
-            // Apply stored outline material to all payloads
-            if let material = outlineMaterial {
-                // Apply to inner payloads
-                self.adcPayloadsInner.forEach { payload in
-                    if var modelComponent = payload.components[ModelComponent.self] {
-                        modelComponent.materials = [material]
-                        payload.components[ModelComponent.self] = modelComponent
-                        payload.isEnabled = false
-                    }
-                }
-                
-                // Apply to outer payloads
-                self.adcPayloadsOuter.forEach { payload in
-                    if var modelComponent = payload.components[ModelComponent.self] {
-                        modelComponent.materials = [material]
-                        payload.components[ModelComponent.self] = modelComponent
-                        payload.isEnabled = false
-                    }
-                }
-            } else {
-                os_log(.error, "ITR..preparePayloadEntities(): ❌ No outline material available")
-            }
-            
-            os_log(.info, "ITR..preparePayloadEntities(): found all ModelEntities")
-
-        } else {
-            os_log(.error, "ITR..preparePayloadEntities(): ❌ Error, not all ModelEntities found")
+        guard let antibodyRoot = antibodyRootEntity else {
+            os_log(.error, "ITR..preparePayloadEntities(): ❌ No antibody root entity")
+            return
         }
+        
+        // Find all payload entities with proper error handling
+        let payloadPairs: [(inner: ModelEntity?, outer: ModelEntity?)] = [
+            (antibodyRoot.findModelEntity(named: "InnerSphere", from: "linker01_offset"),
+             antibodyRoot.findModelEntity(named: "OuterSphere", from: "linker01_offset")),
+            (antibodyRoot.findModelEntity(named: "InnerSphere", from: "linker02_offset"),
+             antibodyRoot.findModelEntity(named: "OuterSphere", from: "linker02_offset")),
+            (antibodyRoot.findModelEntity(named: "InnerSphere", from: "linker03_offset"),
+             antibodyRoot.findModelEntity(named: "OuterSphere", from: "linker03_offset")),
+            (antibodyRoot.findModelEntity(named: "InnerSphere", from: "linker04_offset"),
+             antibodyRoot.findModelEntity(named: "OuterSphere", from: "linker04_offset"))
+        ]
+        
+        // Process payload pairs with proper component handling
+        for (inner, outer) in payloadPairs {
+            if let innerPayload = inner, let outerPayload = outer {
+                // Set up inner payload
+                innerPayload.isEnabled = false
+                if var modelComponent = innerPayload.components[ModelComponent.self] {
+                    modelComponent.materials = [outlineMaterial].compactMap { $0 }
+                    innerPayload.components[ModelComponent.self] = modelComponent
+                }
+                adcPayloadsInner.append(innerPayload)
+                
+                // Set up outer payload
+                outerPayload.isEnabled = false
+                if var modelComponent = outerPayload.components[ModelComponent.self] {
+                    modelComponent.materials = [outlineMaterial].compactMap { $0 }
+                    outerPayload.components[ModelComponent.self] = modelComponent
+                }
+                adcPayloadsOuter.append(outerPayload)
+                
+                // Ensure proper transform binding
+                innerPayload.transform = Transform(scale: .one,
+                                                rotation: .init(),
+                                                translation: innerPayload.position)
+                outerPayload.transform = Transform(scale: .one,
+                                                rotation: .init(),
+                                                translation: outerPayload.position)
+            } else {
+                os_log(.error, "ITR..preparePayloadEntities(): ❌ Failed to find payload pair")
+            }
+        }
+        
+        os_log(.debug, "ITR..preparePayloadEntities(): ✅ Found \(adcPayloadsInner.count) inner payloads and \(adcPayloadsOuter.count) outer payloads")
     }
     
     func prepareTargetEntities(antibodyScene: Entity) {
@@ -211,6 +217,86 @@ extension ADCOptimizedImmersive {
             self.workingPayloadOuter = workingPayloadOuter
             workingPayloadOuter.components.set(ADCProximityComponent(minScale: 2.0, maxScale: 15.0, minProximity: 0.15, maxProximity: 0.6))
             workingPayloadInner.components.set(ADCProximityComponent(minScale: 2.0, maxScale: 15.0, minProximity: 0.15, maxProximity: 0.6))
+        }
+    }
+    
+    func reset() {
+        os_log(.debug, "ITR..reset() called")
+        
+        // Reset dataModel state
+        dataModel.selectedADCAntibody = nil
+        dataModel.selectedADCLinker = nil
+        dataModel.selectedADCPayload = nil
+        dataModel.selectedLinkerType = nil
+        dataModel.selectedPayloadType = nil
+        dataModel.linkersWorkingIndex = 0
+        dataModel.payloadsWorkingIndex = 0
+        dataModel.placedLinkerCount = 0
+        dataModel.placedPayloadCount = 0
+        
+        // Reset audio
+        currentVOController?.stop()
+        currentVOController = nil
+        popAudioPlaybackController?.stop()
+        popAudioPlaybackController = nil
+//        audioStorage?.cleanup()
+        
+        // Reset entities
+        mainEntity?.removeFromParent()
+        mainViewEntity.removeFromParent()
+        antibodyRootEntity?.removeFromParent()
+        
+        // Remove all components before removing entities
+        antibodyEntity?.components.remove(ModelComponent.self)
+        antibodyEntity?.components.remove(CollisionComponent.self)
+        antibodyEntity?.components.remove(InputTargetComponent.self)
+        
+        // Clear all entities
+        mainEntity = nil
+        mainViewEntity = Entity()
+        antibodyRootEntity = nil
+        antibodyEntity = nil
+        linkerEntity = nil
+        payloadEntity = nil
+        
+        // Clear working entities
+        workingLinker = nil
+        workingPayloadInner = nil
+        workingPayloadOuter = nil
+        
+        // Clear arrays
+        adcLinkers.removeAll(keepingCapacity: false)
+        adcPayloadsInner.removeAll(keepingCapacity: false)
+        adcPayloadsOuter.removeAll(keepingCapacity: false)
+        
+        // Clear attachments
+        adcAttachmentEntity = nil
+        linkerAttachmentEntity = nil
+        payloadAttachmentEntity = nil
+        
+        // Reset flags
+        shouldAddADCAttachment = false
+        shouldAddLinkerAttachment = false
+        shouldAddPayloadAttachment = false
+        shouldAddMainViewAttachment = false
+        refreshFlag = false
+        bubblePopSound = false
+        
+        // Reset audio resources
+        popAudioFileResource = nil
+        vo1Audio = nil
+        vo2Audio = nil
+        vo3Audio = nil
+        vo4Audio = nil
+        
+        // Ensure cleanup happens on main actor
+        Task { @MainActor in
+            await Task.yield()
+            // Release any strong references
+            originalAntibodyMaterial = nil
+            originalPayloadInnerMaterial = nil
+            originalPayloadOuterMaterial = nil
+            outlineMaterial = nil
         }
     }
 }

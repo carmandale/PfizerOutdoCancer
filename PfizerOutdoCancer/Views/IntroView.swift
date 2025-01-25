@@ -8,25 +8,6 @@ struct IntroView: View {
     @Environment(ADCDataModel.self) var dataModel
     @Environment(\.dismissWindow) private var dismissWindow
     
-    // MARK: - Entity States
-    let immersiveSceneRoot: Entity = Entity()
-    @State private var introEnvironment: Entity? = nil
-    @State private var portalWarp: Entity? = nil
-    @State private var portal: Entity? = nil
-    @State var material: ShaderGraphMaterial?
-    @State private var tube: ModelEntity?
-    @State private var skyDome: Entity? = nil
-    @State private var mainEntity: Entity? = nil
-    @State private var logo: Entity? = nil
-    
-    // MARK: - Animation States
-    @State private var showTitleText = false
-    @State private var shouldDimSurroundings = false
-    @State private var isSetupComplete = false
-    
-    let start = Date()
-    let portalStart: Double = 103.0
-    
     var surroundingsEffect: SurroundingsEffect? {
         let tintIntensity = appModel.shouldDimSurroundings ? 0.02 : 1.0
         let tintColor = Color(red: tintIntensity, green: tintIntensity, blue: tintIntensity)
@@ -34,10 +15,12 @@ struct IntroView: View {
     }
     
     var body: some View {
+        @Bindable var appModel = appModel
+        
         RealityView { content, attachments in
+            print("📱 IntroView: Setting up RealityView")
             // Set up root entity
-            let root = Entity()
-            mainEntity = root
+            let root = appModel.introState.setupIntroRoot()
             
             root.components.set(PositioningComponent(
                 offsetX: 0,
@@ -46,171 +29,67 @@ struct IntroView: View {
             ))
             content.add(root)
             
-            // Add environment if loaded
-            if let environment = introEnvironment {
-                immersiveSceneRoot.addChild(environment)
+            // Store attachments for later setup
+            if let titleEntity = attachments.entity(for: "titleText"),
+               let labViewerEntity = attachments.entity(for: "labViewer"),
+               let navToggleEntity = attachments.entity(for: "navToggle") {
+                print("📱 IntroView: Found SwiftUI attachments")
+                appModel.introState.titleEntity = titleEntity
+                appModel.introState.labViewerEntity = labViewerEntity
+                appModel.introState.navToggleEntity = navToggleEntity
+            } else {
+                print("❌ IntroView: Failed to get SwiftUI attachments")
             }
-            
-            // Add portal if loaded
-            if let p = portal {
-                immersiveSceneRoot.addChild(p)
-                
-                // Add text attachment to titleRoot
-                if let titleEntity = attachments.entity(for: "titleText") {
-                    print("📎 Found titleText attachment")
-                    if let titleRoot = p.findEntity(named: "titleRoot") {
-                        print(" Found titleRoot in portal")
-                        titleEntity.position = [0, -0.25, 0.1]  // Position below logo
-                        titleEntity.transform.scale *= 5.0
-                        titleRoot.addChild(titleEntity)
-                        print("📎 Added titleText to titleRoot")
-                    } else {
-                        print("❌ Failed to find titleRoot in portal")
-                    }
-                }
-                
-                // Add labViewer attachment to titleRoot
-                if let labViewerEntity = attachments.entity(for: "labViewer") {
-                    print("📎 Found labViewer attachment")
-                    if let titleRoot = p.findEntity(named: "titleRoot") {
-                        print(" Found titleRoot in portal")
-                        labViewerEntity.position = [0, -0.5, 0.2]  // Position below title
-                        labViewerEntity.transform.scale *= 5.0
-                        titleRoot.addChild(labViewerEntity)
-                        print("📎 Added labViewer to titleRoot")
-                    } else {
-                        print("❌ Failed to find titleRoot in portal")
-                    }
-                }
-            }
-            
-            root.addChild(immersiveSceneRoot)
-            isSetupComplete = true
             
         } attachments: {
             Attachment(id: "titleText") {
-                OutdoCancer(showTitle: $showTitleText)
+                OutdoCancer(showTitle: $appModel.introState.showTitleText)
             }
             Attachment(id: "labViewer") {
                 LabViewerButton()
             }
-        }
-        .onChange(of: isSetupComplete) { _, isComplete in
-            if isComplete {
-                Task {
-                    await setupAnimationSequence()
-                }
+            Attachment(id: "navToggle") {
+                NavToggleView()
             }
         }
-        .task {
-            print("🔄 Starting intro asset loading sequence")
-            await setupEntities()
-        }
-    }
-    
-    // MARK: - Private Methods
-    
-    private func setupEntities() async {
-        // Load intro environment
-        guard let environment = await appModel.assetLoadingManager.instantiateEntity("intro_environment") else {
-            print("Failed to load intro environment")
-            return
-        }
-        introEnvironment = environment
-        
-        // Find the sky
-        if let sky = environment.findEntity(named: "SkySphere") {
-            skyDome = sky
-            sky.opacity = 0
-        }
-        
-        // Find the logo
-        if let l = environment.findEntity(named: "logo") {
-            logo = l
-            l.scale = SIMD3<Float>(0.5, 0.5, 0.5)
-            l.opacity = 0
-        }
-        
-        // Find and setup portal warp
-        if let warp = environment.findEntity(named: "sh0100_v01_portalWarp2") {
-            portalWarp = warp
-            warp.opacity = 0.6
-            
-            // Find and store shader material
-            if let component = warp.components[ModelComponent.self],
-               let material = component.materials.first as? ShaderGraphMaterial {
-                self.material = material
-            }
-        }
-        
-        // Create and setup portal
-        let p = await PortalManager.createPortal(
-            appModel: appModel,
-            environment: environment,
-            portalPlaneName: "Plane_001"
-        )
-        portal = p
-        p.opacity = 0.0
-        p.position = [0, -0.25, 0]
-    }
-    
-    private func setupAnimationSequence() async {
-        // Dim surroundings at 5 seconds
-        //    try? await Task.sleep(for: .seconds(5))
-        //    withAnimation(.easeInOut(duration: 20.0)) {
-        //        appModel.shouldDimSurroundings = true
-        //    }
-        
-        if let s = skyDome {
-            await s.fadeOpacity(to: 0.9, duration: 10.0, delay: 2.0)
-        }
-        
-        // Portal warp fade (24s)
-        try? await Task.sleep(for: .seconds(19))
-        if let warp = portalWarp {
-            await warp.fadeOpacity(to: 0.8, duration: 10.0)
-        }
-        
-        try? await Task.sleep(for: .seconds(75))
-        if let l = logo {
-            await l.fadeOpacity(to: 1.0, duration: 10.0)
-            //                await l.animateZPosition(to: 0.5, duration: 20.0)
-            try? await Task.sleep(for: .seconds(5))
-            // Show title text
-            withAnimation {
-                showTitleText = true
-            }
-        }
-        
-        // Portal fade (103s)
-        try? await Task.sleep(for: .seconds(0.0))
-        if let p = portal {
-            await p.fadeOpacity(to: 1.0, duration: 5.0)
-            
-            // Portal scale and title text (110s)
-            try? await Task.sleep(for: .seconds(5.0))
-            if let portalPlane = p.findEntity(named: "portalPlane") {
-                await portalPlane.animateXScale(from: 0, to: 1.0, duration: 1.0)
+        .task(id: appModel.introState.introRootEntity) {
+            guard !appModel.introState.isSetupComplete else {
+                print("📱 IntroView: Setup already complete, skipping")
+                return
             }
             
+            guard let root = appModel.introState.introRootEntity else {
+                print("❌ IntroView: No root entity found in task")
+                return
+            }
             
+            print("📱 IntroView: Starting environment setup in task")
+            await appModel.introState.setupEnvironment(in: root)
             
-            // Animate title root forward
-            if let titleRoot = p.findEntity(named: "titleRoot") {
-                //                   titleRoot.position.y += 0.2
-                //                   await titleRoot.animateZPosition(to: 0.5, duration: 20.0)
+            print("📱 IntroView: Checking portal and attachments")
+            if let portal = appModel.introState.getPortal() {
+                print("✅ IntroView: Found portal")
                 
+                if let titleEntity = appModel.introState.titleEntity,
+                   let labViewerEntity = appModel.introState.labViewerEntity {
+                    print("✅ IntroView: Found both SwiftUI attachments")
+                    print("📱 IntroView: Setting up portal attachments")
+                    
+                    appModel.introState.setupAttachments(
+                        for: portal,
+                        titleEntity: titleEntity,
+                        labViewerEntity: labViewerEntity
+                    )
+                    
+                    print("📱 IntroView: Starting animation sequence")
+                    await appModel.introState.runAnimationSequence()
+                    appModel.introState.isSetupComplete = true
+                } else {
+                    print("❌ IntroView: Missing one or both SwiftUI attachments")
+                }
+            } else {
+                print("❌ IntroView: Portal not found")
             }
-            
-            
-            
-            
-            // Transition to lab phase (134s)
-            //            try? await Task.sleep(for: .seconds(40)) // (134 - 110)
-            //            await appModel.transitionToPhase(.lab)
-            
         }
     }
 }
-        
-

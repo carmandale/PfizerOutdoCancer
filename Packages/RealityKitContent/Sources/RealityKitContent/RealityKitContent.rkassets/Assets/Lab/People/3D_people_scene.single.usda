@@ -1,0 +1,37 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 2.0 (448.60.4)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    quatf xformOp:orient = (1, 0, 0, 0)
+    float3 xformOp:scale = (1, 1, 1)
+    float3 xformOp:translate = (0, 0, 0)
+    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+    def Xform "People" (
+        active = true
+    )
+    {
+        def "Ahsan_002" (
+            active = true
+            customData = {
+                float3 rotationEulerHint = (-1.5707965, 1.9718896, 0)
+            }
+            references = @3D_people/Ahsan_002.usdc@
+        )
+        {
+            quatf xformOp:orient = (0.3903763, -0.3903763, 0.5895814, 0.5895816)
+            float3 xformOp:scale = (0.9999999, 0.9999999, 0.9999999)
+            float3 xformOp:translate = (0.34908646, 7.4253705e-9, -2.6505227)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+        }
+    }
+}
+

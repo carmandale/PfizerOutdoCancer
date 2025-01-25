@@ -32,6 +32,11 @@ final class TrackingSessionManager {
     
     // MARK: - Session Management
     func startTracking(needsHandTracking: Bool = false) async throws {
+        #if targetEnvironment(simulator)
+        // Do nothing in simulator
+        print("⚠️ Hand tracking not available in simulator")
+        return
+        #else
         // If already tracking with the same hand tracking state, do nothing
         if isTracking && shouldProcessHandTracking == needsHandTracking {
             return
@@ -67,22 +72,37 @@ final class TrackingSessionManager {
         try await arkitSession.run(providers)
         isTracking = true
         print("✅ Started tracking providers")
+        #endif
     }
     
     func stopTracking() {
+        #if targetEnvironment(simulator)
+        // Do nothing in simulator
+        return
+        #else
         arkitSession.stop()
         isTracking = false
         print("⏹️ Stopped tracking providers")
+        #endif
     }
     
     // MARK: - Update Processing
     func processWorldTrackingUpdates() async {
+        #if targetEnvironment(simulator)
+        // Do nothing in simulator
+        return
+        #else
         for await _ in worldTrackingProvider.anchorUpdates {
             // Process world tracking updates
         }
+        #endif
     }
     
     func processHandTrackingUpdates() async {
+        #if targetEnvironment(simulator)
+        // Do nothing in simulator
+        return
+        #else
         guard shouldProcessHandTracking else { return }
         
         print("🖐️ Starting hand tracking updates")
@@ -93,14 +113,10 @@ final class TrackingSessionManager {
                 switch handAnchor.chirality {
                 case .left:
                     leftHandAnchor = handAnchor
-//                    print("👈 Left hand updated")
                 case .right:
                     rightHandAnchor = handAnchor
-//                    print("👉 Right hand updated")
                 }
-                // Update the HandTrackingManager with the new anchors
                 handTrackingManager.updateHandAnchors(left: leftHandAnchor, right: rightHandAnchor)
-                
             case .removed:
                 switch handAnchor.chirality {
                 case .left:
@@ -110,10 +126,10 @@ final class TrackingSessionManager {
                     rightHandAnchor = nil
                     print("❌ Right hand removed")
                 }
-                // Update the HandTrackingManager with the removed anchors
                 handTrackingManager.updateHandAnchors(left: leftHandAnchor, right: rightHandAnchor)
             }
         }
+        #endif
     }
     
     // MARK: - Event Monitoring

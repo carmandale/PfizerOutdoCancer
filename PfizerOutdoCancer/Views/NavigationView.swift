@@ -5,12 +5,13 @@ struct NavigationView: View {
     @Environment(AppModel.self) private var appModel
     @Environment(ADCDataModel.self) private var dataModel
     @Environment(\.openWindow) private var openWindow
+    @Environment(\.scenePhase) private var scenePhase
     
-    private let buttonTitles = ["Intro", "Lab", "Building", "Attack", "Outro"]
+    private let buttonTitles = ["Lab", "Building", "Attack", "Outro"]
     
     var body: some View {
         HStack(spacing: 16) {
-            ForEach(buttonTitles.filter { phaseFor($0) != appModel.currentPhase }, id: \.self) { title in
+            ForEach(buttonTitles, id: \.self) { title in
                 NavigationButton(
                     title: title,
                     action: { await handleNavigation(for: title) },
@@ -21,6 +22,18 @@ struct NavigationView: View {
         }
         .padding(20)
         .glassBackgroundEffect()
+        .opacity(appModel.isNavWindowOpen ? 1 : 0)
+        .animation(.default, value: appModel.isNavWindowOpen)
+        .onChange(of: scenePhase, initial: true) {
+                    switch scenePhase {
+                    case .inactive, .background:
+                        appModel.isNavWindowOpen = false
+                    case .active:
+                        appModel.isNavWindowOpen = true
+                    @unknown default:
+                        appModel.isNavWindowOpen = false
+                    }
+                }
     }
     
     private func handleNavigation(for title: String) async {
@@ -29,7 +42,6 @@ struct NavigationView: View {
             appModel.isBuilderInstructionsOpen = true
             await appModel.transitionToPhase(.building)
         case "Attack":
-//            openWindow(id: AppModel.mainWindowId)
             appModel.isInstructionsWindowOpen = true
             await appModel.transitionToPhase(.playing, adcDataModel: dataModel)
         default:
@@ -39,12 +51,11 @@ struct NavigationView: View {
     
     private func phaseFor(_ title: String) -> AppPhase {
         switch title {
-        case "Intro": return .intro
         case "Lab": return .lab
         case "Building": return .building
         case "Attack": return .playing
         case "Outro": return .outro
-        default: return .intro
+        default: return .lab
         }
     }
 }

@@ -52,6 +52,9 @@ final class AssetLoadingManager {
     /// Singleton instance
     static let shared = AssetLoadingManager()
     
+    /// Stored lab environment entity
+    private(set) var labEnvironment: Entity?
+    
     /// Cached entity templates for efficient cloning
     internal var entityTemplates: [String: Entity] = [:]
     
@@ -70,13 +73,74 @@ final class AssetLoadingManager {
     /// The current state of asset loading
     var state: LoadingState { loadingState }
     
-    /// Loaded lab environment entity
-    var labEnvironment: Entity?
-    
     /// Loaded attack cancer environment entity
-    var attackCancerEnvironment: Entity?
+    private(set) var attackCancerEnvironment: Entity?
+    
+    /// Stored intro environment entity
+    private(set) var introEnvironment: Entity?
+    
+    /// Stored outro environment entity
+    private(set) var outroEnvironment: Entity?
     
     // MARK: - Public Methods
+    
+    /// Get the stored laboratory environment
+    func getLaboratory() -> Entity? {
+        return labEnvironment
+    }
+    
+    /// Get the stored attack cancer environment
+    func getAttackCancerEnvironment() -> Entity? {
+        return attackCancerEnvironment
+    }
+    
+    /// Get the stored intro environment
+    func getIntroEnvironment() -> Entity? {
+        return introEnvironment
+    }
+    
+    /// Get the stored outro environment
+    func getOutroEnvironment() -> Entity? {
+        return outroEnvironment
+    }
+    
+    /// Get the lab audio entity directly without cloning
+    func getLabAudio() async throws -> Entity {
+        if let template = entityTemplates["lab_audio"] {
+            return template
+        }
+        // Fallback to loading if not in templates
+        return try await Entity(named: "LabAudio", in: realityKitContentBundle)
+    }
+    
+    /// Get the lab VO entity directly without cloning
+    func getLabVO() async throws -> Entity {
+        if let template = entityTemplates["lab_vo"] {
+            return template
+        }
+        // Fallback to loading if not in templates
+        return try await Entity(named: "LabVO", in: realityKitContentBundle)
+    }
+    
+    /// Set the laboratory environment
+    internal func setLaboratory(_ environment: Entity) async {
+        self.labEnvironment = environment
+    }
+    
+    /// Set the attack cancer environment
+    internal func setAttackCancerEnvironment(_ environment: Entity) async {
+        self.attackCancerEnvironment = environment
+    }
+    
+    /// Set the intro environment
+    internal func setIntroEnvironment(_ environment: Entity) async {
+        self.introEnvironment = environment
+    }
+    
+    /// Set the outro environment
+    internal func setOutroEnvironment(_ environment: Entity) async {
+        self.outroEnvironment = environment
+    }
     
     /// Load all assets required for the entire app
     func loadAssets() async throws {
@@ -89,21 +153,22 @@ final class AssetLoadingManager {
         do {
             try await withThrowingTaskGroup(of: LoadResult.self) { group in
                 // Load different categories in parallel, updating totalAssets
-               loadIntroEnvironmentAssets(group: &group, taskCount: &totalAssets)
-               loadIntroWarpAssets(group: &group, taskCount: &totalAssets)
-               loadLogoAssets(group: &group, taskCount: &totalAssets)
-               loadTitleAssets(group: &group, taskCount: &totalAssets)
-               loadLabEnvironmentAssets(group: &group, taskCount: &totalAssets)
-               loadLabEquipmentAssets(group: &group, taskCount: &totalAssets)
-               loadLabVO(group: &group, taskCount: &totalAssets)
+              loadIntroEnvironmentAssets(group: &group, taskCount: &totalAssets)
+              loadIntroWarpAssets(group: &group, taskCount: &totalAssets)
+              loadLogoAssets(group: &group, taskCount: &totalAssets)
+              loadTitleAssets(group: &group, taskCount: &totalAssets)
+              loadLabEnvironmentAssets(group: &group, taskCount: &totalAssets)
+              loadLabVO(group: &group, taskCount: &totalAssets)
+              loadLabAudio(group: &group, taskCount: &totalAssets)
+              loadLabEquipmentAssets(group: &group, taskCount: &totalAssets)
 //               loadBuildADCEnvironmentAssets(group: &group, taskCount: &totalAssets)
-               loadBuildADCAssets(group: &group, taskCount: &totalAssets)
-            //    loadBuildADCAudio(group: &group, taskCount: &totalAssets)
-               loadAttackCancerEnvironmentAssets(group: &group, taskCount: &totalAssets)
-               loadAttackCancerGameStartVO(group: &group, taskCount: &totalAssets)
-               loadCancerCellAssets(group: &group, taskCount: &totalAssets)
+              loadBuildADCAssets(group: &group, taskCount: &totalAssets)
+           //    loadBuildADCAudio(group: &group, taskCount: &totalAssets)
+              loadAttackCancerEnvironmentAssets(group: &group, taskCount: &totalAssets)
+              loadAttackCancerGameStartVO(group: &group, taskCount: &totalAssets)
+              loadCancerCellAssets(group: &group, taskCount: &totalAssets)
                loadTreatmentAssets(group: &group, taskCount: &totalAssets)
-               loadOutroEnvironmentAssets(group: &group, taskCount: &totalAssets)
+              loadOutroEnvironmentAssets(group: &group, taskCount: &totalAssets)
                 
                 // Process results with error handling
                 for try await result in group {
@@ -214,9 +279,9 @@ final class AssetLoadingManager {
 
         do {
             // Second attempt: Load from bundle and handle protobuf errors
-            let entity = try await Entity(named: name, in: realityKitContentBundle)
+        let entity = try await Entity(named: name, in: realityKitContentBundle)
             // Clone again to ensure the loaded entity is independent and can be used multiple times
-            return entity.clone(recursive: true)
+        return entity.clone(recursive: true)
         } catch {
             if error.localizedDescription.contains("protobuf") {
                 print("❌ Protobuf error loading \(name): \(error)")

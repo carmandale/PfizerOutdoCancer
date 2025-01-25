@@ -42,7 +42,8 @@ extension AttackCancerViewModel {
         cell.name = "cancer_cell_\(index)"
         
         if let complexCell = cell.findEntity(named: "cancerCell_complex") {
-            // Start with zero opacity
+            // Start with zero scale instead of zero opacity
+            // complexCell.transform.scale = .init(repeating: 0)
             complexCell.opacity = 0
             
             // Setup all the physical aspects first
@@ -82,9 +83,10 @@ extension AttackCancerViewModel {
             root.addChild(cell)
             setupAttachmentPoints(for: cell, complexCell: complexCell, cellID: index)
             
+            // Scale in with spring animation instead of fade
+            // await complexCell.animateScale(from: 0, to: 1, duration: 0.5)
             // Fade in after setup
             await complexCell.fadeOpacity(to: 1.0, duration: 0.5)
-            
 //            print("✅ Successfully spawned cell \(index)")
             return cell
         } else {
@@ -179,7 +181,7 @@ extension AttackCancerViewModel {
         // Calculate orbital velocity exactly like reference
         // REF: orbitSpeed = sqrt(gravityMagnitude / radius) in reference Entity+Planet.swift calculateVelocity()
         let gravityMagnitude: Float = 0.1
-        let orbitSpeed = sqrt(gravityMagnitude / radius) * 1.0  // Added scaling factor to slow down
+        let orbitSpeed = sqrt(gravityMagnitude / radius) * 0.5
         
         // REF: Direction calculation matches reference Entity+Planet.swift calculateVelocity()
         let orbitDirection = SIMD3<Float>(
@@ -228,7 +230,7 @@ extension AttackCancerViewModel {
     }
     
     func setupTutorialCancerCell(_ cell: Entity) {
-//        print("\n=== Setting up Tutorial Cancer Cell ===")
+        print("\n=== Setting up Tutorial Cancer Cell ===")
         
         if let complexCell = cell.findEntity(named: "cancerCell_complex") {
             // Setup all the physical aspects first (minus position and movement)
@@ -237,14 +239,24 @@ extension AttackCancerViewModel {
             
             // Create parameters on-demand
             let parameters = CancerCellParameters(cellID: 0)
-//            print("Creating parameters for cell 0")
-//            print("Required hits: \(parameters.requiredHits)")
+            parameters.isTutorialCell = true  // Mark as tutorial cell
+            parameters.impactScale = CancerCellParameters.tutorialImpactScale  // Use reduced impact
+            parameters.requiredHits = 10  // Set required hits for tutorial
             cellParameters.append(parameters)
 //            print("Total parameters after append: \(cellParameters.count)")
             
             // Add state component with reference to parameters
             cell.components.set(CancerCellStateComponent(parameters: parameters))
 //            print("Added CancerCellStateComponent with parameters")
+
+            // Add damping only for tutorial cell
+            if var physicsBody = complexCell.components[PhysicsBodyComponent.self] {
+                physicsBody.linearDamping = 0.8
+                physicsBody.angularDamping = 0.5
+                // Tutorial cell should be more responsive to impacts
+                physicsBody.massProperties.mass = 0.1 // Lower mass = more responsive to impacts
+                complexCell.components[PhysicsBodyComponent.self] = physicsBody
+            }
             
             // Add ClosureComponent for state updates
             cell.components.set(

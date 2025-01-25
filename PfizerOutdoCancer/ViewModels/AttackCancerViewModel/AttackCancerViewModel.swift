@@ -3,6 +3,12 @@ import RealityKit
 import RealityKitContent
 import Combine
 
+struct CellState {
+    var hits: Int = 0
+    var requiredHits: Int = 0
+    var isDestroyed: Bool = false
+}
+
 @Observable
 @MainActor
 final class AttackCancerViewModel {
@@ -38,6 +44,9 @@ final class AttackCancerViewModel {
     var rootEntity: Entity?
     var scene: RealityKit.Scene?
     var handTrackedEntity: Entity?
+    var isSetupComplete = false
+    var tutorialCancerCell: Entity?
+    var cellStates: [CellState] = []
     
     // Store subscription to prevent deallocation
     internal var subscription: Cancellable?
@@ -65,6 +74,20 @@ final class AttackCancerViewModel {
     
     // MARK: - Cell State Properties
     var cellParameters: [CancerCellParameters] = []
+    
+    // Add after other private properties
+    let tutorialADCDelays: [TimeInterval] = [
+        2.0,  // First ADC at 2s
+        1.9,  // Second ADC at 3.9s
+        1.9,  // Third ADC at 5.8s
+        1.9,  // Fourth ADC at 7.7s
+        1.9,  // Fifth ADC at 9.6s
+        1.9,  // Sixth ADC at 11.5s
+        1.9,  // Seventh ADC at 13.4s
+        1.9,  // Eighth ADC at 15.3s
+        1.9,  // Ninth ADC at 17.2s
+        1.8   // Tenth ADC at 19s
+    ]
     
     // MARK: - Initialization
     init() {

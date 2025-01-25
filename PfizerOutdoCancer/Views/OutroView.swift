@@ -19,14 +19,6 @@ struct OutroView: View {
     @Environment(\.dismissWindow) private var dismissWindow
     @Environment(\.openWindow) private var openWindow
     
-    /// The root entities for the intro scene.
-    let immersiveSceneRoot: Entity = Entity()
-    
-    /// Head position tracker for positioning entities
-
-    @State private var mainEntity: Entity?
-    @State private var outroRoot: Entity?
-    
     // Timer for auto-transition
     @State private var transitionTimer: Timer?
     @State private var tintIntensity: Double = 0.02
@@ -38,37 +30,25 @@ struct OutroView: View {
     
     var body: some View {
         RealityView { content in
-            // Capture content reference
-            let contentRef = content
-
-                    
-                    if let outroEnvironmentEntity = await appModel.assetLoadingManager.instantiateEntity("outro_environment") {
-                        immersiveSceneRoot.addChild(outroEnvironmentEntity)
-                    }
-                    
-                    // Create root entity and store reference
-                    let root = Entity()
-                    self.mainEntity = root
-                    self.outroRoot = root
-                    
-                    // Add PositioningComponent with desired offsets
-                    root.components.set(PositioningComponent(
-                        offsetX: 0,
-                        offsetY: -1.5,  // Same offset they were using
-                        offsetZ: -1.0   // Same offset they were using
-                    ))
-                    
-                    root.addChild(immersiveSceneRoot)
-                    contentRef.add(root)
-
+            let root = Entity()
+            root.components.set(PositioningComponent(
+                offsetX: 0,
+                offsetY: -1.5,
+                offsetZ: -1.0
+            ))
             
+            if let outroEnvironmentEntity = await appModel.assetLoadingManager.getOutroEnvironment() {
+                root.addChild(outroEnvironmentEntity)
+            }
+            
+            content.add(root)
         }
         .preferredSurroundingsEffect(surroundingsEffect)
         .onAppear {
             transitionTimer = Timer.scheduledTimer(withTimeInterval: 42, repeats: false) { _ in
                 Task { @MainActor in
-                    openWindow(id: AppModel.debugNavigationWindowId)
-                    appModel.isDebugWindowOpen = true
+                    openWindow(id: AppModel.navWindowId)
+                    appModel.isNavWindowOpen = true
                     await appModel.transitionToPhase(.intro)
                 }
             }
@@ -79,9 +59,6 @@ struct OutroView: View {
             }
         }
         .onDisappear {
-            outroRoot?.removeFromParent()
-            outroRoot = nil
-            
             // Clean up timer
             transitionTimer?.invalidate()
             transitionTimer = nil

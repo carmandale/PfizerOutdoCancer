@@ -32,6 +32,10 @@ public struct ADCComponent: Component, Codable {
     /// Speed of movement
     public var speed: Float = 2.0
     
+    // MARK: - Rotation
+    /// Speed of protein spin animation (random per instance)
+    public var proteinSpinSpeed: Float = 0.0
+    
     // MARK: - Target Information
     /// Target cancer cell ID
     public var targetCellID: Int? = nil

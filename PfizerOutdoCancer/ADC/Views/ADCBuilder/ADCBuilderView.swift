@@ -134,6 +134,8 @@ struct ADCBuilderView: View {
                                 os_log(.debug, "- Linker Color: \(dataModel.selectedLinkerType ?? -1)")
                                 os_log(.debug, "- Payload Color: \(dataModel.selectedPayloadType ?? -1)")
                                 
+                                appModel.hasBuiltADC = true
+
                                 if !appModel.isMainWindowOpen {
                                     openWindow(id: AppModel.mainWindowId)
                                     appModel.isMainWindowOpen = true

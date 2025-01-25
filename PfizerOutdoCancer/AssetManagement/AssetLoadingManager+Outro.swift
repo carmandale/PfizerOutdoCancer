@@ -23,6 +23,9 @@ extension AssetLoadingManager {
                 let outroEnvironmentScene = try await self.loadEntity(named: "OutroEnvironment")
                 await assetRoot.addChild(outroEnvironmentScene)
                 
+                // Store the actual environment
+                await self.setOutroEnvironment(assetRoot)
+                
                 // Add IBL
                 try await IBLUtility.addImageBasedLighting(to: assetRoot, imageName: "metro_noord_2k")
                 

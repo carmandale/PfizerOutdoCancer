@@ -83,6 +83,14 @@ extension AttackCancerViewModel {
         // Clone the template (colors will be cloned with it)
         let adc = template.clone(recursive: true)
         
+        // Set up collision so that the ADC is recognized as 'adc' by cancer cells
+        let shape = ShapeResource.generateSphere(radius: 0.069)
+        let collision = CollisionComponent(
+            shapes: [shape],
+            filter: .init(group: .adc, mask: .cancerCell)
+        )
+        adc.components.set(collision)
+        
         // Update ADCComponent properties
         guard var adcComponent = adc.components[ADCComponent.self] else { return }
         adcComponent.targetCellID = cellID

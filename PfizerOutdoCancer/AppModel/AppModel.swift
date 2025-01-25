@@ -9,7 +9,7 @@ extension AppModel {
     nonisolated static let introWindowId = "intro"
     nonisolated static let libraryWindowId = "library"
     nonisolated static let builderWindowId = "builder"
-    nonisolated static let debugNavigationWindowId = "DebugNavigation"
+    nonisolated static let navWindowId = "DebugNavigation"
     nonisolated static let gameCompletedWindowId = "Completed"
     nonisolated static let hopeMeterUtilityWindowId = "HopeMeterUtility"
     
@@ -78,6 +78,7 @@ final class AppModel {
     let trackingManager = TrackingSessionManager()
     
     var shouldDimSurroundings: Bool = false
+    var hasBuiltADC: Bool = false
     
     /// Current phase of the app
     var currentPhase: AppPhase = .loading
@@ -99,7 +100,9 @@ final class AppModel {
     var triggerImmersiveSpace = false
     
     var gameState: AttackCancerViewModel
-    var isDebugWindowOpen = true
+    var introState: IntroViewModel
+    var labState: LabViewModel
+    var isNavWindowOpen = false
     var isHopeMeterUtilityWindowOpen = false
     var isLibraryWindowOpen = false
     var isIntroWindowOpen = false
@@ -136,11 +139,12 @@ final class AppModel {
     }
 
     func toggleLibrary() {
-        if isLibraryWindowOpen {
-            isLibraryWindowOpen = false
-        } else {
-            isLibraryWindowOpen = true
-        }
+        // Single source of truth for library state
+        labState.isLibraryOpen.toggle()
+    }
+    
+    func updateLibraryWindowState(isOpen: Bool) {
+        isLibraryWindowOpen = isOpen
     }
     
     // MARK: - Space Management
@@ -203,7 +207,13 @@ final class AppModel {
     // MARK: - Initialization
     init() {
         self.gameState = AttackCancerViewModel()
+        self.introState = IntroViewModel()
+        self.labState = LabViewModel()
+        
+        // Set up dependencies
         self.gameState.appModel = self
+        self.introState.appModel = self
+        self.labState.appModel = self
         self.gameState.handTracking = self.trackingManager.handTrackingManager
     }
     

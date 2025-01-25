@@ -10,7 +10,7 @@
 
 def Xform "Root"
 {
-    reorder nameChildren = ["SkySphere", "lab", "peopleRoot", "LabAttachments", "People"]
+    reorder nameChildren = ["SkySphere", "lab", "LabAttachments", "Ahsan_002", "People"]
     def "SkySphere" (
         active = true
         customData = {
@@ -95,6 +95,14 @@ def Xform "Root"
     def "LabAttachments" (
         active = true
         references = @LabAttachments.usda@
+    )
+    {
+        float3 xformOp:scale = (1, 1, 1)
+    }
+
+    def "_3D_people_scene" (
+        active = true
+        prepend references = @Assets/Lab/People/3D_people_scene.usda@
     )
     {
         float3 xformOp:scale = (1, 1, 1)

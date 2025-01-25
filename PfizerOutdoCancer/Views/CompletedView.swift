@@ -95,7 +95,7 @@ struct CompletedView: View {
         .glassBackgroundEffect()
         .padding(32)
         .onAppear {
-            dismissWindow(id: AppModel.debugNavigationWindowId)
+            dismissWindow(id: AppModel.navWindowId)
             
             withAnimation(.easeOut) {
                 animateStats = true

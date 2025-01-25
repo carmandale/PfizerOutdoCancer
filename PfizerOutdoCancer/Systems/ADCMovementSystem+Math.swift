@@ -1,5 +1,6 @@
 import RealityKit
 import Foundation
+import RealityKitContent
 
 @MainActor
 extension ADCMovementSystem {
@@ -38,10 +39,11 @@ extension ADCMovementSystem {
         let baseOrientation = simd_quatf(from: [0, 0, 1], to: direction)
         
         // Update protein complex spin in world space
-        if let proteinComplex = entity.findEntity(named: "antibodyProtein_complex") {
+        if let proteinComplex = entity.findEntity(named: "antibodyProtein_complex"),
+           let adcComponent = entity.components[ADCComponent.self] {
             // Convert local X-axis to world space
             let worldSpinAxis = baseOrientation.act([-1, 0, 0])
-            let spinRotation = simd_quatf(angle: Float(deltaTime) * proteinSpinSpeed, axis: worldSpinAxis)
+            let spinRotation = simd_quatf(angle: Float(deltaTime) * adcComponent.proteinSpinSpeed, axis: worldSpinAxis)
             
             // Apply spin in world space
             proteinComplex.orientation = spinRotation * proteinComplex.orientation

@@ -75,8 +75,23 @@ extension ADCOptimizedImmersive {
     }
 
     func playPopSound() {
-        print("ITR..playPopSound(): Starting...")
+        os_log(.debug, "ITR..playPopSound(): Starting pop sound playback...")
+        
+        // System 1: Using bubblePopSound toggle
+        os_log(.debug, "ITR..playPopSound(): 🔊 SYSTEM 1 - Triggering bubblePopSound toggle")
         bubblePopSound.toggle()
+        
+        // System 2: Using audioStorage (disabled for now)
+        /*if let storage = audioStorage {
+            os_log(.debug, "ITR..playPopSound(): 🔊 SYSTEM 2 - Attempting audioStorage playback")
+            if dataModel.adcBuildStep == 2, // Linkers step
+               dataModel.linkersWorkingIndex < adcLinkers.count {
+                storage.playPopSound(at: adcLinkers[dataModel.linkersWorkingIndex].position)
+            } else if dataModel.adcBuildStep == 3, // Payloads step
+                      dataModel.payloadsWorkingIndex < adcPayloadsInner.count {
+                storage.playPopSound(at: adcPayloadsInner[dataModel.payloadsWorkingIndex].position)
+            }
+        }*/
     }
 
     func playSpatialAudio(step: Int) {
@@ -87,6 +102,7 @@ extension ADCOptimizedImmersive {
                 currentVOController = nil
             }
             
+            // Play with existing system
             switch step {
             case 0: await playVO1()
             case 1: await playVO2()
@@ -94,6 +110,17 @@ extension ADCOptimizedImmersive {
             case 3: await playVO4()
             default: break
             }
+            
+            // Play with new system
+//            if let storage = audioStorage {
+//                switch step {
+//                case 0: await storage.playVoiceOver(.voiceOver1)
+//                case 1: await storage.playVoiceOver(.voiceOver2)
+//                case 2: await storage.playVoiceOver(.voiceOver3)
+//                case 3: await storage.playVoiceOver(.voiceOver4)
+//                default: break
+//                }
+//            }
         }
     }
 

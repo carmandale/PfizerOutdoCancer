@@ -49,7 +49,7 @@ def Xform "Root"
             }
 
             def Sphere "Sphere" (
-                active = true
+                active = false
                 prepend apiSchemas = ["MaterialBindingAPI"]
             )
             {
@@ -106,7 +106,7 @@ def Xform "Root"
             }
 
             def Sphere "Sphere" (
-                active = true
+                active = false
                 prepend apiSchemas = ["MaterialBindingAPI"]
             )
             {
@@ -162,7 +162,7 @@ def Xform "Root"
             }
 
             def Sphere "Sphere" (
-                active = true
+                active = false
                 prepend apiSchemas = ["MaterialBindingAPI"]
             )
             {
@@ -218,7 +218,7 @@ def Xform "Root"
             }
 
             def Sphere "Sphere" (
-                active = true
+                active = false
                 prepend apiSchemas = ["MaterialBindingAPI"]
             )
             {
@@ -276,7 +276,7 @@ def Xform "Root"
             }
 
             def Sphere "Sphere" (
-                active = true
+                active = false
                 prepend apiSchemas = ["MaterialBindingAPI"]
             )
             {
@@ -334,7 +334,7 @@ def Xform "Root"
             }
 
             def Sphere "Sphere" (
-                active = true
+                active = false
                 prepend apiSchemas = ["MaterialBindingAPI"]
             )
             {
@@ -404,7 +404,7 @@ def Xform "Root"
                 }
 
                 def Sphere "Sphere" (
-                    active = true
+                    active = false
                     prepend apiSchemas = ["MaterialBindingAPI"]
                 )
                 {
@@ -466,7 +466,7 @@ def Xform "Root"
                 }
 
                 def Sphere "Sphere" (
-                    active = true
+                    active = false
                     prepend apiSchemas = ["MaterialBindingAPI"]
                 )
                 {
@@ -528,7 +528,7 @@ def Xform "Root"
                 }
 
                 def Sphere "Sphere" (
-                    active = true
+                    active = false
                     prepend apiSchemas = ["MaterialBindingAPI"]
                 )
                 {
@@ -590,7 +590,7 @@ def Xform "Root"
                 }
 
                 def Sphere "Sphere" (
-                    active = true
+                    active = false
                     prepend apiSchemas = ["MaterialBindingAPI"]
                 )
                 {
@@ -651,7 +651,7 @@ def Xform "Root"
             }
 
             def Sphere "Sphere" (
-                active = true
+                active = false
                 prepend apiSchemas = ["MaterialBindingAPI"]
             )
             {
@@ -711,7 +711,7 @@ def Xform "Root"
             }
 
             def Sphere "Sphere" (
-                active = true
+                active = false
                 prepend apiSchemas = ["MaterialBindingAPI"]
             )
             {
@@ -771,7 +771,7 @@ def Xform "Root"
             }
 
             def Sphere "Sphere" (
-                active = true
+                active = false
                 prepend apiSchemas = ["MaterialBindingAPI"]
             )
             {
@@ -807,6 +807,7 @@ def Xform "Root"
     def RealityKitAudioFile "Keyboard_1_wav"
     {
         uniform asset file = @Audio/Lab_Ambience/Keyboard_1.wav@
+        uniform token loadingStrategy = "Stream"
         rel mixGroup = </Root/AudioMixGroups/keyboard>
         uniform bool shouldLoop = 1
         uniform bool shouldRandomizeStartTime = 1
@@ -815,6 +816,7 @@ def Xform "Root"
     def RealityKitAudioFile "Keyboard_2_wav"
     {
         uniform asset file = @Audio/Lab_Ambience/Keyboard_2.wav@
+        uniform token loadingStrategy = "Stream"
         rel mixGroup = </Root/AudioMixGroups/keyboard>
         uniform bool shouldLoop = 1
         uniform bool shouldRandomizeStartTime = 1
@@ -823,6 +825,7 @@ def Xform "Root"
     def RealityKitAudioFile "Keyboard_3_wav"
     {
         uniform asset file = @Audio/Lab_Ambience/Keyboard_3.wav@
+        uniform token loadingStrategy = "Stream"
         rel mixGroup = </Root/AudioMixGroups/keyboard>
         uniform bool shouldLoop = 1
         uniform bool shouldRandomizeStartTime = 1
@@ -831,6 +834,7 @@ def Xform "Root"
     def RealityKitAudioFile "Keyboard_4_wav"
     {
         uniform asset file = @Audio/Lab_Ambience/Keyboard_4.wav@
+        uniform token loadingStrategy = "Stream"
         rel mixGroup = </Root/AudioMixGroups/keyboard>
         uniform bool shouldLoop = 1
         uniform bool shouldRandomizeStartTime = 1
@@ -839,6 +843,7 @@ def Xform "Root"
     def RealityKitAudioFile "Keyboard_5_wav"
     {
         uniform asset file = @Audio/Lab_Ambience/Keyboard_5.wav@
+        uniform token loadingStrategy = "Stream"
         rel mixGroup = </Root/AudioMixGroups/keyboard>
         uniform bool shouldLoop = 1
         uniform bool shouldRandomizeStartTime = 1
