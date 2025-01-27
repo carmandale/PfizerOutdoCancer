@@ -13,14 +13,17 @@ struct ADCSelectorView: View {
                     .font(.title)
                 Spacer()
                 
-                ADCCheckmarkButton(
-                    action: {
-                        print("ITR..Checkmark button pressed")
-                        dataModel.adcBuildStep = 1
-                        // dataModel.selectedLinkerType = 0
-                    },
-                    isEnabled: dataModel.selectedADCAntibody != nil
-                )
+                if !dataModel.isVOPlaying {
+                    ADCCheckmarkButton(
+                        action: {
+                            print("ITR..Checkmark button pressed")
+                            dataModel.adcBuildStep = 1
+                            // dataModel.selectedLinkerType = 0
+                        },
+                        isEnabled: dataModel.selectedADCAntibody != nil
+                    )
+                }
+                
             }
             .padding(.vertical, 30)
             .padding(.horizontal, 30)
@@ -64,9 +67,9 @@ struct ADCSelectorView: View {
     }
 }
 
-#Preview {
-    ADCSelectorView()
-        .environment(AppModel())
-        .environment(ADCDataModel())
-    
-}
+//#Preview {
+//    ADCSelectorView()
+//        .environment(AppModel())
+//        .environment(ADCDataModel())
+//    
+//}

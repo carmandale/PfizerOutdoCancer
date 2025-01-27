@@ -17,15 +17,18 @@ struct ADCPayloadSelectorView: View {
                         .frame(alignment: .trailing)
                 }
                 
-                ADCCheckmarkButton(
-                    action: {
-                        // Fill all remaining payloads with current selection
-                        dataModel.fillAllPayloads()
-                        // Advance to next step
-                        dataModel.adcBuildStep = 3
-                    },
-                    isEnabled: dataModel.selectedPayloadType != nil
-                )
+                if !dataModel.isVOPlaying {
+                    ADCCheckmarkButton(
+                        action: {
+                            // Fill all remaining payloads with current selection
+                            dataModel.fillAllPayloads()
+                            // Advance to next step
+                            dataModel.adcBuildStep = 3
+                        },
+                        isEnabled: dataModel.selectedPayloadType != nil
+                    )
+                }
+                
             }
             .padding(.vertical, 30)
             .padding(.horizontal, 30)

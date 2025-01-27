@@ -20,8 +20,11 @@ class ADCDataModel {
     var placedLinkerCount: Int = 0
     var placedPayloadCount: Int = 0
     
+    public var isVOPlaying = false
+    
     // Fill all linker positions with currently selected linker type
     func fillAllLinkers() {
+        // set condition if VO is finished  
         guard let selectedType = selectedLinkerType else { return }
         selectedADCLinker = selectedType
         placedLinkerCount = 4

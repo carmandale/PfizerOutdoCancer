@@ -29,7 +29,8 @@ extension ModelEntity {
             self.model?.materials = pbrMaterials
             os_log(.debug, "ITR..updatePBREmissiveColor(): ✅ Updated emissiveColor to: \(String(describing: pbr.emissiveColor.color))")
         } else {
-            os_log(.error, "ITR..updatePBREmissiveColor(): ❌ materials array is empty")
+            // For unplaced payloads with outline material, this is expected behavior
+            os_log(.debug, "ITR..updatePBREmissiveColor(): ℹ️ Skipping color update - entity has outline material (normal for unplaced payload)")
         }
     }
     
@@ -46,10 +47,16 @@ extension ModelEntity {
                 self.model?.materials = materials
                 os_log(.debug, "ITR..updateShaderGraphColor(): ✅ Successfully updated \(parameterName) with color: \(String(describing: color))")
             } catch {
-                os_log(.error, "ITR..updateShaderGraphColor(): ❌ Error setting parameter: \(error)")
+                // For unplaced payloads with outline material, this is expected behavior
+                if error is ShaderGraphMaterial.Error {
+                    os_log(.debug, "ITR..updateShaderGraphColor(): ℹ️ Parameter not found - entity has outline material (normal for unplaced payload)")
+                } else {
+                    os_log(.error, "ITR..updateShaderGraphColor(): ❌ Error setting parameter: \(error)")
+                }
             }
         } else {
-            os_log(.error, "ITR..updateShaderGraphColor(): ❌ No materials found")
+            // For unplaced payloads with outline material, this is expected behavior
+            os_log(.debug, "ITR..updateShaderGraphColor(): ℹ️ Skipping color update - entity has outline material (normal for unplaced payload)")
         }
     }
     

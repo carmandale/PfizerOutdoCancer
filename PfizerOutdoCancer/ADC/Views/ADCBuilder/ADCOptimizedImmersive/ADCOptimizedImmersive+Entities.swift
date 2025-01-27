@@ -126,16 +126,38 @@ extension ADCOptimizedImmersive {
                 // Set up inner payload
                 innerPayload.isEnabled = false
                 if var modelComponent = innerPayload.components[ModelComponent.self] {
+                    // Store original inner material
+                    if let originalMaterial = modelComponent.materials.first as? PhysicallyBasedMaterial {
+                        self.originalPayloadInnerMaterial = originalMaterial
+                        os_log(.debug, "ITR..preparePayloadEntities(): ✅ Stored original inner PBR material for payload %{public}@", String(describing: innerPayload.name))
+                    } else {
+                        os_log(.error, "ITR..preparePayloadEntities(): ❌ Failed to get original PBR material for inner payload %{public}@", String(describing: innerPayload.name))
+                    }
                     modelComponent.materials = [outlineMaterial].compactMap { $0 }
                     innerPayload.components[ModelComponent.self] = modelComponent
+                } else {
+                    os_log(.error, "ITR..preparePayloadEntities(): ❌ No ModelComponent found for inner payload %{public}@", String(describing: innerPayload.name))
                 }
                 adcPayloadsInner.append(innerPayload)
                 
                 // Set up outer payload
                 outerPayload.isEnabled = false
                 if var modelComponent = outerPayload.components[ModelComponent.self] {
+                    // Store original outer material
+                    if let originalMaterial = modelComponent.materials.first as? ShaderGraphMaterial {
+                        self.originalPayloadOuterMaterial = originalMaterial
+                        os_log(.debug, "ITR..preparePayloadEntities(): ✅ Stored original outer shader material for payload %{public}@", String(describing: outerPayload.name))
+                        
+                        // Log available parameters for debugging
+                        let parameters = originalMaterial.parameterNames
+                        os_log(.debug, "ITR..preparePayloadEntities(): 📝 Available shader parameters for %{public}@: %{public}@", String(describing: outerPayload.name), parameters.joined(separator: ", "))
+                    } else {
+                        os_log(.error, "ITR..preparePayloadEntities(): ❌ Failed to get original shader material for outer payload %{public}@", String(describing: outerPayload.name))
+                    }
                     modelComponent.materials = [outlineMaterial].compactMap { $0 }
                     outerPayload.components[ModelComponent.self] = modelComponent
+                } else {
+                    os_log(.error, "ITR..preparePayloadEntities(): ❌ No ModelComponent found for outer payload %{public}@", String(describing: outerPayload.name))
                 }
                 adcPayloadsOuter.append(outerPayload)
                 

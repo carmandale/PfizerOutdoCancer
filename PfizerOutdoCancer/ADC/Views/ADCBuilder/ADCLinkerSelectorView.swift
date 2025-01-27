@@ -17,16 +17,19 @@ struct ADCLinkerSelectorView: View {
                         .frame(alignment: .trailing)
                 }
                 
-                ADCCheckmarkButton(
-                    action: {
-                        // Fill all remaining linkers with current selection
-                        dataModel.fillAllLinkers()
-                        // Advance to next step
-                        dataModel.adcBuildStep = 2
-                        // dataModel.selectedPayloadType = 0
-                    },
-                    isEnabled: dataModel.selectedLinkerType != nil
-                )
+                if !dataModel.isVOPlaying {
+                    ADCCheckmarkButton(
+                        action: {
+                            // Fill all remaining linkers with current selection
+                            dataModel.fillAllLinkers()
+                            // Advance to next step
+                            dataModel.adcBuildStep = 2
+                            // dataModel.selectedPayloadType = 0
+                        },
+                        isEnabled: dataModel.selectedLinkerType != nil
+                    )
+                }
+                
             }
             .padding(.vertical, 30)
             .padding(.horizontal, 30)

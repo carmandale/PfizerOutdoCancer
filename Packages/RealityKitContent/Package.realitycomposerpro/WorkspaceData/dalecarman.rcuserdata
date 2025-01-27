@@ -1,7 +1,7 @@
 {
   "advancedEditorSelectedIdentifier" : "ProjectBrowser",
   "openSceneRelativePaths" : [
-    "ADC-spawn.usda"
+    "AttackCancerGameStart_VO.usda"
   ],
   "recentIdentifiers" : {
     "00353439-B084-4161-BDD3-58325B62FD61" : [
@@ -10774,5 +10774,5 @@
   "sceneViewportBackgroundColors" : {
 
   },
-  "selectedSceneRelativePath" : "ADC-spawn.usda"
+  "selectedSceneRelativePath" : "AttackCancerGameStart_VO.usda"
 }
