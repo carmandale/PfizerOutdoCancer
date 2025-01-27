@@ -298,9 +298,8 @@ extension ADCOptimizedImmersive {
                                 element.isEnabled = index <= dataModel.payloadsWorkingIndex
                             }
                             
-                            if !isFinalPayload && !dataModel.isVOPlaying {
-                                adcPayloadsOuter[dataModel.payloadsWorkingIndex].components.set(ADCProximitySourceComponent())
-                            }
+                            adcPayloadsOuter[dataModel.payloadsWorkingIndex].components.set(ADCProximitySourceComponent())
+                            
                             
                         }
                         updateADC()
