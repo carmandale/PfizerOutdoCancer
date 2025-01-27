@@ -106,27 +106,26 @@ extension ADCOptimizedImmersive {
                         adcLinkers.forEach {
                             $0.components.remove(ADCProximitySourceComponent.self)
                         }
-//                        adcLinkers[dataModel.linkersWorkingIndex].components.set(ProximitySourceComponent())
                         
-                        if dataModel.linkersWorkingIndex >= (adcLinkers.count - 1) {
-                            dataModel.adcBuildStep = 2
-                            dataModel.selectedPayloadType = nil
+                        let isFinalLinker = dataModel.linkersWorkingIndex >= (adcLinkers.count - 1)
+                        if isFinalLinker {
+                            await isFinalLinkerAction()
                         } else {
                             if let linkerEntity = self.linkerEntity,
                                let savedPosition = initialLinkerPosition {
                                 linkerEntity.position = savedPosition  // Restore to original position
-                                // linkerEntity.look(at: cameraEntity.scenePosition,
-                                //                  from: linkerEntity.scenePosition,
-                                //                  relativeTo: nil,
-                                //                  forward: .positiveZ)
                             }
 
                             dataModel.linkersWorkingIndex += 1
+                            print("linker working index = \(dataModel.linkersWorkingIndex)")
+                            print("adcLinkers count = \(adcLinkers.count)")
                             
                             for (index, element) in adcLinkers.enumerated() {
                                 element.isEnabled = index <= dataModel.linkersWorkingIndex
                             }
+                            
                             adcLinkers[dataModel.linkersWorkingIndex].components.set(ADCProximitySourceComponent())
+
                         }
                         updateADC()
                     }
@@ -146,6 +145,34 @@ extension ADCOptimizedImmersive {
             shouldAddPayloadAttachment = true
         }
         return gestureComponent
+    }
+    
+    func isFinalLinkerAction() async {
+        
+        let oldStep = dataModel.adcBuildStep
+        
+        
+        if let linkerEntity = self.linkerEntity,
+           let savedPosition = initialLinkerPosition {
+            linkerEntity.position = savedPosition  // Reset position for final linker too
+            linkerEntity.isEnabled = false  // Hide it since we're done with linkers
+        }
+        
+        // check to see if the VO is playing. if it isn't advance. if it is, wait for it to finish.
+        
+        dataModel.adcBuildStep = 2
+        dataModel.selectedPayloadType = nil
+        
+        if oldStep != dataModel.adcBuildStep {
+            Task { @MainActor in
+                do {
+                    try await playSpatialAudio(step: dataModel.adcBuildStep)
+                } catch {
+                    os_log(.error, "ITR..createLinkerGestureComponent(): ❌ Failed to play VO: \(error)")
+                }
+            }
+        }
+        
     }
     
     func createPayloadGestureComponent(payloadEntity: Entity, payloadTarget: Entity) -> ADCGestureComponent {
@@ -182,7 +209,7 @@ extension ADCOptimizedImmersive {
                         await playPopSound()
                     }
                     dataModel.placedPayloadCount += 1
-
+                    
                     Task { @MainActor in
                         // Only apply color if one has been chosen
                         if let selectedType = dataModel.selectedPayloadType {
@@ -233,10 +260,28 @@ extension ADCOptimizedImmersive {
                         adcPayloadsOuter.forEach {
                             $0.components.remove(ADCProximitySourceComponent.self)
                         }
-//                        adcPayloadsOuter[dataModel.payloadsWorkingIndex].components.set(ProximitySourceComponent())
                         
-                        if dataModel.payloadsWorkingIndex >= (adcPayloadsInner.count - 1) {
+                        let isFinalPayload = dataModel.payloadsWorkingIndex >= (adcPayloadsInner.count - 1)
+                        if isFinalPayload && !dataModel.isVOPlaying {
+                            let oldStep = dataModel.adcBuildStep
+                            
                             dataModel.adcBuildStep = 3
+                            
+                            if let payloadEntity = self.payloadEntity,
+                               let savedPosition = initialPayloadPosition {
+                                payloadEntity.position = savedPosition
+                                payloadEntity.isEnabled = false
+                            }
+                            
+                            if oldStep != dataModel.adcBuildStep {
+                                Task { @MainActor in
+                                    do {
+                                        try await playSpatialAudio(step: dataModel.adcBuildStep)
+                                    } catch {
+                                        os_log(.error, "ITR..createPayloadGestureComponent(): ❌ Failed to play VO: \(error)")
+                                    }
+                                }
+                            }
                         } else {
                             if let payloadEntity = self.payloadEntity,
                                let savedPosition = initialPayloadPosition {
@@ -244,6 +289,7 @@ extension ADCOptimizedImmersive {
                             }
                             
                             dataModel.payloadsWorkingIndex += 1
+                            print("payload working index = \(dataModel.payloadsWorkingIndex)")
                             
                             for (index, element) in adcPayloadsInner.enumerated() {
                                 element.isEnabled = index <= dataModel.payloadsWorkingIndex
@@ -251,7 +297,11 @@ extension ADCOptimizedImmersive {
                             for (index, element) in adcPayloadsOuter.enumerated() {
                                 element.isEnabled = index <= dataModel.payloadsWorkingIndex
                             }
-                            adcPayloadsOuter[dataModel.payloadsWorkingIndex].components.set(ADCProximitySourceComponent())
+                            
+                            if !isFinalPayload && !dataModel.isVOPlaying {
+                                adcPayloadsOuter[dataModel.payloadsWorkingIndex].components.set(ADCProximitySourceComponent())
+                            }
+                            
                         }
                         updateADC()
                     }

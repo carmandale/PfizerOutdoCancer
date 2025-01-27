@@ -94,33 +94,43 @@ extension ADCOptimizedImmersive {
         }*/
     }
 
-    func playSpatialAudio(step: Int) {
-        Task { @MainActor in
-            // Stop any currently playing VO
-            if let controller = currentVOController {
-                controller.stop()
-                currentVOController = nil
+    @MainActor
+    func playSpatialAudio(step: Int) async throws {
+        os_log(.debug, "ITR..playSpatialAudio(): Playing spatial audio for step \(step)")
+        
+        dataModel.isVOPlaying = true
+        
+        // Stop any currently playing VO
+        if let controller = currentVOController {
+            controller.stop()
+            currentVOController = nil
+        }
+        
+        // Get appropriate VO resource
+        let voResource: AudioFileResource? = switch step {
+            case 0: vo1Audio
+            case 1: vo2Audio
+            case 2: vo3Audio
+            case 3: vo4Audio
+            default: nil
+        }
+        
+        guard let voResource,
+              let voEntity = voiceOverAudioEntity else {
+            os_log(.error, "ITR..playSpatialAudio(): Missing VO resource or entity for step \(step)")
+            throw NSError(domain: "ADCOptimizedImmersive", code: -1, userInfo: [NSLocalizedDescriptionKey: "Missing VO resource or entity"])
+        }
+        
+        // Create and play VO with completion handling
+        return await withCheckedContinuation { continuation in
+            currentVOController = voEntity.prepareAudio(voResource)
+            currentVOController?.completionHandler = {
+                os_log(.debug, "ITR..playSpatialAudio(): VO completed for step \(step)")
+                dataModel.isVOPlaying = false
+                continuation.resume()
             }
-            
-            // Play with existing system
-            switch step {
-            case 0: await playVO1()
-            case 1: await playVO2()
-            case 2: await playVO3()
-            case 3: await playVO4()
-            default: break
-            }
-            
-            // Play with new system
-//            if let storage = audioStorage {
-//                switch step {
-//                case 0: await storage.playVoiceOver(.voiceOver1)
-//                case 1: await storage.playVoiceOver(.voiceOver2)
-//                case 2: await storage.playVoiceOver(.voiceOver3)
-//                case 3: await storage.playVoiceOver(.voiceOver4)
-//                default: break
-//                }
-//            }
+            currentVOController?.play()
+            os_log(.debug, "ITR..playSpatialAudio(): Started playing VO for step \(step)")
         }
     }
 

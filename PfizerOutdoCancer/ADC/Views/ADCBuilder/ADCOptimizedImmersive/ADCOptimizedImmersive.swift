@@ -1,3 +1,16 @@
+// ADCOptimizedImmersive.swift
+//
+//  ADCOptimizedImmersive
+//  PfizerOutdoCancer
+//
+//  Created by Dale Carman on 1/4/25.
+//
+//  This file contains the ADCImmersiveView, which is the immersive view
+//  for the ADC Builder.  This view contains the main view hierarchy of the
+//  ADC Builder, including the main view, the ADC attachment, and the
+//  linker and payload attachment entities.
+
+
 import SwiftUI
 import RealityKit
 import RealityKitContent
@@ -11,6 +24,7 @@ struct ADCOptimizedImmersive: View {
     
     // Audio system
     @State internal var bubblePopSound = false
+    
     // System 2 (disabled)
     //@State internal var audioStorage: ADCAudioStorage?
     
@@ -109,26 +123,19 @@ struct ADCOptimizedImmersive: View {
                 // Now that attachments are set up, prepare audio
                 await prepareAudioEntities()
                 
-                // Initialize new audio system (disabled)
-                /*do {
-                    let storage = ADCAudioStorage()
-                    try await storage.prepareAudio(for: masterEntity)
-                    self.audioStorage = storage
-                    
-                    // Play initial VO
-                    await storage.playVoiceOver(.voiceOver1)
-                } catch {
-                    os_log(.error, "ITR..ADCOptimizedImmersive: ❌ Failed to setup audio: \(error)")
-                }*/
-                
-                playSpatialAudio(step: 0)
-                
                 shouldAddADCAttachment = true
                 shouldAddMainViewAttachment = true
                 
                 antibodyRootEntity?.isEnabled = true
                 antibodyEntity?.isEnabled = true
                 dataModel.adcBuildStep = 0
+                
+                // Play audio for initial step
+                do {
+                    try await playSpatialAudio(step: 0)
+                } catch {
+                    os_log(.error, "ITR..ADCOptimizedImmersive: ❌ Failed to play initial VO: \(error)")
+                }
             }
         } update: { content, attachments in
             // updateADC()
@@ -163,7 +170,13 @@ struct ADCOptimizedImmersive: View {
                 os_log(.debug, "- Payload Color: \(dataModel.selectedPayloadType ?? -1)")
                 
                 // Play step audio
-                playSpatialAudio(step: newValue)
+                Task { @MainActor in
+                    do {
+                        try await playSpatialAudio(step: newValue)
+                    } catch {
+                        os_log(.error, "ITR..createLinkerGestureComponent(): ❌ Failed to play VO: \(error)")
+                    }
+                }
                 
                 switch newValue {
                 case 0:
@@ -211,6 +224,9 @@ struct ADCOptimizedImmersive: View {
                                 linker.updateShaderGraphColor(parameterName: "Basecolor_Tint", color: .adc[dataModel.selectedLinkerType ?? 0])
                                 linker.isEnabled = true
                             }
+                            
+                            // Only advance step after visuals are complete
+                            // dataModel.adcBuildStep = 3
                         }
                     }
                     
@@ -218,6 +234,8 @@ struct ADCOptimizedImmersive: View {
                     self.linkerEntity?.isEnabled = false
                     self.linkerAttachmentEntity?.isEnabled = false
                     self.payloadEntity?.isEnabled = true
+                    
+                    // Restore payload setup code
                     for (index, element) in adcPayloadsInner.enumerated() {
                         element.isEnabled = index <= dataModel.payloadsWorkingIndex
                     }
@@ -252,6 +270,9 @@ struct ADCOptimizedImmersive: View {
                                 inner.isEnabled = true
                                 outer.isEnabled = true
                             }
+                            
+                            // Only advance step after visuals are complete
+                            // dataModel.adcBuildStep = 4
                         }
                     }
                     
@@ -307,7 +328,7 @@ struct ADCOptimizedImmersive: View {
         .onChange(of: dataModel.selectedPayloadType) { oldValue, newValue in
             os_log(.debug, "ITR..onChange(of: dataModel.selectedPayloadType): New change selected working payload: \(newValue ?? -1)")
             guard dataModel.adcBuildStep == 2  else {
-                os_log(.error, "ITR..onChange(of: dataModel.selectedPayloadType): ❌ Error, got a new value for selectedPayloadType: \(newValue ?? -1) but adcBuildStep is not 1")
+                os_log(.error, "ITR..onChange(of: dataModel.selectedPayloadType): ❌ Error, got a new value for selectedPayloadType: \(newValue ?? -1) but adcBuildStep is not 2")
                 return
             }
             Task { @MainActor in
