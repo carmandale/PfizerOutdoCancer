@@ -109,7 +109,12 @@ extension ADCOptimizedImmersive {
                         
                         let isFinalLinker = dataModel.linkersWorkingIndex >= (adcLinkers.count - 1)
                         if isFinalLinker {
-                            await isFinalLinkerAction()
+                            await handleFinalEntityPlacement(
+                                entityType: .linker,
+                                workingEntity: linkerEntity,
+                                savedPosition: initialLinkerPosition,
+                                nextStep: 2
+                            )
                         } else {
                             if let linkerEntity = self.linkerEntity,
                                let savedPosition = initialLinkerPosition {
@@ -117,9 +122,7 @@ extension ADCOptimizedImmersive {
                             }
 
                             dataModel.linkersWorkingIndex += 1
-                            print("linker working index = \(dataModel.linkersWorkingIndex)")
-                            print("adcLinkers count = \(adcLinkers.count)")
-                            
+
                             for (index, element) in adcLinkers.enumerated() {
                                 element.isEnabled = index <= dataModel.linkersWorkingIndex
                             }
@@ -147,32 +150,46 @@ extension ADCOptimizedImmersive {
         return gestureComponent
     }
     
-    func isFinalLinkerAction() async {
-        
-        let oldStep = dataModel.adcBuildStep
-        
-        
-        if let linkerEntity = self.linkerEntity,
-           let savedPosition = initialLinkerPosition {
-            linkerEntity.position = savedPosition  // Reset position for final linker too
-            linkerEntity.isEnabled = false  // Hide it since we're done with linkers
+    /// Handles the final placement of an entity (linker or payload)
+    /// - Parameters:
+    ///   - entityType: Type of entity being placed
+    ///   - workingEntity: The current working entity to reset
+    ///   - savedPosition: Original position to reset to
+    ///   - nextStep: Step to advance to when complete
+    func handleFinalEntityPlacement(entityType: ADCEntityType,
+                                  workingEntity: Entity?,
+                                  savedPosition: SIMD3<Float>?,
+                                  nextStep: Int) async {
+        // Reset position and hide working entity
+        if let workingEntity = workingEntity,
+           let savedPosition = savedPosition {
+            workingEntity.position = savedPosition
+            workingEntity.isEnabled = false
         }
         
-        // check to see if the VO is playing. if it isn't advance. if it is, wait for it to finish.
-        
-        dataModel.adcBuildStep = 2
-        dataModel.selectedPayloadType = nil
-        
-        if oldStep != dataModel.adcBuildStep {
-            Task { @MainActor in
+        // Only advance if VO is not playing
+        if !dataModel.isVOPlaying {
+            let oldStep = dataModel.adcBuildStep
+            dataModel.adcBuildStep = nextStep
+            
+            // Reset selection for next step if needed
+            switch entityType {
+            case .linker:
+                dataModel.selectedPayloadType = nil
+            case .payload:
+                // No reset needed for payload as it's the final step
+                break
+            }
+            
+            // Play VO for new step if step changed
+            if oldStep != dataModel.adcBuildStep {
                 do {
                     try await playSpatialAudio(step: dataModel.adcBuildStep)
                 } catch {
-                    os_log(.error, "ITR..createLinkerGestureComponent(): ❌ Failed to play VO: \(error)")
+                    os_log(.error, "ITR..handleFinalEntityPlacement(): ❌ Failed to play VO: \(error)")
                 }
             }
         }
-        
     }
     
     func createPayloadGestureComponent(payloadEntity: Entity, payloadTarget: Entity) -> ADCGestureComponent {
@@ -250,10 +267,11 @@ extension ADCOptimizedImmersive {
                         }
                         
                         // If there's a next payload, give it the outline material
-                        if dataModel.payloadsWorkingIndex < (adcPayloadsInner.count - 1) {
+                        let nextIndex = dataModel.payloadsWorkingIndex + 1
+                        if nextIndex < adcPayloadsInner.count && nextIndex < adcPayloadsOuter.count {
                             if let material = outlineMaterial {
-                                adcPayloadsInner[dataModel.payloadsWorkingIndex + 1].model?.materials = [material]
-                                adcPayloadsOuter[dataModel.payloadsWorkingIndex + 1].model?.materials = [material]
+                                adcPayloadsInner[nextIndex].model?.materials = [material]
+                                adcPayloadsOuter[nextIndex].model?.materials = [material]
                             }
                         }
                         
@@ -262,34 +280,20 @@ extension ADCOptimizedImmersive {
                         }
                         
                         let isFinalPayload = dataModel.payloadsWorkingIndex >= (adcPayloadsInner.count - 1)
-                        if isFinalPayload && !dataModel.isVOPlaying {
-                            let oldStep = dataModel.adcBuildStep
-                            
-                            dataModel.adcBuildStep = 3
-                            
-                            if let payloadEntity = self.payloadEntity,
-                               let savedPosition = initialPayloadPosition {
-                                payloadEntity.position = savedPosition
-                                payloadEntity.isEnabled = false
-                            }
-                            
-                            if oldStep != dataModel.adcBuildStep {
-                                Task { @MainActor in
-                                    do {
-                                        try await playSpatialAudio(step: dataModel.adcBuildStep)
-                                    } catch {
-                                        os_log(.error, "ITR..createPayloadGestureComponent(): ❌ Failed to play VO: \(error)")
-                                    }
-                                }
-                            }
+                        if isFinalPayload {
+                            await handleFinalEntityPlacement(
+                                entityType: .payload,
+                                workingEntity: payloadEntity,
+                                savedPosition: initialPayloadPosition,
+                                nextStep: 3
+                            )
                         } else {
                             if let payloadEntity = self.payloadEntity,
                                let savedPosition = initialPayloadPosition {
-                                payloadEntity.position = savedPosition  // Use saved position
+                                payloadEntity.position = savedPosition  // Restore to original position
                             }
                             
                             dataModel.payloadsWorkingIndex += 1
-                            print("payload working index = \(dataModel.payloadsWorkingIndex)")
                             
                             for (index, element) in adcPayloadsInner.enumerated() {
                                 element.isEnabled = index <= dataModel.payloadsWorkingIndex
@@ -299,8 +303,6 @@ extension ADCOptimizedImmersive {
                             }
                             
                             adcPayloadsOuter[dataModel.payloadsWorkingIndex].components.set(ADCProximitySourceComponent())
-                            
-                            
                         }
                         updateADC()
                     }

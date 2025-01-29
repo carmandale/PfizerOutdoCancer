@@ -30,14 +30,14 @@ extension AttackCancerViewModel {
             print("No scene available or no cell component/ID")
             return
         }
-        print("Found cancer cell with ID: \(cellID)")
-        
+            print("Found cancer cell with ID: \(cellID)")
+            
         guard let attachPoint = AttachmentSystem.getAvailablePoint(in: scene, forCellID: cellID) else {
             print("No available attach point found")
             // TODO: Handle no available attach point
             // if no attach point is available, spawn and launch an ADC and have it go into orbit and look for a cancer cell to attach to
-            return
-        }
+                return
+            }
         print("Found attach point: \(attachPoint.name)")
         
         AttachmentSystem.markPointAsOccupied(attachPoint)

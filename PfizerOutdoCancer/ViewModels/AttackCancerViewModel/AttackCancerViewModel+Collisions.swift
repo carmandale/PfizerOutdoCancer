@@ -17,7 +17,7 @@ extension AttackCancerViewModel {
             for object in objectsToModify {
                 if var collision = object.components[CollisionComponent.self] {
                     collision.filter.group = .cancerCell
-                    collision.filter.mask = .adc
+                    collision.filter.mask = .cancerCell
                     object.components[CollisionComponent.self] = collision
                 }
             }
@@ -52,13 +52,13 @@ extension AttackCancerViewModel {
         let entities = UnorderedPair(event.entityA, event.entityB)
         
         // Handle ADC-to-cell collisions
-        if let _ = entities.itemA.components[ADCComponent.self],
-           let _ = entities.itemB.components[CancerCellStateComponent.self] {
-            handleADCToCellCollision(adc: entities.itemA, cell: entities.itemB, collision: event)
-        } else if let _ = entities.itemB.components[ADCComponent.self],
-                  let _ = entities.itemA.components[CancerCellStateComponent.self] {
-            handleADCToCellCollision(adc: entities.itemB, cell: entities.itemA, collision: event)
-        }
+        // if let _ = entities.itemA.components[ADCComponent.self],
+        //    let _ = entities.itemB.components[CancerCellStateComponent.self] {
+        //     handleADCToCellCollision(adc: entities.itemA, cell: entities.itemB, collision: event)
+        // } else if let _ = entities.itemB.components[ADCComponent.self],
+        //           let _ = entities.itemA.components[CancerCellStateComponent.self] {
+        //     handleADCToCellCollision(adc: entities.itemB, cell: entities.itemA, collision: event)
+        // }
     }
     
     private func handleADCToCellCollision(adc: Entity, cell: Entity, collision: CollisionEvents.Began) {

@@ -120,18 +120,17 @@ public class ADCMovementSystem: System {
 //                    print("Found cancer cell: \(cancerCell.name)")
 //                    print("Initial velocity: \(cellPhysics.linearVelocity)")
                     
-                    // Apply impulse
-                    cellPhysics.linearVelocity += impactDirection * 2.0 // 0.05
+                    // Removed physics impulse application to disable ADC-cancer cell interactions
+                    // while maintaining cell-to-cell collisions
                     
-                    // Add random angular velocity around Y axis
-                    let randomSign: Float = Bool.random() ? 1.0 : -1.0
-                    cellPhysics.angularVelocity += SIMD3<Float>(0, randomSign * 2.1, 0)
-                    
-//                    print("New velocity: \(cellPhysics.linearVelocity)")
-//                    print("New angular velocity: \(cellPhysics.angularVelocity)")
-                    
-                    cancerCell.components[PhysicsMotionComponent.self] = cellPhysics
-//                    print("Updated physics on cancer cell")
+//                    // Apply impulse
+//                    cellPhysics.linearVelocity += impactDirection * 2.0
+//                    
+//                    // Add random angular velocity around Y axis
+//                    let randomSign: Float = Bool.random() ? 1.0 : -1.0
+//                    cellPhysics.angularVelocity += SIMD3<Float>(0, randomSign * 2.1, 0)
+//                    
+//                    cancerCell.components[PhysicsMotionComponent.self] = cellPhysics
                     
                 } else {
                     print("Could not find parent cancer cell with physics component")

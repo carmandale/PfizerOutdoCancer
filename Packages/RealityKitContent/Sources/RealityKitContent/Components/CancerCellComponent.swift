@@ -7,7 +7,7 @@ public class CancerCellParameters {
     public static let maxRequiredHits = 8
     
     // Default impact scale for tutorial cells (constant to ensure thread safety)
-    public static let tutorialImpactScale: Float = 3.0
+    public static let tutorialImpactScale: Float = 0.00001
     
     public var cellID: Int? = nil
     public var hitCount: Int = 0
@@ -22,7 +22,7 @@ public class CancerCellParameters {
     public var linearVelocity: SIMD3<Float> = .zero
     public var angularVelocity: SIMD3<Float> = .zero
     public var isTutorialCell: Bool = false
-    public var impactScale: Float = 1.0  // Default full impact
+    public var impactScale: Float = 0.0001  // Default full impact
     public var testValue: Int = 23  // Added for debug purposes
     
     // Scale thresholds for different hit counts

@@ -21,7 +21,7 @@ class ADCDataModel {
     var placedPayloadCount: Int = 0
     
     public var isVOPlaying = false
-    
+    public var hasInitialVOCompleted = false
     // Fill all linker positions with currently selected linker type
     func fillAllLinkers() {
         // set condition if VO is finished  

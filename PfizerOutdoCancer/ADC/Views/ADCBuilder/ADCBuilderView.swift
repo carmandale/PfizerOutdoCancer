@@ -18,148 +18,112 @@ struct ADCBuilderView: View {
     ]
     
     var body: some View {
-        VStack(spacing: 20) {
-            // Main content
-            VStack {
-                ZStack {
-                    HStack {
-                        Image("Pfizer_Logo_White_RGB")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 100)
-                            .padding(.leading, 30)
-                        Spacer()
-                    }
-                    HStack {
-                        Spacer()
-                        Text(appModel.immersiveSpaceState == .closed ? "ADC Builder" : {
-                            switch dataModel.adcBuildStep {
-                            case 0:
-                                return "Antibody"
-                            case 1:
-                                return "Antibody + Linker"
-                            case 2:
-                                return "Antibody + Linker + Payload"
-                            default:
-                                return "Your ADC is ready"
-                            }
-                        }())
-                            .font(.largeTitle)
-                            .transition(.opacity.combined(with: .move(edge: .top)))
-                            .animation(.easeInOut(duration: 0.3), value: dataModel.adcBuildStep)
-                        Spacer()
-                    }
-                }
-                .padding(30)
-                // .padding(.vertical, 30)
-                // .padding(.horizontal, 30)
-                .background(.black.opacity(0.4))
-//                HStack (alignment: .top, spacing: 50){
-//                    Group {
-//                        ADCButtonSquareWithOutline(imageName: dataModel.getADCImageName(),
-//                                                outlineColor: Color.white,
-//                                                description: "Antibody",
-//                                                index: 0,
-//                                                isSelected: {
-//                            false
-//                        }) {
-//                            print("ITR..Button 0 antibody pressed")
-//                        }
-//                        
-//                        ADCButtonSquareWithOutline(imageName: dataModel.getLinkerImageName(),
-//                                                outlineColor: Color.white,
-//                                                description: "Linkers",
-//                                                index: 1,
-//                                                isSelected: {
-//                            false
-//                        }) {
-//                            print("ITR..Button 1 linkers pressed")
-//                        }
-//                        
-//                        ADCButtonSquareWithOutline(imageName: dataModel.getPayloadImageName(),
-//                                                outlineColor: Color.white,
-//                                                description: "Payload",
-//                                                index: 2,
-//                                                isSelected: {
-//                            false
-//                        }) {
-//                            print("ITR..Button 2 payload pressed")
-//                        }
-//                    }
-//                    .disabled(appModel.immersiveSpaceState == .closed)
-//                }
-//                // .padding(30)
-//                .padding(.horizontal,30)
-//                .padding(.top, 30)
-
+        VStack(spacing: 0) {
+            // Header with logo and title
+            ZStack {
                 HStack {
-                    Text(appModel.immersiveSpaceState == .closed ? "We'll start building the ADC.\n\nTap into the `Start building` button." : descriptions[dataModel.adcBuildStep])
-                        .font(.title3)
-                        .multilineTextAlignment(appModel.immersiveSpaceState == .closed ? .center : .leading)
+                    Image("Pfizer_Logo_White_RGB")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 100)
+                    Spacer()
                 }
-                .frame(width: 600)
-                // .padding(30)
-                .padding(.horizontal,30)
-                .padding(.top, 30)
+                
+                Text(appModel.immersiveSpaceState == .closed ? "ADC Builder" : {
+                    switch dataModel.adcBuildStep {
+                    case 0:
+                        return "Antibody"
+                    case 1:
+                        return "Antibody + Linker"
+                    case 2:
+                        return "Antibody + Linker + Payload"
+                    default:
+                        return "Your ADC is ready"
+                    }
+                }())
+                    .font(.largeTitle)
             }
+            .padding(30)
+            .background(.black.opacity(0.4))
             .frame(width: 800)
-            
-            // Add selector views here
-            Group {
-                switch dataModel.adcBuildStep {
-                case 0:
-                    ADCSelectorView()
-                case 1:
-                    ADCLinkerSelectorView()
-                case 2:
-                    ADCPayloadSelectorView()
-                default:
-                    EmptyView()
-                }
+
+            // Description text
+            HStack {
+                Text(appModel.immersiveSpaceState == .closed ? "We'll start building the ADC.\n\nTap into the `Start building` button." : descriptions[dataModel.adcBuildStep])
+                    .font(.title3)
+                    .multilineTextAlignment(appModel.immersiveSpaceState == .closed ? .center : .leading)
+                    .fixedSize(horizontal: false, vertical: true)
             }
             .frame(width: 600)
+            .padding(.horizontal, 30)
             .padding(.top, 30)
+            .padding(.bottom, !dataModel.isVOPlaying ? 30 : 60)
             
-            // Move buttons to bottom
-            HStack(spacing: 30) {
-                Spacer()
-                if dataModel.adcBuildStep == 3 {
-                    NavigationButton(
-                        title: "Attack Cancer",
-                        action: {
-                            Task {
-                                // Log final color summary before attack
-                                os_log(.debug, "ADC Final Color Summary (Attack Button Pressed):")
-                                os_log(.debug, "- Antibody Color: \(dataModel.selectedADCAntibody ?? -1)")
-                                os_log(.debug, "- Linker Color: \(dataModel.selectedLinkerType ?? -1)")
-                                os_log(.debug, "- Payload Color: \(dataModel.selectedPayloadType ?? -1)")
-                                
-                                appModel.hasBuiltADC = true
+            // Selector views or navigation button
+            if !dataModel.isVOPlaying && dataModel.hasInitialVOCompleted {
+                if dataModel.adcBuildStep < 3 {
+                    Group {
+                        switch dataModel.adcBuildStep {
+                        case 0:
+                            ADCSelectorView()
+                        case 1:
+                            ADCLinkerSelectorView()
+                        case 2:
+                            ADCPayloadSelectorView()
+                        default:
+                            EmptyView()
+                        }
+                    }
+                    .frame(width: 600)
+                    .padding(.top, 10)
+                    .padding(.bottom, 30)
+                    .transition(Appear())
+                } else {  // adcBuildStep must be 3
+                    // Navigation button for step 3
+                    VStack {
+                        NavigationButton(
+                            title: "Attack Cancer",
+                            action: {
+                                Task {
+                                    // Log final color summary before attack
+                                    os_log(.debug, "ADC Final Color Summary (Attack Button Pressed):")
+                                    os_log(.debug, "- Antibody Color: \(dataModel.selectedADCAntibody ?? -1)")
+                                    os_log(.debug, "- Linker Color: \(dataModel.selectedLinkerType ?? -1)")
+                                    os_log(.debug, "- Payload Color: \(dataModel.selectedPayloadType ?? -1)")
+                                    
+                                    appModel.hasBuiltADC = true
 
-                                if !appModel.isMainWindowOpen {
-                                    openWindow(id: AppModel.mainWindowId)
-                                    appModel.isMainWindowOpen = true
-                                    appModel.isInstructionsWindowOpen = true
+                                    if !appModel.isMainWindowOpen {
+                                        openWindow(id: AppModel.mainWindowId)
+                                        appModel.isMainWindowOpen = true
+                                        appModel.isInstructionsWindowOpen = true
+                                    }
+                                    await dismissImmersiveSpace()
+                                    await appModel.transitionToPhase(.playing, adcDataModel: dataModel)
                                 }
-                                await dismissImmersiveSpace()
-                                await appModel.transitionToPhase(.playing, adcDataModel: dataModel)
-                            }
-                        },
-                        font: .headline,
-                        scaleEffect: 1.1,
-                        width: 200
-                    )
-                    .fontWeight(.bold)
-                    .glassBackgroundEffect()
+                            },
+                            font: .title,
+                            scaleEffect: 1.06
+                        )
+                        .fontWeight(.bold)
+                        .glassBackgroundEffect()
+                        .hoverEffect(.highlight)
+                        .hoverEffect { effect, isActive, proxy in
+                            effect.scaleEffect(!isActive ? 1.0 : 1.05)
+                        }
+                    }
+                    .frame(width: 600)
+                    .padding(.top, 10)
+                    .padding(.bottom, 30)
+                    .transition(Appear())
                 }
-                Spacer()
             }
-            .padding(.top, 30)
-            .padding(.bottom, 60)
         }
         .frame(width: 800)
+        .frame(alignment: .top) // height: dataModel.isVOPlaying ? 350 : 700,
         .glassBackgroundEffect()
         .clipShape(RoundedRectangle(cornerRadius: 20))
+        .animation(.spring(response: 0.5, dampingFraction: 0.7), value: dataModel.isVOPlaying)
     }
 }
 

@@ -89,7 +89,7 @@ extension AttackCancerViewModel {
             shapes: [shape],
             filter: .init(group: .adc, mask: .cancerCell)
         )
-        adc.components.set(collision)
+        // adc.components.set(collision)
         
         // Update ADCComponent properties
         guard var adcComponent = adc.components[ADCComponent.self] else { return }
@@ -106,5 +106,57 @@ extension AttackCancerViewModel {
         
         // Start movement
         ADCMovementSystem.startMovement(entity: adc, from: position, to: targetPoint)
+    }
+    
+    /// Spawns an ADC without a specific target, moving in the specified direction
+    func spawnUntargetedADC(from position: SIMD3<Float>, direction: SIMD3<Float>) async {
+        guard let template = adcTemplate,
+              let root = rootEntity else {
+            return
+        }
+        
+        totalADCsDeployed += 1
+        #if DEBUG
+        print("\n=== Spawning Untargeted ADC ===")
+        print("Position: \(position)")
+        print("Direction: \(direction)")
+        print("✅ ADC #\(totalADCsDeployed) Launched (Total Taps: \(totalTaps))")
+        #endif
+        
+        // Set the flag for first ADC fired
+        if !hasFirstADCBeenFired {
+            hasFirstADCBeenFired = true
+        }
+        
+        // Clone the template (colors will be cloned with it)
+        let adc = template.clone(recursive: true)
+        
+        // Set up collision component
+        let shape = ShapeResource.generateSphere(radius: 0.069)
+        let collision = CollisionComponent(
+            shapes: [shape],
+            filter: .init(group: .adc, mask: .cancerCell)
+        )
+        // adc.components.set(collision)
+        
+        // Set up ADC component for seeking behavior
+        guard var adcComponent = adc.components[ADCComponent.self] else { return }
+        adcComponent.state = .seeking
+        adcComponent.startWorldPosition = position
+        adcComponent.seekingDirection = direction
+        adcComponent.seekingStartTimeSeconds = Date().timeIntervalSinceReferenceDate
+        adcComponent.proteinSpinSpeed = Float.random(in: 8.0...10.0)
+        adcComponent.speedFactor = Float.random(in: ADCMovementSystem.speedRange)
+        adcComponent.arcHeightFactor = Float.random(in: ADCMovementSystem.arcHeightRange)
+        adc.components[ADCComponent.self] = adcComponent
+        
+        // Set initial position
+        adc.position = position
+        
+        // Add to scene
+        root.addChild(adc)
+        
+        // The movement system will handle the seeking behavior in its update loop
+        print("✅ Untargeted ADC spawned successfully")
     }
 }

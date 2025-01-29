@@ -21,3 +21,5 @@ struct Appear: Transition {
             .brightness(phase == .willAppear ? 1 : 0)
     }
 }
+
+

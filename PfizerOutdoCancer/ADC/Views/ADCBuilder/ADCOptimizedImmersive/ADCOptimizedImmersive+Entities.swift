@@ -26,7 +26,7 @@ extension ADCOptimizedImmersive {
                                                    antibodyRoot.transform.translation.z]
                 
                 // Add mainViewEntity as child with proper transform
-                mainViewEntity.position = mainViewEntity.position + antibodyAttachmentOffset
+                mainViewEntity.position = mainViewEntity.position //  + antibodyAttachmentOffset
                 mainViewEntity.transform.translation = [mainViewEntity.transform.translation.x,
                                                      mainViewEntity.transform.translation.y,
                                                      mainViewEntity.transform.translation.z]

@@ -209,8 +209,8 @@ def Xform "Root"
         references = @CancerCell-spawn.usda@
     )
     {
-        float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (0, 0, -2)
+        float3 xformOp:scale = (1.2, 1.2, 1.2)
+        float3 xformOp:translate = (0, 0, -1)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }
 

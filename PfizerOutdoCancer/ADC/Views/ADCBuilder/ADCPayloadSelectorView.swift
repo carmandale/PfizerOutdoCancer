@@ -17,17 +17,17 @@ struct ADCPayloadSelectorView: View {
                         .frame(alignment: .trailing)
                 }
                 
-                if !dataModel.isVOPlaying {
-                    ADCCheckmarkButton(
-                        action: {
+                
+                ADCCheckmarkButton(
+                    action: {
                             // Fill all remaining payloads with current selection
-                            dataModel.fillAllPayloads()
+                        dataModel.fillAllPayloads()
                             // Advance to next step
-                            dataModel.adcBuildStep = 3
-                        },
-                        isEnabled: dataModel.selectedPayloadType != nil
-                    )
-                }
+                        dataModel.adcBuildStep = 3
+                    },
+                    isEnabled: dataModel.selectedPayloadType != nil
+                )
+                
                 
             }
             .padding(.vertical, 30)
@@ -35,29 +35,30 @@ struct ADCPayloadSelectorView: View {
             .background(.black.opacity(0.4))
             HStack (alignment: .top, spacing: 20){
                 ADCButtonSquareWithOutline(imageName: "payload0", outlineColor: Color.white, description: "", index: 0, isSelected: {
-                    dataModel.selectedPayloadType == 0
-                }) {
-                    print("ITR..Button 0 pressed")
-                    dataModel.selectedPayloadType = 0
-                }
+                        dataModel.selectedPayloadType == 0
+                    }) {
+                        print("ITR..Button 0 pressed")
+                        dataModel.selectedPayloadType = 0
+                    }
                 ADCButtonSquareWithOutline(imageName: "payload1", outlineColor: Color.white, description: "", index: 1, isSelected: {
-                    dataModel.selectedPayloadType == 1
-                }) {
-                    print("ITR..Button 1 pressed")
-                    dataModel.selectedPayloadType = 1
-                }
+                        dataModel.selectedPayloadType == 1
+                    }) {
+                        print("ITR..Button 1 pressed")
+                        dataModel.selectedPayloadType = 1
+                    }
                 ADCButtonSquareWithOutline(imageName: "payload2", outlineColor: Color.white, description: "", index: 2, isSelected: {
-                    dataModel.selectedPayloadType == 2
-                }) {
-                    print("ITR..Button 2 pressed")
-                    dataModel.selectedPayloadType = 2
-                }
+                        dataModel.selectedPayloadType == 2
+                    }) {
+                        print("ITR..Button 2 pressed")
+                        dataModel.selectedPayloadType = 2
+                    }
                 
+                }
+                .padding(.bottom, 30)
             }
-            .padding(.bottom, 30)
-        }
         .frame(width: 600, height: 280)
         .glassBackgroundEffect()
+        // .selectorAnimation(isVOPlaying: dataModel.isVOPlaying)
     }
 }
 

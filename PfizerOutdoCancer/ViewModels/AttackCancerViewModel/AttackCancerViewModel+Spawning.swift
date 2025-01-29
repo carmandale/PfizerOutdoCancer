@@ -155,7 +155,7 @@ extension AttackCancerViewModel {
         let shape2 = ShapeResource.generateSphere(radius: 0.32)  // Cancer cell size
         let collisionComponent2 = CollisionComponent(
             shapes: [shape2],
-            filter: .init(group: .cancerCell, mask: .all)
+            filter: .init(group: .cancerCell, mask: .cancerCell)
         )
         cell.components.set(collisionComponent2)
         

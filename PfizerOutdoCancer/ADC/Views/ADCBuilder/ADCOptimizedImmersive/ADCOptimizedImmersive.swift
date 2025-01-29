@@ -17,6 +17,13 @@ import RealityKitContent
 import OSLog
 import ARKit
 
+// MARK: - Types
+
+enum ADCEntityType {
+    case linker
+    case payload
+}
+
 struct ADCOptimizedImmersive: View {
     
     @Environment(AppModel.self) var appModel
@@ -70,7 +77,7 @@ struct ADCOptimizedImmersive: View {
     @State var timer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
     @State var isCameraInitialized = false
     
-    let antibodyAttachmentOffset: SIMD3<Float> = SIMD3(-0.5, 0, 0)
+    // let antibodyAttachmentOffset: SIMD3<Float> = SIMD3(-0.5, 0, 0)
     let linkerAttachmentOffset: SIMD3<Float> = SIMD3(0.35, 0, 0)
     let payloadAttachmentOffset: SIMD3<Float> = SIMD3(0.35, 0, 0)
     let defaultZPosition: Float = -1.0
@@ -127,7 +134,8 @@ struct ADCOptimizedImmersive: View {
                 shouldAddMainViewAttachment = true
                 
                 antibodyRootEntity?.isEnabled = true
-                antibodyEntity?.isEnabled = true
+                antibodyEntity?.isEnabled = false
+                antibodyEntity?.opacity = 0
                 dataModel.adcBuildStep = 0
                 
                 // Play audio for initial step
@@ -200,7 +208,8 @@ struct ADCOptimizedImmersive: View {
                     adcLinkers[dataModel.linkersWorkingIndex].components.set(ADCProximitySourceComponent())
                     
                     if let linkerEntity = linkerEntity {
-                        linkerEntity.isEnabled = true
+                        linkerEntity.isEnabled = false
+                        linkerEntity.opacity = 0
                     }
                     self.linkerAttachmentEntity?.isEnabled = true
                     self.payloadEntity?.isEnabled = false
@@ -233,7 +242,11 @@ struct ADCOptimizedImmersive: View {
                     self.adcLinkers.forEach { $0.isEnabled = true }
                     self.linkerEntity?.isEnabled = false
                     self.linkerAttachmentEntity?.isEnabled = false
-                    self.payloadEntity?.isEnabled = true
+                    
+                    if let payloadEntity = payloadEntity {
+                        payloadEntity.isEnabled = false
+                        payloadEntity.opacity = 0
+                    }
                     
                     // Restore payload setup code
                     for (index, element) in adcPayloadsInner.enumerated() {
@@ -293,6 +306,52 @@ struct ADCOptimizedImmersive: View {
         .onChange(of: dataModel.selectedADCAntibody) { oldValue, newValue in
             os_log(.debug, "ITR..onChange(of: selectedADCAntibody): new value: \(newValue ?? -1)")
             handleAntibodyColorChange(newValue: newValue)
+        }
+        .onChange(of: dataModel.isVOPlaying) { oldValue, newValue in
+            if !newValue {  // VO finished playing
+                Task { @MainActor in
+                    os_log(.debug, "ITR..VO finished playing, current step: \(dataModel.adcBuildStep)")
+                    // Fade in the appropriate entities based on current step
+                    switch dataModel.adcBuildStep {
+                    case 0:  // Initial fade in of antibody
+                        if dataModel.adcBuildStep == 0 && !dataModel.hasInitialVOCompleted {
+                            dataModel.hasInitialVOCompleted = true
+                        }
+                        os_log(.debug, "ITR..Attempting to animate main view position")
+                        try? await mainViewEntity.animatePosition(to: SIMD3(-0.5, 0, 0), duration: 1.0, delay: 0.5)
+                        
+                        // After position animation, fade in antibody with delay
+                        if let antibodyEntity = antibodyEntity {
+                            os_log(.debug, "ITR..antibodyEntity exists, fading in")
+                            try? await antibodyEntity.fadeOpacity(to: 1, duration: 1.0, delay: 1.5)
+                            antibodyEntity.isEnabled = true
+                            os_log(.debug, "ITR..antibodyEntity fade complete, isEnabled set to true")
+                        }
+                    case 1:  // Fade in linker
+                        os_log(.debug, "ITR..Attempting to fade in linker entities")
+                        if let linkerEntity = linkerEntity {
+                            os_log(.debug, "ITR..linkerEntity exists, isEnabled: \(linkerEntity.isEnabled)")
+                            // Fade in entities
+                            try? await linkerEntity.fadeOpacity(to: 1, duration: 1.0)
+                            linkerEntity.isEnabled = true
+                            os_log(.debug, "ITR..linkerEntity fade complete, isEnabled set to true")
+                        } else {
+                            os_log(.error, "ITR..❌ linkerEntity is nil")
+                        }
+                    case 2:  // Fade in payload
+                        if let payloadEntity = payloadEntity {
+                            os_log(.debug, "ITR..Attempting to fade in payloadEntity")
+                            os_log(.debug, "ITR..payload.isEnabled: \(payloadEntity.isEnabled)")
+                            try? await payloadEntity.fadeOpacity(to: 1, duration: 1.0)
+                            payloadEntity.isEnabled = true
+                        }
+                    default:
+                        os_log(.debug, "ITR..No fade needed for step \(dataModel.adcBuildStep)")
+                    }
+                    
+                    await checkAndAdvanceStep()
+                }
+            }
         }
         // Change the linker 3D model material color to the selected color
         .onChange(of: dataModel.selectedLinkerType) { oldValue, newValue in
@@ -367,6 +426,30 @@ struct ADCOptimizedImmersive: View {
             self.popAudioPlaybackController?.play()
         }
 
+    }
+    
+    // MARK: - Step Management
+    
+    /// Checks conditions and advances to the next step if appropriate
+    private func checkAndAdvanceStep() async {
+        // Don't advance if VO is still playing
+        guard !dataModel.isVOPlaying else { return }
+        
+        switch dataModel.adcBuildStep {
+        case 1:  // Linker step
+            // Check if we're on the last linker and it's been placed
+            if dataModel.linkersWorkingIndex >= (adcLinkers.count - 1) {
+                dataModel.adcBuildStep = 2
+                dataModel.selectedPayloadType = nil
+            }
+        case 2:  // Payload step
+            // Check if we're on the last payload and it's been placed
+            if dataModel.payloadsWorkingIndex >= (adcPayloadsInner.count - 1) {
+                dataModel.adcBuildStep = 3
+            }
+        default:
+            break  // No auto-advancement for other steps
+        }
     }
     
     // MARK: - Preparation

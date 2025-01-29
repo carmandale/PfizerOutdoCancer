@@ -173,4 +173,55 @@ extension Entity {
             transform = endTransform
         }
     }
+    
+    /// Animates the position of an entity from its current position to a target position
+    /// - Parameters:
+    ///   - to: Target position as SIMD3<Float> to add to current position
+    ///   - duration: Animation duration in seconds
+    ///   - delay: Optional delay before starting the animation (in seconds)
+    ///   - timing: Animation timing curve (default: .easeInOut)
+    ///   - waitForCompletion: If true, waits for the animation to complete before returning
+    func animatePosition(to targetPosition: SIMD3<Float>,
+                        duration: TimeInterval,
+                        delay: TimeInterval = 0,
+                        timing: RealityKit.AnimationTimingFunction = .easeInOut,
+                        waitForCompletion: Bool = false) async {
+        // Handle delay first, even for immediate changes
+        if delay > 0 {
+            try? await Task.sleep(for: .seconds(delay))
+        }
+        
+        let startTransform = transform
+        var endTransform = transform
+        endTransform.translation = startTransform.translation + targetPosition
+        
+        // For non-animated changes (duration = 0), set immediately
+        guard duration > 0 else {
+            transform = endTransform
+            return
+        }
+        
+        // Build and play the animation
+        let positionAnimation = FromToByAnimation(
+            from: startTransform,
+            to: endTransform,
+            duration: duration,
+            timing: timing,
+            bindTarget: .transform
+        )
+        
+        do {
+            let resource = try AnimationResource.generate(with: positionAnimation)
+            playAnimation(resource)
+            
+            // Optionally wait for the animation to complete
+            if waitForCompletion {
+                try? await Task.sleep(for: .seconds(duration))
+            }
+        } catch {
+            print("⚠️ Could not generate position animation: \(error.localizedDescription)")
+            // Fall back to immediate change
+            transform = endTransform
+        }
+    }
 }
