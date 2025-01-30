@@ -38,3 +38,6 @@ Documentation/REFERENCE_PROJECTS/
 
 # Ignore large 3D people files
 Documentation/BACKUP/3D_people/
+
+# Environment variables
+.env

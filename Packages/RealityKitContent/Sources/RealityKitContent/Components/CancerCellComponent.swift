@@ -105,9 +105,7 @@ public class CancerCellParameters {
              // Check if cell should be destroyed
              if parameters.hitCount >= parameters.requiredHits && !parameters.isDestroyed {
                  parameters.isDestroyed = true
-                 
 
-                 
                  print("=== Cancer Cell Death Triggered ===")
                  print("💀 Cell is destroyed")
                  
@@ -175,37 +173,36 @@ public class CancerCellParameters {
              }
              
              // Handle sudden scale changes based on hit count
-             if parameters.isScaling {
-                 let currentScale = entity.scale.x
-                 let targetScale = parameters.targetScale
-                 
-                 // Even faster scaling with easing
-                 let t = Float(15.0 * context.deltaTime) // 15x faster
-                 
-                 // Use exponential easing for more dramatic effect
-                 let easedT = 1.0 - pow(1.0 - t, 3)  // Cubic easing
-                 
-                 if abs(currentScale - targetScale) > 0.001 {
-                     let newScale = simd_mix(currentScale, targetScale, easedT)
-                     entity.scale = [newScale, newScale, newScale]
-                 } else {
-                     // Animation complete
-                     parameters.isScaling = false
-                     entity.scale = [targetScale, targetScale, targetScale]
-                 }
-                 entity.components[CancerCellStateComponent.self] = stateComponent
-             }
+//             if parameters.isScaling {
+//                 let currentScale = entity.scale.x
+//                 let targetScale = parameters.targetScale
+//                 
+//                 // Even faster scaling with easing
+//                 let t = Float(15.0 * context.deltaTime) // 15x faster
+//                 
+//                 // Use exponential easing for more dramatic effect
+//                 let easedT = 1.0 - pow(1.0 - t, 3)  // Cubic easing
+//                 
+//                 if abs(currentScale - targetScale) > 0.001 {
+//                     let newScale = simd_mix(currentScale, targetScale, easedT)
+//                     entity.scale = [newScale, newScale, newScale]
+//                 } else {
+//                     // Animation complete
+//                     parameters.isScaling = false
+//                     entity.scale = [targetScale, targetScale, targetScale]
+//                 }
+//                 entity.components[CancerCellStateComponent.self] = stateComponent
+//             }
              
              // Check for hit count thresholds
-             for threshold in CancerCellParameters.scaleThresholds {
-                 if parameters.hitCount == threshold.hits {
-                     parameters.isScaling = true
-                     parameters.targetScale = threshold.scale
-                     parameters.currentScale = threshold.scale
-                     entity.components[CancerCellStateComponent.self] = stateComponent
-                     break
-                 }
-             }
+//             for threshold in CancerCellParameters.scaleThresholds {
+//                 if parameters.hitCount == threshold.hits && !parameters.isScaling {
+//                     parameters.isScaling = true
+//                     parameters.targetScale = threshold.scale
+//                     entity.components[CancerCellStateComponent.self] = stateComponent
+//                     break
+//                 }
+//             }
          }
      }
  }

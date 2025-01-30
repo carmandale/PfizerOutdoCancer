@@ -34,6 +34,7 @@ struct NavigationView: View {
                         appModel.isNavWindowOpen = false
                     }
                 }
+//        .transition(Appear())
     }
     
     private func handleNavigation(for title: String) async {

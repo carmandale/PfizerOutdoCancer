@@ -53,31 +53,31 @@ extension AttackCancerViewModel {
             setupCellIdentification(complexCell, cellID: index)
             
             // Create parameters on-demand
-            let parameters = CancerCellParameters(cellID: index)
+            // let parameters = CancerCellParameters(cellID: index)
 //            print("Creating parameters for cell \(index)")
 //            print("Required hits: \(parameters.requiredHits)")
-            cellParameters.append(parameters)
+            // cellParameters.append(parameters)
 //            print("Total parameters after append: \(cellParameters.count)")
             
             // Add state component with reference to parameters
-            cell.components.set(CancerCellStateComponent(parameters: parameters))
+            // cell.components.set(CancerCellStateComponent(parameters: parameters))
 //            print("Added CancerCellStateComponent with parameters")
             
             // Add ClosureComponent for state updates
-            cell.components.set(
-                ClosureComponent { _ in
-                    guard let stateComponent = cell.components[CancerCellStateComponent.self],
-                          let cellID = stateComponent.parameters.cellID,
-                          cellID < self.cellParameters.count else { return }
+            // cell.components.set(
+            //     ClosureComponent { _ in
+            //         guard let stateComponent = cell.components[CancerCellStateComponent.self],
+            //               let cellID = stateComponent.parameters.cellID,
+            //               cellID < self.cellParameters.count else { return }
                     
-                    // Get reference to the correct parameters instance
-                    let parameters = self.cellParameters[cellID]
+            //         // Get reference to the correct parameters instance
+            //         let parameters = self.cellParameters[cellID]
                     
-                    // Update state
-                    parameters.hitCount = stateComponent.parameters.hitCount
-                    parameters.isDestroyed = stateComponent.parameters.isDestroyed
-                }
-            )
+            //         // Update state
+            //         parameters.hitCount = stateComponent.parameters.hitCount
+            //         parameters.isDestroyed = stateComponent.parameters.isDestroyed
+            //     }
+            // )
 //            print("Added ClosureComponent for state updates")
             
             root.addChild(cell)
@@ -155,7 +155,7 @@ extension AttackCancerViewModel {
         let shape2 = ShapeResource.generateSphere(radius: 0.32)  // Cancer cell size
         let collisionComponent2 = CollisionComponent(
             shapes: [shape2],
-            filter: .init(group: .cancerCell, mask: .cancerCell)
+            filter: .init(group: .cancerCell, mask: [.adc, .cancerCell])
         )
         cell.components.set(collisionComponent2)
         
@@ -201,11 +201,13 @@ extension AttackCancerViewModel {
     private func setupCellIdentification(_ cell: Entity, cellID: Int) {
         // Verify we have the marker component from RCP
         if cell.components.has(CancerCellComponent.self) {
-            // Add our state component if not present
-            let parameters = CancerCellParameters(cellID: cellID)
-            parameters.requiredHits = 10  // Update to 10 hits for tutorial
-            let stateComponent = CancerCellStateComponent(parameters: parameters)
-            cell.components.set(stateComponent)
+            // Only add state component if it doesn't already exist
+            if !cell.components.has(CancerCellStateComponent.self) {
+                // Add our state component if not present
+                let parameters = CancerCellParameters(cellID: cellID)
+                let stateComponent = CancerCellStateComponent(parameters: parameters)
+                cell.components.set(stateComponent)
+            }
         }
     }
     
@@ -235,9 +237,8 @@ extension AttackCancerViewModel {
         if let complexCell = cell.findEntity(named: "cancerCell_complex") {
             // Setup all the physical aspects first (minus position and movement)
             configureCellPhysics(complexCell)
-            setupCellIdentification(complexCell, cellID: 0)
             
-            // Create parameters on-demand
+            // Create parameters before calling setupCellIdentification
             let parameters = CancerCellParameters(cellID: 0)
             parameters.isTutorialCell = true  // Mark as tutorial cell
             parameters.impactScale = CancerCellParameters.tutorialImpactScale  // Use reduced impact
@@ -245,9 +246,14 @@ extension AttackCancerViewModel {
             cellParameters.append(parameters)
 //            print("Total parameters after append: \(cellParameters.count)")
             
-            // Add state component with reference to parameters
-            cell.components.set(CancerCellStateComponent(parameters: parameters))
+            // Create and set state component with our parameters
+            let stateComponent = CancerCellStateComponent(parameters: parameters)
+            complexCell.components.set(stateComponent)
 //            print("Added CancerCellStateComponent with parameters")
+            
+            // Now call setupCellIdentification which will skip creating new parameters
+            // since the state component already exists
+            // setupCellIdentification(complexCell, cellID: 0)
 
             // Add damping only for tutorial cell
             if var physicsBody = complexCell.components[PhysicsBodyComponent.self] {
@@ -259,9 +265,9 @@ extension AttackCancerViewModel {
             }
             
             // Add ClosureComponent for state updates
-            cell.components.set(
+            complexCell.components.set(
                 ClosureComponent { [weak self] _ in
-                    guard let stateComponent = cell.components[CancerCellStateComponent.self],
+                    guard let stateComponent = complexCell.components[CancerCellStateComponent.self],
                           let cellID = stateComponent.parameters.cellID,
                           cellID < self?.cellParameters.count ?? 0 else { return }
                     

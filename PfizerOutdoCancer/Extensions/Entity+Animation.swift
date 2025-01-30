@@ -224,4 +224,90 @@ extension Entity {
             transform = endTransform
         }
     }
+    
+    /// Creates a quick squish and bounce scale animation when an entity is hit
+    /// - Parameters:
+    ///   - intensity: How strong the squish effect should be (default: 0.9)
+    ///   - duration: Total duration of the squish and bounce animation (default: 0.3)
+    ///   - scaleReduction: The percentage to reduce the current scale by (default: 0.1 = 10%)
+    ///   - waitForCompletion: If true, waits for the animation to complete before returning
+    func hitScaleAnimation(intensity: Float = 0.9,
+                         duration: TimeInterval = 0.3,
+                         scaleReduction: Float = 0.1,
+                         waitForCompletion: Bool = false) async {
+        // Store original scale
+        let originalScale = scale
+        let targetScale = originalScale * (1.0 - scaleReduction) // Reduce by percentage
+        
+        // First phase: Quick squish (25% of duration)
+        var squishTransform = transform
+        squishTransform.scale = originalScale * intensity
+        
+        // Second phase: Bounce back slightly larger (50% of duration)
+        var bounceTransform = transform
+        let bounceScale = targetScale * (2.0 - intensity) // Bounce to slightly larger than target
+        bounceTransform.scale = bounceScale
+        
+        // Final phase: Return to target scale (25% of duration)
+        var finalTransform = transform
+        finalTransform.scale = targetScale
+        
+        // Create the multi-phase animation
+        let squishDuration = duration * 0.25
+        let bounceDuration = duration * 0.5
+        let returnDuration = duration * 0.25
+        
+        // Squish phase
+        let squishAnimation = FromToByAnimation(
+            from: transform,
+            to: squishTransform,
+            duration: squishDuration,
+            timing: .easeIn,
+            bindTarget: .transform
+        )
+        
+        // Bounce phase
+        let bounceAnimation = FromToByAnimation(
+            from: squishTransform,
+            to: bounceTransform,
+            duration: bounceDuration,
+            timing: .easeOut,
+            bindTarget: .transform
+        )
+        
+        // Return phase
+        let returnAnimation = FromToByAnimation(
+            from: bounceTransform,
+            to: finalTransform,
+            duration: returnDuration,
+            timing: .easeInOut,
+            bindTarget: .transform
+        )
+        
+        do {
+            // Generate and play each phase
+            let squishResource = try AnimationResource.generate(with: squishAnimation)
+            playAnimation(squishResource, transitionDuration: 0)
+            
+            if waitForCompletion {
+                try await Task.sleep(for: .seconds(squishDuration))
+            }
+            
+            let bounceResource = try AnimationResource.generate(with: bounceAnimation)
+            playAnimation(bounceResource, transitionDuration: 0)
+            
+            if waitForCompletion {
+                try await Task.sleep(for: .seconds(bounceDuration))
+            }
+            
+            let returnResource = try AnimationResource.generate(with: returnAnimation)
+            playAnimation(returnResource, transitionDuration: 0)
+            
+            if waitForCompletion {
+                try await Task.sleep(for: .seconds(returnDuration))
+            }
+        } catch {
+            print("Failed to create hit scale animation: \(error)")
+        }
+    }
 }

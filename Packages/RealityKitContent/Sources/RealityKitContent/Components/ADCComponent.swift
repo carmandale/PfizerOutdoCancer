@@ -64,11 +64,16 @@ public struct ADCComponent: Component, Codable {
     /// Initial direction for seeking movement
     public var seekingDirection: SIMD3<Float>? = nil
     
-    /// When seeking started (stored as seconds since reference date)
-    public var seekingStartTimeSeconds: Double? = nil
+    /// When seeking started (used to enforce minimum seeking duration)
+    public var seekingStartTime: Double? = nil
     
-    /// Last time we checked for targets while seeking (stored as seconds since reference date)
-    public var lastTargetCheckTimeSeconds: Double? = nil
+    /// Minimum duration (in seconds) that an ADC must seek before targeting
+    public static let minimumSeekingDuration: Double = 2.0
+    
+    // Add these to the existing struct:
+    public var previousPathTangent: SIMD3<Float>?  // Needs to be public
+    public var isRetargetedPath: Bool = false
+    public var compositeProgress: Float = 0
     
     // MARK: - Initialization
     /// Initialize ADC component and register system
@@ -103,7 +108,9 @@ public struct ADCComponent: Component, Codable {
         case speedFactor
         case arcHeightFactor
         case seekingDirection
-        case seekingStartTimeSeconds
-        case lastTargetCheckTimeSeconds
+        case seekingStartTime
+        case previousPathTangent
+        case isRetargetedPath
+        case compositeProgress
     }
 }

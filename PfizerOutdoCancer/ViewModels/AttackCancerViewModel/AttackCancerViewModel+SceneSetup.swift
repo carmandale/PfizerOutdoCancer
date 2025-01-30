@@ -88,12 +88,18 @@ extension AttackCancerViewModel {
     private func fireTutorialADCs(in root: Entity, attachments: RealityViewAttachments) async {
         print("\n=== Starting Tutorial ADC Sequence ===")
         let launchPosition = SIMD3<Float>(0.25, 0.5, -0.25)
+
+        // Find the cancerCell_complex within the tutorial cell
+        guard let complexCell = tutorialCancerCell?.findEntity(named: "cancerCell_complex") else {
+            print("❌ Could not find cancerCell_complex in tutorial cell")
+            return
+        }
         
         for (index, delay) in tutorialADCDelays.enumerated() {
             try? await Task.sleep(for: .seconds(delay))
             print("🚀 Firing tutorial ADC \(index + 1)/10")
             await handleTap(
-                on: tutorialCancerCell!,
+                on: complexCell,
                 location: launchPosition,
                 in: scene
             )
@@ -102,7 +108,7 @@ extension AttackCancerViewModel {
         
         // Wait until 24s mark
         print("⏱️ Waiting for 24s mark...")
-        try? await Task.sleep(for: .seconds(5))  // 19s + 5s = 24s
+        try? await Task.sleep(for: .seconds(2))  // 19s + 5s = 24s
         
         print("🎯 Opening hope meter utility window")
         if !appModel.isHopeMeterUtilityWindowOpen {

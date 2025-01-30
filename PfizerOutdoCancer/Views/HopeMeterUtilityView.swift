@@ -57,6 +57,7 @@ struct HopeMeterUtilityView: View {
             }
             .padding(20)
             .glassBackgroundEffect()
+            .transition(Appear())
         }
     }
 }

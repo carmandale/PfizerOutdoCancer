@@ -80,11 +80,11 @@ final class LabViewModel {
             print("🎙️ Lab VO added to MainEntity")
         }
         
-       if let labAudio = try? await appModel?.assetLoadingManager.getLabAudio() {
-           root.addChild(labAudio)
-           labAudioEntity = labAudio
-           print("🔊 Lab Audio added to MainEntity")
-       }
+//       if let labAudio = try? await appModel?.assetLoadingManager.getLabAudio() {
+//           root.addChild(labAudio)
+//           labAudioEntity = labAudio
+//           print("🔊 Lab Audio added to MainEntity")
+//       }
         
         isSetupComplete = true
         print("✅ LabViewModel: Environment setup complete")

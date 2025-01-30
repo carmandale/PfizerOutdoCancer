@@ -23,28 +23,26 @@ extension AttackCancerViewModel {
             print("Right hand tap detected")
         }
         
-        // Proceed with existing cancer cell logic
-        guard let scene = scene,
-              let stateComponent = entity.components[CancerCellStateComponent.self],
-              let cellID = stateComponent.parameters.cellID else {
-            print("No scene available or no cell component/ID")
+        // Ensure we have a valid hand position and scene
+        guard let spawnPosition = handPosition, let scene = scene else {
+            print("No valid hand position or scene available")
             return
         }
+        
+        // Check if we can target a cancer cell
+        if let stateComponent = entity.components[CancerCellStateComponent.self],
+           let cellID = stateComponent.parameters.cellID,
+           let attachPoint = AttachmentSystem.getAvailablePoint(in: scene, forCellID: cellID) {
             print("Found cancer cell with ID: \(cellID)")
+            print("Found attach point: \(attachPoint.name)")
             
-        guard let attachPoint = AttachmentSystem.getAvailablePoint(in: scene, forCellID: cellID) else {
-            print("No available attach point found")
-            // TODO: Handle no available attach point
-            // if no attach point is available, spawn and launch an ADC and have it go into orbit and look for a cancer cell to attach to
-                return
-            }
-        print("Found attach point: \(attachPoint.name)")
-        
-        AttachmentSystem.markPointAsOccupied(attachPoint)
-        
-        // Use the detected hand position if available, otherwise fall back to tap location
-        let spawnPosition = handPosition ?? location
-        await spawnADC(from: spawnPosition, targetPoint: attachPoint, forCellID: cellID)
+            AttachmentSystem.markPointAsOccupied(attachPoint)
+            await spawnADC(from: spawnPosition, targetPoint: attachPoint, forCellID: cellID)
+        } else {
+            // No valid cancer cell target - spawn untargeted ADC
+            print("Spawning untargeted ADC")
+            await spawnUntargetedADC(from: spawnPosition)
+        }
     }
 
     func setupHandTracking(in content: RealityViewContent, attachments: RealityViewAttachments) {

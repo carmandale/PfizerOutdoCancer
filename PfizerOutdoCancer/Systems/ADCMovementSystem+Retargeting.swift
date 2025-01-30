@@ -40,10 +40,20 @@ extension ADCMovementSystem {
             print("✅ Marked attachment point as occupied")
         }
         
+        // Capture current motion state before reset
+//        adcComponent.previousPathTangent = calculateCurrentTangent(adcComponent)
+//        adcComponent.isRetargetedPath = true
+//        adcComponent.compositeProgress = adcComponent.movementProgress
+        
         return true
     }
 
     static func validateTarget(_ targetEntity: Entity, _ adcComponent: ADCComponent, in scene: Scene) -> Bool {
+        // If this is headPosition, it's always valid
+        if targetEntity.components[PositioningComponent.self] != nil {
+            return true
+        }
+        
         // Skip logging for routine validation checks
         let isInitialValidation = targetEntity.components[AttachmentPoint.self]?.isOccupied == false
         
@@ -94,7 +104,7 @@ extension ADCMovementSystem {
     static func findNewTarget(for adcEntity: Entity, currentPosition: SIMD3<Float>, in scene: Scene) -> (Entity, Int)? {
         print("\n=== Finding New Target ===")
         let query = EntityQuery(where: .has(AttachmentPoint.self))
-        var closestDistance = Float.infinity
+        var farthestDistance: Float = -Float.infinity
         var bestTarget: (attachPoint: Entity, cellID: Int)? = nil
         
         let entities = scene.performQuery(query)
@@ -127,8 +137,8 @@ extension ADCMovementSystem {
             let attachPosition = entity.position(relativeTo: nil)
             let distance = length(attachPosition - currentPosition)
             
-            if distance < closestDistance {
-                closestDistance = distance
+            if distance > farthestDistance {
+                farthestDistance = distance
                 bestTarget = (attachPoint: entity, cellID: cellID)
                 print("✨ New best target found - Distance: \(distance)")
             }
@@ -138,7 +148,7 @@ extension ADCMovementSystem {
             print("\n🎯 Selected target:")
             print("Cell ID: \(target.cellID)")
             print("Attachment Point: \(target.attachPoint.name)")
-            print("Distance: \(closestDistance)")
+            print("Distance: \(farthestDistance)")
         }
         
         return bestTarget

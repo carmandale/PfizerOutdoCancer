@@ -1,0 +1,268 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 2.0 (448.60.4)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    quatf xformOp:orient = (1, 0, 0, 0)
+    float3 xformOp:scale = (1, 1, 1)
+    float3 xformOp:translate = (0, 0, 0)
+    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+    def Xform "peopleRoot" (
+        active = true
+        customData = {
+            float3 rotationEulerHint = (0, -1.99574e-8, -8.3676094e-10)
+        }
+    )
+    {
+        reorder nameChildren = ["Shane", "Andrea", "Monte", "Ashton_002", "Ahsan_003", "Armando", "Scott_002", "Gary", "Ashton_3", "DanAndGabi_001", "Andrew_002", "AshtonAndCat", "Ethan_002", "Monte_1", "Armando_002", "DanAndGabi_003", "Ahsan_002"]
+        quatf xformOp:orient = (1, -4.174893e-18, -9.9787e-9, -4.1838047e-10)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def "Shane" (
+            active = true
+            customData = {
+                float3 rotationEulerHint = (8.881784e-16, -2.980233e-8, 2.3857563)
+            }
+            references = @3D_people/decimated/Shane/Shane.usdc@
+        )
+        {
+            quatf xformOp:orient = (0.26091272, -0.26091272, 0.6572097, 0.6572096)
+            float3 xformOp:scale = (0.9999997, 0.9999997, 0.99999976)
+            float3 xformOp:translate = (-3.1975646, 1.1920929e-7, -3.1566112)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+        }
+
+        def "Andrea" (
+            active = true
+            customData = {
+                float3 rotationEulerHint = (-1.570796, 2.8746006, 0)
+            }
+            references = @3D_people/decimated/Andrea/Andrea.usdc@
+        )
+        {
+            quatf xformOp:orient = (0.09411575, -0.09411575, 0.70081544, 0.7008154)
+            float3 xformOp:scale = (1.1140397, 1.1140397, 1.1140397)
+            float3 xformOp:translate = (1.0180835, 9.86591e-7, -6.605928)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+        }
+
+        def "Monte" (
+            active = true
+            customData = {
+                float3 rotationEulerHint = (1.776357e-15, -5.960465e-8, 2.4508646)
+            }
+            references = @3D_people/decimated/Monte/Monte.usdc@
+        )
+        {
+            quatf xformOp:orient = (0.23938344, -0.2393834, 0.6653537, 0.6653537)
+            float3 xformOp:scale = (0.99999976, 0.99999976, 0.9999998)
+            float3 xformOp:translate = (1.65953, 7.4486735e-8, -6.6082435)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+        }
+
+        def "Ashton_002" (
+            active = true
+            customData = {
+                float3 rotationEulerHint = (0, -1.1920929e-7, 1.8627349)
+            }
+            references = @3D_people/decimated/Ashton_002/Ashton_002.usdc@
+        )
+        {
+            quatf xformOp:orient = (0.42195705, -0.42195696, 0.5674083, 0.56740844)
+            float3 xformOp:scale = (0.9999997, 0.9999997, 0.99999976)
+            float3 xformOp:translate = (4.084631, 0.22415984, -7.088434)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+        }
+
+        def "Ahsan_003" (
+            active = true
+            customData = {
+                float3 rotationEulerHint = (0, -8.940697e-8, 2.2093773)
+            }
+            references = @3D_people/decimated/Ahsan_003/Ahsan_003.usdc@
+        )
+        {
+            quatf xformOp:orient = (0.31778276, -0.3177827, 0.63167566, 0.63167566)
+            float3 xformOp:scale = (0.9999999, 0.9999999, 0.9999999)
+            float3 xformOp:translate = (-2.2771897, 8.9611525e-8, -2.9876056)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+        }
+
+        def "Armando" (
+            active = true
+            customData = {
+                float3 rotationEulerHint = (-4.7123885, -0.5157596, 3.1415925)
+            }
+            references = @3D_people/decimated/Armando/Armando.usdc@
+        )
+        {
+            quatf xformOp:orient = (0.18033418, -0.18033418, -0.6837248, -0.6837248)
+            float3 xformOp:scale = (0.99999976, 0.99999976, 0.99999976)
+            float3 xformOp:translate = (-3.1201735, 0.24267289, -6.413249)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+        }
+
+        def "Scott_002" (
+            active = true
+            customData = {
+                float3 rotationEulerHint = (-3.5527137e-15, -8.940697e-8, 1.918428)
+            }
+            references = @3D_people/decimated/Scott_002/Scott_002.usdc@
+        )
+        {
+            quatf xformOp:orient = (0.40599513, -0.4059951, 0.57893693, 0.57893693)
+            float3 xformOp:scale = (0.99999976, 0.99999976, 0.99999976)
+            float3 xformOp:translate = (-2.419148, -1.1920929e-7, -6.280088)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+        }
+
+        def "Gary" (
+            active = true
+            customData = {
+                float3 rotationEulerHint = (-1.5707964, -0.109586164, 7.945276e-7)
+            }
+            references = @3D_people/decimated/Gary/Gary.usdc@
+        )
+        {
+            quatf xformOp:orient = (0.70604557, -0.70604557, -0.038725458, -0.0387249)
+            float3 xformOp:scale = (0.99999994, 0.99999994, 1)
+            float3 xformOp:translate = (-0.83831906, 0.46602035, 4.084852)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+        }
+
+        def "Ashton_3" (
+            active = true
+            customData = {
+                float3 rotationEulerHint = (1.5707963, -1.5707963, 0)
+            }
+            references = @3D_people/decimated/Ashton_002/Ashton_002.usdc@
+        )
+        {
+            quatf xformOp:orient = (0.5068642, -0.5068642, -0.49304032, -0.49304035)
+            float3 xformOp:scale = (1, 1, 1)
+            float3 xformOp:translate = (-1.4966339, 0.14754507, 4.435216)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+        }
+
+        def "DanAndGabi_001" (
+            active = true
+            customData = {
+                float3 rotationEulerHint = (-1.5707964, 0, 0)
+            }
+            references = @3D_people/decimated/DanAndGabi_001/DanAndGabi_001.usdc@
+        )
+        {
+            quatf xformOp:orient = (0.70710677, -0.7071067, 0, 0)
+            float3 xformOp:scale = (0.99999994, 0.99999994, 0.99999994)
+            float3 xformOp:translate = (1.6952581, 3.46452e-7, 3.8393793)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+        }
+
+        def "Andrew_002" (
+            active = true
+            customData = {
+                float3 rotationEulerHint = (-1.5707964, 0, 0)
+            }
+            references = @3D_people/decimated/Andrew_002/Andrew_002.usdc@
+        )
+        {
+            quatf xformOp:orient = (0.70710677, -0.7071067, 0, 0)
+            float3 xformOp:scale = (0.99999994, 0.99999994, 0.99999994)
+            float3 xformOp:translate = (0.9467275, 1.0058284e-7, 3.726938)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+        }
+
+        def "AshtonAndCat" (
+            active = true
+            customData = {
+                float3 rotationEulerHint = (-1.5707964, 0, 0)
+            }
+            references = @3D_people/decimated/AshtonAndCat/AshtonAndCat.usdc@
+        )
+        {
+            quatf xformOp:orient = (0.70710677, -0.7071067, 0, 0)
+            float3 xformOp:scale = (0.99999994, 0.99999994, 0.99999994)
+            float3 xformOp:translate = (-0.11442113, 3.9488077e-7, 8.126673)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+        }
+
+        def "Ethan_002" (
+            active = true
+            customData = {
+                float3 rotationEulerHint = (-1.5707964, 0, 0)
+            }
+            references = @3D_people/decimated/Ethan_002/Ethan_002.usdc@
+        )
+        {
+            quatf xformOp:orient = (0.70710677, -0.7071067, 0, 0)
+            float3 xformOp:scale = (0.99999994, 0.99999994, 0.99999994)
+            float3 xformOp:translate = (-3.0384943, 0, 8.355176)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+        }
+
+        def "Monte_1" (
+            active = true
+            customData = {
+                float3 rotationEulerHint = (-1.5707966, -1.1688081, 1.5234457e-7)
+            }
+            references = @3D_people/decimated/Monte/Monte.usdc@
+        )
+        {
+            quatf xformOp:orient = (0.589756, -0.58975613, -0.3901125, -0.39011252)
+            float3 xformOp:scale = (0.8590886, 0.8590886, 0.85908854)
+            float3 xformOp:translate = (-0.92706156, 2.3841858e-7, 8.178238)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+        }
+
+        def "Armando_002" (
+            active = true
+            customData = {
+                float3 rotationEulerHint = (-1.5707964, 0, 0)
+            }
+            references = @3D_people/decimated/Armando_002/Armando_002.usdc@
+        )
+        {
+            quatf xformOp:orient = (0.70710677, -0.7071067, 0, 0)
+            float3 xformOp:scale = (0.99999994, 0.99999994, 0.99999994)
+            float3 xformOp:translate = (3.3743324, 0.11492312, 8.53603)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+        }
+
+        def "DanAndGabi_003" (
+            active = true
+            customData = {
+                float3 rotationEulerHint = (-1.5707965, 2.0801, 0)
+            }
+            references = @3D_people/decimated/DanAndGabi_003/DanAndGabi_003.usdc@
+        )
+        {
+            quatf xformOp:orient = (0.35792115, -0.35792115, 0.6098297, 0.60982996)
+            float3 xformOp:scale = (0.9999999, 0.9999999, 0.9999999)
+            float3 xformOp:translate = (0.7676265, 8.195639e-8, -2.5805485)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+        }
+
+        def "Ahsan_002" (
+            active = true
+            customData = {
+                float3 rotationEulerHint = (-1.5707963, -0.6820047, -3.8389686e-8)
+            }
+            references = @3D_people/decimated/Ahsan_002/Ahsan_002.usdc@
+        )
+        {
+            quatf xformOp:orient = (0.66639155, -0.6663915, -0.23647904, -0.23647906)
+            float3 xformOp:scale = (1, 1, 1)
+            float3 xformOp:translate = (3.0741498, 3.801122e-8, -3.8191798)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+        }
+    }
+}
+

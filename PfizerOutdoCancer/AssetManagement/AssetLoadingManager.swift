@@ -159,7 +159,7 @@ final class AssetLoadingManager {
               loadTitleAssets(group: &group, taskCount: &totalAssets)
               loadLabEnvironmentAssets(group: &group, taskCount: &totalAssets)
               loadLabVO(group: &group, taskCount: &totalAssets)
-              loadLabAudio(group: &group, taskCount: &totalAssets)
+//              loadLabAudio(group: &group, taskCount: &totalAssets)
               loadLabEquipmentAssets(group: &group, taskCount: &totalAssets)
 //               loadBuildADCEnvironmentAssets(group: &group, taskCount: &totalAssets)
               loadBuildADCAssets(group: &group, taskCount: &totalAssets)

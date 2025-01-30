@@ -5,7 +5,7 @@
 ⚙️ Registering PositioningSystem...
 ✅ PfizerOutdoCancerApp init completed
 ContentView: Showing LoadingView
-🎯 PositioningSystem 755BC498-6494-44D3-8BD2-DF16D8517F71 initializing...
+🎯 PositioningSystem 4E8FC96F-BF3F-40C7-85D3-C3C8C2DB21E3 initializing...
 nw_socket_initialize_socket [C1:2] setsockopt SO_NECP_CLIENTUUID failed [22: Invalid argument]
 nw_socket_initialize_socket setsockopt SO_NECP_CLIENTUUID failed [22: Invalid argument]
 nw_socket_copy_info [C1:2] getsockopt TCP_INFO failed [102: Operation not supported on socket]
@@ -17,28 +17,28 @@ Starting to load Pfizer logo
 Starting to load Intro Warp
 Starting to load Title card
 Starting to load and assemble LabEnvironment
-Starting to load Lab VO
 Starting to load Lab Audio
+Starting to load Lab VO
 Starting to load asset: Assets/Lab/Objects/autoclave
 Starting to load asset: Assets/Lab/Objects/beaker
 Starting to load asset: Assets/Lab/Objects/beaker_tall
 Starting to load asset: Assets/Lab/Objects/bin
 Starting to load asset: Assets/Lab/Objects/bottle_square
-Starting to load asset: Assets/Lab/Objects/dryingRack
-Starting to load asset: Assets/Lab/Objects/bottle_liquid
-Starting to load asset: Assets/Lab/Objects/flask_conical
-Starting to load asset: Assets/Lab/Objects/flask_conical_lg
-Starting to load asset: Assets/Lab/Objects/flask_flatBottom
-Starting to load asset: Assets/Lab/Objects/centrifuge
-Starting to load asset: Assets/Lab/Objects/flask_volumetric
-Starting to load asset: Assets/Lab/Objects/bottle_pill
-Starting to load asset: Assets/Lab/Objects/deskShelf_double
-Starting to load asset: Assets/Lab/Objects/flask_volumetric_lg
-Starting to load asset: Assets/Lab/Objects/glovesBox_B
-Starting to load asset: Assets/Lab/Objects/jar_pill_sm
+Starting to load asset: Assets/Lab/Objects/chair
 Starting to load asset: Assets/Lab/Objects/deskShelf_single
-Starting to load asset: Assets/Lab/Objects/laptop
+Starting to load asset: Assets/Lab/Objects/bottle_liquid
+Starting to load asset: Assets/Lab/Objects/centrifuge
 Starting to load asset: Assets/Lab/Objects/flask_flatBottom_lg
+Starting to load asset: Assets/Lab/Objects/flask_volumetric
+Starting to load asset: Assets/Lab/Objects/flask_volumetric_lg
+Starting to load asset: Assets/Lab/Objects/fridge_sm
+Starting to load asset: Assets/Lab/Objects/glovesBox_A
+Starting to load asset: Assets/Lab/Objects/glovesBox_B
+Starting to load asset: Assets/Lab/Objects/jar_pill
+Starting to load asset: Assets/Lab/Objects/jar_pill_sm
+Starting to load asset: Assets/Lab/Objects/laptop
+Starting to load asset: Assets/Lab/Objects/mettlerBalance
+Starting to load asset: Assets/Lab/Objects/mettlerBalance_box
 Starting to load asset: Assets/Lab/Objects/microscope
 Starting to load asset: Assets/Lab/Objects/oven
 Starting to load asset: Assets/Lab/Objects/pcKeyboard
@@ -60,13 +60,13 @@ Starting to load Attack Cancer Game Start VO
 Starting to load CancerCell-spawn
 Starting to load ADC-spawn
 Starting to load OutroEnvironment
-Starting to load asset: Assets/Lab/Objects/fridge_sm
-Starting to load asset: Assets/Lab/Objects/jar_pill
+Starting to load asset: Assets/Lab/Objects/bottle_pill
+Starting to load asset: Assets/Lab/Objects/flask_flatBottom
+Starting to load asset: Assets/Lab/Objects/deskShelf_double
+Starting to load asset: Assets/Lab/Objects/flask_conical_lg
+Starting to load asset: Assets/Lab/Objects/dryingRack
+Starting to load asset: Assets/Lab/Objects/flask_conical
 Starting to load asset: Assets/Lab/Objects/bottle_squat
-Starting to load asset: Assets/Lab/Objects/mettlerBalance
-Starting to load asset: Assets/Lab/Objects/mettlerBalance_box
-Starting to load asset: Assets/Lab/Objects/glovesBox_A
-Starting to load asset: Assets/Lab/Objects/chair
 Loading state changed from notStarted to loading
 Loading progress: 0.0
 cannot add handler to 0 from 1 - dropping
@@ -78,30 +78,30 @@ Registering library (/System/Library/PrivateFrameworks/CoreRE.framework/default.
 cannot add handler to 0 from 1 - dropping
 Successfully loaded Pfizer logo
 Successfully loaded Intro Warp
-Successfully loaded Lab VO
-Successfully loaded asset: Assets/Lab/Objects/beaker
-Successfully loaded asset: Assets/Lab/Objects/autoclave
-Successfully loaded asset: Assets/Lab/Objects/beaker_tall
-Successfully loaded Title card
 Successfully loaded Lab Audio
+Successfully loaded asset: Assets/Lab/Objects/beaker
+Successfully loaded asset: Assets/Lab/Objects/beaker_tall
 Successfully loaded asset: Assets/Lab/Objects/bin
+Successfully loaded asset: Assets/Lab/Objects/autoclave
+Successfully loaded Lab VO
 Successfully loaded asset: Assets/Lab/Objects/bottle_square
-Successfully loaded asset: Assets/Lab/Objects/dryingRack
-Successfully loaded asset: Assets/Lab/Objects/bottle_liquid
-Successfully loaded asset: Assets/Lab/Objects/flask_conical
-Successfully loaded asset: Assets/Lab/Objects/centrifuge
-Successfully loaded asset: Assets/Lab/Objects/flask_conical_lg
-Successfully loaded asset: Assets/Lab/Objects/flask_flatBottom
-Successfully loaded asset: Assets/Lab/Objects/flask_volumetric
-Successfully loaded asset: Assets/Lab/Objects/bottle_pill
-Successfully loaded asset: Assets/Lab/Objects/deskShelf_double
-Successfully loaded asset: Assets/Lab/Objects/flask_volumetric_lg
-Successfully loaded asset: Assets/Lab/Objects/glovesBox_B
-Successfully loaded asset: Assets/Lab/Objects/jar_pill_sm
+Successfully loaded asset: Assets/Lab/Objects/chair
+Successfully loaded Title card
 Successfully loaded asset: Assets/Lab/Objects/deskShelf_single
+Successfully loaded asset: Assets/Lab/Objects/bottle_liquid
+Successfully loaded asset: Assets/Lab/Objects/centrifuge
+Successfully loaded asset: Assets/Lab/Objects/flask_flatBottom_lg
+Successfully loaded asset: Assets/Lab/Objects/flask_volumetric
+Successfully loaded asset: Assets/Lab/Objects/flask_volumetric_lg
+Successfully loaded asset: Assets/Lab/Objects/fridge_sm
+Successfully loaded asset: Assets/Lab/Objects/glovesBox_A
+Successfully loaded asset: Assets/Lab/Objects/glovesBox_B
+Successfully loaded asset: Assets/Lab/Objects/jar_pill
+Successfully loaded asset: Assets/Lab/Objects/jar_pill_sm
 Invalid Material input type token
 Successfully loaded asset: Assets/Lab/Objects/laptop
-Successfully loaded asset: Assets/Lab/Objects/flask_flatBottom_lg
+Successfully loaded asset: Assets/Lab/Objects/mettlerBalance
+Successfully loaded asset: Assets/Lab/Objects/mettlerBalance_box
 Successfully loaded asset: Assets/Lab/Objects/microscope
 Successfully loaded asset: Assets/Lab/Objects/oven
 Successfully loaded asset: Assets/Lab/Objects/pcKeyboard
@@ -122,20 +122,29 @@ Successfully loaded antibodyScene
 Successfully assembled AttackCancerEnvironment
 Successfully loaded AttackCancerGameStart_VO
 Successfully loaded CancerCell-spawn
-Successfully loaded ADC-spawn
-ADC template loaded (using inner Root with audio)
-Successfully loaded asset: Assets/Lab/Objects/fridge_sm
-Successfully loaded asset: Assets/Lab/Objects/jar_pill
+decodeComponent: Unexpected error: keyNotFound(CodingKeys(stringValue: "currentVelocity", intValue: nil), Swift.DecodingError.Context(codingPath: [], debugDescription: "No value associated with key CodingKeys(stringValue: \"currentVelocity\", intValue: nil) (\"currentVelocity\").", underlyingError: nil))
+Asset deserialization failed. Asset type "SceneAsset". Details: Failed to deserialize "/container/@shared/7/object". Reason: Failed to deserialize Swift Codable component of type RealityKitContent.ADCComponent.
+Asset 17518494163041908296 Scene (RealityFileAsset)Bundle/realitykitcontent.RealityKitContent.resources/RealityKitContent.reality/Scene_0.compiledscene failure: Asset provider load failed: type 'RealityFileAsset' -- Failed to load compiled data for asset path 'Scene_0.compiledscene', due to error: Failed to deserialize asset data.
+AssetLoadRequest failed because asset failed to load '17518494163041908296 Scene (RealityFileAsset)Bundle/realitykitcontent.RealityKitContent.resources/RealityKitContent.reality/Scene_0.compiledscene' (Asset provider load failed: type 'RealityFileAsset' -- Failed to load compiled data for asset path 'Scene_0.compiledscene', due to error: Failed to deserialize asset data.)
+Failed to load ADC-spawn: Error Domain=REAssetLoadRequestErrorDomain Code=200 "failed to load '17518494163041908296 Scene (RealityFileAsset)Bundle/realitykitcontent.RealityKitContent.resources/RealityKitContent.reality/Scene_0.compiledscene' (Asset provider load failed: type 'RealityFileAsset' -- Failed to load compiled data for asset path 'Scene_0.compiledscene', due to error: Failed to deserialize asset data.)" UserInfo={NSLocalizedDescription=failed to load '17518494163041908296 Scene (RealityFileAsset)Bundle/realitykitcontent.RealityKitContent.resources/RealityKitContent.reality/Scene_0.compiledscene' (Asset provider load failed: type 'RealityFileAsset' -- Failed to load compiled data for asset path 'Scene_0.compiledscene', due to error: Failed to deserialize asset data.)}
+Successfully loaded asset: Assets/Lab/Objects/bottle_pill
+Successfully loaded asset: Assets/Lab/Objects/flask_flatBottom
+Successfully loaded asset: Assets/Lab/Objects/deskShelf_double
+Successfully loaded asset: Assets/Lab/Objects/flask_conical_lg
+Successfully loaded asset: Assets/Lab/Objects/dryingRack
+Successfully loaded asset: Assets/Lab/Objects/flask_conical
 Successfully loaded asset: Assets/Lab/Objects/bottle_squat
-Successfully loaded asset: Assets/Lab/Objects/mettlerBalance
-Successfully loaded asset: Assets/Lab/Objects/mettlerBalance_box
-Successfully loaded asset: Assets/Lab/Objects/glovesBox_A
-Successfully loaded asset: Assets/Lab/Objects/chair
 Successfully assembled complete IntroEnvironment
 Assembling lab equipment
 Setting up IBL lighting
 Successfully assembled complete OutroEnvironment
 Successfully assembled complete LabEnvironment
+
+=== Asset Loading Report ===
+Failed to load 1 assets:
+- adc (adc): Error Domain=REAssetLoadRequestErrorDomain Code=200 "failed to load '17518494163041908296 Scene (RealityFileAsset)Bundle/realitykitcontent.RealityKitContent.resources/RealityKitContent.reality/Scene_0.compiledscene' (Asset provider load failed: type 'RealityFileAsset' -- Failed to load compiled data for asset path 'Scene_0.compiledscene', due to error: Failed to deserialize asset data.)" UserInfo={NSLocalizedDescription=failed to load '17518494163041908296 Scene (RealityFileAsset)Bundle/realitykitcontent.RealityKitContent.resources/RealityKitContent.reality/Scene_0.compiledscene' (Asset provider load failed: type 'RealityFileAsset' -- Failed to load compiled data for asset path 'Scene_0.compiledscene', due to error: Failed to deserialize asset data.)}
+========================
+
 Assets loaded successfully
 loadingState: completed
 🔄 Phase transition: loading -> ready
@@ -143,7 +152,7 @@ loadingState: completed
 Loading state changed from loading to completed
 Loading progress: 0.9818182
 🎯 Managing windows for phase: ready
-📊 Before state update - Debug window open: true
+📊 Before state update - nav window open: false
 📊 Window states after update:
   Main: true
   Debug: false
@@ -156,7 +165,7 @@ Loading progress: 0.9818182
 🔄 Phase transition: ready -> intro
 🚨 LoadingView disappeared
 🎯 Managing windows for phase: intro
-📊 Before state update - Debug window open: false
+📊 Before state update - nav window open: false
 📊 Window states after update:
   Main: true
   Debug: true
@@ -167,17 +176,18 @@ Loading progress: 0.9818182
     ScenePhase: active
     LoadingPhase: completed
 cannot add handler to 0 from 1 - dropping
-🎯 PositioningSystem 80EC85B8-C11A-49B0-B03C-8FD9F3AA24F7 initializing...
+🎯 PositioningSystem DA34077D-CFCB-4950-9299-446AFCAC4742 initializing...
 cannot add handler to 0 from 1 - dropping
-🎯 PositioningSystem 7D7E3CD5-2E24-4A05-85EC-FBC2FC372E2F initializing...
+🎯 PositioningSystem 1D87C646-FE4F-42B2-878F-25C6A85E32DF initializing...
 Initializing hosting entity without a context
 Initializing hosting entity without a context
+Initializing hosting entity without a context
 cannot add handler to 0 from 1 - dropping
-🖐️ Starting hand tracking session
 ❌ IntroView: No root entity found in task
 📱 IntroView: Setting up RealityView
 📱 IntroViewModel: Setting up intro root
 📱 IntroView: Found SwiftUI attachments
+🖐️ Starting hand tracking session
 cannot add handler to 0 from 1 - dropping
 ✅ Started tracking providers
 ✅ Phase transition complete: intro
@@ -215,11 +225,11 @@ Cloned entity for key: lab_environment
 🔍 After - labViewer position: SIMD3<Float>(0.0, -0.4, 0.3), scale: SIMD3<Float>(5.0, 5.0, 5.0)
 📎 Added labViewer to titleRoot
 📱 IntroView: Starting animation sequence
-🎬 Animation Sequence: Starting at 2025-01-24 23:43:36 +0000
+🎬 Animation Sequence: Starting at 2025-01-30 15:50:47 +0000
 🔍 Entity Check - skyDome: true, portalWarp: true, logo: true, portal: true
 🌟 Sky fade: Starting at +0s
 🔍 Sky initial opacity: 0.0
-📍 Positioned entity 'IntroRoot' at SIMD3<Float>(0.00047566742, -0.25664663, -1.0989947)
+📍 Positioned entity 'IntroRoot' at SIMD3<Float>(-0.00053597987, -0.22015786, -1.1005572)
 ✅ Successfully positioned entity: IntroRoot
 Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", ""
 Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
@@ -232,51 +242,53 @@ ContentView: Showing AttackCancerInstructionsView
 cannot add handler to 0 from 1 - dropping
 🖐️ Starting hand tracking session
 ✅ Started tracking providers
-
-Cloned entity for key: adc
+Warning: No template found for key: adc
 ✅ Phase transition complete: playing
-ARPredictorRemoteService <0x127e2e4b0>: Query queue is not running.
-ARPredictorRemoteService <0x16f6f7460>: Query queue is not running.
-ARPredictorRemoteService <0x12a5078d0>: Query queue is not running.
-ARPredictorRemoteService <0x504e20820>: Query queue is not running.
-ARPredictorRemoteService <0x12a5110c0>: Query queue is not running.
-ARPredictorRemoteService <0x127f93e00>: Query queue is not running.
-ARPredictorRemoteService <0x12a414150>: Query queue is not running.
+ARPredictorRemoteService <0x1649210b0>: Query queue is not running.
+ARPredictorRemoteService <0x10d50e600>: Query queue is not running.
+ARPredictorRemoteService <0x10d41d460>: Query queue is not running.
+ARPredictorRemoteService <0x15ed6b1f0>: Query queue is not running.
+ARPredictorRemoteService <0x15ed41ae0>: Query queue is not running.
+ARPredictorRemoteService <0x10d41e5a0>: Query queue is not running.
+ARPredictorRemoteService <0x10bf0f160>: Query queue is not running.
 🎯 Managing windows for phase: playing
-📊 Before state update - Debug window open: true
+📊 Before state update - nav window open: true
+[NetworkComponent] Trying to process with outdated syncable that has already been unbound, guid=14082739816856202793
 🌟 Sky fade: Completed fade animation
 🔍 Sky final opacity: 0.0
 ⏰ Sleeping for 19s before portal warp
-🌀 Portal warp: Starting at +1.6547070741653442s
+🌀 Portal warp: Starting at +1.8749680519104004s
 🔍 PortalWarp reference check: true
 🔍 Warp initial opacity: 0.6
 🌀 Portal warp: Completed fade animation
 🔍 Warp final opacity: 0.6
 ⏰ Sleeping for 75s before logo
-🎯 Logo: Starting at +1.6589430570602417s
+🎯 Logo: Starting at +1.8750540018081665s
 🔍 Logo reference check: true
 🔍 Logo initial opacity: 0.0
 🎯 Logo: Completed fade animation
 🔍 Logo final opacity: 0.0
-📝 Title: Showing at +1.6590430736541748s
-🌐 Portal: Starting at +1.6590620279312134s
+📝 Title: Showing at +1.875108003616333s
+🌐 Portal: Starting at +1.8751250505447388s
 🔍 Portal reference check: true
 🔍 Portal initial opacity: 0.0
 🌐 Portal: Completed fade animation
 🔍 Portal final opacity: 0.0
-🌐 Portal plane: Starting scale animation at +1.6610440015792847s
+🌐 Portal plane: Starting scale animation at +1.8761529922485352s
 🌐 Portal plane: Completed scale animation
-🎬 Animation Sequence: Completed at +1.6611040830612183s
-🎯 PositioningSystem 4DBB227F-1CF6-4078-A322-90D75551B173 initializing...
+🎬 Animation Sequence: Completed at +1.8762069940567017s
+🎯 PositioningSystem 71A7AF60-B8F5-4D3C-A4AF-760DE8734E03 initializing...
 cannot add handler to 0 from 1 - dropping
 ❌ AttackCancerView: No stored attachments found
 📱 AttackCancerView: Setting up RealityView
 📱 AttackCancerViewModel: Setting up root
+[NetworkComponent] Trying to process with outdated syncable that has already been unbound, guid=15863949128470630298
+[NetworkComponent] Trying to process with outdated syncable that has already been unbound, guid=14753152188608849291
 📱 AttackCancerView: Starting environment setup
 🎯 Setting up AttackCancerView environment...
-📍 Positioned entity 'Decoy' at SIMD3<Float>(0.0014534581, 1.247183, -1.1012161)
+📍 Positioned entity 'Decoy' at SIMD3<Float>(0.0022093952, 1.295731, -1.0921882)
 ✅ Successfully positioned entity: Decoy
-📍 Positioned entity 'Decoy' at SIMD3<Float>(0.0014539945, 1.2471818, -1.1012181)
+📍 Positioned entity 'Decoy' at SIMD3<Float>(0.0022082627, 1.2957355, -1.0921819)
 ✅ Successfully positioned entity: Decoy
 ✅ Environment setup complete
 Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
@@ -293,123 +305,451 @@ Cloned entity for key: game_start_vo
 
 === Starting Tutorial ADC Sequence ===
 cannot add handler to 0 from 1 - dropping
-Cannot find a BindPoint for any bind path: "", "", ""
-Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
-Cannot find a BindPoint for any bind path: "", "", "entities[].Transform.transform"
 Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
 Cannot find a BindPoint for any bind path: "", "", "entities[].Transform.transform"
 Cannot find a BindPoint for any bind path: "", "", ""
 🚀 Firing tutorial ADC 1/10
 
 === Tapped Entity ===
-Entity name: CancerCell_spawn
+Entity name: cancerCell_complex
 Right hand tap detected
 Found cancer cell with ID: 0
 Found attach point: attach_9
 🚀 Firing tutorial ADC 2/10
 
 === Tapped Entity ===
-Entity name: CancerCell_spawn
+Entity name: cancerCell_complex
 Right hand tap detected
 Found cancer cell with ID: 0
 Found attach point: attach_8
 🚀 Firing tutorial ADC 3/10
 
 === Tapped Entity ===
-Entity name: CancerCell_spawn
+Entity name: cancerCell_complex
 Right hand tap detected
 Found cancer cell with ID: 0
 Found attach point: attach_7
 🚀 Firing tutorial ADC 4/10
 
 === Tapped Entity ===
-Entity name: CancerCell_spawn
+Entity name: cancerCell_complex
 Right hand tap detected
 Found cancer cell with ID: 0
 Found attach point: attach_6
 🚀 Firing tutorial ADC 5/10
 
 === Tapped Entity ===
-Entity name: CancerCell_spawn
+Entity name: cancerCell_complex
 Right hand tap detected
 Found cancer cell with ID: 0
 Found attach point: attach_1
 🚀 Firing tutorial ADC 6/10
 
 === Tapped Entity ===
-Entity name: CancerCell_spawn
+Entity name: cancerCell_complex
 Right hand tap detected
 Found cancer cell with ID: 0
 Found attach point: attach_4
 🚀 Firing tutorial ADC 7/10
 
 === Tapped Entity ===
-Entity name: CancerCell_spawn
+Entity name: cancerCell_complex
 Right hand tap detected
 Found cancer cell with ID: 0
 Found attach point: attach_12
 🚀 Firing tutorial ADC 8/10
 
 === Tapped Entity ===
-Entity name: CancerCell_spawn
+Entity name: cancerCell_complex
 Right hand tap detected
 Found cancer cell with ID: 0
 Found attach point: attach_16
 🚀 Firing tutorial ADC 9/10
 
 === Tapped Entity ===
-Entity name: CancerCell_spawn
+Entity name: cancerCell_complex
 Right hand tap detected
 Found cancer cell with ID: 0
 Found attach point: attach_10
 🚀 Firing tutorial ADC 10/10
 
 === Tapped Entity ===
-Entity name: CancerCell_spawn
+Entity name: cancerCell_complex
 Right hand tap detected
 Found cancer cell with ID: 0
 Found attach point: attach_15
 ✅ Tutorial ADC sequence complete
 ⏱️ Waiting for 24s mark...
-=== Cancer Cell Death Triggered ===
-💀 Cell is destroyed
-✨ Updated particle emitter isEmitting to: false
-Failed to set override status for bind point component member.
-ARPredictorRemoteService <0x12a5e88a0>: Query queue is not running.
-ARPredictorRemoteService <0x12a5e8a00>: Query queue is not running.
-ARPredictorRemoteService <0x127e2e4b0>: Query queue is not running.
-FINISH ✨ Stopped particle emitter
-FINISH ✨ Removed particle emitter component
-FINISH ✨ Removed cancer cell component
-✨ Removing entity from scene
 🎯 Opening hope meter utility window
 🎮 Setting up cancer cells
 
 === Initializing Cell States ===
 
 Cloned entity for key: cancer_cell
-🎯 PositioningSystem D1EDB866-51C4-4F68-93CB-5A889F1080DA initializing...
-[NetworkComponent] Trying to process with outdated syncable that has already been unbound, guid=10068074251548103516
-[NetworkComponent] Cannot find component's entity (guid=12996651833411253412, typeID=295756909031380028, type=CustomComponentRCPInputTargetComponent, entity=0x1298f9610).
+🎯 PositioningSystem C5C45995-EB93-4E32-B94C-49B3A69FC8CA initializing...
+Cannot find a BindPoint for any bind path: "", "", ""
+Cannot find a BindPoint for any bind path: "", "", ""
 cannot add handler to 0 from 1 - dropping
-🎯 Counter 0 ready: 0/10
-🎯 Counter 1 ready: 0/10
-🎯 Counter 2 ready: 0/10
-🎯 Counter 3 ready: 0/10
-🎯 Counter 4 ready: 0/10
-🎯 Counter 5 ready: 0/10
-🎯 Counter 6 ready: 0/10
-🎯 Counter 7 ready: 0/10
-🎯 Counter 8 ready: 0/10
-🎯 Counter 9 ready: 0/10
-🎯 Counter 10 ready: 0/10
-🎯 Counter 11 ready: 0/10
-🎯 Counter 12 ready: 0/10
-🎯 Counter 13 ready: 0/10
-🎯 Counter 14 ready: 0/10
-🎯 Counter 15 ready: 0/10
-🎯 Counter 16 ready: 0/10
-🎯 Counter 17 ready: 0/10
-🎯 Counter 18 ready: 0/10
-🎯 Counter 19 ready: 0/10
+Cannot find a BindPoint for any bind path: "", "", ""
+Cannot find a BindPoint for any bind path: "", "", ""
+Failed to set override status for bind point component member.
+Cannot find a BindPoint for any bind path: "", "", ""
+Failed to set override status for bind point component member.
+Cannot find a BindPoint for any bind path: "", "", ""
+Failed to set override status for bind point component member.
+Cannot find a BindPoint for any bind path: "", "", ""
+Failed to set override status for bind point component member.
+Cannot find a BindPoint for any bind path: "", "", ""
+Failed to set override status for bind point component member.
+Cannot find a BindPoint for any bind path: "", "", ""
+Failed to set override status for bind point component member.
+Cannot find a BindPoint for any bind path: "", "", ""
+Failed to set override status for bind point component member.
+Cannot find a BindPoint for any bind path: "", "", ""
+Failed to set override status for bind point component member.
+Cannot find a BindPoint for any bind path: "", "", ""
+Failed to set override status for bind point component member.
+Cannot find a BindPoint for any bind path: "", "", ""
+Cannot find a BindPoint for any bind path: "", "", ""
+Failed to set override status for bind point component member.
+Cannot find a BindPoint for any bind path: "", "", ""
+Failed to set override status for bind point component member.
+🕒 Starting Hope Meter
+🛑 Stopping Hope Meter
+Cannot find a BindPoint for any bind path: "", "", ""
+cannot add handler to 0 from 1 - dropping
+Failed to set override status for bind point component member.
+Cannot find a BindPoint for any bind path: "", "", ""
+Failed to set override status for bind point component member.
+Cannot find a BindPoint for any bind path: "", "", ""
+Failed to set override status for bind point component member.
+Cannot find a BindPoint for any bind path: "", "", ""
+Cannot find a BindPoint for any bind path: "", "", ""
+Failed to set override status for bind point component member.
+Cannot find a BindPoint for any bind path: "", "", ""
+Failed to set override status for bind point component member.
+Failed to set override status for bind point component member.
+Cannot find a BindPoint for any bind path: "", "", ""
+Cannot find a BindPoint for any bind path: "", "", ""
+Failed to set override status for bind point component member.
+Cannot find a BindPoint for any bind path: "", "", ""
+Cannot find a BindPoint for any bind path: "", "", ""
+Failed to set override status for bind point component member.
+🎯 Counter 0 ready: 0/8
+🎯 Counter 1 ready: 0/8
+🎯 Counter 2 ready: 0/7
+🎯 Counter 3 ready: 0/4
+🎯 Counter 4 ready: 0/6
+🎯 Counter 5 ready: 0/4
+🎯 Counter 6 ready: 0/4
+🎯 Counter 7 ready: 0/4
+🎯 Counter 8 ready: 0/5
+🎯 Counter 9 ready: 0/4
+🎯 Counter 10 ready: 0/5
+🎯 Counter 11 ready: 0/5
+🎯 Counter 12 ready: 0/6
+🎯 Counter 13 ready: 0/7
+🎯 Counter 14 ready: 0/8
+🎯 Counter 15 ready: 0/8
+🎯 Counter 16 ready: 0/4
+🎯 Counter 17 ready: 0/6
+🎯 Counter 18 ready: 0/6
+🎯 Counter 19 ready: 0/6
+Failed to set override status for bind point component member.
+🕒 Starting Hope Meter
+🛑 Stopping Hope Meter
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 4
+Found attach point: attach_9
+Failed to set override status for bind point component member.
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 4
+Found attach point: attach_8
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 4
+Found attach point: attach_7
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 4
+Found attach point: attach_6
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 4
+Found attach point: attach_1
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 1
+Found attach point: attach_9
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 1
+Found attach point: attach_8
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 1
+Found attach point: attach_7
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 1
+Found attach point: attach_6
+
+=== Tapped Entity ===
+Entity name: right
+Right hand tap detected
+Spawning untargeted ADC
+❌ Failed to spawn untargeted ADC: missing template or root
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 9
+Found attach point: attach_9
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 9
+Found attach point: attach_8
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 9
+Found attach point: attach_7
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 9
+Found attach point: attach_6
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 9
+Found attach point: attach_1
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 9
+Found attach point: attach_4
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 2
+Found attach point: attach_9
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 2
+Found attach point: attach_8
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 2
+Found attach point: attach_7
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 2
+Found attach point: attach_6
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 2
+Found attach point: attach_1
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 7
+Found attach point: attach_9
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 7
+Found attach point: attach_8
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 7
+Found attach point: attach_7
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 1
+Found attach point: attach_1
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 1
+Found attach point: attach_4
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 4
+Found attach point: attach_4
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 4
+Found attach point: attach_12
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 4
+Found attach point: attach_16
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 4
+Found attach point: attach_10
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 4
+Found attach point: attach_15
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 2
+Found attach point: attach_4
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 2
+Found attach point: attach_12
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 2
+Found attach point: attach_16
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 2
+Found attach point: attach_10
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 7
+Found attach point: attach_6
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 7
+Found attach point: attach_1
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 7
+Found attach point: attach_4
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 7
+Found attach point: attach_12
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 7
+Found attach point: attach_16
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 7
+Found attach point: attach_10
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 7
+Found attach point: attach_15
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 4
+Found attach point: attach_18
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 4
+Found attach point: attach_17
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 4
+Found attach point: attach_13
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 8
+Found attach point: attach_9
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 8
+Found attach point: attach_8
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 8
+Found attach point: attach_7
+ARPredictorRemoteService <0x10bd0a1a0>: Query queue is not running.
+ARPredictorRemoteService <0x16e6d25f0>: Query queue is not running.
+ARPredictorRemoteService <0x1649210b0>: Query queue is not running.
+ARPredictorRemoteService <0x16e6bd890>: Query queue is not running.
+ARPredictorRemoteService <0x10d4db230>: Query queue is not running.
 Message from debugger: killed

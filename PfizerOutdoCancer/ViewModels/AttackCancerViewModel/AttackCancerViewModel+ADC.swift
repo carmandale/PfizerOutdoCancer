@@ -89,7 +89,7 @@ extension AttackCancerViewModel {
             shapes: [shape],
             filter: .init(group: .adc, mask: .cancerCell)
         )
-        // adc.components.set(collision)
+        adc.components.set(collision)
         
         // Update ADCComponent properties
         guard var adcComponent = adc.components[ADCComponent.self] else { return }
@@ -108,18 +108,59 @@ extension AttackCancerViewModel {
         ADCMovementSystem.startMovement(entity: adc, from: position, to: targetPoint)
     }
     
-    /// Spawns an ADC without a specific target, moving in the specified direction
-    func spawnUntargetedADC(from position: SIMD3<Float>, direction: SIMD3<Float>) async {
+    /// Spawns an ADC without a specific target, moving in the direction the user is looking
+    func spawnUntargetedADC(from position: SIMD3<Float>) async {
         guard let template = adcTemplate,
               let root = rootEntity else {
+            print("❌ Failed to spawn untargeted ADC: missing template or root")
             return
+        }
+        
+        // Create headPosition entity with random positioning
+        let headPosition = Entity()
+        headPosition.name = "headPosition"
+        
+        // Random offsets
+        let randomX = Float.random(in: -1.0...1.0)
+        let randomY = Float.random(in: 0.5...1.5)
+        let randomZ = Float.random(in: -3.5...(-2.5))
+        
+        // Set positioning component with random offsets
+        headPosition.components.set(PositioningComponent(
+            offsetX: randomX,
+            offsetY: randomY,
+            offsetZ: randomZ
+        ))
+        
+        // Add AttachmentPoint component and mark as occupied
+        var attachPoint = AttachmentPoint()
+        attachPoint.isOccupied = true
+        headPosition.components.set(attachPoint)
+        
+        // Add debug sphere as child for visualization
+        let debugSphere = ModelEntity(
+            mesh: .generateSphere(radius: 0.1), 
+            materials: [SimpleMaterial(color: .blue, isMetallic: false)]
+        )
+        headPosition.addChild(debugSphere)
+        root.addChild(headPosition)
+        
+        // Log world space positions for debugging
+        let worldPosition = headPosition.position(relativeTo: nil)
+        print("\n=== Debug Sphere World Position ===")
+        print("🎯 World Position: (\(String(format: "%.3f", worldPosition.x)), \(String(format: "%.3f", worldPosition.y)), \(String(format: "%.3f", worldPosition.z)))")
+        
+        // Remove debug sphere after 5 seconds
+        Task {
+            try? await Task.sleep(for: .seconds(5))
+            debugSphere.removeFromParent()
         }
         
         totalADCsDeployed += 1
         #if DEBUG
         print("\n=== Spawning Untargeted ADC ===")
-        print("Position: \(position)")
-        print("Direction: \(direction)")
+        print("Start Position: \(position)")
+        print("Target Position: \(worldPosition)")
         print("✅ ADC #\(totalADCsDeployed) Launched (Total Taps: \(totalTaps))")
         #endif
         
@@ -137,14 +178,12 @@ extension AttackCancerViewModel {
             shapes: [shape],
             filter: .init(group: .adc, mask: .cancerCell)
         )
-        // adc.components.set(collision)
+        adc.components.set(collision)
         
-        // Set up ADC component for seeking behavior
+        // Set up ADC component
         guard var adcComponent = adc.components[ADCComponent.self] else { return }
-        adcComponent.state = .seeking
+        adcComponent.state = .moving  // Use moving state instead of seeking
         adcComponent.startWorldPosition = position
-        adcComponent.seekingDirection = direction
-        adcComponent.seekingStartTimeSeconds = Date().timeIntervalSinceReferenceDate
         adcComponent.proteinSpinSpeed = Float.random(in: 8.0...10.0)
         adcComponent.speedFactor = Float.random(in: ADCMovementSystem.speedRange)
         adcComponent.arcHeightFactor = Float.random(in: ADCMovementSystem.arcHeightRange)
@@ -156,7 +195,9 @@ extension AttackCancerViewModel {
         // Add to scene
         root.addChild(adc)
         
-        // The movement system will handle the seeking behavior in its update loop
+        // Start movement using headPosition entity as target
+        ADCMovementSystem.startMovement(entity: adc, from: position, to: headPosition)
+        
         print("✅ Untargeted ADC spawned successfully")
     }
 }

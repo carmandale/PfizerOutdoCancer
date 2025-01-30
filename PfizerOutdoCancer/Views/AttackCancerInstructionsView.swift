@@ -107,6 +107,7 @@ struct AttackCancerInstructionsView: View {
         }
         .frame(minWidth: 800)
         .frame(minHeight: 900)
+        .transition(Appear())
 
     }
     

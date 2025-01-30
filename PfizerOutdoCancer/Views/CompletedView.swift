@@ -101,6 +101,7 @@ struct CompletedView: View {
                 animateStats = true
             }
         }
+        .transition(Appear())
     }
     
     private func statRow(_ title: String, value: Int, icon: String) -> some View {

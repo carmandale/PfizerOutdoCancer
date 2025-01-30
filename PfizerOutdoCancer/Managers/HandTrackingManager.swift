@@ -122,6 +122,44 @@ final class HandTrackingManager {
         leftHandAnchor = left
         rightHandAnchor = right
     }
+    
+    /// Gets the forward direction vector for a hand
+    /// - Parameter chirality: Which hand to get the direction for
+    /// - Returns: A normalized direction vector in world space, or nil if hand is not tracked
+    func getHandDirection(_ chirality: HandAnchor.Chirality) -> SIMD3<Float>? {
+        let handAnchor = chirality == .left ? leftHandAnchor : rightHandAnchor
+        
+        guard let handAnchor = handAnchor,
+              handAnchor.isTracked,
+              let handSkeleton = handAnchor.handSkeleton else {
+            return nil
+        }
+        
+        // Get wrist and palm center joints
+        let wrist = handSkeleton.joint(.wrist)
+        let middleKnuckle = handSkeleton.joint(.middleFingerKnuckle)
+        
+        guard wrist.isTracked && middleKnuckle.isTracked else {
+            return nil
+        }
+        
+        // Transform joint positions to world space
+        let originFromAnchor = handAnchor.originFromAnchorTransform
+        let wristTransform = originFromAnchor * wrist.anchorFromJointTransform
+        let knuckleTransform = originFromAnchor * middleKnuckle.anchorFromJointTransform
+        
+        // Get positions from transforms
+        let wristPosition = SIMD3<Float>(wristTransform.columns.3.x,
+                                       wristTransform.columns.3.y,
+                                       wristTransform.columns.3.z)
+        let knucklePosition = SIMD3<Float>(knuckleTransform.columns.3.x,
+                                         knuckleTransform.columns.3.y,
+                                         knuckleTransform.columns.3.z)
+        
+        // Calculate and normalize direction
+        let direction = normalize(knucklePosition - wristPosition)
+        return direction
+    }
 }
 
 // MARK: - ModelEntity Extensions

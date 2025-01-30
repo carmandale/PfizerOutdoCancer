@@ -108,12 +108,45 @@ public class ADCMovementSystem: System {
             // Update progress with randomized speed and phase-based multiplier
             adcComponent.movementProgress += Float(context.deltaTime / (Self.baseStepDuration * TimeInterval(1/speedFactor) * Self.numSteps)) * speedMultiplier
             
+            if adcComponent.movementProgress >= 0.8 { // At 80% of journey
+                // Check if current target is headPosition
+                if targetEntity.components[PositioningComponent.self] != nil {
+                    print("🎯 ADC at 80% to headPosition - attempting to find cancer cell target")
+                    // Try to find a cancer cell target
+                    if Self.retargetADC(entity, 
+                                      &adcComponent, 
+                                      currentPosition: entity.position(relativeTo: nil),
+                                      in: context.scene) {
+                        // Successfully found new cancer cell target
+                        entity.components[ADCComponent.self] = adcComponent
+                        // Remove the headPosition entity and its debug sphere
+                        targetEntity.removeFromParent()
+                        print("✨ Removed headPosition entity after successful retarget")
+                        continue
+                    }
+                    print("⚠️ No cancer cell targets found - continuing to headPosition")
+                }
+            }
+
             if adcComponent.movementProgress >= 1.0 {
                 // Movement complete
 //                print("\n=== ADC Impact ===")
                 let impactDirection = normalize(target - start)
 //                print("💥 Direction: (\(String(format: "%.2f, %.2f, %.2f", impactDirection.x, impactDirection.y, impactDirection.z)))")
                 
+                if let cancerCell = Self.findParentCancerCell(for: targetEntity, in: context.scene) {
+                    print("Found cancer cell: \(cancerCell.name)")
+                    // Launch the animation in a Task to handle the async call
+                    Task { @MainActor in
+                        await cancerCell.hitScaleAnimation(
+                            intensity: 0.95, // Less squish (0.95 instead of 0.9)
+                            duration: 0.2,  // Faster animation (0.2 instead of 0.3)
+                            scaleReduction: 0.05 // Less reduction (0.05 instead of 0.1)
+                        )
+                    }
+                } else {
+                    print("No cancer cell found")
+                }
                 // Find the parent cancer cell using our utility function
                 if let cancerCell = Self.findParentCancerCell(for: targetEntity, in: context.scene),
                    var cellPhysics = cancerCell.components[PhysicsMotionComponent.self] {
@@ -392,4 +425,28 @@ public class ADCMovementSystem: System {
             entity.playAudio(droneSound)
         }
     }
+    
+//    private func calculatePosition(for adcComponent: ADCComponent) -> SIMD3<Float> {
+//        if adcComponent.isRetargetedPath {
+//            // Composite curve construction
+//            let prevEnd = adcComponent.startWorldPosition!
+//            let prevControl = prevEnd + adcComponent.previousPathTangent! * 0.5
+//            let newStart = currentPosition
+//            let newControl = newStart + adcComponent.previousPathTangent! * 0.5
+//            let newEnd = targetPosition
+//            
+//            // Use cubic Bézier for smooth transition
+//            return compositeBezier(
+//                prevEnd: prevEnd,
+//                prevControl: prevControl,
+//                newStart: newStart,
+//                newControl: newControl,
+//                newEnd: newEnd,
+//                t: adcComponent.compositeProgress
+//            )
+//        } else {
+//            // Original quadratic Bézier
+//        }
+//    }
 }
+

@@ -66,6 +66,7 @@ struct PfizerOutdoCancerApp: App {
                             break
                         }
                     }
+                .transition(Appear())
                 
         }
         .defaultSize(width: 800, height: 800)
@@ -78,6 +79,7 @@ struct PfizerOutdoCancerApp: App {
             LibraryView()
                 .environment(appModel)
                 .environment(adcDataModel)
+                .transition(Appear())
             }
         }
         .defaultSize(CGSize(width: 800, height: 600))
@@ -94,6 +96,7 @@ struct PfizerOutdoCancerApp: App {
             NavigationView()
                 .environment(appModel)
                 .environment(adcDataModel)
+                .transition(Appear())
         }
         .windowStyle(.plain)
         .windowResizability(.contentSize)
