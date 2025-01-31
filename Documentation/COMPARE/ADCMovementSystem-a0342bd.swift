@@ -23,13 +23,13 @@ public class ADCMovementSystem: System {
     static let maxBankAngle: Float = .pi / 8  // Reduced maximum banking angle
     static let bankingSmoothingFactor: Float = 6.0  // New parameter for banking smoothing
     
+    // Spin configuration
+    static let proteinSpinSpeed: Float = Float.random(in: 8.0...10.0)  // Random spin speed between 8-15
+    
     // Acceleration parameters
     static let accelerationPhase: Float = 0.2  // First 20% of movement
     static let decelerationPhase: Float = 0.2  // Last 20% of movement
     static let minSpeedMultiplier: Float = 0.4  // Minimum speed during accel/decel
-    
-    // MARK: - Constants
-    private static let retargetDuration: Float = 0.5 // Duration for retargeting interpolation
     
     /// Initialize the system with the RealityKit scene
     required public init(scene: Scene) {}
@@ -111,62 +111,30 @@ public class ADCMovementSystem: System {
             // Update progress with randomized speed and phase-based multiplier
             adcComponent.movementProgress += Float(context.deltaTime / (Self.baseStepDuration * TimeInterval(1/speedFactor) * Self.numSteps)) * speedMultiplier
             
-            if adcComponent.movementProgress >= 0.8 { // At 80% of journey
-                // Check if current target is headPosition
-                if targetEntity.components[PositioningComponent.self] != nil {
-                    print("🎯 ADC at 80% to headPosition - attempting to find cancer cell target")
-                    // Try to find a cancer cell target
-                    if Self.retargetADC(entity, 
-                                      &adcComponent, 
-                                      currentPosition: entity.position(relativeTo: nil),
-                                      in: context.scene) {
-                        // Successfully found new cancer cell target
-                        entity.components[ADCComponent.self] = adcComponent
-                        // Remove the headPosition entity and its debug sphere
-                        targetEntity.removeFromParent()
-                        print("✨ Removed headPosition entity after successful retarget")
-                        continue
-                    }
-                    print("⚠️ No cancer cell targets found - continuing to headPosition")
-                }
-            }
-
             if adcComponent.movementProgress >= 1.0 {
                 // Movement complete
 //                print("\n=== ADC Impact ===")
                 let impactDirection = normalize(target - start)
 //                print("💥 Direction: (\(String(format: "%.2f, %.2f, %.2f", impactDirection.x, impactDirection.y, impactDirection.z)))")
                 
-                if let cancerCell = Self.findParentCancerCell(for: targetEntity, in: context.scene) {
-                    print("Found cancer cell: \(cancerCell.name)")
-                    // Launch the animation in a Task to handle the async call
-                    Task { @MainActor in
-                        await cancerCell.hitScaleAnimation(
-                            intensity: 0.95, // Less squish (0.95 instead of 0.9)
-                            duration: 0.2,  // Faster animation (0.2 instead of 0.3)
-                            scaleReduction: 0.05 // Less reduction (0.05 instead of 0.1)
-                        )
-                    }
-                } else {
-                    print("No cancer cell found")
-                }
                 // Find the parent cancer cell using our utility function
                 if let cancerCell = Self.findParentCancerCell(for: targetEntity, in: context.scene),
                    var cellPhysics = cancerCell.components[PhysicsMotionComponent.self] {
 //                    print("Found cancer cell: \(cancerCell.name)")
 //                    print("Initial velocity: \(cellPhysics.linearVelocity)")
                     
-                    // Removed physics impulse application to disable ADC-cancer cell interactions
-                    // while maintaining cell-to-cell collisions
+                    // Apply impulse
+                    cellPhysics.linearVelocity += impactDirection * 0.05
                     
-//                    // Apply impulse
-//                    cellPhysics.linearVelocity += impactDirection * 2.0
-//                    
-//                    // Add random angular velocity around Y axis
-//                    let randomSign: Float = Bool.random() ? 1.0 : -1.0
-//                    cellPhysics.angularVelocity += SIMD3<Float>(0, randomSign * 2.1, 0)
-//                    
-//                    cancerCell.components[PhysicsMotionComponent.self] = cellPhysics
+                    // Add random angular velocity around Y axis
+                    let randomSign: Float = Bool.random() ? 1.0 : -1.0
+                    cellPhysics.angularVelocity += SIMD3<Float>(0, randomSign * 0.1, 0)
+                    
+//                    print("New velocity: \(cellPhysics.linearVelocity)")
+//                    print("New angular velocity: \(cellPhysics.angularVelocity)")
+                    
+                    cancerCell.components[PhysicsMotionComponent.self] = cellPhysics
+//                    print("Updated physics on cancer cell")
                     
                 } else {
                     print("Could not find parent cancer cell with physics component")
@@ -244,7 +212,7 @@ public class ADCMovementSystem: System {
                     // Configure spatial audio characteristics
                     if var spatialAudio = entity.components[SpatialAudioComponent.self] {
                         spatialAudio.directivity = .beam(focus: 1.0)
-                        spatialAudio.gain = -6.0
+                        spatialAudio.gain = -3.0
                         entity.components[SpatialAudioComponent.self] = spatialAudio
                     }
                     
@@ -265,7 +233,7 @@ public class ADCMovementSystem: System {
                     stateComponent.parameters.hitCount += 1
                     stateComponent.parameters.wasJustHit = true
                     
-//                    print("Incremented hit count for cell \(cellID) to \(stateComponent.parameters.hitCount)")
+                    print("Incremented hit count for cell \(cellID) to \(stateComponent.parameters.hitCount)")
                 }
             } else {
                 // Calculate current position on curve using Bezier curve
@@ -338,14 +306,18 @@ public class ADCMovementSystem: System {
             // Start drone sound
             // if let audioComponent = entity.components[AudioLibraryComponent.self],
             //    let droneSound = audioComponent.resources["Drones_01.wav"] {
-            //     // Configure spatial audio characteristics before playing
-            //     if var spatialAudio = entity.components[SpatialAudioComponent.self] {
-            //         spatialAudio.directivity = .beam(focus: 1.0)
-            //         entity.components[SpatialAudioComponent.self] = spatialAudio
-            //     }
-                
-            //     // Play audio through entity
+            //     // Play audio through entity (will automatically use spatial audio component)
             //     entity.playAudio(droneSound)
+                
+            //     // Configure spatial audio characteristics if needed
+            //     if var spatialAudio = entity.components[SpatialAudioComponent.self] {
+            //         spatialAudio.directivity = .beam(focus: 1.0)  // Following the same pattern as ADCOptimizedImmersive
+            //         entity.components[SpatialAudioComponent.self] = spatialAudio
+                    
+            //         // Debug: Inspect entity to verify spatial audio setup
+            //         // print("🔊 Inspecting ADC entity for spatial audio setup:")
+            //         // AssetLoadingManager.shared.inspectEntityHierarchy(entity)
+            //     }
             // }
         }
     }
@@ -356,9 +328,8 @@ public class ADCMovementSystem: System {
     }
     
     private static func updateProteinSpin(entity: Entity, deltaTime: TimeInterval) {
-        if let proteinComplex = entity.findEntity(named: "antibodyProtein_complex"),
-           let adcComponent = entity.components[ADCComponent.self] {
-            let spinRotation = simd_quatf(angle: Float(deltaTime) * adcComponent.proteinSpinSpeed, axis: [-1, 0, 0])
+        if let proteinComplex = entity.findEntity(named: "antibodyProtein_complex") {
+            let spinRotation = simd_quatf(angle: Float(deltaTime) * proteinSpinSpeed, axis: [-1, 0, 0])
             proteinComplex.orientation = proteinComplex.orientation * spinRotation
         }
     }
@@ -366,20 +337,24 @@ public class ADCMovementSystem: System {
     /// Finds the parent cancer cell entity for an attachment point by querying all cancer cells
     /// and checking if any are ancestors of the given entity
     static func findParentCancerCell(for attachmentPoint: Entity, in scene: Scene) -> Entity? {
-//        print("\n=== Finding Parent Cancer Cell ===")
-//        print("Starting from attachment point: \(attachmentPoint.name)")
+        print("\n=== Finding Parent Cancer Cell ===")
+        print("Starting from attachment point: \(attachmentPoint.name)")
         
         var current = attachmentPoint
         while let parent = current.parent {
-//            print("Checking parent: \(parent.name)")
+            print("Checking parent: \(parent.name)")
             
-            if parent.components[CancerCellStateComponent.self] != nil {
+            if let stateComponent = parent.components[CancerCellStateComponent.self] {
+                print("✅ Found cancer cell with state component")
+                print("Cell ID: \(String(describing: stateComponent.parameters.cellID))")
+                print("Hit Count: \(stateComponent.parameters.hitCount)")
+                print("Is Destroyed: \(stateComponent.parameters.isDestroyed)")
                 return parent
             }
             current = parent
         }
         
-//        print("❌ No parent cancer cell found")
+        print("❌ No parent cancer cell found")
         return nil
     }
     
@@ -418,38 +393,18 @@ public class ADCMovementSystem: System {
         // Start drone sound
         if let audioComponent = entity.components[AudioLibraryComponent.self],
            let droneSound = audioComponent.resources["Drones_01.wav"] {
-            // Configure spatial audio characteristics before playing
-            if var spatialAudio = entity.components[SpatialAudioComponent.self] {
-                spatialAudio.directivity = .beam(focus: 1.0)
-                entity.components[SpatialAudioComponent.self] = spatialAudio
-            }
-            
-            // Play audio through entity
+            // Play audio through entity (will automatically use spatial audio component)
             entity.playAudio(droneSound)
+            
+            // Configure spatial audio characteristics if needed
+            if var spatialAudio = entity.components[SpatialAudioComponent.self] {
+                spatialAudio.directivity = .beam(focus: 1.0)  // Following the same pattern as ADCOptimizedImmersive
+                entity.components[SpatialAudioComponent.self] = spatialAudio
+                
+                // // Debug: Inspect entity to verify spatial audio setup
+                // print("🔊 Inspecting ADC entity for spatial audio setup:")
+                // AssetLoadingManager.shared.inspectEntityHierarchy(entity)
+            }
         }
     }
-    
-//    private func calculatePosition(for adcComponent: ADCComponent) -> SIMD3<Float> {
-//        if adcComponent.isRetargetedPath {
-//            // Composite curve construction
-//            let prevEnd = adcComponent.startWorldPosition!
-//            let prevControl = prevEnd + adcComponent.previousPathTangent! * 0.5
-//            let newStart = currentPosition
-//            let newControl = newStart + adcComponent.previousPathTangent! * 0.5
-//            let newEnd = targetPosition
-//            
-//            // Use cubic Bézier for smooth transition
-//            return compositeBezier(
-//                prevEnd: prevEnd,
-//                prevControl: prevControl,
-//                newStart: newStart,
-//                newControl: newControl,
-//                newEnd: newEnd,
-//                t: adcComponent.compositeProgress
-//            )
-//        } else {
-//            // Original quadratic Bézier
-//        }
-//    }
 }
-

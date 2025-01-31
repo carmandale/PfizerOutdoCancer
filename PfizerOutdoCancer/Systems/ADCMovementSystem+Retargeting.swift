@@ -6,14 +6,11 @@ import RealityKitContent
 
 @MainActor
 extension ADCMovementSystem {
-
-    // MARK: - Constants
-    private static let retargetDuration: Float = 0.5 // Duration for retargeting interpolation
-
-    static func retargetADC(_ entity: Entity, 
-                           _ adcComponent: inout ADCComponent,
-                           currentPosition: SIMD3<Float>,
-                           in scene: Scene) -> Bool {
+    
+    static func retargetADC(_ entity: Entity,
+                            _ adcComponent: inout ADCComponent,
+                            currentPosition: SIMD3<Float>,
+                            in scene: Scene) -> Bool {
         // Find new target
         guard let (newTarget, newCellID) = findNewTarget(for: entity, currentPosition: currentPosition, in: scene) else {
             print("⚠️ No valid targets found for retargeting")
@@ -49,7 +46,7 @@ extension ADCMovementSystem {
         
         return true
     }
-
+    
     static func validateTarget(_ targetEntity: Entity, _ adcComponent: ADCComponent, in scene: Scene) -> Bool {
         // If this is headPosition, it's always valid
         if targetEntity.components[PositioningComponent.self] != nil {
@@ -97,8 +94,8 @@ extension ADCMovementSystem {
         
         // Check if this is still our target cell and it's valid
         if parameters.cellID == cellID &&
-           !parameters.isDestroyed &&
-           parameters.hitCount < parameters.requiredHits {
+            !parameters.isDestroyed &&
+            parameters.hitCount < parameters.requiredHits {
             return true
         }
         
@@ -178,7 +175,7 @@ extension ADCMovementSystem {
         
         return points
     }
-
+    
     func updateRetargetProgress(entity: Entity, context: SceneUpdateContext) {
         guard var adc = entity.components[ADCComponent.self],
               adc.needsRetarget,
@@ -236,5 +233,5 @@ extension ADCMovementSystem {
         adc.needsRetarget = false
         adc.targetInterpolationProgress = 0
     }
-
+    
 }

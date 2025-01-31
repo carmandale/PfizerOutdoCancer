@@ -123,7 +123,7 @@ extension AttackCancerViewModel {
         // Random offsets
         let randomX = Float.random(in: -1.0...1.0)
         let randomY = Float.random(in: 0.5...1.5)
-        let randomZ = Float.random(in: -6.5...(-5.5))
+        let randomZ = Float.random(in: -3.5...(-2.5))
         
         // Set positioning component with random offsets
         headPosition.components.set(PositioningComponent(
@@ -137,30 +137,42 @@ extension AttackCancerViewModel {
         attachPoint.isOccupied = true
         headPosition.components.set(attachPoint)
         
-        // Add to scene first
+        // Add debug sphere as child for visualization
+        let debugSphere = ModelEntity(
+            mesh: .generateSphere(radius: 0.1), 
+            materials: [SimpleMaterial(color: .blue, isMetallic: false)]
+        )
+        headPosition.addChild(debugSphere)
         root.addChild(headPosition)
         
-        // Log world space position for validation
+        // Log world space positions for debugging
         let worldPosition = headPosition.position(relativeTo: nil)
-        print("\n=== Debug Head Position ===")
-        print("🎯 World Position: \(worldPosition)")
-        print("Valid Position: \(worldPosition.x.isFinite && worldPosition.y.isFinite && worldPosition.z.isFinite)")
+        print("\n=== Debug Sphere World Position ===")
+        print("🎯 World Position: (\(String(format: "%.3f", worldPosition.x)), \(String(format: "%.3f", worldPosition.y)), \(String(format: "%.3f", worldPosition.z)))")
+        
+        // Remove debug sphere after 5 seconds
+        Task {
+            try? await Task.sleep(for: .seconds(5))
+            debugSphere.removeFromParent()
+        }
         
         totalADCsDeployed += 1
+        #if DEBUG
         print("\n=== Spawning Untargeted ADC ===")
         print("Start Position: \(position)")
         print("Target Position: \(worldPosition)")
         print("✅ ADC #\(totalADCsDeployed) Launched (Total Taps: \(totalTaps))")
+        #endif
         
         // Set the flag for first ADC fired
         if !hasFirstADCBeenFired {
             hasFirstADCBeenFired = true
         }
         
-        // Clone and setup ADC
+        // Clone the template (colors will be cloned with it)
         let adc = template.clone(recursive: true)
         
-        // Set up collision
+        // Set up collision component
         let shape = ShapeResource.generateSphere(radius: 0.069)
         let collision = CollisionComponent(
             shapes: [shape],
@@ -168,17 +180,22 @@ extension AttackCancerViewModel {
         )
         adc.components.set(collision)
         
-        // Update ADCComponent properties
+        // Set up ADC component
         guard var adcComponent = adc.components[ADCComponent.self] else { return }
+        adcComponent.state = .moving  // Use moving state instead of seeking
         adcComponent.startWorldPosition = position
         adcComponent.proteinSpinSpeed = Float.random(in: 8.0...10.0)
+        adcComponent.speedFactor = Float.random(in: ADCMovementSystem.speedRange)
+        adcComponent.arcHeightFactor = Float.random(in: ADCMovementSystem.arcHeightRange)
         adc.components[ADCComponent.self] = adcComponent
         
-        // Set initial position and add to scene
+        // Set initial position
         adc.position = position
+        
+        // Add to scene
         root.addChild(adc)
         
-        // Start movement only after everything is set up
+        // Start movement using headPosition entity as target
         ADCMovementSystem.startMovement(entity: adc, from: position, to: headPosition)
         
         print("✅ Untargeted ADC spawned successfully")

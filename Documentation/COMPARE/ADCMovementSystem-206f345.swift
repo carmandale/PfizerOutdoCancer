@@ -28,9 +28,6 @@ public class ADCMovementSystem: System {
     static let decelerationPhase: Float = 0.2  // Last 20% of movement
     static let minSpeedMultiplier: Float = 0.4  // Minimum speed during accel/decel
     
-    // MARK: - Constants
-    private static let retargetDuration: Float = 0.5 // Duration for retargeting interpolation
-    
     /// Initialize the system with the RealityKit scene
     required public init(scene: Scene) {}
     
@@ -453,3 +450,76 @@ public class ADCMovementSystem: System {
 //    }
 }
 
+        
+        print("\nPath Parameters:")
+        print("Mid Point: \(midPoint)")
+        print("Height Offset: \(heightOffset)")
+        print("Control Point: \(controlPoint)")
+        
+        // Calculate path length
+        let pathLength = quadraticBezierLength(start, controlPoint, targetPosition)
+        print("\nPath Metrics:")
+        print("Curve Length: \(String(format: "%.3f", pathLength))")
+        print("Arc Height Factor: \(String(format: "%.3f", arcHeightFactor))")
+        print("Speed Factor: \(String(format: "%.3f", Float.random(in: speedRange)))")
+        
+        // Set up movement
+        adcComponent.state = .moving
+        adcComponent.startWorldPosition = start
+        adcComponent.movementProgress = 0
+        adcComponent.targetEntityID = UInt64(targetPoint.id)
+        adcComponent.pathLength = pathLength
+        adcComponent.traveledDistance = 0
+        
+        // Add randomization factors
+        adcComponent.arcHeightFactor = arcHeightFactor
+        adcComponent.speedFactor = Float.random(in: speedRange)
+        
+        print("\nComponent Setup:")
+        print("Initial Progress: \(adcComponent.movementProgress)")
+        print("Path Length: \(String(format: "%.3f", adcComponent.pathLength))")
+        print("Traveled Distance: \(String(format: "%.3f", adcComponent.traveledDistance))")
+        
+        // Update the component
+        entity.components[ADCComponent.self] = adcComponent
+        
+        // Initial position
+        entity.position = start
+        
+        // Start drone sound
+        if let audioComponent = entity.components[AudioLibraryComponent.self],
+           let droneSound = audioComponent.resources["Drones_01.wav"] {
+            // Configure spatial audio characteristics before playing
+            if var spatialAudio = entity.components[SpatialAudioComponent.self] {
+                spatialAudio.directivity = .beam(focus: 1.0)
+                entity.components[SpatialAudioComponent.self] = spatialAudio
+            }
+            
+            // Play audio through entity
+            entity.playAudio(droneSound)
+        }
+    }
+    
+//    private func calculatePosition(for adcComponent: ADCComponent) -> SIMD3<Float> {
+//        if adcComponent.isRetargetedPath {
+//            // Composite curve construction
+//            let prevEnd = adcComponent.startWorldPosition!
+//            let prevControl = prevEnd + adcComponent.previousPathTangent! * 0.5
+//            let newStart = currentPosition
+//            let newControl = newStart + adcComponent.previousPathTangent! * 0.5
+//            let newEnd = targetPosition
+//            
+//            // Use cubic Bézier for smooth transition
+//            return compositeBezier(
+//                prevEnd: prevEnd,
+//                prevControl: prevControl,
+//                newStart: newStart,
+//                newControl: newControl,
+//                newEnd: newEnd,
+//                t: adcComponent.compositeProgress
+//            )
+//        } else {
+//            // Original quadratic Bézier
+//        }
+//    }
+}

@@ -28,9 +28,6 @@ public class ADCMovementSystem: System {
     static let decelerationPhase: Float = 0.2  // Last 20% of movement
     static let minSpeedMultiplier: Float = 0.4  // Minimum speed during accel/decel
     
-    // MARK: - Constants
-    private static let retargetDuration: Float = 0.5 // Duration for retargeting interpolation
-    
     /// Initialize the system with the RealityKit scene
     required public init(scene: Scene) {}
     
