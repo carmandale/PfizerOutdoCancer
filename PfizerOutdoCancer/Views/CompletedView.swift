@@ -43,38 +43,38 @@ struct CompletedView: View {
             // Buttons
             VStack(spacing: 12) {
                 HStack(spacing: 12) {
-                   Button(action: {
-                       resetAndStartNew()
-                       Task {
-                           if !appModel.isMainWindowOpen {
-                               openWindow(id: AppModel.mainWindowId)
-                               appModel.isMainWindowOpen = true
-                           }
-                           await appModel.transitionToPhase(.playing, adcDataModel: dataModel)
-                       }
-                   }) {
-                       Label("Replay", systemImage: "arrow.clockwise")
-                           .frame(maxWidth: .infinity)
-                   }
-                   .glassBackgroundEffect()
-                   .frame(width: 180)
+                //    Button(action: {
+                //        resetAndStartNew()
+                //        Task {
+                //            if !appModel.isMainWindowOpen {
+                //                openWindow(id: AppModel.mainWindowId)
+                //                appModel.isMainWindowOpen = true
+                //            }
+                //            await appModel.transitionToPhase(.playing, adcDataModel: dataModel)
+                //        }
+                //    }) {
+                //        Label("Replay", systemImage: "arrow.clockwise")
+                //            .frame(maxWidth: .infinity)
+                //    }
+                //    .glassBackgroundEffect()
+                //    .frame(width: 180)
                     
-                    Button(action: {
-                        Task {
-                            print("main window status: \(appModel.isMainWindowOpen)")
-                            if !appModel.isMainWindowOpen {
-                                openWindow(id: AppModel.mainWindowId)
-                                appModel.isMainWindowOpen = true
-                            }
-                            await appModel.transitionToPhase(.lab)
-                        }
-                    }) {
-                        Label("Return to Lab", systemImage: "building.2")
-                            .frame(maxWidth: .infinity)
-                    }
-                    .glassBackgroundEffect()
-                    .frame(width: 180)
-                }
+                //     Button(action: {
+                //         Task {
+                //             print("main window status: \(appModel.isMainWindowOpen)")
+                //             if !appModel.isMainWindowOpen {
+                //                 openWindow(id: AppModel.mainWindowId)
+                //                 appModel.isMainWindowOpen = true
+                //             }
+                //             await appModel.transitionToPhase(.lab)
+                //         }
+                //     }) {
+                //         Label("Return to Lab", systemImage: "building.2")
+                //             .frame(maxWidth: .infinity)
+                //     }
+                //     .glassBackgroundEffect()
+                //     .frame(width: 180)
+                // }
                 
                 Button(action: {
                     Task {
@@ -82,11 +82,12 @@ struct CompletedView: View {
                         await appModel.transitionToPhase(.outro)
                     }
                 }) {
-                    Label("Finished", systemImage: "checkmark.circle")
+                    Label("Continue", systemImage: "checkmark.circle")
                         .frame(maxWidth: .infinity)
                 }
                 .glassBackgroundEffect()
 //                .frame(width: 372)
+                }
             }
         }
         .padding(64)
@@ -104,6 +105,7 @@ struct CompletedView: View {
         .transition(Appear())
     }
     
+    // Helper functions moved outside of body
     private func statRow(_ title: String, value: Int, icon: String) -> some View {
         HStack {
             Label(title, systemImage: icon)
@@ -120,7 +122,7 @@ struct CompletedView: View {
         .padding()
         .clipShape(RoundedRectangle(cornerRadius: 12))
     }
-    
+
     private func resetAndStartNew() {
         animateStats = false
         

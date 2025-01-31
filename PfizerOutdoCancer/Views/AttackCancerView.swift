@@ -99,9 +99,7 @@ struct AttackCancerView: View {
                 }
         )
         .onChange(of: scenePhase) { _, newPhase in
-            if newPhase == .inactive {
-                appModel.gameState.tearDownGame()
-            }
+            // Let the app handle scene phase changes
         }
         .onChange(of: appModel.isHopeMeterUtilityWindowOpen) { _, isOpen in
             if isOpen {
@@ -112,7 +110,13 @@ struct AttackCancerView: View {
             dismissWindow(id: AppModel.navWindowId)
         }
         .onDisappear {
+            // First tear down the game state
             appModel.gameState.tearDownGame()
+            
+            // Then trigger phase transition
+            Task {
+                await appModel.transitionToPhase(.ready)
+            }
         }
         .onChange(of: appModel.isTutorialStarted) { _, started in
             if started, let root = appModel.gameState.rootEntity, let attachments = appModel.gameState.storedAttachments {

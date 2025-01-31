@@ -20,19 +20,30 @@ struct HopeMeterUtilityView: View {
         if appModel.currentPhase == .playing {
             VStack(spacing: 4) {
                 if !appModel.gameState.isHopeMeterRunning {
-                    Button("Start") {
-                        appModel.startAttackCancerGame()
+                    VStack(spacing: 4) {
+                        Button("Start") {
+                            appModel.startAttackCancerGame()
+                        }
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .frame(width: 648)
+                        .padding(.vertical, 16)
+                        .padding(.horizontal, 24)
+                        .controlSize(.extraLarge)
+                        .buttonStyle(.plain)
+                        .hoverEffect(.highlight)
+                        .hoverEffect { effect, isActive, proxy in
+                            effect.scaleEffect(!isActive ? 1.0 : 1.1)
+                        }
                     }
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .frame(width: 648)
-                    .padding()
+                    .transition(Appear())
                 } else {
-                    Text("Hope Meter")
-                        .font(.system(size: fontSize))
-                        .bold()
-                    
-                    ZStack(alignment: .leading) {
+                    VStack(spacing: 4) {
+                        Text("Hope Meter")
+                            .font(.system(size: fontSize))
+                            .bold()
+                        
+                        ZStack(alignment: .leading) {
                         // Background rectangle
                         RoundedRectangle(cornerRadius: height / 2)
                             .fill(Color.gray.opacity(0.2))
@@ -53,6 +64,9 @@ struct HopeMeterUtilityView: View {
                             .frame(maxWidth: .infinity)
                     }
                     .frame(width: 648)
+                    }
+                    
+                    .transition(Appear())
                 }
             }
             .padding(20)

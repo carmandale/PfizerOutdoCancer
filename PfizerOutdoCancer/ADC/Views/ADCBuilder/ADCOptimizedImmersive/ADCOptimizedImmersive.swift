@@ -73,6 +73,8 @@ struct ADCOptimizedImmersive: View {
     @State var vo2Audio: AudioFileResource?
     @State var vo3Audio: AudioFileResource?
     @State var vo4Audio: AudioFileResource?
+    @State var completionAudio: AudioFileResource?
+    @State var niceJobAudio: AudioFileResource?
     
     @State var timer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
     @State var isCameraInitialized = false
@@ -112,7 +114,7 @@ struct ADCOptimizedImmersive: View {
                 masterEntity.position = SIMD3<Float>(0.125, 1.5, -1.0)
                 #else
                 masterEntity.components.set(PositioningComponent(
-                    offsetX: 0.125,
+                    offsetX: 0, // 0.125,
                     offsetY: 0,
                     offsetZ: -1.0
                 ))
@@ -122,11 +124,18 @@ struct ADCOptimizedImmersive: View {
                 
                 os_log(.debug, "ITR..MainEntity initial position: %@", String(describing: masterEntity.position))
                 
+                // IBL
+                do {
+                    try await IBLUtility.addImageBasedLighting(to: masterEntity, imageName: "metro_noord_2k")
+                } catch {
+                    print("Failed to setup IBL: \(error)")
+                }
+
                 // Load materials and entities
                 await setupEntitiesAndMaterials()
                 
                 setupAttachments(attachments: attachments)
-                
+            
                 // Now that attachments are set up, prepare audio
                 await prepareAudioEntities()
                 
@@ -220,7 +229,7 @@ struct ADCOptimizedImmersive: View {
                     if dataModel.linkersWorkingIndex == 4 {
                         Task { @MainActor in
                             // Play pop sound for successful placement
-                            bubblePopSound.toggle()
+                            // bubblePopSound.toggle()
                             
                             // Apply original material and selected color to all linkers
                             for linker in adcLinkers {
@@ -314,11 +323,15 @@ struct ADCOptimizedImmersive: View {
                     // Fade in the appropriate entities based on current step
                     switch dataModel.adcBuildStep {
                     case 0:  // Initial fade in of antibody
-                        if dataModel.adcBuildStep == 0 && !dataModel.hasInitialVOCompleted {
-                            dataModel.hasInitialVOCompleted = true
-                        }
-                        os_log(.debug, "ITR..Attempting to animate main view position")
-                        try? await mainViewEntity.animatePosition(to: SIMD3(-0.5, 0, 0), duration: 1.0, delay: 0.5)
+                        // if dataModel.adcBuildStep == 0 && !dataModel.hasInitialVOCompleted {
+                        //     dataModel.hasInitialVOCompleted = true
+                        //     // dataModel.showSelector = true
+                        // }
+                        dataModel.hasInitialVOCompleted = true
+                        
+//                        try? await mainEntity.animatePosition(to: SIMD3(-0.125, 0, 0), duration: 1.0, delay: 0.0)
+//                        os_log(.debug, "ITR..Attempting to animate main view position")
+                        try? await mainViewEntity.animatePosition(to: SIMD3(-0.5, 0, 0), duration: 1.0, delay: 1.0)
                         
                         // After position animation, fade in antibody with delay
                         if let antibodyEntity = antibodyEntity {
@@ -328,6 +341,7 @@ struct ADCOptimizedImmersive: View {
                             os_log(.debug, "ITR..antibodyEntity fade complete, isEnabled set to true")
                         }
                     case 1:  // Fade in linker
+                        // dataModel.showSelector = true
                         os_log(.debug, "ITR..Attempting to fade in linker entities")
                         if let linkerEntity = linkerEntity {
                             os_log(.debug, "ITR..linkerEntity exists, isEnabled: \(linkerEntity.isEnabled)")
@@ -339,6 +353,7 @@ struct ADCOptimizedImmersive: View {
                             os_log(.error, "ITR..❌ linkerEntity is nil")
                         }
                     case 2:  // Fade in payload
+                        // dataModel.showSelector = true
                         if let payloadEntity = payloadEntity {
                             os_log(.debug, "ITR..Attempting to fade in payloadEntity")
                             os_log(.debug, "ITR..payload.isEnabled: \(payloadEntity.isEnabled)")
@@ -439,12 +454,14 @@ struct ADCOptimizedImmersive: View {
         case 1:  // Linker step
             // Check if we're on the last linker and it's been placed
             if dataModel.linkersWorkingIndex >= (adcLinkers.count - 1) {
+                try? await Task.sleep(for: .milliseconds(500))
                 dataModel.adcBuildStep = 2
                 dataModel.selectedPayloadType = nil
             }
         case 2:  // Payload step
             // Check if we're on the last payload and it's been placed
             if dataModel.payloadsWorkingIndex >= (adcPayloadsInner.count - 1) {
+                try? await Task.sleep(for: .milliseconds(500))
                 dataModel.adcBuildStep = 3
             }
         default:
@@ -453,7 +470,7 @@ struct ADCOptimizedImmersive: View {
     }
     
     // MARK: - Preparation
-    
+
     private func handleAntibodyColorChange(newValue: Int?) {
         Task { @MainActor in
             guard let newValue = newValue,

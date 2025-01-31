@@ -85,14 +85,14 @@ def Xform "Root"
         def "Ahsan_003" (
             active = true
             customData = {
-                float3 rotationEulerHint = (0, -8.940697e-8, 2.2093773)
+                float3 rotationEulerHint = (1.5707964, 3.1135683, 3.141593)
             }
-            references = @3D_people/decimated/Ahsan_003/Ahsan_003.usdc@
+            references = @3D_people/decimated/Ahsan_001/Ahsan_001.usdc@
         )
         {
-            quatf xformOp:orient = (0.31778276, -0.3177827, 0.63167566, 0.63167566)
+            quatf xformOp:orient = (0.7070374, -0.70703727, 0.009907751, 0.009907744)
             float3 xformOp:scale = (0.9999999, 0.9999999, 0.9999999)
-            float3 xformOp:translate = (-2.2771897, 8.9611525e-8, -2.9876056)
+            float3 xformOp:translate = (-1.7647079, 0.0000011978245, -3.401737)
             uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
         }
 

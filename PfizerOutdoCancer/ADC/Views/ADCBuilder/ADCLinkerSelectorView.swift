@@ -23,10 +23,10 @@ struct ADCLinkerSelectorView: View {
                             // Fill all remaining linkers with current selection
                         dataModel.fillAllLinkers()
                             // Advance to next step
-                        dataModel.adcBuildStep = 2
-                            // dataModel.selectedPayloadType = 0
+                            dataModel.adcBuildStep = 2
+                        
                     },
-                    isEnabled: dataModel.selectedLinkerType != nil
+                    isEnabled: dataModel.selectedLinkerType != nil && dataModel.placedLinkerCount == 4
                 )
                 
                 

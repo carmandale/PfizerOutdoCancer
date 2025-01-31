@@ -170,6 +170,7 @@ extension ADCOptimizedImmersive {
         // Only advance if VO is not playing
         if !dataModel.isVOPlaying {
             let oldStep = dataModel.adcBuildStep
+            try? await Task.sleep(for: .milliseconds(500))
             dataModel.adcBuildStep = nextStep
             
             // Reset selection for next step if needed

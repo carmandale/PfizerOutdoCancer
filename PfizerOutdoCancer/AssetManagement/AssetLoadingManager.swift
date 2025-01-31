@@ -153,13 +153,13 @@ final class AssetLoadingManager {
         do {
             try await withThrowingTaskGroup(of: LoadResult.self) { group in
                 // Load different categories in parallel, updating totalAssets
-              loadIntroEnvironmentAssets(group: &group, taskCount: &totalAssets)
-              loadIntroWarpAssets(group: &group, taskCount: &totalAssets)
-              loadLogoAssets(group: &group, taskCount: &totalAssets)
-              loadTitleAssets(group: &group, taskCount: &totalAssets)
+//              loadIntroEnvironmentAssets(group: &group, taskCount: &totalAssets)
+//              loadIntroWarpAssets(group: &group, taskCount: &totalAssets)
+//              loadLogoAssets(group: &group, taskCount: &totalAssets)
+//              loadTitleAssets(group: &group, taskCount: &totalAssets)
               loadLabEnvironmentAssets(group: &group, taskCount: &totalAssets)
               loadLabVO(group: &group, taskCount: &totalAssets)
-//              loadLabAudio(group: &group, taskCount: &totalAssets)
+              loadLabAudio(group: &group, taskCount: &totalAssets)
               loadLabEquipmentAssets(group: &group, taskCount: &totalAssets)
 //               loadBuildADCEnvironmentAssets(group: &group, taskCount: &totalAssets)
               loadBuildADCAssets(group: &group, taskCount: &totalAssets)

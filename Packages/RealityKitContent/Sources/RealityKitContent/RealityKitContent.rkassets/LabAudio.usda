@@ -10,7 +10,7 @@
 
 def Xform "Root"
 {
-    reorder nameChildren = ["AUDIO_transforms", "AudioMixGroups", "keyboards", "MasterAudio", "RCP_BehaviorsContainer", "OnAddedToScene", "LabEnvironment_clean", "Keyboard", "Timeline"]
+    reorder nameChildren = ["AUDIO_transforms", "AudioMixGroups", "keyboards", "MasterAudio", "RCP_BehaviorsContainer", "OnAddedToScene", "Keyboard", "Computer_wav", "Filing_Cabinet_wav", "Vent_Hood_wav", "Beaker_Stir_wav", "Conversation_1_wav", "Conversation_2_wav", "conversationAndAmbience", "Paperwork_1_wav", "Paperwork_2_wav", "Printer_1_wav", "venthood"]
     quatf xformOp:orient = (1, 0, 0, 0)
     float3 xformOp:scale = (1, 1, 1)
     float3 xformOp:translate = (0, 0, 0)
@@ -20,7 +20,7 @@ def Xform "Root"
         active = true
     )
     {
-        reorder nameChildren = ["Keyboard1", "Keyboard2", "Beaker", "Paperwork1", "Paperwork1_1", "Beaker_1", "Room_ambience", "Keyboard3", "Keyboard4", "Keyboard5", "conversation", "conversation2"]
+        reorder nameChildren = ["Keyboard1", "Keyboard2", "Beaker", "Paperwork1", "Paperwork1_1", "Beaker_1", "Room_ambience", "Keyboard3", "Keyboard4", "Keyboard5", "conversation", "conversation2", "ventHood", "computer1", "printer", "filingCabinet"]
         def Xform "Keyboard1" (
             active = true
         )
@@ -156,8 +156,8 @@ def Xform "Root"
 
                 def RealityKitDict "resources"
                 {
-                    string[] keys = ["Beaker_Stir_1.wav"]
-                    rel values = </Root/Beaker_Stir_1_wav>
+                    string[] keys = ["Beaker_Stir_wav"]
+                    rel values = </Root/Beaker_Stir_wav>
                 }
             }
 
@@ -215,6 +215,8 @@ def Xform "Root"
 
                 def RealityKitDict "resources"
                 {
+                    string[] keys = ["Paperwork_1.wav"]
+                    rel values = </Root/Paperwork_1_wav>
                 }
             }
 
@@ -273,6 +275,8 @@ def Xform "Root"
 
                 def RealityKitDict "resources"
                 {
+                    string[] keys = ["Paperwork_2.wav"]
+                    rel values = </Root/Paperwork_2_wav>
                 }
             }
 
@@ -334,8 +338,8 @@ def Xform "Root"
 
                 def RealityKitDict "resources"
                 {
-                    string[] keys = ["Beaker_Stir_2.wav"]
-                    rel values = </Root/Beaker_Stir_2_wav>
+                    string[] keys = ["Beaker_Stir_wav"]
+                    rel values = </Root/Beaker_Stir_wav>
                 }
             }
 
@@ -406,6 +410,8 @@ def Xform "Root"
 
                     def RealityKitDict "resources"
                     {
+                        string[] keys = ["Room_Ambience_3.wav"]
+                        rel values = </Root/Room_Ambience_3_wav>
                     }
                 }
 
@@ -468,6 +474,8 @@ def Xform "Root"
 
                     def RealityKitDict "resources"
                     {
+                        string[] keys = ["Room_Ambience_4.wav"]
+                        rel values = </Root/Room_Ambience_4_wav>
                     }
                 }
 
@@ -778,7 +786,7 @@ def Xform "Root"
 
                 def RealityKitDict "resources"
                 {
-                    string[] keys = ["Keyboard_5.wav"]
+                    string[] keys = ["Keyboard_5_wav"]
                     rel values = </Root/Keyboard/Keyboard_5_wav>
                 }
             }
@@ -948,6 +956,255 @@ def Xform "Root"
                 }
             }
         }
+
+        def Xform "ventHood" (
+            active = true
+        )
+        {
+            float2 ui:nodegraph:node:pos = (60, 60)
+            int ui:nodegraph:node:stackingOrder = 3
+            quatf xformOp:orient = (1, 0, 0, 0)
+            float3 xformOp:scale = (1, 1, 1)
+            float3 xformOp:translate = (0.62301207, 3.0708542, 9.071363)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            def RealityKitComponent "AudioLibrary"
+            {
+                uniform token info:id = "RealityKit.AudioLibrary"
+
+                def RealityKitDict "resources"
+                {
+                    string[] keys = ["Vent_Hood_wav"]
+                    rel values = </Root/Vent_Hood_wav>
+                }
+            }
+
+            def RealityKitComponent "SpatialAudio"
+            {
+                float directivityFocus = 1
+                float gain = 0
+                uniform token info:id = "RealityKit.SpatialAudio"
+                float rolloffFactor = 1
+            }
+
+            def Sphere "Sphere" (
+                active = false
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = </Root/AUDIO_transforms/Keyboard2_1/Sphere/DefaultMaterial>
+                double radius = 0.1
+                float2 ui:nodegraph:node:pos = (20, 20)
+                int ui:nodegraph:node:stackingOrder = 1
+                quatf xformOp:orient = (1, 0, 0, 0)
+                float3 xformOp:scale = (1, 1, 1)
+                float3 xformOp:translate = (0, 0, 0)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                def Material "DefaultMaterial"
+                {
+                    token outputs:mtlx:surface
+                    token outputs:realitykit:vertex
+                    token outputs:surface.connect = </Root/AUDIO_transforms/Keyboard2_1/Sphere/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
+
+                    def Shader "DefaultSurfaceShader"
+                    {
+                        uniform token info:id = "UsdPreviewSurface"
+                        color3f inputs:diffuseColor = (0.427, 1, 0.269) (
+                            colorSpace = "srgb_texture"
+                        )
+                        float inputs:roughness = 0.75
+                        token outputs:surface
+                    }
+                }
+            }
+        }
+
+        def Xform "computer1" (
+            active = true
+        )
+        {
+            float2 ui:nodegraph:node:pos = (40, 40)
+            int ui:nodegraph:node:stackingOrder = 2
+            quatf xformOp:orient = (1, 0, 0, 0)
+            float3 xformOp:scale = (1, 1, 1)
+            float3 xformOp:translate = (0.3636794, 1.0624, -1.8373196)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            def RealityKitComponent "AudioLibrary"
+            {
+                uniform token info:id = "RealityKit.AudioLibrary"
+
+                def RealityKitDict "resources"
+                {
+                    string[] keys = ["Computer_wav"]
+                    rel values = </Root/Computer_wav>
+                }
+            }
+
+            def RealityKitComponent "SpatialAudio"
+            {
+                uniform token info:id = "RealityKit.SpatialAudio"
+            }
+
+            def Sphere "Sphere" (
+                active = false
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = </Root/AUDIO_transforms/Paperwork1_2/Sphere/DefaultMaterial>
+                double radius = 0.1
+                float2 ui:nodegraph:node:pos = (20, 20)
+                int ui:nodegraph:node:stackingOrder = 1
+                quatf xformOp:orient = (1, 0, 0, 0)
+                float3 xformOp:scale = (1, 1, 1)
+                float3 xformOp:translate = (0, 0, 0)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                def Material "DefaultMaterial"
+                {
+                    token outputs:mtlx:surface
+                    token outputs:realitykit:vertex
+                    token outputs:surface.connect = </Root/AUDIO_transforms/Paperwork1_2/Sphere/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
+
+                    def Shader "DefaultSurfaceShader"
+                    {
+                        uniform token info:id = "UsdPreviewSurface"
+                        color3f inputs:diffuseColor = (0.427, 1, 0.269) (
+                            colorSpace = "srgb_texture"
+                        )
+                        float inputs:roughness = 0.75
+                        token outputs:surface
+                    }
+                }
+            }
+        }
+
+        def Xform "printer" (
+            active = true
+            customData = {
+                float3 rotationEulerHint = (0, 1.6625173, 0)
+            }
+        )
+        {
+            reorder nameChildren = ["AudioLibrary", "SpatialAudio", "Sphere"]
+            float2 ui:nodegraph:node:pos = (20, 20)
+            int ui:nodegraph:node:stackingOrder = 1
+            quatf xformOp:orient = (0.6739464, 0, 0.73878026, 0)
+            float3 xformOp:scale = (1, 1, 1)
+            float3 xformOp:translate = (3.4589975, 1.0638831, 1.8534026)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            def RealityKitComponent "AudioLibrary"
+            {
+                uniform token info:id = "RealityKit.AudioLibrary"
+
+                def RealityKitDict "resources"
+                {
+                    string[] keys = ["Printer_1_wav"]
+                    rel values = </Root/Printer_1_wav>
+                }
+            }
+
+            def RealityKitComponent "SpatialAudio"
+            {
+                float directivityFocus = 1
+                uniform token info:id = "RealityKit.SpatialAudio"
+            }
+
+            def Sphere "Sphere" (
+                active = false
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = </Root/AUDIO_transforms/Keyboard1_1/Sphere/DefaultMaterial>
+                double radius = 0.1
+                quatf xformOp:orient = (1, 0, 0, 0)
+                float3 xformOp:scale = (1, 1, 1)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                def Material "DefaultMaterial"
+                {
+                    token outputs:mtlx:surface
+                    token outputs:realitykit:vertex
+                    token outputs:surface.connect = </Root/AUDIO_transforms/Keyboard1_1/Sphere/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
+
+                    def Shader "DefaultSurfaceShader"
+                    {
+                        uniform token info:id = "UsdPreviewSurface"
+                        color3f inputs:diffuseColor = (0.427, 1, 0.269) (
+                            colorSpace = "srgb_texture"
+                        )
+                        float inputs:roughness = 0.75
+                        token outputs:surface
+                    }
+                }
+            }
+        }
+
+        def Xform "filingCabinet" (
+            active = true
+            customData = {
+                float3 rotationEulerHint = (0, -2.7459123, 0)
+            }
+        )
+        {
+            float2 ui:nodegraph:node:pos = (20, 20)
+            int ui:nodegraph:node:stackingOrder = 1
+            quatf xformOp:orient = (-0.1965519, 0, 0.9804934, 0)
+            float3 xformOp:scale = (1, 1, 1)
+            float3 xformOp:translate = (-0.5412787, 1.0624095, -7.5261087)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            def RealityKitComponent "AudioLibrary"
+            {
+                uniform token info:id = "RealityKit.AudioLibrary"
+
+                def RealityKitDict "resources"
+                {
+                    string[] keys = ["Filing_Cabinet_wav"]
+                    rel values = </Root/Filing_Cabinet_wav>
+                }
+            }
+
+            def RealityKitComponent "SpatialAudio"
+            {
+                float directivityFocus = 1
+                uniform token info:id = "RealityKit.SpatialAudio"
+            }
+
+            def Sphere "Sphere" (
+                active = false
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = </Root/AUDIO_transforms/Beaker_2/Sphere/DefaultMaterial>
+                double radius = 0.1
+                float2 ui:nodegraph:node:pos = (20, 20)
+                int ui:nodegraph:node:stackingOrder = 1
+                quatf xformOp:orient = (1, 0, 0, 0)
+                float3 xformOp:scale = (1, 1, 1)
+                float3 xformOp:translate = (0, 0, 0)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                def Material "DefaultMaterial"
+                {
+                    token outputs:mtlx:surface
+                    token outputs:realitykit:vertex
+                    token outputs:surface.connect = </Root/AUDIO_transforms/Beaker_2/Sphere/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
+
+                    def Shader "DefaultSurfaceShader"
+                    {
+                        uniform token info:id = "UsdPreviewSurface"
+                        color3f inputs:diffuseColor = (0.427, 1, 0.269) (
+                            colorSpace = "srgb_texture"
+                        )
+                        float inputs:roughness = 0.75
+                        token outputs:surface
+                    }
+                }
+            }
+        }
     }
 
     def RealityKitComponent "AudioMixGroups"
@@ -956,21 +1213,21 @@ def Xform "Root"
 
         def RealityKitAudioMixGroup "keyboard"
         {
-            float gain = -10.541675
+            float gain = -17.881666
             bool mute = 0
             float speed = 1
         }
 
         def RealityKitAudioMixGroup "conversation"
         {
-            float gain = -6.395418
+            float gain = -11.961675
             bool mute = 0
             float speed = 1
         }
 
         def RealityKitAudioMixGroup "beakers"
         {
-            float gain = -5.906136
+            float gain = -10.396786
             bool mute = 0
             float speed = 1
         }
@@ -986,7 +1243,7 @@ def Xform "Root"
                 string actionKind = "audio"
                 string audioResourceName = "Keyboard_1.wav"
                 bool controlPlayback = 1
-                double duration = 193.20533333333333
+                double duration = 45
                 uniform token info:id = "6A424929-C24F-472D-B76B-1021F03F0F1A"
                 double loopCount = 0
                 double startTime = 0
@@ -1005,7 +1262,7 @@ def Xform "Root"
                 string actionKind = "audio"
                 string audioResourceName = "Keyboard_2.wav"
                 bool controlPlayback = 1
-                double duration = 193.20533333333333
+                double duration = 45
                 uniform token info:id = "D273B269-69B9-4E13-B986-1F34E2688D77"
                 double loopCount = 0
                 double startTime = 0
@@ -1024,7 +1281,7 @@ def Xform "Root"
                 string actionKind = "audio"
                 string audioResourceName = "Keyboard_3.wav"
                 bool controlPlayback = 1
-                double duration = 193.20533333333333
+                double duration = 45
                 uniform token info:id = "4D59EF97-471F-4F35-8BCE-60CF93B4CA9D"
                 double loopCount = 0
                 double startTime = 0
@@ -1043,7 +1300,7 @@ def Xform "Root"
                 string actionKind = "audio"
                 string audioResourceName = "Keyboard_4.wav"
                 bool controlPlayback = 1
-                double duration = 193.20533333333333
+                double duration = 45
                 uniform token info:id = "F24E16B5-A610-49B6-AF2B-01CFC6F17138"
                 double loopCount = 0
                 double startTime = 0
@@ -1062,7 +1319,7 @@ def Xform "Root"
                 string actionKind = "audio"
                 string audioResourceName = "Keyboard_5.wav"
                 bool controlPlayback = 1
-                double duration = 193.20533333333333
+                double duration = 45
                 uniform token info:id = "9606F546-A4A4-44CB-B126-0061B447F437"
                 double loopCount = 0
                 double startTime = 0
@@ -1076,27 +1333,99 @@ def Xform "Root"
 
         def RealityKitTrack "Track6"
         {
+            def RealityKitAction "Play_Audio"
+            {
+                string actionKind = "audio"
+                string audioResourceName = "Paperwork_1.wav"
+                bool controlPlayback = 1
+                double duration = 45
+                uniform token info:id = "20F8D89F-D25A-445A-B51C-28B732008B0D"
+                double startTime = 0
+                rel target = </Root/AUDIO_transforms/Paperwork1>
+
+                def RealityKitStruct "handoffType"
+                {
+                }
+            }
         }
 
         def RealityKitTrack "Track7"
         {
+            def RealityKitAction "Play_Audio"
+            {
+                string actionKind = "audio"
+                string audioResourceName = "Paperwork_2.wav"
+                bool controlPlayback = 1
+                double duration = 45
+                uniform token info:id = "8811FF61-44B8-4BA6-AD3F-1CB0DBA32AF2"
+                double startTime = 0
+                rel target = </Root/AUDIO_transforms/Paperwork1_1>
+
+                def RealityKitStruct "handoffType"
+                {
+                }
+            }
         }
 
         def RealityKitTrack "Track8"
         {
+            def RealityKitAction "Play_Audio"
+            {
+                string actionKind = "audio"
+                string audioResourceName = "Computer_1_wav"
+                bool controlPlayback = 1
+                double duration = 45
+                double gain = -30.050904977375566
+                uniform token info:id = "3C612462-683A-448D-9A01-1363443A9C4E"
+                double startTime = 0
+                rel target = </Root/AUDIO_transforms/computer1>
+
+                def RealityKitStruct "handoffType"
+                {
+                }
+            }
         }
 
         def RealityKitTrack "Track9"
         {
+            def RealityKitAction "Play_Audio"
+            {
+                string actionKind = "audio"
+                string audioResourceName = "Printer_1_wav"
+                bool controlPlayback = 1
+                double duration = 45
+                uniform token info:id = "60D19918-88A0-4869-9CDE-7081AD24296D"
+                double startTime = 0
+                rel target = </Root/AUDIO_transforms/printer>
+
+                def RealityKitStruct "handoffType"
+                {
+                }
+            }
         }
 
         def RealityKitTrack "Track10"
         {
+            def RealityKitAction "Play_Audio"
+            {
+                string actionKind = "audio"
+                string audioResourceName = "Filing_Cabinet_1_wav"
+                bool controlPlayback = 1
+                double duration = 45
+                uniform token info:id = "0B35903A-EFDE-47B4-8F3C-69117FC604DA"
+                double startTime = 0
+                rel target = </Root/AUDIO_transforms/filingCabinet>
+
+                def RealityKitStruct "handoffType"
+                {
+                }
+            }
         }
     }
 
     def RealityKitTimeline "MasterAudio"
     {
+        reorder nameChildren = ["Track", "Track2", "Track3"]
         def RealityKitTrack "Track"
         {
             def RealityKitAction "Play_Timeline"
@@ -1107,6 +1436,32 @@ def Xform "Root"
                 uniform token info:id = "9F6E5CA0-059C-40A1-BE0C-17CDF8DB1014"
                 double startTime = 0
                 rel timeline = </Root/keyboards>
+            }
+        }
+
+        def RealityKitTrack "Track2"
+        {
+            def RealityKitAction "Play_Timeline"
+            {
+                string actionKind = "timeline"
+                int blendLayer = 500
+                double duration = 45
+                uniform token info:id = "BA734F9E-FDE1-45CD-A001-453609EFEC43"
+                double startTime = 0
+                rel timeline = </Root/conversationAndAmbience>
+            }
+        }
+
+        def RealityKitTrack "Track3"
+        {
+            def RealityKitAction "Play_Timeline"
+            {
+                string actionKind = "timeline"
+                int blendLayer = 500
+                double duration = 45
+                uniform token info:id = "B2BD9233-0355-49D5-9F5E-37B60CA0CD4A"
+                double startTime = 0
+                rel timeline = </Root/venthood>
             }
         }
     }
@@ -1199,22 +1554,6 @@ def Xform "Root"
         uniform bool shouldLoop = 0
     }
 
-    def RealityKitAudioFile "Beaker_Stir_1_wav"
-    {
-        uniform asset file = @Audio/Lab_Ambience/Beaker_Stir_1.wav@
-        uniform token loadingStrategy = "Stream"
-        rel mixGroup = </Root/AudioMixGroups/beakers>
-        uniform bool shouldLoop = 0
-    }
-
-    def RealityKitAudioFile "Beaker_Stir_2_wav"
-    {
-        uniform asset file = @Audio/Lab_Ambience/Beaker_Stir_2.wav@
-        uniform token loadingStrategy = "Stream"
-        rel mixGroup = </Root/AudioMixGroups/beakers>
-        uniform bool shouldLoop = 0
-    }
-
     def RealityKitAudioFile "Conversation_2_wav"
     {
         uniform asset file = @Audio/Lab_Ambience/Conversation_2.wav@
@@ -1223,25 +1562,18 @@ def Xform "Root"
         uniform bool shouldLoop = 0
     }
 
-    def RealityKitAudioFile "Room_Ambience_1_wav"
+    def RealityKitTimeline "conversationAndAmbience"
     {
-        uniform asset file = @Audio/Lab_Ambience/Room_Ambience_1.wav@
-        uniform token loadingStrategy = "Stream"
-        uniform bool shouldLoop = 0
-    }
-
-    def RealityKitTimeline "Timeline"
-    {
-        reorder nameChildren = ["Track", "Track_3", "Track_2", "Track_1", "Track2", "Track3"]
+        reorder nameChildren = ["Track", "Track_3", "Track_2", "Track_1", "Track2", "Track3", "Track4", "Track5"]
         def RealityKitTrack "Track"
         {
-            reorder nameChildren = ["Play_Audio", "Play_Audio_1", "Play_Audio_22", "Play_Audio_3", "Play_Audio_4"]
-            def RealityKitAction "Play_Audio_22"
+            reorder nameChildren = ["Play_Audio", "Play_Audio_1", "beaker2", "Play_Audio_3", "Play_Audio_4"]
+            def RealityKitAction "beaker2"
             {
                 string actionKind = "audio"
                 string audioResourceName = "Beaker_Stir_2.wav"
                 bool controlPlayback = 1
-                double duration = 193.20533333333333
+                double duration = 45
                 uniform token info:id = "43DCF0F8-BF68-4E95-A490-30BDFDC7141D"
                 double startTime = 0
                 rel target = </Root/AUDIO_transforms/Beaker_1>
@@ -1261,7 +1593,7 @@ def Xform "Root"
                 string actionKind = "audio"
                 string audioResourceName = "Room_Ambience_1.wav"
                 bool controlPlayback = 1
-                double duration = 193.20533333333333
+                double duration = 45
                 uniform token info:id = "3B4A0B26-C526-4FC6-9896-77B212C68F44"
                 double startTime = 0
                 rel target = </Root/AUDIO_transforms/Room_ambience/Rear_Right>
@@ -1276,12 +1608,12 @@ def Xform "Root"
 
         def RealityKitTrack "Track_1"
         {
-            def RealityKitAction "Play_Audio_4"
+            def RealityKitAction "conversation2"
             {
                 string actionKind = "audio"
                 string audioResourceName = "Conversation_2.wav"
                 bool controlPlayback = 1
-                double duration = 193.20533333333333
+                double duration = 45
                 uniform token info:id = "4B3F22A9-8A93-4EB8-9DFE-5D719D955DE6"
                 double startTime = 0
                 rel target = </Root/AUDIO_transforms/conversation2>
@@ -1296,12 +1628,12 @@ def Xform "Root"
 
         def RealityKitTrack "Track_2"
         {
-            def RealityKitAction "Play_Audio"
+            def RealityKitAction "conversation"
             {
                 string actionKind = "audio"
                 string audioResourceName = "Conversation_1.wav"
                 bool controlPlayback = 1
-                double duration = 193.20533333333333
+                double duration = 45
                 uniform token info:id = "299EE60A-254A-4B72-95BA-8ADD06BF850A"
                 double startTime = 0
                 rel target = </Root/AUDIO_transforms/conversation>
@@ -1316,12 +1648,12 @@ def Xform "Root"
 
         def RealityKitTrack "Track_3"
         {
-            def RealityKitAction "Play_Audio_3"
+            def RealityKitAction "beaker1"
             {
                 string actionKind = "audio"
                 string audioResourceName = "Beaker_Stir_1.wav"
                 bool controlPlayback = 1
-                double duration = 193.20533333333333
+                double duration = 45
                 uniform token info:id = "34D4FA76-CEBA-48B0-96CD-F62EC9259EA3"
                 double startTime = 0
                 rel target = </Root/AUDIO_transforms/Beaker>
@@ -1341,7 +1673,7 @@ def Xform "Root"
                 string actionKind = "audio"
                 string audioResourceName = "Room_Ambience_2.wav"
                 bool controlPlayback = 1
-                double duration = 193.20533333333333
+                double duration = 45
                 uniform token info:id = "CE9BBB6D-BEE6-4CF6-8C81-12CB5F2B83AE"
                 double startTime = 0
                 rel target = </Root/AUDIO_transforms/Room_ambience/Rear_Left>
@@ -1351,12 +1683,104 @@ def Xform "Root"
                 }
             }
         }
+
+        def RealityKitTrack "Track4"
+        {
+            def RealityKitAction "Play_Audio"
+            {
+                string actionKind = "audio"
+                string audioResourceName = "Room_Ambience_3.wav"
+                bool controlPlayback = 1
+                double duration = 45
+                uniform token info:id = "7DA41B90-E6F4-455D-9B84-75EA5D93EFC6"
+                double startTime = 0
+                rel target = </Root/AUDIO_transforms/Room_ambience/Front_Left_Upper>
+
+                def RealityKitStruct "handoffType"
+                {
+                }
+            }
+        }
+
+        def RealityKitTrack "Track5"
+        {
+            def RealityKitAction "Play_Audio"
+            {
+                string actionKind = "audio"
+                string audioResourceName = "Room_Ambience_4.wav"
+                bool controlPlayback = 1
+                double duration = 45
+                uniform token info:id = "D715D6D8-CB25-40F7-B63B-E0658EE4A4E7"
+                double startTime = 0
+                rel target = </Root/AUDIO_transforms/Room_ambience/Front_Right_Upper>
+
+                def RealityKitStruct "handoffType"
+                {
+                }
+            }
+        }
     }
 
-    def RealityKitAudioFile "Room_Ambience_2_wav"
+    def RealityKitAudioFile "Paperwork_1_wav"
     {
-        uniform asset file = @Audio/Lab_Ambience/Room_Ambience_2.wav@
-        uniform token loadingStrategy = "Stream"
+        uniform asset file = @Audio/Lab_Ambience/Paperwork_1.wav@
+        uniform bool shouldLoop = 0
+    }
+
+    def RealityKitAudioFile "Paperwork_2_wav"
+    {
+        uniform asset file = @Audio/Lab_Ambience/Paperwork_2.wav@
+        uniform bool shouldLoop = 0
+    }
+
+    def RealityKitAudioFile "Printer_1_wav"
+    {
+        uniform asset file = @Audio/Lab_Ambience/Printer_1.wav@
+        uniform bool shouldLoop = 0
+    }
+
+    def RealityKitTimeline "venthood"
+    {
+        def RealityKitTrack "Track"
+        {
+            def RealityKitAction "Play_Audio"
+            {
+                string actionKind = "audio"
+                string audioResourceName = "Vent_Hood_1_wav"
+                bool controlPlayback = 1
+                double duration = 45
+                uniform token info:id = "196D8001-44BE-47DA-9BB2-DC7140931904"
+                double startTime = 0
+                rel target = </Root/AUDIO_transforms/ventHood>
+
+                def RealityKitStruct "handoffType"
+                {
+                }
+            }
+        }
+    }
+
+    def RealityKitAudioFile "Computer_wav"
+    {
+        uniform asset file = @Audio/Lab_Ambience/Computer.wav@
+        uniform bool shouldLoop = 0
+    }
+
+    def RealityKitAudioFile "Filing_Cabinet_wav"
+    {
+        uniform asset file = @Audio/Lab_Ambience/Filing_Cabinet.wav@
+        uniform bool shouldLoop = 0
+    }
+
+    def RealityKitAudioFile "Vent_Hood_wav"
+    {
+        uniform asset file = @Audio/Lab_Ambience/Vent_Hood.wav@
+        uniform bool shouldLoop = 0
+    }
+
+    def RealityKitAudioFile "Beaker_Stir_wav"
+    {
+        uniform asset file = @Audio/Lab_Ambience/Beaker_Stir.wav@
         uniform bool shouldLoop = 0
     }
 }

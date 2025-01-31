@@ -39,7 +39,7 @@ final class LabViewModel {
         root.components.set(PositioningComponent(
             offsetX: 0,
             offsetY: -1.425,
-            offsetZ: -1.0
+            offsetZ: -0.25
         ))
         mainEntity = root
         print("✅ LabViewModel: Root entity configured")
@@ -80,11 +80,11 @@ final class LabViewModel {
             print("🎙️ Lab VO added to MainEntity")
         }
         
-//       if let labAudio = try? await appModel?.assetLoadingManager.getLabAudio() {
-//           root.addChild(labAudio)
-//           labAudioEntity = labAudio
-//           print("🔊 Lab Audio added to MainEntity")
-//       }
+       if let labAudio = try? await appModel?.assetLoadingManager.getLabAudio() {
+           root.addChild(labAudio)
+           labAudioEntity = labAudio
+           print("🔊 Lab Audio added to MainEntity")
+       }
         
         isSetupComplete = true
         print("✅ LabViewModel: Environment setup complete")
@@ -176,10 +176,10 @@ final class LabViewModel {
         print("🧹 LabViewModel: Starting cleanup")
         
         // Clean up lab audio
-        labAudioEntity?.removeFromParent()
-        labAudioEntity = nil
-        adcBuilderViewerButtonEntity = nil
-        attackCancerViewerButtonEntity = nil
+        // labAudioEntity?.removeFromParent()
+        // labAudioEntity = nil
+        // adcBuilderViewerButtonEntity = nil
+        // attackCancerViewerButtonEntity = nil
         
         // Reset positioning when leaving view
         if var positioningComponent = mainEntity?.components[PositioningComponent.self] {
@@ -188,7 +188,7 @@ final class LabViewModel {
             print("🔄 Reset positioning for next lab entry")
         }
         
-        mainEntity?.removeFromParent()
+        // mainEntity?.removeFromParent()
         isSetupComplete = false
         print("✅ LabViewModel: Cleanup complete")
     }

@@ -1,9 +1,14 @@
+// ADCMovementSystem+Retargeting.swift
+
 import RealityKit
 import Foundation
 import RealityKitContent
 
 @MainActor
 extension ADCMovementSystem {
+
+    // MARK: - Constants
+    private static let retargetDuration: Float = 0.5 // Duration for retargeting interpolation
 
     static func retargetADC(_ entity: Entity, 
                            _ adcComponent: inout ADCComponent,
@@ -17,21 +22,23 @@ extension ADCMovementSystem {
         
         print("🎯 Retargeting ADC to new cancer cell (ID: \(newCellID))")
         
-        // In retargetADC, before updating component:
+        // Skip if targeting same cell
         if adcComponent.targetCellID == newCellID {
             print("⚠️ Attempting to retarget to same cell - skipping")
             return false
         }
         
+        // Set up target interpolation
+        if let currentTargetID = adcComponent.targetEntityID,
+           let currentTarget = scene.findEntity(id: currentTargetID) {
+            adcComponent.previousTargetPosition = currentTarget.position(relativeTo: nil)
+            adcComponent.newTargetPosition = newTarget.position(relativeTo: nil)
+            adcComponent.targetInterpolationProgress = 0
+        }
+        
         // Update component with new target
         adcComponent.targetEntityID = newTarget.id
         adcComponent.targetCellID = newCellID
-        adcComponent.startWorldPosition = currentPosition  // Start from current position
-        adcComponent.movementProgress = 0  // Reset progress for new path
-        
-        // Generate new random factors for variety
-        adcComponent.speedFactor = Float.random(in: Self.speedRange)
-        adcComponent.arcHeightFactor = Float.random(in: Self.arcHeightRange)
         
         // Mark the attachment point as occupied
         if var attachPoint = newTarget.components[AttachmentPoint.self] {
@@ -39,11 +46,6 @@ extension ADCMovementSystem {
             newTarget.components[AttachmentPoint.self] = attachPoint
             print("✅ Marked attachment point as occupied")
         }
-        
-        // Capture current motion state before reset
-//        adcComponent.previousPathTangent = calculateCurrentTangent(adcComponent)
-//        adcComponent.isRetargetedPath = true
-//        adcComponent.compositeProgress = adcComponent.movementProgress
         
         return true
     }
@@ -104,11 +106,10 @@ extension ADCMovementSystem {
     static func findNewTarget(for adcEntity: Entity, currentPosition: SIMD3<Float>, in scene: Scene) -> (Entity, Int)? {
         print("\n=== Finding New Target ===")
         let query = EntityQuery(where: .has(AttachmentPoint.self))
-        var farthestDistance: Float = -Float.infinity
+        var closestDistance: Float = Float.infinity
         var bestTarget: (attachPoint: Entity, cellID: Int)? = nil
         
         let entities = scene.performQuery(query)
-//        print("Found \(entities.count) potential attachment points")
         
         for entity in entities {
             // First check if attachment point is available
@@ -125,11 +126,8 @@ extension ADCMovementSystem {
                 continue
             }
             
-            // Cache current hit count for comparison
-            let currentHits = stateComponent.parameters.hitCount
-            
             // Skip if cell has reached required hits
-            if currentHits >= stateComponent.parameters.requiredHits {
+            if stateComponent.parameters.hitCount >= stateComponent.parameters.requiredHits {
                 continue
             }
             
@@ -137,8 +135,13 @@ extension ADCMovementSystem {
             let attachPosition = entity.position(relativeTo: nil)
             let distance = length(attachPosition - currentPosition)
             
-            if distance > farthestDistance {
-                farthestDistance = distance
+            // Skip if the target is too close (prevent sharp turns)
+            if distance < 0.3 {  // Minimum distance threshold
+                continue
+            }
+            
+            if distance < closestDistance {
+                closestDistance = distance
                 bestTarget = (attachPoint: entity, cellID: cellID)
                 print("✨ New best target found - Distance: \(distance)")
             }
@@ -148,7 +151,7 @@ extension ADCMovementSystem {
             print("\n🎯 Selected target:")
             print("Cell ID: \(target.cellID)")
             print("Attachment Point: \(target.attachPoint.name)")
-            print("Distance: \(farthestDistance)")
+            print("Distance: \(closestDistance)")
         }
         
         return bestTarget
@@ -169,4 +172,63 @@ extension ADCMovementSystem {
         
         return points
     }
+
+    func updateRetargetProgress(entity: Entity, context: SceneUpdateContext) {
+        guard var adc = entity.components[ADCComponent.self],
+              adc.needsRetarget,
+              let newTarget = adc.newTargetPosition,
+              let previousTarget = adc.previousTargetPosition
+        else { return }
+        
+        // Calculate interpolation progress
+        let deltaTime = Float(context.deltaTime)
+        adc.targetInterpolationProgress = min(adc.targetInterpolationProgress + deltaTime / Float(ADCComponent.targetInterpolationDuration), 1.0)
+        
+        // Smooth step interpolation
+        let t = adc.targetInterpolationProgress
+        let smoothT = t * t * (3 - 2 * t)
+        adc.targetWorldPosition = simd_mix(previousTarget, newTarget, SIMD3<Float>(repeating: smoothT))
+        
+        // Update movement parameters
+        updatePathLength(adc: &adc)
+        updateCurrentVelocity(entity: entity, adc: &adc, deltaTime: deltaTime)
+        
+        // Complete retarget
+        if adc.targetInterpolationProgress >= 1.0 {
+            finalizeRetarget(adc: &adc)
+        }
+        
+        // Update component
+        entity.components[ADCComponent.self] = adc
+    }
+    
+    private func updatePathLength(adc: inout ADCComponent) {
+        guard let start = adc.startWorldPosition,
+              let target = adc.targetWorldPosition
+        else { return }
+        
+        let newLength = distance(start, target)
+        adc.previousPathLength = adc.pathLength
+        adc.pathLength = newLength
+        if adc.previousPathLength > Float.ulpOfOne {  // Prevent division by zero
+            adc.traveledDistance *= newLength / adc.previousPathLength
+        }
+        adc.movementProgress = adc.traveledDistance / adc.pathLength
+    }
+    
+    private func updateCurrentVelocity(entity: Entity, adc: inout ADCComponent, deltaTime: Float) {
+        guard let targetPos = adc.targetWorldPosition else { return }
+        
+        let currentPos = entity.transform.translation
+        let direction = normalize(targetPos - currentPos)
+        adc.currentVelocity = direction * adc.speed
+    }
+    
+    private func finalizeRetarget(adc: inout ADCComponent) {
+        adc.previousTargetPosition = adc.targetWorldPosition
+        adc.newTargetPosition = nil
+        adc.needsRetarget = false
+        adc.targetInterpolationProgress = 0
+    }
+
 }

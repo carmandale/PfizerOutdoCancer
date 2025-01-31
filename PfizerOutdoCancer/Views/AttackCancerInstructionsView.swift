@@ -103,11 +103,12 @@ struct AttackCancerInstructionsView: View {
                     .controlSize(.extraLarge)
                 }
                 .padding(.bottom, 100)
+                .transition(Appear())
             }
         }
         .frame(minWidth: 800)
         .frame(minHeight: 900)
-        .transition(Appear())
+        
 
     }
     

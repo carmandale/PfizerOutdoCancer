@@ -49,7 +49,7 @@ struct OutroView: View {
                 Task { @MainActor in
                     openWindow(id: AppModel.navWindowId)
                     appModel.isNavWindowOpen = true
-                    await appModel.transitionToPhase(.intro)
+                    await appModel.transitionToPhase(.lab)
                 }
             }
             

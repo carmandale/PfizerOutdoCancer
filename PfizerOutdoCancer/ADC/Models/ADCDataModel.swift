@@ -22,6 +22,8 @@ class ADCDataModel {
     
     public var isVOPlaying = false
     public var hasInitialVOCompleted = false
+    public var showSelector = false
+    
     // Fill all linker positions with currently selected linker type
     func fillAllLinkers() {
         // set condition if VO is finished  

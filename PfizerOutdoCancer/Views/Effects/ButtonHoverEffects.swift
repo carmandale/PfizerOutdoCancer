@@ -55,4 +55,15 @@ struct GlowingOutlineEffect: CustomHoverEffect {
             }
         }
     }
-} 
+}
+
+/// Creates a rainbow gradient border that animates on hover
+struct GradientBorderEffect: CustomHoverEffect {
+    func body(content: Content) -> some CustomHoverEffect {
+        content.hoverEffect { effect, isActive, _ in
+            effect.animation(.default.delay(isActive ? 0.2 : 0.2)) {
+                $0.opacity(isActive ? 1.0 : 0.3)
+            }
+        }
+    }
+}

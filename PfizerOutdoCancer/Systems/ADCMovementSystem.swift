@@ -1,3 +1,5 @@
+// ADCMovementSystem.swift
+
 import RealityKit
 import Foundation
 import RealityKitContent
@@ -105,8 +107,9 @@ public class ADCMovementSystem: System {
 //                print("🎚️ Speed Multiplier: \(String(format: "%.2f", speedMultiplier))")
             }
             
-            // Update progress with randomized speed and phase-based multiplier
-            adcComponent.movementProgress += Float(context.deltaTime / (Self.baseStepDuration * TimeInterval(1/speedFactor) * Self.numSteps)) * speedMultiplier
+            // Update progress with clamping
+            let delta = Float(context.deltaTime / (Self.baseStepDuration * TimeInterval(1/speedFactor) * Self.numSteps)) * speedMultiplier
+            adcComponent.movementProgress = min(adcComponent.movementProgress + delta, 1.0)
             
             if adcComponent.movementProgress >= 0.8 { // At 80% of journey
                 // Check if current target is headPosition
@@ -139,19 +142,18 @@ public class ADCMovementSystem: System {
                     // Launch the animation in a Task to handle the async call
                     Task { @MainActor in
                         await cancerCell.hitScaleAnimation(
-                            intensity: 0.95, // Less squish (0.95 instead of 0.9)
-                            duration: 0.2,  // Faster animation (0.2 instead of 0.3)
-                            scaleReduction: 0.05 // Less reduction (0.05 instead of 0.1)
+                            intensity: 0.9, // Less squish (0.95 instead of 0.9)
+                            duration: 0.25,  // Faster animation (0.2 instead of 0.3)
+                            scaleReduction: 0.12
                         )
                     }
                 } else {
                     print("No cancer cell found")
                 }
                 // Find the parent cancer cell using our utility function
-                if let cancerCell = Self.findParentCancerCell(for: targetEntity, in: context.scene),
-                   var cellPhysics = cancerCell.components[PhysicsMotionComponent.self] {
+                if let cancerCell = Self.findParentCancerCell(for: targetEntity, in: context.scene) {
 //                    print("Found cancer cell: \(cancerCell.name)")
-//                    print("Initial velocity: \(cellPhysics.linearVelocity)")
+//                    print("Initial velocity: ")
                     
                     // Removed physics impulse application to disable ADC-cancer cell interactions
                     // while maintaining cell-to-cell collisions
@@ -268,20 +270,51 @@ public class ADCMovementSystem: System {
                 // Calculate current position on curve using Bezier curve
                 let p = adcComponent.movementProgress
                 let distance = length(target - start)
-                let midPoint = Self.mix(start, target, t: 0.5)
-                let heightOffset = distance * 0.5 * arcHeightFactor
-                let controlPoint = midPoint + SIMD3<Float>(0, heightOffset, 0)
                 
-                // Quadratic Bezier formula: B(t) = (1-t)²P0 + 2(1-t)tP1 + t²P2
-                let t1 = 1.0 - p
-                let position = t1 * t1 * start + 2 * t1 * p * controlPoint + p * p * target
+                // If we're interpolating to a new target, blend the target position
+                let currentTarget: SIMD3<Float>
+                if let previousTarget = adcComponent.previousTargetPosition,
+                   let newTarget = adcComponent.newTargetPosition,
+                   adcComponent.targetInterpolationProgress < 1.0 {
+                    // Update interpolation progress
+                    adcComponent.targetInterpolationProgress += Float(context.deltaTime / ADCComponent.targetInterpolationDuration)
+                    if adcComponent.targetInterpolationProgress >= 1.0 {
+                        adcComponent.targetInterpolationProgress = 1.0
+                        adcComponent.previousTargetPosition = nil
+                        adcComponent.newTargetPosition = nil
+                    }
+                    
+                    // Interpolate target position
+                    let t = Self.smoothstep(0, 1, adcComponent.targetInterpolationProgress)
+                    currentTarget = Self.mix(previousTarget, newTarget, t: t)
+                } else {
+                    currentTarget = target
+                }
                 
-                // Update position
+                // Calculate control point based on current target
+                let arcHeight = Self.baseArcHeight * arcHeightFactor * (distance / Self.maxDistance)
+                let controlPoint1 = SIMD3<Float>(start.x, start.y + arcHeight, start.z)
+                let controlPoint2 = SIMD3<Float>(target.x, target.y + arcHeight, target.z)
+                
+                // Cubic Bezier interpolation
+                let position = Self.quadraticBezierPoint(
+                    start, 
+                    controlPoint1,  // Single control point for quadratic
+                    currentTarget,  // End point
+                    t: p
+                )
                 entity.position = position
+                
+                // Check remaining distance and force completion if close enough
+                let remainingDistance = length(position - currentTarget)
+                if remainingDistance <= 0.001 {
+                    adcComponent.movementProgress = 1.0
+                    entity.position = currentTarget
+                }
                 
                 // Set initial orientation only once when movement starts
                 if adcComponent.movementProgress <= 0.01 {
-                    let direction = normalize(target - start)
+                    let direction = normalize(currentTarget - start)
                     Self.setInitialRootOrientation(entity: entity, direction: direction)
                 }
                 
@@ -289,9 +322,10 @@ public class ADCMovementSystem: System {
                 Self.updateProteinSpin(entity: entity, deltaTime: context.deltaTime)
                 
                 // Calculate tangent vector (derivative of Bezier curve)
-                let tangentStep1 = (controlPoint - start) * (1 - p)
-                let tangentStep2 = (target - controlPoint) * p
-                let tangent = normalize(2 * (tangentStep1 + tangentStep2))
+                let tangentStep1 = (controlPoint1 - start) * (1 - p)
+                let tangentStep2 = (controlPoint2 - controlPoint1) * (p)
+                let tangentStep3 = (currentTarget - controlPoint2) * (p)
+                let tangent = normalize(3 * (tangentStep1 + tangentStep2 + tangentStep3))
                 
                 // Debug prints every 10% progress
                 if Int(adcComponent.movementProgress * 100) % 10 == 0 {
@@ -300,7 +334,7 @@ public class ADCMovementSystem: System {
 //                    print("Progress: \(String(format: "%.2f", adcComponent.movementProgress))")
 //                    print("Speed Factor: \(String(format: "%.2f", speedFactor))")
 //                    print("Position: (\(String(format: "%.2f, %.2f, %.2f", position.x, position.y, position.z)))")
-//                    print("Target: (\(String(format: "%.2f, %.2f, %.2f", target.x, target.y, target.z)))")
+//                    print("Target: (\(String(format: "%.2f, %.2f, %.2f", currentTarget.x, currentTarget.y, currentTarget.z)))")
                     
                     // Calculate banking parameters
                     let flatTangent = SIMD3<Float>(tangent.x, 0, tangent.z)
@@ -449,4 +483,3 @@ public class ADCMovementSystem: System {
 //        }
 //    }
 }
-

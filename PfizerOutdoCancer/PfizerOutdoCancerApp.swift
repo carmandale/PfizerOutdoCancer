@@ -36,31 +36,25 @@ struct PfizerOutdoCancerApp: App {
                                 print("→ .background")
                                 // Stop tracking and close immersive space
                                 await cleanupAppState()
-                                // await handleWindowsForPhase(.ready)
+                                
+                                // Ensure game state is cleaned up
+                                if appModel.currentPhase == .playing {
+                                    appModel.gameState.tearDownGame()
+                                }
                             }
                         case .inactive:
                             Task {
                                 print("→ .inactive")
-                                // Wait for cleanup to complete
-                                try? await Task.sleep(nanoseconds: 100_000_000) // 100ms delay
-                                // await cleanupAppState()
-                                // if appModel.trackingManager.currentState == .paused {
-                                //     appModel.trackingManager.stopTracking()
-                                // }
+                                // No additional cleanup needed here
                             }
                         case .active:
                             Task {
                                 print("→ .active")
                                 // Add small delay to ensure cleanup completes
                                 try? await Task.sleep(nanoseconds: 200_000_000) // 200ms delay
-                                if appModel.trackingManager.currentState == .paused {
-                                    appModel.trackingManager.stopTracking()
-                                }
+                                
+                                // Always transition to ready state
                                 await appModel.transitionToPhase(.ready)
-                                // if !appModel.isMainWindowOpen {
-                                //     openWindow(id: AppModel.mainWindowId)
-                                //     appModel.isMainWindowOpen = true
-                                // }
                             }
                         default:
                             break
@@ -438,17 +432,22 @@ struct PfizerOutdoCancerApp: App {
     private func cleanupAppState() async {
         print("🧹 Cleaning up app state")
         
-        // 1. Close immersive space if open
+        // 1. Stop any running game systems first
+        if appModel.currentPhase == .playing {
+            appModel.gameState.tearDownGame()
+        }
+        
+        // 2. Close immersive space if open
         if appModel.immersiveSpaceState == .open {
             appModel.immersiveSpaceDismissReason = .manual
             await dismissImmersiveSpace()
             appModel.immersiveSpaceState = .closed
         }
         
-        // 2. Stop tracking
+        // 3. Stop tracking
         appModel.trackingManager.stopTracking()
         
-        // 3. Reset phase to ready
+        // 4. Reset phase to ready
         await appModel.transitionToPhase(.ready)
         
         print("✅ App state cleanup completed")

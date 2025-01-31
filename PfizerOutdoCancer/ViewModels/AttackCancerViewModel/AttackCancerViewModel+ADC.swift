@@ -123,7 +123,7 @@ extension AttackCancerViewModel {
         // Random offsets
         let randomX = Float.random(in: -1.0...1.0)
         let randomY = Float.random(in: 0.5...1.5)
-        let randomZ = Float.random(in: -3.5...(-2.5))
+        let randomZ = Float.random(in: -6.5...(-5.5))
         
         // Set positioning component with random offsets
         headPosition.components.set(PositioningComponent(
@@ -138,11 +138,11 @@ extension AttackCancerViewModel {
         headPosition.components.set(attachPoint)
         
         // Add debug sphere as child for visualization
-        let debugSphere = ModelEntity(
-            mesh: .generateSphere(radius: 0.1), 
-            materials: [SimpleMaterial(color: .blue, isMetallic: false)]
-        )
-        headPosition.addChild(debugSphere)
+        // let debugSphere = ModelEntity(
+        //     mesh: .generateSphere(radius: 0.1), 
+        //     materials: [SimpleMaterial(color: .blue, isMetallic: false)]
+        // )
+        // headPosition.addChild(debugSphere)
         root.addChild(headPosition)
         
         // Log world space positions for debugging
@@ -153,7 +153,7 @@ extension AttackCancerViewModel {
         // Remove debug sphere after 5 seconds
         Task {
             try? await Task.sleep(for: .seconds(5))
-            debugSphere.removeFromParent()
+//            debugSphere.removeFromParent()
         }
         
         totalADCsDeployed += 1

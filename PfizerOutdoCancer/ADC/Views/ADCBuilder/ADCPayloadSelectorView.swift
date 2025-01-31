@@ -23,9 +23,9 @@ struct ADCPayloadSelectorView: View {
                             // Fill all remaining payloads with current selection
                         dataModel.fillAllPayloads()
                             // Advance to next step
-                        dataModel.adcBuildStep = 3
+                            dataModel.adcBuildStep = 3
                     },
-                    isEnabled: dataModel.selectedPayloadType != nil
+                    isEnabled: dataModel.selectedPayloadType != nil && dataModel.placedPayloadCount == 4
                 )
                 
                 

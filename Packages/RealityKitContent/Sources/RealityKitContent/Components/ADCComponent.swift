@@ -70,9 +70,37 @@ public struct ADCComponent: Component, Codable {
     /// Minimum duration (in seconds) that an ADC must seek before targeting
     public static let minimumSeekingDuration: Double = 2.0
     
-    // Add these to the existing struct:
+    // MARK: - Path and Distance Tracking
+    /// Length of the current movement path
+    public var pathLength: Float = 0
+    
+    /// Previously calculated path length
+    public var previousPathLength: Float = 0
+    
+    /// Distance traveled along the current path
+    public var traveledDistance: Float = 0
+    
+    // MARK: - Target Interpolation
+    /// Previous target position for interpolation
+    public var previousTargetPosition: SIMD3<Float>? = nil
+    
+    /// New target position for interpolation
+    public var newTargetPosition: SIMD3<Float>? = nil
+    
+    /// Progress of target position interpolation (0 to 1)
+    public var targetInterpolationProgress: Float = 0
+    
+    /// Duration for target interpolation
+    public static let targetInterpolationDuration: Double = 1.0
+    
+    // MARK: - Path Tangent and Retargeting
+    /// Previous path tangent
     public var previousPathTangent: SIMD3<Float>?  // Needs to be public
+    
+    /// Flag indicating if the current path is a retargeted path
     public var isRetargetedPath: Bool = false
+    
+    /// Composite progress of the current path
     public var compositeProgress: Float = 0
     
     // MARK: - Initialization
@@ -112,5 +140,65 @@ public struct ADCComponent: Component, Codable {
         case previousPathTangent
         case isRetargetedPath
         case compositeProgress
+        case pathLength
+        case previousPathLength
+        case traveledDistance
+        case previousTargetPosition
+        case newTargetPosition
+        case targetInterpolationProgress
+    }
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        state = try container.decode(State.self, forKey: .state)
+        movementProgress = try container.decode(Float.self, forKey: .movementProgress)
+        currentVelocity = try container.decodeIfPresent(SIMD3<Float>.self, forKey: .currentVelocity)
+        speed = try container.decode(Float.self, forKey: .speed)
+        proteinSpinSpeed = try container.decode(Float.self, forKey: .proteinSpinSpeed)
+        targetCellID = try container.decodeIfPresent(Int.self, forKey: .targetCellID)
+        targetEntityID = try container.decodeIfPresent(UInt64.self, forKey: .targetEntityID)
+        startWorldPosition = try container.decodeIfPresent(SIMD3<Float>.self, forKey: .startWorldPosition)
+        targetWorldPosition = try container.decodeIfPresent(SIMD3<Float>.self, forKey: .targetWorldPosition)
+        needsRetarget = try container.decode(Bool.self, forKey: .needsRetarget)
+        speedFactor = try container.decodeIfPresent(Float.self, forKey: .speedFactor)
+        arcHeightFactor = try container.decodeIfPresent(Float.self, forKey: .arcHeightFactor)
+        seekingDirection = try container.decodeIfPresent(SIMD3<Float>.self, forKey: .seekingDirection)
+        seekingStartTime = try container.decodeIfPresent(Double.self, forKey: .seekingStartTime)
+        previousPathTangent = try container.decodeIfPresent(SIMD3<Float>.self, forKey: .previousPathTangent)
+        isRetargetedPath = try container.decode(Bool.self, forKey: .isRetargetedPath)
+        compositeProgress = try container.decode(Float.self, forKey: .compositeProgress)
+        pathLength = try container.decode(Float.self, forKey: .pathLength)
+        previousPathLength = try container.decode(Float.self, forKey: .previousPathLength)
+        traveledDistance = try container.decode(Float.self, forKey: .traveledDistance)
+        previousTargetPosition = try container.decodeIfPresent(SIMD3<Float>.self, forKey: .previousTargetPosition)
+        newTargetPosition = try container.decodeIfPresent(SIMD3<Float>.self, forKey: .newTargetPosition)
+        targetInterpolationProgress = try container.decode(Float.self, forKey: .targetInterpolationProgress)
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(state, forKey: .state)
+        try container.encode(movementProgress, forKey: .movementProgress)
+        try container.encodeIfPresent(currentVelocity, forKey: .currentVelocity)
+        try container.encode(speed, forKey: .speed)
+        try container.encode(proteinSpinSpeed, forKey: .proteinSpinSpeed)
+        try container.encodeIfPresent(targetCellID, forKey: .targetCellID)
+        try container.encodeIfPresent(targetEntityID, forKey: .targetEntityID)
+        try container.encodeIfPresent(startWorldPosition, forKey: .startWorldPosition)
+        try container.encodeIfPresent(targetWorldPosition, forKey: .targetWorldPosition)
+        try container.encode(needsRetarget, forKey: .needsRetarget)
+        try container.encodeIfPresent(speedFactor, forKey: .speedFactor)
+        try container.encodeIfPresent(arcHeightFactor, forKey: .arcHeightFactor)
+        try container.encodeIfPresent(seekingDirection, forKey: .seekingDirection)
+        try container.encodeIfPresent(seekingStartTime, forKey: .seekingStartTime)
+        try container.encodeIfPresent(previousPathTangent, forKey: .previousPathTangent)
+        try container.encode(isRetargetedPath, forKey: .isRetargetedPath)
+        try container.encode(compositeProgress, forKey: .compositeProgress)
+        try container.encode(pathLength, forKey: .pathLength)
+        try container.encode(previousPathLength, forKey: .previousPathLength)
+        try container.encode(traveledDistance, forKey: .traveledDistance)
+        try container.encodeIfPresent(previousTargetPosition, forKey: .previousTargetPosition)
+        try container.encodeIfPresent(newTargetPosition, forKey: .newTargetPosition)
+        try container.encode(targetInterpolationProgress, forKey: .targetInterpolationProgress)
     }
 }

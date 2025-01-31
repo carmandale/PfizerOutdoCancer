@@ -166,7 +166,7 @@ def Xform "Root"
                 rel material:binding = </Root/M_text> (
                     bindMaterialAs = "weakerThanDescendants"
                 )
-                float3 xformOp:scale = (1.0000002, 1.0000002, 1.0000002)
+                float3 xformOp:scale = (1, 0.26171985, 1)
                 uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
                 def RealityKitComponent "HierarchicalFade"
@@ -530,112 +530,6 @@ def Xform "Root"
         }
     }
 
-    def "IntroWarp" (
-        active = true
-        references = @IntroWarp.usda@
-    )
-    {
-        float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (0, 0.2, 0)
-
-        over "sh0100_v01_portalWarp2"
-        {
-            over "PortalWarp_MSR"
-            {
-                over "PortalWarp2_endCap"
-                {
-                    over "Cylinder_002"
-                    {
-                        def RealityKitComponent "MeshSorting"
-                        {
-                            rel group = </Root/Model_Sorting_Group>
-                            token info:id = "RealityKit.MeshSorting"
-                            int priorityInGroup = 0
-                        }
-                    }
-                }
-
-                over "PortalWarp2"
-                {
-                    over "Cylinder"
-                    {
-                        def RealityKitComponent "MeshSorting"
-                        {
-                            rel group = </Root/Model_Sorting_Group>
-                            token info:id = "RealityKit.MeshSorting"
-                            int priorityInGroup = 1
-                        }
-                    }
-                }
-            }
-        }
-
-        over "sh0100_v01_portalWarp3" (
-            customData = {
-                float3 rotationEulerHint = (-1.5707964, 0, 0)
-            }
-        )
-        {
-            quatf xformOp:orient = (0.70710677, -0.70710677, 0, 0)
-            float3 xformOp:scale = (3.075441, 3.075441, 3.075441)
-            float3 xformOp:translate = (0, 1.4999999, 1.7763568e-15)
-
-            over "PortalWarp3"
-            {
-                over "portalMesh"
-                {
-                    def RealityKitComponent "MeshSorting"
-                    {
-                        rel group = </Root/Model_Sorting_Group>
-                        token info:id = "RealityKit.MeshSorting"
-                        int priorityInGroup = 2
-                    }
-                }
-            }
-        }
-
-        over "M_jet"
-        {
-            over "JetMaterial"
-            {
-                float inputs:TunnelMapAmount = 0.8
-
-                over "jetNodeGraph"
-                {
-                    float inputs:Remap_inlow (
-                        customData = {
-                            dictionary realitykit = {
-                                float2 positionInSubgraph = (587.7347, 154.89322)
-                                int stackingOrderInSubgraph = 2329
-                            }
-                        }
-                    )
-
-                    over "Range_1"
-                    {
-                        float inputs:gamma = 0.29
-                        int ui:nodegraph:node:stackingOrder = 2326
-                    }
-
-                    over "Range"
-                    {
-                        int ui:nodegraph:node:stackingOrder = 2325
-                    }
-
-                    over "Noise3D"
-                    {
-                        int ui:nodegraph:node:stackingOrder = 2327
-                    }
-
-                    over "Flicker_Intensity"
-                    {
-                        int ui:nodegraph:node:stackingOrder = 2328
-                    }
-                }
-            }
-        }
-    }
-
     def RealityKitMeshSortingGroup "Model_Sorting_Group" (
         active = false
     )
@@ -969,9 +863,9 @@ def Xform "Root"
         references = @Assets/Outro/change_v03.usdc@
     )
     {
-        quatf xformOp:orient = (0.70710677, -0.7071068, 0, 0)
-        float3 xformOp:scale = (1.45, 1.45, 1.45)
-        float3 xformOp:translate = (-0.0000017862767, -8.698553e-7, -11.545573)
+        quatf xformOp:orient = (0.70710677, -0.70710677, 0, 0)
+        float3 xformOp:scale = (2.7101696, 1.3167702, 2.7101696)
+        float3 xformOp:translate = (-0.0000017862767, -8.698552e-7, -11.545572)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
         def RealityKitComponent "HierarchicalFade"
@@ -1017,6 +911,124 @@ def Xform "Root"
                         rel group = </Root/Model_Sorting_Group>
                         token info:id = "RealityKit.MeshSorting"
                         int priorityInGroup = 9
+                    }
+                }
+            }
+        }
+    }
+}
+
+def Xform "Transform" (
+    active = true
+)
+{
+    quatf xformOp:orient = (1, 0, 0, 0)
+    float3 xformOp:scale = (7.3086376, 6.7396693, 0.8292636)
+    float3 xformOp:translate = (0, 0, -353.03204)
+    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+    def "IntroWarp" (
+        active = true
+        references = @IntroWarp.usda@
+    )
+    {
+        reorder nameChildren = ["sh0100_v01_portalWarp2", "M_jet", "sh0100_v01_portalWarp3", "Transform"]
+        quatf xformOp:orient = (1, 0, 0, 0)
+        float3 xformOp:scale = (1, 1, 1.240308)
+        float3 xformOp:translate = (0, 0.2, 437.86847)
+
+        over "sh0100_v01_portalWarp2"
+        {
+            over "PortalWarp_MSR"
+            {
+                over "PortalWarp2_endCap"
+                {
+                    over "Cylinder_002"
+                    {
+                        def RealityKitComponent "MeshSorting"
+                        {
+                            rel group = </Root/Model_Sorting_Group>
+                            token info:id = "RealityKit.MeshSorting"
+                            int priorityInGroup = 0
+                        }
+                    }
+                }
+
+                over "PortalWarp2"
+                {
+                    over "Cylinder"
+                    {
+                        def RealityKitComponent "MeshSorting"
+                        {
+                            rel group = </Root/Model_Sorting_Group>
+                            token info:id = "RealityKit.MeshSorting"
+                            int priorityInGroup = 1
+                        }
+                    }
+                }
+            }
+        }
+
+        over "sh0100_v01_portalWarp3" (
+            customData = {
+                float3 rotationEulerHint = (-1.5707964, 0, 0)
+            }
+        )
+        {
+            quatf xformOp:orient = (0.70710677, -0.70710677, 0, 0)
+            float3 xformOp:scale = (3.075441, 3.075441, 3.075441)
+            float3 xformOp:translate = (0, 1.4999999, 1.7763568e-15)
+
+            over "PortalWarp3"
+            {
+                over "portalMesh"
+                {
+                    def RealityKitComponent "MeshSorting"
+                    {
+                        rel group = </Root/Model_Sorting_Group>
+                        token info:id = "RealityKit.MeshSorting"
+                        int priorityInGroup = 2
+                    }
+                }
+            }
+        }
+
+        over "M_jet"
+        {
+            over "JetMaterial"
+            {
+                float inputs:TunnelMapAmount = 0.8
+
+                over "jetNodeGraph"
+                {
+                    float inputs:Remap_inlow (
+                        customData = {
+                            dictionary realitykit = {
+                                float2 positionInSubgraph = (587.7347, 154.89322)
+                                int stackingOrderInSubgraph = 2329
+                            }
+                        }
+                    )
+
+                    over "Range_1"
+                    {
+                        float inputs:gamma = 0.29
+                        int ui:nodegraph:node:stackingOrder = 2326
+                    }
+
+                    over "Range"
+                    {
+                        int ui:nodegraph:node:stackingOrder = 2325
+                    }
+
+                    over "Noise3D"
+                    {
+                        int ui:nodegraph:node:stackingOrder = 2327
+                    }
+
+                    over "Flicker_Intensity"
+                    {
+                        int ui:nodegraph:node:stackingOrder = 2328
                     }
                 }
             }

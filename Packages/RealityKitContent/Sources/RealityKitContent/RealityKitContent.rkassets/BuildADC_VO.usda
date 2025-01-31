@@ -51,12 +51,13 @@ def Xform "Root"
 
             def RealityKitDict "resources"
             {
-                string[] keys = ["BuildADC_VO_1_mp3", "BuildADC_VO_2_mp3", "BuildADC_VO_3_mp3", "BuildADC_VO_4_mp3"]
+                string[] keys = ["BuildADC_VO_1_mp3", "BuildADC_VO_2_mp3", "BuildADC_VO_3_mp3", "BuildADC_VO_4_mp3", "ADC_Build_Complete_1_wav"]
                 rel values = [
                     </Root/BuildADC_VO_1_mp3>,
                     </Root/BuildADC_VO_2_mp3>,
                     </Root/BuildADC_VO_3_mp3>,
                     </Root/BuildADC_VO_4_mp3>,
+                    </Root/ADC_Build_Complete_1_wav>,
                 ]
             }
         }
@@ -72,6 +73,18 @@ def Xform "Root"
             float blendFactor = 1
             uniform token info:id = "RealityKit.Billboard"
         }
+    }
+
+    def RealityKitAudioFile "ADC_Build_Complete_1_wav"
+    {
+        uniform asset file = @Audio/BuildADC_VO/ADC_Build_Complete_1.wav@
+        uniform bool shouldLoop = 0
+    }
+
+    def RealityKitAudioFile "niceJob_mp3"
+    {
+        uniform asset file = @Audio/BuildADC_VO/niceJob.mp3@
+        uniform bool shouldLoop = 0
     }
 }
 

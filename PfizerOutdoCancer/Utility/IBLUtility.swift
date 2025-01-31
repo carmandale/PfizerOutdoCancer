@@ -6,9 +6,11 @@ enum IBLUtility {
     /// - Parameters:
     ///   - root: The root entity to add the IBL to
     ///   - imageName: Name of the IBL image file (without extension)
+    ///   - intensity: The intensity exponent of the IBL (default: 1.0)
     static func addImageBasedLighting(
         to root: Entity,
-        imageName: String
+        imageName: String,
+        intensity: Float = 1.0
     ) async throws {
         // Load the image-based lighting resource
         guard let iblURL = Bundle.main.url(forResource: imageName, withExtension: "exr") else {
@@ -19,7 +21,7 @@ enum IBLUtility {
         
         // Set up image-based lighting
         let iblEntity = await Entity()
-        var iblComp = ImageBasedLightComponent(source: .single(iblEnv), intensityExponent: 1.0)
+        var iblComp = ImageBasedLightComponent(source: .single(iblEnv), intensityExponent: intensity)
         iblComp.inheritsRotation = true
         await iblEntity.components.set(iblComp)
         

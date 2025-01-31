@@ -7,7 +7,8 @@ struct ADCBuilderView: View {
     @Environment(\.openWindow) private var openWindow
     @Environment(\.dismissWindow) private var dismissWindow
     @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
-    
+
+
     let titles = ["Antibodies", "Linker", "Payload", "ADC Ready"]
     
     let descriptions = [
@@ -60,16 +61,20 @@ struct ADCBuilderView: View {
             .padding(.bottom, !dataModel.isVOPlaying ? 30 : 60)
             
             // Selector views or navigation button
-            if !dataModel.isVOPlaying && dataModel.hasInitialVOCompleted {
+            if !dataModel.isVOPlaying { // && dataModel.hasInitialVOCompleted
                 if dataModel.adcBuildStep < 3 {
                     Group {
                         switch dataModel.adcBuildStep {
                         case 0:
-                            ADCSelectorView()
+                                ADCSelectorView()
+                                    .opacity(dataModel.hasInitialVOCompleted ? 1 : 0)
+                                    .transition(Appear())
                         case 1:
                             ADCLinkerSelectorView()
+                                    .transition(Appear())
                         case 2:
                             ADCPayloadSelectorView()
+                                    .transition(Appear())
                         default:
                             EmptyView()
                         }
@@ -105,6 +110,7 @@ struct ADCBuilderView: View {
                             font: .title,
                             scaleEffect: 1.06
                         )
+                        .opacity(dataModel.adcBuildStep == 3 ? 1 : 0)
                         .fontWeight(.bold)
                         .glassBackgroundEffect()
                         .hoverEffect(.highlight)
@@ -115,7 +121,7 @@ struct ADCBuilderView: View {
                     .frame(width: 600)
                     .padding(.top, 10)
                     .padding(.bottom, 30)
-                    .transition(Appear())
+                    
                 }
             }
         }

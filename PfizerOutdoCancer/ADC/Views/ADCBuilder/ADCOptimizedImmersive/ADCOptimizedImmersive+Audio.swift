@@ -56,6 +56,14 @@ extension ADCOptimizedImmersive {
             vo4Audio = resource
             os_log(.debug, "ITR..ADCOptimizedImmersive: ✅ Successfully loaded VO4")
         }
+        if let resource = try? await AudioFileResource(named: "/Root/ADC_Build_Complete_1_wav", from: "BuildADC_VO.usda", in: realityKitContentBundle) {
+            completionAudio = resource
+            os_log(.debug, "ITR..ADCOptimizedImmersive: ✅ Successfully loaded completion sound")
+        }
+        if let resource = try? await AudioFileResource(named: "/Root/niceJob_mp3", from: "BuildADC_VO.usda", in: realityKitContentBundle) {
+            niceJobAudio = resource
+            os_log(.debug, "ITR..ADCOptimizedImmersive: ✅ Successfully loaded nice job sound")
+        }
 
         // Create voice-over entity with spatial audio - attached to main view entity
         let voiceOverSource = Entity()
@@ -106,12 +114,56 @@ extension ADCOptimizedImmersive {
             currentVOController = nil
         }
         
-        // Get appropriate VO resource
+        // For step 3, play completion sound first
+        if step == 3 {
+            guard let completionAudio,
+                  let niceJobAudio,
+                  let vo4Audio,
+                  let voEntity = voiceOverAudioEntity else {
+                os_log(.error, "ITR..playSpatialAudio(): Missing required audio or entity for step 3")
+                throw NSError(domain: "ADCOptimizedImmersive", code: -1, userInfo: [NSLocalizedDescriptionKey: "Missing required audio or entity for step 3"])
+            }
+            
+            // 1. Play completion sound and wait for it to finish
+            await withCheckedContinuation { continuation in
+                let completionController = voEntity.prepareAudio(completionAudio)
+                completionController.completionHandler = {
+                    os_log(.debug, "ITR..playSpatialAudio(): Completion sound finished")
+                    continuation.resume()
+                }
+                completionController.play()
+                os_log(.debug, "ITR..playSpatialAudio(): Started playing completion sound")
+            }
+            
+            // 2. Play nice job audio and wait for it to finish
+            await withCheckedContinuation { continuation in
+                let niceJobController = voEntity.prepareAudio(niceJobAudio)
+                niceJobController.completionHandler = {
+                    os_log(.debug, "ITR..playSpatialAudio(): Nice job audio finished")
+                    continuation.resume()
+                }
+                niceJobController.play()
+                os_log(.debug, "ITR..playSpatialAudio(): Started playing nice job audio")
+            }
+            
+            // 3. Play VO 4 and store the controller
+            return await withCheckedContinuation { continuation in
+                currentVOController = voEntity.prepareAudio(vo4Audio)
+                currentVOController?.completionHandler = {
+                    os_log(.debug, "ITR..playSpatialAudio(): VO 4 completed")
+                    dataModel.isVOPlaying = false
+                    continuation.resume()
+                }
+                currentVOController?.play()
+                os_log(.debug, "ITR..playSpatialAudio(): Started playing VO 4")
+            }
+        }
+        
+        // Get appropriate VO resource for other steps
         let voResource: AudioFileResource? = switch step {
             case 0: vo1Audio
             case 1: vo2Audio
             case 2: vo3Audio
-            case 3: vo4Audio
             default: nil
         }
         
