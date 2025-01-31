@@ -32,6 +32,11 @@ final class TrackingSessionManager {
     
     // MARK: - Session Management
     func startTracking(needsHandTracking: Bool = false) async throws {
+        print("\n=== Tracking Session Start ===")
+        print("Need Hand Tracking: \(needsHandTracking)")
+        print("Current Tracking State: \(isTracking)")
+        print("Current Hand Tracking State: \(shouldProcessHandTracking)")
+        
         #if targetEnvironment(simulator)
         // Do nothing in simulator
         print("⚠️ Hand tracking not available in simulator")
@@ -39,11 +44,13 @@ final class TrackingSessionManager {
         #else
         // If already tracking with the same hand tracking state, do nothing
         if isTracking && shouldProcessHandTracking == needsHandTracking {
+            print("⚠️ Already tracking with same state - skipping")
             return
         }
         
         // Wait for previous session to fully stop
         if isTracking {
+            print("🛑 Stopping previous tracking session")
             stopTracking()
             // Wait for the provider to enter stopped state via monitorTrackingEvents
             for _ in 0..<10 { // Maximum 1 second wait
@@ -63,19 +70,26 @@ final class TrackingSessionManager {
             handTrackingProvider = HandTrackingProvider()
             providers = [worldTrackingProvider, handTrackingProvider]
             print("🖐️ Starting hand tracking session")
+            print("Hand Provider State: \(handTrackingProvider.state)")
         } else {
             shouldProcessHandTracking = false
             providers = [worldTrackingProvider]
+            print("🌎 Starting world tracking only")
         }
         
         providersStoppedWithError = false
         try await arkitSession.run(providers)
         isTracking = true
         print("✅ Started tracking providers")
+        print("Final Hand Tracking State: \(shouldProcessHandTracking)")
         #endif
     }
     
     func stopTracking() {
+        print("\n=== Stopping Tracking Session ===")
+        print("Was Tracking: \(isTracking)")
+        print("Had Hand Tracking: \(shouldProcessHandTracking)")
+        
         #if targetEnvironment(simulator)
         // Do nothing in simulator
         return
@@ -99,11 +113,18 @@ final class TrackingSessionManager {
     }
     
     func processHandTrackingUpdates() async {
+        print("\n=== Processing Hand Updates ===")
+        print("Should Process Hand Tracking: \(shouldProcessHandTracking)")
+        print("Hand Provider State: \(handTrackingProvider?.state ?? .initialized)")
+        
         #if targetEnvironment(simulator)
         // Do nothing in simulator
         return
         #else
-        guard shouldProcessHandTracking else { return }
+        guard shouldProcessHandTracking else {
+            print("❌ Hand tracking updates disabled")
+            return
+        }
         
         print("🖐️ Starting hand tracking updates")
         for await update in handTrackingProvider.anchorUpdates {
@@ -113,8 +134,10 @@ final class TrackingSessionManager {
                 switch handAnchor.chirality {
                 case .left:
                     leftHandAnchor = handAnchor
+                    print("👈 Left hand \(update.event == .added ? "added" : "updated")")
                 case .right:
                     rightHandAnchor = handAnchor
+                    print("👉 Right hand \(update.event == .added ? "added" : "updated")")
                 }
                 handTrackingManager.updateHandAnchors(left: leftHandAnchor, right: rightHandAnchor)
             case .removed:

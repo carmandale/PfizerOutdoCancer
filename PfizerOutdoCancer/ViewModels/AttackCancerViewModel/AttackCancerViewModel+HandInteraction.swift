@@ -7,27 +7,49 @@ extension AttackCancerViewModel {
     func handleTap(on entity: Entity, location: SIMD3<Float>, in scene: RealityKit.Scene?) async {
         print("\n=== Tapped Entity ===")
         print("Entity name: \(entity.name)")
-//        appModel.assetLoadingManager.inspectEntityHierarchy(entity)
+        print("Passed Location: \(location)")
         
-        // Get pinch distances for both hands to determine which hand tapped
-        let leftPinchDistance = handTracking.getPinchDistance(.left) ?? Float.infinity
-        let rightPinchDistance = handTracking.getPinchDistance(.right) ?? Float.infinity
-        
-        // Determine which hand's position to use
-        let handPosition: SIMD3<Float>?
-        if leftPinchDistance < rightPinchDistance {
-            handPosition = handTracking.getFingerPosition(.left)
-            print("Left hand tap detected")
+        // If location is non-zero, use it (for tutorial ADCs)
+        let spawnPosition: SIMD3<Float>
+        if location != .zero {
+            spawnPosition = location
+            print("Using passed location for spawn: \(location)")
         } else {
-            handPosition = handTracking.getFingerPosition(.right)
-            print("Right hand tap detected")
+            // Get pinch distances for both hands to determine which hand tapped
+            let leftPinchDistance = handTracking.getPinchDistance(.left) ?? Float.infinity
+            let rightPinchDistance = handTracking.getPinchDistance(.right) ?? Float.infinity
+            
+            // Determine which hand's position to use
+            let handPosition: SIMD3<Float>?
+            if leftPinchDistance < rightPinchDistance {
+                handPosition = handTracking.getFingerPosition(.left)
+                print("Left hand tap detected")
+                print("Left hand position: \(String(describing: handPosition))")
+            } else {
+                handPosition = handTracking.getFingerPosition(.right)
+                print("Right hand tap detected")
+                print("Right hand position: \(String(describing: handPosition))")
+            }
+            
+            guard let position = handPosition else {
+                print("❌ No valid hand position available")
+                return
+            }
+            spawnPosition = position
+            print("Using hand position for spawn: \(spawnPosition)")
         }
         
-        // Ensure we have a valid hand position and scene
-        guard let spawnPosition = handPosition, let scene = scene else {
-            print("No valid hand position or scene available")
+        // Ensure we have a valid scene
+        guard let scene = scene else {
+            print("No valid scene available")
             return
         }
+        
+        // Validate spawn position before proceeding
+        print("\n=== Spawn Position Validation ===")
+        print("Final spawn position: \(spawnPosition)")
+        print("Is valid: \(spawnPosition.x.isFinite && spawnPosition.y.isFinite && spawnPosition.z.isFinite)")
+        print("Is non-zero: \(spawnPosition != .zero)")
         
         // Check if we can target a cancer cell
         if let stateComponent = entity.components[CancerCellStateComponent.self],
@@ -35,6 +57,7 @@ extension AttackCancerViewModel {
            let attachPoint = AttachmentSystem.getAvailablePoint(in: scene, forCellID: cellID) {
             print("Found cancer cell with ID: \(cellID)")
             print("Found attach point: \(attachPoint.name)")
+            print("Attach point world position: \(attachPoint.position(relativeTo: nil))")
             
             AttachmentSystem.markPointAsOccupied(attachPoint)
             await spawnADC(from: spawnPosition, targetPoint: attachPoint, forCellID: cellID)

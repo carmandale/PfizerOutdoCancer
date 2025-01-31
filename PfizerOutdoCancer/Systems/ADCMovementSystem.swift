@@ -114,7 +114,14 @@ public class ADCMovementSystem: System {
             if adcComponent.movementProgress >= 0.8 { // At 80% of journey
                 // Check if current target is headPosition
                 if targetEntity.components[PositioningComponent.self] != nil {
-                    print("🎯 ADC at 80% to headPosition - attempting to find cancer cell target")
+                    print("\n=== ADC HEAD POSITION RETARGET (80%) ===")
+                    print("Current Progress: \(String(format: "%.3f", adcComponent.movementProgress))")
+                    print("Current Position: \(entity.position(relativeTo: nil))")
+                    print("Current Target (Head Position): \(targetEntity.position(relativeTo: nil))")
+                    print("Distance Traveled: \(String(format: "%.3f", adcComponent.traveledDistance))")
+                    print("Total Path Length: \(String(format: "%.3f", adcComponent.pathLength))")
+                    print("🎯 Attempting to find cancer cell target")
+
                     // Try to find a cancer cell target
                     if Self.retargetADC(entity, 
                                       &adcComponent, 
@@ -124,7 +131,7 @@ public class ADCMovementSystem: System {
                         entity.components[ADCComponent.self] = adcComponent
                         // Remove the headPosition entity and its debug sphere
                         targetEntity.removeFromParent()
-                        print("✨ Removed headPosition entity after successful retarget")
+                        print("✨ Successfully retargeted to cancer cell")
                         continue
                     }
                     print("⚠️ No cancer cell targets found - continuing to headPosition")
@@ -418,27 +425,61 @@ public class ADCMovementSystem: System {
     
     @MainActor
     public static func startMovement(entity: Entity, from start: SIMD3<Float>, to targetPoint: Entity) {
-//        print("\n=== Starting ADC Movement ===")
-//        print("ADC Entity: \(entity.name)")
-//        print("Start Position: \(start)")
-//        print("Target Entity: \(targetPoint.name)")
-//        print("Target Position: \(targetPoint.position(relativeTo: nil))")
-//        print("ADC Components: \(entity.components)")
+        print("\n=== ADC LAUNCH VALIDATION ===")
+        print("Target Entity: \(targetPoint.name)")
+        print("Target Has Parent: \(targetPoint.parent != nil)")
+        let targetPosition = targetPoint.position(relativeTo: nil)
+        print("Target World Position: \(targetPosition)")
+        print("Target Position Valid: \(targetPosition.x.isFinite && targetPosition.y.isFinite && targetPosition.z.isFinite)")
+        print("Start Position: \(start)")
+        print("Start Position Valid: \(start.x.isFinite && start.y.isFinite && start.z.isFinite)")
+        
+        print("\n=== ADC Entity State ===")
+        print("ADC Entity: \(entity.name)")
+        print("ADC Has Parent: \(entity.parent != nil)")
+        print("ADC Is Enabled: \(entity.isEnabled)")
+        print("Current Position: \(entity.position(relativeTo: nil))")
         
         guard var adcComponent = entity.components[ADCComponent.self] else {
             print("ERROR: No ADCComponent found on entity")
             return
         }
         
+        // Calculate path parameters
+        let midPoint = mix(start, targetPosition, t: 0.5)
+        let distance = length(targetPosition - start)
+        let arcHeightFactor = Float.random(in: arcHeightRange)
+        let heightOffset = distance * 0.5 * arcHeightFactor
+        let controlPoint = midPoint + SIMD3<Float>(0, heightOffset, 0)
+        
+        print("\nPath Parameters:")
+        print("Mid Point: \(midPoint)")
+        print("Height Offset: \(heightOffset)")
+        print("Control Point: \(controlPoint)")
+        
+        // Calculate path length
+        let pathLength = quadraticBezierLength(start, controlPoint, targetPosition)
+        print("\nPath Metrics:")
+        print("Curve Length: \(String(format: "%.3f", pathLength))")
+        print("Arc Height Factor: \(String(format: "%.3f", arcHeightFactor))")
+        print("Speed Factor: \(String(format: "%.3f", Float.random(in: speedRange)))")
+        
         // Set up movement
         adcComponent.state = .moving
         adcComponent.startWorldPosition = start
         adcComponent.movementProgress = 0
         adcComponent.targetEntityID = UInt64(targetPoint.id)
+        adcComponent.pathLength = pathLength
+        adcComponent.traveledDistance = 0
         
         // Add randomization factors
-        adcComponent.arcHeightFactor = Float.random(in: arcHeightRange)
+        adcComponent.arcHeightFactor = arcHeightFactor
         adcComponent.speedFactor = Float.random(in: speedRange)
+        
+        print("\nComponent Setup:")
+        print("Initial Progress: \(adcComponent.movementProgress)")
+        print("Path Length: \(String(format: "%.3f", adcComponent.pathLength))")
+        print("Traveled Distance: \(String(format: "%.3f", adcComponent.traveledDistance))")
         
         // Update the component
         entity.components[ADCComponent.self] = adcComponent

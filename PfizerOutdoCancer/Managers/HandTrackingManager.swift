@@ -25,11 +25,18 @@ final class HandTrackingManager {
     }
     
     func configure(with trackingManager: TrackingSessionManager) {
+        print("\n=== Configuring Hand Tracking Manager ===")
+        print("Previous Manager: \(self.trackingManager != nil)")
+        print("New Manager: \(trackingManager)")
         self.trackingManager = trackingManager
     }
     
     // MARK: - Setup
     func setupContentEntity() -> Entity {
+        print("\n=== Setting Up Hand Tracking Content ===")
+        print("Content Entity Parent: \(contentEntity.parent?.name ?? "none")")
+        print("Existing Children: \(contentEntity.children.count)")
+        
         // Add finger entities to content
         for entity in fingerEntities.values {
             entity.scale = .one * 0.02  // Make sure debug spheres are visible
@@ -39,11 +46,16 @@ final class HandTrackingManager {
             ))
             entity.isEnabled = true  // Make sure entities start enabled
             contentEntity.addChild(entity)
+            print("✅ Added finger entity to content")
         }
         
+        print("Setting up closure component")
         // Set up hand tracking updates using ClosureComponent
         contentEntity.components.set(ClosureComponent(closure: { [weak self] deltaTime in
-            guard let self = self else { return }
+            guard let self = self else {
+                print("❌ Self reference lost in hand tracking closure")
+                return
+            }
             
             // Update left hand
             if let leftAnchor = self.leftHandAnchor,
@@ -53,6 +65,7 @@ final class HandTrackingManager {
                 if indexTip.isTracked {
                     let originFromIndex = leftAnchor.originFromAnchorTransform * indexTip.anchorFromJointTransform
                     self.fingerEntities[.left]?.setTransformMatrix(originFromIndex, relativeTo: nil)
+                    print("📍 Left hand index tip tracked")
                 }
             }
             
@@ -64,10 +77,13 @@ final class HandTrackingManager {
                 if indexTip.isTracked {
                     let originFromIndex = rightAnchor.originFromAnchorTransform * indexTip.anchorFromJointTransform
                     self.fingerEntities[.right]?.setTransformMatrix(originFromIndex, relativeTo: nil)
+                    print("📍 Right hand index tip tracked")
                 }
             }
         }))
         
+        print("✅ Hand tracking content setup complete")
+        print("Final Children Count: \(contentEntity.children.count)")
         return contentEntity
     }
     
@@ -77,39 +93,50 @@ final class HandTrackingManager {
     /// - Parameter chirality: Which hand to get the position for
     /// - Returns: The world space position of the index finger, if available
     func getFingerPosition(_ chirality: HandAnchor.Chirality) -> SIMD3<Float>? {
-        return fingerEntities[chirality]?.transform.translation
+        let position = fingerEntities[chirality]?.transform.translation
+        print("\n=== Getting \(chirality) Hand Position ===")
+        print("Entity Exists: \(fingerEntities[chirality] != nil)")
+        print("Entity Enabled: \(fingerEntities[chirality]?.isEnabled ?? false)")
+        print("Entity In Scene: \(fingerEntities[chirality]?.parent != nil)")
+        print("Position: \(String(describing: position))")
+        return position
     }
     
     /// Gets the distance between thumb and index finger for a hand
     /// - Parameter chirality: Which hand to check
     /// - Returns: Distance between thumb and index finger if both are tracked, nil otherwise
     func getPinchDistance(_ chirality: HandAnchor.Chirality) -> Float? {
-        let handAnchor = chirality == .left ? leftHandAnchor : rightHandAnchor
+        print("\n=== Getting \(chirality) Hand Pinch Distance ===")
+        guard let anchor = chirality == .left ? leftHandAnchor : rightHandAnchor,
+              let skeleton = anchor.handSkeleton else {
+            print("❌ No hand skeleton available")
+            return nil
+        }
         
-        guard handAnchor?.isTracked == true else { return nil }
+        let thumb = skeleton.joint(.thumbTip)
+        let index = skeleton.joint(.indexFingerTip)
         
-        let thumbTip = handAnchor?.handSkeleton?.joint(.thumbTip)
-        let indexTip = handAnchor?.handSkeleton?.joint(.indexFingerTip)
+        guard thumb.isTracked && index.isTracked else {
+            print("❌ Thumb or index finger not tracked")
+            return nil
+        }
         
-        guard ((thumbTip?.isTracked) != nil) && ((indexTip?.isTracked) != nil) else { return nil }
+        let thumbTransform = anchor.originFromAnchorTransform * thumb.anchorFromJointTransform
+        let indexTransform = anchor.originFromAnchorTransform * index.anchorFromJointTransform
         
-        let originFromAnchor = handAnchor!.originFromAnchorTransform
-        let thumbTransform = thumbTip?.anchorFromJointTransform
-        let indexTransform = indexTip?.anchorFromJointTransform
-        
-        let originFromThumb = originFromAnchor * thumbTransform!
-        let originFromIndex = originFromAnchor * indexTransform!
-        
-        // Get positions from transforms
-        let thumbPosition = SIMD3<Float>(originFromThumb.columns.3.x, 
-                                       originFromThumb.columns.3.y, 
-                                       originFromThumb.columns.3.z)
-        let indexPosition = SIMD3<Float>(originFromIndex.columns.3.x, 
-                                       originFromIndex.columns.3.y, 
-                                       originFromIndex.columns.3.z)
-        
-        // Calculate distance
-        return distance(thumbPosition, indexPosition)
+        let thumbPos = SIMD3<Float>(
+            thumbTransform.columns.3.x,
+            thumbTransform.columns.3.y,
+            thumbTransform.columns.3.z
+        )
+        let indexPos = SIMD3<Float>(
+            indexTransform.columns.3.x,
+            indexTransform.columns.3.y,
+            indexTransform.columns.3.z
+        )
+        let distance = simd_length(thumbPos - indexPos)
+        print("📏 Pinch distance: \(distance)")
+        return distance
     }
     
     /// Calculate distance between two 3D points
@@ -119,6 +146,13 @@ final class HandTrackingManager {
     }
     
     func updateHandAnchors(left: HandAnchor?, right: HandAnchor?) {
+        print("\n=== Updating Hand Anchors ===")
+        print("Left Hand: \(left != nil ? "Present" : "Nil")")
+        print("Right Hand: \(right != nil ? "Present" : "Nil")")
+        print("Content Entity in Scene: \(contentEntity.parent != nil)")
+        print("Left Entity in Scene: \(fingerEntities[.left]?.parent != nil)")
+        print("Right Entity in Scene: \(fingerEntities[.right]?.parent != nil)")
+        
         leftHandAnchor = left
         rightHandAnchor = right
     }

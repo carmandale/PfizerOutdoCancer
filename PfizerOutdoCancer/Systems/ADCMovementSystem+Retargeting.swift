@@ -56,41 +56,44 @@ extension ADCMovementSystem {
             return true
         }
         
-        // Skip logging for routine validation checks
-        let isInitialValidation = targetEntity.components[AttachmentPoint.self]?.isOccupied == false
-        
-        if isInitialValidation {
-            print("\n=== Validating Target ===")
-            print("Target Entity: \(targetEntity.name)")
-            print("ADC Component Target Cell ID: \(String(describing: adcComponent.targetCellID))")
-        }
-        
         // Check if target entity still exists and is valid
         if targetEntity.parent == nil {
-            print("⚠️ Target attachment point has been removed from scene")
+            print("\n=== ADC RETARGET (Target Lost) ===")
+            print("Target attachment point has been removed from scene")
             return false
         }
         
         // Find parent cancer cell
         guard let cancerCell = findParentCancerCell(for: targetEntity, in: scene) else {
-            print("⚠️ Parent cancer cell no longer exists")
+            print("\n=== ADC RETARGET (Cancer Cell Lost) ===")
+            print("Parent cancer cell no longer exists")
             return false
         }
         
-        // Check cancer cell state using new component structure
+        // Check cancer cell state
         guard let stateComponent = cancerCell.components[CancerCellStateComponent.self],
               let cellID = adcComponent.targetCellID else {
-            print("⚠️ Missing state component or target cell ID")
+            print("\n=== ADC RETARGET (Invalid State) ===")
+            print("Missing state component or target cell ID")
             return false
         }
         
         // Validate using parameters
         let parameters = stateComponent.parameters
         
-        // Only log state changes
-//        if parameters.hitCount > 0 {
-//            print("📊 Cell \(cellID): \(parameters.hitCount)/\(parameters.requiredHits) hits")
-//        }
+        if parameters.isDestroyed {
+            print("\n=== ADC RETARGET (Cell Destroyed) ===")
+            print("Cell ID: \(cellID)")
+            print("Hit Count: \(parameters.hitCount)/\(parameters.requiredHits)")
+            return false
+        }
+        
+        if parameters.hitCount >= parameters.requiredHits {
+            print("\n=== ADC RETARGET (Cell Complete) ===")
+            print("Cell ID: \(cellID)")
+            print("Hit Count: \(parameters.hitCount)/\(parameters.requiredHits)")
+            return false
+        }
         
         // Check if this is still our target cell and it's valid
         if parameters.cellID == cellID &&
@@ -99,7 +102,10 @@ extension ADCMovementSystem {
             return true
         }
         
-        print("❌ Target validation failed")
+        print("\n=== ADC RETARGET (Target Invalid) ===")
+        print("Cell ID: \(cellID)")
+        print("Hit Count: \(parameters.hitCount)/\(parameters.requiredHits)")
+        print("Is Destroyed: \(parameters.isDestroyed)")
         return false
     }
     
