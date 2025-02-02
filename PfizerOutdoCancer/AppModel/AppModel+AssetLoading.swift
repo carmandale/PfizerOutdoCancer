@@ -38,8 +38,8 @@ extension AppModel {
                         loadingProgress = assetLoadingManager.loadingProgress()
                     }
                     
-                    try await assetLoadingManager.loadAssets()
-                    print("Assets loaded successfully")
+                    // try await assetLoadingManager.loadAssets()
+                    // print("Assets loaded successfully")
                     
                     // Update state and trigger phase transition
                     loadingState = .completed

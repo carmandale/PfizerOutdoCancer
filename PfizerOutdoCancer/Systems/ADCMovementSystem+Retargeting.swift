@@ -109,7 +109,7 @@ extension ADCMovementSystem {
     static func findNewTarget(for adcEntity: Entity, currentPosition: SIMD3<Float>, in scene: Scene) -> (Entity, Int)? {
         print("\n=== Finding New Target ===")
         let query = EntityQuery(where: .has(AttachmentPoint.self))
-        var closestDistance: Float = Float.infinity
+        var bestScore: Float = -Float.infinity
         var bestTarget: (attachPoint: Entity, cellID: Int)? = nil
         
         let entities = scene.performQuery(query)
@@ -134,8 +134,9 @@ extension ADCMovementSystem {
                 continue
             }
             
-            // Calculate distance
+            // Calculate positions and vectors
             let attachPosition = entity.position(relativeTo: nil)
+            let cellCenter = cancerCell.position(relativeTo: nil)
             let distance = length(attachPosition - currentPosition)
             
             // Skip if the target is too close (prevent sharp turns)
@@ -143,10 +144,30 @@ extension ADCMovementSystem {
                 continue
             }
             
-            if distance < closestDistance {
-                closestDistance = distance
+            // Calculate base score from distance (closer is better, but not too close)
+            var score = 1.0 / max(distance, 0.3)
+            
+            // Calculate how front-facing the antigen is relative to spawn point
+            // Vector from cell center to antigen
+            let antigenDirection = simd_normalize(attachPosition - cellCenter)
+            
+            // Vector from cell center to spawn point
+            let cellToSpawn = simd_normalize(currentPosition - cellCenter)
+            
+            // Calculate dot product (how front-facing the antigen is)
+            let dotProduct = simd_dot(antigenDirection, cellToSpawn)
+            
+            // Heavily weight front-facing antigens
+            // dotProduct ranges from -1 (back) to 1 (front)
+            // We transform it to range 0 to 1 and multiply by 2 for emphasis
+            score *= (dotProduct + 1) * 2.0
+            
+            print("📊 Antigen Score - Distance: \(distance), Dot Product: \(dotProduct), Final Score: \(score)")
+            
+            if score > bestScore {
+                bestScore = score
                 bestTarget = (attachPoint: entity, cellID: cellID)
-                print("✨ New best target found - Distance: \(distance)")
+                print("✨ New best target found - Score: \(score)")
             }
         }
         
@@ -154,7 +175,7 @@ extension ADCMovementSystem {
             print("\n🎯 Selected target:")
             print("Cell ID: \(target.cellID)")
             print("Attachment Point: \(target.attachPoint.name)")
-            print("Distance: \(closestDistance)")
+            print("Final Score: \(bestScore)")
         }
         
         return bestTarget

@@ -4,6 +4,19 @@ import RealityKit
 
 extension AttackCancerViewModel {
     // MARK: - Notification Setup
+    func handleTimelineNotification(for entity: Entity) {
+        // Add debug logging
+        print("📢 Timeline notification received from \(entity.name)")
+        
+        // Main thread execution for UI updates
+        DispatchQueue.main.async {
+            print("🎯 Opening hope meter utility window")
+            if !self.appModel.isHopeMeterUtilityWindowOpen {
+                self.appModel.isHopeMeterUtilityWindowOpen = true
+            }
+        }
+    }
+
     func setupNotifications() {
         NotificationCenter.default.addObserver(
             self,

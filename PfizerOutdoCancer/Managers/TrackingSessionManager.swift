@@ -134,10 +134,10 @@ final class TrackingSessionManager {
                 switch handAnchor.chirality {
                 case .left:
                     leftHandAnchor = handAnchor
-                    print("👈 Left hand \(update.event == .added ? "added" : "updated")")
+//                    print("👈 Left hand \(update.event == .added ? "added" : "updated")")
                 case .right:
                     rightHandAnchor = handAnchor
-                    print("👉 Right hand \(update.event == .added ? "added" : "updated")")
+//                    print("👉 Right hand \(update.event == .added ? "added" : "updated")")
                 }
                 handTrackingManager.updateHandAnchors(left: leftHandAnchor, right: rightHandAnchor)
             case .removed:

@@ -61,10 +61,11 @@ def Xform "Root"
 
     def RealityKitTimeline "AttackCancerGameStart_VO"
     {
-        reorder nameChildren = ["Track2", "Track", "Track3", "Track4"]
+        reorder nameChildren = ["Track2", "Track", "Track3", "Track4", "Track5"]
         def RealityKitTrack "Track2"
         {
-            def RealityKitAction "Play_Audio"
+            reorder nameChildren = ["tutorial_01", "tutorial_02", "gameStart_01", "gameStart_02"]
+            def RealityKitAction "tutorial_01"
             {
                 string actionKind = "audio"
                 string audioResourceName = "tutorial_01_mp3"
@@ -79,7 +80,7 @@ def Xform "Root"
                 }
             }
 
-            def RealityKitAction "Play_Audio2"
+            def RealityKitAction "tutorial_02"
             {
                 string actionKind = "audio"
                 string audioResourceName = "tutorial_02_mp3"
@@ -94,14 +95,14 @@ def Xform "Root"
                 }
             }
 
-            def RealityKitAction "Play_Audio3"
+            def RealityKitAction "gameStart_01"
             {
                 string actionKind = "audio"
                 string audioResourceName = "gameStart_01_mp3"
                 bool controlPlayback = 1
                 double duration = 11.702854166666667
                 uniform token info:id = "1204D4D5-6D0E-4E69-901E-F61DE4B09CF2"
-                double startTime = 32.03311614598621
+                double startTime = 35.64808821888402
                 rel target = </Root/VO>
 
                 def RealityKitStruct "handoffType"
@@ -109,14 +110,14 @@ def Xform "Root"
                 }
             }
 
-            def RealityKitAction "Play_Audio4"
+            def RealityKitAction "gameStart_02"
             {
                 string actionKind = "audio"
                 string audioResourceName = "gameStart_02_mp3"
                 bool controlPlayback = 1
                 double duration = 3.4220208333333333
                 uniform token info:id = "A62883DE-996D-40CC-B909-A085BE3370F6"
-                double startTime = 44.4255877714498
+                double startTime = 31.610204565763343
                 rel target = </Root/VO>
 
                 def RealityKitStruct "handoffType"
@@ -164,6 +165,19 @@ def Xform "Root"
                 double loopCount = 0
                 double startTime = 0
                 rel timeline = </Root/ADC_FloatAndSpin>
+            }
+        }
+
+        def RealityKitTrack "Track5"
+        {
+            def RealityKitAction "Notification"
+            {
+                string actionKind = "notification"
+                double duration = 0
+                uniform token info:id = "278BC01A-BE25-4453-9E79-AD11CA9AA2C6"
+                string notificationName = "StartButtonTrigger"
+                double startTime = 24.83183747504016
+                rel target = </Root/CancerCell_spawn>
             }
         }
     }

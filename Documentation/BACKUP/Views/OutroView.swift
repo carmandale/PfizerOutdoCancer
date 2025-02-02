@@ -47,9 +47,9 @@ struct OutroView: View {
         .onAppear {
             transitionTimer = Timer.scheduledTimer(withTimeInterval: 42, repeats: false) { _ in
                 Task { @MainActor in
-                    openWindow(id: AppModel.debugNavigationWindowId)
-                    appModel.isDebugWindowOpen = true
-                    await appModel.transitionToPhase(.intro)
+                    openWindow(id: AppModel.navWindowId)
+                    appModel.isNavWindowOpen = true
+                    await appModel.transitionToPhase(.lab)
                 }
             }
             

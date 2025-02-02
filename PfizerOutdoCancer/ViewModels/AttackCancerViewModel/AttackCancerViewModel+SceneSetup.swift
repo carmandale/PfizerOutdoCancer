@@ -34,9 +34,15 @@ extension AttackCancerViewModel {
         }
         
         // Environment
-        if let attackCancerScene = await appModel.assetLoadingManager.getAttackCancerEnvironment() {
+        do {
+            let attackCancerScene = try await appModel.assetLoadingManager.instantiateAsset(
+                withName: "attack_cancer_environment",
+                category: .attackCancerEnvironment
+            )
             root.addChild(attackCancerScene)
             setupCollisions(in: attackCancerScene)
+        } catch {
+            print("❌ Failed to load attack cancer environment: \(error)")
         }
         
         print("✅ Environment setup complete")
@@ -59,29 +65,42 @@ extension AttackCancerViewModel {
         // Ensure we have the scene reference
         scene = root.scene
         
-        if let gameStartVO = await appModel.assetLoadingManager.instantiateEntity("game_start_vo") {
+        do {
+            print("📱 Tutorial: Loading game start VO")
+            let gameStartVO = try await appModel.assetLoadingManager.instantiateAsset(
+                withName: "game_start_vo",
+                category: .attackCancerEnvironment
+            )
+            print("✅ Tutorial: Retrieved game start VO")
+            
             if let VO_parent = root.findEntity(named: "Decoy") {
-                print("🎯 Found tutorial VO parent")
+                print("🎯 Tutorial: Found VO parent")
                 VO_parent.addChild(gameStartVO)
                 root.addChild(VO_parent)
+                print("✅ Tutorial: Added VO to scene")
                 
                 // Find tutorial cancer cell using existing pattern
                 if let cell = gameStartVO.findEntity(named: "CancerCell_spawn") {
-                    print("✅ Found tutorial cancer cell")
+                    print("✅ Tutorial: Found tutorial cancer cell")
                     tutorialCancerCell = cell
                     
                     // Set up tutorial cell using ViewModel
                     setupTutorialCancerCell(cell)
+                    print("✅ Tutorial: Cancer cell setup complete")
                     
-                    // Start ADC firing sequence - now passing both root and attachments
+                    // Start ADC firing sequence
                     Task {
                         await fireTutorialADCs(in: root, attachments: attachments)
                     }
-                    
+                    print("✅ Tutorial: ADC sequence initiated")
                 } else {
-                    print("❌ Could not find tutorial cancer cell")
+                    print("❌ Tutorial: Could not find CancerCell_spawn")
                 }
+            } else {
+                print("❌ Tutorial: Could not find Decoy entity")
             }
+        } catch {
+            print("❌ Tutorial: Failed to load game start VO: \(error)")
         }
     }
     
@@ -131,10 +150,13 @@ extension AttackCancerViewModel {
         print("\n=== Initializing Cell States ===")
         cellStates = Array(repeating: CellState(), count: maxCancerCells)
         
-
         // ADC template is already set up during phase transition
         
-        if let cancerCellTemplate = await appModel.assetLoadingManager.instantiateEntity("cancer_cell") {
+        do {
+            let cancerCellTemplate = try await appModel.assetLoadingManager.instantiateAsset(
+                withName: "cancer_cell",
+                category: .cancerCell
+            )
             let maxCells = maxCancerCells
             await spawnCancerCells(in: root, from: cancerCellTemplate, count: maxCells)
 //            setupUIAttachments(in: root, attachments: attachments, count: maxCells)
@@ -177,6 +199,8 @@ extension AttackCancerViewModel {
             
             // print("🎮 Game Content Setup Complete - Starting Hope Meter")
             // appModel.startHopeMeter()
+        } catch {
+            print("❌ Failed to load cancer cell template: \(error)")
         }
     }
     

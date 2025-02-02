@@ -20,7 +20,7 @@ struct IntroView: View {
         RealityView { content, attachments in
             print("📱 IntroView: Setting up RealityView")
             // Set up root entity
-            let root = appModel.introState.setupIntroRoot()
+            let root = appModel.introState.introRootEntity ?? appModel.introState.setupIntroRoot()
             
             root.components.set(PositioningComponent(
                 offsetX: 0,
@@ -50,6 +50,13 @@ struct IntroView: View {
             }
             Attachment(id: "navToggle") {
                 NavToggleView()
+            }
+        }
+        .onAppear {
+        // Make sure the root entity is created as soon as the view appears.
+            if appModel.introState.introRootEntity == nil {
+                _ = appModel.introState.setupIntroRoot()
+                print("📱 IntroView: setupIntroRoot() called in onAppear")
             }
         }
         .task(id: appModel.introState.introRootEntity) {
@@ -93,3 +100,5 @@ struct IntroView: View {
         }
     }
 }
+
+

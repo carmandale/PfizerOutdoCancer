@@ -14,22 +14,43 @@ struct AttackCancerView: View {
         @Bindable var appModel = appModel
         
         RealityView { content, attachments in
-            print("📱 AttackCancerView: Setting up RealityView")
+            print("\n=== AttackCancerView Setup ===")
+            print("📱 AttackCancerView: Setting up root")
             let root = appModel.gameState.setupRoot()
+            root.name = "AttackCancerRoot"
+            print("✅ Root entity created: \(root.name)")
+
+            let decoy = Entity()
+            decoy.name = "Decoy"
+            decoy.components.set(PositioningComponent(
+                offsetX: 0,
+                offsetY: 0,
+                offsetZ: -1.0
+            ))
+            root.addChild(decoy)
+            print("✅ Decoy entity added to root")
             
             content.add(root)
-            
             appModel.gameState.storedAttachments = attachments
-            
-            // Store attachments for later setup
-//            if let hopeMeterEntity = attachments.entity(for: "HopeMeter") {
-//                print("📱 AttackCancerView: Found SwiftUI attachments")
-//                
-//            } else {
-//                print("❌ AttackCancerView: Failed to get SwiftUI attachments")
-//            }
-            
             appModel.gameState.setupHandTracking(in: content, attachments: attachments)
+            
+            // Setup environment in a task after root is configured
+            Task { @MainActor in
+                print("\n=== Setting up Environment ===")
+                await appModel.gameState.setupEnvironment(in: root, attachments: attachments)
+                print("✅ Environment setup complete")
+                
+                // If tutorial is already started, begin it
+                if appModel.isTutorialStarted {
+                    print("\n🎓 Starting tutorial sequence...")
+                    await appModel.gameState.startTutorial(in: root, attachments: attachments)
+                }
+                
+                // If game should start, handle it
+                if appModel.shouldStartGame {
+                    await appModel.gameState.handleGameStart(in: root)
+                }
+            }
         } attachments: {
             // HopeMeter attachment
             // Attachment(id: "HopeMeter") {
@@ -51,32 +72,14 @@ struct AttackCancerView: View {
 //                }
 //            }
         }
-        .task(id: appModel.gameState.rootEntity) {
-            guard !appModel.gameState.isSetupComplete else {
-                print("📱 AttackCancerView: Setup already complete, skipping")
-                return
-            }
-            
-            guard let root = appModel.gameState.rootEntity else {
-                print("❌ AttackCancerView: No root entity found in task")
-                return
-            }
-            
-            guard let attachments = appModel.gameState.storedAttachments else {
-                print("❌ AttackCancerView: No stored attachments found")
-                return
-            }
-            
-            print("📱 AttackCancerView: Starting environment setup")
-            await appModel.gameState.setupEnvironment(in: root, attachments: attachments)
-            
-            // Start tracking systems
+        .task {
             await appModel.trackingManager.processWorldTrackingUpdates()
+        }
+        .task {
             await appModel.trackingManager.processHandTrackingUpdates()
+        }
+        .task {
             await appModel.trackingManager.monitorTrackingEvents()
-            
-            appModel.gameState.isSetupComplete = true
-            print("✅ AttackCancerView: Setup complete")
         }
         .gesture(
             SpatialTapGesture()
@@ -114,14 +117,16 @@ struct AttackCancerView: View {
             appModel.gameState.tearDownGame()
             
             // Then trigger phase transition
-            Task {
-                await appModel.transitionToPhase(.ready)
-            }
+            // Task {
+            //     await appModel.transitionToPhase(.ready)
+            // }
         }
         .onChange(of: appModel.isTutorialStarted) { _, started in
-            if started, let root = appModel.gameState.rootEntity, let attachments = appModel.gameState.storedAttachments {
+            // Only start tutorial if it wasn't already started during initial setup
+            if started && !appModel.gameState.isSetupComplete,
+               let root = appModel.gameState.rootEntity,
+               let attachments = appModel.gameState.storedAttachments {
                 print("🎓 Tutorial state changed - Starting tutorial...")
-                
                 Task {
                     await appModel.gameState.startTutorial(in: root, attachments: attachments)
                 }

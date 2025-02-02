@@ -32,11 +32,11 @@ def Xform "Root"
     def Xform "VO_1" (
         active = true
         customData = {
-            float3 rotationEulerHint = (0, 3.1415927, 0)
+            float3 rotationEulerHint = (0, 3.8040369, 0)
         }
     )
     {
-        quatf xformOp:orient = (-4.371139e-8, 0, 1, 0)
+        quatf xformOp:orient = (-0.32519886, 0, 0.9456457, 0)
         float3 xformOp:translate = (-0.5, 1.4, -0.5)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
@@ -58,14 +58,8 @@ def Xform "Root"
         {
             float directivityFocus = 1
             uniform token info:id = "RealityKit.SpatialAudio"
-            float reverbLevel = -60
+            float reverbLevel = 0
             float rolloffFactor = 0
-        }
-
-        def RealityKitComponent "Billboard"
-        {
-            float blendFactor = 1
-            uniform token info:id = "RealityKit.Billboard"
         }
     }
 
@@ -128,12 +122,12 @@ def Xform "Root"
     def Xform "VO_2" (
         active = true
         customData = {
-            float3 rotationEulerHint = (0, 3.1415927, 0)
+            float3 rotationEulerHint = (0, 2.5385742, 0)
         }
     )
     {
-        quatf xformOp:orient = (-4.371139e-8, 0, 1, 0)
-        float3 xformOp:translate = (0.445, 1.5, -0.5)
+        quatf xformOp:orient = (0.29696155, 0, 0.9548894, 0)
+        float3 xformOp:translate = (0.445, 1.4, -0.5)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
         def RealityKitComponent "AudioLibrary"
@@ -152,12 +146,6 @@ def Xform "Root"
             float directivityFocus = 1
             uniform token info:id = "RealityKit.SpatialAudio"
             float reverbLevel = -9.9985895
-        }
-
-        def RealityKitComponent "Billboard"
-        {
-            float blendFactor = 1
-            uniform token info:id = "RealityKit.Billboard"
         }
     }
 

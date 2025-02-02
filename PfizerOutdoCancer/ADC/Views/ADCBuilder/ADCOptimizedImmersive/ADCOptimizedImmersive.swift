@@ -331,12 +331,12 @@ struct ADCOptimizedImmersive: View {
                         
 //                        try? await mainEntity.animatePosition(to: SIMD3(-0.125, 0, 0), duration: 1.0, delay: 0.0)
 //                        os_log(.debug, "ITR..Attempting to animate main view position")
-                        try? await mainViewEntity.animatePosition(to: SIMD3(-0.5, 0, 0), duration: 1.0, delay: 1.0)
+                        try? await mainViewEntity.animatePosition(to: SIMD3(-0.5, 0, 0.2), duration: 1.0, delay: 0.5)
                         
                         // After position animation, fade in antibody with delay
                         if let antibodyEntity = antibodyEntity {
                             os_log(.debug, "ITR..antibodyEntity exists, fading in")
-                            try? await antibodyEntity.fadeOpacity(to: 1, duration: 1.0, delay: 1.5)
+                            try? await antibodyEntity.fadeOpacity(to: 1, duration: 1.0, delay: 1.0)
                             antibodyEntity.isEnabled = true
                             os_log(.debug, "ITR..antibodyEntity fade complete, isEnabled set to true")
                         }
@@ -508,21 +508,29 @@ struct ADCOptimizedImmersive: View {
             }
         
         // Get antibody scene from asset manager
-        guard let antibodyScene = await appModel.assetLoadingManager.instantiateEntity("antibody_scene") else {
-            return
-        }
-        
-        self.antibodyRootEntity = antibodyScene
+        do {
+            let antibodyScene = try await appModel.assetLoadingManager.instantiateAsset(
+                withName: "antibody_scene",
+                category: .buildADCEnvironment
+            )
+            guard antibodyScene != nil else {
+                print("Failed to load antibody scene")
+                return
+            }
+            self.antibodyRootEntity = antibodyScene
             
-        prepareAntibodyEntities()
+            prepareAntibodyEntities()
             
-        await prepareLinkerEntities()
-        await preparePayloadEntities()
-        if let rootEntity = antibodyRootEntity {
-            prepareTargetEntities(antibodyScene: rootEntity)
+            await prepareLinkerEntities()
+            await preparePayloadEntities()
+            if let rootEntity = antibodyRootEntity {
+                prepareTargetEntities(antibodyScene: rootEntity)
+            }
+            
+            // Ensure linkers start disabled
+            self.adcLinkers.forEach { $0.isEnabled = false }
+        } catch {
+            os_log(.error, "ITR..setupEntitiesAndMaterials(): ❌ Failed to load antibody scene: \(error)")
         }
-        
-        // Ensure linkers start disabled
-        self.adcLinkers.forEach { $0.isEnabled = false }
     }
 }

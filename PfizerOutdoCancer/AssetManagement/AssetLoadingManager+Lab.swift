@@ -24,7 +24,7 @@ extension AssetLoadingManager {
                 try await IBLUtility.addImageBasedLighting(to: assetRoot, imageName: "lab_v005")
                 
                 // Store the actual environment
-                await self.setLaboratory(assetRoot)
+//                await self.setLaboratory(assetRoot)
                 
                 print("Successfully assembled complete LabEnvironment")
                 return .success(entity: assetRoot, key: "lab_environment", category: .labEnvironment)
@@ -172,5 +172,35 @@ extension AssetLoadingManager {
         instance.position = .zero
         instance.orientation = .init()
         instance.scale = .one
+    }
+    
+    /// Loads and assembles the complete lab environment on demand
+    func loadAssembledLab() async throws -> Entity {
+        print("📱 Starting lab environment assembly")
+        
+        // Check if we already have it cached
+        if let cached = entityTemplates["assembled_lab"] {
+            print("✅ Using cached assembled lab")
+            return cached.clone(recursive: true)
+        }
+        
+        let assetRoot = Entity()
+        
+        // Use existing assembly logic
+        let labEnvironmentScene = try await loadEntity(named: "LabEnvironment")
+        await assetRoot.addChild(labEnvironmentScene)
+        
+        // Use existing equipment population
+        let equipmentScene = try await loadPopulatedLabScene()
+        await assetRoot.addChild(equipmentScene)
+        
+        // Use existing IBL setup
+        try await IBLUtility.addImageBasedLighting(to: assetRoot, imageName: "lab_v005")
+        
+        // Cache the assembled lab
+        entityTemplates["assembled_lab"] = assetRoot
+        
+        print("✅ Completed lab environment assembly")
+        return assetRoot.clone(recursive: true)
     }
 } 

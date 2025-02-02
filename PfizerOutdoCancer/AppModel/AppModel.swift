@@ -102,6 +102,7 @@ final class AppModel {
     var gameState: AttackCancerViewModel
     var introState: IntroViewModel
     var labState: LabViewModel
+    var outroState: OutroViewModel
     var isNavWindowOpen = false
     var isHopeMeterUtilityWindowOpen = false
     var isLibraryWindowOpen = false
@@ -209,11 +210,13 @@ final class AppModel {
         self.gameState = AttackCancerViewModel()
         self.introState = IntroViewModel()
         self.labState = LabViewModel()
+        self.outroState = OutroViewModel()
         
         // Set up dependencies
         self.gameState.appModel = self
         self.introState.appModel = self
         self.labState.appModel = self
+        self.outroState.appModel = self
         self.gameState.handTracking = self.trackingManager.handTrackingManager
     }
     
@@ -230,23 +233,80 @@ final class AppModel {
             trackingManager.stopTracking()
         }
         
-        // Set the new phase
-        currentPhase = newPhase
-        
-        // Then start tracking if the new phase needs it
-        if newPhase.needsHandTracking {
-            // Add a small delay to ensure ARKit has time to clean up
-            try? await Task.sleep(for: .milliseconds(100))
-            try? await trackingManager.startTracking(needsHandTracking: newPhase.needsHandTracking)
-        }
-        
-        // Handle ADC setup for playing phase
-        if newPhase == .playing, let adcDataModel = adcDataModel {
-            if let adcEntity = await assetLoadingManager.instantiateEntity("adc") {
-                gameState.setADCTemplate(adcEntity, dataModel: adcDataModel)
+        // Clean up assets from the current phase before transitioning
+        do {
+            switch currentPhase {
+            case .intro:
+                if newPhase != .intro {
+                    await assetLoadingManager.releaseIntroEnvironment()
+                }
+            // Add other phase cleanup as needed
+            default:
+                break
             }
+            
+            // Pre-load required assets for playing phase before state change
+            if newPhase == .playing {
+                print("\n=== Pre-loading Playing Phase Assets ===")
+                print("📱 Pre-loading required assets for playing phase...")
+                if let adcDataModel = adcDataModel {
+                    // Load and configure ADC template
+                    print("🎯 Loading ADC template...")
+                    let adcEntity = try await assetLoadingManager.instantiateAsset(
+                        withName: "adc",
+                        category: .adc
+                    )
+                    print("✅ ADC entity loaded, applying colors...")
+                    gameState.setADCTemplate(adcEntity, dataModel: adcDataModel)
+                    print("✅ ADC template configured with colors")
+                    
+                    // Ensure tutorial asset is loaded and cached
+                    print("🎯 Loading tutorial assets...")
+                    _ = try await assetLoadingManager.instantiateAsset(
+                        withName: "game_start_vo",
+                        category: .attackCancerEnvironment
+                    )
+                    print("✅ Tutorial assets cached")
+                    print("=== Playing Phase Assets Ready ===\n")
+                } else {
+                    print("❌ No ADCDataModel available for playing phase")
+                }
+            }
+            
+            // Pre-load outro environment before transitioning to outro phase
+            if newPhase == .outro {
+                print("\n=== Pre-loading Outro Phase Assets ===")
+                print("📱 Pre-loading outro environment...")
+                do {
+                    _ = try await assetLoadingManager.instantiateAsset(
+                        withName: "outro_environment",
+                        category: .outroEnvironment
+                    )
+                    print("✅ Outro environment cached")
+                    print("=== Outro Phase Assets Ready ===\n")
+                } catch {
+                    print("❌ Failed to pre-load outro environment: \(error)")
+                }
+            }
+            
+            // Set the new phase
+            currentPhase = newPhase
+            
+            // Then start tracking if the new phase needs it
+            if newPhase.needsHandTracking {
+                // Add a small delay to ensure ARKit has time to clean up
+                try? await Task.sleep(for: .milliseconds(100))
+                try? await trackingManager.startTracking(needsHandTracking: newPhase.needsHandTracking)
+            }
+            
+            // Handle memory pressure after phase change
+            assetLoadingManager.handleMemoryWarning()
+            
+            print("✅ Phase transition complete: \(newPhase)")
+        } catch {
+            print("❌ Error during phase transition: \(error)")
+            currentPhase = .error
         }
-        print("✅ Phase transition complete: \(newPhase)")
     }
     
     // Keep all other existing methods...

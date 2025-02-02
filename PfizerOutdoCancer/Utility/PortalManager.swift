@@ -47,8 +47,14 @@ final class PortalManager {
         world.components.set(WorldComponent())
         
         // Create the lab environment and add it to the world.
-        if let labEnvironment = await appModel.assetLoadingManager.instantiateEntity("lab_environment") {
+        do {
+            let labEnvironment = try await appModel.assetLoadingManager.instantiateAsset(
+                withName: "lab_environment",
+                category: .labEnvironment
+            )
             world.addChild(labEnvironment)
+        } catch {
+            print("Error loading lab environment: \(error)")
         }
         
         root.addChild(world)

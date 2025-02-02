@@ -65,17 +65,19 @@ final class IntroViewModel {
             uiAnchor.addChild(navToggleEntity)
         }
         
-        // Load intro environment
+        // Load intro environment using on-demand API through appModel.assetLoadingManager
         print("📱 IntroViewModel: Attempting to load intro environment")
-        guard let environment = await appModel.assetLoadingManager.getIntroEnvironment() else {
-            print("❌ IntroViewModel: Failed to get intro environment")
+        var environment: Entity
+        do {
+            environment = try await appModel.assetLoadingManager.instantiateAsset(withName: "intro_environment", category: AssetCategory.introEnvironment)
+            print("✅ IntroViewModel: Successfully loaded intro environment")
+            // Add environment to root
+            print("📱 IntroViewModel: Adding environment to root")
+            root.addChild(environment)
+        } catch {
+            print("❌ IntroViewModel: Error loading intro environment: \(error)")
             return
         }
-        print("✅ IntroViewModel: Successfully loaded intro environment")
-        
-        // Add environment to root
-        print("📱 IntroViewModel: Adding environment to root")
-        root.addChild(environment)
         
         // Find and setup entities
         print("📱 IntroViewModel: Setting up individual entities")
@@ -162,21 +164,42 @@ final class IntroViewModel {
     
     private func setupPortal(in root: Entity) async {
         print("📱 IntroViewModel: Starting portal setup")
-        if let labEnvironment = appModel.assetLoadingManager.getLaboratory() {
-            print("✅ IntroViewModel: Got laboratory environment")
+        do {
+            // Load lab environment using new on-demand system
+            let labEnvironment = try await appModel.assetLoadingManager.instantiateAsset(
+                withName: "lab_environment", 
+                category: .labEnvironment
+            )
+            print("✅ IntroViewModel: Successfully loaded laboratory environment")
+            
+            // Create portal with loaded environment
             let p = await PortalManager.createPortal(
                 appModel: appModel,
                 environment: labEnvironment,
                 portalPlaneName: "Plane_001"
             )
             print("✅ IntroViewModel: Created portal")
+            
+            // Store and configure portal
             portal = p
             p.opacity = 0.0
             p.position = [0, -0.25, 0]
             root.addChild(p)
             print("✅ IntroViewModel: Portal setup complete")
-        } else {
-            print("❌ IntroViewModel: Failed to get laboratory environment")
+            
+        } catch {
+            print("❌ IntroViewModel: Failed to load laboratory environment: \(error)")
+            // Handle specific error cases
+            if let assetError = error as? AssetError {
+                switch assetError {
+                case .resourceNotFound:
+                    print("❌ IntroViewModel: Lab environment resource not found")
+                case .protobufError(let name):
+                    print("❌ IntroViewModel: Protobuf error loading lab environment: \(name)")
+                default:
+                    print("❌ IntroViewModel: Asset error loading lab environment: \(assetError)")
+                }
+            }
         }
     }
     

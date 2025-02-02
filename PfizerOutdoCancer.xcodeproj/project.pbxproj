@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		883ED15A2D15E5C80015B5FD /* RealityKitContent in Frameworks */ = {isa = PBXBuildFile; productRef = 883ED1592D15E5C80015B5FD /* RealityKitContent */; };
+		888606D02D4D98EE00EE5EC5 /* RealityKitContent in Frameworks */ = {isa = PBXBuildFile; productRef = 888606CF2D4D98EE00EE5EC5 /* RealityKitContent */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -30,7 +30,6 @@
 		8834F16E2D349ED800379788 /* Exceptions for "PfizerOutdoCancer" folder in "PfizerOutdoCancer" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				ADC/ECS/log,
 				Info.plist,
 				"Preview Content/Preview Assets.xcassets",
 			);
@@ -59,7 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				883ED15A2D15E5C80015B5FD /* RealityKitContent in Frameworks */,
+				888606D02D4D98EE00EE5EC5 /* RealityKitContent in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -120,7 +119,7 @@
 			);
 			name = PfizerOutdoCancer;
 			packageProductDependencies = (
-				883ED1592D15E5C80015B5FD /* RealityKitContent */,
+				888606CF2D4D98EE00EE5EC5 /* RealityKitContent */,
 			);
 			productName = PfizerOutdoCancer;
 			productReference = 883ED1542D15E5C80015B5FD /* PfizerOutdoCancer.app */;
@@ -177,6 +176,9 @@
 			);
 			mainGroup = 883ED14B2D15E5C80015B5FD;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				888606CE2D4D98EE00EE5EC5 /* XCLocalSwiftPackageReference "Packages/RealityKitContent" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 883ED1552D15E5C80015B5FD /* Products */;
 			projectDirPath = "";
@@ -476,8 +478,15 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		888606CE2D4D98EE00EE5EC5 /* XCLocalSwiftPackageReference "Packages/RealityKitContent" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/RealityKitContent;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
-		883ED1592D15E5C80015B5FD /* RealityKitContent */ = {
+		888606CF2D4D98EE00EE5EC5 /* RealityKitContent */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = RealityKitContent;
 		};

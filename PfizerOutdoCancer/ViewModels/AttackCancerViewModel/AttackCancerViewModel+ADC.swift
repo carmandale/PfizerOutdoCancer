@@ -5,13 +5,11 @@ import RealityKitContent
 extension AttackCancerViewModel {
     // MARK: - ADC Setup
     func setADCTemplate(_ template: Entity, dataModel: ADCDataModel) {
-        #if DEBUG
-        print("\n=== Setting ADC Template ===")
-        print("Current ADC Recipe:")
+        print("\n🎯 Setting up ADC Template")
+        print("- Template entity: \(template.name)")
         print("- Antibody Color: \(String(describing: dataModel.selectedADCAntibody ?? -1))")
         print("- Linker Color: \(String(describing: dataModel.selectedLinkerType ?? -1))")
         print("- Payload Color: \(String(describing: dataModel.selectedPayloadType ?? -1))")
-        #endif
         
         // Find and apply antibody color
         if let antibody = template.findModelEntity(named: "ADC_complex") {
@@ -58,9 +56,7 @@ extension AttackCancerViewModel {
         }
         
         adcTemplate = template
-        #if DEBUG
-        print("✅ ADC template set successfully with color recipe applied")
-        #endif
+        print("✅ ADC template stored in gameState")
     }
     
     // MARK: - ADC Spawning

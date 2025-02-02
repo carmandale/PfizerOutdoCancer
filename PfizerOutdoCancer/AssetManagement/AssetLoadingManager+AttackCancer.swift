@@ -20,7 +20,7 @@ extension AssetLoadingManager {
                 await assetRoot.addChild(attackCancerScene)
                 
                 // Store the actual environment
-                await self.setAttackCancerEnvironment(assetRoot)
+//                await self.setAttackCancerEnvironment(assetRoot)
                 
                 print("Successfully assembled AttackCancerEnvironment")
                 return .success(entity: assetRoot, key: "attack_cancer_environment", category: .attackCancerEnvironment)
@@ -38,10 +38,10 @@ extension AssetLoadingManager {
             do {
                 let entity = try await Entity(named: "AttackCancerGameStart_VO", in: realityKitContentBundle)
                 print("Successfully loaded AttackCancerGameStart_VO")
-                return .success(entity: entity, key: "game_start_vo", category: .cancerCell)
+                return .success(entity: entity, key: "game_start_vo", category: .attackCancerEnvironment)
             } catch {
                 print("Failed to load AttackCancerGameStart_VO: \(error)")
-                return .failure(key: "game_start_vo", category: .cancerCell, error: error)
+                return .failure(key: "game_start_vo", category: .attackCancerEnvironment, error: error)
             }
         }
         taskCount += 1

@@ -46,7 +46,7 @@ final class LabViewModel {
         return root
     }
     
-    func setupInitialEnvironment() {
+    func setupInitialEnvironment() async throws {
         print("📱 LabViewModel: Setting up initial environment")
         
         guard let root = mainEntity else {
@@ -54,15 +54,14 @@ final class LabViewModel {
             return
         }
         
-        // Use preloaded lab environment
-        if let labEnvironment = appModel?.assetLoadingManager.getLaboratory() {
-            root.addChild(labEnvironment)
-            print("🏢 Lab Environment added to MainEntity")
-            print("📍 Lab Environment position: \(labEnvironment.position)")
-            
-            // Configure the interactive devices
-            configureInteractiveDevices(in: labEnvironment)
-        }
+        // Use the assembled lab that should already be in memory
+        let labEnvironment = try await appModel.assetLoadingManager.loadAssembledLab()
+        root.addChild(labEnvironment)
+        print("🏢 Assembled Lab Environment added to MainEntity")
+        print("📍 Lab Environment position: \(labEnvironment.position)")
+        
+        // Configure the interactive devices
+        configureInteractiveDevices(in: labEnvironment)
     }
     
     // MARK: - Environment Setup
@@ -74,20 +73,29 @@ final class LabViewModel {
             return
         }
         
-        // Add VO and Audio since these are loaded async
-        if let labVO = try? await appModel?.assetLoadingManager.getLabVO() {
+        // Add VO and Audio using the new on-demand loading system
+        do {
+            let labVO = try await appModel.assetLoadingManager.instantiateAsset(
+                withName: "lab_vo",
+                category: .labEnvironment
+            )
             root.addChild(labVO)
             print("🎙️ Lab VO added to MainEntity")
+            
+            let labAudio = try await appModel.assetLoadingManager.instantiateAsset(
+                withName: "lab_audio",
+                category: .labEnvironment
+            )
+            root.addChild(labAudio)
+            labAudioEntity = labAudio
+            print("🔊 Lab Audio added to MainEntity")
+            
+            isSetupComplete = true
+            print("✅ LabViewModel: Environment setup complete")
+        } catch {
+            print("❌ LabViewModel: Failed to load audio/VO: \(error)")
+            throw error
         }
-        
-       if let labAudio = try? await appModel?.assetLoadingManager.getLabAudio() {
-           root.addChild(labAudio)
-           labAudioEntity = labAudio
-           print("🔊 Lab Audio added to MainEntity")
-       }
-        
-        isSetupComplete = true
-        print("✅ LabViewModel: Environment setup complete")
     }
     
     // MARK: - Attachment Setup

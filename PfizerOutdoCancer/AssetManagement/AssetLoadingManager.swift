@@ -15,7 +15,7 @@ struct FailedAsset {
     let error: Error
 }
 
-/// Categories of assets in the lab environment
+/// Categories of assets for each environment
 enum AssetCategory {
     case introEnvironment
     case outroEnvironment
@@ -52,9 +52,6 @@ final class AssetLoadingManager {
     /// Singleton instance
     static let shared = AssetLoadingManager()
     
-    /// Stored lab environment entity
-    private(set) var labEnvironment: Entity?
-    
     /// Cached entity templates for efficient cloning
     internal var entityTemplates: [String: Entity] = [:]
     
@@ -73,75 +70,188 @@ final class AssetLoadingManager {
     /// The current state of asset loading
     var state: LoadingState { loadingState }
     
-    /// Loaded attack cancer environment entity
-    private(set) var attackCancerEnvironment: Entity?
-    
-    /// Stored intro environment entity
-    private(set) var introEnvironment: Entity?
-    
-    /// Stored outro environment entity
-    private(set) var outroEnvironment: Entity?
-    
     // MARK: - Public Methods
     
-    /// Get the stored laboratory environment
-    func getLaboratory() -> Entity? {
-        return labEnvironment
-    }
-    
-    /// Get the stored attack cancer environment
-    func getAttackCancerEnvironment() -> Entity? {
-        return attackCancerEnvironment
-    }
-    
-    /// Get the stored intro environment
-    func getIntroEnvironment() -> Entity? {
-        return introEnvironment
-    }
-    
-    /// Get the stored outro environment
-    func getOutroEnvironment() -> Entity? {
-        return outroEnvironment
-    }
-    
-    /// Get the lab audio entity directly without cloning
-    func getLabAudio() async throws -> Entity {
-        if let template = entityTemplates["lab_audio"] {
-            return template
+    /// Releases intro environment assets asynchronously
+    func releaseIntroEnvironment() async {
+        print("📱 AssetLoadingManager: Starting intro environment cleanup")
+        
+        // Remove from entity templates
+        let keysToRemove = [
+            "intro_environment",
+            "intro_warp",
+            "pfizer_logo",
+            "title_card"
+        ]
+        
+        for key in keysToRemove {
+            if let entity = entityTemplates[key] {
+                // Remove from parent if still attached
+                entity.removeFromParent()
+                // Remove from templates
+                entityTemplates.removeValue(forKey: key)
+                print("✅ Released asset: \(key)")
+            }
         }
-        // Fallback to loading if not in templates
-        return try await Entity(named: "LabAudio", in: realityKitContentBundle)
+        
+        print("✅ AssetLoadingManager: Completed intro environment cleanup")
     }
     
-    /// Get the lab VO entity directly without cloning
-    func getLabVO() async throws -> Entity {
-        if let template = entityTemplates["lab_vo"] {
-            return template
+    
+    
+    /// Get the current loading progress
+    func loadingProgress() -> Float {
+        switch loadingState {
+        case .notStarted:
+            return 0
+        case .loading(let progress):
+            return progress
+        case .completed:
+            return 1
+        case .error:
+            return 0
         }
-        // Fallback to loading if not in templates
-        return try await Entity(named: "LabVO", in: realityKitContentBundle)
     }
     
-    /// Set the laboratory environment
-    internal func setLaboratory(_ environment: Entity) async {
-        self.labEnvironment = environment
+    /// Logs the entity hierarchy during instantiation
+    func instantiateEntity(_ key: String) async -> Entity? {
+        guard let template = entityTemplates[key] else {
+            print("Warning: No template found for key: \(key)")
+            return nil
+        }
+        let clone = template.clone(recursive: true)
+        print("\nCloned entity for key: \(key)")
+//        inspectEntityHierarchy(clone)
+        return clone
     }
     
-    /// Set the attack cancer environment
-    internal func setAttackCancerEnvironment(_ environment: Entity) async {
-        self.attackCancerEnvironment = environment
+    internal func processLoadedAsset(_ result: LoadResult) {
+        switch result {
+        case .success(let entity, let key, _):
+            entityTemplates[key] = entity
+        case .failure(_, _, _):
+            break
+        }
     }
     
-    /// Set the intro environment
-    internal func setIntroEnvironment(_ environment: Entity) async {
-        self.introEnvironment = environment
+    // MARK: - Memory Management
+    
+    /// Handles memory pressure by releasing non-essential assets
+    func handleMemoryWarning() {
+        print("⚠️ AssetLoadingManager: Handling memory pressure")
+        
+        // Keep only essential templates based on current usage
+        let essentialKeys = ["assembled_lab", "lab_environment", "cancer_cell"]
+        entityTemplates = entityTemplates.filter { key, _ in
+            essentialKeys.contains(key)
+        }
+        
+        print("✅ AssetLoadingManager: Completed memory pressure handling")
     }
     
-    /// Set the outro environment
-    internal func setOutroEnvironment(_ environment: Entity) async {
-        self.outroEnvironment = environment
+    internal func validateTemplate(_ entity: Entity, category: AssetCategory) async {
+        print("\n=== Validating \(category) Template ===")
+        inspectEntityHierarchy(entity, level: 0)
     }
     
+    /// Debug utility to inspect entity hierarchies
+    public func inspectEntityHierarchy(_ entity: Entity, level: Int = 0, showComponents: Bool = true) {
+        let indent = String(repeating: "  ", count: level)
+        print("\(indent)Entity: \(entity.name)")
+        if showComponents {
+            print("\(indent)Components: \(entity.components.map { type(of: $0) })")
+        }
+        
+        for child in entity.children {
+            inspectEntityHierarchy(child, level: level + 1, showComponents: showComponents)
+        }
+    }
+    
+    /// Load an entity by name, using caching to avoid redundant loads
+    func loadEntity(named name: String) async throws -> Entity {
+        // First attempt: Check cache and clone to ensure each usage gets its own instance
+        if let cachedEntity = entityTemplates[name] {
+            return cachedEntity.clone(recursive: true)
+        }
+
+        do {
+            // Second attempt: Load from bundle and handle protobuf errors
+        let entity = try await Entity(named: name, in: realityKitContentBundle)
+            // Clone again to ensure the loaded entity is independent and can be used multiple times
+        return entity.clone(recursive: true)
+        } catch {
+            if error.localizedDescription.contains("protobuf") {
+                print("❌ Protobuf error loading \(name): \(error)")
+                throw AssetError.protobufError(name)
+            }
+            throw error
+        }
+    }
+    
+    // MARK: - On-Demand Asset Loading
+
+    // Add a private mapping from our logical keys to actual asset names
+    private let assetNameMappings: [String: String] = [
+        "intro_environment": "IntroEnvironment",
+        "intro_warp": "IntroWarp",
+        "pfizer_logo": "PfizerLogo",
+        "title_card": "outdoCancer",
+        "lab_environment": "LabEnvironment",
+        "lab_vo": "LabVO",
+        "lab_audio": "LabAudio",
+        "antibody_scene": "antibodyScene",
+        "attack_cancer_environment": "AttackCancerEnvironment",
+        "adc": "ADC-spawn",  // ADC asset name
+        "cancer_cell": "CancerCell-spawn",  // Cancer cell asset name
+        "game_start_vo": "AttackCancerGameStart_VO",  // Tutorial/game start VO
+        "outro_environment": "OutroEnvironment"  // Outro environment asset
+        // add further mappings as needed
+    ]
+
+    // Helper function to obtain the actual asset name from a key
+    private func actualAssetName(for key: String, category: AssetCategory) -> String {
+        return assetNameMappings[key] ?? key
+    }
+
+    /// Loads an asset by name on demand and caches it.
+    func loadAsset(withName name: String, category: AssetCategory) async throws -> Entity {
+        // If already cached, return a clone of the cached asset
+        if let cached = entityTemplates[name] {
+            return cached.clone(recursive: true)
+        }
+        
+        // Map the provided logical key to the actual resource name
+        let actualName = actualAssetName(for: name, category: category)
+        
+        // Attempt to load from the RealityKitContent bundle using the actual asset name
+        let entity = try await self.loadEntity(named: actualName)
+        
+        // Special handling for ADC asset
+        if name == "adc" {
+            if let innerRoot = await entity.children.first {
+                print("✅ ADC template loaded (using inner Root with audio)")
+                // Cache the inner root as the ADC template
+                entityTemplates[name] = innerRoot
+                return innerRoot.clone(recursive: true)
+            } else {
+                print("❌ Failed to find inner root in ADC-spawn")
+                throw AssetError.resourceNotFound
+            }
+        }
+        
+        // Cache the loaded asset for future use using the logical key
+        entityTemplates[name] = entity
+        
+        // Return a cloned copy so that modifications do not affect the cached template
+        return entity.clone(recursive: true)
+    }
+
+    /// Instantiates an asset, returning a cloned instance.
+    func instantiateAsset(withName name: String, category: AssetCategory) async throws -> Entity {
+        return try await loadAsset(withName: name, category: category)
+    }
+
+    /// TODO remove this once we are sure the assets are loaded on demand
     /// Load all assets required for the entire app
     func loadAssets() async throws {
         loadingState = .loading(progress: 0)
@@ -153,13 +263,13 @@ final class AssetLoadingManager {
         do {
             try await withThrowingTaskGroup(of: LoadResult.self) { group in
                 // Load different categories in parallel, updating totalAssets
-//              loadIntroEnvironmentAssets(group: &group, taskCount: &totalAssets)
-//              loadIntroWarpAssets(group: &group, taskCount: &totalAssets)
-//              loadLogoAssets(group: &group, taskCount: &totalAssets)
-//              loadTitleAssets(group: &group, taskCount: &totalAssets)
+             loadIntroEnvironmentAssets(group: &group, taskCount: &totalAssets)
+             loadIntroWarpAssets(group: &group, taskCount: &totalAssets)
+             loadLogoAssets(group: &group, taskCount: &totalAssets)
+             loadTitleAssets(group: &group, taskCount: &totalAssets)
               loadLabEnvironmentAssets(group: &group, taskCount: &totalAssets)
               loadLabVO(group: &group, taskCount: &totalAssets)
-              loadLabAudio(group: &group, taskCount: &totalAssets)
+            //   loadLabAudio(group: &group, taskCount: &totalAssets)
               loadLabEquipmentAssets(group: &group, taskCount: &totalAssets)
 //               loadBuildADCEnvironmentAssets(group: &group, taskCount: &totalAssets)
               loadBuildADCAssets(group: &group, taskCount: &totalAssets)
@@ -204,89 +314,6 @@ final class AssetLoadingManager {
         } catch {
             print("Error in task group: \(error)")
             loadingState = .error(error)
-            throw error
-        }
-    }
-    
-    /// Get the current loading progress
-    func loadingProgress() -> Float {
-        switch loadingState {
-        case .notStarted:
-            return 0
-        case .loading(let progress):
-            return progress
-        case .completed:
-            return 1
-        case .error:
-            return 0
-        }
-    }
-    
-    /// Logs the entity hierarchy during instantiation
-    func instantiateEntity(_ key: String) async -> Entity? {
-        guard let template = entityTemplates[key] else {
-            print("Warning: No template found for key: \(key)")
-            return nil
-        }
-        let clone = template.clone(recursive: true)
-        print("\nCloned entity for key: \(key)")
-//        inspectEntityHierarchy(clone)
-        return clone
-    }
-    
-    internal func processLoadedAsset(_ result: LoadResult) {
-        switch result {
-        case .success(let entity, let key, _):
-            entityTemplates[key] = entity
-        case .failure(_, _, _):
-            break
-        }
-    }
-    
-    // MARK: - Memory Management
-    
-    /// Clear unused templates when memory pressure is high
-    func handleMemoryWarning() {
-        // Keep essential templates, clear others that can be reloaded
-        let essentialKeys = ["lab_environment", "cancer_cell"]
-        entityTemplates = entityTemplates.filter { essentialKeys.contains($0.key) }
-    }
-    
-    internal func validateTemplate(_ entity: Entity, category: AssetCategory) async {
-        print("\n=== Validating \(category) Template ===")
-        inspectEntityHierarchy(entity, level: 0)
-    }
-    
-    /// Debug utility to inspect entity hierarchies
-    public func inspectEntityHierarchy(_ entity: Entity, level: Int = 0, showComponents: Bool = true) {
-        let indent = String(repeating: "  ", count: level)
-        print("\(indent)Entity: \(entity.name)")
-        if showComponents {
-            print("\(indent)Components: \(entity.components.map { type(of: $0) })")
-        }
-        
-        for child in entity.children {
-            inspectEntityHierarchy(child, level: level + 1, showComponents: showComponents)
-        }
-    }
-    
-    /// Load an entity by name, using caching to avoid redundant loads
-    func loadEntity(named name: String) async throws -> Entity {
-        // First attempt: Check cache and clone to ensure each usage gets its own instance
-        if let cachedEntity = entityTemplates[name] {
-            return cachedEntity.clone(recursive: true)
-        }
-
-        do {
-            // Second attempt: Load from bundle and handle protobuf errors
-        let entity = try await Entity(named: name, in: realityKitContentBundle)
-            // Clone again to ensure the loaded entity is independent and can be used multiple times
-        return entity.clone(recursive: true)
-        } catch {
-            if error.localizedDescription.contains("protobuf") {
-                print("❌ Protobuf error loading \(name): \(error)")
-                throw AssetError.protobufError(name)
-            }
             throw error
         }
     }

@@ -12,7 +12,6 @@ import RealityKitContent
 struct PfizerOutdoCancerApp: App {
     // Change from @StateObject to @State
     @State private var appModel = AppModel()
-    @State private var handTracking = HandTrackingViewModel()
     
     // for ADC view
     @State private var adcDataModel = ADCDataModel()
@@ -52,9 +51,12 @@ struct PfizerOutdoCancerApp: App {
                                 print("→ .active")
                                 // Add small delay to ensure cleanup completes
                                 try? await Task.sleep(nanoseconds: 200_000_000) // 200ms delay
-                                
+                                print("I waited 200ms and I am still in the active state")
+                                print("I am in the \(appModel.currentPhase) phase")
+                                print("I am in the \(scenePhase) scene phase")
+                                print("not doing anything else until I figure this out")
                                 // Always transition to ready state
-                                await appModel.transitionToPhase(.ready)
+                                // await appModel.transitionToPhase(.ready)
                             }
                         default:
                             break
@@ -159,9 +161,10 @@ struct PfizerOutdoCancerApp: App {
                             appModel.immersiveSpaceState = .closed
                         } else {
                             // System dismissed it (Digital Crown), clean up
-                            Task {
-                                await cleanupAppState()
-                            }
+                            print("I am in the outro space in the onDisappear else block and think that I have been dismissed")
+                            // Task {
+                            //     await cleanupAppState()
+                            // }
                         }
                         // Reset for next time
                         appModel.immersiveSpaceDismissReason = nil
@@ -244,6 +247,17 @@ struct PfizerOutdoCancerApp: App {
             
             // MARK: PHASE CHANGE
             // Single onChange handler for phase transitions
+            // .onChange(of: appModel.currentPhase) { oldPhase, newPhase in
+            //     if oldPhase == newPhase { return }
+                
+            //     Task {
+            //         // Ensure this runs on the main actor by either wrapping the Task as shown
+            //         // or by calling a @MainActor function.
+            //         await updateImmersiveSpace(for: newPhase, from: oldPhase)
+            //         await handleWindowsForPhase(newPhase)
+            //     }
+            // }
+
             .onChange(of: appModel.currentPhase) { oldPhase, newPhase in
                 if oldPhase == newPhase { return }
                 
@@ -262,6 +276,7 @@ struct PfizerOutdoCancerApp: App {
                     }
                 }
             }
+
         }
         
         
@@ -364,6 +379,11 @@ struct PfizerOutdoCancerApp: App {
                 openWindow(id: AppModel.navWindowId)
                 appModel.isNavWindowOpen = true
             }
+        case .outro:
+            if appModel.isNavWindowOpen {
+                dismissWindow(id: AppModel.navWindowId)
+                appModel.isNavWindowOpen = false
+            }
         case .playing:
             // Explicitly dismiss nav window first
             if appModel.isNavWindowOpen {
@@ -427,6 +447,18 @@ struct PfizerOutdoCancerApp: App {
         print("    ScenePhase: \(scenePhase)")
         print("    LoadingPhase: \(appModel.loadingState)")
     }
+
+    @MainActor
+    func updateImmersiveSpace(for newPhase: AppPhase, from oldPhase: AppPhase) async {
+        if oldPhase.needsImmersiveSpace && !newPhase.shouldKeepPreviousSpace {
+            if appModel.immersiveSpaceState == .open {
+                appModel.immersiveSpaceDismissReason = .manual
+                await dismissImmersiveSpace()
+            } else {
+                await openImmersiveSpace(id: newPhase.spaceId)
+            }
+        }
+    }
     
     // MARK: - App State Management
     private func cleanupAppState() async {
@@ -448,6 +480,7 @@ struct PfizerOutdoCancerApp: App {
         appModel.trackingManager.stopTracking()
         
         // 4. Reset phase to ready
+        print("> Resetting to phase: READY")
         await appModel.transitionToPhase(.ready)
         
         print("✅ App state cleanup completed")

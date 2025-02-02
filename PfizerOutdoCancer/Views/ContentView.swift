@@ -38,6 +38,8 @@ struct ContentView: View {
                     .environment(appModel)
                     .environment(adcDataModel)
                     .onAppear { print("ContentView: Showing CompletedView") }
+            case .outro:
+                EmptyView()
             default:
                 EmptyView()
             }

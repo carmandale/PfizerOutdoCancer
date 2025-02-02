@@ -89,6 +89,9 @@ final class AttackCancerViewModel {
         1.8   // Tenth ADC at 19s
     ]
     
+    // Root entity for the instructions view
+    var instructionsRootEntity: Entity?
+    
     // MARK: - Initialization
     init() {
         // Initialize handTrackedEntity

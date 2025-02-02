@@ -20,7 +20,6 @@ struct OutroView: View {
     @Environment(\.openWindow) private var openWindow
     
     // Timer for auto-transition
-    @State private var transitionTimer: Timer?
     @State private var tintIntensity: Double = 0.02
     
     var surroundingsEffect: SurroundingsEffect? {
@@ -30,38 +29,50 @@ struct OutroView: View {
     
     var body: some View {
         RealityView { content in
+            print("\n=== Setting up OutroView ===")
+            
+            // Create and configure root
             let root = Entity()
+            root.name = "OutroRoot"
             root.components.set(PositioningComponent(
                 offsetX: 0,
                 offsetY: -1.5,
                 offsetZ: -1.0
             ))
+            print("✅ Created root entity: \(root.name)")
             
-            if let outroEnvironmentEntity = await appModel.assetLoadingManager.getOutroEnvironment() {
-                root.addChild(outroEnvironmentEntity)
-            }
-            
+            // Add root to content
             content.add(root)
+            print("✅ Added root to content")
+            
+            // Load environment
+            do {
+                print("📱 OutroView: Loading environment")
+                let outroEnvironmentEntity = try await appModel.assetLoadingManager.instantiateAsset(
+                    withName: "outro_environment",
+                    category: .outroEnvironment
+                )
+                print("✅ OutroView: Successfully loaded outro environment")
+                
+                root.addChild(outroEnvironmentEntity)
+                print("✅ OutroView: Added environment to root")
+            } catch {
+                print("❌ OutroView: Failed to load outro environment: \(error)")
+            }
         }
         .preferredSurroundingsEffect(surroundingsEffect)
+        .task {
+            // Wait for environment animation to complete
+            try? await Task.sleep(for: .seconds(34))
+            print("🎯 OutroView: Transitioning to lab")
+            await appModel.transitionToPhase(.lab)
+        }
         .onAppear {
-            transitionTimer = Timer.scheduledTimer(withTimeInterval: 42, repeats: false) { _ in
-                Task { @MainActor in
-                    openWindow(id: AppModel.navWindowId)
-                    appModel.isNavWindowOpen = true
-                    await appModel.transitionToPhase(.lab)
-                }
-            }
-            
+            print("\n=== OutroView Appeared ===")
             // Add tint animation
             withAnimation(.linear(duration: 30.0)) {
                 tintIntensity = 0.02
             }
-        }
-        .onDisappear {
-            // Clean up timer
-            transitionTimer?.invalidate()
-            transitionTimer = nil
         }
         .task {
             await appModel.trackingManager.processWorldTrackingUpdates()

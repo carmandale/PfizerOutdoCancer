@@ -25,18 +25,26 @@ struct AttackCancerInstructionsView: View {
 //                Spacer()
                 VStack {
                     RealityView { content in
+                        print("\n=== AttackCancerInstructionsView Setup ===")
+                        print("📱 Instructions View: Setting up root entity")
                         let root = appModel.gameState.setupRoot()
                         content.add(root)
-
+                        
+                        // Setup IBL
                         await appModel.gameState.setupIBL(in: root)
-
+                        print("✅ Instructions View: IBL setup complete")
+                        
                         // Use the template from gameState (already has colors applied)
                         if let template = appModel.gameState.adcTemplate {
-                            
+                            print("✅ Instructions View: Found ADC template")
                             adcEntity = template.clone(recursive: true)
                             adcEntity.components.set(RotationComponent())
                             root.addChild(adcEntity)
+                            print("✅ Instructions View: Added ADC to display")
+                        } else {
+                            print("❌ Instructions View: No ADC template available")
                         }
+                        print("=== Instructions View Setup Complete ===\n")
                     }
                 }
                 VStack(spacing: 0) {
