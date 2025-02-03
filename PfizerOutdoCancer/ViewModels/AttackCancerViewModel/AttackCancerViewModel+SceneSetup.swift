@@ -106,7 +106,13 @@ extension AttackCancerViewModel {
     
     private func fireTutorialADCs(in root: Entity, attachments: RealityViewAttachments) async {
         print("\n=== Starting Tutorial ADC Sequence ===")
+        
+        // Launch position is slightly offset to the right and above
         let launchPosition = SIMD3<Float>(0.25, 0.5, -0.25)
+        
+        // Calculate approach vector that points towards the cell from slightly in front
+        // This ensures ADCs prefer antigens facing the player's view
+        let approachPosition = SIMD3<Float>(0, 0.5, -1.0)  // Position in front of the cell
 
         // Find the cancerCell_complex within the tutorial cell
         guard let complexCell = tutorialCancerCell?.findEntity(named: "cancerCell_complex") else {
@@ -119,7 +125,7 @@ extension AttackCancerViewModel {
             print("🚀 Firing tutorial ADC \(index + 1)/10")
             await handleTap(
                 on: complexCell,
-                location: launchPosition,
+                location: approachPosition,  // Use approach position for targeting
                 in: scene
             )
         }

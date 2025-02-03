@@ -1,4 +1,5 @@
-//import Foundation
+// ADCMath+Extensions.swift
+
 import RealityKit
 
 extension SIMD3 where Scalar == Float {

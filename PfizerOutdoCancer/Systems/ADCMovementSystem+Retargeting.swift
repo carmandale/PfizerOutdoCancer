@@ -11,7 +11,6 @@ extension ADCMovementSystem {
                             _ adcComponent: inout ADCComponent,
                             currentPosition: SIMD3<Float>,
                             in scene: Scene) -> Bool {
-        // Find new target
         guard let (newTarget, newCellID) = findNewTarget(for: entity, currentPosition: currentPosition, in: scene) else {
             print("⚠️ No valid targets found for retargeting")
             return false
@@ -19,13 +18,11 @@ extension ADCMovementSystem {
         
         print("🎯 Retargeting ADC to new cancer cell (ID: \(newCellID))")
         
-        // Skip if targeting same cell
         if adcComponent.targetCellID == newCellID {
             print("⚠️ Attempting to retarget to same cell - skipping")
             return false
         }
         
-        // Set up target interpolation
         if let currentTargetID = adcComponent.targetEntityID,
            let currentTarget = scene.findEntity(id: currentTargetID) {
             adcComponent.previousTargetPosition = currentTarget.position(relativeTo: nil)
@@ -33,41 +30,51 @@ extension ADCMovementSystem {
             adcComponent.targetInterpolationProgress = 0
         }
         
-        // Update component with new target
         adcComponent.targetEntityID = newTarget.id
         adcComponent.targetCellID = newCellID
         
-        // Mark the attachment point as occupied
         if var attachPoint = newTarget.components[AttachmentPoint.self] {
             attachPoint.isOccupied = true
             newTarget.components[AttachmentPoint.self] = attachPoint
             print("✅ Marked attachment point as occupied")
         }
         
+        // Reinitialize the lookup table for the new target curve.
+        if let start = adcComponent.startWorldPosition {
+            let newTargetPosition = newTarget.position(relativeTo: nil)
+            let distance = length(newTargetPosition - start)
+            let midPoint = mix(start, newTargetPosition, t: 0.5)
+            let heightOffset = distance * 0.5 * (adcComponent.arcHeightFactor ?? 1.0)
+            let controlPoint = midPoint + SIMD3<Float>(0, heightOffset, 0)
+            let lookup = buildLookupTableForQuadraticBezier(start: start, control: controlPoint, end: newTargetPosition, samples: Self.numLookupSamples)
+            adcComponent.lookupTable = lookup
+            adcComponent.previousPathLength = adcComponent.pathLength
+            adcComponent.pathLength = lookup.last ?? 0.0
+            if adcComponent.previousPathLength > 0 {
+                adcComponent.traveledDistance = (adcComponent.traveledDistance / adcComponent.previousPathLength) * adcComponent.pathLength
+            }
+        }
+        
         return true
     }
     
     static func validateTarget(_ targetEntity: Entity, _ adcComponent: ADCComponent, in scene: Scene) -> Bool {
-        // If this is headPosition, it's always valid
         if targetEntity.components[PositioningComponent.self] != nil {
             return true
         }
         
-        // Check if target entity still exists and is valid
         if targetEntity.parent == nil {
             print("\n=== ADC RETARGET (Target Lost) ===")
             print("Target attachment point has been removed from scene")
             return false
         }
         
-        // Find parent cancer cell
         guard let cancerCell = findParentCancerCell(for: targetEntity, in: scene) else {
             print("\n=== ADC RETARGET (Cancer Cell Lost) ===")
             print("Parent cancer cell no longer exists")
             return false
         }
         
-        // Check cancer cell state
         guard let stateComponent = cancerCell.components[CancerCellStateComponent.self],
               let cellID = adcComponent.targetCellID else {
             print("\n=== ADC RETARGET (Invalid State) ===")
@@ -75,7 +82,6 @@ extension ADCMovementSystem {
             return false
         }
         
-        // Validate using parameters
         let parameters = stateComponent.parameters
         
         if parameters.isDestroyed {
@@ -92,7 +98,6 @@ extension ADCMovementSystem {
             return false
         }
         
-        // Check if this is still our target cell and it's valid
         if parameters.cellID == cellID &&
             !parameters.isDestroyed &&
             parameters.hitCount < parameters.requiredHits {
@@ -106,22 +111,55 @@ extension ADCMovementSystem {
         return false
     }
     
+    /// Calculates a score for an attachment point based on its position and orientation relative to an approach position
+    /// - Parameters:
+    ///   - attachPosition: World position of the attachment point
+    ///   - cellCenter: World position of the cell center
+    ///   - approachPosition: Position from which the ADC is approaching
+    ///   - minDistance: Minimum allowed distance (to prevent too-close targeting)
+    /// - Returns: A score where higher values indicate better targets, or nil if the target is invalid
+    @MainActor
+    public static func calculateAttachmentScore(
+        attachPosition: SIMD3<Float>,
+        cellCenter: SIMD3<Float>,
+        approachPosition: SIMD3<Float>,
+        minDistance: Float = 0.3
+    ) -> Float? {
+        let distance = length(attachPosition - approachPosition)
+        
+        // Skip if the target is too close (prevent sharp turns)
+        if distance < minDistance {
+            return nil
+        }
+        
+        // Base score on inverse distance (closer is better, but not too close)
+        var score = 1.0 / max(distance, minDistance)
+        
+        // Factor in the facing direction of the antigen
+        let antigenDirection = simd_normalize(attachPosition - cellCenter)
+        let approachVector = simd_normalize(approachPosition - cellCenter)
+        let dotProduct = simd_dot(antigenDirection, approachVector)
+        
+        // Adjust score based on how well the antigen faces the approach vector
+        // (dotProduct + 1) * 2.0 maps the dot product from [-1,1] to [0,4]
+        score *= (dotProduct + 1) * 2.0
+        
+        return score
+    }
+
     static func findNewTarget(for adcEntity: Entity, currentPosition: SIMD3<Float>, in scene: Scene) -> (Entity, Int)? {
-        print("\n=== Finding New Target ===")
         let query = EntityQuery(where: .has(AttachmentPoint.self))
         var bestScore: Float = -Float.infinity
-        var bestTarget: (attachPoint: Entity, cellID: Int)? = nil
+        var bestTarget: (Entity, Int)? = nil
         
         let entities = scene.performQuery(query)
         
         for entity in entities {
-            // First check if attachment point is available
             guard let attachComponent = entity.components[AttachmentPoint.self],
                   !attachComponent.isOccupied else {
                 continue
             }
             
-            // Find and validate parent cancer cell
             guard let cancerCell = findParentCancerCell(for: entity, in: scene),
                   let stateComponent = cancerCell.components[CancerCellStateComponent.self],
                   let cellID = stateComponent.parameters.cellID,
@@ -129,130 +167,47 @@ extension ADCMovementSystem {
                 continue
             }
             
-            // Skip if cell has reached required hits
             if stateComponent.parameters.hitCount >= stateComponent.parameters.requiredHits {
                 continue
             }
             
-            // Calculate positions and vectors
             let attachPosition = entity.position(relativeTo: nil)
             let cellCenter = cancerCell.position(relativeTo: nil)
-            let distance = length(attachPosition - currentPosition)
             
-            // Skip if the target is too close (prevent sharp turns)
-            if distance < 0.3 {  // Minimum distance threshold
-                continue
-            }
+            guard let score = Self.calculateAttachmentScore(
+                attachPosition: attachPosition,
+                cellCenter: cellCenter,
+                approachPosition: currentPosition
+            ) else { continue }
             
-            // Calculate base score from distance (closer is better, but not too close)
-            var score = 1.0 / max(distance, 0.3)
-            
-            // Calculate how front-facing the antigen is relative to spawn point
-            // Vector from cell center to antigen
-            let antigenDirection = simd_normalize(attachPosition - cellCenter)
-            
-            // Vector from cell center to spawn point
-            let cellToSpawn = simd_normalize(currentPosition - cellCenter)
-            
-            // Calculate dot product (how front-facing the antigen is)
-            let dotProduct = simd_dot(antigenDirection, cellToSpawn)
-            
-            // Heavily weight front-facing antigens
-            // dotProduct ranges from -1 (back) to 1 (front)
-            // We transform it to range 0 to 1 and multiply by 2 for emphasis
-            score *= (dotProduct + 1) * 2.0
-            
-            print("📊 Antigen Score - Distance: \(distance), Dot Product: \(dotProduct), Final Score: \(score)")
+            // print("📊 Antigen Score - Distance: \(length(attachPosition - currentPosition)), Score: \(score)")
             
             if score > bestScore {
                 bestScore = score
-                bestTarget = (attachPoint: entity, cellID: cellID)
+                bestTarget = (entity, cellID)
                 print("✨ New best target found - Score: \(score)")
             }
         }
         
         if let target = bestTarget {
             print("\n🎯 Selected target:")
-            print("Cell ID: \(target.cellID)")
-            print("Attachment Point: \(target.attachPoint.name)")
+            print("Cell ID: \(target.1)")
+            print("Attachment Point: \(target.0.name)")
             print("Final Score: \(bestScore)")
         }
         
         return bestTarget
     }
     
-    private static func findAttachmentPoints(in entity: Entity) -> [Entity] {
-        var points: [Entity] = []
-        
-        // Check if this entity has an attachment point
-        if entity.components[AttachmentPoint.self] != nil {
-            points.append(entity)
+    // --- Re-add findParentCancerCell ---
+    static func findParentCancerCell(for attachmentPoint: Entity, in scene: Scene) -> Entity? {
+        var current = attachmentPoint
+        while let parent = current.parent {
+            if parent.components[CancerCellStateComponent.self] != nil {
+                return parent
+            }
+            current = parent
         }
-        
-        // Recursively check children
-        for child in entity.children {
-            points.append(contentsOf: findAttachmentPoints(in: child))
-        }
-        
-        return points
+        return nil
     }
-    
-    func updateRetargetProgress(entity: Entity, context: SceneUpdateContext) {
-        guard var adc = entity.components[ADCComponent.self],
-              adc.needsRetarget,
-              let newTarget = adc.newTargetPosition,
-              let previousTarget = adc.previousTargetPosition
-        else { return }
-        
-        // Calculate interpolation progress
-        let deltaTime = Float(context.deltaTime)
-        adc.targetInterpolationProgress = min(adc.targetInterpolationProgress + deltaTime / Float(ADCComponent.targetInterpolationDuration), 1.0)
-        
-        // Smooth step interpolation
-        let t = adc.targetInterpolationProgress
-        let smoothT = t * t * (3 - 2 * t)
-        adc.targetWorldPosition = simd_mix(previousTarget, newTarget, SIMD3<Float>(repeating: smoothT))
-        
-        // Update movement parameters
-        updatePathLength(adc: &adc)
-        updateCurrentVelocity(entity: entity, adc: &adc, deltaTime: deltaTime)
-        
-        // Complete retarget
-        if adc.targetInterpolationProgress >= 1.0 {
-            finalizeRetarget(adc: &adc)
-        }
-        
-        // Update component
-        entity.components[ADCComponent.self] = adc
-    }
-    
-    private func updatePathLength(adc: inout ADCComponent) {
-        guard let start = adc.startWorldPosition,
-              let target = adc.targetWorldPosition
-        else { return }
-        
-        let newLength = distance(start, target)
-        adc.previousPathLength = adc.pathLength
-        adc.pathLength = newLength
-        if adc.previousPathLength > Float.ulpOfOne {  // Prevent division by zero
-            adc.traveledDistance *= newLength / adc.previousPathLength
-        }
-        adc.movementProgress = adc.traveledDistance / adc.pathLength
-    }
-    
-    private func updateCurrentVelocity(entity: Entity, adc: inout ADCComponent, deltaTime: Float) {
-        guard let targetPos = adc.targetWorldPosition else { return }
-        
-        let currentPos = entity.transform.translation
-        let direction = normalize(targetPos - currentPos)
-        adc.currentVelocity = direction * adc.speed
-    }
-    
-    private func finalizeRetarget(adc: inout ADCComponent) {
-        adc.previousTargetPosition = adc.targetWorldPosition
-        adc.newTargetPosition = nil
-        adc.needsRetarget = false
-        adc.targetInterpolationProgress = 0
-    }
-    
 }

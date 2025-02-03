@@ -1,114 +1,139 @@
 /*
-See LICENSE.txt file for this sample's licensing information.
+ See LICENSE.txt file for this sample's licensing information.
 
-Abstract:
-Component that tracks ADC (Antibody-Drug Conjugate) state and movement parameters.
+ Abstract:
+ Component that tracks ADC (Antibody-Drug Conjugate) state and movement parameters.
 */
 
 import RealityKit
 import Foundation
 
-/// Component that defines ADC behavior and movement parameters
+/// Component that defines ADC behavior and movement parameters.
 public struct ADCComponent: Component, Codable {
-    /// Current state of the ADC
-    public enum State: String, Codable {
-        case idle       // Initial state, waiting for target
-        case moving     // Moving towards target
-        case seeking    // Moving without target, looking for one
-        case retargeting // Found new target, transitioning
-        case attached   // Attached to cancer cell
-    }
     
     // MARK: - State
-    /// Current state of the ADC
-    public var state: State = .idle
     
-    // MARK: - Movement
-    /// Movement progress (0 to 1)
-    public var movementProgress: Float = 0
-    
-    /// Current velocity
-    public var currentVelocity: SIMD3<Float>? = nil
-    
-    /// Speed of movement
-    public var speed: Float = 2.0
-    
-    // MARK: - Rotation
-    /// Speed of protein spin animation (random per instance)
-    public var proteinSpinSpeed: Float = 0.0
-    
-    // MARK: - Target Information
-    /// Target cancer cell ID
-    public var targetCellID: Int? = nil
-    
-    /// ID of the target entity
-    public var targetEntityID: UInt64? = nil
-    
-    /// Starting position in world space
-    public var startWorldPosition: SIMD3<Float>? = nil
-    
-    /// Target position in world space
-    public var targetWorldPosition: SIMD3<Float>? = nil
-    
-    /// Flag indicating if retargeting is needed
-    public var needsRetarget: Bool = false
-    
-    // MARK: - Movement Parameters
-    /// Speed factor for movement (random value between speedRange)
-    public var speedFactor: Float? = nil
-    
-    /// Arc height factor for movement (random value between arcHeightRange)
-    public var arcHeightFactor: Float? = nil
-    
-    // MARK: - Seeking Parameters
-    /// Initial direction for seeking movement
-    public var seekingDirection: SIMD3<Float>? = nil
-    
-    /// When seeking started (used to enforce minimum seeking duration)
-    public var seekingStartTime: Double? = nil
-    
-    /// Minimum duration (in seconds) that an ADC must seek before targeting
-    public static let minimumSeekingDuration: Double = 2.0
-    
-    // MARK: - Path and Distance Tracking
-    /// Length of the current movement path
-    public var pathLength: Float = 0
-    
-    /// Previously calculated path length
-    public var previousPathLength: Float = 0
-    
-    /// Distance traveled along the current path
-    public var traveledDistance: Float = 0
-    
-    // MARK: - Target Interpolation
-    /// Previous target position for interpolation
-    public var previousTargetPosition: SIMD3<Float>? = nil
-    
-    /// New target position for interpolation
-    public var newTargetPosition: SIMD3<Float>? = nil
-    
-    /// Progress of target position interpolation (0 to 1)
-    public var targetInterpolationProgress: Float = 0
-    
-    /// Duration for target interpolation
-    public static let targetInterpolationDuration: Double = 1.0
-    
-    // MARK: - Path Tangent and Retargeting
-    /// Previous path tangent
-    public var previousPathTangent: SIMD3<Float>?  // Needs to be public
-    
-    /// Flag indicating if the current path is a retargeted path
-    public var isRetargetedPath: Bool = false
-    
-    /// Composite progress of the current path
-    public var compositeProgress: Float = 0
-    
-    // MARK: - Initialization
-    /// Initialize ADC component and register system
-    public init() {
+    /// Represents the various states of an ADC.
+    public enum State: String, Codable {
+        case idle       // Waiting for a target.
+        case moving     // Currently moving toward a target.
+        case seeking    // Moving without a target, looking for one.
+        case retargeting// Transitioning to a new target.
+        case attached   // Attached to a cancer cell.
     }
     
-    /// Initialize ADC component with specified parameters
+    /// The current state of the ADC.
+    public var state: State = .idle
+
+    
+    // MARK: - Movement (Distance-Based)
+    
+    /// The total length (arc-length) of the current movement path.
+    public var pathLength: Float = 0
+    
+    /// The distance traveled along the current path.
+    public var traveledDistance: Float = 0
+    
+    /// A computed property that returns normalized progress (0 to 1) along the path.
+    public var normalizedProgress: Float {
+        return pathLength > 0 ? traveledDistance / pathLength : 0
+    }
+    
+    /// The current velocity of the ADC.
+    public var currentVelocity: SIMD3<Float>? = nil
+    
+    /// The base speed of movement.
+    public var speed: Float = 2.0
+
+    
+    // MARK: - Rotation and Animation
+    
+    /// Speed of the protein spin animation (typically randomized per instance).
+    public var proteinSpinSpeed: Float = 0.0
+
+    
+    // MARK: - Target Information
+    
+    /// The target cancer cell ID.
+    public var targetCellID: Int? = nil
+    
+    /// The ID of the target entity.
+    public var targetEntityID: UInt64? = nil
+    
+    /// The starting position (in world space) when movement begins.
+    public var startWorldPosition: SIMD3<Float>? = nil
+    
+    /// The target position (in world space) for movement.
+    public var targetWorldPosition: SIMD3<Float>? = nil
+    
+    /// A flag indicating whether retargeting is needed.
+    public var needsRetarget: Bool = false
+
+    
+    // MARK: - Randomization Factors
+    
+    /// A speed factor (random value within a defined range) applied to movement.
+    public var speedFactor: Float? = nil
+    
+    /// An arc height factor (random value within a defined range) for the curved path.
+    public var arcHeightFactor: Float? = nil
+
+    
+    // MARK: - Seeking Parameters
+    
+    /// The initial direction for seeking movement.
+    public var seekingDirection: SIMD3<Float>? = nil
+    
+    /// The timestamp when seeking began (used to enforce a minimum duration).
+    public var seekingStartTime: Double? = nil
+    
+    /// The minimum duration (in seconds) that an ADC must seek before locking onto a target.
+    public static let minimumSeekingDuration: Double = 2.0
+
+    
+    // MARK: - Path Tracking and Arc-Length Parameterization
+    
+    /// A lookup table storing cumulative arc lengths (sampled along the quadratic Bézier curve).
+    /// This is used to remap a traveled distance into a parameter t (0 to 1).
+    public var lookupTable: [Float]? = nil
+
+    
+    // MARK: - Target Interpolation (for Retargeting)
+    
+    /// The previous target position used for interpolating when a retarget occurs.
+    public var previousTargetPosition: SIMD3<Float>? = nil
+    
+    /// The new target position (after retargeting) for interpolation.
+    public var newTargetPosition: SIMD3<Float>? = nil
+    
+    /// The progress (0 to 1) of the target position interpolation.
+    public var targetInterpolationProgress: Float = 0
+    
+    /// The duration (in seconds) for target interpolation.
+    public static let targetInterpolationDuration: Double = 1.0
+
+    
+    // MARK: - Additional Retargeting and Path Data
+    
+    /// The previously calculated path length (used during retargeting adjustments).
+    public var previousPathLength: Float = 0
+    
+    /// The previous path tangent (optional; useful for composite path calculations).
+    public var previousPathTangent: SIMD3<Float>? = nil
+    
+    /// A flag indicating if the current path is a retargeted path.
+    public var isRetargetedPath: Bool = false
+    
+    /// The composite progress of the current path (if using a composite curve).
+    public var compositeProgress: Float = 0
+
+    
+    // MARK: - Initialization
+    
+    /// Default initializer.
+    public init() { }
+    
+    /// Initializes the ADCComponent with the given parameters.
     public init(
         state: State = .idle,
         targetCellID: Int? = nil,
@@ -120,38 +145,33 @@ public struct ADCComponent: Component, Codable {
         self.targetEntityID = targetEntityID
         self.seekingDirection = seekingDirection
     }
+
     
     // MARK: - Codable Implementation
+    
     private enum CodingKeys: String, CodingKey {
         case state
-        case movementProgress
-        case currentVelocity
-        case speed
+        // Movement (we do not store normalizedProgress since it is computed)
+        case currentVelocity, speed
+        // Rotation and Animation
         case proteinSpinSpeed
-        case targetCellID
-        case targetEntityID
-        case startWorldPosition
-        case targetWorldPosition
-        case needsRetarget
-        case speedFactor
-        case arcHeightFactor
-        case seekingDirection
-        case seekingStartTime
-        case previousPathTangent
-        case isRetargetedPath
-        case compositeProgress
-        case pathLength
-        case previousPathLength
-        case traveledDistance
-        case previousTargetPosition
-        case newTargetPosition
-        case targetInterpolationProgress
+        // Target Information
+        case targetCellID, targetEntityID, startWorldPosition, targetWorldPosition, needsRetarget
+        // Randomization Factors
+        case speedFactor, arcHeightFactor
+        // Seeking Parameters
+        case seekingDirection, seekingStartTime
+        // Path Tracking and Arc-Length Parameterization
+        case pathLength, traveledDistance, lookupTable
+        // Target Interpolation (for Retargeting)
+        case previousTargetPosition, newTargetPosition, targetInterpolationProgress
+        // Additional Retargeting and Path Data
+        case previousPathLength, previousPathTangent, isRetargetedPath, compositeProgress
     }
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         state = try container.decode(State.self, forKey: .state)
-        movementProgress = try container.decode(Float.self, forKey: .movementProgress)
         currentVelocity = try container.decodeIfPresent(SIMD3<Float>.self, forKey: .currentVelocity)
         speed = try container.decode(Float.self, forKey: .speed)
         proteinSpinSpeed = try container.decode(Float.self, forKey: .proteinSpinSpeed)
@@ -164,21 +184,21 @@ public struct ADCComponent: Component, Codable {
         arcHeightFactor = try container.decodeIfPresent(Float.self, forKey: .arcHeightFactor)
         seekingDirection = try container.decodeIfPresent(SIMD3<Float>.self, forKey: .seekingDirection)
         seekingStartTime = try container.decodeIfPresent(Double.self, forKey: .seekingStartTime)
-        previousPathTangent = try container.decodeIfPresent(SIMD3<Float>.self, forKey: .previousPathTangent)
-        isRetargetedPath = try container.decode(Bool.self, forKey: .isRetargetedPath)
-        compositeProgress = try container.decode(Float.self, forKey: .compositeProgress)
         pathLength = try container.decode(Float.self, forKey: .pathLength)
-        previousPathLength = try container.decode(Float.self, forKey: .previousPathLength)
         traveledDistance = try container.decode(Float.self, forKey: .traveledDistance)
+        lookupTable = try container.decodeIfPresent([Float].self, forKey: .lookupTable)
         previousTargetPosition = try container.decodeIfPresent(SIMD3<Float>.self, forKey: .previousTargetPosition)
         newTargetPosition = try container.decodeIfPresent(SIMD3<Float>.self, forKey: .newTargetPosition)
         targetInterpolationProgress = try container.decode(Float.self, forKey: .targetInterpolationProgress)
+        previousPathLength = try container.decode(Float.self, forKey: .previousPathLength)
+        previousPathTangent = try container.decodeIfPresent(SIMD3<Float>.self, forKey: .previousPathTangent)
+        isRetargetedPath = try container.decode(Bool.self, forKey: .isRetargetedPath)
+        compositeProgress = try container.decode(Float.self, forKey: .compositeProgress)
     }
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(state, forKey: .state)
-        try container.encode(movementProgress, forKey: .movementProgress)
         try container.encodeIfPresent(currentVelocity, forKey: .currentVelocity)
         try container.encode(speed, forKey: .speed)
         try container.encode(proteinSpinSpeed, forKey: .proteinSpinSpeed)
@@ -191,14 +211,15 @@ public struct ADCComponent: Component, Codable {
         try container.encodeIfPresent(arcHeightFactor, forKey: .arcHeightFactor)
         try container.encodeIfPresent(seekingDirection, forKey: .seekingDirection)
         try container.encodeIfPresent(seekingStartTime, forKey: .seekingStartTime)
-        try container.encodeIfPresent(previousPathTangent, forKey: .previousPathTangent)
-        try container.encode(isRetargetedPath, forKey: .isRetargetedPath)
-        try container.encode(compositeProgress, forKey: .compositeProgress)
         try container.encode(pathLength, forKey: .pathLength)
-        try container.encode(previousPathLength, forKey: .previousPathLength)
         try container.encode(traveledDistance, forKey: .traveledDistance)
+        try container.encodeIfPresent(lookupTable, forKey: .lookupTable)
         try container.encodeIfPresent(previousTargetPosition, forKey: .previousTargetPosition)
         try container.encodeIfPresent(newTargetPosition, forKey: .newTargetPosition)
         try container.encode(targetInterpolationProgress, forKey: .targetInterpolationProgress)
+        try container.encode(previousPathLength, forKey: .previousPathLength)
+        try container.encodeIfPresent(previousPathTangent, forKey: .previousPathTangent)
+        try container.encode(isRetargetedPath, forKey: .isRetargetedPath)
+        try container.encode(compositeProgress, forKey: .compositeProgress)
     }
 }

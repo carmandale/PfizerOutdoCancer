@@ -27,15 +27,67 @@ public struct AttachmentSystem: System {
     // MARK: - Public API
     
     @MainActor
-    public static func getAvailablePoint(in scene: RealityKit.Scene, forCellID cellID: Int) -> Entity? {
+    public static func getAvailablePoint(
+        in scene: RealityKit.Scene,
+        forCellID cellID: Int,
+        approachPosition: SIMD3<Float>? = nil
+    ) -> Entity? {
         let query = EntityQuery(where: .has(AttachmentPoint.self))
         let entities = scene.performQuery(query)
         
-        // Find first unoccupied attachment point for this cell
-        return entities.first { entity in
-            guard let attachPoint = entity.components[AttachmentPoint.self] else { return false }
-            return attachPoint.cellID == cellID && !attachPoint.isOccupied
+        // If no approach position provided, use simple first-available logic
+        if approachPosition == nil {
+            return entities.first { entity in
+                guard let attachPoint = entity.components[AttachmentPoint.self] else { return false }
+                return attachPoint.cellID == cellID && !attachPoint.isOccupied
+            }
         }
+        
+        // Otherwise use scoring logic to find best available point
+        var bestScore: Float = -Float.infinity
+        var bestPoint: Entity? = nil
+        
+        for entity in entities {
+            guard let attachPoint = entity.components[AttachmentPoint.self],
+                  attachPoint.cellID == cellID && !attachPoint.isOccupied else {
+                continue
+            }
+            
+            // Find parent cancer cell for center position
+            var current = entity
+            var cellCenter: SIMD3<Float>? = nil
+            while let parent = current.parent {
+                if parent.components[CancerCellStateComponent.self] != nil {
+                    cellCenter = parent.position(relativeTo: nil)
+                    break
+                }
+                current = parent
+            }
+            
+            guard let cellCenter = cellCenter else { continue }
+            
+            let attachPosition = entity.position(relativeTo: nil)
+            
+            guard let score = ADCMovementSystem.calculateAttachmentScore(
+                attachPosition: attachPosition,
+                cellCenter: cellCenter,
+                approachPosition: approachPosition!
+            ) else { continue }
+            
+            print("📊 Attachment Point Score - Point: \(entity.name), Score: \(score)")
+            
+            if score > bestScore {
+                bestScore = score
+                bestPoint = entity
+                print("✨ New best attachment point - Score: \(score)")
+            }
+        }
+        
+        if let bestPoint = bestPoint {
+            print("🎯 Selected attachment point: \(bestPoint.name) with score: \(bestScore)")
+        }
+        
+        return bestPoint
     }
     
     @MainActor
