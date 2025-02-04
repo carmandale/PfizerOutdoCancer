@@ -310,6 +310,15 @@ final class AppModel {
                     // First cleanup the game state
                     gameState.cleanup()
                 }
+            case .outro:
+                if newPhase != .outro {
+                    // First cleanup the view model (clears all entity references)
+                    outroState.cleanup()
+                    // Then release assets from the manager
+                    await assetLoadingManager.releaseOutroEnvironment()
+                }
+            case .ready:
+                break
             default:
                 break
             }

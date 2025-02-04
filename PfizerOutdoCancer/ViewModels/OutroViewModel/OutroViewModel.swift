@@ -71,4 +71,35 @@ final class OutroViewModel {
             print("❌ OutroViewModel: Failed to load outro environment: \(error)")
         }
     }
+    
+    // MARK: - Cleanup
+    func cleanup() {
+        print("\n=== Starting OutroViewModel Cleanup ===")
+        
+        // Clear root entity and scene
+        if let root = outroRootEntity {
+            print("🗑️ Removing outro root entity")
+            // Reset positioning component before removal
+            if var positioningComponent = root.components[PositioningComponent.self] {
+                print("🎯 Resetting positioning component")
+                positioningComponent.needsPositioning = true
+                root.components[PositioningComponent.self] = positioningComponent
+            }
+            root.removeFromParent()
+        }
+        outroRootEntity = nil
+        scene = nil
+        
+        // Clear environment entity
+        if let environment = outroEnvironmentEntity {
+            print("🌍 Removing environment entity")
+            environment.removeFromParent()
+        }
+        outroEnvironmentEntity = nil
+        
+        // Reset state
+        isSetupComplete = false
+        
+        print("✅ Completed OutroViewModel cleanup\n")
+    }
 } 

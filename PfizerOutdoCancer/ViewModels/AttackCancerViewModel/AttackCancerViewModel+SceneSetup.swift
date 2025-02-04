@@ -9,15 +9,15 @@ extension AttackCancerViewModel {
         let root = Entity()
         root.name = "AttackCancerRoot"
         
-        // Keep decoy setup - needed for AttackCancer functionality
-        let decoy = Entity()
-        decoy.name = "Decoy"
-        decoy.components.set(PositioningComponent(
+        // Keep headTrackingRoot setup - needed for AttackCancer functionality
+        let headTrackingRoot = Entity()
+        headTrackingRoot.name = "headTrackingRoot"
+        headTrackingRoot.components.set(PositioningComponent(
             offsetX: 0,
             offsetY: 0,
             offsetZ: -1.0
         ))
-        root.addChild(decoy)
+        root.addChild(headTrackingRoot)
         
         rootEntity = root
         return root
@@ -73,7 +73,7 @@ extension AttackCancerViewModel {
             )
             print("✅ Tutorial: Retrieved game start VO")
             
-            if let VO_parent = root.findEntity(named: "Decoy") {
+            if let VO_parent = root.findEntity(named: "headTrackingRoot") {
                 print("🎯 Tutorial: Found VO parent")
                 VO_parent.addChild(gameStartVO)
                 root.addChild(VO_parent)
@@ -97,7 +97,7 @@ extension AttackCancerViewModel {
                     print("❌ Tutorial: Could not find CancerCell_spawn")
                 }
             } else {
-                print("❌ Tutorial: Could not find Decoy entity")
+                print("❌ Tutorial: Could not find headTrackingRoot entity")
             }
         } catch {
             print("❌ Tutorial: Failed to load game start VO: \(error)")
@@ -146,7 +146,7 @@ extension AttackCancerViewModel {
     
     func handleGameStart(in root: Entity) async {
         // Fade out tutorial
-        if let tutorialContent = root.findEntity(named: "Decoy") {
+        if let tutorialContent = root.findEntity(named: "headTrackingRoot") {
             await tutorialContent.fadeOpacity(to: 0, duration: 1)
         }
     }

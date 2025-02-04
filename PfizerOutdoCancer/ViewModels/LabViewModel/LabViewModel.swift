@@ -202,6 +202,12 @@ final class LabViewModel {
         // Clear main entity and scene
         if let root = mainEntity {
             print("🗑️ Removing main entity")
+            // Reset positioning component before removal
+            if var positioningComponent = root.components[PositioningComponent.self] {
+                print("🎯 Resetting positioning component")
+                positioningComponent.needsPositioning = true
+                root.components[PositioningComponent.self] = positioningComponent
+            }
             root.removeFromParent()
         }
         mainEntity = nil

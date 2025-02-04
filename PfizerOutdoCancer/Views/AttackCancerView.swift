@@ -20,15 +20,15 @@ struct AttackCancerView: View {
             root.name = "AttackCancerRoot"
             print("✅ Root entity created: \(root.name)")
 
-            let decoy = Entity()
-            decoy.name = "Decoy"
-            decoy.components.set(PositioningComponent(
-                offsetX: 0,
-                offsetY: 0,
-                offsetZ: -1.0
-            ))
-            root.addChild(decoy)
-            print("✅ Decoy entity added to root")
+            // let decoy = Entity()
+            // decoy.name = "Decoy"
+            // decoy.components.set(PositioningComponent(
+            //     offsetX: 0,
+            //     offsetY: 0,
+            //     offsetZ: -1.0
+            // ))
+            // root.addChild(decoy)
+            // print("✅ Decoy entity added to root")
             
             content.add(root)
             appModel.gameState.storedAttachments = attachments

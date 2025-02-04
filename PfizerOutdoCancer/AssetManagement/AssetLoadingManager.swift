@@ -179,6 +179,41 @@ final class AssetLoadingManager {
         print("✅ Completed aggressive lab cleanup\n")
     }
     
+    /// Releases outro environment assets asynchronously
+    func releaseOutroEnvironment() async {
+        print("\n=== Starting Outro Environment Cleanup ===")
+        
+        // Log initial state
+        print("📊 Current template cache size: \(entityTemplates.count) entities")
+        print("📊 Current templates: \(entityTemplates.keys.joined(separator: ", "))")
+        
+        // Remove from entity templates
+        let keysToRemove = [
+            "outro_environment"
+        ]
+        
+        print("🗑️ Preparing to remove \(keysToRemove.count) outro assets:")
+        for key in keysToRemove {
+            if let entity = entityTemplates[key] {
+                print("\n🗑️ Removing asset: \(key)")
+                // Use releaseEntity for thorough cleanup including audio
+                releaseEntity(entity)
+                // Remove from templates after release
+                entityTemplates.removeValue(forKey: key)
+                print("✅ Released asset: \(key)")
+            } else {
+                print("⚠️ Asset not found in cache: \(key)")
+            }
+        }
+        
+        // Log final state
+        print("\n📊 Updated template cache size: \(entityTemplates.count) entities")
+        if let remainingKeys = entityTemplates.keys.first {
+            print("🔒 Remaining asset: \(remainingKeys)")
+        }
+        print("✅ Completed outro environment cleanup\n")
+    }
+    
     /// Get the current loading progress
     func loadingProgress() -> Float {
         switch loadingState {

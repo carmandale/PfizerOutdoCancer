@@ -66,14 +66,14 @@ struct AttackCancerViewerButton: View {
     @Environment(ADCDataModel.self) var dataModel
     @Environment(\.openWindow) private var openWindow
     @State private var rotation: CGFloat = 0.0
-    @State private var currentTheme: GradientTheme = .darkRed
+    @State private var currentTheme: GradientTheme = .lightMustard
     var scaleEffect: CGFloat = 1.2
     var width: CGFloat = 450
     var height: CGFloat = 350
     
     // MARK: - Debug Controls
     #if DEBUG
-    private let isDebugMode = true
+    private let isDebugMode = false
     #else
     private let isDebugMode = false
     #endif

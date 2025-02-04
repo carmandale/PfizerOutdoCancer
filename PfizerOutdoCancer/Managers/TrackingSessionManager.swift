@@ -1,6 +1,7 @@
 import ARKit
 import RealityKit
 import SwiftUI
+import QuartzCore
 
 @Observable
 @MainActor
@@ -32,10 +33,7 @@ final class TrackingSessionManager {
     
     // MARK: - Session Management
     func startTracking(needsHandTracking: Bool = false) async throws {
-        print("\n=== Tracking Session Start ===")
-        print("Need Hand Tracking: \(needsHandTracking)")
-        print("Current Tracking State: \(isTracking)")
-        print("Current Hand Tracking State: \(shouldProcessHandTracking)")
+        await logTrackingState(context: "Start Tracking Request")
         
         #if targetEnvironment(simulator)
         // Do nothing in simulator
@@ -59,6 +57,7 @@ final class TrackingSessionManager {
                 }
                 try await Task.sleep(for: .milliseconds(100))
             }
+            await logTrackingState(context: "Post-Stop Check")
         }
         
         // Create new providers for this session
@@ -82,21 +81,26 @@ final class TrackingSessionManager {
         isTracking = true
         print("✅ Started tracking providers")
         print("Final Hand Tracking State: \(shouldProcessHandTracking)")
+        
+        await logTrackingState(context: "Post-Start")
         #endif
     }
     
     func stopTracking() {
-        print("\n=== Stopping Tracking Session ===")
-        print("Was Tracking: \(isTracking)")
-        print("Had Hand Tracking: \(shouldProcessHandTracking)")
-        
         #if targetEnvironment(simulator)
         // Do nothing in simulator
         return
         #else
-        arkitSession.stop()
-        isTracking = false
-        print("⏹️ Stopped tracking providers")
+        Task {
+            await logTrackingState(context: "Pre-Stop")
+            
+            arkitSession.stop()
+            isTracking = false
+            
+            // Give a moment for state to update
+            try? await Task.sleep(for: .milliseconds(100))
+            await logTrackingState(context: "Post-Stop")
+        }
         #endif
     }
     
@@ -162,6 +166,10 @@ final class TrackingSessionManager {
             case .dataProviderStateChanged(_, let newState, let error):
                 print("🔄 Provider state changed to: \(newState)")
                 currentState = newState  // Track the current state
+                
+                // Log full state after any state change
+                await logTrackingState(context: "Provider State Change [\(newState)]")
+                
                 switch newState {
                 case .initialized:
                     print("ℹ️ Provider initialized")
@@ -171,19 +179,23 @@ final class TrackingSessionManager {
                 case .paused:
                     print("⏸️ Provider paused")
                 case .stopped:
-                    print("⚠️ Provider stopped - Error: \(String(describing: error))")
-                    isTracking = false
                     if let error {
-                        print("❌ Provider error: \(error)")
+                        print("❌ Provider stopped with error: \(error)")
                         providersStoppedWithError = true
+                    } else {
+                        print("⏹️ Provider stopped normally")
                     }
+                    isTracking = false
                 @unknown default:
                     break
                 }
+                
             case .authorizationChanged(let type, let status):
                 if type == .worldSensing {
                     worldSensingAuthorizationStatus = status
+                    print("🔐 World sensing authorization changed: \(status)")
                 }
+                
             default:
                 break
             }
@@ -203,5 +215,51 @@ extension TrackingSessionManager {
         case capabilitiesUnavailable(String)
         case providerError(Error)
         case authorizationDenied
+    }
+}
+
+// MARK: - Enhanced Logging
+extension TrackingSessionManager {
+    /// Logs the current tracking state with detailed position and state information
+    /// - Parameter context: A string describing the context of when this log is being made
+    func logTrackingState(context: String) async {
+        print("\n=== Tracking State [\(context)] ===")
+        
+        // Log tracking flags
+        print("🎯 Tracking Enabled: \(isTracking)")
+        print("✋ Hand Tracking Enabled: \(shouldProcessHandTracking)")
+        print("🔄 Current Provider State: \(currentState)")
+        
+        // Get and log head position
+        if let deviceAnchor = try? await worldTrackingProvider.queryDeviceAnchor(atTimestamp: CACurrentMediaTime()) {
+            print("📍 Head Transform: \(deviceAnchor.originFromAnchorTransform)")
+            // Extract position components for easier reading
+            let position = deviceAnchor.originFromAnchorTransform.columns.3
+            print("📍 Head Position - X: \(position.x), Y: \(position.y), Z: \(position.z)")
+        } else {
+            print("⚠️ No device anchor available")
+        }
+        
+        // Log provider states
+        print("🌎 World Provider State: \(worldTrackingProvider.state)")
+        if let handState = handTrackingProvider?.state {
+            print("🖐️ Hand Provider State: \(handState)")
+        }
+        
+        // Log any error states
+        if providersStoppedWithError {
+            print("❌ Providers stopped with error")
+        }
+        
+        print("=== End State Log ===\n")
+    }
+    
+    /// Logs the transition between two phases
+    /// - Parameters:
+    ///   - from: The phase we're transitioning from
+    ///   - to: The phase we're transitioning to
+    func logTransition(from: String, to: String) async {
+        print("\n🔄 === Phase Transition [\(from) -> \(to)] ===")
+        await logTrackingState(context: "Pre-Transition")
     }
 } 

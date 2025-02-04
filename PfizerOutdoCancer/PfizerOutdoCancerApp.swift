@@ -400,6 +400,7 @@ struct PfizerOutdoCancerApp: App {
             //     appModel.isNavWindowOpen = true
             // }
             dismissWindow(id: AppModel.hopeMeterUtilityWindowId)
+            appModel.isHopeMeterUtilityWindowOpen = false
 //            openWindow(id: AppModel.mainWindowId)
             
         case .lab:

@@ -283,9 +283,15 @@ final class IntroViewModel {
     func cleanup() {
         print("\n=== Starting IntroViewModel Cleanup ===")
         
-        // Clear entity references
+        // Clear root entity and scene
         if let root = introRootEntity {
             print("🗑️ Removing intro root entity")
+            // Reset positioning component before removal
+            if var positioningComponent = root.components[PositioningComponent.self] {
+                print("🎯 Resetting positioning component")
+                positioningComponent.needsPositioning = true
+                root.components[PositioningComponent.self] = positioningComponent
+            }
             root.removeFromParent()
         }
         introRootEntity = nil
