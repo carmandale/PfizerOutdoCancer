@@ -18,20 +18,20 @@ struct AttackCancerViewerButton: View {
         ZStack {
             // Outer gradient border
             Capsule()
-                .frame(width: 400, height: 250)
+                .frame(width: 450, height: 250)
                 .foregroundStyle(LinearGradient(gradient: Gradient(colors: [
-                    Color(red: 0.4, green: 0, blue: 0),     // Dark red
-                    Color(red: 0.6, green: 0, blue: 0),     // Medium dark red
-                    Color(red: 0.8, green: 0, blue: 0),     // Medium red
-                    Color(red: 0.9, green: 0.1, blue: 0.1), // Lighter red
-                    Color(red: 1.0, green: 0.2, blue: 0.2)  // Light red
+                    Color("DarkRed800"),     // Darkest red
+                    Color("DarkRed600"),     // Very dark red
+                    Color("DarkRed400"),     // Medium dark red
+                    Color("DarkRed200"),     // Medium red
+                    Color("DarkRed050")      // Lighter red
                 ]), startPoint: .top, endPoint: .bottom))
                 .rotationEffect(.degrees(rotation))
                 .hoverEffect(.highlight)
                 .mask {
                     Capsule()
                         .stroke(lineWidth: 20)
-                        .frame(width: 300, height: 60)
+                        .frame(width: 250, height: 60)
                         .blur(radius: 10)
                 }
                 .hoverEffect { effect, isActive, proxy in
@@ -40,20 +40,20 @@ struct AttackCancerViewerButton: View {
             
             // Inner gradient border
             Capsule()
-                .frame(width: 400, height: 250)
+                .frame(width: 450, height: 250)
                 .foregroundStyle(LinearGradient(gradient: Gradient(colors: [
-                    Color(red: 0.4, green: 0, blue: 0),     // Dark red
-                    Color(red: 0.6, green: 0, blue: 0),     // Medium dark red
-                    Color(red: 0.8, green: 0, blue: 0),     // Medium red
-                    Color(red: 0.9, green: 0.1, blue: 0.1), // Lighter red
-                    Color(red: 1.0, green: 0.2, blue: 0.2)  // Light red
+                    Color("DarkRed800"),     // Darkest red
+                    Color("DarkRed600"),     // Very dark red
+                    Color("DarkRed400"),     // Medium dark red
+                    Color("DarkRed200"),     // Medium red
+                    Color("DarkRed050")      // Lighter red
                 ]), startPoint: .top, endPoint: .bottom))
                 .rotationEffect(.degrees(rotation))
                 .hoverEffect(.highlight)
                 .mask {
                     Capsule()
                         .stroke(lineWidth: 10)
-                        .frame(width: 300, height: 60)
+                        .frame(width: 250, height: 60)
                 }
                 .hoverEffect { effect, isActive, proxy in
                     effect.scaleEffect(!isActive ? 1.0 : scaleEffect)
@@ -85,6 +85,9 @@ struct AttackCancerViewerButton: View {
                 rotation = 360
             }
         }
+        .opacity(appModel.hasBuiltADC ? 1 : 0)
+        .animation(.spring(response: 0.5, dampingFraction: 0.7), value: appModel.hasBuiltADC)
+        .transition(Appear())
     }
 }
 

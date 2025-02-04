@@ -66,7 +66,7 @@ private struct LoadingBlock: View {
                     .padding()
                     .transition(.opacity)
                 
-                Text("build v40 - 1.21.25")
+                Text("build v41 - 2.3.25")
                     .foregroundStyle(.secondary)
                     .font(.caption)
                     .padding()

@@ -27,12 +27,13 @@ final class LabViewModel {
     // State
     var isSetupComplete = false
     var isLibraryOpen = false
+    var shouldShowADCButton = false
     
     // Dependencies
     var appModel: AppModel!
     
     // MARK: - Setup Methods
-    func setupLabRoot() -> Entity {
+    func setupRoot() -> Entity {
         print("📱 LabViewModel: Setting up root entity")
         let root = Entity()
         root.name = "MainEntity"
@@ -54,7 +55,8 @@ final class LabViewModel {
             return
         }
         
-        // Use the assembled lab that should already be in memory
+        // Load the complete assembled lab
+        print("📱 Loading assembled lab environment")
         let labEnvironment = try await appModel.assetLoadingManager.loadAssembledLab()
         root.addChild(labEnvironment)
         print("🏢 Assembled Lab Environment added to MainEntity")
@@ -66,36 +68,40 @@ final class LabViewModel {
     
     // MARK: - Environment Setup
     func setupEnvironment() async throws {
-        print("📱 LabViewModel: Starting additional environment setup")
+        print("📱 LabViewModel: Starting environment setup")
         
         guard let root = mainEntity else {
             print("❌ LabViewModel: No root entity for environment setup")
-            return
+            throw AssetError.resourceNotFound
         }
         
         // Add VO and Audio using the new on-demand loading system
-        do {
-            let labVO = try await appModel.assetLoadingManager.instantiateAsset(
-                withName: "lab_vo",
-                category: .labEnvironment
-            )
-            root.addChild(labVO)
-            print("🎙️ Lab VO added to MainEntity")
-            
-            let labAudio = try await appModel.assetLoadingManager.instantiateAsset(
-                withName: "lab_audio",
-                category: .labEnvironment
-            )
-            root.addChild(labAudio)
-            labAudioEntity = labAudio
-            print("🔊 Lab Audio added to MainEntity")
-            
-            isSetupComplete = true
-            print("✅ LabViewModel: Environment setup complete")
-        } catch {
-            print("❌ LabViewModel: Failed to load audio/VO: \(error)")
-            throw error
+        let labVO = try await appModel.assetLoadingManager.instantiateAsset(
+            withName: "lab_vo",
+            category: .labEnvironment
+        )
+        root.addChild(labVO)
+        print("🎙️ Lab VO added to MainEntity")
+        
+        let labAudio = try await appModel.assetLoadingManager.instantiateAsset(
+            withName: "lab_audio",
+            category: .labEnvironment
+        )
+        root.addChild(labAudio)
+        labAudioEntity = labAudio
+        print("🔊 Lab Audio added to MainEntity")
+        
+        // Start the timer for ADC button
+        shouldShowADCButton = false  // Ensure it starts hidden
+        Task {
+            try? await Task.sleep(for: .seconds(30))
+            withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
+                shouldShowADCButton = true
+            }
         }
+        
+        isSetupComplete = true
+        print("✅ LabViewModel: Environment setup complete")
     }
     
     // MARK: - Attachment Setup
@@ -179,28 +185,6 @@ final class LabViewModel {
         }
     }
     
-    // MARK: - Cleanup
-    func cleanup() {
-        print("🧹 LabViewModel: Starting cleanup")
-        
-        // Clean up lab audio
-        // labAudioEntity?.removeFromParent()
-        // labAudioEntity = nil
-        // adcBuilderViewerButtonEntity = nil
-        // attackCancerViewerButtonEntity = nil
-        
-        // Reset positioning when leaving view
-        if var positioningComponent = mainEntity?.components[PositioningComponent.self] {
-            positioningComponent.needsPositioning = true
-            mainEntity?.components[PositioningComponent.self] = positioningComponent
-            print("🔄 Reset positioning for next lab entry")
-        }
-        
-        // mainEntity?.removeFromParent()
-        isSetupComplete = false
-        print("✅ LabViewModel: Cleanup complete")
-    }
-    
     // MARK: - Interactive Device Handling
     func handleTap(on entity: Entity) {
         print("🎯 Tap detected on entity: \(entity.name)")
@@ -209,5 +193,45 @@ final class LabViewModel {
             print("📱 Found InteractiveDeviceComponent, toggling library...")
             isLibraryOpen.toggle()
         }
+    }
+    
+    // MARK: - Cleanup
+    func cleanup() {
+        print("\n=== Starting LabViewModel Cleanup ===")
+        
+        // Clear main entity and scene
+        if let root = mainEntity {
+            print("🗑️ Removing main entity")
+            root.removeFromParent()
+        }
+        mainEntity = nil
+        scene = nil
+        
+        // Clear audio entity
+        if let audio = labAudioEntity {
+            print("🔊 Removing lab audio entity")
+            audio.removeFromParent()
+        }
+        labAudioEntity = nil
+        
+        // Clear attachment entities
+        if let builder = adcBuilderViewerButtonEntity {
+            print("🔧 Removing ADC builder button")
+            builder.removeFromParent()
+        }
+        adcBuilderViewerButtonEntity = nil
+        
+        if let attack = attackCancerViewerButtonEntity {
+            print("🎯 Removing Attack Cancer button")
+            attack.removeFromParent()
+        }
+        attackCancerViewerButtonEntity = nil
+        
+        // Reset state
+        isSetupComplete = false
+        isLibraryOpen = false
+        shouldShowADCButton = false  // Reset the button state
+        
+        print("✅ Completed LabViewModel cleanup\n")
     }
 }

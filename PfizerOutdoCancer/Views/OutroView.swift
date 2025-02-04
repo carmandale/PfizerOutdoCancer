@@ -63,7 +63,7 @@ struct OutroView: View {
         .preferredSurroundingsEffect(surroundingsEffect)
         .task {
             // Wait for environment animation to complete
-            try? await Task.sleep(for: .seconds(34))
+            try? await Task.sleep(for: .seconds(40))
             print("🎯 OutroView: Transitioning to lab")
             await appModel.transitionToPhase(.lab)
         }

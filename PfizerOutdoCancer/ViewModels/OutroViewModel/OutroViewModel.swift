@@ -44,6 +44,16 @@ final class OutroViewModel {
     func setupEnvironment(in root: Entity) async {
         print("📱 OutroViewModel: Starting environment setup")
         
+        // IBL
+        do {
+            print("📱 OutroViewModel: Setting up IBL lighting")
+            try await IBLUtility.addImageBasedLighting(to: root, imageName: "metro_noord_2k")
+            print("✅ OutroViewModel: Added IBL lighting")
+        } catch {
+            print("❌ OutroViewModel: Failed to setup IBL: \(error)")
+        }
+
+        // Load environment
         do {
             print("📱 OutroViewModel: Loading environment")
             let environment = try await appModel.assetLoadingManager.instantiateAsset(

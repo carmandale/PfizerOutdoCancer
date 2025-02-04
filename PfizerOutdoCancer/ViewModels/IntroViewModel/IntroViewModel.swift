@@ -165,12 +165,9 @@ final class IntroViewModel {
     private func setupPortal(in root: Entity) async {
         print("📱 IntroViewModel: Starting portal setup")
         do {
-            // Load lab environment using new on-demand system
-            let labEnvironment = try await appModel.assetLoadingManager.instantiateAsset(
-                withName: "lab_environment", 
-                category: .labEnvironment
-            )
-            print("✅ IntroViewModel: Successfully loaded laboratory environment")
+            // Load assembled lab using loadAssembledLab
+            let labEnvironment = try await appModel.assetLoadingManager.loadAssembledLab()
+            print("✅ IntroViewModel: Successfully loaded assembled laboratory environment")
             
             // Create portal with loaded environment
             let p = await PortalManager.createPortal(
@@ -280,5 +277,39 @@ final class IntroViewModel {
     // MARK: - Entity Access Methods
     func getPortal() -> Entity? {
         return portal
+    }
+    
+    // MARK: - Cleanup
+    func cleanup() {
+        print("\n=== Starting IntroViewModel Cleanup ===")
+        
+        // Clear entity references
+        if let root = introRootEntity {
+            print("🗑️ Removing intro root entity")
+            root.removeFromParent()
+        }
+        introRootEntity = nil
+        
+        // Clear scene reference
+        scene = nil
+        
+        // Clear entity references
+        portalWarp = nil
+        portal = nil
+        skyDome = nil
+        logo = nil
+        material = nil
+        
+        // Clear attachment entities
+        titleEntity = nil
+        labViewerEntity = nil
+        navToggleEntity = nil
+        
+        // Reset state
+        showTitleText = false
+        shouldDimSurroundings = false
+        isSetupComplete = false
+        
+        print("✅ Completed IntroViewModel cleanup\n")
     }
 }

@@ -20,7 +20,7 @@ struct LabView: View {
         RealityView { content, attachments in
             print("📱 LabView: Setting up RealityView")
             // Set up root entity
-            let root = appModel.labState.setupLabRoot()
+            let root = appModel.labState.setupRoot()
             content.add(root)
             
             // Setup environment in a task after root is configured
@@ -78,7 +78,7 @@ struct LabView: View {
             appModel.updateLibraryWindowState(isOpen: false)
         }
         .onDisappear {
-            appModel.labState.cleanup()
+            // Cleanup is now handled by AssetLoadingManager during phase transitions
         }
         .onChange(of: appModel.labState.isLibraryOpen) { _, isOpen in
             if isOpen {

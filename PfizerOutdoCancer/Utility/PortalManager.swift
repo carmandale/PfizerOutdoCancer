@@ -46,16 +46,8 @@ final class PortalManager {
         // Allow the entity to be visible only through a portal.
         world.components.set(WorldComponent())
         
-        // Create the lab environment and add it to the world.
-        do {
-            let labEnvironment = try await appModel.assetLoadingManager.instantiateAsset(
-                withName: "lab_environment",
-                category: .labEnvironment
-            )
-            world.addChild(labEnvironment)
-        } catch {
-            print("Error loading lab environment: \(error)")
-        }
+        // Add the provided lab environment to the world
+        world.addChild(environment)
         
         root.addChild(world)
 

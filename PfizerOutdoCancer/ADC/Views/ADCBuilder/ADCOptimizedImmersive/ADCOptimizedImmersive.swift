@@ -331,7 +331,12 @@ struct ADCOptimizedImmersive: View {
                         
 //                        try? await mainEntity.animatePosition(to: SIMD3(-0.125, 0, 0), duration: 1.0, delay: 0.0)
 //                        os_log(.debug, "ITR..Attempting to animate main view position")
-                        try? await mainViewEntity.animatePosition(to: SIMD3(-0.5, 0, 0.2), duration: 1.0, delay: 0.5)
+                        try? await mainViewEntity.animatePositionAndRotation(
+                            position: SIMD3(-0.5, 0, 0.2),
+                            rotation: 30,
+                            duration: 1.0,
+                            delay: 0.5
+                        )
                         
                         // After position animation, fade in antibody with delay
                         if let antibodyEntity = antibodyEntity {

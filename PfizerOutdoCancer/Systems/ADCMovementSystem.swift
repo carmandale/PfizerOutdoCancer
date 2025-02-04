@@ -70,27 +70,109 @@ public class ADCMovementSystem: System {
                 }
             }
             
-            // Get the target position.
-            let target = targetEntity.position(relativeTo: nil)
-            let distance = length(target - start)
-            let midPoint = Self.mix(start, target, t: 0.5)
+            // Get the target position, handling interpolation if needed
+            var targetPosition = targetEntity.position(relativeTo: nil)
+            
+            // If we're interpolating between targets, blend the target position
+            if let previousTarget = adcComponent.previousTargetPosition,
+               let newTarget = adcComponent.newTargetPosition {
+                // Update interpolation progress
+                adcComponent.targetInterpolationProgress += Float(context.deltaTime / ADCComponent.targetInterpolationDuration)
+                
+                // When interpolation is complete, update the path
+                if adcComponent.targetInterpolationProgress >= 1.0 {
+                    adcComponent.targetInterpolationProgress = 1.0
+                    
+                    print("\n=== Path Update Before Recalculation ===")
+                    print("Current Position: \(entity.position(relativeTo: nil))")
+                    print("Start Position: \(start)")
+                    print("Previous Target: \(previousTarget)")
+                    print("New Target: \(newTarget)")
+                    print("Current Traveled Distance: \(adcComponent.traveledDistance)")
+                    print("Previous Path Length: \(adcComponent.pathLength)")
+                    
+                    // Calculate distances for scaling decision
+                    let oldTargetDistance = length(previousTarget - start)
+                    let newTargetDistance = length(newTarget - start)
+                    
+                    print("\n=== Distance Comparison ===")
+                    print("Old target distance: \(oldTargetDistance)")
+                    print("New target distance: \(newTargetDistance)")
+                    
+                    // Scale traveled distance if new target is closer
+                    var newTraveledDistance = adcComponent.traveledDistance
+                    if newTargetDistance < oldTargetDistance {
+                        newTraveledDistance = (adcComponent.traveledDistance / oldTargetDistance) * newTargetDistance
+                        print("Scaling traveled distance: \(adcComponent.traveledDistance) -> \(newTraveledDistance)")
+                    } else {
+                        print("New target is farther - preserving absolute traveled distance")
+                    }
+                    
+                    // Calculate new path
+                    let distance = length(newTarget - start)
+                    let midPoint = Self.mix(start, newTarget, t: 0.5)
+                    let arcHeightFactor = adcComponent.arcHeightFactor ?? 1.0
+                    let heightOffset = distance * 0.5 * arcHeightFactor
+                    let controlPoint = midPoint + SIMD3<Float>(0, heightOffset, 0)
+                    
+                    // Build new lookup table
+                    let lookup = Self.buildLookupTableForQuadraticBezier(
+                        start: start,
+                        control: controlPoint,
+                        end: newTarget,
+                        samples: Self.numLookupSamples
+                    )
+                    
+                    let newPathLength = lookup.last ?? 0.0
+                    
+                    print("\n=== Path Update After Recalculation ===")
+                    print("New Path Length: \(newPathLength)")
+                    print("Traveled Distance (updated): \(newTraveledDistance)")
+                    print("New Progress: \(newTraveledDistance / newPathLength)")
+                    print("Distance from start to target: \(distance)")
+                    
+                    // Verify the new path is valid
+                    if newPathLength <= 0.0 {
+                        print("⚠️ Invalid new path length!")
+                        continue
+                    }
+                    
+                    // Update component with new path data
+                    adcComponent.lookupTable = lookup
+                    adcComponent.pathLength = newPathLength
+                    adcComponent.traveledDistance = newTraveledDistance
+                    adcComponent.wasRetargeted = true
+                    adcComponent.previousTargetPosition = nil
+                    adcComponent.newTargetPosition = nil
+                    
+                    print("✅ Path update complete - ADC will continue to new target")
+                }
+                
+                // Interpolate target position for this frame
+                let t = Self.smoothstep(0, 1, adcComponent.targetInterpolationProgress)
+                targetPosition = Self.mix(previousTarget, newTarget, t: t)
+            }
+            
+            // Calculate path parameters based on current target position
+            let distance = length(targetPosition - start)
+            let midPoint = Self.mix(start, targetPosition, t: 0.5)
             let arcHeightFactor = adcComponent.arcHeightFactor ?? 1.0
             let heightOffset = distance * 0.5 * arcHeightFactor
             let controlPoint = midPoint + SIMD3<Float>(0, heightOffset, 0)
             
-            // If the lookup table has not been built yet, build it.
+            // Update lookup table if needed (first frame or after retargeting)
             if adcComponent.lookupTable == nil {
-                let lookup = Self.buildLookupTableForQuadraticBezier(start: start, control: controlPoint, end: target, samples: Self.numLookupSamples)
+                let lookup = Self.buildLookupTableForQuadraticBezier(start: start, control: controlPoint, end: targetPosition, samples: Self.numLookupSamples)
                 adcComponent.lookupTable = lookup
                 adcComponent.pathLength = lookup.last ?? 0.0
                 adcComponent.traveledDistance = 0.0
             }
             
-            // Calculate effective speed and update traveled distance.
+            // Calculate effective speed and update traveled distance
             let speedFactor = adcComponent.speedFactor ?? 1.0
             let baseSpeed = adcComponent.pathLength / Float(Self.totalDuration)
             
-            // Calculate a speed multiplier based on acceleration/deceleration.
+            // Calculate speed multiplier based on acceleration/deceleration
             let normalizedProgress = (adcComponent.pathLength > 0) ? (adcComponent.traveledDistance / adcComponent.pathLength) : 0
             let speedMultiplier: Float
             if normalizedProgress < Self.accelerationPhase {
@@ -102,18 +184,16 @@ public class ADCMovementSystem: System {
             } else {
                 speedMultiplier = 1.0
             }
-            let effectiveSpeed = baseSpeed * speedFactor * speedMultiplier
             
+            let effectiveSpeed = baseSpeed * speedFactor * speedMultiplier
             adcComponent.traveledDistance += effectiveSpeed * Float(context.deltaTime)
             adcComponent.traveledDistance = min(adcComponent.traveledDistance, adcComponent.pathLength)
             
-            // *** NEW: Check for retargeting if untargeted ADC has reached 80% of its journey ***
+            // Check for retargeting at 40% for untargeted ADCs
             let currentNormalizedProgress = (adcComponent.pathLength > 0) ? (adcComponent.traveledDistance / adcComponent.pathLength) : 0
-            if currentNormalizedProgress >= 0.8 {
-                // If the current target is a "headPosition" (i.e. it has a PositioningComponent),
-                // then attempt to retarget to a cancer cell.
+            if currentNormalizedProgress >= 0.4 {
                 if targetEntity.components[PositioningComponent.self] != nil {
-                    print("🎯 ADC at 80% to headPosition - attempting to find cancer cell target")
+                    print("🎯 ADC at 40% to headPosition - attempting to find cancer cell target")
                     if Self.retargetADC(entity, &adcComponent, currentPosition: entity.position(relativeTo: nil), in: context.scene) {
                         entity.components[ADCComponent.self] = adcComponent
                         // Remove the headPosition entity and its debug sphere.
@@ -121,21 +201,90 @@ public class ADCMovementSystem: System {
                         print("✨ Removed headPosition entity after successful retarget")
                         continue
                     }
-                    print("⚠️ No cancer cell targets found - continuing to headPosition")
+                    // If retargeting fails, just continue to the headPosition
+                    print("⚠️ No suitable cancer cell targets found - continuing to headPosition")
                 }
             }
-            // *** End retargeting check ***
             
-            // Map the traveled distance to a parameter t using the lookup table.
-            let lookup = adcComponent.lookupTable ?? []
-            let tMapped = Self.lookupParameter(forDistance: adcComponent.traveledDistance, lookup: lookup)
+            // Calculate current position on the path
+            let tMapped = Self.lookupParameter(forDistance: adcComponent.traveledDistance, lookup: adcComponent.lookupTable ?? [])
             
-            // If we've reached (or nearly reached) the end, trigger impact.
+            // Break down quadratic Bézier calculation into steps
+            let t1 = 1.0 - tMapped
+            let t2 = tMapped
+            
+            // Calculate each term separately
+            let term1 = start * (t1 * t1)
+            let term2 = controlPoint * (2 * t1 * t2)
+            let term3 = targetPosition * (t2 * t2)
+            
+            // Sum the terms to get final position
+            let position = term1 + term2 + term3
+            entity.position = position
+            
+            // Calculate tangent vector components separately
+            let tangentStart = (controlPoint - start) * (1 - tMapped)
+            let tangentEnd = (targetPosition - controlPoint) * tMapped
+            let tangent = normalize(2 * (tangentStart + tangentEnd))
+            
+            // Update orientation
+            let orientation = Self.calculateOrientation(
+                progress: tMapped,
+                direction: tangent,
+                deltaTime: context.deltaTime,
+                currentOrientation: entity.orientation,
+                entity: entity
+            )
+            entity.orientation = orientation
+            
+            // Save updated component
+            entity.components[ADCComponent.self] = adcComponent
+            
+            // Handle completion
             if tMapped >= 1.0 {
-                let impactDirection = normalize(target - start)
+                // For retargeted ADCs, ensure proper completion conditions
+                if adcComponent.wasRetargeted {
+                    let distanceToTarget = length(position - targetPosition)
+                    // Use relative threshold based on path length
+                    let closeThreshold = max(adcComponent.pathLength * 0.1, 0.05)  // At least 0.05 units, but scales with path
+                    let isCloseEnough = distanceToTarget <= closeThreshold
+                    
+                    // More gradual speed check
+                    let isInDeceleration = normalizedProgress >= (1.0 - Self.decelerationPhase)
+                    let isSlowingDown = speedMultiplier <= 0.7  // Slightly more forgiving
+                    
+                    print("\n=== ADC Completion Check ===")
+                    print("Distance to target: \(distanceToTarget)")
+                    print("Close threshold: \(closeThreshold)")
+                    print("Speed multiplier: \(speedMultiplier)")
+                    print("Is in deceleration: \(isInDeceleration)")
+                    
+                    if !isCloseEnough || (!isInDeceleration && !isSlowingDown) {
+                        print("Delaying completion - continuing path")
+                        // More gradual approach to target
+                        let progressLimit: Float = isInDeceleration ? 0.999 : 0.99
+                        adcComponent.traveledDistance = min(adcComponent.traveledDistance, adcComponent.pathLength * progressLimit)
+                        entity.components[ADCComponent.self] = adcComponent
+                        continue
+                    } else {
+                        // Clear retargeted flag once conditions are met
+                        adcComponent.wasRetargeted = false
+                    }
+                }
+
+                print("\n=== ADC Path Completion ===")
+                print("Final Progress: \(tMapped)")
+                print("Total Distance Traveled: \(adcComponent.traveledDistance)")
+                print("Path Length: \(adcComponent.pathLength)")
+                print("Start Position: \(start)")
+                print("Final Position: \(position)")
+                print("Target Position: \(targetPosition)")
+                
+                let impactDirection = normalize(targetPosition - start)
                 
                 // Trigger a hit-scale animation on the parent cancer cell.
                 if let cancerCell = Self.findParentCancerCell(for: targetEntity, in: context.scene) {
+                    print("✅ Found parent cancer cell - triggering hit animation")
                     Task { @MainActor in
                         await cancerCell.hitScaleAnimation(
                             intensity: 0.95,
@@ -143,11 +292,18 @@ public class ADCMovementSystem: System {
                             scaleReduction: 0.05
                         )
                     }
+                } else {
+                    print("⚠️ Could not find parent cancer cell for hit animation")
                 }
                 
+                print("\n=== ADC Attachment Process ===")
                 // Remove ADC from its current parent and add it as a child of the target entity.
+                let previousParent = entity.parent?.name ?? "none"
                 entity.removeFromParent()
                 targetEntity.addChild(entity)
+                print("🔄 Reparented ADC:")
+                print("Previous Parent: \(previousParent)")
+                print("New Parent: \(targetEntity.name)")
                 
                 // Trigger antigen retraction on the offset entity (the parent of the attachment point), if available.
                 if let offsetEntity = targetEntity.parent {
@@ -199,43 +355,36 @@ public class ADCMovementSystem: System {
                 // Update ADC state.
                 adcComponent.state = .attached
                 entity.components[ADCComponent.self] = adcComponent
+                print("✅ ADC state updated to attached")
                 
                 // Increment the hit count for the target cell.
                 if let cellID = adcComponent.targetCellID,
                    let cancerCell = Self.findParentCancerCell(for: targetEntity, in: context.scene),
                    let stateComponent = cancerCell.components[CancerCellStateComponent.self] {
+                    let previousHits = stateComponent.parameters.hitCount
                     stateComponent.parameters.hitCount += 1
                     stateComponent.parameters.wasJustHit = true
+                    print("📊 Updated cell hit count:")
+                    print("Cell ID: \(cellID)")
+                    print("Previous Hits: \(previousHits)")
+                    print("New Hits: \(stateComponent.parameters.hitCount)")
+                    print("Required Hits: \(stateComponent.parameters.requiredHits)")
+                } else {
+                    print("⚠️ Could not update hit count - missing required components")
                 }
+                
+                print("✅ ADC completion process finished successfully")
                 continue
             }
             
-            // Compute the new position along the quadratic Bézier curve.
-            let position = Self.quadraticBezierPoint(start, controlPoint, target, t: tMapped)
-            entity.position = position
-            
             // Set the initial orientation on the first frame.
             if adcComponent.traveledDistance <= 0.01 {
-                let direction = simd_normalize(target - start)
+                let direction = simd_normalize(targetPosition - start)
                 Self.setInitialRootOrientation(entity: entity, direction: direction)
             }
             
             // Update any additional per-frame behavior (like protein spin).
             Self.updateProteinSpin(entity: entity, deltaTime: context.deltaTime)
-            
-            // Update orientation using the tangent (computed as the derivative of the Bézier).
-            let tangentStep1 = (controlPoint - start) * (1 - tMapped)
-            let tangentStep2 = (target - controlPoint) * tMapped
-            let tangent = normalize(2 * (tangentStep1 + tangentStep2))
-            
-            let orientation = Self.calculateOrientation(
-                progress: tMapped,
-                direction: tangent,
-                deltaTime: context.deltaTime,
-                currentOrientation: entity.orientation,
-                entity: entity
-            )
-            entity.orientation = orientation
             
             // Save updated component.
             entity.components[ADCComponent.self] = adcComponent

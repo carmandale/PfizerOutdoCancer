@@ -139,7 +139,7 @@ extension ADCOptimizedImmersive {
             viewAttachment.name = ADCUIAttachments.mainADCView
 //            viewAttachment.scale = SIMD3<Float>(0.6, 0.6, 0.6)
             viewAttachment.scale = .one
-             viewAttachment.components[BillboardComponent.self] = BillboardComponent()
+            //  viewAttachment.components[BillboardComponent.self] = BillboardComponent()
             mainViewEntity.addChild(viewAttachment)
         }
     }

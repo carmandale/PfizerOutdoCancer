@@ -36,6 +36,10 @@ struct ADCSelectorView: View {
                     }) {
                         print("ITR..Button 0 antibody pressed")
                         dataModel.selectedADCAntibody = 0
+                        // Task {
+                        //     try? await Task.sleep(for: .milliseconds(1000))
+                        //     dataModel.adcBuildStep = 1
+                        // }
                     }
                     ADCButtonSquareWithOutline(imageName: "antibody1",
                                            outlineColor: Color.white,
@@ -46,6 +50,10 @@ struct ADCSelectorView: View {
                     }) {
                         print("ITR..Button 1 antibody pressed")
                         dataModel.selectedADCAntibody = 1
+                        // Task {
+                        //     try? await Task.sleep(for: .milliseconds(1000))
+                        //     dataModel.adcBuildStep = 1
+                        // }
                     }
                     ADCButtonSquareWithOutline(imageName: "antibody2",
                                            outlineColor: Color.white,
@@ -56,6 +64,10 @@ struct ADCSelectorView: View {
                     }) {
                         print("ITR..Button 2 antibody pressed")
                         dataModel.selectedADCAntibody = 2
+                        // Task {
+                        //     try? await Task.sleep(for: .milliseconds(1000))
+                        //     dataModel.adcBuildStep = 1
+                        // }
                     }
                 }
                 .padding(.bottom, 30)

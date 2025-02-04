@@ -117,46 +117,37 @@ extension AttackCancerViewModel {
         headPosition.name = "headPosition"
         
         // Random offsets
-        let randomX = Float.random(in: -1.0...1.0)
-        let randomY = Float.random(in: 0.5...1.5)
-        let randomZ = Float.random(in: -3.5...(-2.5))
+        let randomX = Float.random(in: -2.0...2.0)  // Doubled X range
+        let randomY = Float.random(in: 0.5...1.5)   // Increased height range
+        let randomZ = Float.random(in: -7.0...(-5.0))  // Doubled distance range
         
-        // Set positioning component with random offsets
-        headPosition.components.set(PositioningComponent(
+        // Create positioning component
+        let positioning = PositioningComponent(
             offsetX: randomX,
             offsetY: randomY,
             offsetZ: randomZ
-        ))
+        )
         
-        // Add AttachmentPoint component and mark as occupied
+        // Create attachment point and mark as occupied
         var attachPoint = AttachmentPoint()
         attachPoint.isOccupied = true
-        headPosition.components.set(attachPoint)
         
-        // Add debug sphere as child for visualization
-        let debugSphere = ModelEntity(
-            mesh: .generateSphere(radius: 0.1), 
-            materials: [SimpleMaterial(color: .blue, isMetallic: false)]
-        )
-        headPosition.addChild(debugSphere)
-        root.addChild(headPosition)
-        
-        // Log world space positions for debugging
-        let worldPosition = headPosition.position(relativeTo: nil)
-        print("\n=== Debug Sphere World Position ===")
-        print("🎯 World Position: (\(String(format: "%.3f", worldPosition.x)), \(String(format: "%.3f", worldPosition.y)), \(String(format: "%.3f", worldPosition.z)))")
-        
-        // Remove debug sphere after 5 seconds
-        Task {
-            try? await Task.sleep(for: .seconds(5))
-            debugSphere.removeFromParent()
+        // Add components using proper lifecycle management
+        do {
+            try await headPosition.components.set(positioning)
+            try await headPosition.components.set(attachPoint)
+        } catch {
+            print("⚠️ Failed to set components on headPosition: \(error.localizedDescription)")
         }
+        
+        // Add to scene
+        root.addChild(headPosition)
         
         totalADCsDeployed += 1
         #if DEBUG
         print("\n=== Spawning Untargeted ADC ===")
         print("Start Position: \(position)")
-        print("Target Position: \(worldPosition)")
+        print("Target Position: \(headPosition.position(relativeTo: nil))")
         print("✅ ADC #\(totalADCsDeployed) Launched (Total Taps: \(totalTaps))")
         #endif
         
@@ -168,13 +159,12 @@ extension AttackCancerViewModel {
         // Clone the template (colors will be cloned with it)
         let adc = template.clone(recursive: true)
         
-        // Set up collision component
+        // Create ADC components
         let shape = ShapeResource.generateSphere(radius: 0.069)
         let collision = CollisionComponent(
             shapes: [shape],
             filter: .init(group: .adc, mask: .cancerCell)
         )
-        adc.components.set(collision)
         
         // Set up ADC component
         guard var adcComponent = adc.components[ADCComponent.self] else { return }
@@ -183,7 +173,14 @@ extension AttackCancerViewModel {
         adcComponent.proteinSpinSpeed = Float.random(in: 8.0...10.0)
         adcComponent.speedFactor = Float.random(in: ADCMovementSystem.speedRange)
         adcComponent.arcHeightFactor = Float.random(in: ADCMovementSystem.arcHeightRange)
-        adc.components[ADCComponent.self] = adcComponent
+        
+        // Add components using proper lifecycle management
+        do {
+            try await adc.components.set(collision)
+            try await adc.components.set(adcComponent)
+        } catch {
+            print("⚠️ Failed to set components on ADC: \(error.localizedDescription)")
+        }
         
         // Set initial position
         adc.position = position

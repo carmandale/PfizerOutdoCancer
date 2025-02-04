@@ -51,12 +51,12 @@ struct PfizerOutdoCancerApp: App {
                                 print("→ .active")
                                 // Add small delay to ensure cleanup completes
                                 try? await Task.sleep(nanoseconds: 200_000_000) // 200ms delay
-                                print("I waited 200ms and I am still in the active state")
-                                print("I am in the \(appModel.currentPhase) phase")
-                                print("I am in the \(scenePhase) scene phase")
-                                print("not doing anything else until I figure this out")
+//                                print("I waited 200ms and I am still in the active state")
+//                                print("I am in the \(appModel.currentPhase) phase")
+//                                print("I am in the \(scenePhase) scene phase")
+//                                print("not doing anything else until I figure this out")
                                 // Always transition to ready state
-                                // await appModel.transitionToPhase(.ready)
+                                 await appModel.transitionToPhase(.ready)
                             }
                         default:
                             break
@@ -162,9 +162,9 @@ struct PfizerOutdoCancerApp: App {
                         } else {
                             // System dismissed it (Digital Crown), clean up
                             print("I am in the outro space in the onDisappear else block and think that I have been dismissed")
-                            // Task {
-                            //     await cleanupAppState()
-                            // }
+                             Task {
+                                 await cleanupAppState()
+                             }
                         }
                         // Reset for next time
                         appModel.immersiveSpaceDismissReason = nil
@@ -391,15 +391,16 @@ struct PfizerOutdoCancerApp: App {
                 appModel.isNavWindowOpen = false
             }
             // No need for default case handling
-            return  // Add explicit return to prevent falling through to default
+//            return  // Add explicit return to prevent falling through to default
+//            openWindow(id: AppModel.mainWindowId)
             
         case .completed:
-            if !appModel.isNavWindowOpen {
-                openWindow(id: AppModel.navWindowId)
-                appModel.isNavWindowOpen = true
-            }
+            // if !appModel.isNavWindowOpen {
+            //     openWindow(id: AppModel.navWindowId)
+            //     appModel.isNavWindowOpen = true
+            // }
             dismissWindow(id: AppModel.hopeMeterUtilityWindowId)
-            openWindow(id: AppModel.mainWindowId)
+//            openWindow(id: AppModel.mainWindowId)
             
         case .lab:
 

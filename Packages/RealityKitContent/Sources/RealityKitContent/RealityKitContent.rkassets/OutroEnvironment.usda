@@ -271,9 +271,9 @@ def Xform "Root"
             {
                 string actionKind = "hide"
                 int blendLayer = 300
-                double duration = 5
+                double duration = 4
                 uniform token info:id = "A9198273-B1EE-4D91-AA58-C6D5EA362C30"
-                double startTime = 41.38892760706694
+                double startTime = 36
                 rel target = </Root/hope_MSR/hope_v01/logo_MSR>
 
                 def RealityKitStruct "timingFunction"
@@ -363,6 +363,20 @@ def Xform "Root"
                 double duration = 3
                 uniform token info:id = "1C9603F0-26E1-4251-93A9-63998D4566C6"
                 double startTime = 31.477796600460124
+                rel target = </Root/hope_MSR/hope_v01/sh0200_tagline_v01>
+
+                def RealityKitStruct "timingFunction"
+                {
+                }
+            }
+
+            def RealityKitAction "Hide2"
+            {
+                string actionKind = "hide"
+                int blendLayer = 300
+                double duration = 4
+                uniform token info:id = "649D8565-A9DB-4B5A-ABCE-D055BB157DE1"
+                double startTime = 36
                 rel target = </Root/hope_MSR/hope_v01/sh0200_tagline_v01>
 
                 def RealityKitStruct "timingFunction"
@@ -502,7 +516,7 @@ def Xform "Root"
             {
                 string actionKind = "moveBy"
                 int blendLayer = 300
-                double duration = 34.03303698258318
+                double duration = 37.072382980676146
                 uniform token info:id = "F2E299CE-A4B6-4279-BED7-231E67D2FAD1"
                 float3 position = (0, -0.5, 0)
                 double startTime = 0

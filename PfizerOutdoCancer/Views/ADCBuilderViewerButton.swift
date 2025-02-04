@@ -102,6 +102,9 @@ struct ADCBuilderViewerButton: View {
                 rotation = 360
             }
         }
+        .opacity(appModel.labState.shouldShowADCButton ? 1 : 0)
+        .animation(.spring(response: 0.5, dampingFraction: 0.7), value: appModel.labState.shouldShowADCButton)
+        .transition(Appear())
     }
 }
 

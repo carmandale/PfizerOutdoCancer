@@ -25,9 +25,11 @@ struct NavigationButton: View {
                 .frame(width: width)
         }
         .buttonStyle(.plain)
+        
         .hoverEffect(.highlight)
         .hoverEffect { effect, isActive, proxy in
             effect.scaleEffect(!isActive ? 1.0 : scaleEffect)
         }
+        .glassBackgroundEffect()
     }
 }

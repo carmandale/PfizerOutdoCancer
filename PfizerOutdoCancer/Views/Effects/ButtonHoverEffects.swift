@@ -3,25 +3,25 @@ import SwiftUI
 // Custom hover effects will be implemented following Apple's patterns 
 
 /// Expands and scales content on hover.
-struct ExpandEffect: CustomHoverEffect {
-    func body(content: Content) -> some CustomHoverEffect {
-        content.hoverEffect { effect, isActive, proxy in
-            effect.animation(.linear.delay(isActive ? 0.8 : 0.2)) {
-                $0.clipShape(
-                    .capsule.size(
-                        width: isActive ? proxy.size.width : proxy.size.height,
-                        height: proxy.size.height,
-                        anchor: .leading
-                    )
-                )
-                .scaleEffect(
-                    isActive ? 1.05 : 1.0,
-                    anchor: UnitPoint(x: (proxy.size.height / 2) / proxy.size.width, y: 0.5)
-                )
-            }
-        }
-    }
-}
+//struct ExpandEffect: CustomHoverEffect {
+//    func body(content: Content) -> some CustomHoverEffect {
+//        content.hoverEffect { effect, isActive, proxy in
+//            effect.animation(.linear.delay(isActive ? 0.8 : 0.2)) {
+//                $0.clipShape(
+//                    .capsule.size(
+//                        width: isActive ? proxy.size.width : proxy.size.height,
+//                        height: proxy.size.height,
+//                        anchor: .leading
+//                    )
+//                )
+//                .scaleEffect(
+//                    isActive ? 1.05 : 1.0,
+//                    anchor: UnitPoint(x: (proxy.size.height / 2) / proxy.size.width, y: 0.5)
+//                )
+//            }
+//        }
+//    }
+//}
 
 /// Fades content between the `from` and `to` properties on hover.
 struct FadeEffect: CustomHoverEffect {

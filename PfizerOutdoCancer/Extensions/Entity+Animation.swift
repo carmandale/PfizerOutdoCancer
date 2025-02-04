@@ -225,6 +225,60 @@ extension Entity {
         }
     }
     
+    /// Animates the Y rotation of an entity from its current rotation to a target angle in degrees
+    /// - Parameters:
+    ///   - to: Target angle in degrees (positive = clockwise)
+    ///   - duration: Animation duration in seconds
+    ///   - delay: Optional delay before starting the animation (in seconds)
+    ///   - timing: Animation timing curve (default: .easeInOut)
+    ///   - waitForCompletion: If true, waits for the animation to complete before returning
+    func animateYRotation(to targetDegrees: Float,
+                         duration: TimeInterval,
+                         delay: TimeInterval = 0,
+                         timing: RealityKit.AnimationTimingFunction = .easeInOut,
+                         waitForCompletion: Bool = false) async {
+        // Handle delay first, even for immediate changes
+        if delay > 0 {
+            try? await Task.sleep(for: .seconds(delay))
+        }
+        
+        let startTransform = transform
+        var endTransform = transform
+        
+        // Convert degrees to radians and set Y rotation
+        let targetRadians = (targetDegrees * .pi) / 180
+        endTransform.rotation = simd_quatf(angle: targetRadians, axis: SIMD3<Float>(0, 1, 0))
+        
+        // For non-animated changes (duration = 0), set immediately
+        guard duration > 0 else {
+            transform = endTransform
+            return
+        }
+        
+        // Build and play the animation
+        let rotationAnimation = FromToByAnimation(
+            from: startTransform,
+            to: endTransform,
+            duration: duration,
+            timing: timing,
+            bindTarget: .transform
+        )
+        
+        do {
+            let resource = try AnimationResource.generate(with: rotationAnimation)
+            playAnimation(resource)
+            
+            // Optionally wait for the animation to complete
+            if waitForCompletion {
+                try? await Task.sleep(for: .seconds(duration))
+            }
+        } catch {
+            print("⚠️ Could not generate rotation animation: \(error.localizedDescription)")
+            // Fall back to immediate change
+            transform = endTransform
+        }
+    }
+    
     /// Creates a quick squish and bounce scale animation when an entity is hit
     /// - Parameters:
     ///   - intensity: How strong the squish effect should be (default: 0.9)
@@ -308,6 +362,63 @@ extension Entity {
             }
         } catch {
             print("Failed to create hit scale animation: \(error)")
+        }
+    }
+    
+    /// Animates both position and Y rotation of an entity simultaneously
+    /// - Parameters:
+    ///   - position: Target position as SIMD3<Float> to add to current position
+    ///   - rotation: Target Y rotation in degrees (positive = clockwise)
+    ///   - duration: Animation duration in seconds
+    ///   - delay: Optional delay before starting the animation (in seconds)
+    ///   - timing: Animation timing curve (default: .easeInOut)
+    ///   - waitForCompletion: If true, waits for the animation to complete before returning
+    func animatePositionAndRotation(position: SIMD3<Float>,
+                                  rotation: Float,
+                                  duration: TimeInterval,
+                                  delay: TimeInterval = 0,
+                                  timing: RealityKit.AnimationTimingFunction = .easeInOut,
+                                  waitForCompletion: Bool = false) async {
+        // Handle delay first, even for immediate changes
+        if delay > 0 {
+            try? await Task.sleep(for: .seconds(delay))
+        }
+        
+        let startTransform = transform
+        var endTransform = transform
+        
+        // Set both position and rotation in the end transform
+        endTransform.translation = startTransform.translation + position
+        let rotationRadians = (rotation * .pi) / 180
+        endTransform.rotation = simd_quatf(angle: rotationRadians, axis: SIMD3<Float>(0, 1, 0))
+        
+        // For non-animated changes (duration = 0), set immediately
+        guard duration > 0 else {
+            transform = endTransform
+            return
+        }
+        
+        // Build and play the animation
+        let combinedAnimation = FromToByAnimation(
+            from: startTransform,
+            to: endTransform,
+            duration: duration,
+            timing: timing,
+            bindTarget: .transform
+        )
+        
+        do {
+            let resource = try AnimationResource.generate(with: combinedAnimation)
+            playAnimation(resource)
+            
+            // Optionally wait for the animation to complete
+            if waitForCompletion {
+                try? await Task.sleep(for: .seconds(duration))
+            }
+        } catch {
+            print("⚠️ Could not generate combined animation: \(error.localizedDescription)")
+            // Fall back to immediate change
+            transform = endTransform
         }
     }
 }

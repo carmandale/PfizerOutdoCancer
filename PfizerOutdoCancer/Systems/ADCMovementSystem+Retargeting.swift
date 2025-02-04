@@ -11,6 +11,7 @@ extension ADCMovementSystem {
                             _ adcComponent: inout ADCComponent,
                             currentPosition: SIMD3<Float>,
                             in scene: Scene) -> Bool {
+        // Find new target
         guard let (newTarget, newCellID) = findNewTarget(for: entity, currentPosition: currentPosition, in: scene) else {
             print("⚠️ No valid targets found for retargeting")
             return false
@@ -18,40 +19,76 @@ extension ADCMovementSystem {
         
         print("🎯 Retargeting ADC to new cancer cell (ID: \(newCellID))")
         
+        // Skip if targeting same cell
         if adcComponent.targetCellID == newCellID {
             print("⚠️ Attempting to retarget to same cell - skipping")
             return false
         }
         
-        if let currentTargetID = adcComponent.targetEntityID,
-           let currentTarget = scene.findEntity(id: currentTargetID) {
-            adcComponent.previousTargetPosition = currentTarget.position(relativeTo: nil)
-            adcComponent.newTargetPosition = newTarget.position(relativeTo: nil)
-            adcComponent.targetInterpolationProgress = 0
+        // Check that the new target is sufficiently far from current position
+        let newTargetPos = newTarget.position(relativeTo: nil)
+        let distanceToNewTarget = length(newTargetPos - currentPosition)
+        let minRequiredDistance: Float = 0.3 // Match the scoring function's minimum distance
+        
+        if distanceToNewTarget < minRequiredDistance {
+            print("\n⚠️ Target Distance Check Failed:")
+            print("New target \(newTarget.name) is too close to current position")
+            print("Distance to target: \(distanceToNewTarget)")
+            print("Required minimum distance: \(minRequiredDistance)")
+            return false
+        } else {
+            print("\n✅ Target Distance Check Passed:")
+            print("Distance to new target: \(distanceToNewTarget)")
+            print("Current position: \(currentPosition)")
+            print("Target position: \(newTargetPos)")
         }
         
+        // Store current target position and set up interpolation
+        if let currentTargetID = adcComponent.targetEntityID,
+           let currentTarget = scene.findEntity(id: currentTargetID) {
+            // Store the current path length before updating
+            adcComponent.previousPathLength = adcComponent.pathLength
+            
+            print("\n=== Previous Path Info ===")
+            print("Previous Path Length: \(adcComponent.pathLength)")
+            print("Previous Progress: \(adcComponent.traveledDistance / adcComponent.pathLength)")
+            print("Previous Target Position: \(currentTarget.position(relativeTo: nil))")
+            print("Previous Target Distance: \(length(currentTarget.position(relativeTo: nil) - currentPosition))")
+            
+            // Set up target interpolation using transform snapshots
+            let currentTransform = currentTarget.transformMatrix(relativeTo: nil)
+            let newTransform = newTarget.transformMatrix(relativeTo: nil)
+            
+            adcComponent.previousTargetPosition = currentTransform.translation()
+            adcComponent.newTargetPosition = newTransform.translation()
+            adcComponent.targetInterpolationProgress = 0
+            
+            print("\n=== Starting Retarget ===")
+            print("From: \(currentTarget.name) to: \(newTarget.name)")
+            print("Current Distance Traveled: \(adcComponent.traveledDistance)")
+            print("Current Path Length: \(adcComponent.pathLength)")
+            print("Current Progress: \(adcComponent.traveledDistance / adcComponent.pathLength)")
+            print("New Target Distance: \(length(newTarget.position(relativeTo: nil) - currentPosition))")
+            print("Interpolation Start Position: \(currentPosition)")
+        }
+        
+        // Update component with new target info using proper component update pattern
         adcComponent.targetEntityID = newTarget.id
         adcComponent.targetCellID = newCellID
         
-        if var attachPoint = newTarget.components[AttachmentPoint.self] {
-            attachPoint.isOccupied = true
-            newTarget.components[AttachmentPoint.self] = attachPoint
-            print("✅ Marked attachment point as occupied")
-        }
-        
-        // Reinitialize the lookup table for the new target curve.
-        if let start = adcComponent.startWorldPosition {
-            let newTargetPosition = newTarget.position(relativeTo: nil)
-            let distance = length(newTargetPosition - start)
-            let midPoint = mix(start, newTargetPosition, t: 0.5)
-            let heightOffset = distance * 0.5 * (adcComponent.arcHeightFactor ?? 1.0)
-            let controlPoint = midPoint + SIMD3<Float>(0, heightOffset, 0)
-            let lookup = buildLookupTableForQuadraticBezier(start: start, control: controlPoint, end: newTargetPosition, samples: Self.numLookupSamples)
-            adcComponent.lookupTable = lookup
-            adcComponent.previousPathLength = adcComponent.pathLength
-            adcComponent.pathLength = lookup.last ?? 0.0
-            if adcComponent.previousPathLength > 0 {
-                adcComponent.traveledDistance = (adcComponent.traveledDistance / adcComponent.previousPathLength) * adcComponent.pathLength
+        // Update attachment point using proper component update pattern
+        if let attachPoint = newTarget.components[AttachmentPoint.self] {
+            Task { @MainActor in
+                var updatedAttachPoint = attachPoint
+                updatedAttachPoint.isOccupied = true
+                
+                // Use proper error handling for component updates
+                do {
+                    try await newTarget.components.set(updatedAttachPoint)
+                    print("✅ Marked attachment point as occupied")
+                } catch {
+                    print("⚠️ Failed to update attachment point: \(error.localizedDescription)")
+                }
             }
         }
         
@@ -59,26 +96,24 @@ extension ADCMovementSystem {
     }
     
     static func validateTarget(_ targetEntity: Entity, _ adcComponent: ADCComponent, in scene: Scene) -> Bool {
+        // Use proper component access pattern
         if targetEntity.components[PositioningComponent.self] != nil {
             return true
         }
         
+        // Validate entity hierarchy
         if targetEntity.parent == nil {
             print("\n=== ADC RETARGET (Target Lost) ===")
             print("Target attachment point has been removed from scene")
             return false
         }
         
-        guard let cancerCell = findParentCancerCell(for: targetEntity, in: scene) else {
-            print("\n=== ADC RETARGET (Cancer Cell Lost) ===")
-            print("Parent cancer cell no longer exists")
-            return false
-        }
-        
-        guard let stateComponent = cancerCell.components[CancerCellStateComponent.self],
+        // Use proper error handling for component access
+        guard let cancerCell = findParentCancerCell(for: targetEntity, in: scene),
+              let stateComponent = cancerCell.components[CancerCellStateComponent.self],
               let cellID = adcComponent.targetCellID else {
             print("\n=== ADC RETARGET (Invalid State) ===")
-            print("Missing state component or target cell ID")
+            print("Missing required components or target cell ID")
             return false
         }
         

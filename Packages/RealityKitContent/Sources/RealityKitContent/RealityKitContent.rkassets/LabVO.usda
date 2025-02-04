@@ -65,7 +65,7 @@ def Xform "Root"
 
     def RealityKitTimeline "Lab_VO"
     {
-        reorder nameChildren = ["Track", "Track2"]
+        reorder nameChildren = ["Track", "Track2", "Track3"]
         def RealityKitTrack "Track"
         {
             reorder nameChildren = ["Play_Audio", "Play_Audio2", "Play_Audio3"]
@@ -102,6 +102,7 @@ def Xform "Root"
 
         def RealityKitTrack "Track2"
         {
+            reorder nameChildren = ["Play_Audio3", "Play_Audio"]
             def RealityKitAction "Play_Audio3"
             {
                 string actionKind = "audio"
@@ -111,6 +112,25 @@ def Xform "Root"
                 uniform token info:id = "1AFDDD54-BE80-4651-8D53-993F8DC818C7"
                 double startTime = 13.783733976039585
                 rel target = </Root/VO_1>
+
+                def RealityKitStruct "handoffType"
+                {
+                }
+            }
+        }
+
+        def RealityKitTrack "Track3"
+        {
+            def RealityKitAction "Play_Audio"
+            {
+                string actionKind = "audio"
+                string audioResourceName = "Sonic_Pulse_Hit_03_wav"
+                bool controlPlayback = 1
+                double duration = 6.9375
+                double gain = -13.302106900452493
+                uniform token info:id = "95766467-0283-4DF6-9791-167B2A33DC78"
+                double startTime = 29.575145844065844
+                rel target = </Root/VO_2>
 
                 def RealityKitStruct "handoffType"
                 {
@@ -136,8 +156,11 @@ def Xform "Root"
 
             def RealityKitDict "resources"
             {
-                string[] keys = ["labVOalt_1_mp3"]
-                rel values = </Root/labVOalt_1_mp3>
+                string[] keys = ["labVOalt_1_mp3", "Sonic_Pulse_Hit_03_wav"]
+                rel values = [
+                    </Root/labVOalt_1_mp3>,
+                    </Root/Sonic_Pulse_Hit_03_wav>,
+                ]
             }
         }
 
@@ -194,6 +217,12 @@ def Xform "Root"
     def RealityKitAudioFile "labVOalt_3_mp3"
     {
         uniform asset file = @Audio/LabVO2/labVOalt_3.mp3@
+        uniform bool shouldLoop = 0
+    }
+
+    def RealityKitAudioFile "Sonic_Pulse_Hit_03_wav"
+    {
+        uniform asset file = @Audio/LabVO2/Sonic_Pulse_Hit_03.wav@
         uniform bool shouldLoop = 0
     }
 }

@@ -88,7 +88,7 @@ struct AttackCancerInstructionsView: View {
                             print("🎓 Starting tutorial sequence...")
                             appModel.isTutorialStarted = true
                             appModel.isInstructionsWindowOpen = false
-                            dismiss()
+                            // dismiss()
                         } else {
                             print("🎮 Tutorial complete - Starting game...")
                             appModel.startAttackCancerGame()
@@ -96,7 +96,7 @@ struct AttackCancerInstructionsView: View {
                             if !appModel.isHopeMeterUtilityWindowOpen {
                                 openWindow(id: AppModel.hopeMeterUtilityWindowId)
                             }
-                            dismiss()
+                            // dismiss()
                         }
                     }) {
                         Text(appModel.isTutorialStarted ? "Attack Cancer!" : "Start Tutorial")

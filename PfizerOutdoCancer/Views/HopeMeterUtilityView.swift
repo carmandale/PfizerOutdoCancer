@@ -18,41 +18,49 @@ struct HopeMeterUtilityView: View {
     
     var body: some View {
         if appModel.currentPhase == .playing {
-            VStack(spacing: 4) {
-                if !appModel.gameState.isHopeMeterRunning {
-                    VStack(spacing: 4) {
-                        Button("Start") {
-                            appModel.startAttackCancerGame()
-                        }
-                        .font(.title)
-                        .fontWeight(.bold)
-                        .frame(width: 648)
-                        .padding(.vertical, 16)
-                        .padding(.horizontal, 24)
-                        .controlSize(.extraLarge)
-                        .buttonStyle(.plain)
-                        .hoverEffect(.highlight)
-                        .hoverEffect { effect, isActive, proxy in
-                            effect.scaleEffect(!isActive ? 1.0 : 1.1)
-                        }
+            VStack(spacing: 0) {
+                // Header with logo and title
+                ZStack {
+                    HStack {
+                        Image("Pfizer_Logo_White_RGB")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 100)
+                        Spacer()
                     }
+                    
+                    Text("Hope Meter")
+                        .font(.largeTitle)
+                }
+                .padding(30)
+                .background(.black.opacity(0.4))
+                .frame(width: 648)
+                
+                // Content section
+                if !appModel.gameState.isHopeMeterRunning {
+                    NavigationButton(
+                        title: "Start",
+                        action: {
+                            appModel.startAttackCancerGame()
+                        },
+                        font: .title,
+                        scaleEffect: 1.1,
+                        width: 250
+                    )
+                    .fontWeight(.bold)
+                    .padding(.vertical, 30)
                     .transition(Appear())
                 } else {
-                    VStack(spacing: 4) {
-                        Text("Hope Meter")
-                            .font(.system(size: fontSize))
-                            .bold()
-                        
-                        ZStack(alignment: .leading) {
+                    ZStack(alignment: .leading) {
                         // Background rectangle
                         RoundedRectangle(cornerRadius: height / 2)
-                            .fill(Color.gray.opacity(0.2))
+                            .fill(Color("LightBlue200"))
                             .frame(height: height)
                         
                         // Progress rectangle
                         RoundedRectangle(cornerRadius: height / 2)
-                            .fill(Color.blue)
-                            .frame(width: 648 * progress, height: height)
+                            .fill(Color("gradient600"))
+                            .frame(width: 598 * progress, height: height)
                             .animation(.linear(duration: 0.5), value: progress)
                         
                         // Percentage text
@@ -60,17 +68,17 @@ struct HopeMeterUtilityView: View {
                             .font(.system(size: fontSize))
                             .bold()
                             .foregroundColor(.white)
-//                            .shadow(color: .black, radius: 5)
                             .frame(maxWidth: .infinity)
                     }
-                    .frame(width: 648)
-                    }
-                    
+                    .frame(width: 598)
+                    .padding(.vertical, 30)
                     .transition(Appear())
                 }
             }
-            .padding(20)
+            .frame(width: 648)
+            .frame(alignment: .top)
             .glassBackgroundEffect()
+            .clipShape(RoundedRectangle(cornerRadius: 20))
             .transition(Appear())
         }
     }

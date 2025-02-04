@@ -1,3 +1,10 @@
+//
+//  AppModel.swift
+//  PfizerOutdoCancer
+//
+//  Created by Dale Carman
+//
+
 import SwiftUI
 import RealityKit
 import RealityKitContent
@@ -233,20 +240,32 @@ final class AppModel {
             trackingManager.stopTracking()
         }
         
-        // Clean up assets from the current phase before transitioning
+        // Clean up current phase's view model and assets
         do {
             switch currentPhase {
             case .intro:
                 if newPhase != .intro {
+                    // First cleanup the view model (clears all entity references)
+                    introState.cleanup()
+                    // Then release assets from the manager
                     await assetLoadingManager.releaseIntroEnvironment()
                 }
-            // Add other phase cleanup as needed
+            case .lab:
+                if newPhase != .lab {
+                    // First cleanup the view model (clears all entity references)
+                    labState.cleanup()
+                    // Then release assets from the manager
+                    await assetLoadingManager.releaseLabEnvironment()
+                }
             default:
                 break
             }
             
             // Pre-load required assets for playing phase before state change
             if newPhase == .playing {
+                // Reset game state when transitioning to playing phase
+//                gameState.resetGameState()
+                
                 print("\n=== Pre-loading Playing Phase Assets ===")
                 print("📱 Pre-loading required assets for playing phase...")
                 if let adcDataModel = adcDataModel {
@@ -298,9 +317,6 @@ final class AppModel {
                 try? await Task.sleep(for: .milliseconds(100))
                 try? await trackingManager.startTracking(needsHandTracking: newPhase.needsHandTracking)
             }
-            
-            // Handle memory pressure after phase change
-            assetLoadingManager.handleMemoryWarning()
             
             print("✅ Phase transition complete: \(newPhase)")
         } catch {
