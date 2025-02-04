@@ -275,7 +275,12 @@ final class AssetLoadingManager {
         }
         
         // Keep only absolute essentials based on current phase
-        let essentialKeys = ["assembled_lab", "cancer_cell", "adc"]
+        let essentialKeys = [
+            "assembled_lab",
+            "attack_cancer_environment",
+            "adc",
+            "cancer_cell"
+        ]
         let nonEssentialKeys = entityTemplates.keys.filter { !essentialKeys.contains($0) }
         
         print("\n🔒 Essential assets to retain: \(essentialKeys)")

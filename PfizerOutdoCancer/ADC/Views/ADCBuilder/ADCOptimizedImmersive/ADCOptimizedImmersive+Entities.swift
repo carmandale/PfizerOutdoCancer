@@ -242,7 +242,7 @@ extension ADCOptimizedImmersive {
         }
     }
     
-    func reset() {
+    func cleanup() {
         os_log(.debug, "ITR..reset() called")
         
         // Reset dataModel state

@@ -104,6 +104,50 @@ final class AttackCancerViewModel {
         self.hopeMeterTimeLeft = hopeMeterDuration
     }
 
+    // MARK: - Cleanup
+    func cleanup() {
+        print("\n=== Starting AttackCancerViewModel Cleanup ===")
+        
+        // First tear down the game state (existing function)
+        tearDownGame()
+        
+        // Clear entity references
+        if let root = rootEntity {
+            print("🗑️ Removing root entity")
+            root.removeFromParent()
+        }
+        rootEntity = nil
+        scene = nil
+        
+        // Clear tutorial entities
+        tutorialCancerCell = nil
+        instructionsRootEntity = nil
+        
+        // Clear ADC template
+        adcTemplate = nil
+        
+        // Clear arrays
+        cellParameters.removeAll()
+        cellStates.removeAll()
+        
+        // Reset all game stats
+        cellsDestroyed = 0
+        totalADCsDeployed = 0
+        totalTaps = 0
+        totalHits = 0
+        
+        // Reset hope meter
+        hopeMeterTimeLeft = hopeMeterDuration
+        isHopeMeterRunning = false
+        
+        // Reset flags
+        isSetupComplete = false
+        tutorialComplete = false
+        hasFirstADCBeenFired = false
+        
+        print("✅ Completed AttackCancerViewModel cleanup\n")
+    }
+
     var progressiveAttack: ImmersionStyle = .progressive(
         0.1...0.8,
         initialAmount: 0.3

@@ -39,27 +39,32 @@ extension AppModel {
         loadingState = .loading
         loadingProgress = 0
         
-        let introAssets = [
-            "intro_environment",
-            "intro_warp",
+        // All assets to preload
+        let assetsToLoad = [
+            // Intro assets
+            ("intro_environment", AssetCategory.introEnvironment),
+            ("intro_warp", AssetCategory.introEnvironment),
+            
+            // Playing phase essential assets (no audio)
+            ("attack_cancer_environment", AssetCategory.attackCancerEnvironment),
+            ("adc", AssetCategory.adc),
+            ("cancer_cell", AssetCategory.cancerCell),
+            
+            // Essential lab asset
+            ("assembled_lab", AssetCategory.labEnvironment)
         ]
         
-        // Load intro assets with progress
-        for (index, asset) in introAssets.enumerated() {
-            print("📱 Loading intro asset: \(asset)")
-            try await assetLoadingManager.loadAsset(withName: asset, category: .introEnvironment)
-            let progress = Float(index + 1) / Float(introAssets.count + 1) // +1 for assembled_lab
+        // Load all assets with progress
+        for (index, (asset, category)) in assetsToLoad.enumerated() {
+            print("📱 Loading asset: \(asset)")
+            try await assetLoadingManager.loadAsset(withName: asset, category: category)
+            let progress = Float(index + 1) / Float(assetsToLoad.count)
             loadingProgress = progress
             print("✅ Loaded \(asset) - Progress: \(progress)")
         }
         
-        // Preload assembled lab for portal
-        print("📱 Preloading assembled lab for portal")
-        try await assetLoadingManager.loadAsset(withName: "assembled_lab", category: .labEnvironment)
         loadingProgress = 1.0
-        print("✅ Assembled lab preloaded")
-        
         loadingState = .completed
-        print("✅ Intro phase preparation complete")
+        print("✅ Initial asset loading complete")
     }
 }

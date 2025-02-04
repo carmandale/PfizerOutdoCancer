@@ -69,6 +69,32 @@ class ADCDataModel {
             return "payload3"
         }
     }
+    
+    // MARK: - Cleanup
+    func cleanup() {
+        // Reset selections
+        selectedADCAntibody = nil
+        selectedADCLinker = nil
+        selectedADCPayload = nil
+        selectedLinkerType = nil
+        selectedPayloadType = nil
+        
+        // Reset indices
+        linkersWorkingIndex = 0
+        payloadsWorkingIndex = 0
+        
+        // Reset build step
+        adcBuildStep = 0
+        
+        // Reset counters
+        placedLinkerCount = 0
+        placedPayloadCount = 0
+        
+        // Reset flags
+        isVOPlaying = false
+        hasInitialVOCompleted = false
+        showSelector = false
+    }
 }
 
 public enum ADCUIAttachments {

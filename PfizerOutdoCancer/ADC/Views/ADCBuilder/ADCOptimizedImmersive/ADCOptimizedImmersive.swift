@@ -106,7 +106,7 @@ struct ADCOptimizedImmersive: View {
         RealityView { content, attachments in
         let contentRef = content
             Task { @MainActor in
-                reset()
+                
                 
                 let masterEntity = Entity()
                 self.mainEntity = masterEntity
@@ -176,8 +176,14 @@ struct ADCOptimizedImmersive: View {
         .task {
             await appModel.trackingManager.monitorTrackingEvents()
         }
-
-        
+        .onChange(of: appModel.currentPhase) { oldPhase, newPhase in
+            if oldPhase == .building && newPhase != .building {
+                print("\n=== ADCOptimizedImmersive Phase Change Cleanup ===")
+                print("Transitioning from .building to \(newPhase)")
+                cleanup()  // Perform complete cleanup
+                print("✅ ADCOptimizedImmersive cleanup complete\n")
+            }
+        }
         .onChange(of: dataModel.adcBuildStep) { oldValue, newValue in
             Task { @MainActor in
                 // Log color summary at each step

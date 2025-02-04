@@ -240,35 +240,12 @@ final class AppModel {
             trackingManager.stopTracking()
         }
         
-        // Clean up current phase's view model and assets
-        do {
-            switch currentPhase {
-            case .intro:
-                if newPhase != .intro {
-                    // First cleanup the view model (clears all entity references)
-                    introState.cleanup()
-                    // Then release assets from the manager
-                    await assetLoadingManager.releaseIntroEnvironment()
-                }
-            case .lab:
-                if newPhase != .lab {
-                    // First cleanup the view model (clears all entity references)
-                    labState.cleanup()
-                    // Then release assets from the manager
-                    await assetLoadingManager.releaseLabEnvironment()
-                }
-            default:
-                break
-            }
-            
-            // Pre-load required assets for playing phase before state change
-            if newPhase == .playing {
-                // Reset game state when transitioning to playing phase
-//                gameState.resetGameState()
-                
-                print("\n=== Pre-loading Playing Phase Assets ===")
-                print("📱 Pre-loading required assets for playing phase...")
-                if let adcDataModel = adcDataModel {
+        // Pre-load required assets for playing phase before state change
+        if newPhase == .playing {
+            print("\n=== Pre-loading Playing Phase Assets ===")
+            print("📱 Pre-loading required assets for playing phase...")
+            if let adcDataModel = adcDataModel {
+                do {
                     // Load and configure ADC template
                     print("🎯 Loading ADC template...")
                     let adcEntity = try await assetLoadingManager.instantiateAsset(
@@ -287,42 +264,68 @@ final class AppModel {
                     )
                     print("✅ Tutorial assets cached")
                     print("=== Playing Phase Assets Ready ===\n")
-                } else {
-                    print("❌ No ADCDataModel available for playing phase")
-                }
-            }
-            
-            // Pre-load outro environment before transitioning to outro phase
-            if newPhase == .outro {
-                print("\n=== Pre-loading Outro Phase Assets ===")
-                print("📱 Pre-loading outro environment...")
-                do {
-                    _ = try await assetLoadingManager.instantiateAsset(
-                        withName: "outro_environment",
-                        category: .outroEnvironment
-                    )
-                    print("✅ Outro environment cached")
-                    print("=== Outro Phase Assets Ready ===\n")
                 } catch {
-                    print("❌ Failed to pre-load outro environment: \(error)")
+                    print("❌ Failed to load playing phase assets: \(error)")
                 }
+            } else {
+                print("❌ No ADCDataModel available for playing phase")
             }
-            
-            // Set the new phase
-            currentPhase = newPhase
-            
-            // Then start tracking if the new phase needs it
-            if newPhase.needsHandTracking {
-                // Add a small delay to ensure ARKit has time to clean up
-                try? await Task.sleep(for: .milliseconds(100))
-                try? await trackingManager.startTracking(needsHandTracking: newPhase.needsHandTracking)
-            }
-            
-            print("✅ Phase transition complete: \(newPhase)")
-        } catch {
-            print("❌ Error during phase transition: \(error)")
-            currentPhase = .error
         }
+        
+        // Pre-load outro environment before transitioning to outro phase
+        if newPhase == .outro {
+            print("\n=== Pre-loading Outro Phase Assets ===")
+            print("📱 Pre-loading outro environment...")
+            do {
+                _ = try await assetLoadingManager.instantiateAsset(
+                    withName: "outro_environment",
+                    category: .outroEnvironment
+                )
+                print("✅ Outro environment cached")
+                print("=== Outro Phase Assets Ready ===\n")
+            } catch {
+                print("❌ Failed to pre-load outro environment: \(error)")
+            }
+        }
+        
+        // Clean up current phase's view model and assets
+        do {
+            switch currentPhase {
+            case .intro:
+                if newPhase != .intro {
+                    // First cleanup the view model (clears all entity references)
+                    introState.cleanup()
+                    // Then release assets from the manager
+                    await assetLoadingManager.releaseIntroEnvironment()
+                }
+            case .lab:
+                if newPhase != .lab {
+                    // First cleanup the view model (clears all entity references)
+                    labState.cleanup()
+                    // Then release assets from the manager
+                    await assetLoadingManager.releaseLabEnvironment()
+                }
+            case .playing, .completed:  // Handle both since they share the same space
+                if newPhase != .playing && newPhase != .completed {
+                    // First cleanup the game state
+                    gameState.cleanup()
+                }
+            default:
+                break
+            }
+        }
+        
+        // Set the new phase
+        currentPhase = newPhase
+        
+        // Then start tracking if the new phase needs it
+        if newPhase.needsHandTracking {
+            // Add a small delay to ensure ARKit has time to clean up
+            try? await Task.sleep(for: .milliseconds(100))
+            try? await trackingManager.startTracking(needsHandTracking: newPhase.needsHandTracking)
+        }
+        
+        print("✅ Phase transition complete: \(newPhase)")
     }
     
     // Keep all other existing methods...

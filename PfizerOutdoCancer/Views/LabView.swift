@@ -61,9 +61,7 @@ struct LabView: View {
                 ADCBuilderViewerButton()
             }
             Attachment(id: "AttackCancerViewerButton") {
-                if appModel.hasBuiltADC {
-                    AttackCancerViewerButton()
-                }
+                AttackCancerViewerButton()
             }
         }
         .task {
