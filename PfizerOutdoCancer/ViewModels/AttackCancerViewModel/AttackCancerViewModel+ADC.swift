@@ -1,3 +1,10 @@
+//
+//  AttackCancerViewModel+ADC.swift
+//  PfizerOutdoCancer
+//
+//  Created by Dale Carman on 05.02.25.
+//
+
 import SwiftUI
 import RealityKit
 import RealityKitContent
@@ -86,6 +93,10 @@ extension AttackCancerViewModel {
             filter: .init(group: .adc, mask: .cancerCell)
         )
         adc.components.set(collision)
+
+        // New: Add a PhysicsBodyComponent so the ADC gets picked up by the physics simulation
+        // let physicsBody = PhysicsBodyComponent(shapes: [shape], mass: 0.0, mode: .kinematic)
+        // adc.components.set(physicsBody)
         
         // Update ADCComponent properties
         guard var adcComponent = adc.components[ADCComponent.self] else { return }

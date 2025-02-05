@@ -1,3 +1,5 @@
+
+
 import SwiftUI
 import RealityKit
 import RealityKitContent
@@ -53,32 +55,32 @@ extension AttackCancerViewModel {
             setupCellIdentification(complexCell, cellID: index)
             
             // Create parameters on-demand
-            // let parameters = CancerCellParameters(cellID: index)
-//            print("Creating parameters for cell \(index)")
-//            print("Required hits: \(parameters.requiredHits)")
-            // cellParameters.append(parameters)
-//            print("Total parameters after append: \(cellParameters.count)")
+            let parameters = CancerCellParameters(cellID: index)
+            print("Creating parameters for cell \(index)")
+            print("Required hits: \(parameters.requiredHits)")
+            cellParameters.append(parameters)
+            print("Total parameters after append: \(cellParameters.count)")
             
             // Add state component with reference to parameters
-            // cell.components.set(CancerCellStateComponent(parameters: parameters))
-//            print("Added CancerCellStateComponent with parameters")
+            cell.components.set(CancerCellStateComponent(parameters: parameters))
+            print("Added CancerCellStateComponent with parameters")
             
             // Add ClosureComponent for state updates
-            // cell.components.set(
-            //     ClosureComponent { _ in
-            //         guard let stateComponent = cell.components[CancerCellStateComponent.self],
-            //               let cellID = stateComponent.parameters.cellID,
-            //               cellID < self.cellParameters.count else { return }
+            cell.components.set(
+                ClosureComponent { _ in
+                    guard let stateComponent = cell.components[CancerCellStateComponent.self],
+                          let cellID = stateComponent.parameters.cellID,
+                          cellID < self.cellParameters.count else { return }
                     
-            //         // Get reference to the correct parameters instance
-            //         let parameters = self.cellParameters[cellID]
+                    // Get reference to the correct parameters instance
+                    let parameters = self.cellParameters[cellID]
                     
-            //         // Update state
-            //         parameters.hitCount = stateComponent.parameters.hitCount
-            //         parameters.isDestroyed = stateComponent.parameters.isDestroyed
-            //     }
-            // )
-//            print("Added ClosureComponent for state updates")
+                    // Update state
+                    parameters.hitCount = stateComponent.parameters.hitCount
+                    parameters.isDestroyed = stateComponent.parameters.isDestroyed
+                }
+            )
+            print("Added ClosureComponent for state updates")
             
             root.addChild(cell)
             setupAttachmentPoints(for: cell, complexCell: complexCell, cellID: index)
@@ -155,7 +157,7 @@ extension AttackCancerViewModel {
         let shape2 = ShapeResource.generateSphere(radius: 0.32)  // Cancer cell size
         let collisionComponent2 = CollisionComponent(
             shapes: [shape2],
-            filter: .init(group: .cancerCell, mask: [.adc, .cancerCell])
+            filter: .init(group: .cancerCell, mask: .all ) // [.adc, .cancerCell]
         )
         cell.components.set(collisionComponent2)
         

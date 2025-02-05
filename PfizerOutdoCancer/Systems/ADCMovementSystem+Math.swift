@@ -101,12 +101,266 @@ extension ADCMovementSystem {
                                      deltaTime: TimeInterval,
                                      currentOrientation: simd_quatf,
                                      entity: Entity) -> simd_quatf {
+        // Validate inputs
+        guard validateOrientationCalculation(entity: entity,
+                                          progress: progress,
+                                          direction: direction,
+                                          currentOrientation: currentOrientation) else {
+            return currentOrientation
+        }
+        
+        // Handle protein complex spin animation
         if let proteinComplex = entity.findEntity(named: "antibodyProtein_complex"),
            let adcComponent = entity.components[ADCComponent.self] {
             let worldSpinAxis = currentOrientation.act([-1, 0, 0])
             let spinRotation = simd_quatf(angle: Float(deltaTime) * adcComponent.proteinSpinSpeed, axis: worldSpinAxis)
             proteinComplex.orientation = spinRotation * proteinComplex.orientation
         }
-        return currentOrientation
+        
+        // Early return if we don't have the necessary components
+        guard let adcComponent = entity.components[ADCComponent.self],
+              let targetID = adcComponent.targetEntityID else {
+            return currentOrientation
+        }
+        
+        // Find target entity
+        let query = EntityQuery(where: .has(AttachmentPoint.self))
+        guard let targetEntity = entity.scene?.performQuery(query).first(where: { $0.id == Entity.ID(targetID) }) else {
+            return currentOrientation
+        }
+        
+        // Compute landing orientation and blend factor
+        let landingOrientation = computeLandingOrientation(for: entity, with: targetEntity)
+        let blendFactor = computeBlendFactor(progress: progress)
+        
+        // Debug state if needed
+        #if DEBUG
+        debugPrintOrientationState(
+            progress: progress,
+            blendFactor: blendFactor,
+            currentOrientation: currentOrientation,
+            targetOrientation: landingOrientation
+        )
+        #endif
+        
+        if blendFactor > 0 {
+            // Blend between flight orientation and landing orientation
+            let flightOrientation = simd_quatf(from: [0, 0, 1], to: direction)
+            let intermediateOrientation = safeSlerp(from: flightOrientation, to: landingOrientation, t: blendFactor)
+            
+            // Add subtle banking based on progress
+            let bankAngle = computeBankingAngle(progress: progress, blendFactor: blendFactor)
+            let bankRotation = simd_quatf(angle: bankAngle, axis: [1, 0, 0])
+            
+            // Combine orientations
+            let targetOrientation = bankRotation * intermediateOrientation
+            
+            // Smoothly interpolate from current to target orientation
+            return safeSlerp(from: currentOrientation, to: targetOrientation, t: Float(deltaTime) * rotationSmoothingFactor)
+        } else {
+            // Standard flight orientation when not near target
+            let flightOrientation = simd_quatf(from: [0, 0, 1], to: direction)
+            
+            // Add banking during normal flight
+            let bankAngle = computeBankingAngle(progress: progress, blendFactor: 0)
+            let bankRotation = simd_quatf(angle: bankAngle, axis: [1, 0, 0])
+            
+            // Combine orientations
+            let targetOrientation = bankRotation * flightOrientation
+            
+            // Smoothly interpolate from current to target orientation
+            return safeSlerp(from: currentOrientation, to: targetOrientation, t: Float(deltaTime) * rotationSmoothingFactor)
+        }
+    }
+    
+    // MARK: - Landing Orientation Helpers
+    
+    /// Ensures a quaternion is normalized and valid
+    internal static func normalizeQuaternion(_ quat: simd_quatf) -> simd_quatf {
+        if !validateQuaternion(quat) {
+            // Create identity quaternion manually (w=1, xyz=0)
+            return simd_quatf(vector: SIMD4<Float>(0, 0, 0, 1))
+        }
+        return quat
+    }
+    
+    /// Computes surface normal from a point on the surface to the center
+    internal static func computeSurfaceNormal(surfacePoint: SIMD3<Float>, center: SIMD3<Float>) -> SIMD3<Float> {
+        let normal = surfacePoint - center
+        return simd_normalize(normal)
+    }
+    
+    /// Safely interpolates between two quaternions with validation
+    internal static func safeSlerp(from start: simd_quatf, to end: simd_quatf, t: Float) -> simd_quatf {
+        guard validateQuaternion(start) && validateQuaternion(end) else {
+            return start
+        }
+        return simd_slerp(start, end, t)
+    }
+    
+    // MARK: - Easing and Blending
+    
+    /// Smooth easing function for orientation blending
+    internal static func smoothEaseInOut(_ x: Float) -> Float {
+        let t = simd_clamp(x, 0, 1)
+        return t * t * (3 - 2 * t)
+    }
+    
+    /// Exponential ease out for smoother deceleration
+    internal static func expEaseOut(_ x: Float) -> Float {
+        return x == 1 ? 1 : 1 - pow(2, -10 * x)
+    }
+    
+    /// Computes blend factor for landing orientation transition
+    internal static func computeBlendFactor(progress: Float, startBlend: Float = 0.8) -> Float {
+        if progress < startBlend {
+            return 0
+        }
+        let rawFactor = (progress - startBlend) / (1 - startBlend)
+        return smoothEaseInOut(rawFactor)
+    }
+    
+    /// Computes banking angle based on progress and blend factor
+    internal static func computeBankingAngle(progress: Float, blendFactor: Float) -> Float {
+        let baseAngle = sin(progress * .pi * 2)
+        return (1 - blendFactor) * maxBankAngle * baseAngle
+    }
+    
+    // MARK: - Landing Orientation
+    
+    /// Computes a landing orientation that aligns the ADC with the antigen's surface normal
+    internal static func computeLandingOrientation(for adc: Entity, with target: Entity) -> simd_quatf {
+        // Get the parent cell (if it exists)
+        guard let cell = target.parent else {
+            print("⚠️ No parent cell found for target - using target orientation")
+            return target.orientation(relativeTo: nil)
+        }
+        
+        // Compute world positions
+        let antigenWorldPos = target.position(relativeTo: nil)
+        let cellWorldPos = cell.position(relativeTo: nil)
+        
+        // Compute surface normal and validate
+        let normal = computeSurfaceNormal(surfacePoint: antigenWorldPos, center: cellWorldPos)
+        guard !normal.x.isNaN && !normal.y.isNaN && !normal.z.isNaN else {
+            print("⚠️ Invalid surface normal computed - using target orientation")
+            return target.orientation(relativeTo: nil)
+        }
+        
+        // Base rotation to align ADC's up vector with surface normal
+        let baseRotation = simd_quatf(from: SIMD3<Float>(0, 1, 0), to: normal)
+        guard validateQuaternion(baseRotation) else {
+            print("⚠️ Invalid base rotation - using target orientation")
+            return target.orientation(relativeTo: nil)
+        }
+        
+        // Add randomized rotation around the normal for variety
+        let randomAngle = Float.random(in: -Float.pi/8 ... Float.pi/8)
+        let randomRotation = simd_quatf(angle: randomAngle, axis: normal)
+        
+        // Combine rotations and validate
+        let finalOrientation = normalizeQuaternion(randomRotation * baseRotation)
+        if !validateQuaternion(finalOrientation) {
+            print("⚠️ Invalid final orientation - using target orientation")
+            return target.orientation(relativeTo: nil)
+        }
+        
+        return finalOrientation
+    }
+    
+    /// Computes the complete landing transform including position offset
+    internal static func computeLandingTransform(for adc: Entity, with target: Entity) -> Transform {
+        var transform = Transform()
+        
+        // Set orientation
+        transform.rotation = computeLandingOrientation(for: adc, with: target)
+        
+        // Set position with slight offset along the surface normal
+        if let cell = target.parent {
+            let normal = computeSurfaceNormal(
+                surfacePoint: target.position(relativeTo: nil),
+                center: cell.position(relativeTo: nil)
+            )
+            transform.translation = SIMD3<Float>(0, -0.08, 0) // Slight offset for visual appeal
+        } else {
+            transform.translation = .zero
+        }
+        
+        return transform
+    }
+    
+    // MARK: - Validation and Debugging
+    
+    /// Validates all inputs for orientation calculation
+    internal static func validateOrientationCalculation(entity: Entity,
+                                                      progress: Float,
+                                                      direction: SIMD3<Float>,
+                                                      currentOrientation: simd_quatf) -> Bool {
+        // Check for NaN values in direction vector
+        if direction.x.isNaN || direction.y.isNaN || direction.z.isNaN {
+            print("⚠️ Invalid direction vector in orientation calculation")
+            return false
+        }
+        
+        // Validate current orientation
+        if !validateQuaternion(currentOrientation) {
+            print("⚠️ Invalid current orientation in calculation")
+            return false
+        }
+        
+        // Validate progress value
+        if progress.isNaN || progress < 0 || progress > 1 {
+            print("⚠️ Invalid progress value: \(progress)")
+            return false
+        }
+        
+        // Validate entity has required components
+        if entity.components[ADCComponent.self] == nil {
+            print("⚠️ Entity missing ADC component")
+            return false
+        }
+        
+        return true
+    }
+    
+    /// Debug function to print orientation state
+    internal static func debugPrintOrientationState(progress: Float,
+                                                  blendFactor: Float,
+                                                  currentOrientation: simd_quatf,
+                                                  targetOrientation: simd_quatf) {
+        print("""
+        === ADC Orientation State ===
+        Progress: \(String(format: "%.3f", progress))
+        Blend Factor: \(String(format: "%.3f", blendFactor))
+        Current Orientation: \(currentOrientation)
+        Target Orientation: \(targetOrientation)
+        Quaternion Lengths:
+          Current: \(sqrt(simd_dot(currentOrientation.vector, currentOrientation.vector)))
+          Target: \(sqrt(simd_dot(targetOrientation.vector, targetOrientation.vector)))
+        ========================
+        """)
+    }
+    
+    /// Validates transform for landing
+    internal static func validateLandingTransform(_ transform: Transform) -> Bool {
+        // Check position
+        if transform.translation.x.isNaN || transform.translation.y.isNaN || transform.translation.z.isNaN {
+            print("⚠️ Invalid landing position")
+            return false
+        }
+        
+        // Check rotation
+        if !validateQuaternion(transform.rotation) {
+            print("⚠️ Invalid landing rotation")
+            return false
+        }
+        
+        // Check scale (should be uniform)
+        if transform.scale.x != transform.scale.y || transform.scale.y != transform.scale.z {
+            print("⚠️ Non-uniform scale in landing transform")
+            return false
+        }
+        
+        return true
     }
 }

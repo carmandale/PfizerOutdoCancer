@@ -127,6 +127,9 @@ public struct ADCComponent: Component, Codable {
     /// A flag indicating if this ADC has been retargeted.
     public var wasRetargeted: Bool = false
     
+    /// A flag indicating if this ADC has collided with its target cell.
+    public var hasCollided: Bool = false
+    
     /// The composite progress of the current path (if using a composite curve).
     public var compositeProgress: Float = 0
 
@@ -169,7 +172,7 @@ public struct ADCComponent: Component, Codable {
         // Target Interpolation (for Retargeting)
         case previousTargetPosition, newTargetPosition, targetInterpolationProgress
         // Additional Retargeting and Path Data
-        case previousPathLength, previousPathTangent, isRetargetedPath, wasRetargeted, compositeProgress
+        case previousPathLength, previousPathTangent, isRetargetedPath, wasRetargeted, hasCollided, compositeProgress
     }
     
     public init(from decoder: Decoder) throws {
@@ -197,6 +200,7 @@ public struct ADCComponent: Component, Codable {
         previousPathTangent = try container.decodeIfPresent(SIMD3<Float>.self, forKey: .previousPathTangent)
         isRetargetedPath = try container.decode(Bool.self, forKey: .isRetargetedPath)
         wasRetargeted = try container.decode(Bool.self, forKey: .wasRetargeted)
+        hasCollided = try container.decode(Bool.self, forKey: .hasCollided)
         compositeProgress = try container.decode(Float.self, forKey: .compositeProgress)
     }
     
@@ -225,6 +229,7 @@ public struct ADCComponent: Component, Codable {
         try container.encodeIfPresent(previousPathTangent, forKey: .previousPathTangent)
         try container.encode(isRetargetedPath, forKey: .isRetargetedPath)
         try container.encode(wasRetargeted, forKey: .wasRetargeted)
+        try container.encode(hasCollided, forKey: .hasCollided)
         try container.encode(compositeProgress, forKey: .compositeProgress)
     }
 }

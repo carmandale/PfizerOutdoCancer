@@ -1,3 +1,5 @@
+
+
 import SwiftUI
 import RealityKit
 import RealityKitContent
@@ -40,6 +42,7 @@ extension AttackCancerViewModel {
                 category: .attackCancerEnvironment
             )
             root.addChild(attackCancerScene)
+            print("setting up collisions")
             setupCollisions(in: attackCancerScene)
         } catch {
             print("❌ Failed to load attack cancer environment: \(error)")

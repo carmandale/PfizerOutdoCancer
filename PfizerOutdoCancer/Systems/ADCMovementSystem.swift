@@ -241,37 +241,7 @@ public class ADCMovementSystem: System {
             entity.components[ADCComponent.self] = adcComponent
             
             // Handle completion
-            if tMapped >= 1.0 {
-                // For retargeted ADCs, ensure proper completion conditions
-                if adcComponent.wasRetargeted {
-                    let distanceToTarget = length(position - targetPosition)
-                    // Use relative threshold based on path length
-                    let closeThreshold = max(adcComponent.pathLength * 0.1, 0.05)  // At least 0.05 units, but scales with path
-                    let isCloseEnough = distanceToTarget <= closeThreshold
-                    
-                    // More gradual speed check
-                    let isInDeceleration = normalizedProgress >= (1.0 - Self.decelerationPhase)
-                    let isSlowingDown = speedMultiplier <= 0.7  // Slightly more forgiving
-                    
-                    print("\n=== ADC Completion Check ===")
-                    print("Distance to target: \(distanceToTarget)")
-                    print("Close threshold: \(closeThreshold)")
-                    print("Speed multiplier: \(speedMultiplier)")
-                    print("Is in deceleration: \(isInDeceleration)")
-                    
-                    if !isCloseEnough || (!isInDeceleration && !isSlowingDown) {
-                        print("Delaying completion - continuing path")
-                        // More gradual approach to target
-                        let progressLimit: Float = isInDeceleration ? 0.999 : 0.99
-                        adcComponent.traveledDistance = min(adcComponent.traveledDistance, adcComponent.pathLength * progressLimit)
-                        entity.components[ADCComponent.self] = adcComponent
-                        continue
-                    } else {
-                        // Clear retargeted flag once conditions are met
-                        adcComponent.wasRetargeted = false
-                    }
-                }
-
+            if adcComponent.hasCollided {
                 print("\n=== ADC Path Completion ===")
                 print("Final Progress: \(tMapped)")
                 print("Total Distance Traveled: \(adcComponent.traveledDistance)")
@@ -280,9 +250,7 @@ public class ADCMovementSystem: System {
                 print("Final Position: \(position)")
                 print("Target Position: \(targetPosition)")
                 
-                let impactDirection = normalize(targetPosition - start)
-                
-                // Trigger a hit-scale animation on the parent cancer cell.
+                // Trigger a hit-scale animation on the parent cancer cell
                 if let cancerCell = Self.findParentCancerCell(for: targetEntity, in: context.scene) {
                     print("✅ Found parent cancer cell - triggering hit animation")
                     Task { @MainActor in
@@ -297,15 +265,31 @@ public class ADCMovementSystem: System {
                 }
                 
                 print("\n=== ADC Attachment Process ===")
-                // Remove ADC from its current parent and add it as a child of the target entity.
+                // Remove ADC from its current parent and prepare for attachment
                 let previousParent = entity.parent?.name ?? "none"
                 entity.removeFromParent()
-                targetEntity.addChild(entity)
+                
+                // Compute and validate landing transform
+                let landingTransform = Self.computeLandingTransform(for: entity, with: targetEntity)
+                if Self.validateLandingTransform(landingTransform) {
+                    // Add as child with computed transform
+                    targetEntity.addChild(entity)
+                    entity.transform = landingTransform
+                    
+                    print("✅ Applied landing transform successfully")
+                } else {
+                    // Fallback to simple attachment if transform is invalid
+                    targetEntity.addChild(entity)
+                    entity.position = SIMD3<Float>(0, -0.08, 0)
+                    entity.orientation = targetEntity.orientation(relativeTo: nil)
+                    print("⚠️ Using fallback attachment due to invalid landing transform")
+                }
+                
                 print("🔄 Reparented ADC:")
                 print("Previous Parent: \(previousParent)")
                 print("New Parent: \(targetEntity.name)")
                 
-                // Trigger antigen retraction on the offset entity (the parent of the attachment point), if available.
+                // Trigger antigen retraction
                 if let offsetEntity = targetEntity.parent {
                     if var antigenComponent = offsetEntity.components[AntigenComponent.self] {
                         antigenComponent.isRetracting = true
@@ -313,12 +297,7 @@ public class ADCMovementSystem: System {
                     }
                 }
                 
-                // Align orientation with the target entity.
-                entity.orientation = targetEntity.orientation(relativeTo: nil)
-                // Set the local position to a slight offset.
-                entity.position = SIMD3<Float>(0, -0.08, 0)
-                
-                // Scale-up animation: Increase scale to 1.2 and then scale back down.
+                // Scale-up animation
                 var scaleUpTransform = entity.transform
                 scaleUpTransform.scale = SIMD3<Float>(repeating: 1.2)
                 entity.move(
@@ -340,7 +319,7 @@ public class ADCMovementSystem: System {
                     )
                 }
                 
-                // Stop the drone sound and play the attach sound.
+                // Handle audio
                 entity.stopAllAudio()
                 if let audioComponent = entity.components[AudioLibraryComponent.self],
                    let attachSound = audioComponent.resources["ADC_Attach.wav"] {
@@ -352,12 +331,12 @@ public class ADCMovementSystem: System {
                     entity.playAudio(attachSound)
                 }
                 
-                // Update ADC state.
+                // Update ADC state
                 adcComponent.state = .attached
                 entity.components[ADCComponent.self] = adcComponent
                 print("✅ ADC state updated to attached")
                 
-                // Increment the hit count for the target cell.
+                // Update cell hit count
                 if let cellID = adcComponent.targetCellID,
                    let cancerCell = Self.findParentCancerCell(for: targetEntity, in: context.scene),
                    let stateComponent = cancerCell.components[CancerCellStateComponent.self] {

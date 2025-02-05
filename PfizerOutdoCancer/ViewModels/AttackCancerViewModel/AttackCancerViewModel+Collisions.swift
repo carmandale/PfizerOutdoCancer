@@ -1,3 +1,10 @@
+//
+//  AttackCancerViewModel+Collisions.swift
+//  PfizerOutdoCancer
+//
+//  Created by Dale Carman on 05.02.25.
+//
+
 import SwiftUI
 import RealityKit
 import RealityKitContent
@@ -6,6 +13,7 @@ import Combine
 extension AttackCancerViewModel {
     // MARK: - Collision Setup
     func setupCollisions(in entity: Entity) {
+        print("setting up collisions in \(entity.name)")
         // Cancel any existing subscription first
         subscription?.cancel()
         subscription = nil
@@ -21,23 +29,36 @@ extension AttackCancerViewModel {
                     object.components[CollisionComponent.self] = collision
                 }
             }
-            setupCollisionSubscription()
+            setupCollisionSubscription(with: scene)
         }
     }
     
     // MARK: - Collision Subscription
-    func setupCollisionSubscription() {
-        guard let scene = scene else { return }
-        
+    func setupCollisionSubscription(with scene: RealityKit.Scene) {
+        print("🎯 Setting up collision subscription")
         // Store the SceneEventSubscription
         subscription = scene.subscribe(to: CollisionEvents.Began.self) { [weak self] event in
+//            print("💥 Collision event received")
             guard let self = self else { return }
             self.handleCollisionBegan(event)
         }
+        print("✅ Collision subscription set up")
     }
     
     // MARK: - Collision Handling
     func handleCollisionBegan(_ event: CollisionEvents.Began) {
+//        print("Collision between \(event.entityA.name) and \(event.entityB.name)")
+//        print("Entity A components: \(event.entityA.components)")
+//        print("Entity B components: \(event.entityB.components)")
+
+//        guard let adc = (event.entityA.findComponent(ofType: ADCComponent.self) ?? event.entityB.findComponent(ofType: ADCComponent.self)),
+//                let _ = (event.entityA.findComponent(ofType: CancerCellStateComponent.self) ?? event.entityB.findComponent(ofType: CancerCellStateComponent.self)) else {
+//                return
+//            }
+//            
+//        print("💥 ADC hit cell")
+        // You can now call your collision handling logic passing the correct entities
+
         guard shouldHandleCollision(event) else { return }
         
         // Check for head-microscope collision - only play sound, no transition
@@ -62,11 +83,25 @@ extension AttackCancerViewModel {
     }
     
     private func handleADCToCellCollision(adc: Entity, cell: Entity, collision: CollisionEvents.Began) {
+        print("\n=== ADC-Cell Collision ===")
+        print("ADC: \(adc.name)")
+        print("Cell: \(cell.name)")
+        
         guard let stateComponent = cell.components[CancerCellStateComponent.self],
               let cellID = stateComponent.parameters.cellID,
               let parameters = cellParameters.first(where: { $0.cellID == cellID }) else {
             print("❌ Failed to handle collision - missing state component or parameters")
             return
+        }
+        
+        // Check if this ADC is targeting this cell
+        if let adcComponent = adc.components[ADCComponent.self],
+           adcComponent.targetCellID == cellID {
+            // Set the collision flag
+            var updatedComponent = adcComponent
+            updatedComponent.hasCollided = true
+            adc.components[ADCComponent.self] = updatedComponent
+            print("✅ ADC collision flag set for target cell \(cellID)")
         }
         
         print("💥 ADC hit cell \(cellID)")
@@ -107,27 +142,27 @@ extension AttackCancerViewModel {
         print("Required hits: \(parameters.requiredHits)")
         
         // Check if cell is destroyed
-        if parameters.hitCount >= parameters.requiredHits {
-            print("🎯 Cell \(cellID) destroyed!")
-            parameters.isDestroyed = true
-            // Let the CancerCellSystem handle the destruction effects
-        }
+//        if parameters.hitCount >= parameters.requiredHits {
+//            print("🎯 Cell \(cellID) destroyed!")
+//            parameters.isDestroyed = true
+//            // Let the CancerCellSystem handle the destruction effects
+//        }
         
         // Always remove the ADC
         // adc.removeFromParent()
     }
     
     private func shouldHandleCollision(_ collision: CollisionEvents.Began) -> Bool {
-        let entities = UnorderedPair(collision.entityA, collision.entityB)
-        let currentTime = Date().timeIntervalSinceReferenceDate
+        // let entities = UnorderedPair(collision.entityA, collision.entityB)
+        // let currentTime = Date().timeIntervalSinceReferenceDate
         
-        if let lastCollisionTime = debounce[entities] {
-            if currentTime - lastCollisionTime < debounceThreshold {
-                return false
-            }
-        }
+        // if let lastCollisionTime = debounce[entities] {
+        //     if currentTime - lastCollisionTime < debounceThreshold {
+        //         return false
+        //     }
+        // }
         
-        debounce[entities] = currentTime
+        // debounce[entities] = currentTime
         return true
     }
     
