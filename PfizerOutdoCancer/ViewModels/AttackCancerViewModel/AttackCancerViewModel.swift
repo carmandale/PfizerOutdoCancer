@@ -45,6 +45,7 @@ final class AttackCancerViewModel {
     var scene: RealityKit.Scene?
     var handTrackedEntity: Entity?
     var isSetupComplete = false
+    var environmentLoaded = false
     var tutorialCancerCell: Entity?
     var cellStates: [CellState] = []
     
@@ -108,7 +109,7 @@ final class AttackCancerViewModel {
     func cleanup() {
         print("\n=== Starting AttackCancerViewModel Cleanup ===")
         
-        // First tear down the game state (existing function)
+        // First tear down the game state
         tearDownGame()
         
         // Clear entity references
@@ -144,6 +145,7 @@ final class AttackCancerViewModel {
         isSetupComplete = false
         tutorialComplete = false
         hasFirstADCBeenFired = false
+        environmentLoaded = false
         
         print("✅ Completed AttackCancerViewModel cleanup\n")
     }
@@ -197,32 +199,45 @@ final class AttackCancerViewModel {
     }
 
     func tearDownGame() {
-        print("\n=== Tearing Down Game ===")
+        print("\n=== Tearing Down Game [Detailed] ===")
+        print("📊 Initial State:")
+        print("  - Hope Meter Running: \(isHopeMeterRunning)")
+        print("  - Tutorial Started: \(appModel.isTutorialStarted)")
+        print("  - Subscription Active: \(subscription != nil)")
+        print("  - Cell Parameters Count: \(cellParameters.count)")
         
         // Stop any running timers/systems
+        print("⏹️ Stopping systems:")
+        print("  - Stopping hope meter")
         appModel.stopHopeMeter()
+        print("  - Resetting tutorial state")
         appModel.isTutorialStarted = false
         
-        // // Stop hand tracking session
-        // Task {
-        //     await handTracking.stopSession()
-        // }
-        
         // Clear collision subscriptions
+        if subscription != nil {
+            print("🔄 Cancelling collision subscription")
+        }
         subscription?.cancel()
         subscription = nil
         
         // Clear all cell parameters
+        print("🗑️ Clearing cell parameters: \(cellParameters.count)")
         cellParameters.removeAll()
         
         // Remove only gameplay entities from root
         if let root = rootEntity {
+            print("\n🔍 Examining root entity: \(root.name)")
+            print("  - Total children: \(root.children.count)")
+            
             // Remove all cancer cells
+            var removedCells = 0
             for i in 0..<maxCancerCells {
                 if let cell = root.findEntity(named: "cancer_cell_\(i)") {
                     cell.removeFromParent()
+                    removedCells += 1
                 }
             }
+            print("🗑️ Removed cancer cells: \(removedCells)")
             
             // Remove any remaining ADCs using scene query
             if let scene = root.scene {
@@ -231,17 +246,25 @@ final class AttackCancerViewModel {
                     entity.removeFromParent()
                 }
             }
+        } else {
+            print("⚠️ No root entity found during teardown")
         }
         
         // Reset game stats
+        print("\n🔄 Resetting game stats:")
+        print("  - Cells Destroyed: \(cellsDestroyed) → 0")
+        print("  - Total ADCs: \(totalADCsDeployed) → 0")
+        print("  - Total Taps: \(totalTaps) → 0")
+        print("  - Total Hits: \(totalHits) → 0")
         cellsDestroyed = 0
         totalADCsDeployed = 0
         totalTaps = 0
         totalHits = 0
         
         // Reset flags
+        print("🔄 Resetting first ADC flag: \(hasFirstADCBeenFired) → false")
         hasFirstADCBeenFired = false
         
-        print("✅ Game tear down complete")
+        print("✅ Game tear down complete\n")
     }
 }

@@ -192,27 +192,36 @@ struct ADCOptimizedImmersive: View {
                 os_log(.debug, "- Linker Color: \(dataModel.selectedLinkerType ?? -1)")
                 os_log(.debug, "- Payload Color: \(dataModel.selectedPayloadType ?? -1)")
                 
-                // Play step audio
-                Task { @MainActor in
-                    do {
-                        try await playSpatialAudio(step: newValue)
-                    } catch {
-                        os_log(.error, "ITR..createLinkerGestureComponent(): ❌ Failed to play VO: \(error)")
+                // Play step audio only if this is a natural transition
+                if !dataModel.manualStepTransition {
+                    Task { @MainActor in
+                        do {
+                            try await playSpatialAudio(step: newValue)
+                        } catch {
+                            os_log(.error, "ITR..createLinkerGestureComponent(): ❌ Failed to play VO: \(error)")
+                        }
                     }
                 }
+//                else {
+//                    // Reset manual flag for future transitions
+//                    dataModel.manualStepTransition = false
+//                }
                 
                 switch newValue {
                 case 0:
                     // Starting case - select the antibody color
                     os_log(.debug, "ITR.. ✅ ADC build step 0")
                     // setAntibodyAttachmentPosition()
-                    self.adcLinkers.forEach { $0.isEnabled = false }
+//                    self.adcLinkers.forEach { $0.isEnabled = false }
                     self.linkerEntity?.isEnabled = false
-                    self.linkerAttachmentEntity?.isEnabled = false
                     self.payloadEntity?.isEnabled = false
+
+                    updateAttachmentEntities()
+                    
+                    
                     // Ensure all payloads are disabled in step 0
-                    self.adcPayloadsInner.forEach { $0.isEnabled = false }
-                    self.adcPayloadsOuter.forEach { $0.isEnabled = false }
+//                    self.adcPayloadsInner.forEach { $0.isEnabled = false }
+//                    self.adcPayloadsOuter.forEach { $0.isEnabled = false }
                 case 1:
                     os_log(.debug, "ITR.. ✅ ADC build step 1 - checkmark to move past antibody to linker")
                     self.antibodyRootEntity?.components.remove(ADCGestureComponent.self)
@@ -222,9 +231,24 @@ struct ADCOptimizedImmersive: View {
                     }
                     adcLinkers[dataModel.linkersWorkingIndex].components.set(ADCProximitySourceComponent())
                     
+                    print("going to look for linker entity")
                     if let linkerEntity = linkerEntity {
-                        linkerEntity.isEnabled = false
-                        linkerEntity.opacity = 0
+                        print("case 1, found linker entity")
+                        if dataModel.isCurrentStepComplete {
+                            print("current step is complete, linker entity = \(linkerEntity.isEnabled)")
+//                            linkerEntity.opacity = 1
+                            linkerEntity.isEnabled = false
+                        } else {
+                            print("linker step is not complete, enabling linker entity dataModel.isCurrentStepComplete = \(dataModel.isCurrentStepComplete)")
+                            linkerEntity.isEnabled = true
+                            linkerEntity.opacity = 1
+                            print("setting linker opacity to \(linkerEntity.opacity)")
+                        }
+                        if !dataModel.manualStepTransition {
+                            print("manualStepTransition = \(dataModel.manualStepTransition)")
+                            linkerEntity.opacity = 0
+                            print("setting linker opacity to \(linkerEntity.opacity)")
+                        }
                     }
                     self.linkerAttachmentEntity?.isEnabled = true
                     self.payloadEntity?.isEnabled = false
@@ -258,10 +282,33 @@ struct ADCOptimizedImmersive: View {
                     self.linkerEntity?.isEnabled = false
                     self.linkerAttachmentEntity?.isEnabled = false
                     
+//                    if let payloadEntity = payloadEntity {
+//                        if dataModel.isCurrentStepComplete {
+//                            payloadEntity.isEnabled = true
+//                        }
+//                        payloadEntity.isEnabled = false
+//                        payloadEntity.opacity = 0
+//                    }
+                    
+                    print("going to look for payload entity")
                     if let payloadEntity = payloadEntity {
-                        payloadEntity.isEnabled = false
-                        payloadEntity.opacity = 0
+                        print("case 1, found payloadEntity entity")
+                        if dataModel.isCurrentStepComplete {
+                            print("current step is complete, payloadEntity entity = \(payloadEntity.isEnabled)")
+                            payloadEntity.isEnabled = false
+                        } else {
+                            print("payloadEntity step is not complete, enabling payloadEntity  dataModel.isCurrentStepComplete = \(dataModel.isCurrentStepComplete)")
+                            payloadEntity.isEnabled = true
+                            payloadEntity.opacity = 1
+                            print("setting payloadEntity opacity to \(payloadEntity.opacity)")
+                        }
+                        if !dataModel.manualStepTransition {
+                            print("manualStepTransition = \(dataModel.manualStepTransition)")
+                            payloadEntity.opacity = 0
+                            print("setting payloadEntity opacity to \(payloadEntity.opacity)")
+                        }
                     }
+                    
                     
                     // Restore payload setup code
                     for (index, element) in adcPayloadsInner.enumerated() {
@@ -276,6 +323,54 @@ struct ADCOptimizedImmersive: View {
                     // clicked checkmark to apply the material to all of the payloads
                     os_log(.debug, "ITR.. ✅ ADC build step 3 - checkmark to fill all payloads")
                     // If we came from checkmark button (all payloads filled)
+                    // play animation sequence
+                    if !dataModel.manualStepTransition {
+                        print("dataModel.manualStepTransition = \(dataModel.manualStepTransition) Must play animation sequence")
+                        Task { @MainActor in
+                            if let antibodyRootEntity = antibodyRootEntity {
+                                os_log(.debug, "ITR..🔍 Starting ADC animation sequence")
+                                
+                                if let adcComplexEntity = antibodyRootEntity.findEntity(named: "ADC_complex_001") {
+                                    os_log(.debug, "ITR..Found ADC_complex_001, starting animation sequence")
+                                    os_log(.debug, "ITR..Initial ADC position: %@", String(describing: adcComplexEntity.position))
+                                    
+                                    do {
+                                        // Move antibody up
+                                        try await adcComplexEntity.animatePosition(
+                                            to: SIMD3(-0.4, 0, 0),
+                                            duration: 1.0,
+                                            timing: .easeInOut,
+                                            waitForCompletion: true
+                                        )
+                                        os_log(.debug, "ITR..ADC position after move: %@", String(describing: adcComplexEntity.position))
+                                        
+                                        // Start rotation
+                                        os_log(.debug, "ITR..Starting ADC rotation")
+                                        adcComplexEntity.startContinuousRotation(speed: 0.5, axis: .xAxis)
+                                        
+                                        // Move main view back
+                                        os_log(.debug, "ITR..Moving main view back to original position")
+                                        try await mainViewEntity.animatePositionAndRotation(
+                                            position: SIMD3(0.5, 0, -0.2),
+                                            rotation: 0,
+                                            duration: 1.0,
+                                            timing: .easeInOut,
+                                            waitForCompletion: true
+                                        )
+                                        os_log(.debug, "ITR..Main view returned to original position")
+                                    } catch {
+                                        os_log(.error, "ITR..❌ Animation sequence failed: %@", error.localizedDescription)
+                                    }
+                                } else {
+                                    os_log(.error, "ITR..❌ Could not find ADC_complex_001 entity")
+                                }
+                            } else {
+                                os_log(.error, "ITR..❌ No antibody root entity found")
+                            }
+                        }
+                    }
+                    
+
                     if dataModel.payloadsWorkingIndex == 4 {
                         Task { @MainActor in
                             // Play pop sound for successful placement
@@ -301,6 +396,7 @@ struct ADCOptimizedImmersive: View {
                             
                             // Only advance step after visuals are complete
                             // dataModel.adcBuildStep = 4
+                            
                         }
                     }
                     
@@ -315,6 +411,11 @@ struct ADCOptimizedImmersive: View {
                     self.payloadEntity?.isEnabled = false
                     antibodyRootEntity?.components.set(createGestureComponent())
                 }
+                
+                
+                    // Reset manual flag for future transitions
+                    dataModel.manualStepTransition = false
+                
             }
         }
         // Change the Antibody 3D model material color to the selected color
@@ -334,6 +435,8 @@ struct ADCOptimizedImmersive: View {
                         //     // dataModel.showSelector = true
                         // }
                         dataModel.hasInitialVOCompleted = true
+                        dataModel.antibodyVOCompleted = true
+                        
                         
 //                        try? await mainEntity.animatePosition(to: SIMD3(-0.125, 0, 0), duration: 1.0, delay: 0.0)
 //                        os_log(.debug, "ITR..Attempting to animate main view position")
@@ -405,6 +508,11 @@ struct ADCOptimizedImmersive: View {
                             }
                         }
                         adcLinkers[index].updateShaderGraphColor(parameterName: "Basecolor_Tint", color: .adc[newValue])
+                    }
+
+                    // Change all linkers to the same color
+                    for linker in adcLinkers {
+                        linker.updateShaderGraphColor(parameterName: "Basecolor_Tint", color: .adc[newValue])
                     }
                 }
             }
@@ -504,6 +612,13 @@ struct ADCOptimizedImmersive: View {
             }
         }
     }
+
+    private func updateAttachmentEntities() {
+        print("dataModel.isCurrentStepComplete: \(dataModel.isCurrentStepComplete)")
+        let currentStepComplete = dataModel.isCurrentStepComplete
+        linkerAttachmentEntity?.isEnabled = !currentStepComplete
+        payloadAttachmentEntity?.isEnabled = !currentStepComplete
+    }
     
     private func setupEntitiesAndMaterials() async {
         // Get outline material
@@ -545,3 +660,4 @@ struct ADCOptimizedImmersive: View {
         }
     }
 }
+

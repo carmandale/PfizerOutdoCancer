@@ -214,6 +214,40 @@ final class AssetLoadingManager {
         print("✅ Completed outro environment cleanup\n")
     }
     
+    /// Releases attack cancer environment assets asynchronously
+    func releaseAttackCancerEnvironment() async {
+        print("\n=== Starting Attack Cancer Environment Cleanup ===")
+        
+        // Log initial state
+        print("📊 Current template cache size: \(entityTemplates.count) entities")
+        print("📊 Current templates: \(entityTemplates.keys.joined(separator: ", "))")
+        
+        // Keep essential assets (following Lab's pattern with assembled_lab)
+        let essentialKeys = [
+            "attack_cancer_environment",
+            "adc",
+            "cancer_cell"
+        ]
+        let keysToRemove = entityTemplates.keys.filter { !essentialKeys.contains($0) }
+        
+        print("🗑️ Preparing to remove \(keysToRemove.count) non-essential assets:")
+        for key in keysToRemove {
+            if let entity = entityTemplates[key] {
+                print("\n🗑️ Removing asset: \(key)")
+                releaseEntity(entity)
+                entityTemplates.removeValue(forKey: key)
+                print("✅ Released asset: \(key)")
+            } else {
+                print("⚠️ Asset not found in cache: \(key)")
+            }
+        }
+        
+        // Log final state
+        print("\n📊 Updated template cache size: \(entityTemplates.count) entities")
+        print("🔒 Remaining essential assets: \(essentialKeys.joined(separator: ", "))")
+        print("✅ Completed attack cancer environment cleanup\n")
+    }
+    
     /// Get the current loading progress
     func loadingProgress() -> Float {
         switch loadingState {

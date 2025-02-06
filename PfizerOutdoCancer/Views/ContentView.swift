@@ -17,27 +17,19 @@ struct ContentView: View {
             switch appModel.currentPhase {
             case .loading, .ready:
                 LoadingView()
-                    .onAppear { print("ContentView: Showing LoadingView") }
             case .building:
                 ADCView()
                     .environment(adcDataModel)
-                    .onAppear {
-                        print("ContentView: About to show ADCView")
-                        print("ContentView: isMainWindowOpen = \(appModel.isMainWindowOpen)")
-                        print("ContentView: isBuilderInstructionsOpen = \(appModel.isBuilderInstructionsOpen)")
-                    }
             case .playing:
                 if appModel.isInstructionsWindowOpen {
                     AttackCancerInstructionsView()
                         .environment(appModel)
                         .environment(adcDataModel)
-                        .onAppear { print("ContentView: Showing AttackCancerInstructionsView") }
                 }
             case .completed:
                 CompletedView()
                     .environment(appModel)
                     .environment(adcDataModel)
-                    .onAppear { print("ContentView: Showing CompletedView") }
             case .outro:
                 EmptyView()
             default:

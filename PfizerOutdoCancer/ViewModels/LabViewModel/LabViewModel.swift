@@ -75,13 +75,33 @@ final class LabViewModel {
             throw AssetError.resourceNotFound
         }
         
-        // Add VO and Audio using the new on-demand loading system
-        let labVO = try await appModel.assetLoadingManager.instantiateAsset(
-            withName: "lab_vo",
-            category: .labEnvironment
-        )
-        root.addChild(labVO)
-        print("🎙️ Lab VO added to MainEntity")
+        print("\n=== Configuring ADC Button Visibility ===")
+        if appModel.hasBuiltADC {
+            print("🎯 ADC previously built - showing button immediately")
+            print("🔇 Skipping lab VO playback")
+            shouldShowADCButton = true
+        } else {
+            print("🎯 First visit - following standard introduction flow")
+            // Load and play VO
+            let labVO = try await appModel.assetLoadingManager.instantiateAsset(
+                withName: "lab_vo",
+                category: .labEnvironment
+            )
+            root.addChild(labVO)
+            print("🎙️ Lab VO added to MainEntity")
+            
+            // Start the timer for ADC button
+            print("⏲️ Starting 30-second timer for ADC button visibility")
+            shouldShowADCButton = false  // Ensure it starts hidden
+            Task {
+                try? await Task.sleep(for: .seconds(30))
+                print("⏲️ Timer complete - showing ADC button")
+                withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
+                    shouldShowADCButton = true
+                }
+            }
+        }
+        print("=== ADC Button Configuration Complete ===\n")
         
         let labAudio = try await appModel.assetLoadingManager.instantiateAsset(
             withName: "lab_audio",
@@ -90,15 +110,6 @@ final class LabViewModel {
         root.addChild(labAudio)
         labAudioEntity = labAudio
         print("🔊 Lab Audio added to MainEntity")
-        
-        // Start the timer for ADC button
-        shouldShowADCButton = false  // Ensure it starts hidden
-        Task {
-            try? await Task.sleep(for: .seconds(30))
-            withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
-                shouldShowADCButton = true
-            }
-        }
         
         isSetupComplete = true
         print("✅ LabViewModel: Environment setup complete")

@@ -55,6 +55,7 @@ def Xform "Root"
             over "ADC_complex_001"
             {
                 float3 xformOp:scale = (2, 2, 2)
+                float3 xformOp:translate = (0, 0, 0)
                 uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
                 over "ADC_complex"
@@ -130,6 +131,11 @@ def Xform "Root"
                     active = false
                 )
                 {
+                }
+
+                def RealityKitCustomComponent "RealityKitContent_ADCComponent"
+                {
+                    uniform token info:id = "RealityKitContent.ADCComponent"
                 }
             }
         }

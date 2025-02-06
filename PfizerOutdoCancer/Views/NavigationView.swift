@@ -17,7 +17,6 @@ struct NavigationView: View {
                     action: { await handleNavigation(for: title) },
                     width: 150
                 )
-                .glassBackgroundEffect()
             }
         }
         .padding(20)
@@ -34,7 +33,6 @@ struct NavigationView: View {
                         appModel.isNavWindowOpen = false
                     }
                 }
-//        .transition(Appear())
     }
     
     private func handleNavigation(for title: String) async {

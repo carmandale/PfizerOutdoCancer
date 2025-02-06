@@ -1,5 +1,3 @@
-
-
 import SwiftUI
 import RealityKit
 import RealityKitContent
@@ -33,6 +31,7 @@ extension AttackCancerViewModel {
             try await IBLUtility.addImageBasedLighting(to: root, imageName: "metro_noord_2k")
         } catch {
             print("Failed to setup IBL: \(error)")
+            return
         }
         
         // Environment
@@ -44,11 +43,13 @@ extension AttackCancerViewModel {
             root.addChild(attackCancerScene)
             print("setting up collisions")
             setupCollisions(in: attackCancerScene)
+            
+            print("✅ Environment setup complete")
+            environmentLoaded = true
         } catch {
             print("❌ Failed to load attack cancer environment: \(error)")
+            environmentLoaded = false
         }
-        
-        print("✅ Environment setup complete")
         
         // Setup game content with attachments
 //        await setupGameContent(in: root, attachments: attachments)
@@ -96,6 +97,7 @@ extension AttackCancerViewModel {
                         await fireTutorialADCs(in: root, attachments: attachments)
                     }
                     print("✅ Tutorial: ADC sequence initiated")
+                    isSetupComplete = true
                 } else {
                     print("❌ Tutorial: Could not find CancerCell_spawn")
                 }

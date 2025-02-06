@@ -22,7 +22,24 @@ class ADCDataModel {
     
     public var isVOPlaying = false
     public var hasInitialVOCompleted = false
+    public var antibodyVOCompleted = false
+    public var antibodyStepCompleted = false
     public var showSelector = false
+    
+    public var manualStepTransition: Bool = false
+    
+    var isCurrentStepComplete: Bool {
+        switch adcBuildStep {
+        case 0:
+            return selectedADCAntibody != nil
+        case 1:
+            return selectedLinkerType != nil && linkersWorkingIndex == 3
+        case 2:
+            return selectedPayloadType != nil && payloadsWorkingIndex == 3
+        default:
+            return true
+        }
+    }
     
     // Fill all linker positions with currently selected linker type
     func fillAllLinkers() {

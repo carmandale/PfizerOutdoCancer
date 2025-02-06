@@ -4,6 +4,8 @@ struct ADCLinkerSelectorView: View {
     @Environment(AppModel.self) var appModel
     @Environment(ADCDataModel.self) var dataModel
     
+    var noButton: Bool = true
+    
     var body: some View {
         VStack (spacing:30) {
             HStack(spacing: 10) {
@@ -21,13 +23,14 @@ struct ADCLinkerSelectorView: View {
                 ADCCheckmarkButton(
                     action: {
                             // Fill all remaining linkers with current selection
-                        dataModel.fillAllLinkers()
+//                        dataModel.fillAllLinkers()
                             // Advance to next step
-                            dataModel.adcBuildStep = 2
+//                            dataModel.adcBuildStep = 2
                         
                     },
                     isEnabled: dataModel.selectedLinkerType != nil && dataModel.placedLinkerCount == 4
                 )
+                .disabled(noButton)
                 
                 
             }

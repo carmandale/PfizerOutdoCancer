@@ -4,6 +4,8 @@ struct ADCSelectorView: View {
     @Environment(AppModel.self) var appModel
     @Environment(ADCDataModel.self) var dataModel
     
+    var noButton: Bool = true
+    
     var body: some View {
         VStack (spacing:30) {
             HStack (spacing: 10) {
@@ -15,11 +17,12 @@ struct ADCSelectorView: View {
                 ADCCheckmarkButton(
                     action: {
                         print("ITR..Checkmark button pressed")
-                        dataModel.adcBuildStep = 1
+                        // dataModel.adcBuildStep = 1
                             // dataModel.selectedLinkerType = 0
                     },
                     isEnabled: dataModel.selectedADCAntibody != nil
                 )
+                .disabled(noButton)
                 
                 
             }

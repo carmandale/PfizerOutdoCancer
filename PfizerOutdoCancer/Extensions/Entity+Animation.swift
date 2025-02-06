@@ -421,4 +421,26 @@ extension Entity {
             transform = endTransform
         }
     }
+    
+    /// Starts continuous rotation around the specified axis
+    /// - Parameters:
+    ///   - speed: Rotation speed in radians per second (default: 1.0)
+    ///   - axis: The axis to rotate around (default: .yAxis)
+    func startContinuousRotation(speed: Float = 1.0, axis: RotationAxis = .yAxis) {
+        var component = RotationComponent()
+        component.speed = speed
+        component.rotationAxis = axis
+        components.set(component)
+    }
+    
+    /// Starts continuous rotation around the Y axis (legacy support)
+    /// - Parameter speed: Rotation speed in radians per second (default: 1.0)
+    func startContinuousYRotation(speed: Float = 1.0) {
+        startContinuousRotation(speed: speed, axis: .yAxis)
+    }
+    
+    /// Stops any continuous rotation by removing the RotationComponent
+    func stopRotation() {
+        components.remove(RotationComponent.self)
+    }
 }

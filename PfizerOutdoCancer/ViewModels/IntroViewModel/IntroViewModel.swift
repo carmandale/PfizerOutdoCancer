@@ -1,10 +1,3 @@
-//
-//  IntroViewModel.swift
-//  PfizerOutdoCancer
-//
-//  Created by Dale Carman on 1/23/25.
-//
-
 import Foundation
 import RealityKit
 import RealityKitContent
@@ -33,6 +26,9 @@ final class IntroViewModel {
     var showTitleText = false
     var shouldDimSurroundings = false
     var isSetupComplete = false
+    
+    // New flag to prevent duplicate environment loading
+    var environmentLoaded = false
     
     // Dependencies
     var appModel: AppModel!
@@ -315,6 +311,7 @@ final class IntroViewModel {
         showTitleText = false
         shouldDimSurroundings = false
         isSetupComplete = false
+        environmentLoaded = false
         
         print("✅ Completed IntroViewModel cleanup\n")
     }

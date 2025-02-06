@@ -62,7 +62,7 @@ struct PfizerOutdoCancerApp: App {
                             break
                         }
                     }
-                .transition(Appear())
+//                .transition(Appear())
                 
         }
         .defaultSize(width: 800, height: 800)

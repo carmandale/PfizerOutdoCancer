@@ -111,7 +111,6 @@ private struct CompletedBlock: View {
             
             StartButton()
                 .padding(.top, 50)
-                .transition(.opacity.combined(with: .scale))
         }
         .onAppear {
             // Delay the title animation slightly to let the logo transition complete

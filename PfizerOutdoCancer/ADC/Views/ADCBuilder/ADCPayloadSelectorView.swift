@@ -4,6 +4,8 @@ struct ADCPayloadSelectorView: View {
     @Environment(AppModel.self) var appModel
     @Environment(ADCDataModel.self) var dataModel
     
+    var noButton: Bool = true
+    
     var body: some View {
         VStack (spacing:30) {
             HStack (spacing: 10) {
@@ -21,12 +23,13 @@ struct ADCPayloadSelectorView: View {
                 ADCCheckmarkButton(
                     action: {
                             // Fill all remaining payloads with current selection
-                        dataModel.fillAllPayloads()
+//                        dataModel.fillAllPayloads()
                             // Advance to next step
-                            dataModel.adcBuildStep = 3
+//                            dataModel.adcBuildStep = 3
                     },
                     isEnabled: dataModel.selectedPayloadType != nil && dataModel.placedPayloadCount == 4
                 )
+                .disabled(noButton)
                 
                 
             }

@@ -309,6 +309,8 @@ final class AppModel {
                 if newPhase != .playing && newPhase != .completed {
                     // First cleanup the game state
                     gameState.cleanup()
+                    // Then release assets
+                    await assetLoadingManager.releaseAttackCancerEnvironment()
                 }
             case .outro:
                 if newPhase != .outro {
