@@ -10,7 +10,6 @@ import RealityKitContent
 
 @main
 struct PfizerOutdoCancerApp: App {
-    // Change from @StateObject to @State
     @State private var appModel = AppModel()
     
     // for ADC view

@@ -66,7 +66,7 @@ private struct LoadingBlock: View {
                     .padding()
                     .transition(.opacity)
                 
-                Text("build v41 - 2.3.25")
+                Text("build v45 - 2.7.25")
                     .foregroundStyle(.secondary)
                     .font(.caption)
                     .padding()
@@ -124,7 +124,7 @@ private struct CompletedBlock: View {
     }
 }
 
-#Preview(windowStyle: .automatic) {
-    LoadingView()
-        .environment(AppModel())
-}
+//#Preview(windowStyle: .automatic) {
+//    LoadingView()
+//        .environment(AppModel())
+//}

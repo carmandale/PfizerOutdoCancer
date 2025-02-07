@@ -128,12 +128,13 @@ struct ADCBuilderView: View {
                             },
                             font: .title,
                             scaleEffect: 1.2,
-                            width: 200
+                            width: 250
                         )
                         .fontWeight(.bold)
                         .glassBackgroundEffect()
                         .controlSize(.extraLarge)
                         .opacity(dataModel.adcBuildStep == 3 ? 1 : 0)
+                        .zIndex(1) // Ensure this button is on top
                     }
                     .frame(width: 600)
                     .padding(.top, 10)
@@ -211,6 +212,7 @@ struct ADCBuilderView: View {
                     }
                 }
                 .padding(20)
+                .zIndex(0)
             }
         }
         .frame(width: 800)

@@ -17,7 +17,7 @@ struct ADCSelectorView: View {
                 ADCCheckmarkButton(
                     action: {
                         print("ITR..Checkmark button pressed")
-                        // dataModel.adcBuildStep = 1
+                         dataModel.adcBuildStep = 1
                             // dataModel.selectedLinkerType = 0
                     },
                     isEnabled: dataModel.selectedADCAntibody != nil

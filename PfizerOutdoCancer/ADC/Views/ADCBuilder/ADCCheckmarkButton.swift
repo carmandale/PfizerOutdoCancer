@@ -61,14 +61,14 @@ struct ADCCheckmarkButton: View {
     }
 }
 
-struct ADCCheckmarkButton_Previews: PreviewProvider {
-    static var previews: some View {
-        // Toggle isEnabled to see the pulsing effect in action.
-        VStack(spacing: 40) {
-            ADCCheckmarkButton(action: { print("Tapped!") }, isEnabled: true)
-            ADCCheckmarkButton(action: { print("Tapped!") }, isEnabled: false)
-        }
-        .padding()
-        .background(Color.gray.opacity(0.2))
-    }
-}
+//struct ADCCheckmarkButton_Previews: PreviewProvider {
+//    static var previews: some View {
+//        // Toggle isEnabled to see the pulsing effect in action.
+//        VStack(spacing: 40) {
+//            ADCCheckmarkButton(action: { print("Tapped!") }, isEnabled: true)
+//            ADCCheckmarkButton(action: { print("Tapped!") }, isEnabled: false)
+//        }
+//        .padding()
+//        .background(Color.gray.opacity(0.2))
+//    }
+//}
