@@ -272,20 +272,39 @@ extension ADCMovementSystem {
     internal static func computeLandingTransform(for adc: Entity, with target: Entity) -> Transform {
         var transform = Transform()
         
-        // Set orientation
-        transform.rotation = computeLandingOrientation(for: adc, with: target)
+        // // Set orientation
+        // transform.rotation = computeLandingOrientation(for: adc, with: target)
         
-        // Set position with slight offset along the surface normal
-        if let cell = target.parent {
-            let normal = computeSurfaceNormal(
-                surfacePoint: target.position(relativeTo: nil),
-                center: cell.position(relativeTo: nil)
-            )
-            transform.translation = SIMD3<Float>(0, -0.08, 0) // Slight offset for visual appeal
-        } else {
-            transform.translation = .zero
-        }
+        // // Set position with slight offset along the surface normal
+        // if let cell = target.parent {
+        //     let normal = computeSurfaceNormal(
+        //         surfacePoint: target.position(relativeTo: nil),
+        //         center: cell.position(relativeTo: nil)
+        //     )
+        //     transform.translation = SIMD3<Float>(0, -0.08, 0) // Slight offset for visual appeal
+        // } else {
+        //     transform.translation = .zero
+        // }
         
+        // Create a pitch rotation of -90 degrees (i.e. -π/2 radians) around the X axis.
+        let pitchRotation = simd_quatf(angle: -Float.pi/2, axis: SIMD3<Float>(1, 0, 0))
+        
+        // Generate a random yaw rotation between 0 and 360 degrees (0 to 2π radians) around the Y axis.
+        let randomYawAngle = Float.random(in: 0 ..< (2 * Float.pi))
+        let yawRotation = simd_quatf(angle: randomYawAngle, axis: SIMD3<Float>(0, 1, 0))
+        
+        // Combine the rotations. (Multiplication order matters:
+        // here, yawRotation * pitchRotation means that the ADC first gets pitched -90°,
+        // then rotated randomly around its new up axis.)
+        transform.rotation = yawRotation * pitchRotation
+        
+        // Optionally, add a slight translation offset along the local Y axis.
+        // (This offset can be adjusted to fine-tune the “lily pad” visual.)
+        transform.translation = SIMD3<Float>(0, -0.08, 0)
+        
+        // Set the scale to uniform 1.
+        transform.scale = SIMD3<Float>(1, 1, 1)
+
         return transform
     }
     

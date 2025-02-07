@@ -222,15 +222,12 @@ final class AssetLoadingManager {
         print("📊 Current template cache size: \(entityTemplates.count) entities")
         print("📊 Current templates: \(entityTemplates.keys.joined(separator: ", "))")
         
-        // Keep essential assets (following Lab's pattern with assembled_lab)
-        let essentialKeys = [
-            "attack_cancer_environment",
-            "adc",
-            "cancer_cell"
+        // Remove voice-over assets
+        let keysToRemove = [
+            "game_start_vo"
         ]
-        let keysToRemove = entityTemplates.keys.filter { !essentialKeys.contains($0) }
         
-        print("🗑️ Preparing to remove \(keysToRemove.count) non-essential assets:")
+        print("🗑️ Preparing to remove \(keysToRemove.count) attack cancer VO assets:")
         for key in keysToRemove {
             if let entity = entityTemplates[key] {
                 print("\n🗑️ Removing asset: \(key)")
@@ -244,7 +241,9 @@ final class AssetLoadingManager {
         
         // Log final state
         print("\n📊 Updated template cache size: \(entityTemplates.count) entities")
-        print("🔒 Remaining essential assets: \(essentialKeys.joined(separator: ", "))")
+        if let remainingKeys = entityTemplates.keys.first {
+            print("🔒 Remaining asset: \(remainingKeys)")
+        }
         print("✅ Completed attack cancer environment cleanup\n")
     }
     

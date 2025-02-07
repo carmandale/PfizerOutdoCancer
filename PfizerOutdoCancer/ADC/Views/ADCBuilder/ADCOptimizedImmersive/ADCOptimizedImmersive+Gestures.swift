@@ -70,6 +70,7 @@ extension ADCOptimizedImmersive {
                     dataModel.selectedADCLinker = dataModel.selectedLinkerType
                     dataModel.placedLinkerCount += 1
                     Task { @MainActor in
+                        attachPopSoundToTarget(finishedEntity)
                         await playPopSound()
                     }
                     
@@ -167,6 +168,13 @@ extension ADCOptimizedImmersive {
             workingEntity.isEnabled = false
         }
         
+        if let workingEntity = workingEntity {
+            attachPopSoundToTarget(workingEntity)
+            Task { @MainActor in
+                await playPopSound()
+            }
+        }
+        
         // Only advance if VO is not playing
         if !dataModel.isVOPlaying {
             let oldStep = dataModel.adcBuildStep
@@ -224,6 +232,7 @@ extension ADCOptimizedImmersive {
                     }
                     dataModel.selectedADCPayload = dataModel.selectedPayloadType
                     Task { @MainActor in
+                        attachPopSoundToTarget(finishedEntity)
                         await playPopSound()
                     }
                     dataModel.placedPayloadCount += 1

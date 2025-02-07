@@ -94,7 +94,7 @@ final class LabViewModel {
             print("⏲️ Starting 30-second timer for ADC button visibility")
             shouldShowADCButton = false  // Ensure it starts hidden
             Task {
-                try? await Task.sleep(for: .seconds(30))
+                try? await Task.sleep(for: .seconds(38))
                 print("⏲️ Timer complete - showing ADC button")
                 withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
                     shouldShowADCButton = true

@@ -44,15 +44,6 @@ final class OutroViewModel {
     func setupEnvironment(in root: Entity) async {
         print("📱 OutroViewModel: Starting environment setup")
         
-        // IBL
-        do {
-            print("📱 OutroViewModel: Setting up IBL lighting")
-            try await IBLUtility.addImageBasedLighting(to: root, imageName: "metro_noord_2k")
-            print("✅ OutroViewModel: Added IBL lighting")
-        } catch {
-            print("❌ OutroViewModel: Failed to setup IBL: \(error)")
-        }
-
         // Load environment
         do {
             print("📱 OutroViewModel: Loading environment")
@@ -65,6 +56,15 @@ final class OutroViewModel {
             root.addChild(environment)
             outroEnvironmentEntity = environment
             print("✅ OutroViewModel: Added environment to root")
+            
+            // IBL
+            do {
+                print("📱 OutroViewModel: Setting up IBL lighting")
+                try await IBLUtility.addImageBasedLighting(to: root, imageName: "metro_noord_2k")
+                print("✅ OutroViewModel: Added IBL lighting")
+            } catch {
+                print("❌ OutroViewModel: Failed to setup IBL: \(error)")
+            }
             
             isSetupComplete = true
         } catch {

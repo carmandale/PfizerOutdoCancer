@@ -56,6 +56,13 @@ struct OutroView: View {
                 
                 root.addChild(outroEnvironmentEntity)
                 print("✅ OutroView: Added environment to root")
+
+                // IBL
+                print("📱 OutroViewModel: Setting up IBL lighting")
+                try await IBLUtility.addImageBasedLighting(to: root, imageName: "metro_noord_2k")
+                print("✅ OutroViewModel: Added IBL lighting")
+            
+
             } catch {
                 print("❌ OutroView: Failed to load outro environment: \(error)")
             }

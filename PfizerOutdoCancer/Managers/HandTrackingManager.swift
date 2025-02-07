@@ -31,15 +31,15 @@ final class HandTrackingManager {
     // MARK: - Setup
     func setupContentEntity() -> Entity {
         // Add finger entities to content
-        for entity in fingerEntities.values {
-            entity.scale = .one * 0.2  // Make sure debug spheres are visible
-            entity.components.set(ModelComponent(
-                mesh: .generateSphere(radius: 1),
-                materials: [SimpleMaterial(color: .blue, isMetallic: false)]
-            ))
-            entity.isEnabled = true  // Make sure entities start enabled
-            contentEntity.addChild(entity)
-        }
+        // for entity in fingerEntities.values {
+        //     entity.scale = .one * 0.2  // Make sure debug spheres are visible
+        //     entity.components.set(ModelComponent(
+        //         mesh: .generateSphere(radius: 1),
+        //         materials: [SimpleMaterial(color: .blue, isMetallic: false)]
+        //     ))
+        //     entity.isEnabled = true  // Make sure entities start enabled
+        //     contentEntity.addChild(entity)
+        // }
         
         // Set up hand tracking updates using ClosureComponent
         contentEntity.components.set(ClosureComponent(closure: { [weak self] deltaTime in

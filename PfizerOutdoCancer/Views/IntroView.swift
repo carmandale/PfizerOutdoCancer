@@ -8,8 +8,9 @@ struct IntroView: View {
     @Environment(ADCDataModel.self) var dataModel
     @Environment(\.dismissWindow) private var dismissWindow
     
+    @State private var tintIntensity: Double = 0.02
+    
     var surroundingsEffect: SurroundingsEffect? {
-        let tintIntensity = appModel.shouldDimSurroundings ? 0.02 : 1.0
         let tintColor = Color(red: tintIntensity, green: tintIntensity, blue: tintIntensity)
         return SurroundingsEffect.colorMultiply(tintColor)
     }
@@ -55,6 +56,14 @@ struct IntroView: View {
             }
             Attachment(id: "navToggle") {
                 NavToggleView()
+            }
+        }
+        .preferredSurroundingsEffect(surroundingsEffect)
+        .onAppear {
+            print("\n=== IntroView Appeared ===")
+            // Add tint animation
+            withAnimation(.linear(duration: 30.0)) {
+                tintIntensity = 0.02
             }
         }
         .onAppear {

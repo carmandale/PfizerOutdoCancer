@@ -30,14 +30,10 @@ extension ADCOptimizedImmersive {
             }
             self.popAudioEntity = popSource
             
-            // Attach pop sound to target entities
+            // Detach pop sound from main entity
             if let mainEntity {
-                mainEntity.addChild(popSource)
-                os_log(.debug, "ITR..ADCOptimizedImmersive: ✅ Successfully attached pop sound to target linker")
-            }
-            if let mainEntity {
-                mainEntity.addChild(popSource)
-                os_log(.debug, "ITR..ADCOptimizedImmersive: ✅ Successfully attached pop sound to target payload")
+                mainEntity.removeChild(popSource)
+                os_log(.debug, "ITR..ADCOptimizedImmersive: ✅ Successfully detached pop sound from main entity")
             }
         } else {
             os_log(.error, "ITR..ADCOptimizedImmersive: ❌ Error loading pop sound from antibodyScene.usda")
@@ -82,6 +78,7 @@ extension ADCOptimizedImmersive {
     func attachPopSoundToTarget(_ target: Entity) {
         if let popSound = popAudioEntity {
             target.addChild(popSound)
+            popSound.position = SIMD3(x: 0, y: 0, z: 0)
         }
     }
 
@@ -90,7 +87,6 @@ extension ADCOptimizedImmersive {
         
         // System 1: Using bubblePopSound toggle
         os_log(.debug, "ITR..playPopSound(): 🔊 SYSTEM 1 - Triggering bubblePopSound toggle")
-        bubblePopSound.toggle()
         
         // System 2: Using audioStorage (disabled for now)
         /*if let storage = audioStorage {
@@ -103,6 +99,12 @@ extension ADCOptimizedImmersive {
                 storage.playPopSound(at: adcPayloadsInner[dataModel.payloadsWorkingIndex].position)
             }
         }*/
+        if let controller = popAudioPlaybackController {
+            controller.play()
+            os_log(.debug, "ITR..playPopSound(): Started playing pop sound")
+        } else {
+            os_log(.error, "ITR..playPopSound(): ❌ No popAudioPlaybackController")
+        }
     }
 
     @MainActor

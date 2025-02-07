@@ -70,7 +70,7 @@ def Xform "Root"
             {
                 quatf xformOp:orient = (1, -1.9471485e-15, 0, 0)
                 float3 xformOp:scale = (0.5, 0.5, 0.5)
-                float3 xformOp:translate = (0, -0.000060081482, 1.1805663)
+                float3 xformOp:translate = (-1.8998985e-7, 4.630145, 0.09293699)
                 uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
                 def "card" (
@@ -98,7 +98,7 @@ def Xform "Root"
                 def RealityKitComponent "HierarchicalFade"
                 {
                     uniform token info:id = "RealityKit.HierarchicalFade"
-                    float opacity = 0
+                    float opacity = 1
                 }
             }
 
@@ -640,20 +640,20 @@ def Xform "Root"
     def "change_v02" (
         active = true
         customData = {
-            float3 rotationEulerHint = (-1.5707963, 0, 0)
+            float3 rotationEulerHint = (-1.5707964, 0, 0)
         }
         references = @Assets/Outro/change_v03.usdc@
     )
     {
-        quatf xformOp:orient = (0.70710677, -0.7071067, 0, 0)
-        float3 xformOp:scale = (5.006789, 2.4326122, 5.006789)
-        float3 xformOp:translate = (-0.0000017862768, -8.6985517e-7, -11.545573)
+        quatf xformOp:orient = (0.70710677, -0.70710677, 0, 0)
+        float3 xformOp:scale = (5.856484, 0.5, 5.856484)
+        float3 xformOp:translate = (-0.5079807, -8.698553e-7, -11.545574)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
         def RealityKitComponent "HierarchicalFade"
         {
             uniform token info:id = "RealityKit.HierarchicalFade"
-            float opacity = 0
+            float opacity = 1
         }
 
         over "change_MSR"

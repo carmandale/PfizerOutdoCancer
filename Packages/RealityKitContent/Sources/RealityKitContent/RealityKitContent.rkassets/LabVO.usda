@@ -129,7 +129,7 @@ def Xform "Root"
                 double duration = 6.9375
                 double gain = -13.302106900452493
                 uniform token info:id = "95766467-0283-4DF6-9791-167B2A33DC78"
-                double startTime = 29.575145844065844
+                double startTime = 37.997810288816346
                 rel target = </Root/VO_2>
 
                 def RealityKitStruct "handoffType"

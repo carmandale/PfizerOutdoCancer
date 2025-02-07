@@ -17,6 +17,8 @@ enum IBLUtility {
             fatalError("Failed to load the Image-Based Lighting file: \(imageName).exr")
         }
         
+        print("IBL URL: \(iblURL)")
+        
         let iblEnv = try await EnvironmentResource(fromImage: iblURL)
         
         // Set up image-based lighting
