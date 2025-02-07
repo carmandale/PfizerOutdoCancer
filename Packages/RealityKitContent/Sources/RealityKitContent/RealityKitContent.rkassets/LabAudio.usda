@@ -1146,42 +1146,56 @@ def Xform "Root"
 
         def RealityKitAudioMixGroup "keyboard"
         {
-            float gain = -22.19553
+            float gain = -18.354097
             bool mute = 0
             float speed = 1
         }
 
         def RealityKitAudioMixGroup "conversation"
         {
-            float gain = -16.91875
+            float gain = -24.426685
             bool mute = 0
             float speed = 1
         }
 
         def RealityKitAudioMixGroup "beakers"
         {
-            float gain = -11.648877
+            float gain = -8.139951
             bool mute = 0
             float speed = 1
         }
 
         def RealityKitAudioMixGroup "Paperwork"
         {
-            float gain = -20.49779
+            float gain = -18.04777
             bool mute = 0
             float speed = 1
         }
 
         def RealityKitAudioMixGroup "ambience"
         {
-            float gain = 0
+            float gain = -13.232587
             bool mute = 0
             float speed = 1
         }
 
         def RealityKitAudioMixGroup "podcast"
         {
-            float gain = -18.35831
+            float gain = -21.26752
+            bool mute = 0
+            float speed = 1
+        }
+
+        def RealityKitAudioMixGroup "ventHood"
+        {
+            float gain = -19.624544
+            bool mute = 0
+            float speed = 1
+        }
+
+        def RealityKitAudioMixGroup "fileCabinet"
+        {
+            float gain = -16.49928
             bool mute = 0
             float speed = 1
         }
@@ -1645,6 +1659,7 @@ def Xform "Root"
     def RealityKitAudioFile "Printer_1_wav"
     {
         uniform asset file = @Audio/Lab_Ambience/Printer_1.wav@
+        rel mixGroup = </Root/AudioMixGroups/fileCabinet>
         uniform bool shouldLoop = 1
     }
 
@@ -1680,6 +1695,7 @@ def Xform "Root"
     def RealityKitAudioFile "Filing_Cabinet_wav"
     {
         uniform asset file = @Audio/Lab_Ambience/Filing_Cabinet.wav@
+        rel mixGroup = </Root/AudioMixGroups/fileCabinet>
         uniform bool shouldLoop = 1
         uniform bool shouldRandomizeStartTime = 0
     }
@@ -1687,6 +1703,7 @@ def Xform "Root"
     def RealityKitAudioFile "Vent_Hood_wav"
     {
         uniform asset file = @Audio/Lab_Ambience/Vent_Hood.wav@
+        rel mixGroup = </Root/AudioMixGroups/ventHood>
         uniform bool shouldLoop = 1
         uniform bool shouldRandomizeStartTime = 0
     }
@@ -1869,20 +1886,29 @@ def Xform "Root"
         def RealityKitAudioFile "ADC_podcast_01_wav"
         {
             uniform asset file = @Audio/Lab_Ambience/split/ADC_podcast_01.wav@
+            rel mixGroup = </Root/AudioMixGroups/podcast>
             uniform bool shouldLoop = 0
         }
 
         def RealityKitAudioFile "ADC_podcast_02_wav"
         {
             uniform asset file = @Audio/Lab_Ambience/split/ADC_podcast_02.wav@
+            rel mixGroup = </Root/AudioMixGroups/podcast>
             uniform bool shouldLoop = 0
         }
 
         def RealityKitAudioFile "ADC_podcast_03_wav"
         {
             uniform asset file = @Audio/Lab_Ambience/split/ADC_podcast_03.wav@
+            rel mixGroup = </Root/AudioMixGroups/podcast>
             uniform bool shouldLoop = 0
         }
+    }
+
+    def RealityKitComponent "Reverb"
+    {
+        uniform token info:id = "RealityKit.Reverb"
+        token reverbPreset = "LargeRoom"
     }
 }
 

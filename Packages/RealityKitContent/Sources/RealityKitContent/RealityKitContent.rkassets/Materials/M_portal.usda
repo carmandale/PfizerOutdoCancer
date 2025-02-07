@@ -1,0 +1,366 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 2.0 (448.60.4)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    quatf xformOp:orient = (1, 0, 0, 0)
+    float3 xformOp:scale = (1, 1, 1)
+    float3 xformOp:translate = (0, 0, 0)
+    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+    def "M_jet" (
+        active = true
+        references = @../Assets/Intro/M_jet.usda@
+    )
+    {
+        over "JetMaterial"
+        {
+            token cullMode = "front" (
+                allowedTokens = ["unspecified", "none", "front", "back"]
+            )
+            float inputs:Speed = 0.4 (
+                customData = {
+                    dictionary realitykit = {
+                        float2 positionInSubgraph = (-536.147, 130.19284)
+                        int stackingOrderInSubgraph = 23
+                    }
+                }
+            )
+            float inputs:TunnelMapAmount = 1.5 (
+                customData = {
+                    dictionary realitykit = {
+                        float2 positionInSubgraph = (-756.7344, 82.72656)
+                        float2 sizeInSubgraph = (122, 53)
+                        int stackingOrderInSubgraph = 22
+                    }
+                }
+            )
+
+            over "jetNodeGraph"
+            {
+                float inputs:Dissolve (
+                    customData = {
+                        dictionary realitykit = {
+                            float2 positionInSubgraph = (1998.9142, 364.83472)
+                            int stackingOrderInSubgraph = 2185
+                        }
+                    }
+                )
+                float inputs:Dissolve.connect = </Root/M_jet/JetMaterial/Divide.outputs:out>
+                float inputs:Remap_inlow (
+                    customData = {
+                        dictionary realitykit = {
+                            float2 positionInSubgraph = (587.7347, 154.89322)
+                            int stackingOrderInSubgraph = 2152
+                        }
+                    }
+                )
+                float inputs:SpeedMultiple = 0 (
+                    customData = {
+                        dictionary realitykit = {
+                            float2 positionInSubgraph = (-1086.8279, 364.47565)
+                            int stackingOrderInSubgraph = 2269
+                        }
+                    }
+                )
+                float inputs:SpeedMultiple.connect = </Root/M_jet/JetMaterial.inputs:Speed>
+                float2 ui:nodegraph:node:pos = (-235.42273, 12.54339)
+                int ui:nodegraph:node:stackingOrder = 23
+                string[] ui:nodegraph:realitykit:node:attributesShowingChildren = ["inputs:Dissolve"]
+                float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (3544.659, 168.41467)
+                int ui:nodegraph:realitykit:subgraphOutputs:stackingOrder = 2239
+
+                over "Multiply_1"
+                {
+                    float2 ui:nodegraph:node:pos = (872.5, 349.25)
+                }
+
+                over "Time"
+                {
+                    float2 ui:nodegraph:node:pos = (68.75, 479.25)
+                }
+
+                over "UnlitSurface"
+                {
+                    color3f inputs:color.connect = </Root/M_jet/JetMaterial/jetNodeGraph/Multiply_2.outputs:out>
+                    bool inputs:hasPremultipliedAlpha = 1
+                    float inputs:opacity.connect = </Root/M_jet/JetMaterial/jetNodeGraph/Dot.outputs:out>
+                    float2 ui:nodegraph:node:pos = (3298.909, 168.41467)
+                    int ui:nodegraph:node:stackingOrder = 2239
+                }
+
+                over "Noise2D"
+                {
+                    float2 ui:nodegraph:node:pos = (740.375, 687.25)
+                }
+
+                over "Texcoord"
+                {
+                    int inputs:index = 0
+                    float2 ui:nodegraph:node:pos = (406.25, 48.75)
+                    int ui:nodegraph:node:stackingOrder = 2154
+                }
+
+                over "Noise3D"
+                {
+                    float inputs:amplitude = 0.6
+                    float inputs:pivot = 0
+                    float3 inputs:position.connect = </Root/M_jet/JetMaterial/jetNodeGraph/Add_3.outputs:out>
+                    float2 ui:nodegraph:node:pos = (655.25, 480.25)
+                    int ui:nodegraph:node:stackingOrder = 2276
+                }
+
+                over "Constant"
+                {
+                    float2 ui:nodegraph:node:pos = (1206.375, 641.25)
+                }
+
+                over "Multiply"
+                {
+                    float2 ui:nodegraph:node:pos = (406.25, 480.25)
+                }
+
+                over "TriplanarProjection"
+                {
+                    float2 ui:nodegraph:node:pos = (991.375, 723.25)
+                }
+
+                over "Combine2"
+                {
+                    float2 ui:nodegraph:node:pos = (1242.369, 74.97132)
+                    int ui:nodegraph:node:stackingOrder = 2051
+                }
+
+                over "Remap"
+                {
+                    float inputs:inlow = 1
+                    float inputs:inlow.connect = </Root/M_jet/JetMaterial/jetNodeGraph.inputs:Remap_inlow>
+                    float inputs:outhigh = 1
+                    float inputs:outlow = 0
+                    float2 ui:nodegraph:node:pos = (872.5, 92.5)
+                    int ui:nodegraph:node:stackingOrder = 2280
+                }
+
+                over "Flicker_Intensity"
+                {
+                    float inputs:value = 2
+                    float2 ui:nodegraph:node:pos = (655.25, 319.25)
+                    int ui:nodegraph:node:stackingOrder = 2274
+                }
+
+                over "Extract"
+                {
+                    int inputs:index = 1
+                    float2 ui:nodegraph:node:pos = (655.25, 48.75)
+                    int ui:nodegraph:node:stackingOrder = 2151
+                }
+
+                over "Add_1"
+                {
+                    float2 ui:nodegraph:node:pos = (226.25, 480.25)
+                }
+
+                over "Add"
+                {
+                    float2 ui:nodegraph:node:pos = (1027.8301, 199.81252)
+                    int ui:nodegraph:node:stackingOrder = 1746
+                }
+
+                over "Position"
+                {
+                    float2 ui:nodegraph:node:pos = (68.75, 370.75)
+                }
+
+                over "Ramptb"
+                {
+                    float2 ui:nodegraph:node:pos = (1490.6577, 23.83797)
+                    int ui:nodegraph:node:stackingOrder = 2040
+                }
+
+                def Shader "Multiply_2"
+                {
+                    uniform token info:id = "ND_multiply_color3FA"
+                    delete color3f inputs:in1.connect = </Root/M_jet/JetMaterial/jetNodeGraph/Dot.outputs:out>
+                    prepend color3f inputs:in1.connect = </Root/M_jet/JetMaterial/jetNodeGraph/Ramptb.outputs:out>
+                    float inputs:in2.connect = </Root/M_jet/JetMaterial/jetNodeGraph/Dot.outputs:out>
+                    color3f outputs:out
+                    float2 ui:nodegraph:node:pos = (3014.0654, 99.32619)
+                    int ui:nodegraph:node:stackingOrder = 2321
+                }
+
+                def Shader "Position_1"
+                {
+                    uniform token info:id = "ND_position_vector3"
+                    string inputs:space = "world"
+                    float3 outputs:out
+                    float2 ui:nodegraph:node:pos = (-976.1765, -65.22177)
+                    float2 ui:nodegraph:node:size = (133.5, 40)
+                    int ui:nodegraph:node:stackingOrder = 2261
+                }
+
+                def Shader "Add_3"
+                {
+                    uniform token info:id = "ND_add_vector3"
+                    float3 inputs:in1.connect = </Root/M_jet/JetMaterial/jetNodeGraph/Combine3.outputs:out>
+                    float3 inputs:in2.connect = </Root/M_jet/JetMaterial/jetNodeGraph/Multiply_4.outputs:out>
+                    float3 outputs:out
+                    float2 ui:nodegraph:node:pos = (85.96008, 219.53122)
+                    int ui:nodegraph:node:stackingOrder = 1704
+                }
+
+                def Shader "Combine3"
+                {
+                    uniform token info:id = "ND_combine3_vector3"
+                    float inputs:in1 = 1
+                    float inputs:in1.connect = None
+                    float inputs:in2.connect = </Root/M_jet/JetMaterial/jetNodeGraph/Add_4.outputs:out>
+                    float inputs:in3 = 1
+                    float inputs:in3.connect = None
+                    float3 outputs:out
+                    float2 ui:nodegraph:node:pos = (-153.3117, 79.683624)
+                    int ui:nodegraph:node:stackingOrder = 1813
+                }
+
+                def Shader "Add_2"
+                {
+                    uniform token info:id = "ND_add_vector3FA"
+                    float3 inputs:in1.connect = </Root/M_jet/JetMaterial/jetNodeGraph/Position_1.outputs:out>
+                    float inputs:in2.connect = </Root/M_jet/JetMaterial/jetNodeGraph/Time_1.outputs:out>
+                    float3 outputs:out
+                    float2 ui:nodegraph:node:pos = (-699.5947, 14.625985)
+                    float2 ui:nodegraph:node:size = (61.5, 36.5)
+                    int ui:nodegraph:node:stackingOrder = 1789
+                }
+
+                def Shader "Separate3"
+                {
+                    uniform token info:id = "ND_separate3_vector3"
+                    float3 inputs:in.connect = </Root/M_jet/JetMaterial/jetNodeGraph/Position_1.outputs:out>
+                    float outputs:outx
+                    float outputs:outy
+                    float outputs:outz
+                    float2 ui:nodegraph:node:pos = (-709.0193, 128.72836)
+                    int ui:nodegraph:node:stackingOrder = 1787
+                }
+
+                def Shader "Time_1"
+                {
+                    uniform token info:id = "ND_time_float"
+                    float outputs:out
+                    float2 ui:nodegraph:node:pos = (-1275.4722, 94.1829)
+                    float2 ui:nodegraph:node:size = (122.5, 53)
+                    int ui:nodegraph:node:stackingOrder = 2263
+                }
+
+                def Shader "Add_4"
+                {
+                    uniform token info:id = "ND_add_float"
+                    float inputs:in1.connect = </Root/M_jet/JetMaterial/jetNodeGraph/Separate3.outputs:outy>
+                    float inputs:in2.connect = </Root/M_jet/JetMaterial/jetNodeGraph/Multiply_3.outputs:out>
+                    float outputs:out
+                    float2 ui:nodegraph:node:pos = (-511.58676, 233.06236)
+                    int ui:nodegraph:node:stackingOrder = 1798
+                }
+
+                def Shader "Multiply_3"
+                {
+                    uniform token info:id = "ND_multiply_float"
+                    float inputs:in1.connect = </Root/M_jet/JetMaterial/jetNodeGraph/Time_1.outputs:out>
+                    float inputs:in2 = 1
+                    float inputs:in2.connect = </Root/M_jet/JetMaterial/jetNodeGraph.inputs:SpeedMultiple>
+                    float outputs:out
+                    float2 ui:nodegraph:node:pos = (-786.1453, 308.18674)
+                    int ui:nodegraph:node:stackingOrder = 2266
+                }
+
+                def Shader "Multiply_4"
+                {
+                    uniform token info:id = "ND_multiply_vector3"
+                    float3 inputs:in1.connect = </Root/M_jet/JetMaterial/jetNodeGraph/Add_2.outputs:out>
+                    float3 inputs:in2 = (0, 0, 0.05)
+                    float3 outputs:out
+                    float2 ui:nodegraph:node:pos = (-506.20276, 76.05426)
+                    float2 ui:nodegraph:node:size = (60, 36)
+                    int ui:nodegraph:node:stackingOrder = 2277
+                }
+
+                def Shader "Range"
+                {
+                    uniform token info:id = "ND_range_float"
+                    bool inputs:doclamp = 0
+                    float inputs:gamma = 0.5
+                    float inputs:in.connect = </Root/M_jet/JetMaterial/jetNodeGraph/Add.outputs:out>
+                    float inputs:inhigh = 1
+                    float inputs:inlow = 0
+                    float inputs:outhigh = 0.2
+                    float inputs:outlow = 0
+                    float outputs:out
+                    float2 ui:nodegraph:node:pos = (1758.669, 232.69315)
+                    int ui:nodegraph:node:stackingOrder = 2279
+                }
+
+                def Shader "Dot"
+                {
+                    uniform token info:id = "ND_dot_float"
+                    float inputs:in.connect = </Root/M_jet/JetMaterial/jetNodeGraph/Range_1.outputs:out>
+                    float outputs:out
+                    float2 ui:nodegraph:node:pos = (2885.506, 225.67722)
+                    int ui:nodegraph:node:stackingOrder = 2321
+                }
+
+                def Shader "Multiply_5"
+                {
+                    uniform token info:id = "ND_multiply_float"
+                    float inputs:in1.connect = </Root/M_jet/JetMaterial/jetNodeGraph/Range.outputs:out>
+                    float inputs:in2.connect = </Root/M_jet/JetMaterial/jetNodeGraph.inputs:Dissolve>
+                    float outputs:out
+                    float2 ui:nodegraph:node:pos = (2225.8342, 258.27948)
+                    int ui:nodegraph:node:stackingOrder = 2246
+                }
+
+                def Shader "Range_1"
+                {
+                    uniform token info:id = "ND_range_float"
+                    bool inputs:doclamp
+                    float inputs:gamma = 0.2896875
+                    float inputs:in.connect = </Root/M_jet/JetMaterial/jetNodeGraph/Multiply_5.outputs:out>
+                    float inputs:inhigh = 1
+                    float inputs:inlow = 0
+                    float inputs:outhigh = 1
+                    float inputs:outlow = 0
+                    float outputs:out
+                    float2 ui:nodegraph:node:pos = (2403.2397, 252.38916)
+                    int ui:nodegraph:node:stackingOrder = 2322
+                }
+            }
+        }
+
+        def "JetMaterial_1" (
+            active = true
+            instanceable = true
+            references = </Root/M_jet/JetMaterial>
+        )
+        {
+            token cullMode = "front" (
+                allowedTokens = ["unspecified", "none", "front", "back"]
+            )
+            float inputs:TunnelMapAmount (
+                customData = {
+                    dictionary realitykit = {
+                        float2 positionInSubgraph = (-756.7344, 82.72656)
+                        float2 sizeInSubgraph = (122, 53)
+                        int stackingOrderInSubgraph = 17
+                    }
+                }
+            )
+        }
+    }
+}
+

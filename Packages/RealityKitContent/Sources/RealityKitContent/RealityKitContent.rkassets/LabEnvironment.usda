@@ -10,7 +10,7 @@
 
 def Xform "Root"
 {
-    reorder nameChildren = ["SkySphere", "lab", "LabAttachments", "Ahsan_002", "People"]
+    reorder nameChildren = ["SkySphere", "lab", "LabAttachments", "Ahsan_002", "People", "adc_spin", "lab_1"]
     def "SkySphere" (
         active = true
         customData = {
@@ -102,10 +102,102 @@ def Xform "Root"
 
     def "_3D_people_scene" (
         active = true
-        prepend references = @Assets/Lab/People/3D_people_scene.usda@
+        references = @Assets/Lab/People/3D_people_scene.usda@
     )
     {
         float3 xformOp:scale = (1, 1, 1)
+
+        over "peopleRoot"
+        {
+            over "DanAndGabi_003"
+            {
+                reorder nameChildren = ["ADC_spawn", "_materials", "ObjectCapture"]
+                def "ADC_spawn" (
+                    active = true
+                    references = @ADC-spawn.usda@
+                )
+                {
+                    quatf xformOp:orient = (-0.35792115, -0.35792112, 0.60982966, 0.60982996)
+                    float3 xformOp:scale = (0.9999998, 0.9999998, 0.99999994)
+                    float3 xformOp:translate = (-0.09401405, 0.36117482, 1.3349537)
+                }
+            }
+        }
+    }
+
+    def RealityKitTimeline "adc_spin"
+    {
+        def RealityKitTrack "Track"
+        {
+            def RealityKitAction "Spin"
+            {
+                string actionKind = "spin"
+                int blendLayer = 400
+                double duration = 3
+                uniform token info:id = "0B3F945E-40A7-4B54-B78D-5ADCE8931369"
+                float revolutions = 1
+                double startTime = 0
+                rel target = </Root/_3D_people_scene/peopleRoot/DanAndGabi_003/ADC_spawn>
+
+                def RealityKitStruct "timingFunction"
+                {
+                    token type = "linear"
+                }
+            }
+        }
+    }
+
+    def RealityKitTimeline "lab_1"
+    {
+        def RealityKitTrack "Track"
+        {
+            def RealityKitAction "Play_Timeline"
+            {
+                string actionKind = "timeline"
+                int blendLayer = 500
+                double duration = 3
+                uniform token info:id = "E0AA103D-E723-4658-B54A-982FBCD46498"
+                double loopCount = 0
+                double startTime = 0
+                rel timeline = </Root/adc_spin>
+            }
+        }
+    }
+
+    def RealityKitComponent "RCP_BehaviorsContainer"
+    {
+        rel behaviors = </Root/OnAddedToScene>
+        uniform token info:id = "RCP.BehaviorsContainer"
+    }
+
+    def Preliminary_Behavior "OnAddedToScene"
+    {
+        rel actions = </Root/OnAddedToScene/Action>
+        uniform bool exclusive
+        rel triggers = </Root/OnAddedToScene/Trigger>
+
+        def Preliminary_Trigger "Trigger"
+        {
+            rel affectedObjects = </Root>
+            token info:id = "SceneTransition"
+        }
+
+        def Preliminary_Action "Action"
+        {
+            rel affectedObjects = </Root>
+            rel animationLibraryKey = </Root/lab_1>
+            rel animationLibraryKeyOverrideKey = </Root/OnAddedToScene/Trigger>
+            token info:id = "PlayTimeline"
+            int loops = 0
+            int performCount = 1
+            token type = "serial"
+        }
+    }
+
+    def RealityKitComponent "Reverb"
+    {
+        uniform token info:id = "RealityKit.Reverb"
+        token reverbPreset = "LargeRoom"
     }
 }
 

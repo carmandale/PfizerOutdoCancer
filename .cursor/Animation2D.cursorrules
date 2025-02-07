@@ -1,0 +1,41 @@
+
+---
+
+### File: `.cursor/Animation2D.cursorrules`
+
+```markdown
+# 2D Animation for UI Views
+
+Animations in SwiftUI can enhance your UI by providing smooth, natural transitions. Follow Apple’s recommendations to use implicit animations and system-provided timing curves.
+
+### Key Guidelines
+
+- **Animate with Purpose:**  
+  Only animate changes that improve clarity or provide necessary feedback. Avoid gratuitous motion.
+
+- **Use SwiftUI’s Animation API:**  
+  Use the built-in animation modifiers (like `.animation` and `withAnimation`) and prefer system‑provided easing options.
+
+- **Keep Performance in Mind:**  
+  Ensure animations are lightweight and do not trigger expensive layout recalculations.
+
+### Example
+
+The following snippet demonstrates a button that animates its scale when tapped:
+
+```swift
+import SwiftUI
+
+struct AnimatedButton: View {
+    @State private var scale: CGFloat = 1.0
+
+    var body: some View {
+        Button("Tap Me") {
+            withAnimation(.spring(response: 0.3, dampingFraction: 0.5, blendDuration: 0)) {
+                scale = (scale == 1.0 ? 1.2 : 1.0)
+            }
+        }
+        .scaleEffect(scale)
+        .padding()
+    }
+}

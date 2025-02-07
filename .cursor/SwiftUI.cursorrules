@@ -1,0 +1,48 @@
+
+---
+
+### File: `.cursor/SwiftUI.cursorrules`
+
+```markdown
+# SwiftUI Best Practices for visionOS
+
+Design your SwiftUI interfaces for visionOS by balancing familiar 2D layouts with spatial enhancements. Follow Apple’s Human Interface Guidelines to keep content legible and interactions natural.
+
+### Key Guidelines
+
+- **Use Appropriate Scenes:**  
+  Choose the proper scene type (windowed, immersive, or mixed) based on your content. For example, most apps use window scenes, but immersive scenes are available for fully spatial experiences.
+
+- **Prioritize Readability and Comfort:**  
+  Ensure text and controls are within the user’s field of view. Use system materials and adaptive layouts so that windows remain legible at various distances.
+
+- **Integrate SwiftUI and RealityKit:**  
+  When mixing 2D and 3D content, embed RealityKit views within SwiftUI using containers like `RealityView`.
+
+### Example
+
+This example shows a basic SwiftUI view using a NavigationView, a common pattern in Apple’s documentation:
+
+```swift
+import SwiftUI
+
+struct ContentView: View {
+    var body: some View {
+        NavigationView {
+            List(0..<5) { item in
+                NavigationLink(destination: DetailView(item: item)) {
+                    Text("Item \(item)")
+                }
+            }
+            .navigationTitle("Items")
+        }
+    }
+}
+
+struct DetailView: View {
+    let item: Int
+    var body: some View {
+        Text("Detail for Item \(item)")
+            .padding()
+    }
+}

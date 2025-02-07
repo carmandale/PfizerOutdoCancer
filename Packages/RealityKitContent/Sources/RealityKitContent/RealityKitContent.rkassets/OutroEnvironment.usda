@@ -10,7 +10,7 @@
 
 def Xform "Root"
 {
-    reorder nameChildren = ["M_text", "hope_MSR", "Outro", "RCP_BehaviorsContainer", "OnAddedToScene", "Model_Sorting_Group", "ADC_particles", "ADC_particles2", "AudioMixGroups", "change_v02", "Audio"]
+    reorder nameChildren = ["M_text", "hope_MSR", "Outro", "RCP_BehaviorsContainer", "OnAddedToScene", "Model_Sorting_Group", "ADC_particles", "ADC_particles2", "AudioMixGroups", "change_v02", "Audio", "Outro_v02"]
     def Material "M_text"
     {
         token outputs:mtlx:surface.connect = </Root/M_text/PBRSurface.outputs:out>
@@ -27,170 +27,6 @@ def Xform "Root"
             token outputs:out
             float2 ui:nodegraph:node:pos = (87.36719, 19.101562)
             int ui:nodegraph:node:stackingOrder = 5
-        }
-    }
-
-    def Xform "hope_MSR" (
-        active = true
-    )
-    {
-        float3 xformOp:translate = (0, 1.5, -2)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-        def "hope_v01" (
-            active = true
-            prepend apiSchemas = ["MaterialBindingAPI"]
-            customData = {
-                float3 rotationEulerHint = (-1.5707964, 0, 0)
-            }
-            references = @Assets/Outro/hope_v01.usdc@
-        )
-        {
-            reorder nameChildren = ["Text", "HierarchicalFade", "logo_MSR", "change_v01", "sh0200_tagline_v01"]
-            rel material:binding = </Root/M_text> (
-                bindMaterialAs = "weakerThanDescendants"
-            )
-            quatf xformOp:orient = (0.70710677, -0.7071067, 0, 0)
-            float3 xformOp:scale = (0.99999994, 0.99999994, 0.99999994)
-            float3 xformOp:translate = (0, 0, -5)
-            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-            def RealityKitComponent "HierarchicalFade"
-            {
-                uniform token info:id = "RealityKit.HierarchicalFade"
-                float opacity = 1
-            }
-
-            def Xform "logo_MSR" (
-                active = true
-                customData = {
-                    float3 rotationEulerHint = (-3.894297e-15, 0, 0)
-                }
-            )
-            {
-                quatf xformOp:orient = (1, -1.9471485e-15, 0, 0)
-                float3 xformOp:scale = (0.5, 0.5, 0.5)
-                float3 xformOp:translate = (-1.8998985e-7, 4.630145, 0.09293699)
-                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-                def "card" (
-                    active = true
-                    references = @Assets/Intro/card.usdc@
-                )
-                {
-                    float3 xformOp:scale = (1, 1, 1)
-                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-                    over "Plane"
-                    {
-                        over "Plane"
-                        {
-                            def RealityKitComponent "MeshSorting"
-                            {
-                                rel group = </Root/Model_Sorting_Group>
-                                token info:id = "RealityKit.MeshSorting"
-                                int priorityInGroup = 3
-                            }
-                        }
-                    }
-                }
-
-                def RealityKitComponent "HierarchicalFade"
-                {
-                    uniform token info:id = "RealityKit.HierarchicalFade"
-                    float opacity = 1
-                }
-            }
-
-            over "Text" (
-                active = false
-            )
-            {
-                quatf xformOp:orient = (0.7071068, 0.7071067, 0, 0)
-                float3 xformOp:scale = (0.6, 0.6, 0.2)
-                double3 xformOp:translate = (0, 2.7465038299560547, -0.000009655952453613281)
-                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-                def RealityKitComponent "HierarchicalFade"
-                {
-                    uniform token info:id = "RealityKit.HierarchicalFade"
-                    float opacity = 0
-                }
-
-                over "Text"
-                {
-                    def RealityKitComponent "MeshSorting"
-                    {
-                        rel group = </Root/Model_Sorting_Group>
-                        token info:id = "RealityKit.MeshSorting"
-                        int priorityInGroup = 6
-                    }
-                }
-            }
-
-            def "change_v01" (
-                active = true
-                references = @Assets/Outro/change_v01.usdc@
-            )
-            {
-                float3 xformOp:scale = (1.0000002, 0.5, 1.0000002)
-                float3 xformOp:translate = (0, 0, 0.14)
-                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-                def RealityKitComponent "HierarchicalFade"
-                {
-                    uniform token info:id = "RealityKit.HierarchicalFade"
-                    float opacity = 0
-                }
-
-                over "Change"
-                {
-                    over "Text_002"
-                    {
-                        def RealityKitComponent "MeshSorting"
-                        {
-                            rel group = </Root/Model_Sorting_Group>
-                            token info:id = "RealityKit.MeshSorting"
-                            int priorityInGroup = 5
-                        }
-                    }
-                }
-            }
-
-            def "sh0200_tagline_v01" (
-                active = true
-                prepend apiSchemas = ["MaterialBindingAPI"]
-                references = @Assets/Outro/sh0200_tagline_v01.usdc@
-            )
-            {
-                rel material:binding = </Root/M_text> (
-                    bindMaterialAs = "weakerThanDescendants"
-                )
-                float3 xformOp:scale = (1, 0.26171985, 1)
-                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-                def RealityKitComponent "HierarchicalFade"
-                {
-                    uniform token info:id = "RealityKit.HierarchicalFade"
-                    float opacity = 0
-                }
-
-                over "tagline"
-                {
-                    over "tagline_1"
-                    {
-                        over "Text_001"
-                        {
-                            def RealityKitComponent "MeshSorting"
-                            {
-                                rel group = </Root/Model_Sorting_Group>
-                                token info:id = "RealityKit.MeshSorting"
-                                int priorityInGroup = 4
-                            }
-                        }
-                    }
-                }
-            }
         }
     }
 
@@ -550,20 +386,13 @@ def Xform "Root"
         def Preliminary_Action "Action"
         {
             rel affectedObjects = </Root>
-            rel animationLibraryKey = </Root/Outro>
+            rel animationLibraryKey = </Root/Outro_v02>
             rel animationLibraryKeyOverrideKey = </Root/OnAddedToScene/Trigger>
             token info:id = "PlayTimeline"
             int loops = 0
             int performCount = 1
             token type = "serial"
         }
-    }
-
-    def RealityKitMeshSortingGroup "Model_Sorting_Group" (
-        active = false
-    )
-    {
-        token depthPass = "prePass"
     }
 
     def "ADC_particles" (
@@ -578,9 +407,9 @@ def Xform "Root"
         {
             def RealityKitComponent "MeshSorting"
             {
-                rel group = </Root/Model_Sorting_Group>
+                rel group = </Root/Model_Sorting_Group_1>
                 token info:id = "RealityKit.MeshSorting"
-                int priorityInGroup = 0
+                int priorityInGroup = 3
             }
         }
     }
@@ -597,9 +426,9 @@ def Xform "Root"
         {
             def RealityKitComponent "MeshSorting"
             {
-                rel group = </Root/Model_Sorting_Group>
+                rel group = </Root/Model_Sorting_Group_1>
                 token info:id = "RealityKit.MeshSorting"
-                int priorityInGroup = 1
+                int priorityInGroup = 2
             }
         }
     }
@@ -637,395 +466,626 @@ def Xform "Root"
         }
     }
 
-    def "change_v02" (
+    def "outro_v01" (
         active = true
         customData = {
-            float3 rotationEulerHint = (-1.5707964, 0, 0)
+            float3 rotationEulerHint = (-1.5707963, 0, 0)
         }
-        references = @Assets/Outro/change_v03.usdc@
+        references = @Assets/Outro/outro_v01.usdc@
     )
     {
-        quatf xformOp:orient = (0.70710677, -0.70710677, 0, 0)
-        float3 xformOp:scale = (5.856484, 0.5, 5.856484)
-        float3 xformOp:translate = (-0.5079807, -8.698553e-7, -11.545574)
+        reorder nameChildren = ["outro_MSR", "_materials", "env_light", "AnimationLibrary", "HierarchicalFade", "outro_v01_logo"]
+        quatf xformOp:orient = (0.70710677, -0.7071067, 0, 0)
+        float3 xformOp:scale = (100, 100, 100)
+        float3 xformOp:translate = (0, 1.5, -150)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
-        def RealityKitComponent "HierarchicalFade"
+        def RealityKitComponent "AnimationLibrary"
         {
-            uniform token info:id = "RealityKit.HierarchicalFade"
-            float opacity = 1
+            token info:id = "RealityKit.AnimationLibrary"
+
+            def RealityKitAnimationFile "default_subtree_animation"
+            {
+                uniform bool looping = 1
+                uniform string name = "default subtree animation"
+            }
         }
 
-        over "change_MSR"
+        over "outro_MSR"
         {
-            over "Text_006"
+            over "change_MSR" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
             {
-                over "Text_005"
+                rel material:binding = </Root/M_change/M_change> (
+                    bindMaterialAs = "strongerThanDescendants"
+                )
+
+                over "Text_003"
                 {
-                    def RealityKitComponent "MeshSorting"
+                    reorder nameChildren = ["Text_004", "Material_002_1"]
+                    over "Text_004" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
                     {
-                        rel group = </Root/Model_Sorting_Group>
-                        token info:id = "RealityKit.MeshSorting"
-                        int priorityInGroup = 7
-                    }
-                }
-            }
+                        rel material:binding = </Root/change_v02/_materials/Material_002> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
 
-            over "Text_007"
-            {
-                over "Text_006"
-                {
-                    def RealityKitComponent "MeshSorting"
-                    {
-                        rel group = </Root/Model_Sorting_Group>
-                        token info:id = "RealityKit.MeshSorting"
-                        int priorityInGroup = 8
-                    }
-                }
-            }
-
-            over "Text_008"
-            {
-                over "Text_007"
-                {
-                    def RealityKitComponent "MeshSorting"
-                    {
-                        rel group = </Root/Model_Sorting_Group>
-                        token info:id = "RealityKit.MeshSorting"
-                        int priorityInGroup = 9
-                    }
-                }
-            }
-        }
-    }
-
-    def Xform "Audio" (
-        active = true
-    )
-    {
-        def Xform "vo" (
-            active = true
-            customData = {
-                float3 rotationEulerHint = (-1.5707964, 0, 0)
-            }
-        )
-        {
-            reorder nameChildren = ["outro01_mp3", "outro02_mp3", "HierarchicalFade", "AudioLibrary", "SpatialAudio"]
-            quatf xformOp:orient = (4.2490367e-8, 1, 0, 0)
-            float3 xformOp:scale = (0.99999994, 0.99999994, 0.99999994)
-            float3 xformOp:translate = (0, 1.5, -0.5)
-            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-            def RealityKitComponent "HierarchicalFade"
-            {
-                uniform token info:id = "RealityKit.HierarchicalFade"
-            }
-
-            def RealityKitComponent "AudioLibrary"
-            {
-                uniform token info:id = "RealityKit.AudioLibrary"
-
-                def RealityKitDict "resources"
-                {
-                    string[] keys = ["outro01_mp3", "outro02_mp3"]
-                    rel values = [
-                        </Root/Audio/vo/outro01_mp3>,
-                        </Root/Audio/vo/outro02_mp3>,
-                    ]
-                }
-            }
-
-            def RealityKitComponent "SpatialAudio"
-            {
-                float directivityFocus = 0.8837714
-                uniform token info:id = "RealityKit.SpatialAudio"
-            }
-
-            def RealityKitAudioFile "outro01_mp3"
-            {
-                uniform asset file = @Audio/outro/outro01.mp3@
-                rel mixGroup = </Root/AudioMixGroups/VO>
-                uniform bool shouldLoop = 0
-            }
-
-            def RealityKitAudioFile "outro02_mp3"
-            {
-                uniform asset file = @Audio/outro/outro02.mp3@
-                rel mixGroup = </Root/AudioMixGroups/VO>
-                uniform bool shouldLoop = 0
-            }
-        }
-
-        def Xform "Bells_1" (
-            active = true
-            customData = {
-                float3 rotationEulerHint = (0, 3.1415927, 0)
-            }
-        )
-        {
-            reorder nameChildren = ["Bells_1_wav", "Bells_2_wav", "AudioLibrary", "SpatialAudio", "Billboard"]
-            quatf xformOp:orient = (-4.371139e-8, 0, 1, 0)
-            float3 xformOp:scale = (1, 1, 1)
-            float3 xformOp:translate = (1, 2, 0)
-            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-            def RealityKitComponent "AudioLibrary"
-            {
-                uniform token info:id = "RealityKit.AudioLibrary"
-
-                def RealityKitDict "resources"
-                {
-                    string[] keys = ["Bells_1_wav"]
-                    rel values = </Root/Audio/Bells_1/Bells_1_wav>
-                }
-            }
-
-            def RealityKitComponent "SpatialAudio"
-            {
-                float directivityFocus = 1
-                uniform token info:id = "RealityKit.SpatialAudio"
-            }
-
-            def RealityKitComponent "Billboard"
-            {
-                float blendFactor = 1
-                uniform token info:id = "RealityKit.Billboard"
-            }
-
-            def RealityKitAudioFile "Bells_1_wav"
-            {
-                uniform asset file = @Audio/outro/Bells_1.wav@
-                rel mixGroup = </Root/AudioMixGroups/Bells>
-                uniform bool shouldLoop = 0
-            }
-        }
-
-        def Xform "Bells_2" (
-            active = true
-            customData = {
-                float3 rotationEulerHint = (0, 3.1415927, 0)
-            }
-        )
-        {
-            reorder nameChildren = ["Bells_1_wav", "Bells_2_wav", "AudioLibrary", "SpatialAudio", "Billboard", "Bells_2_wav_1"]
-            float2 ui:nodegraph:node:pos = (20, 20)
-            int ui:nodegraph:node:stackingOrder = 1
-            quatf xformOp:orient = (-4.371139e-8, 0, 1, 0)
-            float3 xformOp:scale = (1, 1, 1)
-            float3 xformOp:translate = (-1, 2, 0)
-            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-            def RealityKitComponent "AudioLibrary"
-            {
-                uniform token info:id = "RealityKit.AudioLibrary"
-
-                def RealityKitDict "resources"
-                {
-                    string[] keys = ["Bells_2_wav"]
-                    rel values = </Root/Audio/Bells_2/Bells_2_wav>
-                }
-            }
-
-            def RealityKitComponent "SpatialAudio"
-            {
-                float directivityFocus = 1
-                uniform token info:id = "RealityKit.SpatialAudio"
-            }
-
-            def RealityKitComponent "Billboard"
-            {
-                float blendFactor = 1
-                uniform token info:id = "RealityKit.Billboard"
-            }
-
-            def RealityKitAudioFile "Bells_2_wav"
-            {
-                uniform asset file = @Audio/outro/Bells_2.wav@
-                rel mixGroup = </Root/AudioMixGroups/Bells>
-                uniform bool shouldLoop = 0
-            }
-        }
-
-        def Xform "Chimes_1" (
-            active = true
-        )
-        {
-            reorder nameChildren = ["Chimes_1_wav", "Chimes_2_wav"]
-            quatf xformOp:orient = (1, 0, 0, 0)
-            float3 xformOp:scale = (1, 1, 1)
-            float3 xformOp:translate = (-1, 0, 0)
-            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-            def RealityKitAudioFile "Chimes_1_wav"
-            {
-                uniform asset file = @Audio/outro/Chimes_1.wav@
-                rel mixGroup = </Root/AudioMixGroups/Chimes>
-                uniform bool shouldLoop = 0
-            }
-
-            def RealityKitComponent "AudioLibrary"
-            {
-                uniform token info:id = "RealityKit.AudioLibrary"
-
-                def RealityKitDict "resources"
-                {
-                    string[] keys = ["Chimes_1_wav"]
-                    rel values = </Root/Audio/Chimes_1/Chimes_1_wav>
-                }
-            }
-
-            def RealityKitComponent "SpatialAudio"
-            {
-                float directivityFocus = 1
-                uniform token info:id = "RealityKit.SpatialAudio"
-            }
-        }
-
-        def Xform "Chimes_2" (
-            active = true
-        )
-        {
-            reorder nameChildren = ["Chimes_1_wav", "Chimes_2_wav"]
-            float2 ui:nodegraph:node:pos = (20, 20)
-            int ui:nodegraph:node:stackingOrder = 1
-            quatf xformOp:orient = (1, 0, 0, 0)
-            float3 xformOp:scale = (1, 1, 1)
-            float3 xformOp:translate = (1, 0, 0)
-            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-            def RealityKitAudioFile "Chimes_2_wav"
-            {
-                uniform asset file = @Audio/outro/Chimes_2.wav@
-                rel mixGroup = </Root/AudioMixGroups/Chimes>
-                uniform bool shouldLoop = 0
-            }
-
-            def RealityKitComponent "SpatialAudio"
-            {
-                uniform token info:id = "RealityKit.SpatialAudio"
-            }
-
-            def RealityKitComponent "AudioLibrary"
-            {
-                uniform token info:id = "RealityKit.AudioLibrary"
-
-                def RealityKitDict "resources"
-                {
-                    string[] keys = ["Chimes_2_wav"]
-                    rel values = </Root/Audio/Chimes_2/Chimes_2_wav>
-                }
-            }
-        }
-
-        def Xform "Piano_1" (
-            active = true
-        )
-        {
-            reorder nameChildren = ["Piano_wav", "SpatialAudio", "AudioLibrary"]
-            float2 ui:nodegraph:node:pos = (40, 40)
-            int ui:nodegraph:node:stackingOrder = 2
-            quatf xformOp:orient = (1, 0, 0, 0)
-            float3 xformOp:scale = (1, 1, 1)
-            float3 xformOp:translate = (0, 0.5, -0.5)
-            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-            def RealityKitComponent "SpatialAudio"
-            {
-                uniform token info:id = "RealityKit.SpatialAudio"
-            }
-
-            def RealityKitComponent "AudioLibrary"
-            {
-                uniform token info:id = "RealityKit.AudioLibrary"
-
-                def RealityKitDict "resources"
-                {
-                    string[] keys = ["Piano_wav"]
-                    rel values = </Root/Audio/Piano_1/Piano_wav>
-                }
-            }
-
-            def RealityKitAudioFile "Piano_wav"
-            {
-                uniform asset file = @Audio/outro/Piano.wav@
-                rel mixGroup = </Root/AudioMixGroups/Piano>
-                uniform bool shouldLoop = 0
-            }
-        }
-    }
-}
-
-def Xform "Transform" (
-    active = false
-)
-{
-    quatf xformOp:orient = (1, 0, 0, 0)
-    float3 xformOp:translate = (0, 1.5, 0)
-    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-    def "IntroWarp" (
-        active = true
-        references = @IntroWarp.usda@
-    )
-    {
-        reorder nameChildren = ["sh0100_v01_portalWarp2", "M_jet", "sh0100_v01_portalWarp3", "Transform"]
-        quatf xformOp:orient = (1, 0, 0, 0)
-        float3 xformOp:scale = (1, 1, 1.240308)
-        float3 xformOp:translate = (0, 0.2, 437.86847)
-
-        over "sh0100_v01_portalWarp2"
-        {
-            over "PortalWarp_MSR"
-            {
-                over "PortalWarp2_endCap"
-                {
-                    over "Cylinder_002"
-                    {
                         def RealityKitComponent "MeshSorting"
                         {
-                            rel group = </Root/Model_Sorting_Group>
+                            rel group = </Root/Model_Sorting_Group_1>
                             token info:id = "RealityKit.MeshSorting"
                             int priorityInGroup = 0
                         }
                     }
+
+                    def "Material_002_1" (
+                        active = true
+                        instanceable = true
+                        references = </Root/change_v02/_materials/Material_002>
+                    )
+                    {
+                    }
+                }
+            }
+
+            over "logo_MSR"
+            {
+                over "logo"
+                {
                 }
 
-                over "PortalWarp2"
+                over "logo_offset"
                 {
-                    over "Cylinder"
+                    over "Pfizer_Logo_White_RGB"
                     {
-                        def RealityKitComponent "MeshSorting"
+                        over "Pfizer_Logo_White_RGB"
                         {
-                            rel group = </Root/Model_Sorting_Group>
-                            token info:id = "RealityKit.MeshSorting"
-                            int priorityInGroup = 1
+                            def RealityKitComponent "MeshSorting"
+                            {
+                                rel group = </Root/Model_Sorting_Group_1>
+                                token info:id = "RealityKit.MeshSorting"
+                                int priorityInGroup = 22
+                            }
                         }
                     }
                 }
             }
         }
 
-        over "sh0100_v01_portalWarp3" (
-            customData = {
-                float3 rotationEulerHint = (-1.5707964, 0, 0)
-            }
-        )
+        over "PicturesRoot"
         {
-            quatf xformOp:orient = (0.70710677, -0.70710677, 0, 0)
-            float3 xformOp:scale = (3.075441, 3.075441, 3.075441)
-            float3 xformOp:translate = (0, 1.4999999, 1.7763568e-15)
-
-            over "PortalWarp3"
+            over "outro"
             {
-                over "portalMesh"
+                over "People_MSR"
                 {
-                    def RealityKitComponent "MeshSorting"
+                    over "p1"
                     {
-                        rel group = </Root/Model_Sorting_Group>
-                        token info:id = "RealityKit.MeshSorting"
-                        int priorityInGroup = 2
+                        over "p1_mesh"
+                        {
+                            over "Plane_003" (
+                                prepend apiSchemas = ["MaterialBindingAPI"]
+                            )
+                            {
+                                rel material:binding = </Root/M_spatial_picture/M_Spatial> (
+                                    bindMaterialAs = "weakerThanDescendants"
+                                )
+                            }
+                        }
                     }
                 }
+            }
+        }
+
+        over "portalMesh" (
+            active = false
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </Root/M_jet/M_jet/JetMaterial> (
+                bindMaterialAs = "strongerThanDescendants"
+            )
+        }
+
+        over "_materials"
+        {
+            over "Pfizer_Logo_White_RGB"
+            {
+                token outputs:mtlx:surface.connect = </Root/outro_v01/_materials/Pfizer_Logo_White_RGB/UnlitSurface.outputs:out>
+                token outputs:realitykit:vertex
+                token outputs:surface.connect = </Root/outro_v01/_materials/Pfizer_Logo_White_RGB/Principled_BSDF.outputs:surface>
+                float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (0, 110.5)
+
+                over "Principled_BSDF" (
+                    active = false
+                )
+                {
+                }
+
+                def Shader "UnlitSurface"
+                {
+                    uniform token info:id = "ND_realitykit_unlit_surfaceshader"
+                    bool inputs:applyPostProcessToneMap
+                    color3f inputs:color.connect = </Root/outro_v01/_materials/Pfizer_Logo_White_RGB/Combine3.outputs:out>
+                    bool inputs:hasPremultipliedAlpha
+                    float inputs:opacity.connect = </Root/outro_v01/_materials/Pfizer_Logo_White_RGB/Separate4.outputs:outa>
+                    float inputs:opacityThreshold
+                    token outputs:out
+                    float2 ui:nodegraph:node:pos = (-275.5547, 85.85156)
+                    int ui:nodegraph:node:stackingOrder = 3
+                }
+
+                def Shader "Separate4"
+                {
+                    uniform token info:id = "ND_separate4_color4"
+                    color4f inputs:in.connect = </Root/outro_v01/_materials/Pfizer_Logo_White_RGB/Image.outputs:out>
+                    float outputs:outa
+                    float outputs:outb
+                    float outputs:outg
+                    float outputs:outr
+                    float2 ui:nodegraph:node:pos = (-1003.33203, 31.207031)
+                    int ui:nodegraph:node:stackingOrder = 33
+                }
+
+                def Shader "Image"
+                {
+                    uniform token info:id = "ND_image_color4"
+                    asset inputs:file = @Assets/Outro/textures/Pfizer_Logo_White_RGB.png@
+                    string inputs:filtertype
+                    string inputs:vaddressmode
+                    color4f outputs:out
+                    float2 ui:nodegraph:node:pos = (-1226.6562, -8.5625)
+                    int ui:nodegraph:node:stackingOrder = 33
+                }
+
+                def Shader "Combine3"
+                {
+                    uniform token info:id = "ND_combine3_color3"
+                    float inputs:in1.connect = </Root/outro_v01/_materials/Pfizer_Logo_White_RGB/Separate4.outputs:outr>
+                    float inputs:in2.connect = </Root/outro_v01/_materials/Pfizer_Logo_White_RGB/Separate4.outputs:outg>
+                    float inputs:in3.connect = </Root/outro_v01/_materials/Pfizer_Logo_White_RGB/Separate4.outputs:outb>
+                    color3f outputs:out
+                    float2 ui:nodegraph:node:pos = (-809.53906, -34.48828)
+                    int ui:nodegraph:node:stackingOrder = 34
+                }
+            }
+        }
+
+        def RealityKitComponent "HierarchicalFade"
+        {
+            uniform token info:id = "RealityKit.HierarchicalFade"
+        }
+
+        over "logo_MSR"
+        {
+            over "logo_offset"
+            {
+                over "Pfizer_Logo_White_RGB"
+                {
+                    over "Pfizer_Logo_White_RGB"
+                    {
+                        def RealityKitComponent "MeshSorting"
+                        {
+                            rel group = </Root/Model_Sorting_Group_1>
+                            token info:id = "RealityKit.MeshSorting"
+                            int priorityInGroup = 22
+                        }
+                    }
+                }
+
+                over "tagline" (
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                )
+                {
+                    rel material:binding = </Root/M_tagline/M_tagline> (
+                        bindMaterialAs = "strongerThanDescendants"
+                    )
+
+                    over "Text_001"
+                    {
+                        def RealityKitComponent "MeshSorting"
+                        {
+                            rel group = </Root/Model_Sorting_Group_1>
+                            token info:id = "RealityKit.MeshSorting"
+                            int priorityInGroup = 23
+                        }
+                    }
+
+                    def RealityKitComponent "HierarchicalFade"
+                    {
+                        uniform token info:id = "RealityKit.HierarchicalFade"
+                        float opacity = 0
+                    }
+                }
+            }
+        }
+    }
+
+    def RealityKitTimeline "Outro_v02"
+    {
+        reorder nameChildren = ["Track", "Track2", "Track3", "Track4", "Track5", "Track6", "Track7", "Track8"]
+        def RealityKitTrack "Track"
+        {
+            def RealityKitAction "Animation"
+            {
+                string actionKind = "animation"
+                string animation = "default subtree animation"
+                int blendLayer = 500
+                double duration = 52.41666793823242
+                uniform token info:id = "BE8C9804-F17A-48D4-9A38-DC6215DA05AB"
+                bool separateAnimatedValue = 1
+                double startTime = 0
+                rel target = </Root/outro_v01>
+
+                def RealityKitStruct "handoffType"
+                {
+                }
+            }
+        }
+
+        def RealityKitTrack "Track2"
+        {
+            def RealityKitAction "Play_Audio"
+            {
+                string actionKind = "audio"
+                string audioResourceName = "OutroMusic_wav"
+                bool controlPlayback = 1
+                double duration = 52.427375
+                uniform token info:id = "D316FF4A-A7E2-448C-90C2-F30E7B429119"
+                double startTime = 0
+                rel target = </Root/AmbientAudio>
+
+                def RealityKitStruct "handoffType"
+                {
+                }
+            }
+        }
+
+        def RealityKitTrack "Track3"
+        {
+            reorder nameChildren = ["Disable_Entity", "Enable_Entity", "Enable_Entity2"]
+            def RealityKitAction "Disable_Entity"
+            {
+                string actionKind = "disable"
+                uniform token info:id = "ED7C3300-BCF0-47E1-83DE-72117B58ED14"
+                double startTime = 0
+                rel target = </Root/ADC_particles2>
+                float2 ui:nodegraph:node:pos = (20, 20)
+                int ui:nodegraph:node:stackingOrder = 1
+            }
+
+            def RealityKitAction "Enable_Entity"
+            {
+                string actionKind = "enable"
+                double duration = 0
+                uniform token info:id = "3129523B-A3EF-41FA-AB14-5CCE95698E64"
+                double startTime = 1.459591954574795
+                rel target = </Root/ADC_particles2>
+                float2 ui:nodegraph:node:pos = (20, 20)
+                int ui:nodegraph:node:stackingOrder = 1
+            }
+        }
+
+        def RealityKitTrack "Track4"
+        {
+            def RealityKitAction "Animation"
+            {
+                string actionKind = "animation"
+                string animation = "default subtree animation"
+                int blendLayer = 500
+                double duration = 52.41666793823242
+                uniform token info:id = "0259A874-D85D-447F-9336-7CBE283E485F"
+                bool separateAnimatedValue = 1
+                double startTime = 0
+                rel target = </Root/outro_people_v01>
+
+                def RealityKitStruct "handoffType"
+                {
+                }
+            }
+        }
+
+        def RealityKitTrack "Track5"
+        {
+            def RealityKitAction "Hide"
+            {
+                string actionKind = "hide"
+                int blendLayer = 300
+                double duration = 3
+                uniform token info:id = "79593AF8-A257-45DA-8374-DE252BDC9008"
+                double startTime = 46.82799594380535
+                rel target = </Root/outro_v01>
+
+                def RealityKitStruct "timingFunction"
+                {
+                }
+            }
+        }
+
+        def RealityKitTrack "Track6"
+        {
+            def RealityKitAction "Hide"
+            {
+                string actionKind = "hide"
+                int blendLayer = 300
+                double duration = 3
+                uniform token info:id = "3B5ED926-6EFE-4C1F-BBC0-ED028E4F9744"
+                double startTime = 47.00933815591165
+                rel target = </Root/IntroWarp>
+
+                def RealityKitStruct "timingFunction"
+                {
+                }
+            }
+        }
+
+        def RealityKitTrack "Track7"
+        {
+            def RealityKitAction "Enable_Entity2"
+            {
+                string actionKind = "enable"
+                double duration = 0
+                uniform token info:id = "09F9F3A1-F9CC-423D-A61C-677D541D03FF"
+                double startTime = 24.03923092627337
+                rel target = </Root/ADC_particles>
+            }
+
+            def RealityKitAction "Disable_Entity"
+            {
+                string actionKind = "disable"
+                double duration = 0
+                uniform token info:id = "877F4825-D666-4BAB-A839-93BAF558F9B1"
+                double startTime = 0
+                rel target = </Root/ADC_particles>
+            }
+        }
+
+        def RealityKitTrack "Track8"
+        {
+            def RealityKitAction "Show"
+            {
+                string actionKind = "show"
+                int blendLayer = 300
+                double duration = 2
+                uniform token info:id = "9CB71277-CF33-405F-ADF4-B924DDCE8B0D"
+                double startTime = 35.57354075418307
+                rel target = </Root/outro_v01/logo_MSR/logo_offset/tagline>
+
+                def RealityKitStruct "timingFunction"
+                {
+                }
+            }
+        }
+    }
+
+    def RealityKitAudioFile "OutroMusic_wav"
+    {
+        uniform asset file = @Audio/outro/OutroMusic.wav@
+        uniform bool shouldLoop = 0
+    }
+
+    def Xform "AmbientAudio"
+    {
+        def RealityKitComponent "AmbientAudio"
+        {
+            uniform token info:id = "RealityKit.AmbientAudio"
+        }
+
+        def RealityKitComponent "AudioLibrary"
+        {
+            uniform token info:id = "RealityKit.AudioLibrary"
+
+            def RealityKitDict "resources"
+            {
+                string[] keys = ["OutroMusic_wav"]
+                rel values = </Root/OutroMusic_wav>
+            }
+        }
+    }
+
+    def "M_spatial_picture" (
+        active = true
+        references = @Materials/M_spatial_picture.usda@
+    )
+    {
+        reorder nameChildren = ["M_Spatial", "M_Spatial_p1_002", "M_Spatial_p1_003", "M_Spatial_p1_004", "M_Spatial_p1_005", "M_Spatial_p1_006", "M_Spatial_p1_007", "M_Spatial_p1_008", "M_Spatial_p1_009", "M_Spatial_p1_010", "M_Spatial_p1_011", "M_Spatial_p1_012", "M_Spatial_p1_013", "M_Spatial_p1_014", "M_Spatial_p1_015", "M_Spatial_p1_016", "M_Spatial_p1_017", "M_Spatial_p1_018"]
+        float3 xformOp:scale = (1, 1, 1)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "M_Spatial"
+        {
+            asset inputs:Left = @Assets/Intro/textures/F2_001_Woman40s_v02_L.png@
+            asset inputs:Right = @Assets/Intro/textures/F2_001_Woman40s_v02_R.png@
+        }
+
+        def "M_Spatial_p1_002" (
+            active = true
+            instanceable = true
+            references = </Root/M_spatial_picture/M_Spatial>
+        )
+        {
+            asset inputs:Left = @Assets/Intro/textures/CP_11_middleAge_AsianWoman_v01 copy_L.png@
+            asset inputs:Right = @Assets/Intro/textures/CP_11_middleAge_AsianWoman_v01 copy_R.png@
+        }
+
+        def "M_Spatial_p1_003" (
+            active = true
+            instanceable = true
+            references = </Root/M_spatial_picture/M_Spatial>
+        )
+        {
+            asset inputs:Left = @Assets/Intro/textures/F2_002_AfricanAmerican_Man_v01_L.png@
+            asset inputs:Right = @Assets/Intro/textures/F2_002_AfricanAmerican_Man_v01_R.png@
+        }
+
+        def "M_Spatial_p1_004" (
+            active = true
+            instanceable = true
+            references = </Root/M_spatial_picture/M_Spatial>
+        )
+        {
+            asset inputs:Left = @Assets/Intro/textures/F2_004_YoungMan_v02_L.png@
+            asset inputs:Right = @Assets/Intro/textures/F2_004_YoungMan_v02_R.png@
+        }
+
+        def "M_Spatial_p1_005" (
+            active = true
+            instanceable = true
+            references = </Root/M_spatial_picture/M_Spatial>
+        )
+        {
+            asset inputs:Left = @Assets/Intro/textures/F2_005_ElderlyWoman_v02_L.png@
+            asset inputs:Right = @Assets/Intro/textures/F2_005_ElderlyWoman_v02_R.png@
+        }
+
+        def "M_Spatial_p1_006" (
+            active = true
+            instanceable = true
+            references = </Root/M_spatial_picture/M_Spatial>
+        )
+        {
+            asset inputs:Left = @Assets/Intro/textures/F2_007_ElderlyMan_v02_L.png@
+            asset inputs:Right = @Assets/Intro/textures/F2_007_ElderlyMan_v02_R.png@
+        }
+
+        def "M_Spatial_p1_007" (
+            active = true
+            instanceable = true
+            references = </Root/M_spatial_picture/M_Spatial>
+        )
+        {
+            asset inputs:Left = @Assets/Intro/textures/F2_008_middleAgeMan_v02_L.png@
+            asset inputs:Right = @Assets/Intro/textures/F2_008_middleAgeMan_v02_R.png@
+        }
+
+        def "M_Spatial_p1_008" (
+            active = true
+            instanceable = true
+            references = </Root/M_spatial_picture/M_Spatial>
+        )
+        {
+            asset inputs:Left = @Assets/Intro/textures/F2_009_olderWoman_v02_L.png@
+            asset inputs:Right = @Assets/Intro/textures/F2_009_olderWoman_v02_R.png@
+        }
+
+        def "M_Spatial_p1_009" (
+            active = true
+            instanceable = true
+            references = </Root/M_spatial_picture/M_Spatial>
+        )
+        {
+            asset inputs:Left = @Assets/Intro/textures/F2_010_AsianElderlyMan_v02_L.png@
+            asset inputs:Right = @Assets/Intro/textures/F2_010_AsianElderlyMan_v02_R.png@
+        }
+
+        def "M_Spatial_p1_010" (
+            active = true
+            instanceable = true
+            references = </Root/M_spatial_picture/M_Spatial>
+        )
+        {
+            asset inputs:Left = @Assets/Intro/textures/F2_011_IndianElderlyWoman_v01_L.png@
+            asset inputs:Right = @Assets/Intro/textures/F2_011_IndianElderlyWoman_v01_R.png@
+        }
+
+        def "M_Spatial_p1_011" (
+            active = true
+            instanceable = true
+            references = </Root/M_spatial_picture/M_Spatial>
+        )
+        {
+            asset inputs:Left = @Assets/Intro/textures/F2_012_AfricanAmerican_Woman_v01_L.png@
+            asset inputs:Right = @Assets/Intro/textures/F2_012_AfricanAmerican_Woman_v01_R.png@
+        }
+
+        def "M_Spatial_p1_012" (
+            active = true
+            instanceable = true
+            references = </Root/M_spatial_picture/M_Spatial>
+        )
+        {
+            asset inputs:Left = @Assets/Intro/textures/F2_013_AsianTeenager_v02_L.png@
+            asset inputs:Right = @Assets/Intro/textures/F2_013_AsianTeenager_v02_R.png@
+        }
+
+        def "M_Spatial_p1_013" (
+            active = true
+            instanceable = true
+            references = </Root/M_spatial_picture/M_Spatial>
+        )
+        {
+            asset inputs:Left = @Assets/Intro/textures/CP_06_AsianWoman_v01 copy_L.png@
+            asset inputs:Right = @Assets/Intro/textures/CP_06_AsianWoman_v01 copy_R.png@
+        }
+
+        def "M_Spatial_p1_014" (
+            active = true
+            instanceable = true
+            references = </Root/M_spatial_picture/M_Spatial>
+        )
+        {
+            asset inputs:Left = @Assets/Intro/textures/F2_008_middleAgeMan_v02_L.png@
+            asset inputs:Right = @Assets/Intro/textures/F2_008_middleAgeMan_v02_R.png@
+        }
+
+        def "M_Spatial_p1_015" (
+            active = true
+            instanceable = true
+            references = </Root/M_spatial_picture/M_Spatial>
+        )
+        {
+            asset inputs:Left = @Assets/Intro/textures/F2_004_YoungMan_v02_L.png@
+            asset inputs:Right = @Assets/Intro/textures/F2_004_YoungMan_v02_R.png@
+        }
+
+        def "M_Spatial_p1_016" (
+            active = true
+            instanceable = true
+            references = </Root/M_spatial_picture/M_Spatial>
+        )
+        {
+            asset inputs:Left = @Assets/Intro/textures/F2_002_AfricanAmerican_Man_v01_L.png@
+            asset inputs:Right = @Assets/Intro/textures/F2_002_AfricanAmerican_Man_v01_R.png@
+        }
+
+        def "M_Spatial_p1_017" (
+            active = true
+            instanceable = true
+            references = </Root/M_spatial_picture/M_Spatial>
+        )
+        {
+            asset inputs:Left = @Assets/Intro/textures/F2_005_ElderlyWoman_v02_L.png@
+            asset inputs:Right = @Assets/Intro/textures/F2_005_ElderlyWoman_v02_R.png@
+        }
+
+        def "M_Spatial_p1_018" (
+            active = true
+            instanceable = true
+            references = </Root/M_spatial_picture/M_Spatial>
+        )
+        {
+            asset inputs:Left = @Assets/Intro/textures/CP_06_AsianWoman_v01 copy_L.png@
+            asset inputs:Right = @Assets/Intro/textures/CP_06_AsianWoman_v01 copy_R.png@
+        }
+    }
+
+    def "M_jet" (
+        active = true
+        references = @Materials/M_portal.usda@
+    )
+    {
+        float3 xformOp:scale = (1, 1, 1)
+
+        over "JetMaterial"
+        {
+            token cullMode = "front" (
+                allowedTokens = ["unspecified", "none", "front", "back"]
+            )
+
+            over "jetNodeGraph"
+            {
+                int ui:nodegraph:node:stackingOrder = 15
             }
         }
 
@@ -1033,42 +1093,589 @@ def Xform "Transform" (
         {
             over "JetMaterial"
             {
-                float inputs:TunnelMapAmount = 0.8
+                float inputs:Speed (
+                    customData = {
+                        dictionary realitykit = {
+                            float2 positionInSubgraph = (-654.4165, 115.13815)
+                            int stackingOrderInSubgraph = 35
+                        }
+                    }
+                )
+                float inputs:TunnelMapAmount (
+                    customData = {
+                        dictionary realitykit = {
+                            float2 positionInSubgraph = (-998.78516, 36.195312)
+                            float2 sizeInSubgraph = (122, 53)
+                            int stackingOrderInSubgraph = 33
+                        }
+                    }
+                )
+                float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (244.58984, 21.730469)
+                int ui:nodegraph:realitykit:subgraphOutputs:stackingOrder = 27
 
                 over "jetNodeGraph"
                 {
-                    float inputs:Remap_inlow (
-                        customData = {
-                            dictionary realitykit = {
-                                float2 positionInSubgraph = (587.7347, 154.89322)
-                                int stackingOrderInSubgraph = 2329
-                            }
-                        }
-                    )
+                    float2 ui:nodegraph:node:pos = (-314.23914, 0.57854605)
+                    int ui:nodegraph:node:stackingOrder = 39
 
-                    over "Range_1"
+                    over "UnlitSurface"
                     {
-                        float inputs:gamma = 0.29
+                        float2 ui:nodegraph:node:pos = (3288.0261, 178.21155)
                         int ui:nodegraph:node:stackingOrder = 2326
                     }
 
-                    over "Range"
+                    over "Texcoord"
                     {
-                        int ui:nodegraph:node:stackingOrder = 2325
+                        int inputs:index = 0
+                        float2 ui:nodegraph:node:pos = (283.76953, -12.003906)
+                        int ui:nodegraph:node:stackingOrder = 2395
+                    }
+
+                    over "Time"
+                    {
+                        float2 ui:nodegraph:node:pos = (-208.89453, 507.9336)
+                        int ui:nodegraph:node:stackingOrder = 2391
+                    }
+
+                    over "Multiply"
+                    {
+                        float2 ui:nodegraph:node:pos = (128.60547, 508.9336)
+                        int ui:nodegraph:node:stackingOrder = 2391
+                    }
+
+                    over "Position"
+                    {
+                        float2 ui:nodegraph:node:pos = (-208.89453, 399.4336)
+                        int ui:nodegraph:node:stackingOrder = 2391
+                    }
+
+                    over "Add_1"
+                    {
+                        float2 ui:nodegraph:node:pos = (-51.39453, 508.9336)
+                        int ui:nodegraph:node:stackingOrder = 2391
                     }
 
                     over "Noise3D"
                     {
-                        int ui:nodegraph:node:stackingOrder = 2327
+                        float inputs:pivot = 0
+                        int ui:nodegraph:node:stackingOrder = 2393
                     }
+                }
 
-                    over "Flicker_Intensity"
+                over "Divide"
+                {
+                    float2 ui:nodegraph:node:pos = (-664.96875, -81.55078)
+                    int ui:nodegraph:node:stackingOrder = 29
+                }
+            }
+        }
+    }
+
+    def "IntroWarp" (
+        active = true
+        references = @IntroWarp.usda@
+    )
+    {
+        float3 xformOp:scale = (1, 1, 1)
+
+        over "sh0100_v01_portalWarp3"
+        {
+            over "PortalWarp3"
+            {
+                over "portalMesh"
+                {
+                    def RealityKitComponent "MeshSorting"
                     {
-                        int ui:nodegraph:node:stackingOrder = 2328
+                        rel group = </Root/Model_Sorting_Group_1>
+                        token info:id = "RealityKit.MeshSorting"
+                        int priorityInGroup = 1
                     }
                 }
             }
         }
+
+        def RealityKitComponent "HierarchicalFade"
+        {
+            uniform token info:id = "RealityKit.HierarchicalFade"
+        }
+    }
+
+    def "outro_people_v01" (
+        active = true
+        customData = {
+            float3 rotationEulerHint = (-1.5707964, 0, 0)
+        }
+        references = @Assets/Outro/outro_people_v01.usdc@
+    )
+    {
+        quatf xformOp:orient = (0.70710677, -0.70710677, 0, 0)
+        float3 xformOp:scale = (1, 1, 1)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "AnimationLibrary"
+        {
+            token info:id = "RealityKit.AnimationLibrary"
+
+            def RealityKitAnimationFile "default_subtree_animation"
+            {
+                uniform bool looping = 1
+                uniform string name = "default subtree animation"
+            }
+        }
+
+        over "PicturesRoot"
+        {
+            over "outro"
+            {
+                over "People_MSR"
+                {
+                    over "group_003"
+                    {
+                        over "p1_013" (
+                            prepend apiSchemas = ["MaterialBindingAPI"]
+                        )
+                        {
+                            rel material:binding = </Root/M_spatial_picture/M_Spatial_p1_013> (
+                                bindMaterialAs = "strongerThanDescendants"
+                            )
+
+                            over "p1_mesh_013"
+                            {
+                                over "Plane_003_019"
+                                {
+                                    def RealityKitComponent "MeshSorting"
+                                    {
+                                        rel group = </Root/Model_Sorting_Group_1>
+                                        token info:id = "RealityKit.MeshSorting"
+                                        int priorityInGroup = 9
+                                    }
+                                }
+                            }
+                        }
+
+                        over "p1_014" (
+                            prepend apiSchemas = ["MaterialBindingAPI"]
+                        )
+                        {
+                            rel material:binding = </Root/M_spatial_picture/M_Spatial_p1_014> (
+                                bindMaterialAs = "strongerThanDescendants"
+                            )
+
+                            over "p1_mesh_014"
+                            {
+                                over "Plane_003_020"
+                                {
+                                    def RealityKitComponent "MeshSorting"
+                                    {
+                                        rel group = </Root/Model_Sorting_Group_1>
+                                        token info:id = "RealityKit.MeshSorting"
+                                        int priorityInGroup = 8
+                                    }
+                                }
+                            }
+                        }
+
+                        over "p1_018" (
+                            prepend apiSchemas = ["MaterialBindingAPI"]
+                        )
+                        {
+                            rel material:binding = </Root/M_spatial_picture/M_Spatial_p1_018> (
+                                bindMaterialAs = "strongerThanDescendants"
+                            )
+
+                            over "p1_mesh_018"
+                            {
+                                over "Plane_003_024"
+                                {
+                                    def RealityKitComponent "MeshSorting"
+                                    {
+                                        rel group = </Root/Model_Sorting_Group_1>
+                                        token info:id = "RealityKit.MeshSorting"
+                                        int priorityInGroup = 4
+                                    }
+                                }
+                            }
+                        }
+
+                        over "p1_015" (
+                            prepend apiSchemas = ["MaterialBindingAPI"]
+                        )
+                        {
+                            rel material:binding = </Root/M_spatial_picture/M_Spatial_p1_015> (
+                                bindMaterialAs = "strongerThanDescendants"
+                            )
+
+                            over "p1_mesh_015"
+                            {
+                                over "Plane_003_021"
+                                {
+                                    def RealityKitComponent "MeshSorting"
+                                    {
+                                        rel group = </Root/Model_Sorting_Group_1>
+                                        token info:id = "RealityKit.MeshSorting"
+                                        int priorityInGroup = 7
+                                    }
+                                }
+                            }
+                        }
+
+                        over "p1_016" (
+                            prepend apiSchemas = ["MaterialBindingAPI"]
+                        )
+                        {
+                            rel material:binding = </Root/M_spatial_picture/M_Spatial_p1_016> (
+                                bindMaterialAs = "strongerThanDescendants"
+                            )
+
+                            over "p1_mesh_016"
+                            {
+                                over "Plane_003_022"
+                                {
+                                    def RealityKitComponent "MeshSorting"
+                                    {
+                                        rel group = </Root/Model_Sorting_Group_1>
+                                        token info:id = "RealityKit.MeshSorting"
+                                        int priorityInGroup = 6
+                                    }
+                                }
+                            }
+                        }
+
+                        over "p1_017" (
+                            prepend apiSchemas = ["MaterialBindingAPI"]
+                        )
+                        {
+                            rel material:binding = </Root/M_spatial_picture/M_Spatial_p1_017> (
+                                bindMaterialAs = "strongerThanDescendants"
+                            )
+
+                            over "p1_mesh_017"
+                            {
+                                over "Plane_003_023"
+                                {
+                                    def RealityKitComponent "MeshSorting"
+                                    {
+                                        rel group = </Root/Model_Sorting_Group_1>
+                                        token info:id = "RealityKit.MeshSorting"
+                                        int priorityInGroup = 5
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    over "group_001"
+                    {
+                        over "p1_006" (
+                            prepend apiSchemas = ["MaterialBindingAPI"]
+                        )
+                        {
+                            rel material:binding = </Root/M_spatial_picture/M_Spatial_p1_006> (
+                                bindMaterialAs = "strongerThanDescendants"
+                            )
+
+                            over "p1_mesh_006"
+                            {
+                                over "Plane_003_006"
+                                {
+                                    def RealityKitComponent "MeshSorting"
+                                    {
+                                        rel group = </Root/Model_Sorting_Group_1>
+                                        token info:id = "RealityKit.MeshSorting"
+                                        int priorityInGroup = 16
+                                    }
+                                }
+                            }
+                        }
+
+                        over "p1_004" (
+                            prepend apiSchemas = ["MaterialBindingAPI"]
+                        )
+                        {
+                            rel material:binding = </Root/M_spatial_picture/M_Spatial_p1_004> (
+                                bindMaterialAs = "strongerThanDescendants"
+                            )
+
+                            over "p1_mesh_004"
+                            {
+                                over "Plane_003_004"
+                                {
+                                    def RealityKitComponent "MeshSorting"
+                                    {
+                                        rel group = </Root/Model_Sorting_Group_1>
+                                        token info:id = "RealityKit.MeshSorting"
+                                        int priorityInGroup = 18
+                                    }
+                                }
+                            }
+                        }
+
+                        over "p1_001" (
+                            prepend apiSchemas = ["MaterialBindingAPI"]
+                        )
+                        {
+                            rel material:binding = </Root/M_spatial_picture/M_Spatial> (
+                                bindMaterialAs = "strongerThanDescendants"
+                            )
+
+                            over "p1_mesh_001"
+                            {
+                                over "Plane_003_001"
+                                {
+                                    def RealityKitComponent "MeshSorting"
+                                    {
+                                        rel group = </Root/Model_Sorting_Group_1>
+                                        token info:id = "RealityKit.MeshSorting"
+                                        int priorityInGroup = 21
+                                    }
+                                }
+                            }
+                        }
+
+                        over "p1_002" (
+                            prepend apiSchemas = ["MaterialBindingAPI"]
+                        )
+                        {
+                            rel material:binding = </Root/M_spatial_picture/M_Spatial_p1_002> (
+                                bindMaterialAs = "strongerThanDescendants"
+                            )
+
+                            over "p1_mesh_002"
+                            {
+                                over "Plane_003_002"
+                                {
+                                    def RealityKitComponent "MeshSorting"
+                                    {
+                                        rel group = </Root/Model_Sorting_Group_1>
+                                        token info:id = "RealityKit.MeshSorting"
+                                        int priorityInGroup = 20
+                                    }
+                                }
+                            }
+                        }
+
+                        over "p1_003" (
+                            prepend apiSchemas = ["MaterialBindingAPI"]
+                        )
+                        {
+                            rel material:binding = </Root/M_spatial_picture/M_Spatial_p1_003> (
+                                bindMaterialAs = "strongerThanDescendants"
+                            )
+
+                            over "p1_mesh_003"
+                            {
+                                over "Plane_003_003"
+                                {
+                                    def RealityKitComponent "MeshSorting"
+                                    {
+                                        rel group = </Root/Model_Sorting_Group_1>
+                                        token info:id = "RealityKit.MeshSorting"
+                                        int priorityInGroup = 19
+                                    }
+                                }
+                            }
+                        }
+
+                        over "p1_005" (
+                            prepend apiSchemas = ["MaterialBindingAPI"]
+                        )
+                        {
+                            rel material:binding = </Root/M_spatial_picture/M_Spatial_p1_005> (
+                                bindMaterialAs = "strongerThanDescendants"
+                            )
+
+                            over "p1_mesh_005"
+                            {
+                                over "Plane_003_005"
+                                {
+                                    def RealityKitComponent "MeshSorting"
+                                    {
+                                        rel group = </Root/Model_Sorting_Group_1>
+                                        token info:id = "RealityKit.MeshSorting"
+                                        int priorityInGroup = 17
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    over "group_002"
+                    {
+                        over "p1_012" (
+                            prepend apiSchemas = ["MaterialBindingAPI"]
+                        )
+                        {
+                            rel material:binding = </Root/M_spatial_picture/M_Spatial_p1_012> (
+                                bindMaterialAs = "strongerThanDescendants"
+                            )
+
+                            over "p1_mesh_012"
+                            {
+                                over "Plane_003_018"
+                                {
+                                    def RealityKitComponent "MeshSorting"
+                                    {
+                                        rel group = </Root/Model_Sorting_Group_1>
+                                        token info:id = "RealityKit.MeshSorting"
+                                        int priorityInGroup = 10
+                                    }
+                                }
+                            }
+                        }
+
+                        over "p1_008" (
+                            prepend apiSchemas = ["MaterialBindingAPI"]
+                        )
+                        {
+                            rel material:binding = </Root/M_spatial_picture/M_Spatial_p1_008> (
+                                bindMaterialAs = "strongerThanDescendants"
+                            )
+
+                            over "p1_mesh_008"
+                            {
+                                over "Plane_003_014"
+                                {
+                                    def RealityKitComponent "MeshSorting"
+                                    {
+                                        rel group = </Root/Model_Sorting_Group_1>
+                                        token info:id = "RealityKit.MeshSorting"
+                                        int priorityInGroup = 14
+                                    }
+                                }
+                            }
+                        }
+
+                        over "p1_007" (
+                            prepend apiSchemas = ["MaterialBindingAPI"]
+                        )
+                        {
+                            rel material:binding = </Root/M_spatial_picture/M_Spatial_p1_007> (
+                                bindMaterialAs = "strongerThanDescendants"
+                            )
+
+                            over "p1_mesh_007"
+                            {
+                                over "Plane_003_013"
+                                {
+                                    def RealityKitComponent "MeshSorting"
+                                    {
+                                        rel group = </Root/Model_Sorting_Group_1>
+                                        token info:id = "RealityKit.MeshSorting"
+                                        int priorityInGroup = 15
+                                    }
+                                }
+                            }
+                        }
+
+                        over "p1_009" (
+                            prepend apiSchemas = ["MaterialBindingAPI"]
+                        )
+                        {
+                            rel material:binding = </Root/M_spatial_picture/M_Spatial_p1_009> (
+                                bindMaterialAs = "strongerThanDescendants"
+                            )
+
+                            over "p1_mesh_009"
+                            {
+                                over "Plane_003_015"
+                                {
+                                    def RealityKitComponent "MeshSorting"
+                                    {
+                                        rel group = </Root/Model_Sorting_Group_1>
+                                        token info:id = "RealityKit.MeshSorting"
+                                        int priorityInGroup = 13
+                                    }
+                                }
+                            }
+                        }
+
+                        over "p1_011" (
+                            prepend apiSchemas = ["MaterialBindingAPI"]
+                        )
+                        {
+                            rel material:binding = </Root/M_spatial_picture/M_Spatial_p1_011> (
+                                bindMaterialAs = "strongerThanDescendants"
+                            )
+
+                            over "p1_mesh_011"
+                            {
+                                over "Plane_003_017"
+                                {
+                                    def RealityKitComponent "MeshSorting"
+                                    {
+                                        rel group = </Root/Model_Sorting_Group_1>
+                                        token info:id = "RealityKit.MeshSorting"
+                                        int priorityInGroup = 11
+                                    }
+                                }
+                            }
+                        }
+
+                        over "p1_010" (
+                            prepend apiSchemas = ["MaterialBindingAPI"]
+                        )
+                        {
+                            rel material:binding = </Root/M_spatial_picture/M_Spatial_p1_010> (
+                                bindMaterialAs = "strongerThanDescendants"
+                            )
+
+                            over "p1_mesh_010"
+                            {
+                                over "Plane_003_016"
+                                {
+                                    def RealityKitComponent "MeshSorting"
+                                    {
+                                        rel group = </Root/Model_Sorting_Group_1>
+                                        token info:id = "RealityKit.MeshSorting"
+                                        int priorityInGroup = 12
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        over "_materials"
+        {
+            over "M_Spatial"
+            {
+                token outputs:mtlx:surface
+                token outputs:realitykit:vertex
+            }
+        }
+    }
+
+    def RealityKitMeshSortingGroup "Model_Sorting_Group_1" (
+        active = true
+    )
+    {
+        token depthPass = "postPass"
+    }
+
+    def "M_change" (
+        active = true
+        references = @Materials/M_change.usda@
+    )
+    {
+        float3 xformOp:scale = (1, 1, 1)
+
+        over "Material_002"
+        {
+            over "Principled_BSDF"
+            {
+                color3f inputs:diffuseColor = (0, 0.3005438, 1)
+            }
+        }
+    }
+
+    def "M_tagline" (
+        active = true
+        references = @Materials/M_tagline.usda@
+    )
+    {
+        float3 xformOp:scale = (1, 1, 1)
     }
 }
 

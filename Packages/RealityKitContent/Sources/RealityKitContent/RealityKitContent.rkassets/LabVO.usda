@@ -56,7 +56,8 @@ def Xform "Root"
 
         def RealityKitComponent "SpatialAudio"
         {
-            float directivityFocus = 1
+            float directivityFocus = 0
+            float directLevel = 0
             uniform token info:id = "RealityKit.SpatialAudio"
             float reverbLevel = 0
             float rolloffFactor = 0
@@ -130,7 +131,7 @@ def Xform "Root"
                 double gain = -13.302106900452493
                 uniform token info:id = "95766467-0283-4DF6-9791-167B2A33DC78"
                 double startTime = 37.997810288816346
-                rel target = </Root/VO_2>
+                rel target = </Root/VO_3>
 
                 def RealityKitStruct "handoffType"
                 {
@@ -166,9 +167,10 @@ def Xform "Root"
 
         def RealityKitComponent "SpatialAudio"
         {
-            float directivityFocus = 1
+            float directivityFocus = 0
             uniform token info:id = "RealityKit.SpatialAudio"
-            float reverbLevel = -9.9985895
+            float reverbLevel = 0
+            float rolloffFactor = 0
         }
     }
 
@@ -224,6 +226,50 @@ def Xform "Root"
     {
         uniform asset file = @Audio/LabVO2/Sonic_Pulse_Hit_03.wav@
         uniform bool shouldLoop = 0
+    }
+
+    def RealityKitComponent "Reverb"
+    {
+        uniform token info:id = "RealityKit.Reverb"
+        token reverbPreset = "MediumRoomDry"
+    }
+
+    def Xform "VO_3" (
+        active = true
+        customData = {
+            float3 rotationEulerHint = (0, 2.5385742, 0)
+        }
+    )
+    {
+        float2 ui:nodegraph:node:pos = (20, 20)
+        int ui:nodegraph:node:stackingOrder = 1
+        quatf xformOp:orient = (0.29696152, 0, 0.9548895, 0)
+        float3 xformOp:scale = (1, 1, 1)
+        float3 xformOp:translate = (0.445, 1.4, -0.5)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "AudioLibrary"
+        {
+            uniform token info:id = "RealityKit.AudioLibrary"
+
+            def RealityKitDict "resources"
+            {
+                string[] keys = ["labVOalt_1_mp3", "Sonic_Pulse_Hit_03_wav"]
+                rel values = [
+                    </Root/labVOalt_1_mp3>,
+                    </Root/Sonic_Pulse_Hit_03_wav>,
+                ]
+            }
+        }
+
+        def RealityKitComponent "SpatialAudio"
+        {
+            float directivityFocus = 1
+            float gain = -6.870051
+            uniform token info:id = "RealityKit.SpatialAudio"
+            float reverbLevel = 0
+            float rolloffFactor = 0.4698989
+        }
     }
 }
 
