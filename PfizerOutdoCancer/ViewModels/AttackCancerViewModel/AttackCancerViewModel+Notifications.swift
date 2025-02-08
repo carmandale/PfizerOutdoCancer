@@ -54,9 +54,9 @@ extension AttackCancerViewModel {
         // Check if all cells are destroyed
         if cellsDestroyed >= maxCancerCells {
             Task { @MainActor in
-                appModel.isHopeMeterUtilityWindowOpen = false
-                appModel.currentPhase = .completed
-                isHopeMeterRunning = false
+                // Instead of immediately ending, accelerate the hope meter
+                print("🎯 All cells destroyed - accelerating hope meter")
+                await appModel.accelerateHopeMeterToCompletion()
             }
         }
     }

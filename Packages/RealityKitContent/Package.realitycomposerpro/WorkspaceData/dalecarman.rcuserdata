@@ -1,7 +1,7 @@
 {
-  "advancedEditorSelectedIdentifier" : "ProjectBrowser",
+  "advancedEditorSelectedIdentifier" : "BehaviorsPluginID",
   "openSceneRelativePaths" : [
-    "Assets\/Lab\/People\/3D_people_scene.usda"
+    "OutroEnvironment.usda"
   ],
   "recentIdentifiers" : {
     "00353439-B084-4161-BDD3-58325B62FD61" : [
@@ -11791,5 +11791,5 @@
   "sceneViewportBackgroundColors" : {
 
   },
-  "selectedSceneRelativePath" : "Assets\/Lab\/People\/3D_people_scene.usda"
+  "selectedSceneRelativePath" : "OutroEnvironment.usda"
 }

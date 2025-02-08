@@ -128,16 +128,19 @@ extension AttackCancerViewModel {
         headPosition.name = "headPosition"
         
         // Random offsets
-        let randomX = Float.random(in: -2.0...2.0)  // Doubled X range
-        let randomY = Float.random(in: 0.5...1.5)   // Increased height range
-        let randomZ = Float.random(in: -7.0...(-5.0))  // Doubled distance range
+        let randomX = Float.random(in: -2.0...2.0)
+        let randomY = Float.random(in: 1.0...2.5)
+        let randomZ = Float.random(in: -7.0...(-6.5))
+        
+        // Set position directly instead of using positioning component
+        headPosition.position = SIMD3<Float>(randomX, randomY, randomZ)
         
         // Create positioning component
-        let positioning = PositioningComponent(
-            offsetX: randomX,
-            offsetY: randomY,
-            offsetZ: randomZ
-        )
+        // let positioning = PositioningComponent(
+        //     offsetX: randomX,
+        //     offsetY: randomY,
+        //     offsetZ: randomZ
+        // )
         
         // Create attachment point and mark as occupied
         var attachPoint = AttachmentPoint()
@@ -145,7 +148,7 @@ extension AttackCancerViewModel {
         
         // Add components using proper lifecycle management
         do {
-            try await headPosition.components.set(positioning)
+            // try await headPosition.components.set(positioning)
             try await headPosition.components.set(attachPoint)
         } catch {
             print("⚠️ Failed to set components on headPosition: \(error.localizedDescription)")

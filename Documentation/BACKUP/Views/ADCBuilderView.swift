@@ -93,6 +93,42 @@ struct ADCBuilderView: View {
                         case 2:
                             ADCPayloadSelectorView()
                                     .transition(Appear())
+                        case 3:
+                            NavigationButton(
+                                title: "Attack Cancer",
+                                action: {
+                                    Task {
+                                        // Log final color summary before attack
+                                        os_log(.debug, "ADC Final Color Summary (Attack Button Pressed):")
+                                        os_log(.debug, "- Antibody Color: \(dataModel.selectedADCAntibody ?? -1)")
+                                        os_log(.debug, "- Linker Color: \(dataModel.selectedLinkerType ?? -1)")
+                                        os_log(.debug, "- Payload Color: \(dataModel.selectedPayloadType ?? -1)")
+                                        
+                                        appModel.hasBuiltADC = true
+
+                                        if !appModel.isMainWindowOpen {
+                                            openWindow(id: AppModel.mainWindowId)
+                                            appModel.isMainWindowOpen = true
+                                            appModel.isInstructionsWindowOpen = true
+                                        }
+                                        await dismissImmersiveSpace()
+                                        await appModel.transitionToPhase(.playing, adcDataModel: dataModel)
+                                    }
+                                },
+                                font: .title,
+                                scaleEffect: 1.1,
+                                width: 250
+                            )
+                            .opacity(dataModel.adcBuildStep == 3 ? 1 : 0)
+                            .fontWeight(.bold)
+                            .glassBackgroundEffect()
+                            .hoverEffect { effect, isActive, proxy in
+                                effect
+                                    .animation(.easeInOut(duration: 0.2)) {
+                                        $0.scaleEffect(isActive ? 1.1 : 1.0)
+                                    }
+                            }
+                            .transition(Appear())
                         default:
                             EmptyView()
                         }
@@ -101,45 +137,6 @@ struct ADCBuilderView: View {
                     .padding(.top, 10)
                     .padding(.bottom, 30)
                     .transition(Appear())
-                } else {  // adcBuildStep must be 3
-                    // Navigation button for step 3
-                    VStack {
-                        NavigationButton(
-                            title: "Attack Cancer",
-                            action: {
-                                Task {
-                                    // Log final color summary before attack
-                                    os_log(.debug, "ADC Final Color Summary (Attack Button Pressed):")
-                                    os_log(.debug, "- Antibody Color: \(dataModel.selectedADCAntibody ?? -1)")
-                                    os_log(.debug, "- Linker Color: \(dataModel.selectedLinkerType ?? -1)")
-                                    os_log(.debug, "- Payload Color: \(dataModel.selectedPayloadType ?? -1)")
-                                    
-                                    appModel.hasBuiltADC = true
-
-                                    if !appModel.isMainWindowOpen {
-                                        openWindow(id: AppModel.mainWindowId)
-                                        appModel.isMainWindowOpen = true
-                                        appModel.isInstructionsWindowOpen = true
-                                    }
-                                    await dismissImmersiveSpace()
-                                    await appModel.transitionToPhase(.playing, adcDataModel: dataModel)
-                                }
-                            },
-                            font: .title,
-                            scaleEffect: 1.06
-                        )
-                        .opacity(dataModel.adcBuildStep == 3 ? 1 : 0)
-                        .fontWeight(.bold)
-                        .glassBackgroundEffect()
-                        .hoverEffect(.highlight)
-                        .hoverEffect { effect, isActive, proxy in
-                            effect.scaleEffect(!isActive ? 1.0 : 1.05)
-                        }
-                    }
-                    .frame(width: 600)
-                    .padding(.top, 10)
-                    .padding(.bottom, 30)
-                    
                 }
             }
             // Updated navigation chevrons

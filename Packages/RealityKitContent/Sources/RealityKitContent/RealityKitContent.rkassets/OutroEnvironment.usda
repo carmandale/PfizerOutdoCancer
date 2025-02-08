@@ -856,6 +856,20 @@ def Xform "Root"
                 {
                 }
             }
+
+            def RealityKitAction "Hide"
+            {
+                string actionKind = "hide"
+                int blendLayer = 300
+                double duration = 3
+                uniform token info:id = "98AEEEFB-06DB-4C91-8887-D4F099ACDDBB"
+                double startTime = 48.813028203321196
+                rel target = </Root/outro_people_v01>
+
+                def RealityKitStruct "timingFunction"
+                {
+                }
+            }
         }
     }
 

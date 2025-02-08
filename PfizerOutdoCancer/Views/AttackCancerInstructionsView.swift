@@ -83,32 +83,36 @@ struct AttackCancerInstructionsView: View {
                     .padding(.bottom, 60)
                     .padding(.horizontal, 120)
                     // Start button
-                    Button(action: {
-                        if !appModel.isTutorialStarted {
-                            print("🎓 Starting tutorial sequence...")
-                            appModel.isTutorialStarted = true
-                            appModel.isInstructionsWindowOpen = false
-                            // dismiss()
-                        } else {
-                            print("🎮 Tutorial complete - Starting game...")
-                            appModel.startAttackCancerGame()
-                            appModel.isInstructionsWindowOpen = false
-                            if !appModel.isHopeMeterUtilityWindowOpen {
-                                openWindow(id: AppModel.hopeMeterUtilityWindowId)
+                    NavigationButton(
+                        title: appModel.isTutorialStarted ? "Attack Cancer!" : "Start Tutorial",
+                        action: {
+                            if !appModel.isTutorialStarted {
+                                print("🎓 Starting tutorial sequence...")
+                                appModel.isTutorialStarted = true
+                                appModel.isInstructionsWindowOpen = false
+                            } else {
+                                print("🎮 Tutorial complete - Starting game...")
+                                appModel.startAttackCancerGame()
+                                appModel.isInstructionsWindowOpen = false
+                                if !appModel.isHopeMeterUtilityWindowOpen {
+                                    openWindow(id: AppModel.hopeMeterUtilityWindowId)
+                                }
                             }
-                            // dismiss()
-                        }
-                    }) {
-                        Text(appModel.isTutorialStarted ? "Attack Cancer!" : "Start Tutorial")
-                            .font(.title2)
-                            .fontWeight(.bold)
-                            .padding()
-                            .frame(width: 200)
-                            .foregroundColor(.white)
-                    }
-//                    .padding(60)
+                        },
+                        font: .title,
+                        scaleEffect: 1.2,
+                        width: 200
+                    )
+                    .fontWeight(.bold)
                     .glassBackgroundEffect()
-                    .controlSize(.extraLarge)
+                    .hoverEffect { effect, isActive, proxy in
+                        effect
+                            .animation(.easeInOut(duration: 0.2)) {
+                                $0.scaleEffect(isActive ? 1.1 : 1.0)
+                            }
+                    }
+                    .padding(30)
+                    .padding(.bottom, 30)
                 }
                 .padding(.bottom, 100)
                 .transition(Appear())

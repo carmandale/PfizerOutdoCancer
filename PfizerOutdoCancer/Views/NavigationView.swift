@@ -10,19 +10,29 @@ struct NavigationView: View {
     private let buttonTitles = ["Lab", "Building", "Attack", "Outro"]
     
     var body: some View {
-        HStack(spacing: 16) {
+        HStack(spacing: 30) {
             ForEach(buttonTitles, id: \.self) { title in
                 NavigationButton(
                     title: title,
                     action: { await handleNavigation(for: title) },
                     width: 150
                 )
+                .fontWeight(.bold)
+                .glassBackgroundEffect()
+                .controlSize(.extraLarge)
+                .hoverEffect { effect, isActive, proxy in
+                    effect
+                        .animation(.easeInOut(duration: 0.2)) {
+                            $0.scaleEffect(isActive ? 1.05 : 1.0)
+                        }
+                }
             }
         }
         .padding(20)
         .glassBackgroundEffect()
         .opacity(appModel.isNavWindowOpen ? 1 : 0)
         .animation(.default, value: appModel.isNavWindowOpen)
+        
         .onChange(of: scenePhase, initial: true) {
                     switch scenePhase {
                     case .inactive, .background:

@@ -161,18 +161,11 @@ extension ADCOptimizedImmersive {
                                   workingEntity: Entity?,
                                   savedPosition: SIMD3<Float>?,
                                   nextStep: Int) async {
-        // Reset position and hide working entity
-        if let workingEntity = workingEntity,
-           let savedPosition = savedPosition {
-            workingEntity.position = savedPosition
-            workingEntity.isEnabled = false
-        }
-        
+        // Play pop sound while entity is still in final position
         if let workingEntity = workingEntity {
             attachPopSoundToTarget(workingEntity)
-            Task { @MainActor in
-                await playPopSound()
-            }
+            await playPopSound()
+            workingEntity.opacity = 0
         }
         
         // Only advance if VO is not playing

@@ -30,7 +30,6 @@
 		8834F16E2D349ED800379788 /* Exceptions for "PfizerOutdoCancer" folder in "PfizerOutdoCancer" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				"Extensions/Entity+Find.swift",
 				Info.plist,
 				"Preview Content/Preview Assets.xcassets",
 			);
@@ -38,22 +37,11 @@
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
-/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-		88D4C58F2D52C45C00B51764 /* Exceptions for "PfizerOutdoCancer" folder in "Copy Bundle Resources" phase from "PfizerOutdoCancer" target */ = {
-			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
-			buildPhase = 8834F16D2D349ED800379788 /* Resources */;
-			membershipExceptions = (
-				"Extensions/Entity+Find.swift",
-			);
-		};
-/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		883ED1562D15E5C80015B5FD /* PfizerOutdoCancer */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				8834F16E2D349ED800379788 /* Exceptions for "PfizerOutdoCancer" folder in "PfizerOutdoCancer" target */,
-				88D4C58F2D52C45C00B51764 /* Exceptions for "PfizerOutdoCancer" folder in "Copy Bundle Resources" phase from "PfizerOutdoCancer" target */,
 			);
 			path = PfizerOutdoCancer;
 			sourceTree = "<group>";

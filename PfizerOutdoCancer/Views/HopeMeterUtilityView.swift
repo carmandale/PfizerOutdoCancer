@@ -48,8 +48,14 @@ struct HopeMeterUtilityView: View {
                         width: 250
                     )
                     .fontWeight(.bold)
+                    .glassBackgroundEffect()
+                    .hoverEffect { effect, isActive, proxy in
+                        effect
+                            .animation(.easeInOut(duration: 0.2)) {
+                                $0.scaleEffect(isActive ? 1.1 : 1.0)
+                            }
+                    }
                     .padding(.vertical, 30)
-                    .transition(Appear())
                 } else {
                     ZStack(alignment: .leading) {
                         // Background rectangle

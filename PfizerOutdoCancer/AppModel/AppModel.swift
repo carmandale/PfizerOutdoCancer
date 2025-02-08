@@ -206,6 +206,36 @@ final class AppModel {
         gameState.isHopeMeterRunning = false
     }
     
+    @MainActor
+    func accelerateHopeMeterToCompletion() async {
+        print("🚀 Accelerating hope meter to completion")
+        
+        // Stop the normal timer
+        hopeMeterTimer?.invalidate()
+        hopeMeterTimer = nil
+        
+        // Calculate how many seconds are left
+        let remainingTime = gameState.hopeMeterTimeLeft
+        
+        // Create a high-frequency timer for smooth animation
+        // We'll update 60 times during the 1-second animation
+        let updateInterval = 1.0 / 60.0
+        let decrementPerUpdate = remainingTime / 60.0
+        
+        // Animate the timer down over 1 second
+        for _ in 0..<60 {
+            gameState.hopeMeterTimeLeft -= decrementPerUpdate
+            try? await Task.sleep(for: .seconds(updateInterval))
+        }
+        
+        // Ensure we hit exactly zero
+        gameState.hopeMeterTimeLeft = 0
+        
+        // Complete the game
+        gameState.isHopeMeterRunning = false
+        await transitionToPhase(.completed)
+    }
+    
     deinit {
         // Since we're on MainActor, we can directly invalidate the timer
         hopeMeterTimer?.invalidate()

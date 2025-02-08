@@ -77,29 +77,40 @@ extension ADCOptimizedImmersive {
 
     func attachPopSoundToTarget(_ target: Entity) {
         if let popSound = popAudioEntity {
+            // Remove from current parent if any
+            popSound.removeFromParent()
+            
+            // Add to new target and set transform
             target.addChild(popSound)
-            popSound.position = SIMD3(x: 0, y: 0, z: 0)
+            popSound.transform = .init(scale: .one, rotation: .init(), translation: .zero)
+            
+            // Ensure spatial audio component is set
+            if !popSound.components.has(SpatialAudioComponent.self) {
+                popSound.components.set(SpatialAudioComponent(
+                    gain: 1.0,
+                    directivity: .beam(focus: 1.0)
+                ))
+                os_log(.debug, "ITR..attachPopSoundToTarget(): Added spatial audio component")
+            }
+            
+            os_log(.debug, "ITR..attachPopSoundToTarget(): Successfully attached pop sound to target at position: \(target.position)")
+        } else {
+            os_log(.error, "ITR..attachPopSoundToTarget(): No pop sound entity available")
         }
     }
 
     func playPopSound() {
         os_log(.debug, "ITR..playPopSound(): Starting pop sound playback...")
         
-        // System 1: Using bubblePopSound toggle
-        os_log(.debug, "ITR..playPopSound(): 🔊 SYSTEM 1 - Triggering bubblePopSound toggle")
-        
-        // System 2: Using audioStorage (disabled for now)
-        /*if let storage = audioStorage {
-            os_log(.debug, "ITR..playPopSound(): 🔊 SYSTEM 2 - Attempting audioStorage playback")
-            if dataModel.adcBuildStep == 2, // Linkers step
-               dataModel.linkersWorkingIndex < adcLinkers.count {
-                storage.playPopSound(at: adcLinkers[dataModel.linkersWorkingIndex].position)
-            } else if dataModel.adcBuildStep == 3, // Payloads step
-                      dataModel.payloadsWorkingIndex < adcPayloadsInner.count {
-                storage.playPopSound(at: adcPayloadsInner[dataModel.payloadsWorkingIndex].position)
-            }
-        }*/
         if let controller = popAudioPlaybackController {
+            if let popSound = popAudioEntity {
+                os_log(.debug, "ITR..playPopSound(): Pop sound entity position: \(popSound.position)")
+            }
+            
+            // Stop any currently playing pop sound
+            controller.stop()
+            
+            // Play the sound
             controller.play()
             os_log(.debug, "ITR..playPopSound(): Started playing pop sound")
         } else {

@@ -68,57 +68,47 @@ struct ADCView: View {
                     .padding(.bottom, 30)
                     
                     // Start button
-                    Button(action: {
-                        Task { @MainActor in
-                            switch appModel.immersiveSpaceState {
-                                case .open:
-                                    appModel.immersiveSpaceState = .inTransition
-//                                    openWindow(id: AppModel.builderWindowId)
-                                    
-                                    await dismissImmersiveSpace()
-                                    // Don't set immersiveSpaceState to .closed because there
-                                    // are multiple paths to ImmersiveView.onDisappear().
-                                    // Only set .closed in ImmersiveView.onDisappear().
+                    NavigationButton(
+                        title: "Start Building!",
+                        action: {
+                            Task { @MainActor in
+                                switch appModel.immersiveSpaceState {
+                                    case .open:
+                                        appModel.immersiveSpaceState = .inTransition
+                                        await dismissImmersiveSpace()
 
-                                case .closed:
-                                    appModel.immersiveSpaceState = .inTransition
-                                    // dataModel.status = .bloodVesselGame
-                                    switch await openImmersiveSpace(id: AppModel.buildingSpaceId) {
-                                        case .opened:
-                                            appModel.isBuilderInstructionsOpen = false
-                                            // Don't set immersiveSpaceState to .open because there
-                                            // may be multiple paths to ImmersiveView.onAppear().
-                                            // Only set .open in ImmersiveView.onAppear().
-                                            dismissWindow(id: AppModel.mainWindowId)
-                                            appModel.isMainWindowOpen = false
-                                            break
+                                    case .closed:
+                                        appModel.immersiveSpaceState = .inTransition
+                                        switch await openImmersiveSpace(id: AppModel.buildingSpaceId) {
+                                            case .opened:
+                                                appModel.isBuilderInstructionsOpen = false
+                                                dismissWindow(id: AppModel.mainWindowId)
+                                                appModel.isMainWindowOpen = false
+                                                break
 
-                                        case .userCancelled, .error:
-                                            // On error, we need to mark the immersive space
-                                            // as closed because it failed to open.
-                                            fallthrough
-                                        @unknown default:
-                                            // On unknown response, assume space did not open.
-                                            appModel.immersiveSpaceState = .closed
-                                    }
+                                            case .userCancelled, .error:
+                                                fallthrough
+                                            @unknown default:
+                                                appModel.immersiveSpaceState = .closed
+                                        }
 
-                                case .inTransition:
-                                    // This case should not ever happen because button is disabled for this case.
-                                    break
+                                    case .inTransition:
+                                        break
+                                }
                             }
-                        }
-                    }) {
-                        Text("Start Building!")
-                            .font(.title2)
-                            .fontWeight(.bold)
-//                            .padding(30)
-                            .frame(width: 200)
-                            .foregroundColor(.white)
-//                            .padding(160)
-                    }
-//                    .padding(60)
+                        },
+                        font: .title,
+                        scaleEffect: 1.2,
+                        width: 200
+                    )
+                    .fontWeight(.bold)
                     .glassBackgroundEffect()
-                    
+                    .hoverEffect { effect, isActive, proxy in
+                        effect
+                            .animation(.easeInOut(duration: 0.2)) {
+                                $0.scaleEffect(isActive ? 1.1 : 1.0)
+                            }
+                    }
                     .padding(30)
                     .padding(.bottom, 30)
 

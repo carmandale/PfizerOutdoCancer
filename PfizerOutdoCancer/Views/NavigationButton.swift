@@ -23,7 +23,7 @@ struct VisionNavigationButtonStyle: ButtonStyle {
                     .fill(.thinMaterial)
             }
             // Group hover effects together
-            .hoverEffect(.highlight)
+//            .hoverEffect(.highlight)
             .hoverEffect { effect, isActive, proxy in
                 effect
                     .animation(.easeInOut(duration: 0.2)) {

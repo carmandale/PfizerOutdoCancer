@@ -70,9 +70,9 @@ struct OutroView: View {
         .preferredSurroundingsEffect(surroundingsEffect)
         .task {
             // Wait for environment animation to complete
-//            try? await Task.sleep(for: .seconds(50))
-//            print("🎯 OutroView: Transitioning to lab")
-//            await appModel.transitionToPhase(.lab)
+            try? await Task.sleep(for: .seconds(50))
+            print("🎯 OutroView: Transitioning to ready")
+            await appModel.transitionToPhase(.ready)
         }
         .onAppear {
             print("\n=== OutroView Appeared ===")

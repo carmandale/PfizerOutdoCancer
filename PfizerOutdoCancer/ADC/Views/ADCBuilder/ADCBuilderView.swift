@@ -81,8 +81,6 @@ struct ADCBuilderView: View {
             
             // Selector views or navigation button
             if !dataModel.isVOPlaying { // && dataModel.hasInitialVOCompleted
-                if dataModel.adcBuildStep < 3 {
-                    Group {
                         switch dataModel.adcBuildStep {
                         case 0:
                                 ADCSelectorView()
@@ -94,59 +92,60 @@ struct ADCBuilderView: View {
                         case 2:
                             ADCPayloadSelectorView()
                                     .transition(Appear())
+
+                        case 3:
+                            NavigationButton(
+                                title: "Attack Cancer",
+                                action: {
+                                    Task {
+                                        // Log final color summary before attack
+                                        os_log(.debug, "ADC Final Color Summary (Attack Button Pressed):")
+                                        os_log(.debug, "- Antibody Color: \(dataModel.selectedADCAntibody ?? -1)")
+                                        os_log(.debug, "- Linker Color: \(dataModel.selectedLinkerType ?? -1)")
+                                        os_log(.debug, "- Payload Color: \(dataModel.selectedPayloadType ?? -1)")
+                                        
+                                        appModel.hasBuiltADC = true
+
+                                        if !appModel.isMainWindowOpen {
+                                            openWindow(id: AppModel.mainWindowId)
+                                            appModel.isMainWindowOpen = true
+                                            appModel.isInstructionsWindowOpen = true
+                                        }
+                                        await dismissImmersiveSpace()
+                                        await appModel.transitionToPhase(.playing, adcDataModel: dataModel)
+                                    }
+                                },
+                                font: .title,
+                                scaleEffect: 1.1,
+                                width: 250
+                            )
+                            .opacity(dataModel.adcBuildStep == 3 ? 1 : 0)
+                            .fontWeight(.bold)
+                            .glassBackgroundEffect()
+                            .hoverEffect { effect, isActive, proxy in
+                                effect
+                                    .animation(.easeInOut(duration: 0.2)) {
+                                        $0.scaleEffect(isActive ? 1.1 : 1.0)
+                                    }
+                            }
+                            .frame(width: 600)
+                            .padding(.top, 10)
+                            .padding(.bottom, 30)
+                            .transition(Appear())
+
                         default:
                             EmptyView()
                         }
                     }
-                    .frame(width: 600)
-                    .padding(.top, 10)
-                    .padding(.bottom, 30)
-                    .transition(Appear())
-                } else {  // adcBuildStep must be 3
-                    // Navigation button for step 3
-                    VStack {
-                        NavigationButton(
-                            title: "Attack Cancer",
-                            action: {
-                                Task {
-                                    // Log final color summary before attack
-                                    os_log(.debug, "ADC Final Color Summary (Attack Button Pressed):")
-                                    os_log(.debug, "- Antibody Color: \(dataModel.selectedADCAntibody ?? -1)")
-                                    os_log(.debug, "- Linker Color: \(dataModel.selectedLinkerType ?? -1)")
-                                    os_log(.debug, "- Payload Color: \(dataModel.selectedPayloadType ?? -1)")
-                                    
-                                    appModel.hasBuiltADC = true
-
-                                    if !appModel.isMainWindowOpen {
-                                        openWindow(id: AppModel.mainWindowId)
-                                        appModel.isMainWindowOpen = true
-                                        appModel.isInstructionsWindowOpen = true
-                                    }
-                                    await dismissImmersiveSpace()
-                                    await appModel.transitionToPhase(.playing, adcDataModel: dataModel)
-                                }
-                            },
-                            font: .title,
-                            scaleEffect: 1.2,
-                            width: 250
-                        )
-                        .fontWeight(.bold)
-                        .glassBackgroundEffect()
-                        .controlSize(.extraLarge)
-                        .opacity(dataModel.adcBuildStep == 3 ? 1 : 0)
-                        .zIndex(1) // Ensure this button is on top
-                    }
-                    .frame(width: 600)
-                    .padding(.top, 10)
-                    .padding(.bottom, 30)
                     
-                }
-            }
+                
+                
+            
             // Updated navigation chevrons
             if dataModel.adcBuildStep > 0 || dataModel.adcBuildStep < 3 {
                 HStack {
                     // Back Chevron
-                    if dataModel.adcBuildStep > 0 {
+                    if dataModel.adcBuildStep > 0 && dataModel.adcBuildStep < 3 {
                         Button(action: {
                             withAnimation {
                                 print("Back Chevron Pressed on Step: \(dataModel.adcBuildStep)")

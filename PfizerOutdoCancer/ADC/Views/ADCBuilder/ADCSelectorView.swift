@@ -4,7 +4,7 @@ struct ADCSelectorView: View {
     @Environment(AppModel.self) var appModel
     @Environment(ADCDataModel.self) var dataModel
     
-    var noButton: Bool = true
+    var noButton: Bool = false
     
     var body: some View {
         VStack (spacing:30) {

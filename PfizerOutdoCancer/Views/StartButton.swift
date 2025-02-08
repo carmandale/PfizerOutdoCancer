@@ -32,10 +32,17 @@ struct StartButton: View {
             font: .title,
             scaleEffect: 1.2,
             width: 200
+            
         )
         .fontWeight(.bold)
         .glassBackgroundEffect()
         .controlSize(.extraLarge)
+        .hoverEffect { effect, isActive, proxy in
+            effect
+                .animation(.easeInOut(duration: 0.2)) {
+                    $0.scaleEffect(isActive ? 1.1 : 1.0)
+                }
+        }
     }
 }
 //#Preview {
