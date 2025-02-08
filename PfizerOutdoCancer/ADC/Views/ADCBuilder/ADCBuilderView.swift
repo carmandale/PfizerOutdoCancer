@@ -116,7 +116,7 @@ struct ADCBuilderView: View {
                                     }
                                 },
                                 font: .title,
-                                scaleEffect: AppModel.buttonExpandScale,
+                                scaleEffect: AppModel.UIConstants.buttonExpandScale,
                                 width: 250
                             )
                             .opacity(dataModel.adcBuildStep == 3 ? 1 : 0)
@@ -125,7 +125,7 @@ struct ADCBuilderView: View {
                             .hoverEffect { effect, isActive, proxy in
                                 effect
                                     .animation(.easeInOut(duration: 0.2)) {
-                                        $0.scaleEffect(isActive ? AppModel.buttonExpandScale : 1.0)
+                                        $0.scaleEffect(isActive ? AppModel.UIConstants.buttonExpandScale : 1.0)
                                     }
                             }
                             .frame(width: 600)
@@ -154,7 +154,7 @@ struct ADCBuilderView: View {
                                 .font(.largeTitle)
                                 .foregroundColor(.white)
                                 .hoverEffect { effect, isActive, proxy in
-                                    effect.scaleEffect(!isActive ? 1.0 : AppModel.buttonExpandScale)
+                                    effect.scaleEffect(!isActive ? 1.0 : AppModel.UIConstants.buttonExpandScale)
                                 }
                         }
                         .glassBackgroundEffect()
@@ -197,7 +197,7 @@ struct ADCBuilderView: View {
                                 .font(.largeTitle)
                                 .foregroundColor(.white)
                                 .hoverEffect { effect, isActive, proxy in
-                                    effect.scaleEffect(!isActive ? 1.0 : AppModel.buttonExpandScale)
+                                    effect.scaleEffect(!isActive ? 1.0 : AppModel.UIConstants.buttonExpandScale)
                                 }
                         }
                         .glassBackgroundEffect()

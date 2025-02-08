@@ -134,14 +134,14 @@ extension ADCMovementSystem {
         let blendFactor = computeBlendFactor(progress: progress)
         
         // Debug state if needed
-        #if DEBUG
-        debugPrintOrientationState(
-            progress: progress,
-            blendFactor: blendFactor,
-            currentOrientation: currentOrientation,
-            targetOrientation: landingOrientation
-        )
-        #endif
+        // #if DEBUG
+        // debugPrintOrientationState(
+        //     progress: progress,
+        //     blendFactor: blendFactor,
+        //     currentOrientation: currentOrientation,
+        //     targetOrientation: landingOrientation
+        // )
+        // #endif
         
         if blendFactor > 0 {
             // Blend between flight orientation and landing orientation
@@ -184,10 +184,35 @@ extension ADCMovementSystem {
         return quat
     }
     
+    /// Safely normalizes a vector, returning a default up vector if normalization fails
+    internal static func safeNormalize(_ vector: SIMD3<Float>, defaultVector: SIMD3<Float> = SIMD3<Float>(0, 1, 0)) -> SIMD3<Float> {
+        let vectorLength = length(vector)
+        
+        // Check for near-zero length or NaN components
+        if vectorLength < 1e-6 || vector.x.isNaN || vector.y.isNaN || vector.z.isNaN {
+            #if DEBUG
+            print("⚠️ Vector normalization failed:")
+            print("Vector: \(vector)")
+            print("Length: \(vectorLength)")
+            print("Using default vector: \(defaultVector)")
+            #endif
+            return defaultVector
+        }
+        
+        return vector / vectorLength
+    }
+    
     /// Computes surface normal from a point on the surface to the center
     internal static func computeSurfaceNormal(surfacePoint: SIMD3<Float>, center: SIMD3<Float>) -> SIMD3<Float> {
-        let normal = surfacePoint - center
-        return simd_normalize(normal)
+        let vector = surfacePoint - center
+        
+        #if DEBUG
+        print("Surface Normal Calculation:")
+        print("Vector: \(vector)")
+        print("Vector Length: \(length(vector))")
+        #endif
+        
+        return safeNormalize(vector)
     }
     
     /// Safely interpolates between two quaternions with validation
@@ -230,18 +255,36 @@ extension ADCMovementSystem {
     
     /// Computes a landing orientation that aligns the ADC with the antigen's surface normal
     internal static func computeLandingOrientation(for adc: Entity, with target: Entity) -> simd_quatf {
-        // Get the parent cell (if it exists)
-        guard let cell = target.parent else {
+        // Get the antigen (two levels up from attachment point)
+        guard let antigenOffset = target.parent,
+              let antigen = antigenOffset.parent,
+              let scene = antigen.scene,
+              let cell = findParentCancerCell(for: antigen, in: scene) else {
             print("⚠️ No parent cell found for target - using target orientation")
             return target.orientation(relativeTo: nil)
         }
         
-        // Compute world positions
-        let antigenWorldPos = target.position(relativeTo: nil)
+        // Compute world positions using the antigen position instead of attachment point
+        let antigenWorldPos = antigen.position(relativeTo: nil)
         let cellWorldPos = cell.position(relativeTo: nil)
+        
+        // #if DEBUG
+        // print("\n=== Landing Orientation Debug ===")
+        // print("Antigen Entity: \(antigen.name)")
+        // print("Antigen World Position: \(antigenWorldPos)")
+        // print("Cell World Position: \(cellWorldPos)")
+        // print("Vector between positions: \(antigenWorldPos - cellWorldPos)")
+        // #endif
         
         // Compute surface normal and validate
         let normal = computeSurfaceNormal(surfacePoint: antigenWorldPos, center: cellWorldPos)
+        
+        // #if DEBUG
+        // print("Computed Normal: \(normal)")
+        // print("Normal length: \(length(normal))")
+        // print("Has NaN?: \(normal.x.isNaN || normal.y.isNaN || normal.z.isNaN)")
+        // #endif
+        
         guard !normal.x.isNaN && !normal.y.isNaN && !normal.z.isNaN else {
             print("⚠️ Invalid surface normal computed - using target orientation")
             return target.orientation(relativeTo: nil)
@@ -299,7 +342,7 @@ extension ADCMovementSystem {
         transform.rotation = yawRotation * pitchRotation
         
         // Optionally, add a slight translation offset along the local Y axis.
-        // (This offset can be adjusted to fine-tune the “lily pad” visual.)
+        // (This offset can be adjusted to fine-tune the "lily pad" visual.)
         transform.translation = SIMD3<Float>(0, -0.08, 0)
         
         // Set the scale to uniform 1.

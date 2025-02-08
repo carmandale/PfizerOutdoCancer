@@ -135,9 +135,12 @@ extension AttackCancerViewModel {
         let randomX = Float.random(in: -2.0...2.0)
         let randomY = Float.random(in: 1.0...2.5)
         let randomZ = Float.random(in: -7.0...(-6.5))
-        
-        // Set position directly instead of using positioning component
-        headPosition.position = SIMD3<Float>(randomX, randomY, randomZ)
+
+        // Compensate for root entity's Z offset
+        let adjustedZ = randomZ + 1.0  // Add 1.0 to compensate for headTrackingRoot's -1.0 offset
+
+        // Set position with compensation for root offset
+        headPosition.position = SIMD3<Float>(randomX, randomY, adjustedZ)
         
         // Create positioning component
         // let positioning = PositioningComponent(
@@ -149,6 +152,7 @@ extension AttackCancerViewModel {
         // Create attachment point and mark as occupied
         var attachPoint = AttachmentPoint()
         attachPoint.isOccupied = true
+        attachPoint.isUntargeted = true
         
         // Add components using proper lifecycle management
         do {
@@ -158,8 +162,18 @@ extension AttackCancerViewModel {
             print("⚠️ Failed to set components on headPosition: \(error.localizedDescription)")
         }
         
-        // Add to scene
+        // Add headPosition to the scene's root to avoid ADC root offset
+        print("DEBUG: Root entity details:")
+        print("- Name: \(root.name)")
+        print("- World position: \(root.position(relativeTo: nil))")
+        print("- Local position: \(root.position)")
+        
         root.addChild(headPosition)
+        
+        print("DEBUG: HeadPosition target details:")
+        print("- Local position set: \(headPosition.position)")
+        print("- World position after add: \(headPosition.position(relativeTo: nil))")
+        print("- Parent entity: \(headPosition.parent?.name ?? "none")")
         
         totalADCsDeployed += 1
         #if DEBUG

@@ -30,17 +30,10 @@ struct StartButton: View {
                 }
             },
             font: .title,
-            scaleEffect: AppModel.buttonExpandScale,
+            scaleEffect: AppModel.UIConstants.buttonExpandScale,
             width: 200
         )
         .fontWeight(.bold)
-        .glassBackgroundEffect()
-        .hoverEffect { effect, isActive, proxy in
-            effect
-                .animation(.easeInOut(duration: 0.2)) {
-                    $0.scaleEffect(isActive ? AppModel.buttonExpandScale : 1.0)
-                }
-        }
     }
 }
 //#Preview {

@@ -22,13 +22,6 @@ struct VisionNavigationButtonStyle: ButtonStyle {
                 RoundedRectangle(cornerRadius: AppModel.UIConstants.buttonCornerRadius, style: .continuous)
                     .fill(.thinMaterial)
             }
-            .hoverEffect { effect, isActive, proxy in
-                effect
-                    .animation(.easeInOut(duration: AppModel.UIConstants.buttonHoverDuration)) {
-                        $0.scaleEffect(isActive ? scaleEffect : 1.0)
-                    }
-            }
-            .hoverEffectGroup()
             .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
     }
 }
@@ -42,16 +35,26 @@ struct NavigationButton: View {
     var width: CGFloat? = nil
     
     var body: some View {
-        Button {
-            Task { await action() }
-        } label: {
-            Text(title)
+        // Outer container to handle glass effect and scaling
+        HStack {
+            Button {
+                Task { await action() }
+            } label: {
+                Text(title)
+            }
+            .buttonStyle(VisionNavigationButtonStyle(
+                font: font,
+                width: width,
+                scaleEffect: scaleEffect
+            ))
         }
-        .buttonStyle(VisionNavigationButtonStyle(
-            font: font,
-            width: width,
-            scaleEffect: scaleEffect
-        ))
+        .glassBackgroundEffect()
+        .hoverEffect { effect, isActive, proxy in
+            effect
+                .animation(.easeInOut(duration: AppModel.UIConstants.buttonHoverDuration)) {
+                    $0.scaleEffect(isActive ? AppModel.UIConstants.buttonExpandScale : 1.0)
+                }
+        }
     }
 }
 

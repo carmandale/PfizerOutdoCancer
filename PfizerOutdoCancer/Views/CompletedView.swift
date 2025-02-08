@@ -41,14 +41,15 @@ struct CompletedView: View {
             // Buttons
             VStack(spacing: 12) {
                 HStack(spacing: 12) {
-                    Button(action: {
-                        Task {
+                    NavigationButton(
+                        title: "Continue",
+                        action: {
                             await appModel.transitionToPhase(.outro)
-                        }
-                    }) {
-                        Label("Continue", systemImage: "checkmark.circle")
-                            .frame(maxWidth: .infinity)
-                    }
+                        },
+                        font: .title,
+                        scaleEffect: AppModel.UIConstants.buttonExpandScale
+                    )
+                    .fontWeight(.bold)
                     .glassBackgroundEffect()
                 }
             }

@@ -100,7 +100,7 @@ struct AttackCancerInstructionsView: View {
                             }
                         },
                         font: .title,
-                        scaleEffect: AppModel.buttonExpandScale,
+                        scaleEffect: AppModel.UIConstants.buttonExpandScale,
                         width: 200
                     )
                     .fontWeight(.bold)
@@ -108,7 +108,7 @@ struct AttackCancerInstructionsView: View {
                     .hoverEffect { effect, isActive, proxy in
                         effect
                             .animation(.easeInOut(duration: 0.2)) {
-                                $0.scaleEffect(isActive ? AppModel.buttonExpandScale : 1.0)
+                                $0.scaleEffect(isActive ? AppModel.UIConstants.buttonExpandScale : 1.0)
                             }
                     }
                     .padding(30)

@@ -96,12 +96,13 @@ extension ADCMovementSystem {
     }
     
     static func validateTarget(_ targetEntity: Entity, _ adcComponent: ADCComponent, in scene: Scene) -> Bool {
-        // Use proper component access pattern
-        if targetEntity.components[PositioningComponent.self] != nil {
+        // Check if this is an untargeted spawn point
+        if let attachPoint = targetEntity.components[AttachmentPoint.self],
+           attachPoint.isUntargeted {
             return true
         }
         
-        // Validate entity hierarchy
+        // The rest of the validation is for cancer cell targets
         if targetEntity.parent == nil {
             print("\n=== ADC RETARGET (Target Lost) ===")
             print("Target attachment point has been removed from scene")
