@@ -27,7 +27,17 @@ extension AppModel {
     nonisolated static let attackSpaceId = "AttackSpace"
     
     // MARK: - Global UI Settings
-    static let buttonExpandScale: CGFloat = 1.1  // Global scale for button hover effects
+    enum UIConstants {
+        // Button Dimensions
+        static let buttonCornerRadius: CGFloat = 16
+        static let buttonPaddingHorizontal: CGFloat = 24
+        static let buttonPaddingVertical: CGFloat = 16
+        static let buttonExpandScale: CGFloat = 1.1
+        
+        // Animation Durations
+        static let buttonHoverDuration: CGFloat = 0.2
+        static let buttonPressDuration: CGFloat = 0.3
+    }
 }
 
 enum AppPhase: String, CaseIterable, Codable, Sendable, Equatable {
@@ -80,6 +90,7 @@ enum AppPhase: String, CaseIterable, Codable, Sendable, Equatable {
         }
     }
 }
+
 
 @Observable
 @MainActor

@@ -10,38 +10,35 @@ import SwiftUI
 struct VisionNavigationButtonStyle: ButtonStyle {
     var font: Font = .body
     var width: CGFloat?
-    var scaleEffect: CGFloat = 1.2
-    
+    var scaleEffect: CGFloat = AppModel.UIConstants.buttonExpandScale
+
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(font)
-            .padding(.horizontal, 24)
-            .padding(.vertical, 16)
+            .padding(.horizontal, AppModel.UIConstants.buttonPaddingHorizontal)
+            .padding(.vertical, AppModel.UIConstants.buttonPaddingVertical)
             .frame(width: width)
             .background {
-                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                RoundedRectangle(cornerRadius: AppModel.UIConstants.buttonCornerRadius, style: .continuous)
                     .fill(.thinMaterial)
             }
-            // Group hover effects together
-//            .hoverEffect(.highlight)
             .hoverEffect { effect, isActive, proxy in
                 effect
-                    .animation(.easeInOut(duration: 0.2)) {
+                    .animation(.easeInOut(duration: AppModel.UIConstants.buttonHoverDuration)) {
                         $0.scaleEffect(isActive ? scaleEffect : 1.0)
                     }
             }
             .hoverEffectGroup()
-            // Add press animation
             .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
-            .animation(.easeInOut(duration: 0.2), value: configuration.isPressed)
     }
 }
 
 struct NavigationButton: View {
+    @Environment(AppModel.self) private var appModel
     let title: String
     let action: () async -> Void
     var font: Font = .body
-    var scaleEffect: CGFloat = 1.2
+    var scaleEffect: CGFloat = AppModel.UIConstants.buttonExpandScale
     var width: CGFloat? = nil
     
     var body: some View {
@@ -58,25 +55,24 @@ struct NavigationButton: View {
     }
 }
 
-// Keep these for backward compatibility if needed
 struct ScalableButtonStyle: ButtonStyle {
-    var scaleFactor: CGFloat = 1.2
+    var scaleFactor: CGFloat = AppModel.UIConstants.buttonExpandScale
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .scaleEffect(configuration.isPressed ? scaleFactor : 1.0)
-            .animation(.spring(response: 0.3, dampingFraction: 0.5), value: configuration.isPressed)
+            .animation(.interactiveSpring(response: 0.3, dampingFraction: 0.5), value: configuration.isPressed)
     }
 }
 
 struct ScalableGlassButtonStyle: ButtonStyle {
-    var scaleFactor: CGFloat = 1.2
-    var cornerRadius: CGFloat = 16
+    var scaleFactor: CGFloat = AppModel.UIConstants.buttonExpandScale
+    var cornerRadius: CGFloat = AppModel.UIConstants.buttonCornerRadius
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .padding(.horizontal, 16)
-            .padding(.vertical, 8)
+            .padding(.horizontal, AppModel.UIConstants.buttonPaddingHorizontal)
+            .padding(.vertical, AppModel.UIConstants.buttonPaddingVertical)
             .background(
                 Color.clear
                     .glassBackgroundEffect()
@@ -84,6 +80,6 @@ struct ScalableGlassButtonStyle: ButtonStyle {
             )
             .clipShape(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
             .scaleEffect(configuration.isPressed ? scaleFactor : 1.0)
-            .animation(.spring(response: 0.3, dampingFraction: 0.5), value: configuration.isPressed)
+            .animation(.spring(response: AppModel.UIConstants.buttonPressDuration, dampingFraction: 0.5), value: configuration.isPressed)
     }
 }
