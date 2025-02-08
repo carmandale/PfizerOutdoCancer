@@ -21,15 +21,16 @@ struct LabViewerButton: View {
                 }
             },
             font: .title,
-            scaleEffect: 1.1,
+            scaleEffect: AppModel.buttonExpandScale,
             width: 250
         )
         .fontWeight(.bold)
         .glassBackgroundEffect()
-        .controlSize(.extraLarge)
-        .hoverEffect(.highlight)
         .hoverEffect { effect, isActive, proxy in
-            effect.scaleEffect(!isActive ? 1.0 : 1.05)
+            effect
+                .animation(.easeInOut(duration: 0.2)) {
+                    $0.scaleEffect(isActive ? AppModel.buttonExpandScale : 1.0)
+                }
         }
     }
 }
