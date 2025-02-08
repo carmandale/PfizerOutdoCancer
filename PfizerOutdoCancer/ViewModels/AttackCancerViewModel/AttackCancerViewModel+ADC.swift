@@ -75,6 +75,10 @@ extension AttackCancerViewModel {
         
         totalADCsDeployed += 1
         #if DEBUG
+        print("\n=== Spawning Natural ADC ===")
+        print("Start World Position: \(position)")
+        print("Target World Position: \(targetPoint.position(relativeTo: nil))")
+        print("Target Cell ID: \(cellID)")
         print("✅ ADC #\(totalADCsDeployed) Launched (Total Taps: \(totalTaps))")
         #endif
         
@@ -160,8 +164,8 @@ extension AttackCancerViewModel {
         totalADCsDeployed += 1
         #if DEBUG
         print("\n=== Spawning Untargeted ADC ===")
-        print("Start Position: \(position)")
-        print("Target Position: \(headPosition.position(relativeTo: nil))")
+        print("Start World Position: \(position)")
+        print("Target World Position: \(headPosition.position(relativeTo: nil))")
         print("✅ ADC #\(totalADCsDeployed) Launched (Total Taps: \(totalTaps))")
         #endif
         
