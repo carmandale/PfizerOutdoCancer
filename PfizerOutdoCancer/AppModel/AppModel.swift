@@ -25,6 +25,9 @@ extension AppModel {
     nonisolated static let labSpaceId = "LabSpace"
     nonisolated static let buildingSpaceId = "BuildingSpace"
     nonisolated static let attackSpaceId = "AttackSpace"
+    
+    // MARK: - Global UI Settings
+    static let buttonExpandScale: CGFloat = 1.1  // Global scale for button hover effects
 }
 
 enum AppPhase: String, CaseIterable, Codable, Sendable, Equatable {
