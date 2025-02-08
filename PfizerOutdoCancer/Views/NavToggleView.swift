@@ -6,7 +6,6 @@ struct NavToggleView: View {
     @Environment(AppModel.self) private var appModel
     @Environment(\.openWindow) private var openWindow
     
-    var scaleEffect: CGFloat = 1.2
     private let size: CGFloat = 60
     private let iconSize: CGFloat = 24
     
@@ -22,14 +21,17 @@ struct NavToggleView: View {
                 
                 Image(systemName: "sidebar.left")
                     .font(.system(size: iconSize))
+                    .fontWeight(.bold)
                     .shadow(radius: 2)
             }
         })
         .buttonStyle(.plain)
         .glassBackgroundEffect()
-        .hoverEffect(.highlight)
         .hoverEffect { effect, isActive, proxy in
-            effect.scaleEffect(!isActive ? 1.0 : scaleEffect)
+            effect
+                .animation(.easeInOut(duration: 0.2)) {
+                    $0.scaleEffect(isActive ? AppModel.buttonExpandScale : 1.0)
+                }
         }
         .opacity(appModel.isNavWindowOpen ? 0 : 1)
     }

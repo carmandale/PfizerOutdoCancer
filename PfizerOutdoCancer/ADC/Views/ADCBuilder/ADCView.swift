@@ -98,15 +98,14 @@ struct ADCView: View {
                             }
                         },
                         font: .title,
-                        scaleEffect: 1.2,
-                        width: 200
+                        scaleEffect: AppModel.buttonExpandScale
                     )
                     .fontWeight(.bold)
                     .glassBackgroundEffect()
                     .hoverEffect { effect, isActive, proxy in
                         effect
                             .animation(.easeInOut(duration: 0.2)) {
-                                $0.scaleEffect(isActive ? 1.1 : 1.0)
+                                $0.scaleEffect(isActive ? AppModel.buttonExpandScale : 1.0)
                             }
                     }
                     .padding(30)

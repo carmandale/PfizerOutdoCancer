@@ -50,8 +50,8 @@ struct GlowingOutlineEffect: CustomHoverEffect {
                     )
                 )
             }
-            .animation(isActive ? .easeOut(duration: 0.3) : .easeIn(duration: 0.2)) {
-                $0.scaleEffect(isActive ? 1.1 : 1)
+            .animation(.easeInOut(duration: 0.2)) {
+                $0.scaleEffect(isActive ? AppModel.buttonExpandScale : 1.0)
             }
         }
     }

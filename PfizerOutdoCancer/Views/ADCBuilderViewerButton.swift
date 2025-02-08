@@ -27,7 +27,6 @@ struct ADCBuilderViewerButton: View {
                     Color("gradient050") // 050: hsla(199,100,94,1)
                 ]), startPoint: .top, endPoint: .bottom))
                 .rotationEffect(.degrees(rotation))
-                .hoverEffect(.highlight)
                 .mask {
                     Capsule()
                         .stroke(lineWidth: 20)
@@ -35,7 +34,10 @@ struct ADCBuilderViewerButton: View {
                         .blur(radius: 10)
                 }
                 .hoverEffect { effect, isActive, proxy in
-                    effect.scaleEffect(!isActive ? 1.0 : scaleEffect)
+                    effect
+                        .animation(.easeInOut(duration: 0.2)) {
+                            $0.scaleEffect(isActive ? AppModel.buttonExpandScale : 1.0)
+                        }
                 }
             
             // Inner gradient border
@@ -49,14 +51,16 @@ struct ADCBuilderViewerButton: View {
                     Color("gradient050") // 050: hsla(199,100,94,1)
                 ]), startPoint: .top, endPoint: .bottom))
                 .rotationEffect(.degrees(rotation))
-                .hoverEffect(.highlight)
                 .mask {
                     Capsule()
                         .stroke(lineWidth: 10)
                         .frame(width: 200, height: 60)
                 }
                 .hoverEffect { effect, isActive, proxy in
-                    effect.scaleEffect(!isActive ? 1.0 : scaleEffect)
+                    effect
+                        .animation(.easeInOut(duration: 0.2)) {
+                            $0.scaleEffect(isActive ? AppModel.buttonExpandScale : 1.0)
+                        }
                 }
             
             // Background gradient
@@ -90,12 +94,11 @@ struct ADCBuilderViewerButton: View {
                     }
                 },
                 font: .title,
-                scaleEffect: 1.1,
+                scaleEffect: AppModel.buttonExpandScale,
                 width: 200
             )
             .fontWeight(.bold)
             .glassBackgroundEffect()
-            .controlSize(.extraLarge)
         }
         .onAppear {
             withAnimation(.linear(duration: 4).repeatForever(autoreverses: false)) {

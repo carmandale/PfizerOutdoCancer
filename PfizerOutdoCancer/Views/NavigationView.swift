@@ -19,11 +19,10 @@ struct NavigationView: View {
                 )
                 .fontWeight(.bold)
                 .glassBackgroundEffect()
-                .controlSize(.extraLarge)
                 .hoverEffect { effect, isActive, proxy in
                     effect
                         .animation(.easeInOut(duration: 0.2)) {
-                            $0.scaleEffect(isActive ? 1.05 : 1.0)
+                            $0.scaleEffect(isActive ? AppModel.buttonExpandScale : 1.0)
                         }
                 }
             }
