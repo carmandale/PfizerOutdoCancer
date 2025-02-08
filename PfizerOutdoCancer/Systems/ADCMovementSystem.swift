@@ -191,9 +191,17 @@ public class ADCMovementSystem: System {
             
             // Check for retargeting at 40% for untargeted ADCs
             let currentNormalizedProgress = (adcComponent.pathLength > 0) ? (adcComponent.traveledDistance / adcComponent.pathLength) : 0
-            if currentNormalizedProgress >= 0.4 {
+            if currentNormalizedProgress >= 0.8 {
                 if targetEntity.components[PositioningComponent.self] != nil {
+                    print("\n=== ADC Retargeting Check at 80% ===")
+                    print("Current Progress: \(currentNormalizedProgress)")
+                    print("ADC World Position: \(entity.position(relativeTo: nil))")
+                    print("Target World Position: \(targetEntity.position(relativeTo: nil))")
+                    print("Distance to Target: \(length(targetEntity.position(relativeTo: nil) - entity.position(relativeTo: nil)))")
+                    print("Path Length: \(adcComponent.pathLength)")
+                    print("Traveled Distance: \(adcComponent.traveledDistance)")
                     print("🎯 ADC at 40% to headPosition - attempting to find cancer cell target")
+                    
                     if Self.retargetADC(entity, &adcComponent, currentPosition: entity.position(relativeTo: nil), in: context.scene) {
                         entity.components[ADCComponent.self] = adcComponent
                         // Remove the headPosition entity and its debug sphere.
