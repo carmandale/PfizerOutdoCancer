@@ -116,7 +116,7 @@ struct ADCBuilderView: View {
                                     }
                                 },
                                 font: .title,
-                                scaleEffect: 1.1,
+                                scaleEffect: AppModel.buttonExpandScale,
                                 width: 250
                             )
                             .opacity(dataModel.adcBuildStep == 3 ? 1 : 0)
@@ -125,7 +125,7 @@ struct ADCBuilderView: View {
                             .hoverEffect { effect, isActive, proxy in
                                 effect
                                     .animation(.easeInOut(duration: 0.2)) {
-                                        $0.scaleEffect(isActive ? 1.1 : 1.0)
+                                        $0.scaleEffect(isActive ? AppModel.buttonExpandScale : 1.0)
                                     }
                             }
                             .frame(width: 600)
@@ -137,10 +137,6 @@ struct ADCBuilderView: View {
                             EmptyView()
                         }
                     }
-                    
-                
-                
-            
             // Updated navigation chevrons
             if dataModel.adcBuildStep > 0 || dataModel.adcBuildStep < 3 {
                 HStack {
@@ -158,7 +154,7 @@ struct ADCBuilderView: View {
                                 .font(.largeTitle)
                                 .foregroundColor(.white)
                                 .hoverEffect { effect, isActive, proxy in
-                                    effect.scaleEffect(!isActive ? 1.0 : 1.1)
+                                    effect.scaleEffect(!isActive ? 1.0 : AppModel.buttonExpandScale)
                                 }
                         }
                         .glassBackgroundEffect()
@@ -201,7 +197,7 @@ struct ADCBuilderView: View {
                                 .font(.largeTitle)
                                 .foregroundColor(.white)
                                 .hoverEffect { effect, isActive, proxy in
-                                    effect.scaleEffect(!isActive ? 1.0 : 1.1)
+                                    effect.scaleEffect(!isActive ? 1.0 : AppModel.buttonExpandScale)
                                 }
                         }
                         .glassBackgroundEffect()
