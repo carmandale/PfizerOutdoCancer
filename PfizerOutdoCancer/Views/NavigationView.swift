@@ -18,13 +18,6 @@ struct NavigationView: View {
                     width: 150
                 )
                 .fontWeight(.bold)
-                .glassBackgroundEffect()
-                .hoverEffect { effect, isActive, proxy in
-                    effect
-                        .animation(.easeInOut(duration: 0.2)) {
-                            $0.scaleEffect(isActive ? AppModel.UIConstants.buttonExpandScale : 1.0)
-                        }
-                }
             }
         }
         .padding(20)
@@ -67,9 +60,6 @@ struct NavigationView: View {
         }
     }
 }
-
-
-
 
 //#Preview {
 //    NavigationView()

@@ -44,17 +44,9 @@ struct HopeMeterUtilityView: View {
                             appModel.startAttackCancerGame()
                         },
                         font: .title,
-                        scaleEffect: AppModel.UIConstants.buttonExpandScale,
                         width: 250
                     )
                     .fontWeight(.bold)
-                    .glassBackgroundEffect()
-                    .hoverEffect { effect, isActive, proxy in
-                        effect
-                            .animation(.easeInOut(duration: 0.2)) {
-                                $0.scaleEffect(isActive ? AppModel.UIConstants.buttonExpandScale : 1.0)
-                            }
-                    }
                     .padding(.vertical, 30)
                 } else {
                     ZStack(alignment: .leading) {

@@ -50,7 +50,6 @@ struct CompletedView: View {
                         scaleEffect: AppModel.UIConstants.buttonExpandScale
                     )
                     .fontWeight(.bold)
-                    .glassBackgroundEffect()
                 }
             }
         }
