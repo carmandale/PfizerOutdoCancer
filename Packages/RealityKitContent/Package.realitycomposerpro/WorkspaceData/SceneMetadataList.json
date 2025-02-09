@@ -381,6 +381,18 @@
       [
         "1C8A319C-C3C8-4EB5-B82E-7B452D913E6D",
         "Root",
+        "outro_people_v01",
+        "PicturesRoot",
+        "outro",
+        "People_MSR"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "1C8A319C-C3C8-4EB5-B82E-7B452D913E6D",
+        "Root",
         "Outro_v02",
         "Track4"
       ],
@@ -446,8 +458,27 @@
       [
         "1C8A319C-C3C8-4EB5-B82E-7B452D913E6D",
         "Root",
+        "outro_people_v01",
+        "PicturesRoot"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "1C8A319C-C3C8-4EB5-B82E-7B452D913E6D",
+        "Root",
         "outro_v01",
         "logo_MSR"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "1C8A319C-C3C8-4EB5-B82E-7B452D913E6D",
+        "Root",
+        "M_spatial_picture"
       ],
       {
         "isExpanded" : true,
@@ -466,6 +497,15 @@
       [
         "1C8A319C-C3C8-4EB5-B82E-7B452D913E6D",
         "Root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "1C8A319C-C3C8-4EB5-B82E-7B452D913E6D",
+        "Root",
+        "outro_people_v01"
       ],
       {
         "isExpanded" : true,
@@ -530,6 +570,15 @@
       [
         "1C8A319C-C3C8-4EB5-B82E-7B452D913E6D",
         "Root",
+        "M_change"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "1C8A319C-C3C8-4EB5-B82E-7B452D913E6D",
+        "Root",
         "Outro",
         "Track"
       ],
@@ -556,6 +605,19 @@
         "People_MSR",
         "p1",
         "p1_mesh"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "1C8A319C-C3C8-4EB5-B82E-7B452D913E6D",
+        "Root",
+        "outro_people_v01",
+        "PicturesRoot",
+        "outro",
+        "People_MSR",
+        "group_001"
       ],
       {
         "isExpanded" : true,
@@ -669,6 +731,17 @@
         "Root",
         "Outro",
         "Track4"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "1C8A319C-C3C8-4EB5-B82E-7B452D913E6D",
+        "Root",
+        "outro_people_v01",
+        "PicturesRoot",
+        "outro"
       ],
       {
         "isExpanded" : true,
@@ -1381,6 +1454,15 @@
       {
         "isExpanded" : true,
         "isLocked" : false
+      },
+      [
+        "213F9A17-9C89-4C24-A4C4-0BE231165FC0",
+        "root",
+        "Mesh"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
       }
     ]
   },
@@ -1440,6 +1522,15 @@
       [
         "220C04E5-242E-4BBB-82A0-77AFE2744F74",
         "Root",
+        "ADC_spawn"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "220C04E5-242E-4BBB-82A0-77AFE2744F74",
+        "Root",
         "Lab_VO"
       ],
       {
@@ -1469,6 +1560,16 @@
         "220C04E5-242E-4BBB-82A0-77AFE2744F74",
         "Root",
         "Andrew_Narrator"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "220C04E5-242E-4BBB-82A0-77AFE2744F74",
+        "Root",
+        "spin",
+        "Track"
       ],
       {
         "isExpanded" : true,
@@ -1546,6 +1647,16 @@
       [
         "220C04E5-242E-4BBB-82A0-77AFE2744F74",
         "Root",
+        "ADC",
+        "Track"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "220C04E5-242E-4BBB-82A0-77AFE2744F74",
+        "Root",
         "Outro",
         "Track3"
       ],
@@ -1582,6 +1693,34 @@
         "selectedAudioFilePrim" : {
           "string" : "\/Root\/Lab_VO_1_wav"
         }
+      },
+      [
+        "220C04E5-242E-4BBB-82A0-77AFE2744F74",
+        "Root",
+        "ADC"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "220C04E5-242E-4BBB-82A0-77AFE2744F74",
+        "Root",
+        "float"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "220C04E5-242E-4BBB-82A0-77AFE2744F74",
+        "Root",
+        "ADC",
+        "Track2"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
       },
       [
         "220C04E5-242E-4BBB-82A0-77AFE2744F74",
@@ -1637,6 +1776,25 @@
         "220C04E5-242E-4BBB-82A0-77AFE2744F74",
         "Root",
         "sh0100_animation"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "220C04E5-242E-4BBB-82A0-77AFE2744F74",
+        "Root",
+        "spin"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "220C04E5-242E-4BBB-82A0-77AFE2744F74",
+        "Root",
+        "float",
+        "Track"
       ],
       {
         "isExpanded" : true,
@@ -2048,6 +2206,15 @@
       [
         "34734776-6C43-4EC9-AA2B-F6904B89C1ED",
         "root",
+        "Mesh"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "34734776-6C43-4EC9-AA2B-F6904B89C1ED",
+        "root",
         "_materials"
       ],
       {
@@ -2123,6 +2290,19 @@
       [
         "3C484B2E-DEF0-4302-B76F-681C274D34A5",
         "Root",
+        "cancerCell_complex",
+        "body",
+        "Antigens",
+        "antigen_16",
+        "attach_16_offset"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "3C484B2E-DEF0-4302-B76F-681C274D34A5",
+        "Root",
         "ADC_spawn",
         "antibodyProtein_complex_assembled",
         "antibodyProtein_complex_base",
@@ -2146,6 +2326,18 @@
         "3C484B2E-DEF0-4302-B76F-681C274D34A5",
         "Root",
         "Timeline"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "3C484B2E-DEF0-4302-B76F-681C274D34A5",
+        "Root",
+        "cancerCell_complex",
+        "body",
+        "Antigens",
+        "antigen_16"
       ],
       {
         "isExpanded" : true,
@@ -2341,6 +2533,31 @@
         "ADC_complex",
         "antibodyProtein_complex_assembled_clean",
         "antibodyProtein_complex_base_clean"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "3C484B2E-DEF0-4302-B76F-681C274D34A5",
+        "Root",
+        "cancerCell_complex",
+        "body",
+        "Antigens",
+        "antigen_9",
+        "attach_9_offset"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "3C484B2E-DEF0-4302-B76F-681C274D34A5",
+        "Root",
+        "cancerCell_complex",
+        "body",
+        "Antigens",
+        "antigen_9"
       ],
       {
         "isExpanded" : true,
@@ -6981,15 +7198,6 @@
       [
         "8219B444-07C8-4845-902E-82B2639E5982",
         "root",
-        "Transform"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "8219B444-07C8-4845-902E-82B2639E5982",
-        "root",
         "_materials"
       ],
       {
@@ -6999,6 +7207,24 @@
       [
         "8219B444-07C8-4845-902E-82B2639E5982",
         "root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "8219B444-07C8-4845-902E-82B2639E5982",
+        "root",
+        "Transform"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "8219B444-07C8-4845-902E-82B2639E5982",
+        "root",
+        "Mesh_001"
       ],
       {
         "isExpanded" : true,
@@ -7208,6 +7434,32 @@
       [
         "8F147A5E-21A3-494D-B8D5-156DE567ADE6",
         "Root",
+        "ADC_xform_5"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "8F147A5E-21A3-494D-B8D5-156DE567ADE6",
+        "Root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "8F147A5E-21A3-494D-B8D5-156DE567ADE6",
+        "Root",
+        "ADC_xform_2"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "8F147A5E-21A3-494D-B8D5-156DE567ADE6",
+        "Root",
         "People"
       ],
       {
@@ -7225,7 +7477,35 @@
       },
       [
         "8F147A5E-21A3-494D-B8D5-156DE567ADE6",
-        "Root"
+        "Root",
+        "ADC_xform_1"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "8F147A5E-21A3-494D-B8D5-156DE567ADE6",
+        "Root",
+        "ADC_xform_3"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "8F147A5E-21A3-494D-B8D5-156DE567ADE6",
+        "Root",
+        "ADC_xform_4"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "8F147A5E-21A3-494D-B8D5-156DE567ADE6",
+        "Root",
+        "ADC_xform"
       ],
       {
         "isExpanded" : true,
