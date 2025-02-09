@@ -91,68 +91,30 @@ struct AttackCancerViewerButton: View {
     var body: some View {
         Group {
             if shouldShowButton {
-                ZStack {
-                    // Outer gradient border
-                    Capsule()
-                        .frame(width: width, height: height)
-                        .foregroundStyle(LinearGradient(gradient: Gradient(colors: currentTheme.colors), 
-                            startPoint: .top, endPoint: .bottom))
-                        .rotationEffect(.degrees(rotation))
-                        .mask {
-                            Capsule()
-                                .stroke(lineWidth: 20)
-                                .frame(width: 250, height: 60)
-                                .blur(radius: 10)
-                        }
-                        .hoverEffect { effect, isActive, proxy in
-                            effect
-                                .animation(.easeInOut(duration: 0.2)) {
-                                    $0.scaleEffect(isActive ? AppModel.UIConstants.buttonExpandScale : 1.0)
+                NavigationButton(
+                    title: "Attack Cancer",
+                    action: {
+                        if isDebugMode {
+                            cycleTheme()
+                        } else {
+                            Task {
+                                if !appModel.isMainWindowOpen {
+                                    openWindow(id: AppModel.mainWindowId)
+                                    appModel.isMainWindowOpen = true
                                 }
-                        }
-                    
-                    // Inner gradient border
-                    Capsule()
-                        .frame(width: width, height: height)
-                        .foregroundStyle(LinearGradient(gradient: Gradient(colors: currentTheme.colors), 
-                            startPoint: .top, endPoint: .bottom))
-                        .rotationEffect(.degrees(rotation))
-                        .mask {
-                            Capsule()
-                                .stroke(lineWidth: 10)
-                                .frame(width: 250, height: 60)
-                        }
-                        .hoverEffect { effect, isActive, proxy in
-                            effect
-                                .animation(.easeInOut(duration: 0.2)) {
-                                    $0.scaleEffect(isActive ? AppModel.UIConstants.buttonExpandScale : 1.0)
-                                }
-                        }
-                    
-                    // Button
-                    NavigationButton(
-                        title: "Attack Cancer",
-                        action: {
-                            if isDebugMode {
-                                cycleTheme()
-                            } else {
-                                Task {
-                                    if !appModel.isMainWindowOpen {
-                                        openWindow(id: AppModel.mainWindowId)
-                                        appModel.isMainWindowOpen = true
-                                    }
-                                    appModel.isInstructionsWindowOpen = true
-                                    await appModel.transitionToPhase(.playing, adcDataModel: dataModel)
-                                }
+                                appModel.isInstructionsWindowOpen = true
+                                await appModel.transitionToPhase(.playing, adcDataModel: dataModel)
                             }
-                        },
-                        font: .title,
-                        scaleEffect: AppModel.UIConstants.buttonExpandScale,
-                        width: 250
-                    )
-                    .fontWeight(.bold)
-                    .glassBackgroundEffect()
-                }
+                        }
+                    },
+                    font: .title,
+                    scaleEffect: AppModel.UIConstants.buttonExpandScale,
+                    width: 250,
+                    theme: currentTheme,
+                    gradientWidth: width,
+                    gradientHeight: height
+                )
+                .fontWeight(.bold)
                 .onAppear {
                     withAnimation(.linear(duration: 4).repeatForever(autoreverses: false)) {
                         rotation = 360
