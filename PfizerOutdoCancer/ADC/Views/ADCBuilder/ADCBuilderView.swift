@@ -67,17 +67,27 @@ struct ADCBuilderView: View {
             .background(.black.opacity(0.4))
             .frame(width: 800)
 
-            // Description text
-            HStack {
-                Text(descriptions[dataModel.adcBuildStep])
-                    .font(.title3)
-                    .multilineTextAlignment(appModel.immersiveSpaceState == .closed ? .center : .leading)
-                    .fixedSize(horizontal: false, vertical: true)
+            // Description text and progress
+            VStack(spacing: 0) {
+                HStack {
+                    Text(descriptions[dataModel.adcBuildStep])
+                        .font(.title3)
+                        .multilineTextAlignment(appModel.immersiveSpaceState == .closed ? .center : .leading)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .frame(width: 600)
+                .padding(.horizontal, 30)
+                .padding(.top, 30)
+                .padding(.bottom, 12)
+                
+                if dataModel.isVOPlaying {
+                    VOProgressBar(progress: dataModel.voiceOverProgress)
+                        .frame(width: 600)
+                        .padding(.horizontal, 30)
+                        .padding(.vertical, 8)
+                }
             }
-            .frame(width: 600)
-            .padding(.horizontal, 30)
-            .padding(.top, 30)
-            .padding(.bottom, !dataModel.isVOPlaying ? 30 : 60)
+            .padding(.bottom, !dataModel.isVOPlaying ? 30 : 20)
             
             // Selector views or navigation button
             if !dataModel.isVOPlaying { // && dataModel.hasInitialVOCompleted
@@ -295,9 +305,23 @@ extension View {
     }
 }
 
-//#Preview {
-//
-//    ADCBuilderView()
-//        .environment(AppModel())
-//        .environment(ADCDataModel())
-//}
+// MARK: - VOProgressBar
+struct VOProgressBar: View {
+    let progress: Double
+    
+    var body: some View {
+        ProgressView(value: progress)
+            .progressViewStyle(.linear)
+            .tint(
+                LinearGradient(
+                    colors: [
+                        Color("gradient600"),
+                        Color("gradient200")
+                    ],
+                    startPoint: .leading,
+                    endPoint: .trailing
+                )
+            )
+            .frame(height: 2)
+    }
+}

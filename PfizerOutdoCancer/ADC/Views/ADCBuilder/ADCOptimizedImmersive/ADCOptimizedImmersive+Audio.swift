@@ -123,6 +123,7 @@ extension ADCOptimizedImmersive {
         os_log(.debug, "ITR..playSpatialAudio(): Playing spatial audio for step \(step)")
         
         dataModel.isVOPlaying = true
+        dataModel.voiceOverProgress = 0.0
         
         // Stop any currently playing VO
         if let controller = currentVOController {
@@ -162,15 +163,27 @@ extension ADCOptimizedImmersive {
                 os_log(.debug, "ITR..playSpatialAudio(): Started playing nice job audio")
             }
             
-            // 3. Play VO 4 and store the controller
+            // 3. Play VO 4 with progress
             return await withCheckedContinuation { continuation in
                 currentVOController = voEntity.prepareAudio(vo4Audio)
                 currentVOController?.completionHandler = {
-                    os_log(.debug, "ITR..playSpatialAudio(): VO 4 completed")
+                    dataModel.voiceOverProgress = 0.0
                     dataModel.isVOPlaying = false
                     continuation.resume()
                 }
                 currentVOController?.play()
+                
+                // Start progress timer
+                let duration = dataModel.voiceOverDurations[3] ?? 16.0
+                Task {
+                    let startTime = Date()
+                    while dataModel.isVOPlaying {
+                        let elapsed = Date().timeIntervalSince(startTime)
+                        dataModel.voiceOverProgress = min(elapsed / duration, 1.0)
+                        try? await Task.sleep(for: .milliseconds(16)) // ~60fps
+                    }
+                }
+                
                 os_log(.debug, "ITR..playSpatialAudio(): Started playing VO 4")
             }
         }
@@ -193,11 +206,23 @@ extension ADCOptimizedImmersive {
         return await withCheckedContinuation { continuation in
             currentVOController = voEntity.prepareAudio(voResource)
             currentVOController?.completionHandler = {
-                os_log(.debug, "ITR..playSpatialAudio(): VO completed for step \(step)")
+                dataModel.voiceOverProgress = 0.0
                 dataModel.isVOPlaying = false
                 continuation.resume()
             }
             currentVOController?.play()
+            
+            // Start progress timer
+            let duration = dataModel.voiceOverDurations[step] ?? 18.0
+            Task {
+                let startTime = Date()
+                while dataModel.isVOPlaying {
+                    let elapsed = Date().timeIntervalSince(startTime)
+                    dataModel.voiceOverProgress = min(elapsed / duration, 1.0)
+                    try? await Task.sleep(for: .milliseconds(16)) // ~60fps
+                }
+            }
+            
             os_log(.debug, "ITR..playSpatialAudio(): Started playing VO for step \(step)")
         }
     }

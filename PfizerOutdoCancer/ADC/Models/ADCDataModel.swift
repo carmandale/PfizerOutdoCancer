@@ -28,6 +28,15 @@ class ADCDataModel {
     
     public var manualStepTransition: Bool = false
     
+    // Voice-over progress tracking
+    public var voiceOverProgress: Double = 0.0
+    let voiceOverDurations: [Int: TimeInterval] = [
+        0: 18.0,  // VO1
+        1: 22.0,  // VO2
+        2: 28.0,  // VO3
+        3: 16.0   // VO4
+    ]
+    
     var isCurrentStepComplete: Bool {
         switch adcBuildStep {
         case 0:
