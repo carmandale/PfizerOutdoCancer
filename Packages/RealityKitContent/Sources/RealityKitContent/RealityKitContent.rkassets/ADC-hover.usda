@@ -1,0 +1,148 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 2.0 (448.60.4)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    reorder nameChildren = ["spin", "ADC", "float"]
+    def "ADC_spawn" (
+        active = true
+        references = @ADC-spawn.usda@
+    )
+    {
+        float3 xformOp:scale = (1, 1, 1)
+
+        over "SpatialAudio"
+        {
+            float gain = -32.94394
+        }
+    }
+
+    def RealityKitTimeline "spin"
+    {
+        def RealityKitTrack "Track"
+        {
+            def RealityKitAction "Spin"
+            {
+                string actionKind = "spin"
+                int blendLayer = 400
+                double duration = 3
+                uniform token info:id = "FD272600-1D1E-46DE-BE21-CDCAFEBA0501"
+                double startTime = 0
+                rel target = </Root/ADC_spawn>
+
+                def RealityKitStruct "timingFunction"
+                {
+                    token type = "linear"
+                }
+            }
+        }
+    }
+
+    def RealityKitTimeline "ADC"
+    {
+        reorder nameChildren = ["Track", "Track2", "Track3", "Track4", "Track5"]
+        def RealityKitTrack "Track"
+        {
+            def RealityKitAction "Play_Timeline"
+            {
+                string actionKind = "timeline"
+                int blendLayer = 500
+                double duration = 3
+                uniform token info:id = "F593D2DF-E596-40ED-BD51-87B4F75167D5"
+                double loopCount = 0
+                double startTime = 0
+                rel timeline = </Root/spin>
+            }
+        }
+
+        def RealityKitTrack "Track2"
+        {
+            def RealityKitAction "Play_Timeline"
+            {
+                string actionKind = "timeline"
+                int blendLayer = 500
+                double duration = 2.0000000001
+                uniform token info:id = "00893CEF-20E4-4D1F-89DB-7584C3787B4A"
+                double loopCount = 0
+                double startTime = 0
+                rel timeline = </Root/float>
+            }
+        }
+    }
+
+    def RealityKitTimeline "float"
+    {
+        def RealityKitTrack "Track"
+        {
+            def RealityKitAction "Transform_By"
+            {
+                string actionKind = "moveBy"
+                int blendLayer = 300
+                double duration = 1
+                uniform token info:id = "ADF83FC4-7E00-41FB-BD76-7C516893C002"
+                float3 position = (0, 0.02, 0)
+                double startTime = 0
+                rel target = </Root/ADC_spawn>
+
+                def RealityKitStruct "timingFunction"
+                {
+                    token type = "easeInOut"
+                }
+            }
+
+            def RealityKitAction "Transform_By2"
+            {
+                string actionKind = "moveBy"
+                int blendLayer = 300
+                double duration = 1
+                uniform token info:id = "6E50F7DD-859C-4286-A389-F32BDD0B5590"
+                float3 position = (0, -0.02, 0)
+                double startTime = 1.0000000001
+                rel target = </Root/ADC_spawn>
+
+                def RealityKitStruct "timingFunction"
+                {
+                    token type = "easeInOut"
+                }
+            }
+        }
+    }
+
+    def RealityKitComponent "RCP_BehaviorsContainer"
+    {
+        rel behaviors = </Root/OnAddedToScene>
+        uniform token info:id = "RCP.BehaviorsContainer"
+    }
+
+    def Preliminary_Behavior "OnAddedToScene"
+    {
+        rel actions = </Root/OnAddedToScene/Action>
+        uniform bool exclusive
+        rel triggers = </Root/OnAddedToScene/Trigger>
+
+        def Preliminary_Trigger "Trigger"
+        {
+            rel affectedObjects = </Root>
+            token info:id = "SceneTransition"
+        }
+
+        def Preliminary_Action "Action"
+        {
+            rel affectedObjects = </Root>
+            rel animationLibraryKey = </Root/ADC>
+            rel animationLibraryKeyOverrideKey = </Root/OnAddedToScene/Trigger>
+            token info:id = "PlayTimeline"
+            int loops = 0
+            int performCount = 1
+            token type = "serial"
+        }
+    }
+}
+
