@@ -39,10 +39,11 @@ extension AttackCancerViewModel {
         }
         print("📊 Total hits across all cells: \(totalHits)")
         
-        cellsDestroyed = cellParameters.filter { params in
+        let destroyedCount = cellParameters.filter { params in
             params.hitCount >= params.requiredHits
         }.count
-        print("💀 Total cells destroyed: \(cellsDestroyed)")
+        appModel.gameState.cellsDestroyed = destroyedCount
+        print("💀 Total cells destroyed: \(destroyedCount)")
         
         // Check game conditions and notify state changes
         checkGameConditions()
@@ -52,7 +53,7 @@ extension AttackCancerViewModel {
     
     private func checkGameConditions() {
         // Check if all cells are destroyed
-        if cellsDestroyed >= maxCancerCells {
+        if appModel.gameState.cellsDestroyed >= cellParameters.count {
             Task { @MainActor in
                 // Instead of immediately ending, accelerate the hope meter
                 print("🎯 All cells destroyed - accelerating hope meter")

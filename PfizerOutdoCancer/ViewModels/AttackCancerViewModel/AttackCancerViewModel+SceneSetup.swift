@@ -26,6 +26,9 @@ extension AttackCancerViewModel {
     func setupEnvironment(in root: Entity, attachments: RealityViewAttachments) async {
         print("🎯 Setting up AttackCancerView environment...")
         
+        // Setup notifications first
+        setupNotifications()
+        
         // IBL
         do {
             try await IBLUtility.addImageBasedLighting(to: root, imageName: "metro_noord_2k")
@@ -159,6 +162,11 @@ extension AttackCancerViewModel {
     @MainActor
     private func setupGameContent(in root: Entity, attachments: RealityViewAttachments) async {
         print("\n=== Initializing Cell States ===")
+        
+        // Reset game state before starting main game
+        appModel.gameState.cellsDestroyed = 0
+        cellParameters.removeAll()
+        
         cellStates = Array(repeating: CellState(), count: maxCancerCells)
         
         // ADC template is already set up during phase transition
@@ -178,7 +186,7 @@ extension AttackCancerViewModel {
                     // Set initial required hits
                     if let state = cell.components[CancerCellStateComponent.self] {
                         cellStates[i].requiredHits = state.parameters.requiredHits
-                        print("🎯 Counter \(i) ready: \(cellStates[i].hits)/\(cellStates[i].requiredHits)")
+                        print("🎯 Cell \(i) initialized - Required hits: \(state.parameters.requiredHits)")
                     }
                     
                     // Setup hit tracking closure
@@ -194,13 +202,28 @@ extension AttackCancerViewModel {
                                 
                                 // Track stats
                                 if !wasDestroyed && state.parameters.isDestroyed {
-                                    appModel.gameState.cellsDestroyed += 1
-                                    print("💀 Cell \(i) destroyed - Total destroyed: \(appModel.gameState.cellsDestroyed)")
+                                    // Calculate destroyed cells by checking actual state
+                                    let destroyedCount = cellParameters.filter { params in
+                                        !params.isTutorialCell && params.hitCount >= params.requiredHits
+                                    }.count
+                                    
+                                    let totalGameCells = cellParameters.filter { !$0.isTutorialCell }.count
+                                    
+                                    appModel.gameState.cellsDestroyed = destroyedCount
+                                    print("💀 Cell \(i) destroyed - Total game cells destroyed: \(destroyedCount)/\(totalGameCells)")
+                                    
+                                    // Only check for game completion if we're not in tutorial
+                                    if !state.parameters.isTutorialCell && destroyedCount >= totalGameCells {
+                                        print("🎯 All game cells destroyed! Accelerating hope meter...")
+                                        Task {
+                                            await appModel.accelerateHopeMeterToCompletion()
+                                        }
+                                    }
                                 }
                                 
                                 // Only log actual changes
                                 if oldHits != state.parameters.hitCount {
-                                    print("📊 Cell \(i): \(state.parameters.hitCount)/\(state.parameters.requiredHits) hits")
+                                    print("📊 Cell \(i) hit - Current hits: \(state.parameters.hitCount)/\(state.parameters.requiredHits)")
                                 }
                             }
                         }

@@ -1,5 +1,3 @@
-
-
 import SwiftUI
 import RealityKit
 import RealityKitContent
@@ -33,8 +31,9 @@ extension AttackCancerViewModel {
             }
         }
         
-//        print("=== Finished Spawning ===")
-//        print("Total parameters created: \(cellParameters.count)")
+        print("=== Finished Spawning ===")
+        print("Total parameters created: \(cellParameters.count)")
+        print("Initial cellsDestroyed count: \(appModel.gameState.cellsDestroyed)")
     }
     
     private func spawnSingleCancerCell(in root: Entity, from template: Entity, index: Int, preferFront: Bool) async -> Entity? {

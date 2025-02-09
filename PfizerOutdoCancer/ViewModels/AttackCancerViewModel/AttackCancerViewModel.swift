@@ -58,7 +58,7 @@ final class AttackCancerViewModel {
 //    var dataModel: ADCDataModel!
     
     // MARK: - Game Stats
-    var maxCancerCells: Int = 20
+    var maxCancerCells: Int = 2
     var cellsDestroyed: Int = 0
     var totalADCsDeployed: Int = 0
     var totalTaps: Int = 0
