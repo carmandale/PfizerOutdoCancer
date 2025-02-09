@@ -121,13 +121,6 @@ struct ADCBuilderView: View {
                             )
                             .opacity(dataModel.adcBuildStep == 3 ? 1 : 0)
                             .fontWeight(.bold)
-                            .glassBackgroundEffect()
-                            .hoverEffect { effect, isActive, proxy in
-                                effect
-                                    .animation(.easeInOut(duration: 0.2)) {
-                                        $0.scaleEffect(isActive ? AppModel.UIConstants.buttonExpandScale : 1.0)
-                                    }
-                            }
                             .frame(width: 600)
                             .padding(.top, 10)
                             .padding(.bottom, 30)
