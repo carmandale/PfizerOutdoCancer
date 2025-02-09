@@ -218,6 +218,9 @@ extension ADCMovementSystem {
     /// Safely interpolates between two quaternions with validation
     internal static func safeSlerp(from start: simd_quatf, to end: simd_quatf, t: Float) -> simd_quatf {
         guard validateQuaternion(start) && validateQuaternion(end) else {
+            #if DEBUG
+            print("⚠️ Invalid quaternions in slerp - using start quaternion")
+            #endif
             return start
         }
         return simd_slerp(start, end, t)
@@ -260,7 +263,9 @@ extension ADCMovementSystem {
               let antigen = antigenOffset.parent,
               let scene = antigen.scene,
               let cell = findParentCancerCell(for: antigen, in: scene) else {
+            #if DEBUG
             print("⚠️ No parent cell found for target - using target orientation")
+            #endif
             return target.orientation(relativeTo: nil)
         }
         
@@ -286,14 +291,18 @@ extension ADCMovementSystem {
         // #endif
         
         guard !normal.x.isNaN && !normal.y.isNaN && !normal.z.isNaN else {
+            #if DEBUG
             print("⚠️ Invalid surface normal computed - using target orientation")
+            #endif
             return target.orientation(relativeTo: nil)
         }
         
         // Base rotation to align ADC's up vector with surface normal
         let baseRotation = simd_quatf(from: SIMD3<Float>(0, 1, 0), to: normal)
         guard validateQuaternion(baseRotation) else {
+            #if DEBUG
             print("⚠️ Invalid base rotation - using target orientation")
+            #endif
             return target.orientation(relativeTo: nil)
         }
         
@@ -304,7 +313,9 @@ extension ADCMovementSystem {
         // Combine rotations and validate
         let finalOrientation = normalizeQuaternion(randomRotation * baseRotation)
         if !validateQuaternion(finalOrientation) {
+            #if DEBUG
             print("⚠️ Invalid final orientation - using target orientation")
+            #endif
             return target.orientation(relativeTo: nil)
         }
         
@@ -360,25 +371,33 @@ extension ADCMovementSystem {
                                                       currentOrientation: simd_quatf) -> Bool {
         // Check for NaN values in direction vector
         if direction.x.isNaN || direction.y.isNaN || direction.z.isNaN {
+            #if DEBUG
             print("⚠️ Invalid direction vector in orientation calculation")
+            #endif
             return false
         }
         
         // Validate current orientation
         if !validateQuaternion(currentOrientation) {
+            #if DEBUG
             print("⚠️ Invalid current orientation in calculation")
+            #endif
             return false
         }
         
         // Validate progress value
         if progress.isNaN || progress < 0 || progress > 1 {
+            #if DEBUG
             print("⚠️ Invalid progress value: \(progress)")
+            #endif
             return false
         }
         
         // Validate entity has required components
         if entity.components[ADCComponent.self] == nil {
+            #if DEBUG
             print("⚠️ Entity missing ADC component")
+            #endif
             return false
         }
         
@@ -407,19 +426,25 @@ extension ADCMovementSystem {
     internal static func validateLandingTransform(_ transform: Transform) -> Bool {
         // Check position
         if transform.translation.x.isNaN || transform.translation.y.isNaN || transform.translation.z.isNaN {
+            #if DEBUG
             print("⚠️ Invalid landing position")
+            #endif
             return false
         }
         
         // Check rotation
         if !validateQuaternion(transform.rotation) {
+            #if DEBUG
             print("⚠️ Invalid landing rotation")
+            #endif
             return false
         }
         
         // Check scale (should be uniform)
         if transform.scale.x != transform.scale.y || transform.scale.y != transform.scale.z {
+            #if DEBUG
             print("⚠️ Non-uniform scale in landing transform")
+            #endif
             return false
         }
         
