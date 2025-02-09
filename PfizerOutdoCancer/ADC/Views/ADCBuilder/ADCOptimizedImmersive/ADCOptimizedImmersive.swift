@@ -80,7 +80,7 @@ struct ADCOptimizedImmersive: View {
     @State var isCameraInitialized = false
     
     // let antibodyAttachmentOffset: SIMD3<Float> = SIMD3(-0.5, 0, 0)
-    let linkerAttachmentOffset: SIMD3<Float> = SIMD3(0.35, 0, 0)
+    let linkerAttachmentOffset: SIMD3<Float> = SIMD3(0.25, 0, 0)
     let payloadAttachmentOffset: SIMD3<Float> = SIMD3(0.35, 0, 0)
     let defaultZPosition: Float = -1.0
     let antibodyRootOffset: SIMD3<Float> = SIMD3(0, 0, 0)
