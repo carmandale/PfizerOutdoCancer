@@ -9,26 +9,26 @@ extension Color {
     }
     
     static var adcDarkBlue: Color {
-        Color(hex: 0x0000c9)
+        Color(.sRGB, red: 0.0, green: 0.0, blue: 0.788, opacity: 1.0)
     }
     static var adcLightBlue: Color {
-        Color(hex: 0x4178C6)
+        Color(.sRGB, red: 0.0, green: 0.584, blue: 1.0, opacity: 1.0)
     }
     static var adcYellow: Color {
-        Color(hex: 0xB28E34)
+        Color(.sRGB, red: 1.0, green: 0.81, blue: 0.233, opacity: 1.0)
     }
     static var adcWhite: Color {
         Color(hex: 0xFFFFFF)
     }
     
     static var adcDarkBlueEmissive: Color {
-        Color(hex: 0xACA8FF)
+        Color(.sRGB, red: 0.261, green: 0.261, blue: 0.788, opacity: 1.0)
     }
     static var adcLightBlueEmissive: Color {
-        Color(hex: 0xA8CCFF)
+        Color(.sRGB, red: 0.301, green: 0.709, blue: 1.0, opacity: 1.0)
     }
     static var adcYellowEmissive: Color {
-        Color(hex: 0xFFE6A9)
+        Color(.sRGB, red: 1.0, green: 1.0, blue: 0.656, opacity: 1.0)
     }
     static var adcWhiteEmissive: Color {
         Color(hex: 0xFFFFFF)
@@ -56,26 +56,26 @@ extension UIColor {
     }
     
     static var adcDarkBlue: UIColor {
-        UIColor(hex: 0x0000c9)
+        UIColor(red: 0.0, green: 0.0, blue: 0.788, alpha: 1.0)
     }
     static var adcLightBlue: UIColor {
-        UIColor(hex: 0x4178C6)
+        UIColor(red: 0.0, green: 0.584, blue: 1.0, alpha: 1.0)
     }
     static var adcYellow: UIColor {
-        UIColor(hex: 0xB28E34)
+        UIColor(red: 1.0, green: 0.81, blue: 0.233, alpha: 1.0)
     }
     static var adcWhite: UIColor {
         UIColor(hex: 0xFFFFFF)
     }
     
     static var adcDarkBlueEmissive: UIColor {
-        UIColor(hex: 0xACA8FF)
+        UIColor(red: 0.261, green: 0.261, blue: 0.788, alpha: 1.0)
     }
     static var adcLightBlueEmissive: UIColor {
-        UIColor(hex: 0xA8CCFF)
+        UIColor(red: 0.301, green: 0.709, blue: 1.0, alpha: 1.0)
     }
     static var adcYellowEmissive: UIColor {
-        UIColor(hex: 0xFFE6A9)
+        UIColor(red: 1.0, green: 1.0, blue: 0.656, alpha: 1.0)
     }
     static var adcWhiteEmissive: UIColor {
         UIColor(hex: 0xFFFFFF)
