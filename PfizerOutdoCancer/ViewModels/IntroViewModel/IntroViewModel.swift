@@ -307,7 +307,7 @@ final class IntroViewModel {
         labViewerEntity = nil
         navToggleEntity = nil
         
-        // Reset state
+        // Reset state flags
         showTitleText = false
         shouldDimSurroundings = false
         isSetupComplete = false

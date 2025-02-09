@@ -314,6 +314,22 @@ final class AppModel {
             }
         }
         
+        // Pre-load intro environment before transitioning to intro phase
+        if newPhase == .intro {
+            print("\n=== Pre-loading Intro Phase Assets ===")
+            print("📱 Pre-loading intro environment...")
+            do {
+                _ = try await assetLoadingManager.instantiateAsset(
+                    withName: "intro_environment",
+                    category: .introEnvironment
+                )
+                print("✅ Intro environment cached")
+                print("=== Intro Phase Assets Ready ===\n")
+            } catch {
+                print("❌ Failed to pre-load intro environment: \(error)")
+            }
+        }
+        
         // Pre-load outro environment before transitioning to outro phase
         if newPhase == .outro {
             print("\n=== Pre-loading Outro Phase Assets ===")
@@ -370,6 +386,11 @@ final class AppModel {
         
         // Set the new phase
         currentPhase = newPhase
+        
+        // Clean up intro state when transitioning TO intro to ensure fresh state
+        if newPhase == .intro {
+            introState.cleanup()
+        }
         
         // Then start tracking if the new phase needs it
         if newPhase.needsHandTracking {

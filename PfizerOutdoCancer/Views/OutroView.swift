@@ -1,5 +1,5 @@
 //
-//  IntroView.swift
+//  OutroView.swift
 //  SpawnAndAttrack
 //
 //  Created by Dale Carman on 10/23/24.

@@ -19,34 +19,59 @@ struct IntroView: View {
         @Bindable var appModel = appModel
         
         RealityView { content, attachments in
-            print("📱 IntroView: Setting up RealityView")
-            // Set up root entity if needed
-            let root: Entity
-            if let existingRoot = appModel.introState.introRootEntity {
-                root = existingRoot
-            } else {
-                root = appModel.introState.setupIntroRoot()
-            }
-            // Adjust positioning
+            print("\n=== Setting up IntroView ===")
+            
+            // Create fresh root entity
+            let root = appModel.introState.setupIntroRoot()
             root.components.set(PositioningComponent(
                 offsetX: 0,
                 offsetY: -1.5,
                 offsetZ: -1.0
             ))
             content.add(root)
+            print("✅ Added root to content")
             
-            // Store SwiftUI attachment entities
-            if let titleEntity = attachments.entity(for: "titleText"),
-               let labViewerEntity = attachments.entity(for: "labViewer"),
-               let navToggleEntity = attachments.entity(for: "navToggle") {
-                print("📱 IntroView: Found SwiftUI attachments")
-                appModel.introState.titleEntity = titleEntity
-                appModel.introState.labViewerEntity = labViewerEntity
-                appModel.introState.navToggleEntity = navToggleEntity
-            } else {
-                print("❌ IntroView: Failed to get SwiftUI attachments")
+            // Handle environment and attachments in Task
+            Task { @MainActor in
+                do {
+                    // Load environment first
+                    print("📱 IntroView: Starting environment setup")
+                    await appModel.introState.setupEnvironment(in: root)
+                    appModel.introState.environmentLoaded = true
+                    print("✅ Environment setup complete")
+                    
+                    // Now that environment is loaded, handle attachments
+                    if let titleEntity = attachments.entity(for: "titleText"),
+                       let labViewerEntity = attachments.entity(for: "labViewer"),
+                       let navToggleEntity = attachments.entity(for: "navToggle") {
+                        print("📱 IntroView: Found SwiftUI attachments")
+                        
+                        // Store attachments in view model
+                        appModel.introState.titleEntity = titleEntity
+                        appModel.introState.labViewerEntity = labViewerEntity
+                        appModel.introState.navToggleEntity = navToggleEntity
+                        
+                        // Get portal and set up attachments
+                        if let portal = appModel.introState.getPortal() {
+                            print("✅ Found portal for attachments")
+                            
+                            // Set up attachments on portal
+                            appModel.introState.setupAttachments(
+                                for: portal,
+                                titleEntity: titleEntity,
+                                labViewerEntity: labViewerEntity
+                            )
+                            
+                            // Start animation sequence
+                            print("📱 IntroView: Starting animation sequence")
+                            await appModel.introState.runAnimationSequence()
+                            appModel.introState.isSetupComplete = true
+                        }
+                    }
+                } catch {
+                    print("❌ IntroView: Setup failed: \(error)")
+                }
             }
-            
         } attachments: {
             Attachment(id: "titleText") {
                 OutdoCancer(showTitle: $appModel.introState.showTitleText)
@@ -61,66 +86,16 @@ struct IntroView: View {
         .preferredSurroundingsEffect(surroundingsEffect)
         .onAppear {
             print("\n=== IntroView Appeared ===")
-            // Add tint animation
             withAnimation(.linear(duration: 30.0)) {
                 tintIntensity = 0.02
             }
         }
-        .onAppear {
-            // Make sure the root entity is created as soon as the view appears.
-            if appModel.introState.introRootEntity == nil {
-                _ = appModel.introState.setupIntroRoot()
-                print("📱 IntroView: setupIntroRoot() called in onAppear")
-            }
-        }
-        // Remove the dynamic id to ensure the task runs only once
+        // Keep tracking tasks separate
         .task {
-            // If the complete flag is already true, skip re-running setup.
-            guard !appModel.introState.isSetupComplete else {
-                print("📱 IntroView: Setup already complete, skipping")
-                return
-            }
-            
-            // Wait briefly until the attachments are set.
-            // (Alternatively, you could use Combine or another mechanism to detect when they are ready.)
-            while appModel.introState.titleEntity == nil || appModel.introState.labViewerEntity == nil {
-                try? await Task.sleep(nanoseconds: 50_000_000) // 50ms
-            }
-            
-            guard let root = appModel.introState.introRootEntity else {
-                print("❌ IntroView: No root entity found in task")
-                return
-            }
-            
-            // Load environment only once using a separate flag.
-            if !appModel.introState.environmentLoaded {
-                print("📱 IntroView: Starting environment setup in task")
-                await appModel.introState.setupEnvironment(in: root)
-                appModel.introState.environmentLoaded = true
-            }
-            
-            print("📱 IntroView: Checking portal and attachments")
-            if let portal = appModel.introState.getPortal() {
-                print("✅ IntroView: Found portal")
-                if let titleEntity = appModel.introState.titleEntity,
-                   let labViewerEntity = appModel.introState.labViewerEntity {
-                    print("✅ IntroView: Found both SwiftUI attachments")
-                    print("📱 IntroView: Setting up portal attachments")
-                    appModel.introState.setupAttachments(
-                        for: portal,
-                        titleEntity: titleEntity,
-                        labViewerEntity: labViewerEntity
-                    )
-                    
-                    print("📱 IntroView: Starting animation sequence")
-                    await appModel.introState.runAnimationSequence()
-                    appModel.introState.isSetupComplete = true
-                } else {
-                    print("❌ IntroView: Missing one or both SwiftUI attachments")
-                }
-            } else {
-                print("❌ IntroView: Portal not found")
-            }
+            await appModel.trackingManager.processWorldTrackingUpdates()
+        }
+        .task {
+            await appModel.trackingManager.monitorTrackingEvents()
         }
     }
 }
