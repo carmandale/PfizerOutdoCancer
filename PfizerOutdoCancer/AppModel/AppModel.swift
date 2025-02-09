@@ -33,6 +33,7 @@ extension AppModel {
         static let buttonPaddingHorizontal: CGFloat = 24
         static let buttonPaddingVertical: CGFloat = 16
         static let buttonExpandScale: CGFloat = 1.1
+        static let buttonPressScale: CGFloat = 0.95
         
         // Animation Durations
         static let buttonHoverDuration: CGFloat = 0.2
@@ -228,22 +229,19 @@ final class AppModel {
         hopeMeterTimer?.invalidate()
         hopeMeterTimer = nil
         
-        // Calculate how many seconds are left
-        let remainingTime = gameState.hopeMeterTimeLeft
-        
         // Create a high-frequency timer for smooth animation
         // We'll update 60 times during the 1-second animation
         let updateInterval = 1.0 / 60.0
-        let decrementPerUpdate = remainingTime / 60.0
+        let progressPerUpdate = (gameState.hopeMeterDuration - gameState.hopeMeterTimeLeft) / 60.0
         
-        // Animate the timer down over 1 second
+        // Animate to full duration over 1 second
         for _ in 0..<60 {
-            gameState.hopeMeterTimeLeft -= decrementPerUpdate
+            gameState.hopeMeterTimeLeft += progressPerUpdate
             try? await Task.sleep(for: .seconds(updateInterval))
         }
         
-        // Ensure we hit exactly zero
-        gameState.hopeMeterTimeLeft = 0
+        // Ensure we hit exactly the full duration
+        gameState.hopeMeterTimeLeft = gameState.hopeMeterDuration
         
         // Complete the game
         gameState.isHopeMeterRunning = false
