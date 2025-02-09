@@ -1,0 +1,42 @@
+---
+description: Immersive Spaces
+globs: 
+---
+
+---
+
+
+```markdown
+# Immersive Scenes Best Practices
+
+visionOS supports immersive experiences where content fills a three-dimensional space. Use immersive scenes judiciously and only when the task benefits from spatial depth.
+
+### Key Guidelines
+
+- **Select the Correct Immersion Level:**  
+  Use windowed or mixed experiences by default and reserve full immersion for content that truly needs it.
+
+- **Provide Smooth Transitions:**  
+  If your app shifts between windowed and immersive modes, animate the transition to maintain user context.
+
+- **Respect User Comfort:**  
+  Ensure immersive content is within a comfortable distance and does not require excessive head or arm movement.
+
+### Example
+
+Below is a simplified example using a hypothetical `ImmersiveSpace` container (as described in Apple’s VisionOS documentation):
+
+```swift
+import SwiftUI
+import VisionOS
+
+struct ImmersiveContentView: View {
+    var body: some View {
+        ImmersiveSpace {
+            // Content placed in an immersive space
+            Text("Welcome to Immersive World")
+                .font(.title)
+                .padding()
+        }
+    }
+}

@@ -1,0 +1,57 @@
+---
+description: use these patterns when creating components and systems and working with entities
+globs: 
+---
+
+---
+
+
+```markdown
+# ECS Patterns (Entities, Components, Systems)
+
+RealityKit follows an Entity–Component–System (ECS) architecture to promote modularity. Design your 3D objects by composing entities from components and, when needed, applying system‑level logic.
+
+### Key Guidelines
+
+- **Compose Behavior with Components:**  
+  Instead of subclassing, attach multiple components (e.g. model, physics, collision) to an entity.
+
+- **Define Custom Components When Needed:**  
+  If built‑in components are insufficient, define your own data types that conform to RealityKit’s Component protocols.
+
+- **Implement Systems for Shared Behavior:**  
+  Use systems to operate on groups of entities that share components rather than writing per‑entity update code.
+
+### Example
+
+Below is an example adapted from Apple’s guidelines for creating a custom component and system in RealityKit. (Note: The ECS APIs may evolve; please refer to the latest RealityKit docs for the current APIs.)
+
+```swift
+import RealityKit
+
+// Custom component to add spinning behavior
+struct SpinComponent: Component {
+    var speed: Float
+}
+
+// Extend Entity for convenient access to SpinComponent
+extension Entity {
+    var spinComponent: SpinComponent? {
+        get { self.components[SpinComponent.self] as? SpinComponent }
+        set { self.components.set(newValue, for: SpinComponent.self) }
+    }
+}
+
+// A simplified custom system that updates entities with a SpinComponent.
+// (This example follows common ECS patterns—adapt as needed per the latest RealityKit API.)
+struct SpinSystem: System {
+    func update(context: SceneUpdateContext) {
+        let deltaTime = Float(context.deltaTime)
+        for entity in context.scene.performQuery(SpinComponent.self) {
+            if var spin = entity.spinComponent {
+                // Rotate the entity along the Y‑axis based on the speed component.
+                entity.transform.rotation *= simd_quatf(angle: spin.speed * deltaTime, axis: [0, 1, 0])
+            }
+        }
+    }
+}

@@ -1,0 +1,48 @@
+---
+description: info about using the World Tracking Provider
+globs: 
+---
+
+---
+
+
+```markdown
+# World Tracking & Scene Understanding
+
+When building experiences that interact with the real world, use ARKit’s world tracking and scene reconstruction to anchor virtual content accurately.
+
+### Key Guidelines
+
+- **Configure ARWorldTracking:**  
+  Use `ARWorldTrackingConfiguration` to enable plane detection and, if supported, scene reconstruction for a mesh of the environment.
+
+- **Anchor Virtual Content:**  
+  Use anchors (such as `AnchorEntity`) to attach content to detected planes or images.
+
+- **Handle Tracking States Gracefully:**  
+  Monitor ARKit’s tracking state and provide user feedback if tracking quality diminishes.
+
+### Example
+
+This example shows a custom ARView subclass that configures ARKit for world tracking and scene reconstruction:
+
+```swift
+import ARKit
+import RealityKit
+
+class WorldTrackingARView: ARView {
+    required init(frame frameRect: CGRect) {
+        super.init(frame: frameRect)
+        let config = ARWorldTrackingConfiguration()
+        config.planeDetection = [.horizontal, .vertical]
+        // Enable scene reconstruction if supported on the device
+        if ARWorldTrackingConfiguration.supportsSceneReconstruction(.mesh) {
+            config.sceneReconstruction = .mesh
+        }
+        session.run(config)
+    }
+
+    @objc required dynamic init?(coder decoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}

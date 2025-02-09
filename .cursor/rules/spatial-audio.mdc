@@ -1,0 +1,37 @@
+---
+description: information about using spatial audio
+globs: 
+---
+
+---
+
+
+```markdown
+# Spatial Audio Best Practices
+
+Spatial Audio is integral to immersive experiences on visionOS. Use RealityKit’s spatial audio components so that sounds emanate naturally from their virtual locations.
+
+### Key Guidelines
+
+- **Attach Audio to Entities:**  
+  Use the `SpatialAudioComponent` on RealityKit entities to ensure audio is rendered with correct positional cues.
+
+- **Tune Audio Parameters:**  
+  Adjust parameters such as cone attenuation and distance roll‑off so that sound levels feel natural as the user moves.
+
+- **Integrate with Visual Cues:**  
+  Coordinate audio playback with animations or other interactions to reinforce feedback.
+
+### Example
+
+This snippet demonstrates loading an audio file and attaching it as spatial audio to an entity:
+
+```swift
+import RealityKit
+
+// Load an audio resource (ensure the file exists in your bundle)
+if let audioResource = try? AudioFileResource.load(named: "AmbientSound.wav", in: nil) {
+    let spatialAudio = SpatialAudioComponent(resource: audioResource, isPositional: true)
+    // Attach the spatial audio component to your entity
+    entity.components.set(spatialAudio)
+}

@@ -1,0 +1,55 @@
+---
+description: creating custom hover effects
+globs: 
+---
+# Custom Hover Effects Best Practices
+
+When designing spatial interfaces (for example, on visionOS) it’s important that hover effects are subtle, clear, and responsive. Use SwiftUI’s built‑in view modifiers (such as `onHover`) together with smooth animations to provide immediate visual feedback when the user’s gaze (or pointer) rests on an interactive element.
+
+### Key Guidelines
+
+- **Provide Clear Feedback:**  
+  Indicate interactivity by adjusting properties such as scale, shadow, or opacity when a view is hovered. Avoid overly dramatic changes.
+
+- **Keep Animations Smooth:**  
+  Use system‑recommended animations (e.g. `.easeInOut`) so that changes occur naturally and in sync with other system interactions.
+
+- **Consider Accessibility:**  
+  Ensure that hover effects do not rely solely on color or brightness changes; combine multiple visual cues so that the effect is clear to all users.
+
+### Example
+
+The following example defines a custom view modifier that scales and adds a shadow when the view is hovered. This pattern is consistent with techniques shown in Apple’s SwiftUI documentation:
+
+```swift
+import SwiftUI
+
+struct CustomHoverEffectModifier: ViewModifier {
+    @State private var isHovered = false
+
+    func body(content: Content) -> some View {
+        content
+            .scaleEffect(isHovered ? 1.05 : 1.0)
+            .shadow(color: isHovered ? Color.primary.opacity(0.3) : Color.clear, radius: 10)
+            .animation(.easeInOut(duration: 0.2), value: isHovered)
+            .onHover { hovering in
+                isHovered = hovering
+            }
+    }
+}
+
+extension View {
+    func customHoverEffect() -> some View {
+        self.modifier(CustomHoverEffectModifier())
+    }
+}
+
+struct HoverExampleView: View {
+    var body: some View {
+        Text("Hover Over Me")
+            .padding()
+            .background(Color.accentColor)
+            .cornerRadius(8)
+            .customHoverEffect()
+    }
+}

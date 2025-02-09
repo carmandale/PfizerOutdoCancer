@@ -1,0 +1,36 @@
+---
+description: realityKit 3D animation
+globs: 
+---
+
+---
+
+
+```markdown
+# 3D Animation for Entities
+
+For animating 3D entities, use RealityKit’s high‑level animation APIs. These APIs allow you to load, play, and control animations authored in Reality Composer Pro or created programmatically.
+
+### Key Guidelines
+
+- **Use Built‑in Animation Resources:**  
+  Load animations from USDZ files or Reality Composer Pro projects using `AnimationResource`.
+
+- **Play Animations via Entity Methods:**  
+  Use the `playAnimation(_:transitionDuration:startsPaused:)` method to start animations on an entity.
+
+- **Coordinate Animations with Other Effects:**  
+  Consider synchronizing animations with spatial audio or other visual effects for a coherent experience.
+
+### Example
+
+This snippet demonstrates loading and playing an animation on an entity:
+
+```swift
+import RealityKit
+
+// Assume an entity has been added to the scene (e.g. via a Reality Composer Pro scene)
+if let animationResource = try? AnimationResource.load(named: "SpinAnimation") {
+    // Play the animation with a 0.5-second transition
+    let _ = entity.playAnimation(animationResource, transitionDuration: 0.5, startsPaused: false)
+}

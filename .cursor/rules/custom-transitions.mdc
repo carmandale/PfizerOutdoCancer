@@ -1,0 +1,71 @@
+---
+description: custom transitions for 2D swiftUI windows
+globs: *.swift
+---
+
+---
+
+
+```markdown
+# Custom Transitions Best Practices
+
+Custom transitions allow you to animate view insertion and removal in a way that fits your app’s design. SwiftUI’s flexible transition API (using `AnyTransition` and custom view modifiers) lets you build transitions that combine opacity, movement, and more.
+
+### Key Guidelines
+
+- **Define Custom Transitions with Modifiers:**  
+  Use the `AnyTransition.modifier(active:identity:)` API to specify how views appear and disappear by describing their “active” and “identity” states.
+
+- **Pair with Matching Animations:**  
+  Always coordinate your transitions with a corresponding animation (e.g. using `withAnimation`) so that the changes feel smooth.
+
+- **Keep Design Consistent:**  
+  Ensure that custom transitions follow the overall design language of your app and platform guidelines.
+
+### Example
+
+This example shows a custom “slide‑and‑fade” transition created by defining a view modifier and extending `AnyTransition`:
+
+```swift
+import SwiftUI
+
+struct SlideFadeModifier: ViewModifier {
+    let isActive: Bool
+
+    func body(content: Content) -> some View {
+        content
+            .opacity(isActive ? 1.0 : 0.0)
+            .offset(x: isActive ? 0 : -50)
+    }
+}
+
+extension AnyTransition {
+    static var slideFade: AnyTransition {
+        .modifier(
+            active: SlideFadeModifier(isActive: false),
+            identity: SlideFadeModifier(isActive: true)
+        )
+    }
+}
+
+struct CustomTransitionExample: View {
+    @State private var showDetail = false
+
+    var body: some View {
+        VStack {
+            if showDetail {
+                Text("Hello, SwiftUI!")
+                    .padding()
+                    .background(Color.blue.opacity(0.7))
+                    .cornerRadius(8)
+                    .transition(.slideFade)
+            }
+            Button("Toggle Detail") {
+                withAnimation(.easeInOut(duration: 0.5)) {
+                    showDetail.toggle()
+                }
+            }
+        }
+        .padding()
+    }
+}

@@ -1,0 +1,48 @@
+---
+description: using Observable with classes
+globs: *.swift
+---
+# @Observable Best Practices
+
+you can review [SwiftUI_Observable.txt](mdc:Documentation/SwiftUI_Observable.txt) for more detail
+
+Apple’s new Observation framework (documented in SwiftUI updates for visionOS and iOS 17+) introduces the `@Observable` macro as a replacement for the older `ObservableObject`/`@Published` pattern. Use it to simplify your state–model declarations and enable granular view updates.
+
+### Key Guidelines
+
+- **Declare Models with `@Observable`:**  
+  Mark your model classes with `@Observable` so that all stored properties become observable automatically. This reduces boilerplate code compared to manually marking each property with `@Published`.
+
+- **Store Observable Models in SwiftUI State:**  
+  When using an observable model in a view, store it in a state property (e.g. `@State`) so that SwiftUI preserves the instance across updates.
+
+- **Prefer Direct Bindings when Needed:**  
+  Use the built‑in binding mechanisms (such as the `$` syntax) with an observable to bind directly to UI controls.
+
+### Example
+
+Below is a simple example adapted from Apple’s recommended usage:
+
+```swift
+import SwiftUI
+import Observation // New framework
+
+@Observable
+final class CounterModel {
+    var count: Int = 0
+}
+
+struct CounterView: View {
+    // Hold the model in state to preserve its instance
+    @State var model = CounterModel()
+
+    var body: some View {
+        VStack {
+            Text("Count: \(model.count)")
+            Button("Increment") {
+                model.count += 1
+            }
+        }
+        .padding()
+    }
+}

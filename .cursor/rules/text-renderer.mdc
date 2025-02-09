@@ -1,0 +1,59 @@
+---
+description: info on using the new text render effects
+globs: 
+---
+
+---
+
+
+```markdown
+# Text Render Effects Best Practices
+
+Customizing text rendering helps enhance the visual appeal and legibility of your app. Use SwiftUI’s typography and effect modifiers to fine‑tune appearance. When additional visual effects are needed (such as glowing or outlined text), create custom view modifiers that build on system‑provided capabilities.
+
+### Key Guidelines
+
+- **Use System-Provided Text Modifiers:**  
+  Adjust properties like font, kerning, and line spacing using modifiers such as `.font()`, `.kerning()`, and `.lineSpacing()`.
+
+- **Create Custom Effects with Overlays and Shadows:**  
+  Combine effects like shadows, overlays, and opacity to create subtle text enhancements (for example, a glow effect).
+
+- **Test for Legibility:**  
+  Verify that custom effects improve visual clarity and are robust under different lighting or display conditions.
+
+### Example
+
+The example below defines a custom modifier that creates a glowing text effect by applying multiple shadows:
+
+```swift
+import SwiftUI
+
+struct GlowingText: ViewModifier {
+    var glowColor: Color = .blue
+
+    func body(content: Content) -> some View {
+        content
+            .shadow(color: glowColor.opacity(0.7), radius: 4, x: 0, y: 0)
+            .shadow(color: glowColor.opacity(0.5), radius: 8, x: 0, y: 0)
+            .shadow(color: glowColor.opacity(0.3), radius: 12, x: 0, y: 0)
+    }
+}
+
+extension View {
+    func glowingText(glowColor: Color = .blue) -> some View {
+        self.modifier(GlowingText(glowColor: glowColor))
+    }
+}
+
+struct TextRenderExample: View {
+    var body: some View {
+        Text("Glowing Text Effect")
+            .font(.largeTitle)
+            .foregroundColor(.white)
+            .glowingText(glowColor: .blue)
+            .padding()
+            .background(Color.black)
+            .cornerRadius(10)
+    }
+}
