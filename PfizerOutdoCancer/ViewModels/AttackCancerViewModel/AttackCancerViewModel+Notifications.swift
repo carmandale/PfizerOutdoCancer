@@ -3,7 +3,7 @@ import RealityKitContent
 import RealityKit
 
 extension AttackCancerViewModel {
-    // MARK: - Notification Setup
+    // MARK: - Notification Setup (This is now just for the timeline)
     func handleTimelineNotification(for entity: Entity) {
         // Add debug logging
         print("📢 Timeline notification received from \(entity.name)")
@@ -17,61 +17,52 @@ extension AttackCancerViewModel {
         }
     }
 
-    func setupNotifications() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(handleCancerCellUpdate),
-            name: Notification.Name("UpdateCancerCell"),
-            object: nil
-        )
-    }
-    
-    @objc func handleCancerCellUpdate(_ notification: Notification) {
-        guard let entity = notification.userInfo?["entity"] as? Entity,
-              let _ = entity.components[CancerCellStateComponent.self] else {
-            print("⚠️ Failed to unwrap required values in handleCancerCellUpdate")
+    // No longer needed: setupNotifications, handleCancerCellUpdate, notifyCellStateChanged, notifyGameStateChanged, notifyScoreChanged
+
+    func checkGameConditions() {
+        // Only check game completion if the game is actually active
+        guard isGameActive else {
+            #if DEBUG
+            print("\n⚠️ Game State Check (NOT ACTIVE):")
+            print("  - Tutorial Complete: \(tutorialComplete)")
+            print("  - Hope Meter Running: \(isHopeMeterRunning)")
+            print("  - Game Active: false\n")
+            #endif
             return
         }
         
-        // Update game stats using cellParameters
-        totalHits = cellParameters.reduce(0) { sum, params in
-            sum + params.hitCount
+        #if DEBUG
+        print("\n🎮 Game State Active:")
+        print("  - Tutorial Complete: \(tutorialComplete)")
+        print("  - Hope Meter Running: \(isHopeMeterRunning)")
+        print("  - Game Active: true")
+        #endif
+        
+        // Check if all *game* cells are destroyed (exclude tutorial cell)
+        let gameCells = cellParameters.filter { !$0.isTutorialCell }
+        let destroyedGameCells = gameCells.filter { $0.isDestroyed }.count
+
+        #if DEBUG
+        print("\n=== Game Completion Check ===")
+        print("📊 Game Cells Status:")
+        for (index, cell) in gameCells.enumerated() {
+            print("  Game Cell \(index):")
+            print("    - Is Destroyed: \(cell.isDestroyed)")
+            print("    - Hit Count: \(cell.hitCount)/\(cell.requiredHits)")
         }
-        print("📊 Total hits across all cells: \(totalHits)")
-        
-        let destroyedCount = cellParameters.filter { params in
-            params.hitCount >= params.requiredHits
-        }.count
-        appModel.gameState.cellsDestroyed = destroyedCount
-        print("💀 Total cells destroyed: \(destroyedCount)")
-        
-        // Check game conditions and notify state changes
-        checkGameConditions()
-        notifyGameStateChanged()
-        notifyScoreChanged()
-    }
-    
-    private func checkGameConditions() {
-        // Check if all cells are destroyed
-        if appModel.gameState.cellsDestroyed >= cellParameters.count {
+        print("\n📈 Summary:")
+        print("  - Total game cells: \(gameCells.count)")
+        print("  - Destroyed game cells: \(destroyedGameCells)")
+        print("  - All cells destroyed: \(destroyedGameCells >= gameCells.count)")
+        print("=== End Completion Check ===\n")
+        #endif
+
+        if destroyedGameCells >= gameCells.count {
+            print("✅✅✅ ALL GAME CELLS DESTROYED! Condition met!")
             Task { @MainActor in
-                // Instead of immediately ending, accelerate the hope meter
-                print("🎯 All cells destroyed - accelerating hope meter")
+                print("🎯 All game cells destroyed - accelerating hope meter")
                 await appModel.accelerateHopeMeterToCompletion()
             }
         }
-    }
-    
-    // MARK: - State Change Notifications
-    private func notifyCellStateChanged() {
-        // This will be handled by SwiftUI's @Observable
-    }
-    
-    private func notifyGameStateChanged() {
-        // This will be handled by SwiftUI's @Observable
-    }
-    
-    private func notifyScoreChanged() {
-        // This will be handled by SwiftUI's @Observable
     }
 }

@@ -3,11 +3,11 @@ import RealityKit
 import RealityKitContent
 import Combine
 
-struct CellState {
-    var hits: Int = 0
-    var requiredHits: Int = 0
-    var isDestroyed: Bool = false
-}
+// struct CellState {
+//     var hits: Int = 0
+//     var requiredHits: Int = 0
+//     var isDestroyed: Bool = false
+// }
 
 @Observable
 @MainActor
@@ -28,8 +28,6 @@ final class AttackCancerViewModel {
         return CollisionFilter(group: microscopeGroup, mask: microscopeMask)
     }
 
-    var tutorialComplete: Bool = false
-    
     // MARK: - Collision Groups
     static let adcGroup = CollisionGroup(rawValue: 1 << 0)
     static let cancerCellGroup = CollisionGroup(rawValue: 1 << 1)
@@ -47,7 +45,7 @@ final class AttackCancerViewModel {
     var isSetupComplete = false
     var environmentLoaded = false
     var tutorialCancerCell: Entity?
-    var cellStates: [CellState] = []
+    var tutorialComplete = false
     
     // Store subscription to prevent deallocation
     internal var subscription: Cancellable?
@@ -64,10 +62,47 @@ final class AttackCancerViewModel {
     var totalTaps: Int = 0
     var totalHits: Int = 0
     
+    // @MainActor
+    // func updateDestroyedCount() {
+    //     // Count actual destroyed non-tutorial cells using isDestroyed flag
+    //     let destroyedCount = cellParameters.filter { params in
+    //         !params.isTutorialCell && params.isDestroyed
+    //     }.count
+        
+    //     // Update observable state
+    //     cellsDestroyed = destroyedCount
+        
+    //     #if DEBUG
+    //     // Detailed debug logging
+    //     print("\n=== Detailed Game State Update ===")
+    //     print("📊 Cell Parameters State:")
+    //     for (index, params) in cellParameters.enumerated() {
+    //         print("  Cell \(index):")
+    //         print("    - Tutorial Cell: \(params.isTutorialCell)")
+    //         print("    - Is Destroyed: \(params.isDestroyed)")
+    //         print("    - Hit Count: \(params.hitCount)/\(params.requiredHits)")
+    //     }
+    //     print("\n📈 Totals:")
+    //     print("  - Total cells: \(cellParameters.count)")
+    //     print("  - Cells destroyed: \(destroyedCount)")
+    //     print("  - Tutorial cells: \(cellParameters.filter { $0.isTutorialCell }.count)")
+    //     print("  - Game cells: \(cellParameters.filter { !$0.isTutorialCell }.count)")
+    //     print("=== End State Update ===\n")
+    //     #endif
+
+    //     // Call checkGameConditions() here
+    //     checkGameConditions()
+    // }
+    
     // MARK: - Hope Meter
     let hopeMeterDuration: TimeInterval = 30
     var hopeMeterTimeLeft: TimeInterval
     var isHopeMeterRunning = false
+    
+    var isGameActive: Bool {
+        // Only consider the game active if both tutorial is complete AND hope meter is running
+        tutorialComplete && isHopeMeterRunning
+    }
     
     // MARK: - ADC Properties
     var adcTemplate: Entity?
@@ -129,7 +164,6 @@ final class AttackCancerViewModel {
         
         // Clear arrays
         cellParameters.removeAll()
-        cellStates.removeAll()
         
         // Reset all game stats
         cellsDestroyed = 0
@@ -143,7 +177,6 @@ final class AttackCancerViewModel {
         
         // Reset flags
         isSetupComplete = false
-        tutorialComplete = false
         hasFirstADCBeenFired = false
         environmentLoaded = false
         
@@ -212,6 +245,8 @@ final class AttackCancerViewModel {
         appModel.stopHopeMeter()
         print("  - Resetting tutorial state")
         appModel.isTutorialStarted = false
+        tutorialComplete = false
+        print("  - Reset tutorial state")
         
         // Clear collision subscriptions
         if subscription != nil {

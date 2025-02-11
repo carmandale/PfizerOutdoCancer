@@ -76,6 +76,19 @@ struct ADCView: View {
                                     case .open:
                                         appModel.immersiveSpaceState = .inTransition
                                         await dismissImmersiveSpace()
+                                        // Insert a short delay to allow for complete teardown of the immersive space
+                                        try? await Task.sleep(nanoseconds: 150_000_000) // 150ms delay
+                                        // Now try opening the immersive space
+                                        switch await openImmersiveSpace(id: AppModel.buildingSpaceId) {
+                                            case .opened:
+                                                appModel.isBuilderInstructionsOpen = false
+                                                dismissWindow(id: AppModel.mainWindowId)
+                                                appModel.isMainWindowOpen = false
+                                            case .userCancelled, .error:
+                                                fallthrough
+                                            @unknown default:
+                                                appModel.immersiveSpaceState = .closed
+                                        }
 
                                     case .closed:
                                         appModel.immersiveSpaceState = .inTransition
@@ -84,8 +97,6 @@ struct ADCView: View {
                                                 appModel.isBuilderInstructionsOpen = false
                                                 dismissWindow(id: AppModel.mainWindowId)
                                                 appModel.isMainWindowOpen = false
-                                                break
-
                                             case .userCancelled, .error:
                                                 fallthrough
                                             @unknown default:

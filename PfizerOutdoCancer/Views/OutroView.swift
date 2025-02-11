@@ -20,10 +20,10 @@ struct OutroView: View {
     @Environment(\.openWindow) private var openWindow
     
     // Timer for auto-transition
-    @State private var tintIntensity: Double = 0.02
+    @State private var outroTintIntensity: Double = 0.02
     
     var surroundingsEffect: SurroundingsEffect? {
-        let tintColor = Color(red: tintIntensity, green: tintIntensity, blue: tintIntensity)
+        let tintColor = Color(red: outroTintIntensity, green: outroTintIntensity, blue: outroTintIntensity)
         return SurroundingsEffect.colorMultiply(tintColor)
     }
     
@@ -78,7 +78,7 @@ struct OutroView: View {
             print("\n=== OutroView Appeared ===")
             // Add tint animation
             withAnimation(.linear(duration: 30.0)) {
-                tintIntensity = 0.02
+                outroTintIntensity = 0.02
             }
         }
         .task {

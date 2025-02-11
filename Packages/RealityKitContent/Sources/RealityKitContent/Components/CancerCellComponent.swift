@@ -1,6 +1,7 @@
 import RealityKit
 import SwiftUI
 
+
 @Observable
 public class CancerCellParameters {
     public static let minRequiredHits = 4
@@ -76,133 +77,107 @@ public class CancerCellParameters {
 
 
 // // Marker component that can be added in USDZ
- public struct CancerCellComponent: Component, Codable {
-     public init() {}
- }
+public struct CancerCellComponent: Component, Codable {
+    public init() {}
+}
 
 // // Full state component added by the system
- public struct CancerCellStateComponent: Component {
-     public let parameters: CancerCellParameters
+public struct CancerCellStateComponent: Component {
+    public let parameters: CancerCellParameters
     
-     public init(parameters: CancerCellParameters) {
-         self.parameters = parameters
-     }
- }
+    public init(parameters: CancerCellParameters) {
+        self.parameters = parameters
+    }
+}
 
- @MainActor
- public class CancerCellSystem: System {
-     /// Query to match cancer cell entities
-     static let query = EntityQuery(where: .has(CancerCellStateComponent.self))
-    
-     required public init(scene: RealityKit.Scene) {}
-    
-     /// Update cancer cell entities
-     public func update(context: SceneUpdateContext) {
-         for entity in context.entities(matching: Self.query, updatingSystemWhen: .rendering) {
-             guard let stateComponent = entity.components[CancerCellStateComponent.self] else { continue }
-             let parameters = stateComponent.parameters
-            
-             // Check if cell should be destroyed
-             if parameters.hitCount >= parameters.requiredHits && !parameters.isDestroyed {
-                 parameters.isDestroyed = true
+@MainActor
+public class CancerCellSystem: System {
+    // Query to match cancer cell entities.
+    static let query = EntityQuery(where: .has(CancerCellStateComponent.self))
 
-                 print("=== Cancer Cell Death Triggered ===")
-                 print("💀 Cell is destroyed")
-                 
-                 // Find and toggle particle emitter
-                 if let particleSystem = entity.findEntity(named: "ParticleEmitter"),
-                    var emitter = particleSystem.components[ParticleEmitterComponent.self] {
-                     emitter.burst()
-                     particleSystem.components.set(emitter)
-                     print("✨ Updated particle emitter isEmitting to: \(emitter.isEmitting)")
-                 } else {
-                     print("⚠️ Could not find particle emitter")
-                 }
-                 
-                 // Attempt to play the default subtree animation
-                 if let animationResource = entity.availableAnimations.first {
-                     entity.playAnimation(animationResource, transitionDuration: 0.0, startsPaused: false)
-                 } else if let animLib = entity.components[AnimationLibraryComponent.self] {
-                     // Fallback to a specific animation in the AnimationLibraryComponent
-                     if let deathAnimation = animLib.animations["death"] {
-                         entity.playAnimation(deathAnimation)
-                     }
-                 }
-                 
-                 // Play audio and wait for particle effect
-                 if let audioComponent = entity.components[AudioLibraryComponent.self],
-                    let deathSound = audioComponent.resources["Kill_Cell_5.wav"] {
-                     entity.playAudio(deathSound)
-                     
-                     // Remove after animation and particles complete
-                     Task {
-                         // Wait for animation and initial particle burst
-                         try? await Task.sleep(for: .seconds(2))
-                         
-                         // First, ensure particles are stopped
-                         if let particleSystem = entity.findEntity(named: "ParticleEmitter"),
-                            var emitter = particleSystem.components[ParticleEmitterComponent.self] {
-                             emitter.isEmitting = false
-                             particleSystem.components.set(emitter)
-                             print("FINISH ✨ Stopped particle emitter")
-                         }
-                         
-                         // Wait a bit for particles to settle
-                         try? await Task.sleep(for: .seconds(1))
-                         
-                         // Remove all components in a specific order
-                         if let particleSystem = entity.findEntity(named: "ParticleEmitter") {
-                             // Remove particle component first
-                             particleSystem.components.remove(ParticleEmitterComponent.self)
-                             print("FINISH ✨ Removed particle emitter component")
-                         }
-                         
-                         // Remove the cancer cell component
-                         entity.components.remove(CancerCellComponent.self)
-                         entity.components.remove(CancerCellStateComponent.self)
-                         print("FINISH ✨ Removed cancer cell component")
-                         
-                         // Finally remove the entity
-                         if entity.scene != nil {
-                             print("✨ Removing entity from scene")
-                             entity.removeFromParent()
-                         }
-                     }
-                 }
-                 continue
-             }
-             
-             // Handle sudden scale changes based on hit count
-//             if parameters.isScaling {
-//                 let currentScale = entity.scale.x
-//                 let targetScale = parameters.targetScale
-//                 
-//                 // Even faster scaling with easing
-//                 let t = Float(15.0 * context.deltaTime) // 15x faster
-//                 
-//                 // Use exponential easing for more dramatic effect
-//                 let easedT = 1.0 - pow(1.0 - t, 3)  // Cubic easing
-//                 
-//                 if abs(currentScale - targetScale) > 0.001 {
-//                     let newScale = simd_mix(currentScale, targetScale, easedT)
-//                     entity.scale = [newScale, newScale, newScale]
-//                 } else {
-//                     // Animation complete
-//                     parameters.isScaling = false
-//                     entity.scale = [targetScale, targetScale, targetScale]
-//                 }
-//                 entity.components[CancerCellStateComponent.self] = stateComponent
-//             }
-             
-             // Check for hit count thresholds
-//             for threshold in CancerCellParameters.scaleThresholds {
-//                 if parameters.hitCount == threshold.hits && !parameters.isScaling {
-//                     parameters.isScaling = true
-//                     parameters.targetScale = threshold.scale
-//                     entity.components[CancerCellStateComponent.self] = stateComponent
-//                     break
-//                 }
-//             }
-         }
-     }
- }
+    // NEW: Add a public closure property to notify when a cell is destroyed.
+    public var onCellDestroyed: (() -> Void)?
+    
+    required public init(scene: RealityKit.Scene) {}
+    
+    /// Update cancer cell entities.
+    public func update(context: SceneUpdateContext) {
+        // Iterate through all entities matching the query.
+        for entity in context.entities(matching: Self.query, updatingSystemWhen: .rendering) {
+            guard let stateComponent = entity.components[CancerCellStateComponent.self] else { continue }
+            let parameters = stateComponent.parameters
+           
+            // Check if the cell should be destroyed and hasn't been marked as destroyed yet.
+            if parameters.hitCount >= parameters.requiredHits && !parameters.isDestroyed {
+                parameters.isDestroyed = true
+
+                print("=== Cancer Cell Death Triggered ===")
+                print("💀 Cell is destroyed")
+                
+                
+                // Handle particle emitter: burst the emitter if found.
+                if let particleSystem = entity.findEntity(named: "ParticleEmitter"),
+                   var emitter = particleSystem.components[ParticleEmitterComponent.self] {
+                    emitter.burst()
+                    particleSystem.components.set(emitter)
+                    print("✨ Updated particle emitter isEmitting to: \(emitter.isEmitting)")
+                } else {
+                    print("⚠️ Could not find particle emitter")
+                }
+                
+                // Attempt to play an animation.
+                if let animationResource = entity.availableAnimations.first {
+                    entity.playAnimation(animationResource, transitionDuration: 0.0, startsPaused: false)
+                } else if let animLib = entity.components[AnimationLibraryComponent.self],
+                          let deathAnimation = animLib.animations["death"] {
+                    entity.playAnimation(deathAnimation)
+                }
+                
+                // Play audio and schedule the removal of the entity after a delay.
+                if let audioComponent = entity.components[AudioLibraryComponent.self],
+                   let deathSound = audioComponent.resources["Kill_Cell_5.wav"] {
+                    entity.playAudio(deathSound)
+                    
+                    Task {
+                        // Wait for the animation and initial particle burst.
+                        try? await Task.sleep(for: .seconds(2))
+                        
+                        // Ensure particles are stopped.
+                        if let particleSystem = entity.findEntity(named: "ParticleEmitter"),
+                           var emitter = particleSystem.components[ParticleEmitterComponent.self] {
+                            emitter.isEmitting = false
+                            particleSystem.components.set(emitter)
+                            print("FINISH ✨ Stopped particle emitter")
+                        }
+                        
+                        // Wait a bit for particles to settle.
+                        try? await Task.sleep(for: .seconds(1))
+                        
+                        // Remove the particle emitter component.
+                        if let particleSystem = entity.findEntity(named: "ParticleEmitter") {
+                            particleSystem.components.remove(ParticleEmitterComponent.self)
+                            print("FINISH ✨ Removed particle emitter component")
+                        }
+                        
+                        // Remove the cancer cell components.
+                        entity.components.remove(CancerCellComponent.self)
+                        entity.components.remove(CancerCellStateComponent.self)
+                        print("FINISH ✨ Removed cancer cell component")
+                        
+                        // Finally, remove the entity from the scene.
+                        if entity.scene != nil {
+                            print("✨ Removing entity from scene")
+                            entity.removeFromParent()
+                        }
+                    }
+                }
+
+                // NEW: Call the closure if set to notify that this cell was destroyed.
+                onCellDestroyed?()
+                
+                // Continue to the next entity.
+                continue
+            }
+        }
+    }
+}

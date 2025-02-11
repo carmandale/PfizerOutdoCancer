@@ -53,7 +53,7 @@ extension AttackCancerViewModel {
         }
     }
 
-    func setupHandTracking(in content: RealityViewContent, attachments: RealityViewAttachments) {
+    func setupHandTracking(in content: RealityViewContent, attachments: RealityViewAttachments? = nil) {
         // Add the hand tracking content entity which includes the debug spheres
         content.add(appModel.trackingManager.handTrackingManager.setupContentEntity())
         

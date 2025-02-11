@@ -59,6 +59,13 @@ extension ADCOptimizedImmersive {
                     modelComponent.materials = [material]
                     antibody.components[ModelComponent.self] = modelComponent
                     os_log(.debug, "ITR..prepareAntibodyEntities(): ✅ Applied outline material")
+                    
+                    // Add sort component for render order
+                    if let sortGroup = adcSortGroup {
+                        let sortComponent = ModelSortGroupComponent(group: sortGroup, order: 10)
+                        antibody.components.set(sortComponent)
+                        os_log(.debug, "ITR..prepareAntibodyEntities(): ✅ Added sort component with order 10")
+                    }
                 }
             } else {
                 os_log(.error, "ITR..prepareAntibodyEntities(): ❌ No main entity to attach to")
@@ -95,7 +102,14 @@ extension ADCOptimizedImmersive {
                         linker.components[ModelComponent.self] = modelComponent
                         linker.isEnabled = false
                     }
+                    
+                    // Add sort component for render order
+                    if let sortGroup = adcSortGroup {
+                        let sortComponent = ModelSortGroupComponent(group: sortGroup, order: 20)
+                        linker.components.set(sortComponent)
+                    }
                 }
+                os_log(.debug, "ITR..prepareLinkerEntities(): ✅ Added sort components to linkers with order 20")
             } else {
                 os_log(.error, "ITR..prepareLinkerEntities(): ❌ No outline material available")
             }
@@ -135,6 +149,13 @@ extension ADCOptimizedImmersive {
                     }
                     modelComponent.materials = [outlineMaterial].compactMap { $0 }
                     innerPayload.components[ModelComponent.self] = modelComponent
+                    
+                    // Add sort component for inner payload
+                    if let sortGroup = adcSortGroup {
+                        let sortComponent = ModelSortGroupComponent(group: sortGroup, order: 30)
+                        innerPayload.components.set(sortComponent)
+                        os_log(.debug, "ITR..preparePayloadEntities(): ✅ Added sort component to inner payload with order 30")
+                    }
                 } else {
                     os_log(.error, "ITR..preparePayloadEntities(): ❌ No ModelComponent found for inner payload %{public}@", String(describing: innerPayload.name))
                 }
@@ -156,6 +177,13 @@ extension ADCOptimizedImmersive {
                     }
                     modelComponent.materials = [outlineMaterial].compactMap { $0 }
                     outerPayload.components[ModelComponent.self] = modelComponent
+                    
+                    // Add sort component for outer payload
+                    if let sortGroup = adcSortGroup {
+                        let sortComponent = ModelSortGroupComponent(group: sortGroup, order: 40)
+                        outerPayload.components.set(sortComponent)
+                        os_log(.debug, "ITR..preparePayloadEntities(): ✅ Added sort component to outer payload with order 40")
+                    }
                 } else {
                     os_log(.error, "ITR..preparePayloadEntities(): ❌ No ModelComponent found for outer payload %{public}@", String(describing: outerPayload.name))
                 }
@@ -231,6 +259,16 @@ extension ADCOptimizedImmersive {
                     workingPayloadOuter.components[ModelComponent.self] = outerComponent
                     os_log(.debug, "ITR..prepareTargetEntities(): ✅ Applied outline material to draggable payload")
                 }
+            }
+            
+            // Add sort components for draggable payloads
+            if let sortGroup = adcSortGroup {
+                let innerSortComponent = ModelSortGroupComponent(group: sortGroup, order: 50)
+                workingPayloadInner.components.set(innerSortComponent)
+                
+                let outerSortComponent = ModelSortGroupComponent(group: sortGroup, order: 60)
+                workingPayloadOuter.components.set(outerSortComponent)
+                os_log(.debug, "ITR..prepareTargetEntities(): ✅ Added sort components to draggable payloads (inner: 50, outer: 60)")
             }
             
             // Rest stays the same...

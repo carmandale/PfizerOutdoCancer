@@ -92,22 +92,12 @@ extension ADCMovementSystem {
         
         // Update attachment point using proper component update pattern
         if let attachPoint = newTarget.components[AttachmentPoint.self] {
-            Task { @MainActor in
-                var updatedAttachPoint = attachPoint
-                updatedAttachPoint.isOccupied = true
-                
-                // Use proper error handling for component updates
-                do {
-                    try await newTarget.components.set(updatedAttachPoint)
-                    #if DEBUG
-                    print("✅ Marked attachment point as occupied")
-                    #endif
-                } catch {
-                    #if DEBUG
-                    print("⚠️ Failed to update attachment point: \(error.localizedDescription)")
-                    #endif
-                }
-            }
+            var updatedAttachPoint = attachPoint
+            updatedAttachPoint.isOccupied = true
+            newTarget.components[AttachmentPoint.self] = updatedAttachPoint
+            #if DEBUG
+            print("✅ Marked attachment point as occupied")
+            #endif
         }
         
         return true

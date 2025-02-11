@@ -105,11 +105,13 @@ extension AttackCancerViewModel {
         }
         
         print("💥 ADC hit cell \(cellID)")
-        print("Current hit count: \(parameters.hitCount)")
+        print("Current hit count: cellParameters \(parameters.hitCount)")
         
-        // Update parameters (source of truth)
-        // parameters.hitCount += 1
-        // parameters.wasJustHit = true
+        // Update parameters (source of truth) - but trying stateComponent.parameters.hitCount += 1 because it was double counting
+        // stateComponent.parameters.hitCount += 1
+        // stateComponent.parameters.wasJustHit = true
+
+        print("Current hit count: StateComponent \(stateComponent.parameters.hitCount)")
         
         // Apply scaled physics impact if enabled
         if parameters.physicsEnabled {

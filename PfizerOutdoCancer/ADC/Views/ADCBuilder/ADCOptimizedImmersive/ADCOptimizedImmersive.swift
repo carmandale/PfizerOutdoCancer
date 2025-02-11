@@ -49,6 +49,9 @@ struct ADCOptimizedImmersive: View {
     @State var workingPayloadInner: ModelEntity?
     @State var workingPayloadOuter: ModelEntity?
     
+    // Sort group for managing render order of ADC components
+    @State var adcSortGroup: ModelSortGroup?
+    
     @State var adcLinkers: [ModelEntity] = .init()
     @State var adcPayloadsInner: [ModelEntity] = .init()
     @State var adcPayloadsOuter: [ModelEntity] = .init()
@@ -110,15 +113,13 @@ struct ADCOptimizedImmersive: View {
                 
                 let masterEntity = Entity()
                 self.mainEntity = masterEntity
-                #if targetEnvironment(simulator)
-                masterEntity.position = SIMD3<Float>(0.125, 1.5, -1.0)
-                #else
+
                 masterEntity.components.set(PositioningComponent(
                     offsetX: 0, // 0.125,
                     offsetY: 0,
                     offsetZ: -1.0
                 ))
-                #endif
+                
                 masterEntity.name = "MainEntity"
                 contentRef.add(masterEntity)
                 
@@ -655,9 +656,12 @@ struct ADCOptimizedImmersive: View {
             
             // Ensure linkers start disabled
             self.adcLinkers.forEach { $0.isEnabled = false }
+            
+            // Create sort group for all ADC components
+            self.adcSortGroup = ModelSortGroup(depthPass: .prePass)
+            os_log(.debug, "ITR..setupEntitiesAndMaterials(): ✅ Created ADC sort group")
         } catch {
             os_log(.error, "ITR..setupEntitiesAndMaterials(): ❌ Failed to load antibody scene: \(error)")
         }
     }
 }
-

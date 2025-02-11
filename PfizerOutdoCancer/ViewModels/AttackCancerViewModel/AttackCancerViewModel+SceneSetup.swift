@@ -23,11 +23,8 @@ extension AttackCancerViewModel {
         return root
     }
     
-    func setupEnvironment(in root: Entity, attachments: RealityViewAttachments) async {
+    func setupEnvironment(in root: Entity, attachments: RealityViewAttachments? = nil) async {
         print("🎯 Setting up AttackCancerView environment...")
-        
-        // Setup notifications first
-        setupNotifications()
         
         // IBL
         do {
@@ -39,23 +36,22 @@ extension AttackCancerViewModel {
         
         // Environment
         do {
-            let attackCancerScene = try await appModel.assetLoadingManager.instantiateAsset(
+            let environment = try await appModel.assetLoadingManager.instantiateAsset(
                 withName: "attack_cancer_environment",
                 category: .attackCancerEnvironment
             )
-            root.addChild(attackCancerScene)
+
+            root.addChild(environment)
+
             print("setting up collisions")
-            setupCollisions(in: attackCancerScene)
+            setupCollisions(in: environment)
             
             print("✅ Environment setup complete")
             environmentLoaded = true
         } catch {
-            print("❌ Failed to load attack cancer environment: \(error)")
+            print("❌ Error setting up AttackCancerView environment: \(error)")
             environmentLoaded = false
         }
-        
-        // Setup game content with attachments
-//        await setupGameContent(in: root, attachments: attachments)
     }
     
     func setupIBL(in root: Entity) async {
@@ -64,9 +60,19 @@ extension AttackCancerViewModel {
         } catch {
             print("Failed to setup IBL: \(error)")
         }
+
+        // NEW: Find the CancerCellSystem in the scene and assign its callback.
+        if let cancerSystem = root.scene?.systems.first(where: { $0 is CancerCellSystem }) as? CancerCellSystem {
+            cancerSystem.onCellDestroyed = { [weak self] in
+                guard let self = self else { return }
+                self.cellsDestroyed += 1
+                print("Incremented cellsDestroyed to \(self.cellsDestroyed)")
+                self.checkGameConditions()
+            }
+        }
     }
     
-    func startTutorial(in root: Entity, attachments: RealityViewAttachments) async {
+    func startTutorial(in root: Entity, attachments: RealityViewAttachments? = nil) async {
         print("\n=== Starting Tutorial Sequence ===")
         
         // Ensure we have the scene reference
@@ -97,7 +103,7 @@ extension AttackCancerViewModel {
                     
                     // Start ADC firing sequence
                     Task {
-                        await fireTutorialADCs(in: root, attachments: attachments)
+                        await fireTutorialADCs(in: root)
                     }
                     print("✅ Tutorial: ADC sequence initiated")
                     isSetupComplete = true
@@ -112,7 +118,7 @@ extension AttackCancerViewModel {
         }
     }
     
-    private func fireTutorialADCs(in root: Entity, attachments: RealityViewAttachments) async {
+    private func fireTutorialADCs(in root: Entity, attachments: RealityViewAttachments? = nil) async {
         print("\n=== Starting Tutorial ADC Sequence ===")
         
         // Launch position is slightly offset to the right and above
@@ -149,7 +155,7 @@ extension AttackCancerViewModel {
         }
         
         print("🎮 Setting up cancer cells")
-        await setupGameContent(in: root, attachments: attachments)
+        await setupGameContent(in: root)
     }
     
     func handleGameStart(in root: Entity) async {
@@ -160,14 +166,12 @@ extension AttackCancerViewModel {
     }
 
     @MainActor
-    private func setupGameContent(in root: Entity, attachments: RealityViewAttachments) async {
+    private func setupGameContent(in root: Entity, attachments: RealityViewAttachments? = nil) async {
         print("\n=== Initializing Cell States ===")
         
         // Reset game state before starting main game
         appModel.gameState.cellsDestroyed = 0
         cellParameters.removeAll()
-        
-        cellStates = Array(repeating: CellState(), count: maxCancerCells)
         
         // ADC template is already set up during phase transition
         
@@ -184,51 +188,15 @@ extension AttackCancerViewModel {
             for i in 0..<maxCells {
                 if let cell = root.findEntity(named: "cancer_cell_\(i)")?.findEntity(named: "cancerCell_complex") {
                     // Set initial required hits
-                    if let state = cell.components[CancerCellStateComponent.self] {
-                        cellStates[i].requiredHits = state.parameters.requiredHits
-                        print("🎯 Cell \(i) initialized - Required hits: \(state.parameters.requiredHits)")
+                    if let stateComponent = cell.components[CancerCellStateComponent.self] {
+                        print("🎯 Cell \(i) initialized - Required hits: \(stateComponent.parameters.requiredHits)")
                     }
-                    
-                    // Setup hit tracking closure
-                    cell.components.set(
-                        ClosureComponent { [self] _ in
-                            if let state = cell.components[CancerCellStateComponent.self] {
-                                let oldHits = cellStates[i].hits
-                                let wasDestroyed = cellStates[i].isDestroyed
-                                
-                                // Update state
-                                cellStates[i].hits = state.parameters.hitCount
-                                cellStates[i].isDestroyed = state.parameters.isDestroyed
-                                
-                                // Track stats
-                                if !wasDestroyed && state.parameters.isDestroyed {
-                                    // Calculate destroyed cells by checking actual state
-                                    let destroyedCount = cellParameters.filter { params in
-                                        !params.isTutorialCell && params.hitCount >= params.requiredHits
-                                    }.count
-                                    
-                                    let totalGameCells = cellParameters.filter { !$0.isTutorialCell }.count
-                                    
-                                    appModel.gameState.cellsDestroyed = destroyedCount
-                                    print("💀 Cell \(i) destroyed - Total game cells destroyed: \(destroyedCount)/\(totalGameCells)")
-                                    
-                                    // Only check for game completion if we're not in tutorial
-                                    if !state.parameters.isTutorialCell && destroyedCount >= totalGameCells {
-                                        print("🎯 All game cells destroyed! Accelerating hope meter...")
-                                        Task {
-                                            await appModel.accelerateHopeMeterToCompletion()
-                                        }
-                                    }
-                                }
-                                
-                                // Only log actual changes
-                                if oldHits != state.parameters.hitCount {
-                                    print("📊 Cell \(i) hit - Current hits: \(state.parameters.hitCount)/\(state.parameters.requiredHits)")
-                                }
-                            }
-                        }
-                    )
                 }
+            }
+
+            print("Cell Parameters after setup:") // ADDED LOG
+            for (index, params) in cellParameters.enumerated() {
+                print("  Cell \(index): isTutorialCell=\(params.isTutorialCell), isDestroyed=\(params.isDestroyed)") // ADDED LOG
             }
             
             // print("🎮 Game Content Setup Complete - Starting Hope Meter")

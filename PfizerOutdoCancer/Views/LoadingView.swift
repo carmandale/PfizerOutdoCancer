@@ -8,20 +8,23 @@ struct LoadingView: View {
     
     var body: some View {
         ZStack {
-            if case .loading = appModel.loadingState {
+            if case .loading = appModel.assetLoadingManager.loadingState {
                 LoadingBlock(namespace: logoNamespace)
                     .environment(appModel)
             }
-            if case .completed = appModel.loadingState {
+            if case .completed = appModel.assetLoadingManager.loadingState {
                 CompletedBlock(namespace: logoNamespace)
                     .environment(appModel)
             }
         }
         .frame(width: 800, height: 600)
-        .animation(.easeInOut(duration: 0.5), value: appModel.loadingState)
-        .onChange(of: appModel.loadingState) { oldState, newState in
-            print("Loading state changed from \(oldState) to \(newState)")
-            print("Loading progress: \(appModel.loadingProgress)")
+        .animation(.easeInOut(duration: 0.5), value: appModel.assetLoadingManager.loadingState)
+        .onChange(of: appModel.assetLoadingManager.loadingState) { oldState, newState in
+            // print("Loading state changed from \(oldState) to \(newState)")
+            // print("Loading progress: \(appModel.loadingProgress)")
+            withAnimation(.easeInOut(duration: 0.2)) {
+                appModel.displayedProgress = appModel.loadingProgress
+            }
         }
         .onDisappear {
             print("🚨 LoadingView disappeared")
@@ -56,7 +59,8 @@ private struct LoadingBlock: View {
                     .padding()
                     .transition(.opacity.combined(with: .scale))
                 
-                ProgressView(value: Double(appModel.loadingProgress))
+                // Use displayedProgress here
+                ProgressView(value: Double(appModel.displayedProgress))
                     .progressViewStyle(.linear)
                     .padding()
                     .transition(.opacity)

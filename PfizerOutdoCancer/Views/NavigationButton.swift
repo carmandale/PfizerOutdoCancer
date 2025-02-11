@@ -18,12 +18,18 @@ struct VisionNavigationButtonStyle: ButtonStyle {
 
     func makeBody(configuration: Configuration) -> some View {
         ZStack {
+            // If a gradient theme and sizes are provided, draw the animated gradient borders.
             if let theme = theme, let gradientWidth = gradientWidth, let gradientHeight = gradientHeight {
                 // Outer gradient border with soft edge
                 Capsule()
                     .frame(width: gradientWidth, height: gradientHeight)
-                    .foregroundStyle(LinearGradient(gradient: Gradient(colors: theme.colors), 
-                        startPoint: .top, endPoint: .bottom))
+                    .foregroundStyle(
+                        LinearGradient(
+                            gradient: Gradient(colors: theme.colors),
+                            startPoint: .top,
+                            endPoint: .bottom
+                        )
+                    )
                     .rotationEffect(.degrees(rotation))
                     .mask {
                         Capsule()
@@ -35,8 +41,13 @@ struct VisionNavigationButtonStyle: ButtonStyle {
                 // Inner gradient border (sharp)
                 Capsule()
                     .frame(width: gradientWidth, height: gradientHeight)
-                    .foregroundStyle(LinearGradient(gradient: Gradient(colors: theme.colors), 
-                        startPoint: .top, endPoint: .bottom))
+                    .foregroundStyle(
+                        LinearGradient(
+                            gradient: Gradient(colors: theme.colors),
+                            startPoint: .top,
+                            endPoint: .bottom
+                        )
+                    )
                     .rotationEffect(.degrees(rotation))
                     .mask {
                         Capsule()
@@ -45,18 +56,25 @@ struct VisionNavigationButtonStyle: ButtonStyle {
                     }
             }
             
+            // The button label and background
             configuration.label
                 .font(font)
                 .padding(.horizontal, AppModel.UIConstants.buttonPaddingHorizontal)
                 .padding(.vertical, AppModel.UIConstants.buttonPaddingVertical)
                 .frame(width: width)
                 .background {
-                    RoundedRectangle(cornerRadius: AppModel.UIConstants.buttonCornerRadius, style: .continuous)
-                        .fill(.thinMaterial)
+                    RoundedRectangle(
+                        cornerRadius: AppModel.UIConstants.buttonCornerRadius,
+                        style: .continuous
+                    )
+                    .fill(.thinMaterial)
                 }
                 .glassBackgroundEffect()
         }
+        // Animate the scale when the button is pressed.
         .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
+        .animation(.easeOut(duration: 0.4), value: configuration.isPressed)
+        // (Optional) Animate hover effects if needed.
         .hoverEffect { effect, isActive, proxy in
             effect
                 .animation(.easeInOut(duration: AppModel.UIConstants.buttonHoverDuration)) {
@@ -64,6 +82,7 @@ struct VisionNavigationButtonStyle: ButtonStyle {
                 }
         }
         .hoverEffectGroup()
+        // Start the continuous rotation animation for the gradient borders.
         .onAppear {
             withAnimation(.linear(duration: 4).repeatForever(autoreverses: false)) {
                 rotation = 360

@@ -17,6 +17,7 @@ struct LabView: View {
     
     // MARK: - View
     var body: some View {
+        
         RealityView { content, attachments in
             print("📱 LabView: Setting up RealityView")
             // Set up root entity

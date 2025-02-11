@@ -77,7 +77,7 @@ final class IntroViewModel {
         
         // Find and setup entities
         print("📱 IntroViewModel: Setting up individual entities")
-        setupSkyDome(in: environment)
+        // setupSkyDome(in: environment)
         setupLogo(in: environment)
         await setupPortalWarp(in: environment)
         await setupPortal(in: root)
@@ -118,14 +118,14 @@ final class IntroViewModel {
     
     // MARK: - Private Setup Methods
     private func setupSkyDome(in environment: Entity) {
-        if let sky = environment.findEntity(named: "SkySphere") {
-            print("🔍 Found skyDome: \(sky.name)")
-            skyDome = sky
-            sky.opacity = 0
-            print("✅ Set skyDome opacity to 0")
-        } else {
-            print("❌ Could not find SkySphere in environment")
-        }
+        // if let sky = environment.findEntity(named: "SkySphere") {
+        //     print("🔍 Found skyDome: \(sky.name)")
+        //     skyDome = sky
+        //     sky.opacity = 0
+        //     print("✅ Set skyDome opacity to 0")
+        // } else {
+        //     print("❌ Could not find SkySphere in environment")
+        // }
     }
     
     private func setupLogo(in environment: Entity) {

@@ -8,10 +8,15 @@ struct IntroView: View {
     @Environment(ADCDataModel.self) var dataModel
     @Environment(\.dismissWindow) private var dismissWindow
     
-    @State private var tintIntensity: Double = 0.02
+    @State private var introTintIntensity: Double = 0.02 {
+        didSet {
+            print("introTintIntensity changed to: \(introTintIntensity)")
+            // Consider adding a breakpoint here to inspect the call stack
+        }
+    }
     
     var surroundingsEffect: SurroundingsEffect? {
-        let tintColor = Color(red: tintIntensity, green: tintIntensity, blue: tintIntensity)
+        let tintColor = Color(red: introTintIntensity, green: introTintIntensity, blue: introTintIntensity)
         return SurroundingsEffect.colorMultiply(tintColor)
     }
     
@@ -86,9 +91,11 @@ struct IntroView: View {
         .preferredSurroundingsEffect(surroundingsEffect)
         .onAppear {
             print("\n=== IntroView Appeared ===")
-            withAnimation(.linear(duration: 30.0)) {
-                tintIntensity = 0.02
-            }
+            
+            // withAnimation(.linear(duration: 30.0)) {
+            //     print(">>> IntroView: Fading in intro tint intensity to %.2f\n", 0.02)
+            //     introTintIntensity = 0.02
+            // }
         }
         // Keep tracking tasks separate
         .task {

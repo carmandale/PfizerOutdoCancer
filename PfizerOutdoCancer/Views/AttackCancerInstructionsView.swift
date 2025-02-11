@@ -25,7 +25,7 @@ struct AttackCancerInstructionsView: View {
 //                Spacer()
                 VStack {
                     RealityView { content in
-                        print("\n=== AttackCancerInstructionsView Setup ===")
+                        print("\n=== AttackCancerInstructionsView Rotating ADC Setup ===")
                         print("📱 Instructions View: Setting up root entity")
                         let root = appModel.gameState.setupRoot()
                         content.add(root)

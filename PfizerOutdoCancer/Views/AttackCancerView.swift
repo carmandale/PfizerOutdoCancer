@@ -72,6 +72,14 @@ struct AttackCancerView: View {
 //                }
 //            }
         }
+        .onChange(of: appModel.gameState.cellsDestroyed) { _, newValue in
+            if newValue >= appModel.gameState.cellParameters.count {
+                print("🎯 All game cells destroyed (\(newValue)/\(appModel.gameState.cellParameters.count))")
+                Task {
+                    await appModel.accelerateHopeMeterToCompletion()
+                }
+            }
+        }
         .task {
             await appModel.trackingManager.processWorldTrackingUpdates()
         }
