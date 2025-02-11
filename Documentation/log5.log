@@ -1,0 +1,382 @@
+AppModel init() - Instance: ObjectIdentifier(0x00000001071082d0)
+🏁 PfizerOutdoCancerApp init starting...
+📲 Setting AppModel in PositioningSystem...
+🔄 PositioningSystem.setAppModel called
+📝 Registering components and systems...
+⚙️ Registering PositioningSystem...
+✅ PfizerOutdoCancerApp init completed
+🎯 PositioningSystem EC284AA5-45D6-432F-A39F-A9FCE23EC6D2 initializing...
+nw_socket_initialize_socket [C1:2] setsockopt SO_NECP_CLIENTUUID failed [22: Invalid argument]
+nw_socket_initialize_socket setsockopt SO_NECP_CLIENTUUID failed [22: Invalid argument]
+nw_socket_copy_info [C1:2] getsockopt TCP_INFO failed [102: Operation not supported on socket]
+nw_socket_copy_info getsockopt TCP_INFO failed [102: Operation not supported on socket]
+cannot add handler to 0 from 1 - dropping
+
+=== Starting Initial Asset Loading ===
+🔍 Current phase: loading
+🔍 Loading state: notStarted
+🔄 Starting prepareIntroPhase...
+
+=== Preparing Intro Phase ===
+🔍 Current phase before loading: loading
+🔍 Loading state: notStarted
+📱 Loading asset: intro_environment
+AssetLoadingManager: loadAsset(withName: intro_environment, category: introEnvironment)
+cannot add handler to 0 from 1 - dropping
+→ .inactive
+cannot add handler to 0 from 1 - dropping
+cannot add handler to 0 from 1 - dropping
+Registering library (/System/Library/PrivateFrameworks/CoreRE.framework/default.metallib) that already exists in shader manager. Library will be overwritten.
+✅ Loaded intro_environment - Progress: 0.16666667
+📱 Loading asset: intro_warp
+AssetLoadingManager: loadAsset(withName: intro_warp, category: introEnvironment)
+✅ Loaded intro_warp - Progress: 0.33333334
+📱 Loading asset: attack_cancer_environment
+AssetLoadingManager: loadAsset(withName: attack_cancer_environment, category: attackCancerEnvironment)
+✅ Loaded attack_cancer_environment - Progress: 0.5
+📱 Loading asset: adc
+AssetLoadingManager: loadAsset(withName: adc, category: attackCancerEnvironment)
+✅ ADC template loaded (using inner Root with audio)
+✅ Loaded adc - Progress: 0.6666667
+📱 Loading asset: cancer_cell
+AssetLoadingManager: loadAsset(withName: cancer_cell, category: attackCancerEnvironment)
+✅ Loaded cancer_cell - Progress: 0.8333333
+📱 Loading asset: assembled_lab
+AssetLoadingManager: loadAsset(withName: assembled_lab, category: labEnvironment)
+📱 Starting lab environment assembly
+→ .active
+onChange(of: LoadingState) action tried to update multiple times per frame.
+Invalid Material input type token
+Invalid Material input type token
+IBL URL: file:///private/var/containers/Bundle/Application/8FF66D15-E6F7-438D-A666-DB0396AC11CB/PfizerOutdoCancer.app/lab_v005.exr
+✅ Completed lab environment assembly
+✅ Loaded assembled_lab - Progress: 1.0
+✅ prepareIntroPhase completed
+✅ prepareIntroPhase completed
+🔄 Transitioning to .ready...
+🔄 Phase transition: loading -> ready
+🔍 isTransitioning: false
+🔍 immersiveSpaceState: closed
+✅ Phase transition completed: ready
+✅ Transition to .ready completed
+🎯 Managing windows for phase: ready
+📊 Before state update - nav window open: false
+📊 Window states after update:
+  Main: true
+  Debug: false
+  Library: false
+  Builder: false
+  Phases:
+    AppPhase: ready
+    ScenePhase: active
+    LoadingPhase: completed
+🔄 Phase transition: ready -> intro
+🔍 isTransitioning: false
+🔍 immersiveSpaceState: closed
+🚨 LoadingView disappeared
+🎯 Managing windows for phase: intro
+📊 Before state update - nav window open: false
+📊 Window states after update:
+  Main: true
+  Debug: true
+  Library: false
+  Builder: false
+  Phases:
+    AppPhase: intro
+    ScenePhase: active
+    LoadingPhase: completed
+cannot add handler to 0 from 1 - dropping
+🎯 PositioningSystem 9004B21B-8C4C-4270-9D17-72998FC1DC37 initializing...
+🎯 PositioningSystem 919F813F-2021-4119-AD2F-444D2E76DE73 initializing...
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+
+=== IntroView Appeared ===
+cannot add handler to 0 from 1 - dropping
+
+=== Setting up IntroView ===
+📱 IntroViewModel: Setting up intro root
+✅ Added root to content
+
+=== Tracking State [Start Tracking Request] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: false
+🔄 Current Provider State: initialized
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x3000940a0>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: initialized
+=== End State Log ===
+
+🖐️ Starting hand tracking session
+Hand Provider State: initialized
+📱 IntroView: Starting environment setup
+📱 IntroViewModel: Starting environment setup
+📱 IntroViewModel: Attempting to load intro environment
+AssetLoadingManager: loadAsset(withName: intro_environment, category: introEnvironment)
+✅ IntroViewModel: Successfully loaded intro environment
+📱 IntroViewModel: Adding environment to root
+📱 IntroViewModel: Setting up individual entities
+🔍 Found logo: logo
+✅ Set logo scale to 0.5 and opacity to 0
+🔍 Found portalWarp: sh0100_v01_portalWarp3
+✅ Set portalWarp opacity to 0.6
+📱 IntroViewModel: Starting portal setup
+📱 Starting lab environment assembly
+✅ Using cached assembled lab
+✅ IntroViewModel: Successfully loaded assembled laboratory environment
+✅ IntroViewModel: Created portal
+✅ IntroViewModel: Portal setup complete
+✅ IntroViewModel: Environment setup complete
+✅ Environment setup complete
+📱 IntroView: Found SwiftUI attachments
+✅ Found portal for attachments
+📱 IntroViewModel: Setting up attachments
+🔍 Portal state - opacity: 0.0, position: SIMD3<Float>(0.0, -0.25, 0.0)
+📎 Found titleRoot in portal
+🔍 Before - titleEntity position: SIMD3<Float>(0.0, 0.0, 0.0), scale: SIMD3<Float>(1.0, 1.0, 1.0)
+🔍 After - titleEntity position: SIMD3<Float>(0.0, -0.15, 0.2), scale: SIMD3<Float>(5.0, 5.0, 5.0)
+📎 Added titleText to titleRoot
+📎 Found titleRoot in portal
+🔍 Before - labViewer position: SIMD3<Float>(0.0, 0.0, 0.0), scale: SIMD3<Float>(1.0, 1.0, 1.0)
+🔍 After - labViewer position: SIMD3<Float>(0.0, -0.4, 0.3), scale: SIMD3<Float>(5.0, 5.0, 5.0)
+📎 Added labViewer to titleRoot
+📱 IntroView: Starting animation sequence
+🎬 Animation Sequence: Starting at 2025-02-11 00:17:20 +0000
+🔍 Entity Check - skyDome: false, portalWarp: true, logo: true, portal: true
+❌ Sky fade: skyDome not found
+⏰ Sleeping for 19s before portal warp
+✅ Started tracking providers
+Final Hand Tracking State: true
+
+=== Tracking State [Post-Start] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: initialized
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x3000219a0>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: paused
+🖐️ Hand Provider State: paused
+=== End State Log ===
+
+✅ Phase transition completed: intro
+cannot add handler to 0 from 1 - dropping
+🔄 Provider state changed to: paused
+
+=== Tracking State [Provider State Change [paused]] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: paused
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x3000219a0>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: paused
+🖐️ Hand Provider State: paused
+=== End State Log ===
+
+⏸️ Provider paused
+Cannot find a BindPoint for any bind path: "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", ""
+🔄 Provider state changed to: running
+
+=== Tracking State [Provider State Change [running]] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: running
+📍 Head Transform: simd_float4x4([[0.9994003, -0.034573443, -0.0018658886, 0.0], [0.034612842, 0.9989861, 0.028786035, 0.0], [0.0008687627, -0.028833361, 0.9995838, 0.0], [-0.0011503883, 1.2551745, -0.10006484, 0.99999994]])
+📍 Head Position - X: -0.0011503883, Y: 1.2551745, Z: -0.10006484
+🌎 World Provider State: running
+🖐️ Hand Provider State: running
+=== End State Log ===
+
+✅ Provider running
+📍 Positioned entity 'IntroRoot' at SIMD3<Float>(-0.0012047999, -0.24483657, -1.100043)
+✅ Successfully positioned entity: IntroRoot
+🔄 Phase transition: intro -> playing
+🔍 isTransitioning: false
+🔍 immersiveSpaceState: open
+
+=== Pre-loading Playing Phase Assets ===
+📱 Pre-loading required assets for playing phase...
+🎯 Loading ADC template...
+AssetLoadingManager: loadAsset(withName: adc, category: adc)
+✅ ADC entity loaded, applying colors...
+
+🎯 Setting up ADC Template
+- Template entity: Root
+- Antibody Color: -1
+- Linker Color: -1
+- Payload Color: -1
+✅ ADC template stored in gameState
+✅ ADC template configured with colors
+🎯 Loading tutorial assets...
+AssetLoadingManager: loadAsset(withName: game_start_vo, category: attackCancerEnvironment)
+
+=== Tracking State [Pre-Stop] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: running
+📍 Head Transform: simd_float4x4([[0.9988331, -0.026599023, 0.040308233, 0.0], [0.03389671, 0.98064494, -0.192838, 0.0], [-0.034398753, 0.19397938, 0.98040223, 0.0], [0.0054537877, 1.2295758, -0.116399705, 1.0000001]])
+📍 Head Position - X: 0.0054537877, Y: 1.2295758, Z: -0.116399705
+🌎 World Provider State: running
+🖐️ Hand Provider State: running
+=== End State Log ===
+
+🔄 Provider state changed to: stopped
+
+=== Tracking State [Provider State Change [stopped]] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x3000219a0>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===
+
+⏹️ Provider stopped normally
+
+=== Tracking State [Post-Stop] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x3000219a0>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===
+
+✅ Tutorial assets cached
+🎯 Loading attack_cancer_environment...
+AssetLoadingManager: loadAsset(withName: attack_cancer_environment, category: attackCancerEnvironment)
+✅ attack_cancer_environment cached
+✅✅✅ Playing Phase Assets Ready (with delay) ===
+
+
+=== Starting IntroViewModel Cleanup ===
+🗑️ Removing intro root entity
+🎯 Resetting positioning component
+✅ Completed IntroViewModel cleanup
+
+
+=== Starting Intro Environment Cleanup ===
+
+📊 Updated template cache size: 5 entities
+🔒 Remaining asset: game_start_vo
+✅ Completed intro environment cleanup
+
+
+=== AttackCancerInstructionsView Rotating ADC Setup ===
+📱 Instructions View: Setting up root entity
+📱 AttackCancerViewModel: Setting up root
+IBL URL: file:///private/var/containers/Bundle/Application/8FF66D15-E6F7-438D-A666-DB0396AC11CB/PfizerOutdoCancer.app/metro_noord_2k.exr
+
+=== Tracking State [Start Tracking Request] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x3000219a0>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===
+
+🖐️ Starting hand tracking session
+Hand Provider State: initialized
+✅ Started tracking providers
+Final Hand Tracking State: true
+
+=== Tracking State [Post-Start] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x30073d180>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: initialized
+🖐️ Hand Provider State: initialized
+=== End State Log ===
+
+✅ Phase transition completed: playing
+✅ Instructions View: IBL setup complete
+✅ Instructions View: Found ADC template
+✅ Instructions View: Added ADC to display
+=== Instructions View Setup Complete ===
+
+📍 Positioned entity 'headTrackingRoot' at SIMD3<Float>(0.0028650314, 1.2538584, -1.1011177)
+✅ Successfully positioned entity: headTrackingRoot
+ARPredictorRemoteService <0x507a1e530>: Query queue is not running.
+ARPredictorRemoteService <0x1072c8dd0>: Query queue is not running.
+ARPredictorRemoteService <0x507a1ee50>: Query queue is not running.
+ARPredictorRemoteService <0x1072cb090>: Query queue is not running.
+ARPredictorRemoteService <0x104b097d0>: Query queue is not running.
+ARPredictorRemoteService <0x107205d50>: Query queue is not running.
+ARPredictorRemoteService <0x1070097c0>: Query queue is not running.
+🎯 Managing windows for phase: playing
+📊 Before state update - nav window open: true
+📊 Window states after update:
+  Main: true
+  Debug: false
+  Library: false
+  Builder: false
+  Phases:
+    AppPhase: playing
+    ScenePhase: active
+    LoadingPhase: completed
+🎯 PositioningSystem 9D01DC46-F5C9-4912-980C-0FCC8C688988 initializing...
+cannot add handler to 0 from 1 - dropping
+
+=== Processing Hand Updates ===
+Should Process Hand Tracking: true
+Hand Provider State: paused
+🖐️ Starting hand tracking updates
+
+=== AttackCancerView Setup ===
+📱 AttackCancerView: Setting up root
+📱 AttackCancerViewModel: Setting up root
+✅ Root entity created: AttackCancerRoot
+
+=== Setting up Environment ===
+🎯 Setting up AttackCancerView environment...
+IBL URL: file:///private/var/containers/Bundle/Application/8FF66D15-E6F7-438D-A666-DB0396AC11CB/PfizerOutdoCancer.app/metro_noord_2k.exr
+🔄 Provider state changed to: running
+
+=== Tracking State [Provider State Change [running]] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: running
+⚠️ No device anchor available
+🌎 World Provider State: running
+🖐️ Hand Provider State: running
+=== End State Log ===
+
+✅ Provider running
+📍 Positioned entity 'headTrackingRoot' at SIMD3<Float>(0.0018908083, 1.2579077, -1.0955377)
+✅ Successfully positioned entity: headTrackingRoot
+AssetLoadingManager: loadAsset(withName: attack_cancer_environment, category: attackCancerEnvironment)
+Environment Transform (Before Adding):
+  Local Position: SIMD3<Float>(0.0, 0.0, 0.0)
+  World Position: SIMD3<Float>(0.0, 0.0, 0.0)
+  Local Orientation: simd_quatf(real: 1.0, imag: SIMD3<Float>(0.0, 0.0, 0.0))
+  World Orientation: simd_quatf(real: 1.0, imag: SIMD3<Float>(0.0, 0.0, 0.0))
+  Local Scale: SIMD3<Float>(1.0, 1.0, 1.0)
+  World Scale: SIMD3<Float>(1.0, 1.0, 1.0)
+Environment Transform (After Adding):
+  Local Position: SIMD3<Float>(0.0, 0.0, 0.0)
+  World Position: SIMD3<Float>(0.0, 0.0, 0.0)
+  Local Orientation: simd_quatf(real: 1.0, imag: SIMD3<Float>(0.0, 0.0, 0.0))
+  World Orientation: simd_quatf(real: 1.0, imag: SIMD3<Float>(0.0, 0.0, 0.0))
+  Local Scale: SIMD3<Float>(1.0, 1.0, 1.0)
+  World Scale: SIMD3<Float>(1.0, 1.0, 1.0)
+setting up collisions
+setting up collisions in Root
+🎯 Setting up collision subscription
+✅ Collision subscription set up
+✅ Environment setup complete
+✅ Environment setup complete
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+🌀 Portal warp: Starting at +19.055688977241516s
+🔍 PortalWarp reference check: false
+❌ Portal warp: portalWarp not found
+⏰ Sleeping for 75s before logo

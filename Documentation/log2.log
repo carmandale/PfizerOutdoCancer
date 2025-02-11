@@ -1,0 +1,1804 @@
+AppModel init() - Instance: ObjectIdentifier(0x00000001055089f0)
+🏁 PfizerOutdoCancerApp init starting...
+📲 Setting AppModel in PositioningSystem...
+🔄 PositioningSystem.setAppModel called
+📝 Registering components and systems...
+⚙️ Registering PositioningSystem...
+✅ PfizerOutdoCancerApp init completed
+🎯 PositioningSystem 31680718-BA4B-49B4-907B-715C6675BABB initializing...
+nw_socket_initialize_socket [C1:2] setsockopt SO_NECP_CLIENTUUID failed [22: Invalid argument]
+nw_socket_initialize_socket setsockopt SO_NECP_CLIENTUUID failed [22: Invalid argument]
+nw_socket_copy_info [C1:2] getsockopt TCP_INFO failed [102: Operation not supported on socket]
+nw_socket_copy_info getsockopt TCP_INFO failed [102: Operation not supported on socket]
+cannot add handler to 0 from 1 - dropping
+
+=== Starting Initial Asset Loading ===
+🔍 Current phase: loading
+🔍 Loading state: notStarted
+🔄 Starting prepareIntroPhase...
+
+=== Preparing Intro Phase ===
+🔍 Current phase before loading: loading
+🔍 Loading state: notStarted
+📱 Loading asset: intro_environment
+AssetLoadingManager: loadAsset(withName: intro_environment, category: introEnvironment)
+cannot add handler to 0 from 1 - dropping
+cannot add handler to 0 from 1 - dropping
+cannot add handler to 0 from 1 - dropping
+Registering library (/System/Library/PrivateFrameworks/CoreRE.framework/default.metallib) that already exists in shader manager. Library will be overwritten.
+✅ Loaded intro_environment - Progress: 0.16666667
+📱 Loading asset: intro_warp
+AssetLoadingManager: loadAsset(withName: intro_warp, category: introEnvironment)
+✅ Loaded intro_warp - Progress: 0.33333334
+📱 Loading asset: attack_cancer_environment
+AssetLoadingManager: loadAsset(withName: attack_cancer_environment, category: attackCancerEnvironment)
+✅ Loaded attack_cancer_environment - Progress: 0.5
+📱 Loading asset: adc
+AssetLoadingManager: loadAsset(withName: adc, category: attackCancerEnvironment)
+✅ ADC template loaded (using inner Root with audio)
+✅ Loaded adc - Progress: 0.6666667
+📱 Loading asset: cancer_cell
+AssetLoadingManager: loadAsset(withName: cancer_cell, category: attackCancerEnvironment)
+✅ Loaded cancer_cell - Progress: 0.8333333
+📱 Loading asset: assembled_lab
+AssetLoadingManager: loadAsset(withName: assembled_lab, category: labEnvironment)
+📱 Starting lab environment assembly
+Loading state changed from notStarted to loading(progress: 0.0)
+Loading progress: 0.0
+Loading state changed from loading(progress: 0.0) to loading(progress: 0.0009149131)
+Loading progress: 0.0009149131
+Loading state changed from loading(progress: 0.0009149131) to loading(progress: 0.0018298262)
+Loading progress: 0.0018298262
+onChange(of: LoadingState) action tried to update multiple times per frame.
+Loading state changed from loading(progress: 0.0036596523) to loading(progress: 0.004574565)
+Loading progress: 0.004574565
+Loading state changed from loading(progress: 0.004574565) to loading(progress: 0.0054894784)
+Loading progress: 0.0054894784
+Loading state changed from loading(progress: 0.008234218) to loading(progress: 0.00914913)
+Loading progress: 0.00914913
+Loading state changed from loading(progress: 0.00914913) to loading(progress: 0.010064044)
+Loading progress: 0.010064044
+Loading state changed from loading(progress: 0.010064044) to loading(progress: 0.010978957)
+Loading progress: 0.010978957
+Loading state changed from loading(progress: 0.014638609) to loading(progress: 0.015553523)
+Loading progress: 0.015553523
+Loading state changed from loading(progress: 0.015553523) to loading(progress: 0.016468436)
+Loading progress: 0.016468436
+Loading state changed from loading(progress: 0.016468436) to loading(progress: 0.017383348)
+Loading progress: 0.017383348
+Loading state changed from loading(progress: 0.017383348) to loading(progress: 0.01829826)
+Loading progress: 0.01829826
+Loading state changed from loading(progress: 0.022872828) to loading(progress: 0.02378774)
+Loading progress: 0.02378774
+Loading state changed from loading(progress: 0.02378774) to loading(progress: 0.024702653)
+Loading progress: 0.024702653
+Loading state changed from loading(progress: 0.024702653) to loading(progress: 0.025617566)
+Loading progress: 0.025617566
+Loading state changed from loading(progress: 0.025617566) to loading(progress: 0.026532479)
+Loading progress: 0.026532479
+Loading state changed from loading(progress: 0.028362306) to loading(progress: 0.029277219)
+Loading progress: 0.029277219
+Loading state changed from loading(progress: 0.029277219) to loading(progress: 0.030192131)
+Loading progress: 0.030192131
+Loading state changed from loading(progress: 0.030192131) to loading(progress: 0.031107046)
+Loading progress: 0.031107046
+Loading state changed from loading(progress: 0.031107046) to loading(progress: 0.03202196)
+Loading progress: 0.03202196
+Loading state changed from loading(progress: 0.03568161) to loading(progress: 0.03659652)
+Loading progress: 0.03659652
+Loading state changed from loading(progress: 0.03659652) to loading(progress: 0.037511438)
+Loading progress: 0.037511438
+Loading state changed from loading(progress: 0.03842635) to loading(progress: 0.039341263)
+Loading progress: 0.039341263
+Loading state changed from loading(progress: 0.039341263) to loading(progress: 0.040256176)
+Loading progress: 0.040256176
+Loading state changed from loading(progress: 0.040256176) to loading(progress: 0.04117109)
+Loading progress: 0.04117109
+Loading state changed from loading(progress: 0.04117109) to loading(progress: 0.042086)
+Loading progress: 0.042086
+Loading state changed from loading(progress: 0.042086) to loading(progress: 0.043000914)
+Loading progress: 0.043000914
+Loading state changed from loading(progress: 0.04483074) to loading(progress: 0.045745656)
+Loading progress: 0.045745656
+Loading state changed from loading(progress: 0.045745656) to loading(progress: 0.04666057)
+Loading progress: 0.04666057
+Loading state changed from loading(progress: 0.04666057) to loading(progress: 0.04757548)
+Loading progress: 0.04757548
+Loading state changed from loading(progress: 0.04757548) to loading(progress: 0.048490394)
+Loading progress: 0.048490394
+Loading state changed from loading(progress: 0.049405307) to loading(progress: 0.05032022)
+Loading progress: 0.05032022
+Loading state changed from loading(progress: 0.05032022) to loading(progress: 0.051235132)
+Loading progress: 0.051235132
+Loading state changed from loading(progress: 0.053979874) to loading(progress: 0.054894786)
+Loading progress: 0.054894786
+Loading state changed from loading(progress: 0.054894786) to loading(progress: 0.0558097)
+Loading progress: 0.0558097
+Loading state changed from loading(progress: 0.060384262) to loading(progress: 0.061299175)
+Loading progress: 0.061299175
+Loading state changed from loading(progress: 0.061299175) to loading(progress: 0.06221409)
+Loading progress: 0.06221409
+Loading state changed from loading(progress: 0.063129) to loading(progress: 0.06404392)
+Loading progress: 0.06404392
+Loading state changed from loading(progress: 0.06404392) to loading(progress: 0.064958826)
+Loading progress: 0.064958826
+Loading state changed from loading(progress: 0.064958826) to loading(progress: 0.06587374)
+Loading progress: 0.06587374
+Loading state changed from loading(progress: 0.06953339) to loading(progress: 0.07044831)
+Loading progress: 0.07044831
+Loading state changed from loading(progress: 0.07044831) to loading(progress: 0.07136322)
+Loading progress: 0.07136322
+Loading state changed from loading(progress: 0.07319304) to loading(progress: 0.07410796)
+Loading progress: 0.07410796
+Loading state changed from loading(progress: 0.07410796) to loading(progress: 0.075022876)
+Loading progress: 0.075022876
+Loading state changed from loading(progress: 0.0768527) to loading(progress: 0.07776761)
+Loading progress: 0.07776761
+Loading state changed from loading(progress: 0.07776761) to loading(progress: 0.07868253)
+Loading progress: 0.07868253
+Loading state changed from loading(progress: 0.07868253) to loading(progress: 0.079597436)
+Loading progress: 0.079597436
+Loading state changed from loading(progress: 0.083257094) to loading(progress: 0.084172)
+Loading progress: 0.084172
+Loading state changed from loading(progress: 0.084172) to loading(progress: 0.08508692)
+Loading progress: 0.08508692
+Loading state changed from loading(progress: 0.08600183) to loading(progress: 0.086916745)
+Loading progress: 0.086916745
+Loading state changed from loading(progress: 0.086916745) to loading(progress: 0.08783165)
+Loading progress: 0.08783165
+Loading state changed from loading(progress: 0.08783165) to loading(progress: 0.08874657)
+Loading progress: 0.08874657
+Loading state changed from loading(progress: 0.08966148) to loading(progress: 0.090576395)
+Loading progress: 0.090576395
+Loading state changed from loading(progress: 0.090576395) to loading(progress: 0.09149131)
+Loading progress: 0.09149131
+Loading state changed from loading(progress: 0.09149131) to loading(progress: 0.09240622)
+Loading progress: 0.09240622
+Loading state changed from loading(progress: 0.09240622) to loading(progress: 0.09332114)
+Loading progress: 0.09332114
+Loading state changed from loading(progress: 0.09332114) to loading(progress: 0.094236046)
+Loading progress: 0.094236046
+Loading state changed from loading(progress: 0.09698079) to loading(progress: 0.0978957)
+Loading progress: 0.0978957
+Loading state changed from loading(progress: 0.0978957) to loading(progress: 0.09881061)
+Loading progress: 0.09881061
+Loading state changed from loading(progress: 0.09881061) to loading(progress: 0.09972553)
+Loading progress: 0.09972553
+Loading state changed from loading(progress: 0.101555355) to loading(progress: 0.102470264)
+Loading progress: 0.102470264
+Loading state changed from loading(progress: 0.102470264) to loading(progress: 0.10338518)
+Loading progress: 0.10338518
+Loading state changed from loading(progress: 0.10338518) to loading(progress: 0.10430009)
+Loading progress: 0.10430009
+Loading state changed from loading(progress: 0.10430009) to loading(progress: 0.105215006)
+Loading progress: 0.105215006
+Loading state changed from loading(progress: 0.105215006) to loading(progress: 0.106129915)
+Loading progress: 0.106129915
+Loading state changed from loading(progress: 0.106129915) to loading(progress: 0.10704483)
+Loading progress: 0.10704483
+Loading state changed from loading(progress: 0.10704483) to loading(progress: 0.10795975)
+Loading progress: 0.10795975
+Loading state changed from loading(progress: 0.108874656) to loading(progress: 0.10978957)
+Loading progress: 0.10978957
+Loading state changed from loading(progress: 0.10978957) to loading(progress: 0.11070448)
+Loading progress: 0.11070448
+Loading state changed from loading(progress: 0.11527905) to loading(progress: 0.116193965)
+Loading progress: 0.116193965
+Loading state changed from loading(progress: 0.116193965) to loading(progress: 0.117108874)
+Loading progress: 0.117108874
+Loading state changed from loading(progress: 0.117108874) to loading(progress: 0.11802379)
+Loading progress: 0.11802379
+Loading state changed from loading(progress: 0.1189387) to loading(progress: 0.119853616)
+Loading progress: 0.119853616
+Loading state changed from loading(progress: 0.119853616) to loading(progress: 0.120768525)
+Loading progress: 0.120768525
+Loading state changed from loading(progress: 0.12442818) to loading(progress: 0.1253431)
+Loading progress: 0.1253431
+Loading state changed from loading(progress: 0.1253431) to loading(progress: 0.126258)
+Loading progress: 0.126258
+Loading state changed from loading(progress: 0.1326624) to loading(progress: 0.13357732)
+Loading progress: 0.13357732
+Loading state changed from loading(progress: 0.13357732) to loading(progress: 0.13449222)
+Loading progress: 0.13449222
+Loading state changed from loading(progress: 0.13906679) to loading(progress: 0.1399817)
+Loading progress: 0.1399817
+Loading state changed from loading(progress: 0.1399817) to loading(progress: 0.14089662)
+Loading progress: 0.14089662
+Loading state changed from loading(progress: 0.14272644) to loading(progress: 0.14364135)
+Loading progress: 0.14364135
+Loading state changed from loading(progress: 0.14364135) to loading(progress: 0.14455627)
+Loading progress: 0.14455627
+Loading state changed from loading(progress: 0.15004575) to loading(progress: 0.15096065)
+Loading progress: 0.15096065
+Loading state changed from loading(progress: 0.15096065) to loading(progress: 0.15187557)
+Loading progress: 0.15187557
+Loading state changed from loading(progress: 0.15187557) to loading(progress: 0.15279049)
+Loading progress: 0.15279049
+Loading state changed from loading(progress: 0.15736505) to loading(progress: 0.15827997)
+Loading progress: 0.15827997
+Loading state changed from loading(progress: 0.15827997) to loading(progress: 0.15919487)
+Loading progress: 0.15919487
+Loading state changed from loading(progress: 0.16285452) to loading(progress: 0.16376944)
+Loading progress: 0.16376944
+Loading state changed from loading(progress: 0.16376944) to loading(progress: 0.16468436)
+Loading progress: 0.16468436
+Loading state changed from loading(progress: 0.16468436) to loading(progress: 0.16559927)
+Loading progress: 0.16559927
+Loading state changed from loading(progress: 0.17017384) to loading(progress: 0.17108874)
+Loading progress: 0.17108874
+Loading state changed from loading(progress: 0.17108874) to loading(progress: 0.17200366)
+Loading progress: 0.17200366
+Loading state changed from loading(progress: 0.1747484) to loading(progress: 0.1756633)
+Loading progress: 0.1756633
+Loading state changed from loading(progress: 0.1756633) to loading(progress: 0.17657822)
+Loading progress: 0.17657822
+Loading state changed from loading(progress: 0.17840806) to loading(progress: 0.17932296)
+Loading progress: 0.17932296
+Loading state changed from loading(progress: 0.17932296) to loading(progress: 0.18023787)
+Loading progress: 0.18023787
+Loading state changed from loading(progress: 0.18481244) to loading(progress: 0.18572736)
+Loading progress: 0.18572736
+Loading state changed from loading(progress: 0.18572736) to loading(progress: 0.18664227)
+Loading progress: 0.18664227
+Loading state changed from loading(progress: 0.19121684) to loading(progress: 0.19213174)
+Loading progress: 0.19213174
+Loading state changed from loading(progress: 0.19213174) to loading(progress: 0.19304666)
+Loading progress: 0.19304666
+Loading state changed from loading(progress: 0.19762123) to loading(progress: 0.19853614)
+Loading progress: 0.19853614
+Loading state changed from loading(progress: 0.19853614) to loading(progress: 0.19945106)
+Loading progress: 0.19945106
+Loading state changed from loading(progress: 0.20036596) to loading(progress: 0.20128088)
+Loading progress: 0.20128088
+Invalid Material input type token
+Loading state changed from loading(progress: 0.20128088) to loading(progress: 0.2021958)
+Loading progress: 0.2021958
+Loading state changed from loading(progress: 0.2021958) to loading(progress: 0.20311071)
+Loading progress: 0.20311071
+Loading state changed from loading(progress: 0.20585544) to loading(progress: 0.20677036)
+Loading progress: 0.20677036
+Loading state changed from loading(progress: 0.20677036) to loading(progress: 0.20768528)
+Loading progress: 0.20768528
+Loading state changed from loading(progress: 0.21134493) to loading(progress: 0.21225983)
+Loading progress: 0.21225983
+Loading state changed from loading(progress: 0.21225983) to loading(progress: 0.21317475)
+Loading progress: 0.21317475
+Loading state changed from loading(progress: 0.21774931) to loading(progress: 0.21866423)
+Loading progress: 0.21866423
+Loading state changed from loading(progress: 0.21866423) to loading(progress: 0.21957915)
+Loading progress: 0.21957915
+Loading state changed from loading(progress: 0.22140896) to loading(progress: 0.22232388)
+Loading progress: 0.22232388
+Loading state changed from loading(progress: 0.22232388) to loading(progress: 0.2232388)
+Loading progress: 0.2232388
+Loading state changed from loading(progress: 0.2232388) to loading(progress: 0.22415371)
+Loading progress: 0.22415371
+Loading state changed from loading(progress: 0.22415371) to loading(progress: 0.22506861)
+Loading progress: 0.22506861
+Loading state changed from loading(progress: 0.22506861) to loading(progress: 0.22598353)
+Loading progress: 0.22598353
+Loading state changed from loading(progress: 0.22872826) to loading(progress: 0.22964318)
+Loading progress: 0.22964318
+Loading state changed from loading(progress: 0.22964318) to loading(progress: 0.2305581)
+Loading progress: 0.2305581
+Loading state changed from loading(progress: 0.23330283) to loading(progress: 0.23421775)
+Loading progress: 0.23421775
+Loading state changed from loading(progress: 0.23421775) to loading(progress: 0.23513266)
+Loading progress: 0.23513266
+Loading state changed from loading(progress: 0.23970723) to loading(progress: 0.24062215)
+Loading progress: 0.24062215
+Loading state changed from loading(progress: 0.24062215) to loading(progress: 0.24153705)
+Loading progress: 0.24153705
+Loading state changed from loading(progress: 0.24153705) to loading(progress: 0.24245197)
+Loading progress: 0.24245197
+Loading state changed from loading(progress: 0.24245197) to loading(progress: 0.24336688)
+Loading progress: 0.24336688
+Loading state changed from loading(progress: 0.2451967) to loading(progress: 0.24611162)
+Loading progress: 0.24611162
+Loading state changed from loading(progress: 0.24611162) to loading(progress: 0.24702653)
+Loading progress: 0.24702653
+Loading state changed from loading(progress: 0.24977127) to loading(progress: 0.2506862)
+Loading progress: 0.2506862
+Loading state changed from loading(progress: 0.2506862) to loading(progress: 0.2516011)
+Loading progress: 0.2516011
+Loading state changed from loading(progress: 0.25709057) to loading(progress: 0.2580055)
+Loading progress: 0.2580055
+Loading state changed from loading(progress: 0.2580055) to loading(progress: 0.2589204)
+Loading progress: 0.2589204
+Loading state changed from loading(progress: 0.2589204) to loading(progress: 0.2598353)
+Loading progress: 0.2598353
+Loading state changed from loading(progress: 0.2598353) to loading(progress: 0.26075023)
+Loading progress: 0.26075023
+Loading state changed from loading(progress: 0.2662397) to loading(progress: 0.26715463)
+Loading progress: 0.26715463
+Loading state changed from loading(progress: 0.26715463) to loading(progress: 0.26806954)
+Loading progress: 0.26806954
+Loading state changed from loading(progress: 0.26989937) to loading(progress: 0.27081427)
+Loading progress: 0.27081427
+Loading state changed from loading(progress: 0.27081427) to loading(progress: 0.27172917)
+Loading progress: 0.27172917
+Loading state changed from loading(progress: 0.27172917) to loading(progress: 0.2726441)
+Loading progress: 0.2726441
+Loading state changed from loading(progress: 0.2726441) to loading(progress: 0.273559)
+Loading progress: 0.273559
+Loading state changed from loading(progress: 0.273559) to loading(progress: 0.27447394)
+Loading progress: 0.27447394
+Loading state changed from loading(progress: 0.27447394) to loading(progress: 0.27538884)
+Loading progress: 0.27538884
+Loading state changed from loading(progress: 0.27813357) to loading(progress: 0.2790485)
+Loading progress: 0.2790485
+Loading state changed from loading(progress: 0.2790485) to loading(progress: 0.2799634)
+Loading progress: 0.2799634
+Invalid Material input type token
+Loading state changed from loading(progress: 0.2808783) to loading(progress: 0.28179324)
+Loading progress: 0.28179324
+Loading state changed from loading(progress: 0.28179324) to loading(progress: 0.28270814)
+Loading progress: 0.28270814
+Loading state changed from loading(progress: 0.28362307) to loading(progress: 0.28453797)
+Loading progress: 0.28453797
+Loading state changed from loading(progress: 0.28453797) to loading(progress: 0.28545287)
+Loading progress: 0.28545287
+Loading state changed from loading(progress: 0.2881976) to loading(progress: 0.28911254)
+Loading progress: 0.28911254
+Loading state changed from loading(progress: 0.28911254) to loading(progress: 0.29002744)
+Loading progress: 0.29002744
+Loading state changed from loading(progress: 0.29277217) to loading(progress: 0.2936871)
+Loading progress: 0.2936871
+Loading state changed from loading(progress: 0.2936871) to loading(progress: 0.294602)
+Loading progress: 0.294602
+Loading state changed from loading(progress: 0.29643184) to loading(progress: 0.29734674)
+Loading progress: 0.29734674
+Loading state changed from loading(progress: 0.29734674) to loading(progress: 0.29826167)
+Loading progress: 0.29826167
+Loading state changed from loading(progress: 0.29826167) to loading(progress: 0.29917657)
+Loading progress: 0.29917657
+Loading state changed from loading(progress: 0.29917657) to loading(progress: 0.3000915)
+Loading progress: 0.3000915
+Loading state changed from loading(progress: 0.3000915) to loading(progress: 0.3010064)
+Loading progress: 0.3010064
+Loading state changed from loading(progress: 0.30283624) to loading(progress: 0.30375114)
+Loading progress: 0.30375114
+Loading state changed from loading(progress: 0.30375114) to loading(progress: 0.30466604)
+Loading progress: 0.30466604
+Loading state changed from loading(progress: 0.30466604) to loading(progress: 0.30558097)
+Loading progress: 0.30558097
+Loading state changed from loading(progress: 0.30649588) to loading(progress: 0.3074108)
+Loading progress: 0.3074108
+Loading state changed from loading(progress: 0.3074108) to loading(progress: 0.3083257)
+Loading progress: 0.3083257
+Loading state changed from loading(progress: 0.3083257) to loading(progress: 0.3092406)
+Loading progress: 0.3092406
+Loading state changed from loading(progress: 0.3092406) to loading(progress: 0.31015554)
+Loading progress: 0.31015554
+Loading state changed from loading(progress: 0.31015554) to loading(progress: 0.31107044)
+Loading progress: 0.31107044
+Loading state changed from loading(progress: 0.31107044) to loading(progress: 0.31198537)
+Loading progress: 0.31198537
+Loading state changed from loading(progress: 0.31198537) to loading(progress: 0.31290027)
+Loading progress: 0.31290027
+Loading state changed from loading(progress: 0.3147301) to loading(progress: 0.315645)
+Loading progress: 0.315645
+Loading state changed from loading(progress: 0.315645) to loading(progress: 0.31655994)
+Loading progress: 0.31655994
+Loading state changed from loading(progress: 0.31747484) to loading(progress: 0.31838974)
+Loading progress: 0.31838974
+Loading state changed from loading(progress: 0.31838974) to loading(progress: 0.31930467)
+Loading progress: 0.31930467
+Loading state changed from loading(progress: 0.31930467) to loading(progress: 0.32021958)
+Loading progress: 0.32021958
+Loading state changed from loading(progress: 0.32387924) to loading(progress: 0.32479414)
+Loading progress: 0.32479414
+Loading state changed from loading(progress: 0.32479414) to loading(progress: 0.32570904)
+Loading progress: 0.32570904
+Loading state changed from loading(progress: 0.32570904) to loading(progress: 0.32662398)
+Loading progress: 0.32662398
+Loading state changed from loading(progress: 0.3302836) to loading(progress: 0.33119854)
+Loading progress: 0.33119854
+Loading state changed from loading(progress: 0.33119854) to loading(progress: 0.33211344)
+Loading progress: 0.33211344
+Loading state changed from loading(progress: 0.33302838) to loading(progress: 0.33394328)
+Loading progress: 0.33394328
+Loading state changed from loading(progress: 0.33394328) to loading(progress: 0.33485818)
+Loading progress: 0.33485818
+Loading state changed from loading(progress: 0.336688) to loading(progress: 0.3376029)
+Loading progress: 0.3376029
+Loading state changed from loading(progress: 0.3376029) to loading(progress: 0.33851784)
+Loading progress: 0.33851784
+Loading state changed from loading(progress: 0.34217748) to loading(progress: 0.3430924)
+Loading progress: 0.3430924
+Loading state changed from loading(progress: 0.3430924) to loading(progress: 0.3440073)
+Loading progress: 0.3440073
+Loading state changed from loading(progress: 0.34675205) to loading(progress: 0.34766698)
+Loading progress: 0.34766698
+Loading state changed from loading(progress: 0.34766698) to loading(progress: 0.34858188)
+Loading progress: 0.34858188
+Loading state changed from loading(progress: 0.3494968) to loading(progress: 0.3504117)
+Loading progress: 0.3504117
+Loading state changed from loading(progress: 0.3504117) to loading(progress: 0.3513266)
+Loading progress: 0.3513266
+Loading state changed from loading(progress: 0.35590118) to loading(progress: 0.3568161)
+Loading progress: 0.3568161
+Loading state changed from loading(progress: 0.3568161) to loading(progress: 0.357731)
+Loading progress: 0.357731
+Loading state changed from loading(progress: 0.36230558) to loading(progress: 0.36322048)
+Loading progress: 0.36322048
+Loading state changed from loading(progress: 0.36322048) to loading(progress: 0.3641354)
+Loading progress: 0.3641354
+Loading state changed from loading(progress: 0.36688015) to loading(progress: 0.36779505)
+Loading progress: 0.36779505
+Loading state changed from loading(progress: 0.36779505) to loading(progress: 0.36870998)
+Loading progress: 0.36870998
+Loading state changed from loading(progress: 0.36962488) to loading(progress: 0.37053978)
+Loading progress: 0.37053978
+Loading state changed from loading(progress: 0.37053978) to loading(progress: 0.37145472)
+Loading progress: 0.37145472
+Loading state changed from loading(progress: 0.37785912) to loading(progress: 0.37877402)
+Loading progress: 0.37877402
+Loading state changed from loading(progress: 0.37877402) to loading(progress: 0.37968892)
+Loading progress: 0.37968892
+Loading state changed from loading(progress: 0.37968892) to loading(progress: 0.38060385)
+Loading progress: 0.38060385
+Loading state changed from loading(progress: 0.38517842) to loading(progress: 0.38609332)
+Loading progress: 0.38609332
+Loading state changed from loading(progress: 0.38609332) to loading(progress: 0.38700822)
+Loading progress: 0.38700822
+Loading state changed from loading(progress: 0.39249772) to loading(progress: 0.39341262)
+Loading progress: 0.39341262
+Loading state changed from loading(progress: 0.39341262) to loading(progress: 0.39432755)
+Loading progress: 0.39432755
+Loading state changed from loading(progress: 0.39432755) to loading(progress: 0.39524245)
+Loading progress: 0.39524245
+Loading state changed from loading(progress: 0.39524245) to loading(progress: 0.39615735)
+Loading progress: 0.39615735
+Loading state changed from loading(progress: 0.3970723) to loading(progress: 0.3979872)
+Loading progress: 0.3979872
+Loading state changed from loading(progress: 0.3979872) to loading(progress: 0.39890212)
+Loading progress: 0.39890212
+Loading state changed from loading(progress: 0.40073192) to loading(progress: 0.40164685)
+Loading progress: 0.40164685
+Loading state changed from loading(progress: 0.40164685) to loading(progress: 0.40256175)
+Loading progress: 0.40256175
+Loading state changed from loading(progress: 0.40622142) to loading(progress: 0.40713632)
+Loading progress: 0.40713632
+Loading state changed from loading(progress: 0.40713632) to loading(progress: 0.40805122)
+Loading progress: 0.40805122
+Loading state changed from loading(progress: 0.4126258) to loading(progress: 0.41354072)
+Loading progress: 0.41354072
+Loading state changed from loading(progress: 0.41354072) to loading(progress: 0.41445562)
+Loading progress: 0.41445562
+Loading state changed from loading(progress: 0.4199451) to loading(progress: 0.42086002)
+Loading progress: 0.42086002
+Loading state changed from loading(progress: 0.42086002) to loading(progress: 0.42177492)
+Loading progress: 0.42177492
+Loading state changed from loading(progress: 0.42268986) to loading(progress: 0.42360476)
+Loading progress: 0.42360476
+Loading state changed from loading(progress: 0.42360476) to loading(progress: 0.42451966)
+Loading progress: 0.42451966
+Loading state changed from loading(progress: 0.4254346) to loading(progress: 0.4263495)
+Loading progress: 0.4263495
+Loading state changed from loading(progress: 0.4263495) to loading(progress: 0.42726442)
+Loading progress: 0.42726442
+Loading state changed from loading(progress: 0.4327539) to loading(progress: 0.4336688)
+Loading progress: 0.4336688
+Loading state changed from loading(progress: 0.4336688) to loading(progress: 0.43458372)
+Loading progress: 0.43458372
+Loading state changed from loading(progress: 0.43824336) to loading(progress: 0.4391583)
+Loading progress: 0.4391583
+Loading state changed from loading(progress: 0.4391583) to loading(progress: 0.4400732)
+Loading progress: 0.4400732
+Loading state changed from loading(progress: 0.44281793) to loading(progress: 0.44373286)
+Loading progress: 0.44373286
+Loading state changed from loading(progress: 0.44373286) to loading(progress: 0.44464776)
+Loading progress: 0.44464776
+Loading state changed from loading(progress: 0.45013723) to loading(progress: 0.45105216)
+Loading progress: 0.45105216
+Loading state changed from loading(progress: 0.45105216) to loading(progress: 0.45196706)
+Loading progress: 0.45196706
+Loading state changed from loading(progress: 0.45928636) to loading(progress: 0.4602013)
+Loading progress: 0.4602013
+Loading state changed from loading(progress: 0.4602013) to loading(progress: 0.4611162)
+Loading progress: 0.4611162
+Loading state changed from loading(progress: 0.4620311) to loading(progress: 0.46294603)
+Loading progress: 0.46294603
+Loading state changed from loading(progress: 0.46294603) to loading(progress: 0.46386093)
+Loading progress: 0.46386093
+Loading state changed from loading(progress: 0.46386093) to loading(progress: 0.46477586)
+Loading progress: 0.46477586
+Loading state changed from loading(progress: 0.46477586) to loading(progress: 0.46569076)
+Loading progress: 0.46569076
+Loading state changed from loading(progress: 0.47118023) to loading(progress: 0.47209516)
+Loading progress: 0.47209516
+Loading state changed from loading(progress: 0.47209516) to loading(progress: 0.47301006)
+Loading progress: 0.47301006
+Loading state changed from loading(progress: 0.47849953) to loading(progress: 0.47941446)
+Loading progress: 0.47941446
+Loading state changed from loading(progress: 0.47941446) to loading(progress: 0.48032936)
+Loading progress: 0.48032936
+Loading state changed from loading(progress: 0.48032936) to loading(progress: 0.4812443)
+Loading progress: 0.4812443
+Loading state changed from loading(progress: 0.4812443) to loading(progress: 0.4821592)
+Loading progress: 0.4821592
+Loading state changed from loading(progress: 0.48398903) to loading(progress: 0.48490393)
+Loading progress: 0.48490393
+Loading state changed from loading(progress: 0.48490393) to loading(progress: 0.48581883)
+Loading progress: 0.48581883
+Loading state changed from loading(progress: 0.4903934) to loading(progress: 0.49130833)
+Loading progress: 0.49130833
+Loading state changed from loading(progress: 0.49130833) to loading(progress: 0.49222323)
+Loading progress: 0.49222323
+Loading state changed from loading(progress: 0.49222323) to loading(progress: 0.49313816)
+Loading progress: 0.49313816
+Loading state changed from loading(progress: 0.49771273) to loading(progress: 0.49862763)
+Loading progress: 0.49862763
+Loading state changed from loading(progress: 0.49862763) to loading(progress: 0.49954253)
+Loading progress: 0.49954253
+Loading state changed from loading(progress: 0.50045747) to loading(progress: 0.5013724)
+Loading progress: 0.5013724
+Loading state changed from loading(progress: 0.5013724) to loading(progress: 0.50228727)
+Loading progress: 0.50228727
+Loading state changed from loading(progress: 0.50411713) to loading(progress: 0.505032)
+Loading progress: 0.505032
+Loading state changed from loading(progress: 0.505032) to loading(progress: 0.50594693)
+Loading progress: 0.50594693
+Loading state changed from loading(progress: 0.5105215) to loading(progress: 0.5114364)
+Loading progress: 0.5114364
+Loading state changed from loading(progress: 0.5114364) to loading(progress: 0.51235133)
+Loading progress: 0.51235133
+Loading state changed from loading(progress: 0.5169259) to loading(progress: 0.5178408)
+Loading progress: 0.5178408
+Loading state changed from loading(progress: 0.5178408) to loading(progress: 0.51875573)
+Loading progress: 0.51875573
+Loading state changed from loading(progress: 0.5233303) to loading(progress: 0.5242452)
+Loading progress: 0.5242452
+Loading state changed from loading(progress: 0.5242452) to loading(progress: 0.52516013)
+Loading progress: 0.52516013
+Loading state changed from loading(progress: 0.5315645) to loading(progress: 0.5324794)
+Loading progress: 0.5324794
+Loading state changed from loading(progress: 0.5324794) to loading(progress: 0.53339434)
+Loading progress: 0.53339434
+Loading state changed from loading(progress: 0.5388838) to loading(progress: 0.53979874)
+Loading progress: 0.53979874
+Loading state changed from loading(progress: 0.53979874) to loading(progress: 0.5407136)
+Loading progress: 0.5407136
+Loading state changed from loading(progress: 0.5425435) to loading(progress: 0.54345834)
+Loading progress: 0.54345834
+Loading state changed from loading(progress: 0.54345834) to loading(progress: 0.5443733)
+Loading progress: 0.5443733
+Loading state changed from loading(progress: 0.54803294) to loading(progress: 0.5489479)
+Loading progress: 0.5489479
+Loading state changed from loading(progress: 0.5489479) to loading(progress: 0.54986274)
+Loading progress: 0.54986274
+Loading state changed from loading(progress: 0.55443734) to loading(progress: 0.5553523)
+Loading progress: 0.5553523
+Loading state changed from loading(progress: 0.5553523) to loading(progress: 0.55626714)
+Loading progress: 0.55626714
+Loading state changed from loading(progress: 0.5590119) to loading(progress: 0.5599268)
+Loading progress: 0.5599268
+Loading state changed from loading(progress: 0.5599268) to loading(progress: 0.56084174)
+Loading progress: 0.56084174
+Loading state changed from loading(progress: 0.5654163) to loading(progress: 0.5663312)
+Loading progress: 0.5663312
+Loading state changed from loading(progress: 0.5663312) to loading(progress: 0.56724614)
+Loading progress: 0.56724614
+Loading state changed from loading(progress: 0.5736505) to loading(progress: 0.5745654)
+Loading progress: 0.5745654
+Loading state changed from loading(progress: 0.5745654) to loading(progress: 0.57548034)
+Loading progress: 0.57548034
+Loading state changed from loading(progress: 0.5763952) to loading(progress: 0.57731014)
+Loading progress: 0.57731014
+Loading state changed from loading(progress: 0.57731014) to loading(progress: 0.5782251)
+Loading progress: 0.5782251
+Loading state changed from loading(progress: 0.5782251) to loading(progress: 0.57914)
+Loading progress: 0.57914
+Loading state changed from loading(progress: 0.5846295) to loading(progress: 0.58554435)
+Loading progress: 0.58554435
+Loading state changed from loading(progress: 0.58554435) to loading(progress: 0.5864593)
+Loading progress: 0.5864593
+Loading state changed from loading(progress: 0.59011894) to loading(progress: 0.5910339)
+Loading progress: 0.5910339
+Loading state changed from loading(progress: 0.5910339) to loading(progress: 0.59194875)
+Loading progress: 0.59194875
+Loading state changed from loading(progress: 0.5946935) to loading(progress: 0.5956084)
+Loading progress: 0.5956084
+Loading state changed from loading(progress: 0.5956084) to loading(progress: 0.59652334)
+Loading progress: 0.59652334
+Loading state changed from loading(progress: 0.60292774) to loading(progress: 0.6038426)
+Loading progress: 0.6038426
+Loading state changed from loading(progress: 0.6038426) to loading(progress: 0.60475755)
+Loading progress: 0.60475755
+Loading state changed from loading(progress: 0.610247) to loading(progress: 0.61116195)
+Loading progress: 0.61116195
+Loading state changed from loading(progress: 0.61116195) to loading(progress: 0.6120769)
+Loading progress: 0.6120769
+Loading state changed from loading(progress: 0.6157365) to loading(progress: 0.6166514)
+Loading progress: 0.6166514
+Loading state changed from loading(progress: 0.6166514) to loading(progress: 0.61756635)
+Loading progress: 0.61756635
+Loading state changed from loading(progress: 0.6203111) to loading(progress: 0.621226)
+Loading progress: 0.621226
+Loading state changed from loading(progress: 0.621226) to loading(progress: 0.6221409)
+Loading progress: 0.6221409
+Loading state changed from loading(progress: 0.6221409) to loading(progress: 0.6230558)
+Loading progress: 0.6230558
+Loading state changed from loading(progress: 0.6294602) to loading(progress: 0.6303751)
+Loading progress: 0.6303751
+Loading state changed from loading(progress: 0.6303751) to loading(progress: 0.63129)
+Loading progress: 0.63129
+Loading state changed from loading(progress: 0.6367795) to loading(progress: 0.6376944)
+Loading progress: 0.6376944
+Loading state changed from loading(progress: 0.6376944) to loading(progress: 0.63860935)
+Loading progress: 0.63860935
+Loading state changed from loading(progress: 0.64226896) to loading(progress: 0.6431839)
+Loading progress: 0.6431839
+Loading state changed from loading(progress: 0.6431839) to loading(progress: 0.6440988)
+Loading progress: 0.6440988
+Loading state changed from loading(progress: 0.64684355) to loading(progress: 0.6477585)
+Loading progress: 0.6477585
+Loading state changed from loading(progress: 0.6477585) to loading(progress: 0.64867336)
+Loading progress: 0.64867336
+Loading state changed from loading(progress: 0.6541629) to loading(progress: 0.65507776)
+Loading progress: 0.65507776
+Loading state changed from loading(progress: 0.65507776) to loading(progress: 0.6559927)
+Loading progress: 0.6559927
+Loading state changed from loading(progress: 0.66331196) to loading(progress: 0.6642269)
+Loading progress: 0.6642269
+Loading state changed from loading(progress: 0.6642269) to loading(progress: 0.6651418)
+Loading progress: 0.6651418
+Loading state changed from loading(progress: 0.6724611) to loading(progress: 0.673376)
+Loading progress: 0.673376
+Loading state changed from loading(progress: 0.673376) to loading(progress: 0.67429096)
+Loading progress: 0.67429096
+Loading state changed from loading(progress: 0.6788655) to loading(progress: 0.6797804)
+Loading progress: 0.6797804
+Loading state changed from loading(progress: 0.6797804) to loading(progress: 0.68069535)
+Loading progress: 0.68069535
+Loading state changed from loading(progress: 0.6816102) to loading(progress: 0.68252516)
+Loading progress: 0.68252516
+Loading state changed from loading(progress: 0.68252516) to loading(progress: 0.6834401)
+Loading progress: 0.6834401
+Loading state changed from loading(progress: 0.6834401) to loading(progress: 0.68435496)
+Loading progress: 0.68435496
+Loading state changed from loading(progress: 0.68435496) to loading(progress: 0.6852699)
+Loading progress: 0.6852699
+Loading state changed from loading(progress: 0.6852699) to loading(progress: 0.6861848)
+Loading progress: 0.6861848
+Loading state changed from loading(progress: 0.6861848) to loading(progress: 0.68709975)
+Loading progress: 0.68709975
+Loading state changed from loading(progress: 0.69075936) to loading(progress: 0.6916743)
+Loading progress: 0.6916743
+Loading state changed from loading(progress: 0.6916743) to loading(progress: 0.6925892)
+Loading progress: 0.6925892
+Loading state changed from loading(progress: 0.6925892) to loading(progress: 0.6935041)
+Loading progress: 0.6935041
+Loading state changed from loading(progress: 0.6935041) to loading(progress: 0.694419)
+Loading progress: 0.694419
+Loading state changed from loading(progress: 0.694419) to loading(progress: 0.69533396)
+Loading progress: 0.69533396
+Loading state changed from loading(progress: 0.6962488) to loading(progress: 0.69716376)
+Loading progress: 0.69716376
+Loading state changed from loading(progress: 0.69716376) to loading(progress: 0.6980787)
+Loading progress: 0.6980787
+Loading state changed from loading(progress: 0.70173836) to loading(progress: 0.7026532)
+Loading progress: 0.7026532
+Loading state changed from loading(progress: 0.7026532) to loading(progress: 0.70356816)
+Loading progress: 0.70356816
+Loading state changed from loading(progress: 0.7072278) to loading(progress: 0.7081427)
+Loading progress: 0.7081427
+Loading state changed from loading(progress: 0.7081427) to loading(progress: 0.7090576)
+Loading progress: 0.7090576
+Loading state changed from loading(progress: 0.715462) to loading(progress: 0.71637696)
+Loading progress: 0.71637696
+Loading state changed from loading(progress: 0.71637696) to loading(progress: 0.71729183)
+Loading progress: 0.71729183
+Loading state changed from loading(progress: 0.71729183) to loading(progress: 0.71820676)
+Loading progress: 0.71820676
+Loading state changed from loading(progress: 0.71820676) to loading(progress: 0.7191217)
+Loading progress: 0.7191217
+Loading state changed from loading(progress: 0.7191217) to loading(progress: 0.7200366)
+Loading progress: 0.7200366
+Loading state changed from loading(progress: 0.72461116) to loading(progress: 0.7255261)
+Loading progress: 0.7255261
+Loading state changed from loading(progress: 0.7255261) to loading(progress: 0.72644097)
+Loading progress: 0.72644097
+Loading state changed from loading(progress: 0.7282708) to loading(progress: 0.7291857)
+Loading progress: 0.7291857
+Loading state changed from loading(progress: 0.7291857) to loading(progress: 0.73010063)
+Loading progress: 0.73010063
+Loading state changed from loading(progress: 0.73010063) to loading(progress: 0.73101556)
+Loading progress: 0.73101556
+Loading state changed from loading(progress: 0.73101556) to loading(progress: 0.7319305)
+Loading progress: 0.7319305
+Loading state changed from loading(progress: 0.7319305) to loading(progress: 0.73284537)
+Loading progress: 0.73284537
+Loading state changed from loading(progress: 0.73284537) to loading(progress: 0.7337603)
+Loading progress: 0.7337603
+Loading state changed from loading(progress: 0.7337603) to loading(progress: 0.7346752)
+Loading progress: 0.7346752
+Loading state changed from loading(progress: 0.7346752) to loading(progress: 0.7355901)
+Loading progress: 0.7355901
+Loading state changed from loading(progress: 0.7355901) to loading(progress: 0.73650503)
+Loading progress: 0.73650503
+Loading state changed from loading(progress: 0.73650503) to loading(progress: 0.73741996)
+Loading progress: 0.73741996
+Loading state changed from loading(progress: 0.73833483) to loading(progress: 0.73924977)
+Loading progress: 0.73924977
+Loading state changed from loading(progress: 0.73924977) to loading(progress: 0.7401647)
+Loading progress: 0.7401647
+Loading state changed from loading(progress: 0.7419945) to loading(progress: 0.74290943)
+Loading progress: 0.74290943
+Loading state changed from loading(progress: 0.74290943) to loading(progress: 0.74382436)
+Loading progress: 0.74382436
+Loading state changed from loading(progress: 0.74565417) to loading(progress: 0.7465691)
+Loading progress: 0.7465691
+Loading state changed from loading(progress: 0.7465691) to loading(progress: 0.74748397)
+Loading progress: 0.74748397
+Loading state changed from loading(progress: 0.7483989) to loading(progress: 0.74931383)
+Loading progress: 0.74931383
+Loading state changed from loading(progress: 0.74931383) to loading(progress: 0.7502287)
+Loading progress: 0.7502287
+Loading state changed from loading(progress: 0.7502287) to loading(progress: 0.75114363)
+Loading progress: 0.75114363
+Loading state changed from loading(progress: 0.75114363) to loading(progress: 0.75205857)
+Loading progress: 0.75205857
+Loading state changed from loading(progress: 0.7548033) to loading(progress: 0.75571823)
+Loading progress: 0.75571823
+Loading state changed from loading(progress: 0.75571823) to loading(progress: 0.7566331)
+Loading progress: 0.7566331
+Loading state changed from loading(progress: 0.76029277) to loading(progress: 0.7612077)
+Loading progress: 0.7612077
+Loading state changed from loading(progress: 0.7612077) to loading(progress: 0.7621226)
+Loading progress: 0.7621226
+Loading state changed from loading(progress: 0.7630375) to loading(progress: 0.76395243)
+Loading progress: 0.76395243
+Loading state changed from loading(progress: 0.76395243) to loading(progress: 0.76486737)
+Loading progress: 0.76486737
+Loading state changed from loading(progress: 0.76669717) to loading(progress: 0.7676121)
+Loading progress: 0.7676121
+Loading state changed from loading(progress: 0.7676121) to loading(progress: 0.768527)
+Loading progress: 0.768527
+Loading state changed from loading(progress: 0.768527) to loading(progress: 0.7694419)
+Loading progress: 0.7694419
+Loading state changed from loading(progress: 0.7694419) to loading(progress: 0.77035683)
+Loading progress: 0.77035683
+Loading state changed from loading(progress: 0.77035683) to loading(progress: 0.7712717)
+Loading progress: 0.7712717
+Loading state changed from loading(progress: 0.7712717) to loading(progress: 0.77218664)
+Loading progress: 0.77218664
+Loading state changed from loading(progress: 0.77310157) to loading(progress: 0.77401644)
+Loading progress: 0.77401644
+Loading state changed from loading(progress: 0.77401644) to loading(progress: 0.7749314)
+Loading progress: 0.7749314
+Loading state changed from loading(progress: 0.77859104) to loading(progress: 0.77950597)
+Loading progress: 0.77950597
+Loading state changed from loading(progress: 0.77950597) to loading(progress: 0.78042084)
+Loading progress: 0.78042084
+Loading state changed from loading(progress: 0.78042084) to loading(progress: 0.7813358)
+Loading progress: 0.7813358
+Loading state changed from loading(progress: 0.7813358) to loading(progress: 0.7822507)
+Loading progress: 0.7822507
+Loading state changed from loading(progress: 0.7822507) to loading(progress: 0.7831656)
+Loading progress: 0.7831656
+Loading state changed from loading(progress: 0.7831656) to loading(progress: 0.7840805)
+Loading progress: 0.7840805
+Loading state changed from loading(progress: 0.78682524) to loading(progress: 0.7877402)
+Loading progress: 0.7877402
+Loading state changed from loading(progress: 0.7877402) to loading(progress: 0.7886551)
+Loading progress: 0.7886551
+Loading state changed from loading(progress: 0.79139984) to loading(progress: 0.7923147)
+Loading progress: 0.7923147
+Loading state changed from loading(progress: 0.7923147) to loading(progress: 0.79322964)
+Loading progress: 0.79322964
+Loading state changed from loading(progress: 0.79780424) to loading(progress: 0.7987191)
+Loading progress: 0.7987191
+Loading state changed from loading(progress: 0.7987191) to loading(progress: 0.79963404)
+Loading progress: 0.79963404
+Loading state changed from loading(progress: 0.79963404) to loading(progress: 0.800549)
+Loading progress: 0.800549
+Loading state changed from loading(progress: 0.800549) to loading(progress: 0.80146384)
+Loading progress: 0.80146384
+Loading state changed from loading(progress: 0.8032937) to loading(progress: 0.8042086)
+Loading progress: 0.8042086
+Loading state changed from loading(progress: 0.8042086) to loading(progress: 0.8051235)
+Loading progress: 0.8051235
+Loading state changed from loading(progress: 0.8087832) to loading(progress: 0.8096981)
+Loading progress: 0.8096981
+Loading state changed from loading(progress: 0.8096981) to loading(progress: 0.810613)
+Loading progress: 0.810613
+Loading state changed from loading(progress: 0.81427264) to loading(progress: 0.8151876)
+Loading progress: 0.8151876
+Loading state changed from loading(progress: 0.8151876) to loading(progress: 0.81610245)
+Loading progress: 0.81610245
+Loading state changed from loading(progress: 0.81884724) to loading(progress: 0.8197621)
+Loading progress: 0.8197621
+Loading state changed from loading(progress: 0.8197621) to loading(progress: 0.82067704)
+Loading progress: 0.82067704
+Loading state changed from loading(progress: 0.8252516) to loading(progress: 0.8261665)
+Loading progress: 0.8261665
+Loading state changed from loading(progress: 0.8261665) to loading(progress: 0.82708144)
+Loading progress: 0.82708144
+Loading state changed from loading(progress: 0.831656) to loading(progress: 0.8325709)
+Loading progress: 0.8325709
+Loading state changed from loading(progress: 0.8325709) to loading(progress: 0.83348584)
+Loading progress: 0.83348584
+Loading state changed from loading(progress: 0.8362306) to loading(progress: 0.83714545)
+Loading progress: 0.83714545
+Loading state changed from loading(progress: 0.83714545) to loading(progress: 0.8380604)
+Loading progress: 0.8380604
+Loading state changed from loading(progress: 0.8389753) to loading(progress: 0.8398902)
+Loading progress: 0.8398902
+Loading state changed from loading(progress: 0.8398902) to loading(progress: 0.8408051)
+Loading progress: 0.8408051
+Loading state changed from loading(progress: 0.8408051) to loading(progress: 0.84172004)
+Loading progress: 0.84172004
+Loading state changed from loading(progress: 0.84172004) to loading(progress: 0.842635)
+Loading progress: 0.842635
+Loading state changed from loading(progress: 0.8453797) to loading(progress: 0.8462946)
+Loading progress: 0.8462946
+Loading state changed from loading(progress: 0.8462946) to loading(progress: 0.8472095)
+Loading progress: 0.8472095
+Loading state changed from loading(progress: 0.8472095) to loading(progress: 0.84812444)
+Loading progress: 0.84812444
+Loading state changed from loading(progress: 0.84812444) to loading(progress: 0.8490393)
+Loading progress: 0.8490393
+Loading state changed from loading(progress: 0.8490393) to loading(progress: 0.84995425)
+Loading progress: 0.84995425
+Loading state changed from loading(progress: 0.8517841) to loading(progress: 0.852699)
+Loading progress: 0.852699
+Loading state changed from loading(progress: 0.852699) to loading(progress: 0.8536139)
+Loading progress: 0.8536139
+Loading state changed from loading(progress: 0.8572736) to loading(progress: 0.85818845)
+Loading progress: 0.85818845
+Loading state changed from loading(progress: 0.85818845) to loading(progress: 0.8591034)
+Loading progress: 0.8591034
+Loading state changed from loading(progress: 0.86276305) to loading(progress: 0.863678)
+Loading progress: 0.863678
+Loading state changed from loading(progress: 0.863678) to loading(progress: 0.86459285)
+Loading progress: 0.86459285
+Loading state changed from loading(progress: 0.86916745) to loading(progress: 0.8700823)
+Loading progress: 0.8700823
+Loading state changed from loading(progress: 0.8700823) to loading(progress: 0.87099725)
+Loading progress: 0.87099725
+Loading state changed from loading(progress: 0.8746569) to loading(progress: 0.87557185)
+Loading progress: 0.87557185
+Loading state changed from loading(progress: 0.87557185) to loading(progress: 0.8764867)
+Loading progress: 0.8764867
+Loading state changed from loading(progress: 0.8810613) to loading(progress: 0.8819762)
+Loading progress: 0.8819762
+Loading state changed from loading(progress: 0.8819762) to loading(progress: 0.8828911)
+Loading progress: 0.8828911
+Loading state changed from loading(progress: 0.8874657) to loading(progress: 0.8883806)
+Loading progress: 0.8883806
+Loading state changed from loading(progress: 0.8883806) to loading(progress: 0.8892955)
+Loading progress: 0.8892955
+Loading state changed from loading(progress: 0.89204025) to loading(progress: 0.8929552)
+Loading progress: 0.8929552
+Loading state changed from loading(progress: 0.8929552) to loading(progress: 0.89387006)
+Loading progress: 0.89387006
+Loading state changed from loading(progress: 0.89844465) to loading(progress: 0.8993596)
+Loading progress: 0.8993596
+Loading state changed from loading(progress: 0.8993596) to loading(progress: 0.90027446)
+Loading progress: 0.90027446
+Loading state changed from loading(progress: 0.9039341) to loading(progress: 0.90484905)
+Loading progress: 0.90484905
+Loading state changed from loading(progress: 0.90484905) to loading(progress: 0.9057639)
+Loading progress: 0.9057639
+Loading state changed from loading(progress: 0.9085087) to loading(progress: 0.9094236)
+Loading progress: 0.9094236
+Loading state changed from loading(progress: 0.9094236) to loading(progress: 0.9103385)
+Loading progress: 0.9103385
+Loading state changed from loading(progress: 0.91125345) to loading(progress: 0.9121683)
+Loading progress: 0.9121683
+Loading state changed from loading(progress: 0.9121683) to loading(progress: 0.91308326)
+Loading progress: 0.91308326
+Loading state changed from loading(progress: 0.9139982) to loading(progress: 0.91491306)
+Loading progress: 0.91491306
+Loading state changed from loading(progress: 0.91491306) to loading(progress: 0.915828)
+Loading progress: 0.915828
+Loading state changed from loading(progress: 0.91948766) to loading(progress: 0.9204026)
+Loading progress: 0.9204026
+Loading state changed from loading(progress: 0.9204026) to loading(progress: 0.92131746)
+Loading progress: 0.92131746
+Loading state changed from loading(progress: 0.92131746) to loading(progress: 0.9222324)
+Loading progress: 0.9222324
+Loading state changed from loading(progress: 0.9222324) to loading(progress: 0.9231473)
+Loading progress: 0.9231473
+Loading state changed from loading(progress: 0.9231473) to loading(progress: 0.9240622)
+Loading progress: 0.9240622
+Loading state changed from loading(progress: 0.9268069) to loading(progress: 0.92772186)
+Loading progress: 0.92772186
+Loading state changed from loading(progress: 0.92772186) to loading(progress: 0.9286368)
+Loading progress: 0.9286368
+Loading state changed from loading(progress: 0.9332113) to loading(progress: 0.93412626)
+Loading progress: 0.93412626
+Loading state changed from loading(progress: 0.93412626) to loading(progress: 0.9350412)
+Loading progress: 0.9350412
+Loading state changed from loading(progress: 0.9350412) to loading(progress: 0.93595606)
+Loading progress: 0.93595606
+Loading state changed from loading(progress: 0.936871) to loading(progress: 0.9377859)
+Loading progress: 0.9377859
+Loading state changed from loading(progress: 0.9377859) to loading(progress: 0.9387008)
+Loading progress: 0.9387008
+Loading state changed from loading(progress: 0.94236046) to loading(progress: 0.9432754)
+Loading progress: 0.9432754
+Loading state changed from loading(progress: 0.9432754) to loading(progress: 0.9441903)
+Loading progress: 0.9441903
+Loading state changed from loading(progress: 0.9478499) to loading(progress: 0.94876486)
+Loading progress: 0.94876486
+Loading state changed from loading(progress: 0.94876486) to loading(progress: 0.9496798)
+Loading progress: 0.9496798
+Loading state changed from loading(progress: 0.9496798) to loading(progress: 0.9505947)
+Loading progress: 0.9505947
+Loading state changed from loading(progress: 0.9524245) to loading(progress: 0.95333946)
+Loading progress: 0.95333946
+Loading state changed from loading(progress: 0.95333946) to loading(progress: 0.9542543)
+Loading progress: 0.9542543
+Loading state changed from loading(progress: 0.957914) to loading(progress: 0.9588289)
+Loading progress: 0.9588289
+Loading state changed from loading(progress: 0.9588289) to loading(progress: 0.9597438)
+Loading progress: 0.9597438
+Loading state changed from loading(progress: 0.9597438) to loading(progress: 0.9606587)
+Loading progress: 0.9606587
+Loading state changed from loading(progress: 0.9606587) to loading(progress: 0.96157366)
+Loading progress: 0.96157366
+Loading state changed from loading(progress: 0.9624886) to loading(progress: 0.96340346)
+Loading progress: 0.96340346
+Loading state changed from loading(progress: 0.96340346) to loading(progress: 0.9643184)
+Loading progress: 0.9643184
+Loading state changed from loading(progress: 0.9643184) to loading(progress: 0.9652333)
+Loading progress: 0.9652333
+Loading state changed from loading(progress: 0.96889293) to loading(progress: 0.96980786)
+Loading progress: 0.96980786
+Loading state changed from loading(progress: 0.96980786) to loading(progress: 0.9707228)
+Loading progress: 0.9707228
+Loading state changed from loading(progress: 0.97621226) to loading(progress: 0.9771272)
+Loading progress: 0.9771272
+Loading state changed from loading(progress: 0.9771272) to loading(progress: 0.97804207)
+Loading progress: 0.97804207
+Loading state changed from loading(progress: 0.978957) to loading(progress: 0.9798719)
+Loading progress: 0.9798719
+Loading state changed from loading(progress: 0.9798719) to loading(progress: 0.9807868)
+Loading progress: 0.9807868
+Loading state changed from loading(progress: 0.98444647) to loading(progress: 0.9853614)
+Loading progress: 0.9853614
+Loading state changed from loading(progress: 0.9853614) to loading(progress: 0.9862763)
+Loading progress: 0.9862763
+Loading state changed from loading(progress: 0.99085087) to loading(progress: 0.9917658)
+Loading progress: 0.9917658
+Loading state changed from loading(progress: 0.9917658) to loading(progress: 0.99268067)
+Loading progress: 0.99268067
+Loading state changed from loading(progress: 0.9981702) to loading(progress: 0.99908507)
+Loading progress: 0.99908507
+Loading state changed from loading(progress: 0.99908507) to loading(progress: 1.0)
+Loading progress: 1.0
+IBL URL: file:///private/var/containers/Bundle/Application/731E7C95-D7AB-4EA5-9C7C-41CD6464AD09/PfizerOutdoCancer.app/lab_v005.exr
+✅ Completed lab environment assembly
+✅ Loaded assembled_lab - Progress: 1.0
+✅ prepareIntroPhase completed
+✅ prepareIntroPhase completed
+🔄 Transitioning to .ready...
+🔄 Phase transition: loading -> ready
+🔍 isTransitioning: false
+🔍 immersiveSpaceState: closed
+✅ Phase transition complete: ready
+✅ Phase transition completed: ready
+✅ Transition to .ready completed
+Loading state changed from loading(progress: 1.0) to completed
+Loading progress: 1.0
+🎯 Managing windows for phase: ready
+📊 Before state update - nav window open: false
+📊 Window states after update:
+  Main: true
+  Debug: false
+  Library: false
+  Builder: false
+  Phases:
+    AppPhase: ready
+    ScenePhase: active
+    LoadingPhase: completed
+🔄 Phase transition: ready -> intro
+🔍 isTransitioning: false
+🔍 immersiveSpaceState: closed
+🚨 LoadingView disappeared
+🎯 Managing windows for phase: intro
+📊 Before state update - nav window open: false
+📊 Window states after update:
+  Main: true
+  Debug: true
+  Library: false
+  Builder: false
+  Phases:
+    AppPhase: intro
+    ScenePhase: active
+    LoadingPhase: completed
+cannot add handler to 0 from 1 - dropping
+🎯 PositioningSystem 0F54CDBE-D59A-4DA9-8B0E-67E399379B4A initializing...
+🎯 PositioningSystem F31E6973-149A-453A-96AE-CC2663571004 initializing...
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+
+=== IntroView Appeared ===
+cannot add handler to 0 from 1 - dropping
+
+=== Setting up IntroView ===
+📱 IntroViewModel: Setting up intro root
+✅ Added root to content
+
+=== Tracking State [Start Tracking Request] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: false
+🔄 Current Provider State: initialized
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x300bb0000>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: initialized
+=== End State Log ===
+
+🖐️ Starting hand tracking session
+Hand Provider State: initialized
+📱 IntroView: Starting environment setup
+📱 IntroViewModel: Starting environment setup
+📱 IntroViewModel: Attempting to load intro environment
+AssetLoadingManager: loadAsset(withName: intro_environment, category: introEnvironment)
+✅ IntroViewModel: Successfully loaded intro environment
+📱 IntroViewModel: Adding environment to root
+📱 IntroViewModel: Setting up individual entities
+🔍 Found logo: logo
+✅ Set logo scale to 0.5 and opacity to 0
+🔍 Found portalWarp: sh0100_v01_portalWarp3
+✅ Set portalWarp opacity to 0.6
+📱 IntroViewModel: Starting portal setup
+📱 Starting lab environment assembly
+✅ Using cached assembled lab
+✅ IntroViewModel: Successfully loaded assembled laboratory environment
+✅ IntroViewModel: Created portal
+✅ IntroViewModel: Portal setup complete
+✅ IntroViewModel: Environment setup complete
+✅ Environment setup complete
+📱 IntroView: Found SwiftUI attachments
+✅ Found portal for attachments
+📱 IntroViewModel: Setting up attachments
+🔍 Portal state - opacity: 0.0, position: SIMD3<Float>(0.0, -0.25, 0.0)
+📎 Found titleRoot in portal
+🔍 Before - titleEntity position: SIMD3<Float>(0.0, 0.0, 0.0), scale: SIMD3<Float>(1.0, 1.0, 1.0)
+🔍 After - titleEntity position: SIMD3<Float>(0.0, -0.15, 0.2), scale: SIMD3<Float>(5.0, 5.0, 5.0)
+📎 Added titleText to titleRoot
+📎 Found titleRoot in portal
+🔍 Before - labViewer position: SIMD3<Float>(0.0, 0.0, 0.0), scale: SIMD3<Float>(1.0, 1.0, 1.0)
+🔍 After - labViewer position: SIMD3<Float>(0.0, -0.4, 0.3), scale: SIMD3<Float>(5.0, 5.0, 5.0)
+📎 Added labViewer to titleRoot
+📱 IntroView: Starting animation sequence
+🎬 Animation Sequence: Starting at 2025-02-10 21:44:19 +0000
+🔍 Entity Check - skyDome: false, portalWarp: true, logo: true, portal: true
+❌ Sky fade: skyDome not found
+⏰ Sleeping for 19s before portal warp
+✅ Started tracking providers
+Final Hand Tracking State: true
+
+=== Tracking State [Post-Start] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: initialized
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x300b01c20>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: paused
+🖐️ Hand Provider State: paused
+=== End State Log ===
+
+✅ Phase transition complete: intro
+✅ Phase transition completed: intro
+🔄 Provider state changed to: paused
+
+=== Tracking State [Provider State Change [paused]] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: paused
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x300b01c20>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: paused
+🖐️ Hand Provider State: paused
+=== End State Log ===
+
+⏸️ Provider paused
+Cannot find a BindPoint for any bind path: "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+cannot add handler to 0 from 1 - dropping
+Cannot find a BindPoint for any bind path: "", "", "", ""
+📍 Positioned entity 'IntroRoot' at SIMD3<Float>(-0.0010567233, -0.24207854, -1.1019524)
+✅ Successfully positioned entity: IntroRoot
+🔄 Provider state changed to: running
+
+=== Tracking State [Provider State Change [running]] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: running
+📍 Head Transform: simd_float4x4([[0.9993664, -0.035379477, -0.0038558359, 0.0], [0.03526789, 0.99904114, -0.025939582, 0.0], [0.004769908, 0.025787184, 0.999656, 0.0], [-0.0010683909, 1.2579017, -0.10196313, 1.0]])
+📍 Head Position - X: -0.0010683909, Y: 1.2579017, Z: -0.10196313
+🌎 World Provider State: running
+🖐️ Hand Provider State: running
+=== End State Log ===
+
+✅ Provider running
+🔄 Phase transition: intro -> playing
+🔍 isTransitioning: false
+🔍 immersiveSpaceState: open
+
+=== Pre-loading Playing Phase Assets ===
+📱 Pre-loading required assets for playing phase...
+🎯 Loading ADC template...
+AssetLoadingManager: loadAsset(withName: adc, category: adc)
+✅ ADC entity loaded, applying colors...
+
+🎯 Setting up ADC Template
+- Template entity: Root
+- Antibody Color: -1
+- Linker Color: -1
+- Payload Color: -1
+✅ ADC template stored in gameState
+✅ ADC template configured with colors
+🎯 Loading tutorial assets...
+AssetLoadingManager: loadAsset(withName: game_start_vo, category: attackCancerEnvironment)
+
+=== Tracking State [Pre-Stop] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: running
+📍 Head Transform: simd_float4x4([[0.9983008, -0.044011597, 0.03818858, 0.0], [0.05104237, 0.9766329, -0.20876555, 0.0], [-0.028108055, 0.21036011, 0.9772199, 0.0], [0.023107277, 1.2363602, -0.108652346, 1.0000001]])
+📍 Head Position - X: 0.023107277, Y: 1.2363602, Z: -0.108652346
+🌎 World Provider State: running
+🖐️ Hand Provider State: running
+=== End State Log ===
+
+🔄 Provider state changed to: stopped
+
+=== Tracking State [Provider State Change [stopped]] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x300b01c20>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===
+
+⏹️ Provider stopped normally
+
+=== Tracking State [Post-Stop] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x300b01c20>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===
+
+✅ Tutorial assets cached
+=== Playing Phase Assets Ready ===
+
+
+=== Starting IntroViewModel Cleanup ===
+🗑️ Removing intro root entity
+🎯 Resetting positioning component
+✅ Completed IntroViewModel cleanup
+
+
+=== Starting Intro Environment Cleanup ===
+📊 Current template cache size: 7 entities
+📊 Current templates: cancer_cell, intro_warp, game_start_vo, adc, assembled_lab, attack_cancer_environment, intro_environment
+🗑️ Preparing to remove 2 intro assets:
+
+🗑️ Removing asset: intro_environment
+
+📝 Releasing entity: Root
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Root
+  - Child count: 8
+  - Has components: yes
+
+📝 Releasing entity: sh0100_v01
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: sh0100_v01
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: PicturesRoot
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: intro
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: People_MSR
+  - Child count: 13
+  - Has components: yes
+
+📝 Releasing entity: p3
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: p3_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_005
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p3_mesh
+✅ Released entity: Plane_005
+
+  - Detaching from parent: p3
+✅ Released entity: p3_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p3
+
+
+📝 Releasing entity: p4
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: p4_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_007
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p4_mesh
+✅ Released entity: Plane_007
+
+  - Detaching from parent: p4
+✅ Released entity: p4_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p4
+
+
+📝 Releasing entity: p5
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: p5_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_006
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p5_mesh
+✅ Released entity: Plane_006
+
+  - Detaching from parent: p5
+✅ Released entity: p5_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p5
+
+
+📝 Releasing entity: p2
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: p2_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_004
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p2_mesh
+✅ Released entity: Plane_004
+
+  - Detaching from parent: p2
+✅ Released entity: p2_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p2
+
+
+📝 Releasing entity: p1
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: p1_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_003
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p1_mesh
+✅ Released entity: Plane_003
+
+  - Detaching from parent: p1
+✅ Released entity: p1_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p1
+
+
+📝 Releasing entity: p12
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: p12_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_005_005
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p12_mesh
+✅ Released entity: Plane_005_005
+
+  - Detaching from parent: p12
+✅ Released entity: p12_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p12
+
+
+📝 Releasing entity: p13
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: p13_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_005_006
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p13_mesh
+✅ Released entity: Plane_005_006
+
+  - Detaching from parent: p13
+✅ Released entity: p13_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p13
+
+  - Detaching from parent: intro
+✅ Released entity: People_MSR
+
+  - Detaching from parent: PicturesRoot
+✅ Released entity: intro
+
+  - Detaching from parent: sh0100_v01
+✅ Released entity: PicturesRoot
+
+  - Detaching from parent: sh0100_v01
+✅ Released entity: sh0100_v01
+
+  - Detaching from parent: Root
+✅ Released entity: sh0100_v01
+
+
+📝 Releasing entity: Audio
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: Orchestra
+  - Child count: 12
+  - Has components: yes
+
+📝 Releasing entity: PianoBusL
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Orchestra
+✅ Released entity: PianoBusL
+
+
+📝 Releasing entity: PianoBusR
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Orchestra
+✅ Released entity: PianoBusR
+
+
+📝 Releasing entity: Violin2
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Orchestra
+✅ Released entity: Violin2
+
+
+📝 Releasing entity: Violin1
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Orchestra
+✅ Released entity: Violin1
+
+
+📝 Releasing entity: Viola
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Orchestra
+✅ Released entity: Viola
+
+
+📝 Releasing entity: Xylophone
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Orchestra
+✅ Released entity: Xylophone
+
+  - Detaching from parent: Audio
+✅ Released entity: Orchestra
+
+  - Detaching from parent: Root
+✅ Released entity: Audio
+
+
+📝 Releasing entity: materials
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Root
+✅ Released entity: materials
+
+
+📝 Releasing entity: IntroWarp
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: M_jet
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: IntroWarp
+✅ Released entity: M_jet
+
+  - Detaching from parent: Root
+✅ Released entity: IntroWarp
+
+  - Detaching from parent: Root
+✅ Released entity: Root
+
+✅ Released entity: Root
+
+✅ Released asset: intro_environment
+
+🗑️ Removing asset: intro_warp
+
+📝 Releasing entity: Root
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Root
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: M_jet
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Root
+✅ Released entity: M_jet
+
+  - Detaching from parent: Root
+✅ Released entity: Root
+
+✅ Released entity: Root
+
+✅ Released asset: intro_warp
+
+📊 Updated template cache size: 5 entities
+🔒 Remaining asset: cancer_cell
+✅ Completed intro environment cleanup
+
+
+=== AttackCancerInstructionsView Setup ===
+📱 Instructions View: Setting up root entity
+📱 AttackCancerViewModel: Setting up root
+IBL URL: file:///private/var/containers/Bundle/Application/731E7C95-D7AB-4EA5-9C7C-41CD6464AD09/PfizerOutdoCancer.app/metro_noord_2k.exr
+cannot add handler to 0 from 1 - dropping
+
+=== Tracking State [Start Tracking Request] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x300b01c20>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===
+
+🖐️ Starting hand tracking session
+Hand Provider State: initialized
+✅ Started tracking providers
+Final Hand Tracking State: true
+
+=== Tracking State [Post-Start] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x300c317c0>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: initialized
+🖐️ Hand Provider State: initialized
+=== End State Log ===
+
+✅ Phase transition complete: playing
+✅ Phase transition completed: playing
+✅ Instructions View: IBL setup complete
+✅ Instructions View: Found ADC template
+✅ Instructions View: Added ADC to display
+=== Instructions View Setup Complete ===
+
+📍 Positioned entity 'headTrackingRoot' at SIMD3<Float>(0.019434802, 1.2411492, -1.111694)
+✅ Successfully positioned entity: headTrackingRoot
+ARPredictorRemoteService <0x105441310>: Query queue is not running.
+ARPredictorRemoteService <0x176efa170>: Query queue is not running.
+ARPredictorRemoteService <0x13d072ba0>: Query queue is not running.
+ARPredictorRemoteService <0x105616600>: Query queue is not running.
+ARPredictorRemoteService <0x105626650>: Query queue is not running.
+ARPredictorRemoteService <0x105771e00>: Query queue is not running.
+ARPredictorRemoteService <0x1054491e0>: Query queue is not running.
+🎯 Managing windows for phase: playing
+📊 Before state update - nav window open: true
+📊 Window states after update:
+  Main: true
+  Debug: false
+  Library: false
+  Builder: false
+  Phases:
+    AppPhase: playing
+    ScenePhase: active
+    LoadingPhase: completed
+🎯 PositioningSystem 7502CE00-6E86-4F83-96A0-5D09AEEC68F9 initializing...
+cannot add handler to 0 from 1 - dropping
+
+=== Processing Hand Updates ===
+Should Process Hand Tracking: true
+Hand Provider State: paused
+🖐️ Starting hand tracking updates
+
+=== AttackCancerView Setup ===
+📱 AttackCancerView: Setting up root
+📱 AttackCancerViewModel: Setting up root
+✅ Root entity created: AttackCancerRoot
+[NetworkComponent] Trying to process with outdated syncable that has already been unbound, guid=9819304688587167699
+[NetworkComponent] Trying to process with outdated syncable that has already been unbound, guid=2834503007864332778
+
+=== Setting up Environment ===
+🎯 Setting up AttackCancerView environment...
+IBL URL: file:///private/var/containers/Bundle/Application/731E7C95-D7AB-4EA5-9C7C-41CD6464AD09/PfizerOutdoCancer.app/metro_noord_2k.exr
+🔄 Provider state changed to: running
+
+=== Tracking State [Provider State Change [running]] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: running
+⚠️ No device anchor available
+🌎 World Provider State: running
+🖐️ Hand Provider State: running
+=== End State Log ===
+
+✅ Provider running
+📍 Positioned entity 'headTrackingRoot' at SIMD3<Float>(-0.0019206716, 1.2646627, -1.0981148)
+✅ Successfully positioned entity: headTrackingRoot
+AssetLoadingManager: loadAsset(withName: attack_cancer_environment, category: attackCancerEnvironment)
+setting up collisions
+setting up collisions in Root
+🎯 Setting up collision subscription
+✅ Collision subscription set up
+✅ Environment setup complete
+✅ Environment setup complete
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+🌀 Portal warp: Starting at +19.062862992286682s
+🔍 PortalWarp reference check: false
+❌ Portal warp: portalWarp not found
+⏰ Sleeping for 75s before logo
+ARPredictorRemoteService <0x13d081f30>: Query queue is not running.
+ARPredictorRemoteService <0x10552d730>: Query queue is not running.
+ARPredictorRemoteService <0x1054491e0>: Query queue is not running.
+ARPredictorRemoteService <0x105616600>: Query queue is not running.
+ARPredictorRemoteService <0x105771e00>: Query queue is not running.
+→ .background
+🧹 Cleaning up app state
+
+=== Tearing Down Game [Detailed] ===
+📊 Initial State:
+  - Hope Meter Running: false
+  - Tutorial Started: false
+  - Subscription Active: true
+  - Cell Parameters Count: 0
+⏹️ Stopping systems:
+  - Stopping hope meter
+🛑 Stopping Hope Meter
+  - Resetting tutorial state
+  - Reset tutorial state
+🔄 Cancelling collision subscription
+🗑️ Clearing cell parameters: 0
+
+🔍 Examining root entity: AttackCancerRoot
+  - Total children: 3
+🗑️ Removed cancer cells: 0
+
+🔄 Resetting game stats:
+  - Cells Destroyed: 0 → 0
+  - Total ADCs: 0 → 0
+  - Total Taps: 0 → 0
+  - Total Hits: 0 → 0
+🔄 Resetting first ADC flag: false → false
+✅ Game tear down complete
+
+🔄 Provider state changed to: paused
+
+=== Tracking State [Provider State Change [paused]] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: paused
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x300c317c0>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: paused
+🖐️ Hand Provider State: paused
+=== End State Log ===
+
+⏸️ Provider paused
+
+=== Tearing Down Game [Detailed] ===
+📊 Initial State:
+  - Hope Meter Running: false
+  - Tutorial Started: false
+  - Subscription Active: false
+  - Cell Parameters Count: 0
+⏹️ Stopping systems:
+  - Stopping hope meter
+🛑 Stopping Hope Meter
+  - Resetting tutorial state
+  - Reset tutorial state
+🗑️ Clearing cell parameters: 0
+
+🔍 Examining root entity: AttackCancerRoot
+  - Total children: 3
+🗑️ Removed cancer cells: 0
+
+🔄 Resetting game stats:
+  - Cells Destroyed: 0 → 0
+  - Total ADCs: 0 → 0
+  - Total Taps: 0 → 0
+  - Total Hits: 0 → 0
+🔄 Resetting first ADC flag: false → false
+✅ Game tear down complete
+
+> Resetting to phase: READY
+🔄 Phase transition: playing -> ready
+🔍 isTransitioning: false
+🔍 immersiveSpaceState: closed
+
+=== Starting AttackCancerViewModel Cleanup ===
+
+=== Tearing Down Game [Detailed] ===
+📊 Initial State:
+  - Hope Meter Running: false
+  - Tutorial Started: false
+  - Subscription Active: false
+  - Cell Parameters Count: 0
+⏹️ Stopping systems:
+  - Stopping hope meter
+🛑 Stopping Hope Meter
+  - Resetting tutorial state
+  - Reset tutorial state
+🗑️ Clearing cell parameters: 0
+
+🔍 Examining root entity: AttackCancerRoot
+  - Total children: 3
+🗑️ Removed cancer cells: 0
+
+🔄 Resetting game stats:
+  - Cells Destroyed: 0 → 0
+  - Total ADCs: 0 → 0
+  - Total Taps: 0 → 0
+  - Total Hits: 0 → 0
+🔄 Resetting first ADC flag: false → false
+✅ Game tear down complete
+
+🗑️ Removing root entity
+✅ Completed AttackCancerViewModel cleanup
+
+
+=== Starting Attack Cancer Environment Cleanup ===
+📊 Current template cache size: 5 entities
+📊 Current templates: cancer_cell, game_start_vo, adc, assembled_lab, attack_cancer_environment
+🗑️ Preparing to remove 1 attack cancer VO assets:
+
+🗑️ Removing asset: game_start_vo
+
+📝 Releasing entity: Root
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Root
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: VO
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Root
+✅ Released entity: VO
+
+  - Detaching from parent: Root
+✅ Released entity: Root
+
+✅ Released entity: Root
+
+✅ Released asset: game_start_vo
+
+📊 Updated template cache size: 4 entities
+🔒 Remaining asset: cancer_cell
+✅ Completed attack cancer environment cleanup
+
+✅ Phase transition complete: ready
+✅ Phase transition completed: ready
+✅ App state cleanup completed
+
+=== Tracking State [Pre-Stop] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: paused
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x300c317c0>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: paused
+🖐️ Hand Provider State: paused
+=== End State Log ===
+
+
+=== Tracking State [Pre-Stop] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: paused
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x300c317c0>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===
+
+🎯 Managing windows for phase: ready
+📊 Before state update - nav window open: false
+📊 Window states after update:
+  Main: true
+  Debug: false
+  Library: false
+  Builder: false
+  Phases:
+    AppPhase: ready
+    ScenePhase: background
+    LoadingPhase: completed
+cannot add handler to 0 from 1 - dropping
+
+=== Tracking State [Post-Stop] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: paused
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x300c317c0>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===
+
+
+=== Tracking State [Post-Stop] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: paused
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x300c317c0>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===
+
+🎯 Logo: Starting at +94.0674159526825s
+🔍 Logo reference check: false
+❌ Logo: logo not found
+🌐 Portal: Starting at +94.06748497486115s
+🔍 Portal reference check: false
+❌ Portal: portal not found
+🎬 Animation Sequence: Completed at +94.06750893592834s

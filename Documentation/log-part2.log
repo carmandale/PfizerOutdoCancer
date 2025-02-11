@@ -1,0 +1,686 @@
+=== Initializing Cell States ===
+AssetLoadingManager: loadAsset(withName: cancer_cell, category: cancerCell)
+Creating parameters for cell 0
+Required hits: 5
+Total parameters after append: 1
+Added CancerCellStateComponent with parameters
+Added ClosureComponent for state updates
+
+=== Detailed Game State Update ===
+📊 Cell Parameters State:
+  Cell 0:
+    - Tutorial Cell: false
+    - Is Destroyed: true
+    - Hit Count: 10/5
+
+📈 Totals:
+  - Total cells: 1
+  - Cells destroyed: 1
+  - Tutorial cells: 0
+  - Game cells: 1
+=== End State Update ===
+
+⚠️ Game not active - tutorial complete: false, hope meter running: false
+
+=== Detailed Game State Update ===
+📊 Cell Parameters State:
+  Cell 0:
+    - Tutorial Cell: false
+    - Is Destroyed: true
+    - Hit Count: 10/5
+
+📈 Totals:
+  - Total cells: 1
+  - Cells destroyed: 1
+  - Tutorial cells: 0
+  - Game cells: 1
+=== End State Update ===
+
+⚠️ Game not active - tutorial complete: false, hope meter running: false
+🎯 PositioningSystem F6572368-CEF1-4A8A-89FB-3D0B40EE9B02 initializing...
+cannot add handler to 0 from 1 - dropping
+
+=== Detailed Game State Update ===
+📊 Cell Parameters State:
+  Cell 0:
+    - Tutorial Cell: false
+    - Is Destroyed: true
+    - Hit Count: 10/5
+
+📈 Totals:
+  - Total cells: 1
+  - Cells destroyed: 1
+  - Tutorial cells: 0
+  - Game cells: 1
+=== End State Update ===
+
+⚠️ Game not active - tutorial complete: false, hope meter running: false
+
+=== Detailed Game State Update ===
+📊 Cell Parameters State:
+  Cell 0:
+    - Tutorial Cell: false
+    - Is Destroyed: true
+    - Hit Count: 10/5
+
+📈 Totals:
+  - Total cells: 1
+  - Cells destroyed: 1
+  - Tutorial cells: 0
+  - Game cells: 1
+=== End State Update ===
+
+⚠️ Game not active - tutorial complete: false, hope meter running: false
+
+=== Detailed Game State Update ===
+📊 Cell Parameters State:
+  Cell 0:
+    - Tutorial Cell: false
+    - Is Destroyed: true
+    - Hit Count: 10/5
+
+📈 Totals:
+  - Total cells: 1
+  - Cells destroyed: 1
+  - Tutorial cells: 0
+  - Game cells: 1
+=== End State Update ===
+
+⚠️ Game not active - tutorial complete: false, hope meter running: false
+
+=== Detailed Game State Update ===
+📊 Cell Parameters State:
+  Cell 0:
+    - Tutorial Cell: false
+    - Is Destroyed: true
+    - Hit Count: 10/5
+
+📈 Totals:
+  - Total cells: 1
+  - Cells destroyed: 1
+  - Tutorial cells: 0
+  - Game cells: 1
+=== End State Update ===
+
+⚠️ Game not active - tutorial complete: false, hope meter running: false
+Cannot find a BindPoint for any bind path: "", "", ""
+cannot add handler to 0 from 1 - dropping
+
+=== Detailed Game State Update ===
+📊 Cell Parameters State:
+  Cell 0:
+    - Tutorial Cell: false
+    - Is Destroyed: true
+    - Hit Count: 10/5
+
+📈 Totals:
+  - Total cells: 1
+  - Cells destroyed: 1
+  - Tutorial cells: 0
+  - Game cells: 1
+=== End State Update ===
+
+⚠️ Game not active - tutorial complete: false, hope meter running: false
+
+=== Detailed Game State Update ===
+📊 Cell Parameters State:
+  Cell 0:
+    - Tutorial Cell: false
+    - Is Destroyed: true
+    - Hit Count: 10/5
+
+📈 Totals:
+  - Total cells: 1
+  - Cells destroyed: 1
+  - Tutorial cells: 0
+  - Game cells: 1
+=== End State Update ===
+
+⚠️ Game not active - tutorial complete: false, hope meter running: false
+
+=== Detailed Game State Update ===
+📊 Cell Parameters State:
+  Cell 0:
+    - Tutorial Cell: false
+    - Is Destroyed: true
+    - Hit Count: 10/5
+
+📈 Totals:
+  - Total cells: 1
+  - Cells destroyed: 1
+  - Tutorial cells: 0
+  - Game cells: 1
+=== End State Update ===
+
+⚠️ Game not active - tutorial complete: false, hope meter running: false
+
+=== Detailed Game State Update ===
+📊 Cell Parameters State:
+  Cell 0:
+    - Tutorial Cell: false
+    - Is Destroyed: true
+    - Hit Count: 10/5
+
+📈 Totals:
+  - Total cells: 1
+  - Cells destroyed: 1
+  - Tutorial cells: 0
+  - Game cells: 1
+=== End State Update ===
+
+⚠️ Game not active - tutorial complete: false, hope meter running: false
+
+=== Detailed Game State Update ===
+📊 Cell Parameters State:
+  Cell 0:
+    - Tutorial Cell: false
+    - Is Destroyed: true
+    - Hit Count: 10/5
+
+📈 Totals:
+  - Total cells: 1
+  - Cells destroyed: 1
+  - Tutorial cells: 0
+  - Game cells: 1
+=== End State Update ===
+
+⚠️ Game not active - tutorial complete: false, hope meter running: false
+
+=== Detailed Game State Update ===
+📊 Cell Parameters State:
+  Cell 0:
+    - Tutorial Cell: false
+    - Is Destroyed: true
+    - Hit Count: 10/5
+
+📈 Totals:
+  - Total cells: 1
+  - Cells destroyed: 1
+  - Tutorial cells: 0
+  - Game cells: 1
+=== End State Update ===
+
+⚠️ Game not active - tutorial complete: false, hope meter running: false
+
+=== Detailed Game State Update ===
+📊 Cell Parameters State:
+  Cell 0:
+    - Tutorial Cell: false
+    - Is Destroyed: true
+    - Hit Count: 10/5
+
+📈 Totals:
+  - Total cells: 1
+  - Cells destroyed: 1
+  - Tutorial cells: 0
+  - Game cells: 1
+=== End State Update ===
+
+⚠️ Game not active - tutorial complete: false, hope meter running: false
+
+=== Detailed Game State Update ===
+📊 Cell Parameters State:
+  Cell 0:
+    - Tutorial Cell: false
+    - Is Destroyed: true
+    - Hit Count: 10/5
+
+📈 Totals:
+  - Total cells: 1
+  - Cells destroyed: 1
+  - Tutorial cells: 0
+  - Game cells: 1
+=== End State Update ===
+
+⚠️ Game not active - tutorial complete: false, hope meter running: false
+
+=== Detailed Game State Update ===
+📊 Cell Parameters State:
+  Cell 0:
+    - Tutorial Cell: false
+    - Is Destroyed: true
+    - Hit Count: 10/5
+
+📈 Totals:
+  - Total cells: 1
+  - Cells destroyed: 1
+  - Tutorial cells: 0
+  - Game cells: 1
+=== End State Update ===
+
+⚠️ Game not active - tutorial complete: false, hope meter running: false
+
+=== Detailed Game State Update ===
+📊 Cell Parameters State:
+  Cell 0:
+    - Tutorial Cell: false
+    - Is Destroyed: true
+    - Hit Count: 10/5
+
+📈 Totals:
+  - Total cells: 1
+  - Cells destroyed: 1
+  - Tutorial cells: 0
+  - Game cells: 1
+=== End State Update ===
+
+⚠️ Game not active - tutorial complete: false, hope meter running: false
+
+=== Detailed Game State Update ===
+📊 Cell Parameters State:
+  Cell 0:
+    - Tutorial Cell: false
+    - Is Destroyed: true
+    - Hit Count: 10/5
+
+📈 Totals:
+  - Total cells: 1
+  - Cells destroyed: 1
+  - Tutorial cells: 0
+  - Game cells: 1
+=== End State Update ===
+
+⚠️ Game not active - tutorial complete: false, hope meter running: false
+
+=== Detailed Game State Update ===
+📊 Cell Parameters State:
+  Cell 0:
+    - Tutorial Cell: false
+    - Is Destroyed: true
+    - Hit Count: 10/5
+
+📈 Totals:
+  - Total cells: 1
+  - Cells destroyed: 1
+  - Tutorial cells: 0
+  - Game cells: 1
+=== End State Update ===
+
+⚠️ Game not active - tutorial complete: false, hope meter running: false
+
+=== Detailed Game State Update ===
+📊 Cell Parameters State:
+  Cell 0:
+    - Tutorial Cell: false
+    - Is Destroyed: true
+    - Hit Count: 10/5
+
+📈 Totals:
+  - Total cells: 1
+  - Cells destroyed: 1
+  - Tutorial cells: 0
+  - Game cells: 1
+=== End State Update ===
+
+⚠️ Game not active - tutorial complete: false, hope meter running: false
+Creating parameters for cell 1
+Required hits: 4
+Total parameters after append: 2
+Added CancerCellStateComponent with parameters
+Added ClosureComponent for state updates
+
+=== Detailed Game State Update ===
+📊 Cell Parameters State:
+  Cell 0:
+    - Tutorial Cell: false
+    - Is Destroyed: true
+    - Hit Count: 10/5
+  Cell 1:
+    - Tutorial Cell: false
+    - Is Destroyed: false
+    - Hit Count: 0/4
+
+📈 Totals:
+  - Total cells: 2
+  - Cells destroyed: 1
+  - Tutorial cells: 0
+  - Game cells: 2
+=== End State Update ===
+
+⚠️ Game not active - tutorial complete: false, hope meter running: false
+
+=== Detailed Game State Update ===
+📊 Cell Parameters State:
+  Cell 0:
+    - Tutorial Cell: false
+    - Is Destroyed: true
+    - Hit Count: 10/5
+  Cell 1:
+    - Tutorial Cell: false
+    - Is Destroyed: false
+    - Hit Count: 0/4
+
+📈 Totals:
+  - Total cells: 2
+  - Cells destroyed: 1
+  - Tutorial cells: 0
+  - Game cells: 2
+=== End State Update ===
+
+⚠️ Game not active - tutorial complete: false, hope meter running: false
+
+=== Detailed Game State Update ===
+📊 Cell Parameters State:
+  Cell 0:
+    - Tutorial Cell: false
+    - Is Destroyed: true
+    - Hit Count: 10/5
+  Cell 1:
+    - Tutorial Cell: false
+    - Is Destroyed: false
+    - Hit Count: 0/4
+
+📈 Totals:
+  - Total cells: 2
+  - Cells destroyed: 1
+  - Tutorial cells: 0
+  - Game cells: 2
+=== End State Update ===
+
+⚠️ Game not active - tutorial complete: false, hope meter running: false
+
+=== Detailed Game State Update ===
+📊 Cell Parameters State:
+  Cell 0:
+    - Tutorial Cell: false
+    - Is Destroyed: true
+    - Hit Count: 10/5
+  Cell 1:
+    - Tutorial Cell: false
+    - Is Destroyed: false
+    - Hit Count: 0/4
+
+📈 Totals:
+  - Total cells: 2
+  - Cells destroyed: 1
+  - Tutorial cells: 0
+  - Game cells: 2
+=== End State Update ===
+
+⚠️ Game not active - tutorial complete: false, hope meter running: false
+Cannot find a BindPoint for any bind path: "", "", ""
+
+=== Detailed Game State Update ===
+📊 Cell Parameters State:
+  Cell 0:
+    - Tutorial Cell: false
+    - Is Destroyed: true
+    - Hit Count: 10/5
+  Cell 1:
+    - Tutorial Cell: false
+    - Is Destroyed: false
+    - Hit Count: 0/4
+
+📈 Totals:
+  - Total cells: 2
+  - Cells destroyed: 1
+  - Tutorial cells: 0
+  - Game cells: 2
+=== End State Update ===
+
+⚠️ Game not active - tutorial complete: false, hope meter running: false
+
+=== Detailed Game State Update ===
+📊 Cell Parameters State:
+  Cell 0:
+    - Tutorial Cell: false
+    - Is Destroyed: true
+    - Hit Count: 10/5
+  Cell 1:
+    - Tutorial Cell: false
+    - Is Destroyed: false
+    - Hit Count: 0/4
+
+📈 Totals:
+  - Total cells: 2
+  - Cells destroyed: 1
+  - Tutorial cells: 0
+  - Game cells: 2
+=== End State Update ===
+
+⚠️ Game not active - tutorial complete: false, hope meter running: false
+
+=== Detailed Game State Update ===
+📊 Cell Parameters State:
+  Cell 0:
+    - Tutorial Cell: false
+    - Is Destroyed: true
+    - Hit Count: 10/5
+  Cell 1:
+    - Tutorial Cell: false
+    - Is Destroyed: false
+    - Hit Count: 0/4
+
+📈 Totals:
+  - Total cells: 2
+  - Cells destroyed: 1
+  - Tutorial cells: 0
+  - Game cells: 2
+=== End State Update ===
+
+⚠️ Game not active - tutorial complete: false, hope meter running: false
+
+=== Detailed Game State Update ===
+📊 Cell Parameters State:
+  Cell 0:
+    - Tutorial Cell: false
+    - Is Destroyed: true
+    - Hit Count: 10/5
+  Cell 1:
+    - Tutorial Cell: false
+    - Is Destroyed: false
+    - Hit Count: 0/4
+
+📈 Totals:
+  - Total cells: 2
+  - Cells destroyed: 1
+  - Tutorial cells: 0
+  - Game cells: 2
+=== End State Update ===
+
+⚠️ Game not active - tutorial complete: false, hope meter running: false
+
+=== Detailed Game State Update ===
+📊 Cell Parameters State:
+  Cell 0:
+    - Tutorial Cell: false
+    - Is Destroyed: true
+    - Hit Count: 10/5
+  Cell 1:
+    - Tutorial Cell: false
+    - Is Destroyed: false
+    - Hit Count: 0/4
+
+📈 Totals:
+  - Total cells: 2
+  - Cells destroyed: 1
+  - Tutorial cells: 0
+  - Game cells: 2
+=== End State Update ===
+
+⚠️ Game not active - tutorial complete: false, hope meter running: false
+
+=== Detailed Game State Update ===
+📊 Cell Parameters State:
+  Cell 0:
+    - Tutorial Cell: false
+    - Is Destroyed: true
+    - Hit Count: 10/5
+  Cell 1:
+    - Tutorial Cell: false
+    - Is Destroyed: false
+    - Hit Count: 0/4
+
+📈 Totals:
+  - Total cells: 2
+  - Cells destroyed: 1
+  - Tutorial cells: 0
+  - Game cells: 2
+=== End State Update ===
+
+⚠️ Game not active - tutorial complete: false, hope meter running: false
+
+=== Detailed Game State Update ===
+📊 Cell Parameters State:
+  Cell 0:
+    - Tutorial Cell: false
+    - Is Destroyed: true
+    - Hit Count: 10/5
+  Cell 1:
+    - Tutorial Cell: false
+    - Is Destroyed: false
+    - Hit Count: 0/4
+
+📈 Totals:
+  - Total cells: 2
+  - Cells destroyed: 1
+  - Tutorial cells: 0
+  - Game cells: 2
+=== End State Update ===
+
+⚠️ Game not active - tutorial complete: false, hope meter running: false
+
+=== Detailed Game State Update ===
+📊 Cell Parameters State:
+  Cell 0:
+    - Tutorial Cell: false
+    - Is Destroyed: true
+    - Hit Count: 10/5
+  Cell 1:
+    - Tutorial Cell: false
+    - Is Destroyed: false
+    - Hit Count: 0/4
+
+📈 Totals:
+  - Total cells: 2
+  - Cells destroyed: 1
+  - Tutorial cells: 0
+  - Game cells: 2
+=== End State Update ===
+
+⚠️ Game not active - tutorial complete: false, hope meter running: false
+
+=== Detailed Game State Update ===
+📊 Cell Parameters State:
+  Cell 0:
+    - Tutorial Cell: false
+    - Is Destroyed: true
+    - Hit Count: 10/5
+  Cell 1:
+    - Tutorial Cell: false
+    - Is Destroyed: false
+    - Hit Count: 0/4
+
+📈 Totals:
+  - Total cells: 2
+  - Cells destroyed: 1
+  - Tutorial cells: 0
+  - Game cells: 2
+=== End State Update ===
+
+⚠️ Game not active - tutorial complete: false, hope meter running: false
+
+=== Detailed Game State Update ===
+📊 Cell Parameters State:
+  Cell 0:
+    - Tutorial Cell: false
+    - Is Destroyed: true
+    - Hit Count: 10/5
+  Cell 1:
+    - Tutorial Cell: false
+    - Is Destroyed: false
+    - Hit Count: 0/4
+
+📈 Totals:
+  - Total cells: 2
+  - Cells destroyed: 1
+  - Tutorial cells: 0
+  - Game cells: 2
+=== End State Update ===
+
+⚠️ Game not active - tutorial complete: false, hope meter running: false
+
+=== Detailed Game State Update ===
+📊 Cell Parameters State:
+  Cell 0:
+    - Tutorial Cell: false
+    - Is Destroyed: true
+    - Hit Count: 10/5
+  Cell 1:
+    - Tutorial Cell: false
+    - Is Destroyed: false
+    - Hit Count: 0/4
+
+📈 Totals:
+  - Total cells: 2
+  - Cells destroyed: 1
+  - Tutorial cells: 0
+  - Game cells: 2
+=== End State Update ===
+
+⚠️ Game not active - tutorial complete: false, hope meter running: false
+
+=== Detailed Game State Update ===
+📊 Cell Parameters State:
+  Cell 0:
+    - Tutorial Cell: false
+    - Is Destroyed: true
+    - Hit Count: 10/5
+  Cell 1:
+    - Tutorial Cell: false
+    - Is Destroyed: false
+    - Hit Count: 0/4
+
+📈 Totals:
+  - Total cells: 2
+  - Cells destroyed: 1
+  - Tutorial cells: 0
+  - Game cells: 2
+=== End State Update ===
+
+⚠️ Game not active - tutorial complete: false, hope meter running: false
+
+=== Detailed Game State Update ===
+📊 Cell Parameters State:
+  Cell 0:
+    - Tutorial Cell: false
+    - Is Destroyed: true
+    - Hit Count: 10/5
+  Cell 1:
+    - Tutorial Cell: false
+    - Is Destroyed: false
+    - Hit Count: 0/4
+
+📈 Totals:
+  - Total cells: 2
+  - Cells destroyed: 1
+  - Tutorial cells: 0
+  - Game cells: 2
+=== End State Update ===
+
+⚠️ Game not active - tutorial complete: false, hope meter running: false
+
+=== Detailed Game State Update ===
+📊 Cell Parameters State:
+  Cell 0:
+    - Tutorial Cell: false
+    - Is Destroyed: true
+    - Hit Count: 10/5
+  Cell 1:
+    - Tutorial Cell: false
+    - Is Destroyed: false
+    - Hit Count: 0/4
+
+📈 Totals:
+  - Total cells: 2
+  - Cells destroyed: 1
+  - Tutorial cells: 0
+  - Game cells: 2
+=== End State Update ===
+
+⚠️ Game not active - tutorial complete: false, hope meter running: false
+=== Finished Spawning ===
+Total parameters created: 2
+Initial cellsDestroyed count: 1
+🎯 Cell 0 initialized - Required hits: 5
+🎯 Cell 1 initialized - Required hits: 5

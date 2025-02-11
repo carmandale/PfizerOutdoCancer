@@ -1,0 +1,1900 @@
+AppModel init() - Instance: ObjectIdentifier(0x0000000101309740)
+🏁 PfizerOutdoCancerApp init starting...
+📲 Setting AppModel in PositioningSystem...
+🔄 PositioningSystem.setAppModel called
+📝 Registering components and systems...
+⚙️ Registering PositioningSystem...
+✅ PfizerOutdoCancerApp init completed
+🎯 PositioningSystem 9490752F-C8CE-4145-A4C6-64BDB8D59A0E initializing...
+nw_socket_initialize_socket [C1:2] setsockopt SO_NECP_CLIENTUUID failed [22: Invalid argument]
+nw_socket_initialize_socket setsockopt SO_NECP_CLIENTUUID failed [22: Invalid argument]
+nw_socket_copy_info [C1:2] getsockopt TCP_INFO failed [102: Operation not supported on socket]
+nw_socket_copy_info getsockopt TCP_INFO failed [102: Operation not supported on socket]
+cannot add handler to 0 from 1 - dropping
+
+=== Starting Initial Asset Loading ===
+🔍 Current phase: loading
+🔍 Loading state: notStarted
+🔄 Starting prepareIntroPhase...
+
+=== Preparing Intro Phase ===
+🔍 Current phase before loading: loading
+🔍 Loading state: notStarted
+📱 Loading asset: intro_environment
+AssetLoadingManager: loadAsset(withName: intro_environment, category: introEnvironment)
+cannot add handler to 0 from 1 - dropping
+cannot add handler to 0 from 1 - dropping
+cannot add handler to 0 from 1 - dropping
+Registering library (/System/Library/PrivateFrameworks/CoreRE.framework/default.metallib) that already exists in shader manager. Library will be overwritten.
+✅ Loaded intro_environment - Progress: 0.16666667
+📱 Loading asset: intro_warp
+AssetLoadingManager: loadAsset(withName: intro_warp, category: introEnvironment)
+✅ Loaded intro_warp - Progress: 0.33333334
+📱 Loading asset: attack_cancer_environment
+AssetLoadingManager: loadAsset(withName: attack_cancer_environment, category: attackCancerEnvironment)
+✅ Loaded attack_cancer_environment - Progress: 0.5
+📱 Loading asset: adc
+AssetLoadingManager: loadAsset(withName: adc, category: attackCancerEnvironment)
+✅ ADC template loaded (using inner Root with audio)
+✅ Loaded adc - Progress: 0.6666667
+📱 Loading asset: cancer_cell
+AssetLoadingManager: loadAsset(withName: cancer_cell, category: attackCancerEnvironment)
+✅ Loaded cancer_cell - Progress: 0.8333333
+📱 Loading asset: assembled_lab
+AssetLoadingManager: loadAsset(withName: assembled_lab, category: labEnvironment)
+📱 Starting lab environment assembly
+onChange(of: LoadingState) action tried to update multiple times per frame.
+Invalid Material input type token
+Invalid Material input type token
+IBL URL: file:///private/var/containers/Bundle/Application/2FA86BBA-D008-4598-A841-4FBC5B9EDA7F/PfizerOutdoCancer.app/lab_v005.exr
+✅ Completed lab environment assembly
+✅ Loaded assembled_lab - Progress: 1.0
+✅ prepareIntroPhase completed
+✅ prepareIntroPhase completed
+🔄 Transitioning to .ready...
+🔄 Phase transition: loading -> ready
+🔍 isTransitioning: false
+🔍 immersiveSpaceState: closed
+✅ Phase transition completed: ready
+✅ Transition to .ready completed
+🎯 Managing windows for phase: ready
+📊 Before state update - nav window open: false
+📊 Window states after update:
+  Main: true
+  Debug: false
+  Library: false
+  Builder: false
+  Phases:
+    AppPhase: ready
+    ScenePhase: active
+    LoadingPhase: completed
+🔄 Phase transition: ready -> intro
+🔍 isTransitioning: false
+🔍 immersiveSpaceState: closed
+🚨 LoadingView disappeared
+🎯 Managing windows for phase: intro
+📊 Before state update - nav window open: false
+📊 Window states after update:
+  Main: true
+  Debug: true
+  Library: false
+  Builder: false
+  Phases:
+    AppPhase: intro
+    ScenePhase: active
+    LoadingPhase: completed
+cannot add handler to 0 from 1 - dropping
+🎯 PositioningSystem 58D1AA14-EA04-4CF0-8733-43ECAB013533 initializing...
+🎯 PositioningSystem 142D0610-874D-496B-8275-424EFD56FDF5 initializing...
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+
+=== IntroView Appeared ===
+cannot add handler to 0 from 1 - dropping
+
+=== Tracking State [Start Tracking Request] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: false
+🔄 Current Provider State: initialized
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x303ef4000>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: initialized
+=== End State Log ===
+
+🖐️ Starting hand tracking session
+Hand Provider State: initialized
+
+=== Setting up IntroView ===
+📱 IntroViewModel: Setting up intro root
+✅ Added root to content
+✅ Started tracking providers
+Final Hand Tracking State: true
+
+=== Tracking State [Post-Start] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: initialized
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x303e50320>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: initialized
+🖐️ Hand Provider State: initialized
+=== End State Log ===
+
+✅ Phase transition completed: intro
+📱 IntroView: Starting environment setup
+📱 IntroViewModel: Starting environment setup
+📱 IntroViewModel: Attempting to load intro environment
+AssetLoadingManager: loadAsset(withName: intro_environment, category: introEnvironment)
+✅ IntroViewModel: Successfully loaded intro environment
+📱 IntroViewModel: Adding environment to root
+📱 IntroViewModel: Setting up individual entities
+🔍 Found logo: logo
+✅ Set logo scale to 0.5 and opacity to 0
+🔍 Found portalWarp: sh0100_v01_portalWarp3
+✅ Set portalWarp opacity to 0.6
+📱 IntroViewModel: Starting portal setup
+📱 Starting lab environment assembly
+✅ Using cached assembled lab
+✅ IntroViewModel: Successfully loaded assembled laboratory environment
+✅ IntroViewModel: Created portal
+✅ IntroViewModel: Portal setup complete
+✅ IntroViewModel: Environment setup complete
+✅ Environment setup complete
+📱 IntroView: Found SwiftUI attachments
+✅ Found portal for attachments
+📱 IntroViewModel: Setting up attachments
+🔍 Portal state - opacity: 0.0, position: SIMD3<Float>(0.0, -0.25, 0.0)
+📎 Found titleRoot in portal
+🔍 Before - titleEntity position: SIMD3<Float>(0.0, 0.0, 0.0), scale: SIMD3<Float>(1.0, 1.0, 1.0)
+🔍 After - titleEntity position: SIMD3<Float>(0.0, -0.15, 0.2), scale: SIMD3<Float>(5.0, 5.0, 5.0)
+📎 Added titleText to titleRoot
+📎 Found titleRoot in portal
+🔍 Before - labViewer position: SIMD3<Float>(0.0, 0.0, 0.0), scale: SIMD3<Float>(1.0, 1.0, 1.0)
+🔍 After - labViewer position: SIMD3<Float>(0.0, -0.4, 0.3), scale: SIMD3<Float>(5.0, 5.0, 5.0)
+📎 Added labViewer to titleRoot
+📱 IntroView: Starting animation sequence
+🎬 Animation Sequence: Starting at 2025-02-10 23:42:53 +0000
+🔍 Entity Check - skyDome: false, portalWarp: true, logo: true, portal: true
+❌ Sky fade: skyDome not found
+⏰ Sleeping for 19s before portal warp
+🔄 Provider state changed to: paused
+
+=== Tracking State [Provider State Change [paused]] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: paused
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x303e50320>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: paused
+🖐️ Hand Provider State: paused
+=== End State Log ===
+
+⏸️ Provider paused
+Cannot find a BindPoint for any bind path: "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+cannot add handler to 0 from 1 - dropping
+Cannot find a BindPoint for any bind path: "", "", "", ""
+🔄 Provider state changed to: running
+
+=== Tracking State [Provider State Change [running]] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: running
+⚠️ No device anchor available
+🌎 World Provider State: running
+🖐️ Hand Provider State: running
+=== End State Log ===
+
+✅ Provider running
+📍 Positioned entity 'IntroRoot' at SIMD3<Float>(-0.0001758039, -0.25004292, -1.09944)
+✅ Successfully positioned entity: IntroRoot
+🔄 Phase transition: intro -> playing
+🔍 isTransitioning: false
+🔍 immersiveSpaceState: open
+
+=== Pre-loading Playing Phase Assets ===
+📱 Pre-loading required assets for playing phase...
+🎯 Loading ADC template...
+AssetLoadingManager: loadAsset(withName: adc, category: adc)
+✅ ADC entity loaded, applying colors...
+
+🎯 Setting up ADC Template
+- Template entity: Root
+- Antibody Color: -1
+- Linker Color: -1
+- Payload Color: -1
+✅ ADC template stored in gameState
+✅ ADC template configured with colors
+🎯 Loading tutorial assets...
+AssetLoadingManager: loadAsset(withName: game_start_vo, category: attackCancerEnvironment)
+
+=== Tracking State [Pre-Stop] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: running
+📍 Head Transform: simd_float4x4([[0.99736774, -0.042351466, 0.05885331, 0.0], [0.052364986, 0.9821535, -0.18064424, 0.0], [-0.050152447, 0.18325067, 0.981786, 0.0], [0.010375423, 1.2325627, -0.10339608, 1.0]])
+📍 Head Position - X: 0.010375423, Y: 1.2325627, Z: -0.10339608
+🌎 World Provider State: running
+🖐️ Hand Provider State: running
+=== End State Log ===
+
+🔄 Provider state changed to: stopped
+
+=== Tracking State [Provider State Change [stopped]] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x303e50320>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===
+
+⏹️ Provider stopped normally
+
+=== Tracking State [Post-Stop] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x303e50320>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===
+
+✅ Tutorial assets cached
+🎯 Loading attack_cancer_environment...
+AssetLoadingManager: loadAsset(withName: attack_cancer_environment, category: attackCancerEnvironment)
+✅ attack_cancer_environment cached
+✅✅✅ Playing Phase Assets Ready (with delay) ===
+
+
+=== Starting IntroViewModel Cleanup ===
+🗑️ Removing intro root entity
+🎯 Resetting positioning component
+✅ Completed IntroViewModel cleanup
+
+
+=== Starting Intro Environment Cleanup ===
+
+📊 Updated template cache size: 5 entities
+🔒 Remaining asset: adc
+✅ Completed intro environment cleanup
+
+
+=== AttackCancerInstructionsView Rotating ADC Setup ===
+📱 Instructions View: Setting up root entity
+📱 AttackCancerViewModel: Setting up root
+IBL URL: file:///private/var/containers/Bundle/Application/2FA86BBA-D008-4598-A841-4FBC5B9EDA7F/PfizerOutdoCancer.app/metro_noord_2k.exr
+cannot add handler to 0 from 1 - dropping
+
+=== Tracking State [Start Tracking Request] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x303e50320>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===
+
+🖐️ Starting hand tracking session
+Hand Provider State: initialized
+✅ Started tracking providers
+Final Hand Tracking State: true
+
+=== Tracking State [Post-Start] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+⚠️ No device anchor available
+🌎 World Provider State: running
+🖐️ Hand Provider State: running
+=== End State Log ===
+
+✅ Phase transition completed: playing
+✅ Instructions View: IBL setup complete
+✅ Instructions View: Found ADC template
+✅ Instructions View: Added ADC to display
+=== Instructions View Setup Complete ===
+
+📍 Positioned entity 'headTrackingRoot' at SIMD3<Float>(0.012511947, 1.2566582, -1.0894088)
+✅ Successfully positioned entity: headTrackingRoot
+ARPredictorRemoteService <0x1015fbe80>: Query queue is not running.
+ARPredictorRemoteService <0x10163d900>: Query queue is not running.
+ARPredictorRemoteService <0x51148e3a0>: Query queue is not running.
+ARPredictorRemoteService <0x10d9f1350>: Query queue is not running.
+ARPredictorRemoteService <0x1015f9530>: Query queue is not running.
+ARPredictorRemoteService <0x10a809ed0>: Query queue is not running.
+ARPredictorRemoteService <0x1014689c0>: Query queue is not running.
+🎯 Managing windows for phase: playing
+📊 Before state update - nav window open: true
+📊 Window states after update:
+  Main: true
+  Debug: false
+  Library: false
+  Builder: false
+  Phases:
+    AppPhase: playing
+    ScenePhase: active
+    LoadingPhase: completed
+🎯 PositioningSystem 10F3BF7D-0671-44E1-8C1C-B7EDD130E627 initializing...
+cannot add handler to 0 from 1 - dropping
+
+=== Processing Hand Updates ===
+Should Process Hand Tracking: true
+Hand Provider State: paused
+🖐️ Starting hand tracking updates
+
+=== AttackCancerView Setup ===
+📱 AttackCancerView: Setting up root
+📱 AttackCancerViewModel: Setting up root
+✅ Root entity created: AttackCancerRoot
+[NetworkComponent] Trying to process with outdated syncable that has already been unbound, guid=14318913169007536545
+[NetworkComponent] Trying to process with outdated syncable that has already been unbound, guid=4716731546603490728
+
+=== Setting up Environment ===
+🎯 Setting up AttackCancerView environment...
+IBL URL: file:///private/var/containers/Bundle/Application/2FA86BBA-D008-4598-A841-4FBC5B9EDA7F/PfizerOutdoCancer.app/metro_noord_2k.exr
+🔄 Provider state changed to: running
+
+=== Tracking State [Provider State Change [running]] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: running
+⚠️ No device anchor available
+🌎 World Provider State: running
+🖐️ Hand Provider State: running
+=== End State Log ===
+
+✅ Provider running
+📍 Positioned entity 'headTrackingRoot' at SIMD3<Float>(0.010308746, 1.2610164, -1.0865419)
+✅ Successfully positioned entity: headTrackingRoot
+AssetLoadingManager: loadAsset(withName: attack_cancer_environment, category: attackCancerEnvironment)
+Environment Transform (Before Adding):
+  Local Position: SIMD3<Float>(0.0, 0.0, 0.0)
+  World Position: SIMD3<Float>(0.0, 0.0, 0.0)
+  Local Orientation: simd_quatf(real: 1.0, imag: SIMD3<Float>(0.0, 0.0, 0.0))
+  World Orientation: simd_quatf(real: 1.0, imag: SIMD3<Float>(0.0, 0.0, 0.0))
+  Local Scale: SIMD3<Float>(1.0, 1.0, 1.0)
+  World Scale: SIMD3<Float>(1.0, 1.0, 1.0)
+Environment Transform (After Adding):
+  Local Position: SIMD3<Float>(0.0, 0.0, 0.0)
+  World Position: SIMD3<Float>(0.0, 0.0, 0.0)
+  Local Orientation: simd_quatf(real: 1.0, imag: SIMD3<Float>(0.0, 0.0, 0.0))
+  World Orientation: simd_quatf(real: 1.0, imag: SIMD3<Float>(0.0, 0.0, 0.0))
+  Local Scale: SIMD3<Float>(1.0, 1.0, 1.0)
+  World Scale: SIMD3<Float>(1.0, 1.0, 1.0)
+setting up collisions
+setting up collisions in Root
+🎯 Setting up collision subscription
+✅ Collision subscription set up
+✅ Environment setup complete
+✅ Environment setup complete
+Environment setup complete, re-rendering RealityView and opening Instructions Window
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+🎓 Starting tutorial sequence...
+🎓 Tutorial state changed - Starting tutorial...
+
+=== Starting Tutorial Sequence ===
+📱 Tutorial: Loading game start VO
+AssetLoadingManager: loadAsset(withName: game_start_vo, category: attackCancerEnvironment)
+✅ Tutorial: Retrieved game start VO
+🎯 Tutorial: Found VO parent
+✅ Tutorial: Added VO to scene
+✅ Tutorial: Found tutorial cancer cell
+
+=== Setting up Tutorial Cancer Cell ===
+✅ Tutorial: Cancer cell setup complete
+✅ Tutorial: ADC sequence initiated
+
+=== Starting Tutorial ADC Sequence ===
+cannot add handler to 0 from 1 - dropping
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "entities[].Transform.transform"
+Cannot find a BindPoint for any bind path: "", "", ""
+🚀 Firing tutorial ADC 1/10
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 777
+Found attach point: attach_1
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 0
+Current hit count: StateComponent 0
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 0
+Required hits: 10
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 0
+Current hit count: StateComponent 0
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 0
+Required hits: 10
+📊 Cell 777: 1/10 hits
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 1
+Current hit count: StateComponent 1
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 1
+Required hits: 10
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 1
+Current hit count: StateComponent 1
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 1
+Required hits: 10
+Failed to set override status for bind point component member.
+🚀 Firing tutorial ADC 2/10
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Left hand tap detected
+Found cancer cell with ID: 777
+Found attach point: attach_11
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 1
+Current hit count: StateComponent 1
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 1
+Required hits: 10
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 1
+Current hit count: StateComponent 1
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 1
+Required hits: 10
+📊 Cell 777: 2/10 hits
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 2
+Current hit count: StateComponent 2
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 2
+Required hits: 10
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 2
+Current hit count: StateComponent 2
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 2
+Required hits: 10
+Failed to set override status for bind point component member.
+🚀 Firing tutorial ADC 3/10
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 777
+Found attach point: attach_13
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 2
+Current hit count: StateComponent 2
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 2
+Required hits: 10
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 2
+Current hit count: StateComponent 2
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 2
+Required hits: 10
+📊 Cell 777: 3/10 hits
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 3
+Current hit count: StateComponent 3
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 3
+Required hits: 10
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 3
+Current hit count: StateComponent 3
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 3
+Required hits: 10
+Failed to set override status for bind point component member.
+🚀 Firing tutorial ADC 4/10
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 777
+Found attach point: attach_14
+🌀 Portal warp: Starting at +19.057231903076172s
+🔍 PortalWarp reference check: false
+❌ Portal warp: portalWarp not found
+⏰ Sleeping for 75s before logo
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 3
+Current hit count: StateComponent 3
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 3
+Required hits: 10
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 3
+Current hit count: StateComponent 3
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 3
+Required hits: 10
+📊 Cell 777: 4/10 hits
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 4
+Current hit count: StateComponent 4
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 4
+Required hits: 10
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 4
+Current hit count: StateComponent 4
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 4
+Required hits: 10
+Failed to set override status for bind point component member.
+🚀 Firing tutorial ADC 5/10
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 777
+Found attach point: attach_12
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 4
+Current hit count: StateComponent 4
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 4
+Required hits: 10
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 4
+Current hit count: StateComponent 4
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 4
+Required hits: 10
+📊 Cell 777: 5/10 hits
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 5
+Current hit count: StateComponent 5
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 5
+Required hits: 10
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 5
+Current hit count: StateComponent 5
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 5
+Required hits: 10
+Failed to set override status for bind point component member.
+🚀 Firing tutorial ADC 6/10
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 777
+Found attach point: attach_8
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 5
+Current hit count: StateComponent 5
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 5
+Required hits: 10
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 5
+Current hit count: StateComponent 5
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 5
+Required hits: 10
+📊 Cell 777: 6/10 hits
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 6
+Current hit count: StateComponent 6
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 6
+Required hits: 10
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 6
+Current hit count: StateComponent 6
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 6
+Required hits: 10
+Failed to set override status for bind point component member.
+🚀 Firing tutorial ADC 7/10
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 777
+Found attach point: attach_17
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 6
+Current hit count: StateComponent 6
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 6
+Required hits: 10
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 6
+Current hit count: StateComponent 6
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 6
+Required hits: 10
+📊 Cell 777: 7/10 hits
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 7
+Current hit count: StateComponent 7
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 7
+Required hits: 10
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 7
+Current hit count: StateComponent 7
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 7
+Required hits: 10
+Failed to set override status for bind point component member.
+🚀 Firing tutorial ADC 8/10
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 777
+Found attach point: attach_9
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 7
+Current hit count: StateComponent 7
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 7
+Required hits: 10
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 7
+Current hit count: StateComponent 7
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 7
+Required hits: 10
+📊 Cell 777: 8/10 hits
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 8
+Current hit count: StateComponent 8
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 8
+Required hits: 10
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 8
+Current hit count: StateComponent 8
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 8
+Required hits: 10
+Failed to set override status for bind point component member.
+🚀 Firing tutorial ADC 9/10
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Left hand tap detected
+Found cancer cell with ID: 777
+Found attach point: attach_6
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 8
+Current hit count: StateComponent 8
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 8
+Required hits: 10
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 8
+Current hit count: StateComponent 8
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 8
+Required hits: 10
+📊 Cell 777: 9/10 hits
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 9
+Current hit count: StateComponent 9
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 9
+Required hits: 10
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 9
+Current hit count: StateComponent 9
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 9
+Required hits: 10
+Failed to set override status for bind point component member.
+🚀 Firing tutorial ADC 10/10
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Left hand tap detected
+Found cancer cell with ID: 777
+Found attach point: attach_5
+✅ Tutorial ADC sequence complete
+⏱️ Waiting for 24s mark...
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 9
+Current hit count: StateComponent 9
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 9
+Required hits: 10
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 9
+Current hit count: StateComponent 9
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 9
+Required hits: 10
+📊 Cell 777: 10/10 hits
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 10
+Current hit count: StateComponent 10
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 10
+Required hits: 10
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 10
+Current hit count: StateComponent 10
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 10
+Required hits: 10
+=== Cancer Cell Death Triggered ===
+💀 Cell is destroyed
+✨ Updated particle emitter isEmitting to: false
+Failed to set override status for bind point component member.
+Failed to set override status for bind point component member.
+🎯 Opening hope meter utility window
+🎮 Setting up cancer cells
+
+=== Initializing Cell States ===
+AssetLoadingManager: loadAsset(withName: cancer_cell, category: cancerCell)
+Creating parameters for cell 0
+Required hits: 6
+Total parameters after append: 1
+Added CancerCellStateComponent with parameters
+Added ClosureComponent for state updates
+🎯 PositioningSystem 3BA5D778-A647-4B40-831C-E4CBCA151F0E initializing...
+cannot add handler to 0 from 1 - dropping
+Cannot find a BindPoint for any bind path: "", "", ""
+cannot add handler to 0 from 1 - dropping
+Creating parameters for cell 1
+Required hits: 4
+Total parameters after append: 2
+Added CancerCellStateComponent with parameters
+Added ClosureComponent for state updates
+Cannot find a BindPoint for any bind path: "", "", ""
+=== Finished Spawning ===
+Total parameters created: 2
+Initial cellsDestroyed count: 0
+🎯 Cell 0 initialized - Required hits: 5
+🎯 Cell 1 initialized - Required hits: 6
+Failed to set override status for bind point component member.
+Failed to set override status for bind point component member.
+FINISH ✨ Stopped particle emitter
+🎮 Starting Attack Cancer Game
+✅ Set tutorial complete to true
+🕒 Starting Hope Meter
+🛑 Stopping Hope Meter
+cannot add handler to 0 from 1 - dropping
+FINISH ✨ Removed particle emitter component
+FINISH ✨ Removed cancer cell component
+✨ Removing entity from scene
+Failed to set override status for bind point component member.
+🎮 Starting Attack Cancer Game
+✅ Set tutorial complete to true
+🕒 Starting Hope Meter
+🛑 Stopping Hope Meter
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 0
+Found attach point: attach_16
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 0
+Found attach point: attach_6
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 0
+Found attach point: attach_5
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 0
+Found attach point: attach_1
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 0
+Found attach point: attach_2
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 0
+Found attach point: attach_9
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 0
+Found attach point: attach_11
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 0
+💥 ADC hit cell 0
+Current hit count: cellParameters 0
+Current hit count: StateComponent 0
+New hit count: 0
+Required hits: 6
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 0
+💥 ADC hit cell 0
+Current hit count: cellParameters 0
+Current hit count: StateComponent 0
+New hit count: 0
+Required hits: 6
+📊 Cell 0: 1/5 hits
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 0
+💥 ADC hit cell 0
+Current hit count: cellParameters 0
+Current hit count: StateComponent 1
+New hit count: 0
+Required hits: 6
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 0
+💥 ADC hit cell 0
+Current hit count: cellParameters 0
+Current hit count: StateComponent 1
+New hit count: 0
+Required hits: 6
+Failed to set override status for bind point component member.
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 0
+Found attach point: attach_10
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 0
+Found attach point: attach_18
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 0
+Found attach point: attach_15
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 0
+💥 ADC hit cell 0
+Current hit count: cellParameters 0
+Current hit count: StateComponent 1
+New hit count: 0
+Required hits: 6
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 0
+💥 ADC hit cell 0
+Current hit count: cellParameters 0
+Current hit count: StateComponent 1
+New hit count: 0
+Required hits: 6
+📊 Cell 0: 2/5 hits
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 0
+💥 ADC hit cell 0
+Current hit count: cellParameters 0
+Current hit count: StateComponent 2
+New hit count: 0
+Required hits: 6
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 0
+💥 ADC hit cell 0
+Current hit count: cellParameters 0
+Current hit count: StateComponent 2
+New hit count: 0
+Required hits: 6
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 0
+Found attach point: attach_4
+Failed to set override status for bind point component member.
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 0
+💥 ADC hit cell 0
+Current hit count: cellParameters 0
+Current hit count: StateComponent 2
+New hit count: 0
+Required hits: 6
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 0
+💥 ADC hit cell 0
+Current hit count: cellParameters 0
+Current hit count: StateComponent 2
+New hit count: 0
+Required hits: 6
+📊 Cell 0: 3/5 hits
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 0
+💥 ADC hit cell 0
+Current hit count: cellParameters 0
+Current hit count: StateComponent 3
+New hit count: 0
+Required hits: 6
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 0
+💥 ADC hit cell 0
+Current hit count: cellParameters 0
+Current hit count: StateComponent 3
+New hit count: 0
+Required hits: 6
+Failed to set override status for bind point component member.
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 0
+💥 ADC hit cell 0
+Current hit count: cellParameters 0
+Current hit count: StateComponent 3
+New hit count: 0
+Required hits: 6
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 0
+💥 ADC hit cell 0
+Current hit count: cellParameters 0
+Current hit count: StateComponent 3
+New hit count: 0
+Required hits: 6
+📊 Cell 0: 4/5 hits
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 0
+💥 ADC hit cell 0
+Current hit count: cellParameters 0
+Current hit count: StateComponent 4
+New hit count: 0
+Required hits: 6
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 0
+💥 ADC hit cell 0
+Current hit count: cellParameters 0
+Current hit count: StateComponent 4
+New hit count: 0
+Required hits: 6
+Failed to set override status for bind point component member.
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 0
+💥 ADC hit cell 0
+Current hit count: cellParameters 0
+Current hit count: StateComponent 4
+New hit count: 0
+Required hits: 6
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 0
+💥 ADC hit cell 0
+Current hit count: cellParameters 0
+Current hit count: StateComponent 4
+New hit count: 0
+Required hits: 6
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 0
+💥 ADC hit cell 0
+Current hit count: cellParameters 0
+Current hit count: StateComponent 4
+New hit count: 0
+Required hits: 6
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 0
+💥 ADC hit cell 0
+Current hit count: cellParameters 0
+Current hit count: StateComponent 4
+New hit count: 0
+Required hits: 6
+📊 Cell 0: 5/5 hits
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 0
+💥 ADC hit cell 0
+Current hit count: cellParameters 0
+Current hit count: StateComponent 5
+New hit count: 0
+Required hits: 6
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 0
+💥 ADC hit cell 0
+Current hit count: cellParameters 0
+Current hit count: StateComponent 5
+New hit count: 0
+Required hits: 6
+=== Cancer Cell Death Triggered ===
+💀 Cell is destroyed
+✨ Updated particle emitter isEmitting to: false
+📊 Cell 1: 1/6 hits
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 1
+💥 ADC hit cell 1
+Current hit count: cellParameters 0
+Current hit count: StateComponent 1
+New hit count: 0
+Required hits: 4
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 1
+💥 ADC hit cell 1
+Current hit count: cellParameters 0
+Current hit count: StateComponent 1
+New hit count: 0
+Required hits: 4
+Failed to set override status for bind point component member.
+Failed to set override status for bind point component member.
+Failed to set override status for bind point component member.
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 1
+💥 ADC hit cell 1
+Current hit count: cellParameters 0
+Current hit count: StateComponent 1
+New hit count: 0
+Required hits: 4
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 1
+💥 ADC hit cell 1
+Current hit count: cellParameters 0
+Current hit count: StateComponent 1
+New hit count: 0
+Required hits: 4
+📊 Cell 1: 2/6 hits
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 1
+💥 ADC hit cell 1
+Current hit count: cellParameters 0
+Current hit count: StateComponent 2
+New hit count: 0
+Required hits: 4
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 1
+💥 ADC hit cell 1
+Current hit count: cellParameters 0
+Current hit count: StateComponent 2
+New hit count: 0
+Required hits: 4
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 1
+💥 ADC hit cell 1
+Current hit count: cellParameters 0
+Current hit count: StateComponent 2
+New hit count: 0
+Required hits: 4
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 1
+💥 ADC hit cell 1
+Current hit count: cellParameters 0
+Current hit count: StateComponent 2
+New hit count: 0
+Required hits: 4
+📊 Cell 1: 3/6 hits
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 1
+💥 ADC hit cell 1
+Current hit count: cellParameters 0
+Current hit count: StateComponent 3
+New hit count: 0
+Required hits: 4
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 1
+💥 ADC hit cell 1
+Current hit count: cellParameters 0
+Current hit count: StateComponent 3
+New hit count: 0
+Required hits: 4
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 1
+💥 ADC hit cell 1
+Current hit count: cellParameters 0
+Current hit count: StateComponent 3
+New hit count: 0
+Required hits: 4
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 1
+💥 ADC hit cell 1
+Current hit count: cellParameters 0
+Current hit count: StateComponent 3
+New hit count: 0
+Required hits: 4
+📊 Cell 1: 4/6 hits
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 1
+💥 ADC hit cell 1
+Current hit count: cellParameters 0
+Current hit count: StateComponent 4
+New hit count: 0
+Required hits: 4
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 1
+💥 ADC hit cell 1
+Current hit count: cellParameters 0
+Current hit count: StateComponent 4
+New hit count: 0
+Required hits: 4
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 1
+💥 ADC hit cell 1
+Current hit count: cellParameters 0
+Current hit count: StateComponent 4
+New hit count: 0
+Required hits: 4
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 1
+💥 ADC hit cell 1
+Current hit count: cellParameters 0
+Current hit count: StateComponent 4
+New hit count: 0
+Required hits: 4
+📊 Cell 1: 5/6 hits
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 1
+💥 ADC hit cell 1
+Current hit count: cellParameters 0
+Current hit count: StateComponent 5
+New hit count: 0
+Required hits: 4
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 1
+💥 ADC hit cell 1
+Current hit count: cellParameters 0
+Current hit count: StateComponent 5
+New hit count: 0
+Required hits: 4
+Failed to set override status for bind point component member.
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 1
+💥 ADC hit cell 1
+Current hit count: cellParameters 0
+Current hit count: StateComponent 5
+New hit count: 0
+Required hits: 4
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 1
+💥 ADC hit cell 1
+Current hit count: cellParameters 0
+Current hit count: StateComponent 5
+New hit count: 0
+Required hits: 4
+📊 Cell 1: 6/6 hits
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 1
+💥 ADC hit cell 1
+Current hit count: cellParameters 0
+Current hit count: StateComponent 6
+New hit count: 0
+Required hits: 4
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 1
+💥 ADC hit cell 1
+Current hit count: cellParameters 0
+Current hit count: StateComponent 6
+New hit count: 0
+Required hits: 4
+=== Cancer Cell Death Triggered ===
+💀 Cell is destroyed
+✨ Updated particle emitter isEmitting to: false
+Failed to set override status for bind point component member.
+Failed to set override status for bind point component member.
+FINISH ✨ Stopped particle emitter
+FINISH ✨ Removed particle emitter component
+FINISH ✨ Removed cancer cell component
+✨ Removing entity from scene
+FINISH ✨ Stopped particle emitter
+FINISH ✨ Removed particle emitter component
+FINISH ✨ Removed cancer cell component
+✨ Removing entity from scene
+
+=== Tapped Entity ===
+Entity name: back
+Right hand tap detected
+Spawning untargeted ADC
+DEBUG: Root entity details:
+- Name: AttackCancerRoot
+- World position: SIMD3<Float>(0.0, 0.0, 0.0)
+- Local position: SIMD3<Float>(0.0, 0.0, 0.0)
+DEBUG: HeadPosition target details:
+- Local position set: SIMD3<Float>(1.1085169, 1.9588046, -5.846818)
+- World position after add: SIMD3<Float>(1.1085169, 1.9588046, -5.846818)
+- Parent entity: AttackCancerRoot
+✅ Untargeted ADC spawned successfully
+
+=== Tapped Entity ===
+Entity name: back
+Right hand tap detected
+Spawning untargeted ADC
+DEBUG: Root entity details:
+- Name: AttackCancerRoot
+- World position: SIMD3<Float>(0.0, 0.0, 0.0)
+- Local position: SIMD3<Float>(0.0, 0.0, 0.0)
+DEBUG: HeadPosition target details:
+- Local position set: SIMD3<Float>(1.4369771, 1.6821069, -5.851645)
+- World position after add: SIMD3<Float>(1.4369771, 1.6821069, -5.851645)
+- Parent entity: AttackCancerRoot
+✅ Untargeted ADC spawned successfully
+
+=== Tapped Entity ===
+Entity name: back
+Right hand tap detected
+Spawning untargeted ADC
+DEBUG: Root entity details:
+- Name: AttackCancerRoot
+- World position: SIMD3<Float>(0.0, 0.0, 0.0)
+- Local position: SIMD3<Float>(0.0, 0.0, 0.0)
+DEBUG: HeadPosition target details:
+- Local position set: SIMD3<Float>(-1.9185851, 2.331636, -5.7829146)
+- World position after add: SIMD3<Float>(-1.9185851, 2.331636, -5.7829146)
+- Parent entity: AttackCancerRoot
+✅ Untargeted ADC spawned successfully
+
+=== Tapped Entity ===
+Entity name: back
+Right hand tap detected
+Spawning untargeted ADC
+DEBUG: Root entity details:
+- Name: AttackCancerRoot
+- World position: SIMD3<Float>(0.0, 0.0, 0.0)
+- Local position: SIMD3<Float>(0.0, 0.0, 0.0)
+DEBUG: HeadPosition target details:
+- Local position set: SIMD3<Float>(-0.07251191, 2.4750693, -5.963688)
+- World position after add: SIMD3<Float>(-0.07251191, 2.4750693, -5.963688)
+- Parent entity: AttackCancerRoot
+✅ Untargeted ADC spawned successfully
+
+=== Tapped Entity ===
+Entity name: top
+Right hand tap detected
+Spawning untargeted ADC
+DEBUG: Root entity details:
+- Name: AttackCancerRoot
+- World position: SIMD3<Float>(0.0, 0.0, 0.0)
+- Local position: SIMD3<Float>(0.0, 0.0, 0.0)
+DEBUG: HeadPosition target details:
+- Local position set: SIMD3<Float>(1.0085747, 2.0513902, -5.6192627)
+- World position after add: SIMD3<Float>(1.0085747, 2.0513902, -5.6192627)
+- Parent entity: AttackCancerRoot
+✅ Untargeted ADC spawned successfully
+
+=== Tapped Entity ===
+Entity name: top
+Right hand tap detected
+Spawning untargeted ADC
+DEBUG: Root entity details:
+- Name: AttackCancerRoot
+- World position: SIMD3<Float>(0.0, 0.0, 0.0)
+- Local position: SIMD3<Float>(0.0, 0.0, 0.0)
+DEBUG: HeadPosition target details:
+- Local position set: SIMD3<Float>(0.90575624, 2.1521988, -5.8901076)
+- World position after add: SIMD3<Float>(0.90575624, 2.1521988, -5.8901076)
+- Parent entity: AttackCancerRoot
+✅ Untargeted ADC spawned successfully
+
+=== Tapped Entity ===
+Entity name: top
+Right hand tap detected
+Spawning untargeted ADC
+DEBUG: Root entity details:
+- Name: AttackCancerRoot
+- World position: SIMD3<Float>(0.0, 0.0, 0.0)
+- Local position: SIMD3<Float>(0.0, 0.0, 0.0)
+DEBUG: HeadPosition target details:
+- Local position set: SIMD3<Float>(0.46469116, 2.4068594, -5.9177494)
+- World position after add: SIMD3<Float>(0.46469116, 2.4068594, -5.9177494)
+- Parent entity: AttackCancerRoot
+✅ Untargeted ADC spawned successfully
+
+=== Tapped Entity ===
+Entity name: top
+Right hand tap detected
+Spawning untargeted ADC
+DEBUG: Root entity details:
+- Name: AttackCancerRoot
+- World position: SIMD3<Float>(0.0, 0.0, 0.0)
+- Local position: SIMD3<Float>(0.0, 0.0, 0.0)
+DEBUG: HeadPosition target details:
+- Local position set: SIMD3<Float>(1.0369117, 1.9320791, -5.716279)
+- World position after add: SIMD3<Float>(1.0369117, 1.9320791, -5.716279)
+- Parent entity: AttackCancerRoot
+✅ Untargeted ADC spawned successfully
+
+=== Tapped Entity ===
+Entity name: top
+Right hand tap detected
+Spawning untargeted ADC
+DEBUG: Root entity details:
+- Name: AttackCancerRoot
+- World position: SIMD3<Float>(0.0, 0.0, 0.0)
+- Local position: SIMD3<Float>(0.0, 0.0, 0.0)
+DEBUG: HeadPosition target details:
+- Local position set: SIMD3<Float>(-1.9053121, 2.1587396, -5.666396)
+- World position after add: SIMD3<Float>(-1.9053121, 2.1587396, -5.666396)
+- Parent entity: AttackCancerRoot
+✅ Untargeted ADC spawned successfully
+
+=== Tapped Entity ===
+Entity name: top
+Right hand tap detected
+Spawning untargeted ADC
+DEBUG: Root entity details:
+- Name: AttackCancerRoot
+- World position: SIMD3<Float>(0.0, 0.0, 0.0)
+- Local position: SIMD3<Float>(0.0, 0.0, 0.0)
+DEBUG: HeadPosition target details:
+- Local position set: SIMD3<Float>(-1.4923332, 1.1018976, -5.61395)
+- World position after add: SIMD3<Float>(-1.4923332, 1.1018976, -5.61395)
+- Parent entity: AttackCancerRoot
+✅ Untargeted ADC spawned successfully
+
+=== Tapped Entity ===
+Entity name: top
+Right hand tap detected
+Spawning untargeted ADC
+DEBUG: Root entity details:
+- Name: AttackCancerRoot
+- World position: SIMD3<Float>(0.0, 0.0, 0.0)
+- Local position: SIMD3<Float>(0.0, 0.0, 0.0)
+DEBUG: HeadPosition target details:
+- Local position set: SIMD3<Float>(-0.05467391, 1.376318, -5.7909927)
+- World position after add: SIMD3<Float>(-0.05467391, 1.376318, -5.7909927)
+- Parent entity: AttackCancerRoot
+✅ Untargeted ADC spawned successfully
+
+=== Tapped Entity ===
+Entity name: top
+Right hand tap detected
+Spawning untargeted ADC
+DEBUG: Root entity details:
+- Name: AttackCancerRoot
+- World position: SIMD3<Float>(0.0, 0.0, 0.0)
+- Local position: SIMD3<Float>(0.0, 0.0, 0.0)
+DEBUG: HeadPosition target details:
+- Local position set: SIMD3<Float>(-1.4165437, 1.1124108, -5.74625)
+- World position after add: SIMD3<Float>(-1.4165437, 1.1124108, -5.74625)
+- Parent entity: AttackCancerRoot
+✅ Untargeted ADC spawned successfully
+
+=== Tapped Entity ===
+Entity name: top
+Right hand tap detected
+Spawning untargeted ADC
+DEBUG: Root entity details:
+- Name: AttackCancerRoot
+- World position: SIMD3<Float>(0.0, 0.0, 0.0)
+- Local position: SIMD3<Float>(0.0, 0.0, 0.0)
+DEBUG: HeadPosition target details:
+- Local position set: SIMD3<Float>(-0.36808443, 1.9771119, -5.802247)
+- World position after add: SIMD3<Float>(-0.36808443, 1.9771119, -5.802247)
+- Parent entity: AttackCancerRoot
+✅ Untargeted ADC spawned successfully
+
+=== Tapped Entity ===
+Entity name: top
+Right hand tap detected
+Spawning untargeted ADC
+DEBUG: Root entity details:
+- Name: AttackCancerRoot
+- World position: SIMD3<Float>(0.0, 0.0, 0.0)
+- Local position: SIMD3<Float>(0.0, 0.0, 0.0)
+DEBUG: HeadPosition target details:
+- Local position set: SIMD3<Float>(0.23176265, 2.1926112, -5.505733)
+- World position after add: SIMD3<Float>(0.23176265, 2.1926112, -5.505733)
+- Parent entity: AttackCancerRoot
+✅ Untargeted ADC spawned successfully
+
+=== Tapped Entity ===
+Entity name: top
+Right hand tap detected
+Spawning untargeted ADC
+DEBUG: Root entity details:
+- Name: AttackCancerRoot
+- World position: SIMD3<Float>(0.0, 0.0, 0.0)
+- Local position: SIMD3<Float>(0.0, 0.0, 0.0)
+DEBUG: HeadPosition target details:
+- Local position set: SIMD3<Float>(1.8081107, 1.599514, -5.980713)
+- World position after add: SIMD3<Float>(1.8081107, 1.599514, -5.980713)
+- Parent entity: AttackCancerRoot
+✅ Untargeted ADC spawned successfully
+
+=== Tapped Entity ===
+Entity name: top
+Right hand tap detected
+Spawning untargeted ADC
+DEBUG: Root entity details:
+- Name: AttackCancerRoot
+- World position: SIMD3<Float>(0.0, 0.0, 0.0)
+- Local position: SIMD3<Float>(0.0, 0.0, 0.0)
+DEBUG: HeadPosition target details:
+- Local position set: SIMD3<Float>(-0.79846525, 1.5996023, -5.853385)
+- World position after add: SIMD3<Float>(-0.79846525, 1.5996023, -5.853385)
+- Parent entity: AttackCancerRoot
+✅ Untargeted ADC spawned successfully
+
+=== Tapped Entity ===
+Entity name: top
+Right hand tap detected
+Spawning untargeted ADC
+DEBUG: Root entity details:
+- Name: AttackCancerRoot
+- World position: SIMD3<Float>(0.0, 0.0, 0.0)
+- Local position: SIMD3<Float>(0.0, 0.0, 0.0)
+DEBUG: HeadPosition target details:
+- Local position set: SIMD3<Float>(1.975846, 1.1373341, -5.9056034)
+- World position after add: SIMD3<Float>(1.975846, 1.1373341, -5.9056034)
+- Parent entity: AttackCancerRoot
+✅ Untargeted ADC spawned successfully
+
+=== Tapped Entity ===
+Entity name: top
+Right hand tap detected
+Spawning untargeted ADC
+DEBUG: Root entity details:
+- Name: AttackCancerRoot
+- World position: SIMD3<Float>(0.0, 0.0, 0.0)
+- Local position: SIMD3<Float>(0.0, 0.0, 0.0)
+DEBUG: HeadPosition target details:
+- Local position set: SIMD3<Float>(1.4125202, 2.3804445, -5.5724363)
+- World position after add: SIMD3<Float>(1.4125202, 2.3804445, -5.5724363)
+- Parent entity: AttackCancerRoot
+✅ Untargeted ADC spawned successfully
+
+=== Tapped Entity ===
+Entity name: top
+Right hand tap detected
+Spawning untargeted ADC
+DEBUG: Root entity details:
+- Name: AttackCancerRoot
+- World position: SIMD3<Float>(0.0, 0.0, 0.0)
+- Local position: SIMD3<Float>(0.0, 0.0, 0.0)
+DEBUG: HeadPosition target details:
+- Local position set: SIMD3<Float>(-1.0986075, 1.1273601, -5.5320582)
+- World position after add: SIMD3<Float>(-1.0986075, 1.1273601, -5.5320582)
+- Parent entity: AttackCancerRoot
+✅ Untargeted ADC spawned successfully
+
+=== Tapped Entity ===
+Entity name: top
+Right hand tap detected
+Spawning untargeted ADC
+DEBUG: Root entity details:
+- Name: AttackCancerRoot
+- World position: SIMD3<Float>(0.0, 0.0, 0.0)
+- Local position: SIMD3<Float>(0.0, 0.0, 0.0)
+DEBUG: HeadPosition target details:
+- Local position set: SIMD3<Float>(-1.9502285, 1.4554735, -5.6572847)
+- World position after add: SIMD3<Float>(-1.9502285, 1.4554735, -5.6572847)
+- Parent entity: AttackCancerRoot
+✅ Untargeted ADC spawned successfully
+
+=== Tapped Entity ===
+Entity name: top
+Right hand tap detected
+Spawning untargeted ADC
+DEBUG: Root entity details:
+- Name: AttackCancerRoot
+- World position: SIMD3<Float>(0.0, 0.0, 0.0)
+- Local position: SIMD3<Float>(0.0, 0.0, 0.0)
+DEBUG: HeadPosition target details:
+- Local position set: SIMD3<Float>(-1.8510447, 1.0561811, -5.9888716)
+- World position after add: SIMD3<Float>(-1.8510447, 1.0561811, -5.9888716)
+- Parent entity: AttackCancerRoot
+✅ Untargeted ADC spawned successfully
+
+=== Tapped Entity ===
+Entity name: top
+Right hand tap detected
+Spawning untargeted ADC
+DEBUG: Root entity details:
+- Name: AttackCancerRoot
+- World position: SIMD3<Float>(0.0, 0.0, 0.0)
+- Local position: SIMD3<Float>(0.0, 0.0, 0.0)
+DEBUG: HeadPosition target details:
+- Local position set: SIMD3<Float>(-0.38899708, 1.4449403, -5.888117)
+- World position after add: SIMD3<Float>(-0.38899708, 1.4449403, -5.888117)
+- Parent entity: AttackCancerRoot
+✅ Untargeted ADC spawned successfully
+ARPredictorRemoteService <0x15b2a3cb0>: Query queue is not running.
+ARPredictorRemoteService <0x10163d900>: Query queue is not running.
+ARPredictorRemoteService <0x1014689c0>: Query queue is not running.
+ARPredictorRemoteService <0x15b266bd0>: Query queue is not running.
+ARPredictorRemoteService <0x1015f9530>: Query queue is not running.
+ARPredictorRemoteService <0x171f22c90>: Query queue is not running.
+ARPredictorRemoteService <0x10aa20c80>: Query queue is not running.
+→ .background
+🧹 Cleaning up app state
+🔄 Provider state changed to: paused
+
+=== Tracking State [Provider State Change [paused]] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: paused
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x303e437a0>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: paused
+🖐️ Hand Provider State: paused
+=== End State Log ===
+
+⏸️ Provider paused
+
+=== Tearing Down Game [Detailed] ===
+📊 Initial State:
+  - Hope Meter Running: true
+  - Tutorial Started: true
+  - Subscription Active: true
+  - Cell Parameters Count: 2
+⏹️ Stopping systems:
+  - Stopping hope meter
+🛑 Stopping Hope Meter
+  - Resetting tutorial state
+  - Reset tutorial state
+🔄 Cancelling collision subscription
+🗑️ Clearing cell parameters: 2
+
+🔍 Examining root entity: AttackCancerRoot
+  - Total children: 50
+🗑️ Removed cancer cells: 2
+
+🔄 Resetting game stats:
+  - Cells Destroyed: 0 → 0
+  - Total ADCs: 43 → 0
+  - Total Taps: 33 → 0
+  - Total Hits: 0 → 0
+🔄 Resetting first ADC flag: true → false
+✅ Game tear down complete
+
+✅ App state cleanup completed
+
+=== Tracking State [Pre-Stop] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: paused
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x303e437a0>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: paused
+🖐️ Hand Provider State: paused
+=== End State Log ===
+
+cannot add handler to 0 from 1 - dropping
+
+=== Tracking State [Post-Stop] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: paused
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x303e437a0>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===

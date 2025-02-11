@@ -1,0 +1,4415 @@
+AppModel init() - Instance: ObjectIdentifier(0x0000000100b08450)
+🏁 PfizerOutdoCancerApp init starting...
+📲 Setting AppModel in PositioningSystem...
+🔄 PositioningSystem.setAppModel called
+📝 Registering components and systems...
+⚙️ Registering PositioningSystem...
+✅ PfizerOutdoCancerApp init completed
+🎯 PositioningSystem 01B54FD9-A7A7-4E99-9AFD-B2C16CFB1E3A initializing...
+nw_socket_initialize_socket [C1:2] setsockopt SO_NECP_CLIENTUUID failed [22: Invalid argument]
+nw_socket_initialize_socket setsockopt SO_NECP_CLIENTUUID failed [22: Invalid argument]
+nw_socket_copy_info [C1:2] getsockopt TCP_INFO failed [102: Operation not supported on socket]
+nw_socket_copy_info getsockopt TCP_INFO failed [102: Operation not supported on socket]
+cannot add handler to 0 from 1 - dropping
+
+=== Starting Initial Asset Loading ===
+🔍 Current phase: loading
+🔍 Loading state: notStarted
+🔄 Starting prepareIntroPhase...
+
+=== Preparing Intro Phase ===
+🔍 Current phase before loading: loading
+🔍 Loading state: notStarted
+📱 Loading asset: intro_environment
+AssetLoadingManager: loadAsset(withName: intro_environment, category: introEnvironment)
+cannot add handler to 0 from 1 - dropping
+cannot add handler to 0 from 1 - dropping
+cannot add handler to 0 from 1 - dropping
+Registering library (/System/Library/PrivateFrameworks/CoreRE.framework/default.metallib) that already exists in shader manager. Library will be overwritten.
+✅ Loaded intro_environment - Progress: 0.16666667
+📱 Loading asset: intro_warp
+AssetLoadingManager: loadAsset(withName: intro_warp, category: introEnvironment)
+✅ Loaded intro_warp - Progress: 0.33333334
+📱 Loading asset: attack_cancer_environment
+AssetLoadingManager: loadAsset(withName: attack_cancer_environment, category: attackCancerEnvironment)
+✅ Loaded attack_cancer_environment - Progress: 0.5
+📱 Loading asset: adc
+AssetLoadingManager: loadAsset(withName: adc, category: attackCancerEnvironment)
+✅ ADC template loaded (using inner Root with audio)
+✅ Loaded adc - Progress: 0.6666667
+📱 Loading asset: cancer_cell
+AssetLoadingManager: loadAsset(withName: cancer_cell, category: attackCancerEnvironment)
+✅ Loaded cancer_cell - Progress: 0.8333333
+📱 Loading asset: assembled_lab
+AssetLoadingManager: loadAsset(withName: assembled_lab, category: labEnvironment)
+📱 Starting lab environment assembly
+Loading state changed from notStarted to loading(progress: 0.0)
+Loading progress: 0.0
+Loading state changed from loading(progress: 0.0) to loading(progress: 0.0009149131)
+Loading progress: 0.0009149131
+Loading state changed from loading(progress: 0.0009149131) to loading(progress: 0.0018298262)
+Loading progress: 0.0018298262
+Loading state changed from loading(progress: 0.0018298262) to loading(progress: 0.0027447392)
+Loading progress: 0.0027447392
+Loading state changed from loading(progress: 0.0027447392) to loading(progress: 0.0036596523)
+Loading progress: 0.0036596523
+onChange(of: LoadingState) action tried to update multiple times per frame.
+Loading state changed from loading(progress: 0.0064043915) to loading(progress: 0.0073193046)
+Loading progress: 0.0073193046
+Loading state changed from loading(progress: 0.0073193046) to loading(progress: 0.008234218)
+Loading progress: 0.008234218
+Loading state changed from loading(progress: 0.010978957) to loading(progress: 0.01189387)
+Loading progress: 0.01189387
+Loading state changed from loading(progress: 0.01189387) to loading(progress: 0.012808783)
+Loading progress: 0.012808783
+Loading state changed from loading(progress: 0.012808783) to loading(progress: 0.013723697)
+Loading progress: 0.013723697
+Loading state changed from loading(progress: 0.013723697) to loading(progress: 0.014638609)
+Loading progress: 0.014638609
+Loading state changed from loading(progress: 0.015553523) to loading(progress: 0.016468436)
+Loading progress: 0.016468436
+Loading state changed from loading(progress: 0.016468436) to loading(progress: 0.017383348)
+Loading progress: 0.017383348
+Loading state changed from loading(progress: 0.020128088) to loading(progress: 0.021043)
+Loading progress: 0.021043
+Loading state changed from loading(progress: 0.021043) to loading(progress: 0.021957913)
+Loading progress: 0.021957913
+Loading state changed from loading(progress: 0.025617566) to loading(progress: 0.026532479)
+Loading progress: 0.026532479
+Loading state changed from loading(progress: 0.026532479) to loading(progress: 0.027447393)
+Loading progress: 0.027447393
+Loading state changed from loading(progress: 0.028362306) to loading(progress: 0.029277219)
+Loading progress: 0.029277219
+Loading state changed from loading(progress: 0.029277219) to loading(progress: 0.030192131)
+Loading progress: 0.030192131
+Loading state changed from loading(progress: 0.030192131) to loading(progress: 0.031107046)
+Loading progress: 0.031107046
+Loading state changed from loading(progress: 0.031107046) to loading(progress: 0.03202196)
+Loading progress: 0.03202196
+Loading state changed from loading(progress: 0.034766696) to loading(progress: 0.03568161)
+Loading progress: 0.03568161
+Loading state changed from loading(progress: 0.03568161) to loading(progress: 0.03659652)
+Loading progress: 0.03659652
+Loading state changed from loading(progress: 0.039341263) to loading(progress: 0.040256176)
+Loading progress: 0.040256176
+Loading state changed from loading(progress: 0.040256176) to loading(progress: 0.04117109)
+Loading progress: 0.04117109
+Loading state changed from loading(progress: 0.04117109) to loading(progress: 0.042086)
+Loading progress: 0.042086
+Loading state changed from loading(progress: 0.042086) to loading(progress: 0.043000914)
+Loading progress: 0.043000914
+Loading state changed from loading(progress: 0.04483074) to loading(progress: 0.045745656)
+Loading progress: 0.045745656
+Loading state changed from loading(progress: 0.045745656) to loading(progress: 0.04666057)
+Loading progress: 0.04666057
+Loading state changed from loading(progress: 0.048490394) to loading(progress: 0.049405307)
+Loading progress: 0.049405307
+Loading state changed from loading(progress: 0.049405307) to loading(progress: 0.05032022)
+Loading progress: 0.05032022
+Loading state changed from loading(progress: 0.05032022) to loading(progress: 0.051235132)
+Loading progress: 0.051235132
+Loading state changed from loading(progress: 0.053979874) to loading(progress: 0.054894786)
+Loading progress: 0.054894786
+Loading state changed from loading(progress: 0.054894786) to loading(progress: 0.0558097)
+Loading progress: 0.0558097
+Loading state changed from loading(progress: 0.057639524) to loading(progress: 0.058554437)
+Loading progress: 0.058554437
+Loading state changed from loading(progress: 0.058554437) to loading(progress: 0.05946935)
+Loading progress: 0.05946935
+Loading state changed from loading(progress: 0.060384262) to loading(progress: 0.061299175)
+Loading progress: 0.061299175
+Loading state changed from loading(progress: 0.061299175) to loading(progress: 0.06221409)
+Loading progress: 0.06221409
+Loading state changed from loading(progress: 0.06404392) to loading(progress: 0.064958826)
+Loading progress: 0.064958826
+Loading state changed from loading(progress: 0.064958826) to loading(progress: 0.06587374)
+Loading progress: 0.06587374
+Loading state changed from loading(progress: 0.07044831) to loading(progress: 0.07136322)
+Loading progress: 0.07136322
+Loading state changed from loading(progress: 0.07136322) to loading(progress: 0.072278135)
+Loading progress: 0.072278135
+Loading state changed from loading(progress: 0.0768527) to loading(progress: 0.07776761)
+Loading progress: 0.07776761
+Loading state changed from loading(progress: 0.07776761) to loading(progress: 0.07868253)
+Loading progress: 0.07868253
+Loading state changed from loading(progress: 0.07868253) to loading(progress: 0.079597436)
+Loading progress: 0.079597436
+Loading state changed from loading(progress: 0.08142726) to loading(progress: 0.08234218)
+Loading progress: 0.08234218
+Loading state changed from loading(progress: 0.08234218) to loading(progress: 0.083257094)
+Loading progress: 0.083257094
+Loading state changed from loading(progress: 0.08600183) to loading(progress: 0.086916745)
+Loading progress: 0.086916745
+Loading state changed from loading(progress: 0.086916745) to loading(progress: 0.08783165)
+Loading progress: 0.08783165
+Loading state changed from loading(progress: 0.08966148) to loading(progress: 0.090576395)
+Loading progress: 0.090576395
+Loading state changed from loading(progress: 0.090576395) to loading(progress: 0.09149131)
+Loading progress: 0.09149131
+Loading state changed from loading(progress: 0.09240622) to loading(progress: 0.09332114)
+Loading progress: 0.09332114
+Loading state changed from loading(progress: 0.09332114) to loading(progress: 0.094236046)
+Loading progress: 0.094236046
+Loading state changed from loading(progress: 0.09698079) to loading(progress: 0.0978957)
+Loading progress: 0.0978957
+Loading state changed from loading(progress: 0.0978957) to loading(progress: 0.09881061)
+Loading progress: 0.09881061
+Loading state changed from loading(progress: 0.10064044) to loading(progress: 0.101555355)
+Loading progress: 0.101555355
+Loading state changed from loading(progress: 0.101555355) to loading(progress: 0.102470264)
+Loading progress: 0.102470264
+Loading state changed from loading(progress: 0.102470264) to loading(progress: 0.10338518)
+Loading progress: 0.10338518
+Loading state changed from loading(progress: 0.10338518) to loading(progress: 0.10430009)
+Loading progress: 0.10430009
+Loading state changed from loading(progress: 0.10430009) to loading(progress: 0.105215006)
+Loading progress: 0.105215006
+Loading state changed from loading(progress: 0.105215006) to loading(progress: 0.106129915)
+Loading progress: 0.106129915
+Loading state changed from loading(progress: 0.106129915) to loading(progress: 0.10704483)
+Loading progress: 0.10704483
+Loading state changed from loading(progress: 0.10704483) to loading(progress: 0.10795975)
+Loading progress: 0.10795975
+Loading state changed from loading(progress: 0.108874656) to loading(progress: 0.10978957)
+Loading progress: 0.10978957
+Loading state changed from loading(progress: 0.10978957) to loading(progress: 0.11070448)
+Loading progress: 0.11070448
+Loading state changed from loading(progress: 0.11436413) to loading(progress: 0.11527905)
+Loading progress: 0.11527905
+Loading state changed from loading(progress: 0.11527905) to loading(progress: 0.116193965)
+Loading progress: 0.116193965
+Loading state changed from loading(progress: 0.116193965) to loading(progress: 0.117108874)
+Loading progress: 0.117108874
+Loading state changed from loading(progress: 0.11802379) to loading(progress: 0.1189387)
+Loading progress: 0.1189387
+Loading state changed from loading(progress: 0.1189387) to loading(progress: 0.119853616)
+Loading progress: 0.119853616
+Loading state changed from loading(progress: 0.12442818) to loading(progress: 0.1253431)
+Loading progress: 0.1253431
+Loading state changed from loading(progress: 0.1253431) to loading(progress: 0.126258)
+Loading progress: 0.126258
+Loading state changed from loading(progress: 0.13174748) to loading(progress: 0.1326624)
+Loading progress: 0.1326624
+Loading state changed from loading(progress: 0.1326624) to loading(progress: 0.13357732)
+Loading progress: 0.13357732
+Loading state changed from loading(progress: 0.14089662) to loading(progress: 0.14181153)
+Loading progress: 0.14181153
+Loading state changed from loading(progress: 0.14181153) to loading(progress: 0.14272644)
+Loading progress: 0.14272644
+Loading state changed from loading(progress: 0.14547119) to loading(progress: 0.14638609)
+Loading progress: 0.14638609
+Loading state changed from loading(progress: 0.14638609) to loading(progress: 0.147301)
+Loading progress: 0.147301
+Loading state changed from loading(progress: 0.147301) to loading(progress: 0.14821592)
+Loading progress: 0.14821592
+Loading state changed from loading(progress: 0.14821592) to loading(progress: 0.14913084)
+Loading progress: 0.14913084
+Loading state changed from loading(progress: 0.15645014) to loading(progress: 0.15736505)
+Loading progress: 0.15736505
+Loading state changed from loading(progress: 0.15736505) to loading(progress: 0.15827997)
+Loading progress: 0.15827997
+Loading state changed from loading(progress: 0.16376944) to loading(progress: 0.16468436)
+Loading progress: 0.16468436
+Loading state changed from loading(progress: 0.16468436) to loading(progress: 0.16559927)
+Loading progress: 0.16559927
+Loading state changed from loading(progress: 0.17108874) to loading(progress: 0.17200366)
+Loading progress: 0.17200366
+Loading state changed from loading(progress: 0.17200366) to loading(progress: 0.17291857)
+Loading progress: 0.17291857
+Loading state changed from loading(progress: 0.1756633) to loading(progress: 0.17657822)
+Loading progress: 0.17657822
+Loading state changed from loading(progress: 0.17657822) to loading(progress: 0.17749314)
+Loading progress: 0.17749314
+Loading state changed from loading(progress: 0.18298262) to loading(progress: 0.18389753)
+Loading progress: 0.18389753
+Loading state changed from loading(progress: 0.18389753) to loading(progress: 0.18481244)
+Loading progress: 0.18481244
+Loading state changed from loading(progress: 0.19030192) to loading(progress: 0.19121684)
+Loading progress: 0.19121684
+Loading state changed from loading(progress: 0.19121684) to loading(progress: 0.19213174)
+Loading progress: 0.19213174
+Loading state changed from loading(progress: 0.19762123) to loading(progress: 0.19853614)
+Loading progress: 0.19853614
+Loading state changed from loading(progress: 0.19853614) to loading(progress: 0.19945106)
+Loading progress: 0.19945106
+Loading state changed from loading(progress: 0.20036596) to loading(progress: 0.20128088)
+Loading progress: 0.20128088
+Invalid Material input type token
+Loading state changed from loading(progress: 0.20128088) to loading(progress: 0.2021958)
+Loading progress: 0.2021958
+Loading state changed from loading(progress: 0.2021958) to loading(progress: 0.20311071)
+Loading progress: 0.20311071
+Loading state changed from loading(progress: 0.20494053) to loading(progress: 0.20585544)
+Loading progress: 0.20585544
+Loading state changed from loading(progress: 0.20585544) to loading(progress: 0.20677036)
+Loading progress: 0.20677036
+Loading state changed from loading(progress: 0.20677036) to loading(progress: 0.20768528)
+Loading progress: 0.20768528
+Loading state changed from loading(progress: 0.20768528) to loading(progress: 0.20860018)
+Loading progress: 0.20860018
+Loading state changed from loading(progress: 0.21134493) to loading(progress: 0.21225983)
+Loading progress: 0.21225983
+Loading state changed from loading(progress: 0.21225983) to loading(progress: 0.21317475)
+Loading progress: 0.21317475
+Loading state changed from loading(progress: 0.2159195) to loading(progress: 0.2168344)
+Loading progress: 0.2168344
+Loading state changed from loading(progress: 0.2168344) to loading(progress: 0.21774931)
+Loading progress: 0.21774931
+Loading state changed from loading(progress: 0.21774931) to loading(progress: 0.21866423)
+Loading progress: 0.21866423
+Loading state changed from loading(progress: 0.21866423) to loading(progress: 0.21957915)
+Loading progress: 0.21957915
+Loading state changed from loading(progress: 0.21957915) to loading(progress: 0.22049405)
+Loading progress: 0.22049405
+Loading state changed from loading(progress: 0.22049405) to loading(progress: 0.22140896)
+Loading progress: 0.22140896
+Loading state changed from loading(progress: 0.22232388) to loading(progress: 0.2232388)
+Loading progress: 0.2232388
+Loading state changed from loading(progress: 0.2232388) to loading(progress: 0.22415371)
+Loading progress: 0.22415371
+Loading state changed from loading(progress: 0.22415371) to loading(progress: 0.22506861)
+Loading progress: 0.22506861
+Loading state changed from loading(progress: 0.22872826) to loading(progress: 0.22964318)
+Loading progress: 0.22964318
+Loading state changed from loading(progress: 0.22964318) to loading(progress: 0.2305581)
+Loading progress: 0.2305581
+Loading state changed from loading(progress: 0.23147301) to loading(progress: 0.23238793)
+Loading progress: 0.23238793
+Loading state changed from loading(progress: 0.23238793) to loading(progress: 0.23330283)
+Loading progress: 0.23330283
+Loading state changed from loading(progress: 0.2378774) to loading(progress: 0.23879232)
+Loading progress: 0.23879232
+Loading state changed from loading(progress: 0.23879232) to loading(progress: 0.23970723)
+Loading progress: 0.23970723
+Loading state changed from loading(progress: 0.24611162) to loading(progress: 0.24702653)
+Loading progress: 0.24702653
+Loading state changed from loading(progress: 0.24702653) to loading(progress: 0.24794145)
+Loading progress: 0.24794145
+Loading state changed from loading(progress: 0.25526074) to loading(progress: 0.25617567)
+Loading progress: 0.25617567
+Loading state changed from loading(progress: 0.25617567) to loading(progress: 0.25709057)
+Loading progress: 0.25709057
+Loading state changed from loading(progress: 0.26166514) to loading(progress: 0.26258007)
+Loading progress: 0.26258007
+Loading state changed from loading(progress: 0.26258007) to loading(progress: 0.26349497)
+Loading progress: 0.26349497
+Loading state changed from loading(progress: 0.2662397) to loading(progress: 0.26715463)
+Loading progress: 0.26715463
+Loading state changed from loading(progress: 0.26715463) to loading(progress: 0.26806954)
+Loading progress: 0.26806954
+Loading state changed from loading(progress: 0.27081427) to loading(progress: 0.27172917)
+Loading progress: 0.27172917
+Loading state changed from loading(progress: 0.27172917) to loading(progress: 0.2726441)
+Loading progress: 0.2726441
+Loading state changed from loading(progress: 0.273559) to loading(progress: 0.27447394)
+Loading progress: 0.27447394
+Loading state changed from loading(progress: 0.27447394) to loading(progress: 0.27538884)
+Loading progress: 0.27538884
+Loading state changed from loading(progress: 0.2790485) to loading(progress: 0.2799634)
+Loading progress: 0.2799634
+Loading state changed from loading(progress: 0.2799634) to loading(progress: 0.2808783)
+Loading progress: 0.2808783
+Invalid Material input type token
+Loading state changed from loading(progress: 0.2808783) to loading(progress: 0.28179324)
+Loading progress: 0.28179324
+Loading state changed from loading(progress: 0.28179324) to loading(progress: 0.28270814)
+Loading progress: 0.28270814
+Loading state changed from loading(progress: 0.28545287) to loading(progress: 0.2863678)
+Loading progress: 0.2863678
+Loading state changed from loading(progress: 0.2863678) to loading(progress: 0.2872827)
+Loading progress: 0.2872827
+Loading state changed from loading(progress: 0.2872827) to loading(progress: 0.2881976)
+Loading progress: 0.2881976
+Loading state changed from loading(progress: 0.2881976) to loading(progress: 0.28911254)
+Loading progress: 0.28911254
+Loading state changed from loading(progress: 0.28911254) to loading(progress: 0.29002744)
+Loading progress: 0.29002744
+Loading state changed from loading(progress: 0.29185727) to loading(progress: 0.29277217)
+Loading progress: 0.29277217
+Loading state changed from loading(progress: 0.29277217) to loading(progress: 0.2936871)
+Loading progress: 0.2936871
+Loading state changed from loading(progress: 0.29643184) to loading(progress: 0.29734674)
+Loading progress: 0.29734674
+Loading state changed from loading(progress: 0.29734674) to loading(progress: 0.29826167)
+Loading progress: 0.29826167
+Loading state changed from loading(progress: 0.3010064) to loading(progress: 0.3019213)
+Loading progress: 0.3019213
+Loading state changed from loading(progress: 0.3019213) to loading(progress: 0.30283624)
+Loading progress: 0.30283624
+Loading state changed from loading(progress: 0.30375114) to loading(progress: 0.30466604)
+Loading progress: 0.30466604
+Loading state changed from loading(progress: 0.30466604) to loading(progress: 0.30558097)
+Loading progress: 0.30558097
+Loading state changed from loading(progress: 0.3083257) to loading(progress: 0.3092406)
+Loading progress: 0.3092406
+Loading state changed from loading(progress: 0.3092406) to loading(progress: 0.31015554)
+Loading progress: 0.31015554
+Loading state changed from loading(progress: 0.31107044) to loading(progress: 0.31198537)
+Loading progress: 0.31198537
+Loading state changed from loading(progress: 0.31198537) to loading(progress: 0.31290027)
+Loading progress: 0.31290027
+Loading state changed from loading(progress: 0.315645) to loading(progress: 0.31655994)
+Loading progress: 0.31655994
+Loading state changed from loading(progress: 0.31655994) to loading(progress: 0.31747484)
+Loading progress: 0.31747484
+Loading state changed from loading(progress: 0.31747484) to loading(progress: 0.31838974)
+Loading progress: 0.31838974
+Loading state changed from loading(progress: 0.31838974) to loading(progress: 0.31930467)
+Loading progress: 0.31930467
+Loading state changed from loading(progress: 0.31930467) to loading(progress: 0.32021958)
+Loading progress: 0.32021958
+Loading state changed from loading(progress: 0.3220494) to loading(progress: 0.3229643)
+Loading progress: 0.3229643
+Loading state changed from loading(progress: 0.3229643) to loading(progress: 0.32387924)
+Loading progress: 0.32387924
+Loading state changed from loading(progress: 0.32662398) to loading(progress: 0.32753888)
+Loading progress: 0.32753888
+Loading state changed from loading(progress: 0.32753888) to loading(progress: 0.3284538)
+Loading progress: 0.3284538
+Loading state changed from loading(progress: 0.33394328) to loading(progress: 0.33485818)
+Loading progress: 0.33485818
+Loading state changed from loading(progress: 0.33485818) to loading(progress: 0.3357731)
+Loading progress: 0.3357731
+Loading state changed from loading(progress: 0.3376029) to loading(progress: 0.33851784)
+Loading progress: 0.33851784
+Loading state changed from loading(progress: 0.33851784) to loading(progress: 0.33943275)
+Loading progress: 0.33943275
+Loading state changed from loading(progress: 0.33943275) to loading(progress: 0.34034768)
+Loading progress: 0.34034768
+Loading state changed from loading(progress: 0.34034768) to loading(progress: 0.34126258)
+Loading progress: 0.34126258
+Loading state changed from loading(progress: 0.34583715) to loading(progress: 0.34675205)
+Loading progress: 0.34675205
+Loading state changed from loading(progress: 0.34675205) to loading(progress: 0.34766698)
+Loading progress: 0.34766698
+Loading state changed from loading(progress: 0.34766698) to loading(progress: 0.34858188)
+Loading progress: 0.34858188
+Loading state changed from loading(progress: 0.35407135) to loading(progress: 0.35498628)
+Loading progress: 0.35498628
+Loading state changed from loading(progress: 0.35498628) to loading(progress: 0.35590118)
+Loading progress: 0.35590118
+Loading state changed from loading(progress: 0.35590118) to loading(progress: 0.3568161)
+Loading progress: 0.3568161
+Loading state changed from loading(progress: 0.3568161) to loading(progress: 0.357731)
+Loading progress: 0.357731
+Loading state changed from loading(progress: 0.35956085) to loading(progress: 0.36047575)
+Loading progress: 0.36047575
+Loading state changed from loading(progress: 0.36047575) to loading(progress: 0.36139068)
+Loading progress: 0.36139068
+Loading state changed from loading(progress: 0.36688015) to loading(progress: 0.36779505)
+Loading progress: 0.36779505
+Loading state changed from loading(progress: 0.36779505) to loading(progress: 0.36870998)
+Loading progress: 0.36870998
+Loading state changed from loading(progress: 0.37419945) to loading(progress: 0.37511435)
+Loading progress: 0.37511435
+Loading state changed from loading(progress: 0.37511435) to loading(progress: 0.37602928)
+Loading progress: 0.37602928
+Loading state changed from loading(progress: 0.38334858) to loading(progress: 0.3842635)
+Loading progress: 0.3842635
+Loading state changed from loading(progress: 0.3842635) to loading(progress: 0.38517842)
+Loading progress: 0.38517842
+Loading state changed from loading(progress: 0.39341262) to loading(progress: 0.39432755)
+Loading progress: 0.39432755
+Loading state changed from loading(progress: 0.39432755) to loading(progress: 0.39524245)
+Loading progress: 0.39524245
+Loading state changed from loading(progress: 0.39524245) to loading(progress: 0.39615735)
+Loading progress: 0.39615735
+Loading state changed from loading(progress: 0.39890212) to loading(progress: 0.39981702)
+Loading progress: 0.39981702
+Loading state changed from loading(progress: 0.39981702) to loading(progress: 0.40073192)
+Loading progress: 0.40073192
+Loading state changed from loading(progress: 0.40073192) to loading(progress: 0.40164685)
+Loading progress: 0.40164685
+Loading state changed from loading(progress: 0.40164685) to loading(progress: 0.40256175)
+Loading progress: 0.40256175
+Loading state changed from loading(progress: 0.4053065) to loading(progress: 0.40622142)
+Loading progress: 0.40622142
+Loading state changed from loading(progress: 0.40622142) to loading(progress: 0.40713632)
+Loading progress: 0.40713632
+Loading state changed from loading(progress: 0.40713632) to loading(progress: 0.40805122)
+Loading progress: 0.40805122
+Loading state changed from loading(progress: 0.4117109) to loading(progress: 0.4126258)
+Loading progress: 0.4126258
+Loading state changed from loading(progress: 0.4126258) to loading(progress: 0.41354072)
+Loading progress: 0.41354072
+Loading state changed from loading(progress: 0.41537055) to loading(progress: 0.41628546)
+Loading progress: 0.41628546
+Loading state changed from loading(progress: 0.41628546) to loading(progress: 0.41720036)
+Loading progress: 0.41720036
+Loading state changed from loading(progress: 0.41720036) to loading(progress: 0.4181153)
+Loading progress: 0.4181153
+Loading state changed from loading(progress: 0.4181153) to loading(progress: 0.4190302)
+Loading progress: 0.4190302
+Loading state changed from loading(progress: 0.42360476) to loading(progress: 0.42451966)
+Loading progress: 0.42451966
+Loading state changed from loading(progress: 0.42451966) to loading(progress: 0.4254346)
+Loading progress: 0.4254346
+Loading state changed from loading(progress: 0.43000916) to loading(progress: 0.43092406)
+Loading progress: 0.43092406
+Loading state changed from loading(progress: 0.43092406) to loading(progress: 0.431839)
+Loading progress: 0.431839
+Loading state changed from loading(progress: 0.43458372) to loading(progress: 0.43549863)
+Loading progress: 0.43549863
+Loading state changed from loading(progress: 0.43549863) to loading(progress: 0.43641353)
+Loading progress: 0.43641353
+Loading state changed from loading(progress: 0.43732846) to loading(progress: 0.43824336)
+Loading progress: 0.43824336
+Loading state changed from loading(progress: 0.43824336) to loading(progress: 0.4391583)
+Loading progress: 0.4391583
+Loading state changed from loading(progress: 0.4391583) to loading(progress: 0.4400732)
+Loading progress: 0.4400732
+Loading state changed from loading(progress: 0.44464776) to loading(progress: 0.44556266)
+Loading progress: 0.44556266
+Loading state changed from loading(progress: 0.44556266) to loading(progress: 0.4464776)
+Loading progress: 0.4464776
+Loading state changed from loading(progress: 0.45288196) to loading(progress: 0.4537969)
+Loading progress: 0.4537969
+Loading state changed from loading(progress: 0.4537969) to loading(progress: 0.4547118)
+Loading progress: 0.4547118
+Loading state changed from loading(progress: 0.45745653) to loading(progress: 0.45837146)
+Loading progress: 0.45837146
+Loading state changed from loading(progress: 0.45837146) to loading(progress: 0.45928636)
+Loading progress: 0.45928636
+Loading state changed from loading(progress: 0.4620311) to loading(progress: 0.46294603)
+Loading progress: 0.46294603
+Loading state changed from loading(progress: 0.46294603) to loading(progress: 0.46386093)
+Loading progress: 0.46386093
+Loading state changed from loading(progress: 0.4684355) to loading(progress: 0.4693504)
+Loading progress: 0.4693504
+Loading state changed from loading(progress: 0.4693504) to loading(progress: 0.47026533)
+Loading progress: 0.47026533
+Loading state changed from loading(progress: 0.4748399) to loading(progress: 0.4757548)
+Loading progress: 0.4757548
+Loading state changed from loading(progress: 0.4757548) to loading(progress: 0.47666973)
+Loading progress: 0.47666973
+Loading state changed from loading(progress: 0.4830741) to loading(progress: 0.48398903)
+Loading progress: 0.48398903
+Loading state changed from loading(progress: 0.48398903) to loading(progress: 0.48490393)
+Loading progress: 0.48490393
+Loading state changed from loading(progress: 0.4903934) to loading(progress: 0.49130833)
+Loading progress: 0.49130833
+Loading state changed from loading(progress: 0.49130833) to loading(progress: 0.49222323)
+Loading progress: 0.49222323
+Loading state changed from loading(progress: 0.4967978) to loading(progress: 0.49771273)
+Loading progress: 0.49771273
+Loading state changed from loading(progress: 0.49771273) to loading(progress: 0.49862763)
+Loading progress: 0.49862763
+Loading state changed from loading(progress: 0.49862763) to loading(progress: 0.49954253)
+Loading progress: 0.49954253
+Loading state changed from loading(progress: 0.50411713) to loading(progress: 0.505032)
+Loading progress: 0.505032
+Loading state changed from loading(progress: 0.505032) to loading(progress: 0.50594693)
+Loading progress: 0.50594693
+Loading state changed from loading(progress: 0.51235133) to loading(progress: 0.51326627)
+Loading progress: 0.51326627
+Loading state changed from loading(progress: 0.51326627) to loading(progress: 0.51418114)
+Loading progress: 0.51418114
+Loading state changed from loading(progress: 0.5169259) to loading(progress: 0.5178408)
+Loading progress: 0.5178408
+Loading state changed from loading(progress: 0.5178408) to loading(progress: 0.51875573)
+Loading progress: 0.51875573
+Loading state changed from loading(progress: 0.5242452) to loading(progress: 0.52516013)
+Loading progress: 0.52516013
+Loading state changed from loading(progress: 0.52516013) to loading(progress: 0.526075)
+Loading progress: 0.526075
+Loading state changed from loading(progress: 0.53339434) to loading(progress: 0.53430927)
+Loading progress: 0.53430927
+Loading state changed from loading(progress: 0.53430927) to loading(progress: 0.53522414)
+Loading progress: 0.53522414
+Loading state changed from loading(progress: 0.53522414) to loading(progress: 0.5361391)
+Loading progress: 0.5361391
+Loading state changed from loading(progress: 0.5407136) to loading(progress: 0.54162854)
+Loading progress: 0.54162854
+Loading state changed from loading(progress: 0.54162854) to loading(progress: 0.5425435)
+Loading progress: 0.5425435
+Loading state changed from loading(progress: 0.54345834) to loading(progress: 0.5443733)
+Loading progress: 0.5443733
+Loading state changed from loading(progress: 0.5443733) to loading(progress: 0.5452882)
+Loading progress: 0.5452882
+Loading state changed from loading(progress: 0.547118) to loading(progress: 0.54803294)
+Loading progress: 0.54803294
+Loading state changed from loading(progress: 0.54803294) to loading(progress: 0.5489479)
+Loading progress: 0.5489479
+Loading state changed from loading(progress: 0.5526075) to loading(progress: 0.5535224)
+Loading progress: 0.5535224
+Loading state changed from loading(progress: 0.5535224) to loading(progress: 0.55443734)
+Loading progress: 0.55443734
+Loading state changed from loading(progress: 0.5590119) to loading(progress: 0.5599268)
+Loading progress: 0.5599268
+Loading state changed from loading(progress: 0.5599268) to loading(progress: 0.56084174)
+Loading progress: 0.56084174
+Loading state changed from loading(progress: 0.56084174) to loading(progress: 0.5617566)
+Loading progress: 0.5617566
+Loading state changed from loading(progress: 0.5617566) to loading(progress: 0.56267154)
+Loading progress: 0.56267154
+Loading state changed from loading(progress: 0.56267154) to loading(progress: 0.5635865)
+Loading progress: 0.5635865
+Loading state changed from loading(progress: 0.56724614) to loading(progress: 0.568161)
+Loading progress: 0.568161
+Loading state changed from loading(progress: 0.568161) to loading(progress: 0.56907594)
+Loading progress: 0.56907594
+Loading state changed from loading(progress: 0.5727356) to loading(progress: 0.5736505)
+Loading progress: 0.5736505
+Loading state changed from loading(progress: 0.5736505) to loading(progress: 0.5745654)
+Loading progress: 0.5745654
+Loading state changed from loading(progress: 0.57731014) to loading(progress: 0.5782251)
+Loading progress: 0.5782251
+Loading state changed from loading(progress: 0.5782251) to loading(progress: 0.57914)
+Loading progress: 0.57914
+Loading state changed from loading(progress: 0.5800549) to loading(progress: 0.5809698)
+Loading progress: 0.5809698
+Loading state changed from loading(progress: 0.5809698) to loading(progress: 0.58188474)
+Loading progress: 0.58188474
+Loading state changed from loading(progress: 0.5846295) to loading(progress: 0.58554435)
+Loading progress: 0.58554435
+Loading state changed from loading(progress: 0.58554435) to loading(progress: 0.5864593)
+Loading progress: 0.5864593
+Loading state changed from loading(progress: 0.5910339) to loading(progress: 0.59194875)
+Loading progress: 0.59194875
+Loading state changed from loading(progress: 0.59194875) to loading(progress: 0.5928637)
+Loading progress: 0.5928637
+Loading state changed from loading(progress: 0.600183) to loading(progress: 0.6010979)
+Loading progress: 0.6010979
+Loading state changed from loading(progress: 0.6010979) to loading(progress: 0.6020128)
+Loading progress: 0.6020128
+Loading state changed from loading(progress: 0.60475755) to loading(progress: 0.6056725)
+Loading progress: 0.6056725
+Loading state changed from loading(progress: 0.6056725) to loading(progress: 0.60658735)
+Loading progress: 0.60658735
+Loading state changed from loading(progress: 0.60658735) to loading(progress: 0.6075023)
+Loading progress: 0.6075023
+Loading state changed from loading(progress: 0.6075023) to loading(progress: 0.6084172)
+Loading progress: 0.6084172
+Loading state changed from loading(progress: 0.6148216) to loading(progress: 0.6157365)
+Loading progress: 0.6157365
+Loading state changed from loading(progress: 0.6157365) to loading(progress: 0.6166514)
+Loading progress: 0.6166514
+Loading state changed from loading(progress: 0.6166514) to loading(progress: 0.61756635)
+Loading progress: 0.61756635
+Loading state changed from loading(progress: 0.6230558) to loading(progress: 0.62397075)
+Loading progress: 0.62397075
+Loading state changed from loading(progress: 0.62397075) to loading(progress: 0.6248856)
+Loading progress: 0.6248856
+Loading state changed from loading(progress: 0.6248856) to loading(progress: 0.62580055)
+Loading progress: 0.62580055
+Loading state changed from loading(progress: 0.63129) to loading(progress: 0.63220495)
+Loading progress: 0.63220495
+Loading state changed from loading(progress: 0.63220495) to loading(progress: 0.6331199)
+Loading progress: 0.6331199
+Loading state changed from loading(progress: 0.6358646) to loading(progress: 0.6367795)
+Loading progress: 0.6367795
+Loading state changed from loading(progress: 0.6367795) to loading(progress: 0.6376944)
+Loading progress: 0.6376944
+Loading state changed from loading(progress: 0.64043915) to loading(progress: 0.6413541)
+Loading progress: 0.6413541
+Loading state changed from loading(progress: 0.6413541) to loading(progress: 0.64226896)
+Loading progress: 0.64226896
+Loading state changed from loading(progress: 0.6459286) to loading(progress: 0.64684355)
+Loading progress: 0.64684355
+Loading state changed from loading(progress: 0.64684355) to loading(progress: 0.6477585)
+Loading progress: 0.6477585
+Loading state changed from loading(progress: 0.65324795) to loading(progress: 0.6541629)
+Loading progress: 0.6541629
+Loading state changed from loading(progress: 0.6541629) to loading(progress: 0.65507776)
+Loading progress: 0.65507776
+Loading state changed from loading(progress: 0.6623971) to loading(progress: 0.66331196)
+Loading progress: 0.66331196
+Loading state changed from loading(progress: 0.66331196) to loading(progress: 0.6642269)
+Loading progress: 0.6642269
+Loading state changed from loading(progress: 0.66605675) to loading(progress: 0.6669716)
+Loading progress: 0.6669716
+Loading state changed from loading(progress: 0.6669716) to loading(progress: 0.66788656)
+Loading progress: 0.66788656
+Loading state changed from loading(progress: 0.6752058) to loading(progress: 0.67612076)
+Loading progress: 0.67612076
+Loading state changed from loading(progress: 0.67612076) to loading(progress: 0.6770357)
+Loading progress: 0.6770357
+Loading state changed from loading(progress: 0.68252516) to loading(progress: 0.6834401)
+Loading progress: 0.6834401
+Loading state changed from loading(progress: 0.6834401) to loading(progress: 0.68435496)
+Loading progress: 0.68435496
+Loading state changed from loading(progress: 0.6852699) to loading(progress: 0.6861848)
+Loading progress: 0.6861848
+Loading state changed from loading(progress: 0.6861848) to loading(progress: 0.68709975)
+Loading progress: 0.68709975
+Loading state changed from loading(progress: 0.69075936) to loading(progress: 0.6916743)
+Loading progress: 0.6916743
+Loading state changed from loading(progress: 0.6916743) to loading(progress: 0.6925892)
+Loading progress: 0.6925892
+Loading state changed from loading(progress: 0.6925892) to loading(progress: 0.6935041)
+Loading progress: 0.6935041
+Loading state changed from loading(progress: 0.6935041) to loading(progress: 0.694419)
+Loading progress: 0.694419
+Loading state changed from loading(progress: 0.6989936) to loading(progress: 0.6999085)
+Loading progress: 0.6999085
+Loading state changed from loading(progress: 0.6999085) to loading(progress: 0.7008234)
+Loading progress: 0.7008234
+Loading state changed from loading(progress: 0.7026532) to loading(progress: 0.70356816)
+Loading progress: 0.70356816
+Loading state changed from loading(progress: 0.70356816) to loading(progress: 0.7044831)
+Loading progress: 0.7044831
+Loading state changed from loading(progress: 0.7108875) to loading(progress: 0.71180236)
+Loading progress: 0.71180236
+Loading state changed from loading(progress: 0.71180236) to loading(progress: 0.7127173)
+Loading progress: 0.7127173
+Loading state changed from loading(progress: 0.71820676) to loading(progress: 0.7191217)
+Loading progress: 0.7191217
+Loading state changed from loading(progress: 0.7191217) to loading(progress: 0.7200366)
+Loading progress: 0.7200366
+Loading state changed from loading(progress: 0.72461116) to loading(progress: 0.7255261)
+Loading progress: 0.7255261
+Loading state changed from loading(progress: 0.7255261) to loading(progress: 0.72644097)
+Loading progress: 0.72644097
+Loading state changed from loading(progress: 0.73010063) to loading(progress: 0.73101556)
+Loading progress: 0.73101556
+Loading state changed from loading(progress: 0.73101556) to loading(progress: 0.7319305)
+Loading progress: 0.7319305
+Loading state changed from loading(progress: 0.7319305) to loading(progress: 0.73284537)
+Loading progress: 0.73284537
+Loading state changed from loading(progress: 0.7337603) to loading(progress: 0.7346752)
+Loading progress: 0.7346752
+Loading state changed from loading(progress: 0.7346752) to loading(progress: 0.7355901)
+Loading progress: 0.7355901
+Loading state changed from loading(progress: 0.73741996) to loading(progress: 0.73833483)
+Loading progress: 0.73833483
+Loading state changed from loading(progress: 0.73833483) to loading(progress: 0.73924977)
+Loading progress: 0.73924977
+Loading state changed from loading(progress: 0.7419945) to loading(progress: 0.74290943)
+Loading progress: 0.74290943
+Loading state changed from loading(progress: 0.74290943) to loading(progress: 0.74382436)
+Loading progress: 0.74382436
+Loading state changed from loading(progress: 0.74382436) to loading(progress: 0.74473923)
+Loading progress: 0.74473923
+Loading state changed from loading(progress: 0.74473923) to loading(progress: 0.74565417)
+Loading progress: 0.74565417
+Loading state changed from loading(progress: 0.74565417) to loading(progress: 0.7465691)
+Loading progress: 0.7465691
+Loading state changed from loading(progress: 0.7483989) to loading(progress: 0.74931383)
+Loading progress: 0.74931383
+Loading state changed from loading(progress: 0.74931383) to loading(progress: 0.7502287)
+Loading progress: 0.7502287
+Loading state changed from loading(progress: 0.7502287) to loading(progress: 0.75114363)
+Loading progress: 0.75114363
+Loading state changed from loading(progress: 0.7529735) to loading(progress: 0.75388837)
+Loading progress: 0.75388837
+Loading state changed from loading(progress: 0.75388837) to loading(progress: 0.7548033)
+Loading progress: 0.7548033
+Loading state changed from loading(progress: 0.75571823) to loading(progress: 0.7566331)
+Loading progress: 0.7566331
+Loading state changed from loading(progress: 0.7566331) to loading(progress: 0.75754803)
+Loading progress: 0.75754803
+Loading state changed from loading(progress: 0.75754803) to loading(progress: 0.75846297)
+Loading progress: 0.75846297
+Loading state changed from loading(progress: 0.75846297) to loading(progress: 0.75937784)
+Loading progress: 0.75937784
+Loading state changed from loading(progress: 0.75937784) to loading(progress: 0.76029277)
+Loading progress: 0.76029277
+Loading state changed from loading(progress: 0.7630375) to loading(progress: 0.76395243)
+Loading progress: 0.76395243
+Loading state changed from loading(progress: 0.76395243) to loading(progress: 0.76486737)
+Loading progress: 0.76486737
+Loading state changed from loading(progress: 0.76578224) to loading(progress: 0.76669717)
+Loading progress: 0.76669717
+Loading state changed from loading(progress: 0.76669717) to loading(progress: 0.7676121)
+Loading progress: 0.7676121
+Loading state changed from loading(progress: 0.7694419) to loading(progress: 0.77035683)
+Loading progress: 0.77035683
+Loading state changed from loading(progress: 0.77035683) to loading(progress: 0.7712717)
+Loading progress: 0.7712717
+Loading state changed from loading(progress: 0.7749314) to loading(progress: 0.7758463)
+Loading progress: 0.7758463
+Loading state changed from loading(progress: 0.7758463) to loading(progress: 0.77676123)
+Loading progress: 0.77676123
+Loading state changed from loading(progress: 0.77676123) to loading(progress: 0.7776761)
+Loading progress: 0.7776761
+Loading state changed from loading(progress: 0.78042084) to loading(progress: 0.7813358)
+Loading progress: 0.7813358
+Loading state changed from loading(progress: 0.7813358) to loading(progress: 0.7822507)
+Loading progress: 0.7822507
+Loading state changed from loading(progress: 0.7822507) to loading(progress: 0.7831656)
+Loading progress: 0.7831656
+Loading state changed from loading(progress: 0.7831656) to loading(progress: 0.7840805)
+Loading progress: 0.7840805
+Loading state changed from loading(progress: 0.78682524) to loading(progress: 0.7877402)
+Loading progress: 0.7877402
+Loading state changed from loading(progress: 0.7877402) to loading(progress: 0.7886551)
+Loading progress: 0.7886551
+Loading state changed from loading(progress: 0.7886551) to loading(progress: 0.78957)
+Loading progress: 0.78957
+Loading state changed from loading(progress: 0.79322964) to loading(progress: 0.7941446)
+Loading progress: 0.7941446
+Loading state changed from loading(progress: 0.7941446) to loading(progress: 0.79505944)
+Loading progress: 0.79505944
+Loading state changed from loading(progress: 0.79505944) to loading(progress: 0.7959744)
+Loading progress: 0.7959744
+Loading state changed from loading(progress: 0.7959744) to loading(progress: 0.7968893)
+Loading progress: 0.7968893
+Loading state changed from loading(progress: 0.79963404) to loading(progress: 0.800549)
+Loading progress: 0.800549
+Loading state changed from loading(progress: 0.800549) to loading(progress: 0.80146384)
+Loading progress: 0.80146384
+Loading state changed from loading(progress: 0.80146384) to loading(progress: 0.8023788)
+Loading progress: 0.8023788
+Loading state changed from loading(progress: 0.80603844) to loading(progress: 0.8069533)
+Loading progress: 0.8069533
+Loading state changed from loading(progress: 0.8069533) to loading(progress: 0.80786824)
+Loading progress: 0.80786824
+Loading state changed from loading(progress: 0.8133577) to loading(progress: 0.81427264)
+Loading progress: 0.81427264
+Loading state changed from loading(progress: 0.81427264) to loading(progress: 0.8151876)
+Loading progress: 0.8151876
+Loading state changed from loading(progress: 0.8170174) to loading(progress: 0.8179323)
+Loading progress: 0.8179323
+Loading state changed from loading(progress: 0.8179323) to loading(progress: 0.81884724)
+Loading progress: 0.81884724
+Loading state changed from loading(progress: 0.81884724) to loading(progress: 0.8197621)
+Loading progress: 0.8197621
+Loading state changed from loading(progress: 0.8197621) to loading(progress: 0.82067704)
+Loading progress: 0.82067704
+Loading state changed from loading(progress: 0.8261665) to loading(progress: 0.82708144)
+Loading progress: 0.82708144
+Loading state changed from loading(progress: 0.82708144) to loading(progress: 0.8279963)
+Loading progress: 0.8279963
+Loading state changed from loading(progress: 0.831656) to loading(progress: 0.8325709)
+Loading progress: 0.8325709
+Loading state changed from loading(progress: 0.8325709) to loading(progress: 0.83348584)
+Loading progress: 0.83348584
+Loading state changed from loading(progress: 0.8362306) to loading(progress: 0.83714545)
+Loading progress: 0.83714545
+Loading state changed from loading(progress: 0.83714545) to loading(progress: 0.8380604)
+Loading progress: 0.8380604
+Loading state changed from loading(progress: 0.84172004) to loading(progress: 0.842635)
+Loading progress: 0.842635
+Loading state changed from loading(progress: 0.842635) to loading(progress: 0.84354985)
+Loading progress: 0.84354985
+Loading state changed from loading(progress: 0.8453797) to loading(progress: 0.8462946)
+Loading progress: 0.8462946
+Loading state changed from loading(progress: 0.8462946) to loading(progress: 0.8472095)
+Loading progress: 0.8472095
+Loading state changed from loading(progress: 0.8472095) to loading(progress: 0.84812444)
+Loading progress: 0.84812444
+Loading state changed from loading(progress: 0.84812444) to loading(progress: 0.8490393)
+Loading progress: 0.8490393
+Loading state changed from loading(progress: 0.8508692) to loading(progress: 0.8517841)
+Loading progress: 0.8517841
+Loading state changed from loading(progress: 0.8517841) to loading(progress: 0.852699)
+Loading progress: 0.852699
+Loading state changed from loading(progress: 0.8554437) to loading(progress: 0.85635865)
+Loading progress: 0.85635865
+Loading state changed from loading(progress: 0.85635865) to loading(progress: 0.8572736)
+Loading progress: 0.8572736
+Loading state changed from loading(progress: 0.8609332) to loading(progress: 0.8618481)
+Loading progress: 0.8618481
+Loading state changed from loading(progress: 0.8618481) to loading(progress: 0.86276305)
+Loading progress: 0.86276305
+Loading state changed from loading(progress: 0.8673376) to loading(progress: 0.8682525)
+Loading progress: 0.8682525
+Loading state changed from loading(progress: 0.8682525) to loading(progress: 0.86916745)
+Loading progress: 0.86916745
+Loading state changed from loading(progress: 0.87282705) to loading(progress: 0.873742)
+Loading progress: 0.873742
+Loading state changed from loading(progress: 0.873742) to loading(progress: 0.8746569)
+Loading progress: 0.8746569
+Loading state changed from loading(progress: 0.87923145) to loading(progress: 0.8801464)
+Loading progress: 0.8801464
+Loading state changed from loading(progress: 0.8801464) to loading(progress: 0.8810613)
+Loading progress: 0.8810613
+Loading state changed from loading(progress: 0.8810613) to loading(progress: 0.8819762)
+Loading progress: 0.8819762
+Loading state changed from loading(progress: 0.8819762) to loading(progress: 0.8828911)
+Loading progress: 0.8828911
+Loading state changed from loading(progress: 0.8874657) to loading(progress: 0.8883806)
+Loading progress: 0.8883806
+Loading state changed from loading(progress: 0.8883806) to loading(progress: 0.8892955)
+Loading progress: 0.8892955
+Loading state changed from loading(progress: 0.89204025) to loading(progress: 0.8929552)
+Loading progress: 0.8929552
+Loading state changed from loading(progress: 0.8929552) to loading(progress: 0.89387006)
+Loading progress: 0.89387006
+Loading state changed from loading(progress: 0.8993596) to loading(progress: 0.90027446)
+Loading progress: 0.90027446
+Loading state changed from loading(progress: 0.90027446) to loading(progress: 0.9011894)
+Loading progress: 0.9011894
+Loading state changed from loading(progress: 0.9011894) to loading(progress: 0.9021043)
+Loading progress: 0.9021043
+Loading state changed from loading(progress: 0.9021043) to loading(progress: 0.9030192)
+Loading progress: 0.9030192
+Loading state changed from loading(progress: 0.9039341) to loading(progress: 0.90484905)
+Loading progress: 0.90484905
+Loading state changed from loading(progress: 0.90484905) to loading(progress: 0.9057639)
+Loading progress: 0.9057639
+Loading state changed from loading(progress: 0.90667886) to loading(progress: 0.9075938)
+Loading progress: 0.9075938
+Loading state changed from loading(progress: 0.9075938) to loading(progress: 0.9085087)
+Loading progress: 0.9085087
+Loading state changed from loading(progress: 0.9085087) to loading(progress: 0.9094236)
+Loading progress: 0.9094236
+Loading state changed from loading(progress: 0.91308326) to loading(progress: 0.9139982)
+Loading progress: 0.9139982
+Loading state changed from loading(progress: 0.9139982) to loading(progress: 0.91491306)
+Loading progress: 0.91491306
+Loading state changed from loading(progress: 0.91765785) to loading(progress: 0.9185727)
+Loading progress: 0.9185727
+Loading state changed from loading(progress: 0.9185727) to loading(progress: 0.91948766)
+Loading progress: 0.91948766
+Loading state changed from loading(progress: 0.9240622) to loading(progress: 0.9249771)
+Loading progress: 0.9249771
+Loading state changed from loading(progress: 0.9249771) to loading(progress: 0.92589206)
+Loading progress: 0.92589206
+Loading state changed from loading(progress: 0.92589206) to loading(progress: 0.9268069)
+Loading progress: 0.9268069
+Loading state changed from loading(progress: 0.9295517) to loading(progress: 0.9304666)
+Loading progress: 0.9304666
+Loading state changed from loading(progress: 0.9304666) to loading(progress: 0.9313815)
+Loading progress: 0.9313815
+Loading state changed from loading(progress: 0.93412626) to loading(progress: 0.9350412)
+Loading progress: 0.9350412
+Loading state changed from loading(progress: 0.9350412) to loading(progress: 0.93595606)
+Loading progress: 0.93595606
+Loading state changed from loading(progress: 0.9414456) to loading(progress: 0.94236046)
+Loading progress: 0.94236046
+Loading state changed from loading(progress: 0.94236046) to loading(progress: 0.9432754)
+Loading progress: 0.9432754
+Loading state changed from loading(progress: 0.94876486) to loading(progress: 0.9496798)
+Loading progress: 0.9496798
+Loading state changed from loading(progress: 0.9496798) to loading(progress: 0.9505947)
+Loading progress: 0.9505947
+Loading state changed from loading(progress: 0.9505947) to loading(progress: 0.9515096)
+Loading progress: 0.9515096
+Loading state changed from loading(progress: 0.9515096) to loading(progress: 0.9524245)
+Loading progress: 0.9524245
+Loading state changed from loading(progress: 0.9524245) to loading(progress: 0.95333946)
+Loading progress: 0.95333946
+Loading state changed from loading(progress: 0.95333946) to loading(progress: 0.9542543)
+Loading progress: 0.9542543
+Loading state changed from loading(progress: 0.95699906) to loading(progress: 0.957914)
+Loading progress: 0.957914
+Loading state changed from loading(progress: 0.957914) to loading(progress: 0.9588289)
+Loading progress: 0.9588289
+Loading state changed from loading(progress: 0.9588289) to loading(progress: 0.9597438)
+Loading progress: 0.9597438
+Loading state changed from loading(progress: 0.9597438) to loading(progress: 0.9606587)
+Loading progress: 0.9606587
+Loading state changed from loading(progress: 0.96157366) to loading(progress: 0.9624886)
+Loading progress: 0.9624886
+Loading state changed from loading(progress: 0.9624886) to loading(progress: 0.96340346)
+Loading progress: 0.96340346
+Loading state changed from loading(progress: 0.9661482) to loading(progress: 0.9670631)
+Loading progress: 0.9670631
+Loading state changed from loading(progress: 0.9670631) to loading(progress: 0.96797806)
+Loading progress: 0.96797806
+Loading state changed from loading(progress: 0.97163767) to loading(progress: 0.9725526)
+Loading progress: 0.9725526
+Loading state changed from loading(progress: 0.9725526) to loading(progress: 0.9734675)
+Loading progress: 0.9734675
+Loading state changed from loading(progress: 0.97438246) to loading(progress: 0.97529733)
+Loading progress: 0.97529733
+Loading state changed from loading(progress: 0.97529733) to loading(progress: 0.97621226)
+Loading progress: 0.97621226
+Loading state changed from loading(progress: 0.9807868) to loading(progress: 0.98170173)
+Loading progress: 0.98170173
+Loading state changed from loading(progress: 0.98170173) to loading(progress: 0.98261666)
+Loading progress: 0.98261666
+Loading state changed from loading(progress: 0.98810613) to loading(progress: 0.98902106)
+Loading progress: 0.98902106
+Loading state changed from loading(progress: 0.98902106) to loading(progress: 0.98993593)
+Loading progress: 0.98993593
+Loading state changed from loading(progress: 0.99542546) to loading(progress: 0.99634033)
+Loading progress: 0.99634033
+Loading state changed from loading(progress: 0.99634033) to loading(progress: 0.99725527)
+Loading progress: 0.99725527
+Loading state changed from loading(progress: 0.99725527) to loading(progress: 0.9981702)
+Loading progress: 0.9981702
+Loading state changed from loading(progress: 0.9981702) to loading(progress: 0.99908507)
+Loading progress: 0.99908507
+IBL URL: file:///private/var/containers/Bundle/Application/51F8E366-A9F8-4A70-BC05-30A77AFDE60C/PfizerOutdoCancer.app/lab_v005.exr
+✅ Completed lab environment assembly
+✅ Loaded assembled_lab - Progress: 1.0
+✅ prepareIntroPhase completed
+✅ prepareIntroPhase completed
+🔄 Transitioning to .ready...
+🔄 Phase transition: loading -> ready
+🔍 isTransitioning: false
+🔍 immersiveSpaceState: closed
+✅ Phase transition complete: ready
+✅ Phase transition completed: ready
+✅ Transition to .ready completed
+Loading state changed from loading(progress: 1.0) to completed
+Loading progress: 1.0
+🎯 Managing windows for phase: ready
+📊 Before state update - nav window open: false
+📊 Window states after update:
+  Main: true
+  Debug: false
+  Library: false
+  Builder: false
+  Phases:
+    AppPhase: ready
+    ScenePhase: active
+    LoadingPhase: completed
+🔄 Phase transition: ready -> intro
+🔍 isTransitioning: false
+🔍 immersiveSpaceState: closed
+🚨 LoadingView disappeared
+🎯 Managing windows for phase: intro
+📊 Before state update - nav window open: false
+📊 Window states after update:
+  Main: true
+  Debug: true
+  Library: false
+  Builder: false
+  Phases:
+    AppPhase: intro
+    ScenePhase: active
+    LoadingPhase: completed
+cannot add handler to 0 from 1 - dropping
+🎯 PositioningSystem 9C093998-205F-499E-B8FD-EB6E111F286C initializing...
+cannot add handler to 0 from 1 - dropping
+🎯 PositioningSystem 94B0F1A4-F40E-48F4-AC9B-67A57E0A8538 initializing...
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+
+=== IntroView Appeared ===
+cannot add handler to 0 from 1 - dropping
+
+=== Tracking State [Start Tracking Request] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: false
+🔄 Current Provider State: initialized
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x3023281e0>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: initialized
+=== End State Log ===
+
+🖐️ Starting hand tracking session
+Hand Provider State: initialized
+
+=== Setting up IntroView ===
+📱 IntroViewModel: Setting up intro root
+✅ Added root to content
+✅ Started tracking providers
+Final Hand Tracking State: true
+
+=== Tracking State [Post-Start] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: initialized
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x302320280>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: initialized
+🖐️ Hand Provider State: initialized
+=== End State Log ===
+
+✅ Phase transition complete: intro
+✅ Phase transition completed: intro
+📱 IntroView: Starting environment setup
+📱 IntroViewModel: Starting environment setup
+📱 IntroViewModel: Attempting to load intro environment
+AssetLoadingManager: loadAsset(withName: intro_environment, category: introEnvironment)
+✅ IntroViewModel: Successfully loaded intro environment
+📱 IntroViewModel: Adding environment to root
+📱 IntroViewModel: Setting up individual entities
+🔍 Found logo: logo
+✅ Set logo scale to 0.5 and opacity to 0
+🔍 Found portalWarp: sh0100_v01_portalWarp3
+✅ Set portalWarp opacity to 0.6
+📱 IntroViewModel: Starting portal setup
+📱 Starting lab environment assembly
+✅ Using cached assembled lab
+✅ IntroViewModel: Successfully loaded assembled laboratory environment
+✅ IntroViewModel: Created portal
+✅ IntroViewModel: Portal setup complete
+✅ IntroViewModel: Environment setup complete
+✅ Environment setup complete
+📱 IntroView: Found SwiftUI attachments
+✅ Found portal for attachments
+📱 IntroViewModel: Setting up attachments
+🔍 Portal state - opacity: 0.0, position: SIMD3<Float>(0.0, -0.25, 0.0)
+📎 Found titleRoot in portal
+🔍 Before - titleEntity position: SIMD3<Float>(0.0, 0.0, 0.0), scale: SIMD3<Float>(1.0, 1.0, 1.0)
+🔍 After - titleEntity position: SIMD3<Float>(0.0, -0.15, 0.2), scale: SIMD3<Float>(5.0, 5.0, 5.0)
+📎 Added titleText to titleRoot
+📎 Found titleRoot in portal
+🔍 Before - labViewer position: SIMD3<Float>(0.0, 0.0, 0.0), scale: SIMD3<Float>(1.0, 1.0, 1.0)
+🔍 After - labViewer position: SIMD3<Float>(0.0, -0.4, 0.3), scale: SIMD3<Float>(5.0, 5.0, 5.0)
+📎 Added labViewer to titleRoot
+📱 IntroView: Starting animation sequence
+🎬 Animation Sequence: Starting at 2025-02-10 21:26:50 +0000
+🔍 Entity Check - skyDome: false, portalWarp: true, logo: true, portal: true
+❌ Sky fade: skyDome not found
+⏰ Sleeping for 19s before portal warp
+cannot add handler to 0 from 1 - dropping
+🔄 Provider state changed to: paused
+
+=== Tracking State [Provider State Change [paused]] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: paused
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x302320280>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: paused
+🖐️ Hand Provider State: paused
+=== End State Log ===
+
+⏸️ Provider paused
+Cannot find a BindPoint for any bind path: "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", ""
+🔄 Provider state changed to: running
+
+=== Tracking State [Provider State Change [running]] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: running
+📍 Head Transform: simd_float4x4([[0.9999703, 0.0076892027, 0.0004815256, 0.0], [-0.0075652706, 0.9918263, -0.12737112, 0.0], [-0.0014569494, 0.12736365, 0.991855, 0.0], [0.00023845676, 1.2386241, -0.099704385, 1.0]])
+📍 Head Position - X: 0.00023845676, Y: 1.2386241, Z: -0.099704385
+🌎 World Provider State: running
+🖐️ Hand Provider State: running
+=== End State Log ===
+
+✅ Provider running
+📍 Positioned entity 'IntroRoot' at SIMD3<Float>(0.00034769787, -0.26192236, -1.0999787)
+✅ Successfully positioned entity: IntroRoot
+🔄 Phase transition: intro -> playing
+🔍 isTransitioning: false
+🔍 immersiveSpaceState: open
+
+=== Pre-loading Playing Phase Assets ===
+📱 Pre-loading required assets for playing phase...
+🎯 Loading ADC template...
+AssetLoadingManager: loadAsset(withName: adc, category: adc)
+✅ ADC entity loaded, applying colors...
+
+🎯 Setting up ADC Template
+- Template entity: Root
+- Antibody Color: -1
+- Linker Color: -1
+- Payload Color: -1
+✅ ADC template stored in gameState
+✅ ADC template configured with colors
+🎯 Loading tutorial assets...
+AssetLoadingManager: loadAsset(withName: game_start_vo, category: attackCancerEnvironment)
+
+=== Tracking State [Pre-Stop] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: running
+📍 Head Transform: simd_float4x4([[0.9986996, 0.007284732, 0.05046136, 0.0], [0.0072653717, 0.95930475, -0.28227925, 0.0], [-0.050464176, 0.28227875, 0.95800424, 0.0], [0.010545198, 1.2160337, -0.1208635, 1.0]])
+📍 Head Position - X: 0.010545198, Y: 1.2160337, Z: -0.1208635
+🌎 World Provider State: running
+🖐️ Hand Provider State: running
+=== End State Log ===
+
+🔄 Provider state changed to: stopped
+
+=== Tracking State [Provider State Change [stopped]] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x302320280>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===
+
+⏹️ Provider stopped normally
+
+=== Tracking State [Post-Stop] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x302320280>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===
+
+✅ Tutorial assets cached
+=== Playing Phase Assets Ready ===
+
+
+=== Starting IntroViewModel Cleanup ===
+🗑️ Removing intro root entity
+🎯 Resetting positioning component
+✅ Completed IntroViewModel cleanup
+
+
+=== Starting Intro Environment Cleanup ===
+📊 Current template cache size: 7 entities
+📊 Current templates: attack_cancer_environment, assembled_lab, intro_environment, intro_warp, cancer_cell, game_start_vo, adc
+🗑️ Preparing to remove 2 intro assets:
+
+🗑️ Removing asset: intro_environment
+
+📝 Releasing entity: Root
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Root
+  - Child count: 8
+  - Has components: yes
+
+📝 Releasing entity: sh0100_v01
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: sh0100_v01
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: PicturesRoot
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: intro
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: People_MSR
+  - Child count: 13
+  - Has components: yes
+
+📝 Releasing entity: p3
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: p3_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_005
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p3_mesh
+✅ Released entity: Plane_005
+
+  - Detaching from parent: p3
+✅ Released entity: p3_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p3
+
+
+📝 Releasing entity: p4
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: p4_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_007
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p4_mesh
+✅ Released entity: Plane_007
+
+  - Detaching from parent: p4
+✅ Released entity: p4_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p4
+
+
+📝 Releasing entity: p5
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: p5_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_006
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p5_mesh
+✅ Released entity: Plane_006
+
+  - Detaching from parent: p5
+✅ Released entity: p5_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p5
+
+
+📝 Releasing entity: p2
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: p2_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_004
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p2_mesh
+✅ Released entity: Plane_004
+
+  - Detaching from parent: p2
+✅ Released entity: p2_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p2
+
+
+📝 Releasing entity: p1
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: p1_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_003
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p1_mesh
+✅ Released entity: Plane_003
+
+  - Detaching from parent: p1
+✅ Released entity: p1_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p1
+
+
+📝 Releasing entity: p12
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: p12_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_005_005
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p12_mesh
+✅ Released entity: Plane_005_005
+
+  - Detaching from parent: p12
+✅ Released entity: p12_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p12
+
+
+📝 Releasing entity: p13
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: p13_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_005_006
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p13_mesh
+✅ Released entity: Plane_005_006
+
+  - Detaching from parent: p13
+✅ Released entity: p13_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p13
+
+  - Detaching from parent: intro
+✅ Released entity: People_MSR
+
+  - Detaching from parent: PicturesRoot
+✅ Released entity: intro
+
+  - Detaching from parent: sh0100_v01
+✅ Released entity: PicturesRoot
+
+  - Detaching from parent: sh0100_v01
+✅ Released entity: sh0100_v01
+
+  - Detaching from parent: Root
+✅ Released entity: sh0100_v01
+
+
+📝 Releasing entity: Audio
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: Orchestra
+  - Child count: 12
+  - Has components: yes
+
+📝 Releasing entity: PianoBusL
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Orchestra
+✅ Released entity: PianoBusL
+
+
+📝 Releasing entity: PianoBusR
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Orchestra
+✅ Released entity: PianoBusR
+
+
+📝 Releasing entity: Violin2
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Orchestra
+✅ Released entity: Violin2
+
+
+📝 Releasing entity: Violin1
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Orchestra
+✅ Released entity: Violin1
+
+
+📝 Releasing entity: Viola
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Orchestra
+✅ Released entity: Viola
+
+
+📝 Releasing entity: Xylophone
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Orchestra
+✅ Released entity: Xylophone
+
+  - Detaching from parent: Audio
+✅ Released entity: Orchestra
+
+  - Detaching from parent: Root
+✅ Released entity: Audio
+
+
+📝 Releasing entity: materials
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Root
+✅ Released entity: materials
+
+
+📝 Releasing entity: IntroWarp
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: M_jet
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: IntroWarp
+✅ Released entity: M_jet
+
+  - Detaching from parent: Root
+✅ Released entity: IntroWarp
+
+  - Detaching from parent: Root
+✅ Released entity: Root
+
+✅ Released entity: Root
+
+✅ Released asset: intro_environment
+
+🗑️ Removing asset: intro_warp
+
+📝 Releasing entity: Root
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Root
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: M_jet
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Root
+✅ Released entity: M_jet
+
+  - Detaching from parent: Root
+✅ Released entity: Root
+
+✅ Released entity: Root
+
+✅ Released asset: intro_warp
+
+📊 Updated template cache size: 5 entities
+🔒 Remaining asset: attack_cancer_environment
+✅ Completed intro environment cleanup
+
+
+=== AttackCancerInstructionsView Setup ===
+📱 Instructions View: Setting up root entity
+📱 AttackCancerViewModel: Setting up root
+IBL URL: file:///private/var/containers/Bundle/Application/51F8E366-A9F8-4A70-BC05-30A77AFDE60C/PfizerOutdoCancer.app/metro_noord_2k.exr
+🧹 Cleaning up app state
+
+=== Tearing Down Game [Detailed] ===
+📊 Initial State:
+  - Hope Meter Running: false
+  - Tutorial Started: false
+  - Subscription Active: false
+  - Cell Parameters Count: 0
+⏹️ Stopping systems:
+  - Stopping hope meter
+🛑 Stopping Hope Meter
+  - Resetting tutorial state
+  - Reset tutorial state
+🗑️ Clearing cell parameters: 0
+
+🔍 Examining root entity: AttackCancerRoot
+  - Total children: 1
+🗑️ Removed cancer cells: 0
+
+🔄 Resetting game stats:
+  - Cells Destroyed: 0 → 0
+  - Total ADCs: 0 → 0
+  - Total Taps: 0 → 0
+  - Total Hits: 0 → 0
+🔄 Resetting first ADC flag: false → false
+✅ Game tear down complete
+
+
+=== Tracking State [Start Tracking Request] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x302320280>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===
+
+🖐️ Starting hand tracking session
+Hand Provider State: initialized
+✅ Started tracking providers
+Final Hand Tracking State: true
+
+=== Tracking State [Post-Start] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x30233e4e0>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: initialized
+🖐️ Hand Provider State: initialized
+=== End State Log ===
+
+✅ Phase transition complete: playing
+✅ Phase transition completed: playing
+✅ Instructions View: IBL setup complete
+✅ Instructions View: Found ADC template
+✅ Instructions View: Added ADC to display
+=== Instructions View Setup Complete ===
+
+📍 Positioned entity 'headTrackingRoot' at SIMD3<Float>(0.0035185968, 1.2454612, -1.1061555)
+✅ Successfully positioned entity: headTrackingRoot
+🎯 Managing windows for phase: playing
+📊 Before state update - nav window open: true
+📊 Window states after update:
+  Main: true
+  Debug: false
+  Library: false
+  Builder: false
+  Phases:
+    AppPhase: playing
+    ScenePhase: active
+    LoadingPhase: completed
+> Resetting to phase: READY
+🔄 Phase transition: playing -> ready
+🔍 isTransitioning: false
+🔍 immersiveSpaceState: closed
+
+=== Starting AttackCancerViewModel Cleanup ===
+
+=== Tearing Down Game [Detailed] ===
+📊 Initial State:
+  - Hope Meter Running: false
+  - Tutorial Started: false
+  - Subscription Active: false
+  - Cell Parameters Count: 0
+⏹️ Stopping systems:
+  - Stopping hope meter
+🛑 Stopping Hope Meter
+  - Resetting tutorial state
+  - Reset tutorial state
+🗑️ Clearing cell parameters: 0
+
+🔍 Examining root entity: AttackCancerRoot
+  - Total children: 3
+🗑️ Removed cancer cells: 0
+
+🔄 Resetting game stats:
+  - Cells Destroyed: 0 → 0
+  - Total ADCs: 0 → 0
+  - Total Taps: 0 → 0
+  - Total Hits: 0 → 0
+🔄 Resetting first ADC flag: false → false
+✅ Game tear down complete
+
+🗑️ Removing root entity
+✅ Completed AttackCancerViewModel cleanup
+
+
+=== Starting Attack Cancer Environment Cleanup ===
+📊 Current template cache size: 5 entities
+📊 Current templates: attack_cancer_environment, assembled_lab, game_start_vo, cancer_cell, adc
+🗑️ Preparing to remove 1 attack cancer VO assets:
+
+🗑️ Removing asset: game_start_vo
+
+📝 Releasing entity: Root
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Root
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: VO
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Root
+✅ Released entity: VO
+
+  - Detaching from parent: Root
+✅ Released entity: Root
+
+✅ Released entity: Root
+
+✅ Released asset: game_start_vo
+
+📊 Updated template cache size: 4 entities
+🔒 Remaining asset: attack_cancer_environment
+✅ Completed attack cancer environment cleanup
+
+✅ Phase transition complete: ready
+✅ Phase transition completed: ready
+✅ App state cleanup completed
+
+=== Tracking State [Pre-Stop] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+📍 Head Transform: simd_float4x4([[0.9999524, 0.00898737, -0.0038408968, 0.0], [-0.0090832105, 0.99962837, -0.025705405, 0.0], [0.003608466, 0.025739018, 0.9996623, 0.0], [0.0021116878, 1.2476413, -0.10136489, 1.0000001]])
+📍 Head Position - X: 0.0021116878, Y: 1.2476413, Z: -0.10136489
+🌎 World Provider State: running
+🖐️ Hand Provider State: running
+=== End State Log ===
+
+
+=== Tracking State [Pre-Stop] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x30233e4e0>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===
+
+🎯 PositioningSystem B0E5A29F-BC71-45FD-BF11-E2DCD4F23DEE initializing...
+🎯 Managing windows for phase: ready
+📊 Before state update - nav window open: false
+📊 Window states after update:
+  Main: true
+  Debug: false
+  Library: false
+  Builder: false
+  Phases:
+    AppPhase: ready
+    ScenePhase: active
+    LoadingPhase: completed
+cannot add handler to 0 from 1 - dropping
+
+=== Tracking State [Post-Stop] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x30233e4e0>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===
+
+
+=== Tracking State [Post-Stop] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x30233e4e0>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===
+
+ARPredictorRemoteService <0x10c612b80>: Query queue is not running.
+ARPredictorRemoteService <0x179d90b50>: Query queue is not running.
+ARPredictorRemoteService <0x100d09920>: Query queue is not running.
+ARPredictorRemoteService <0x100b29bd0>: Query queue is not running.
+ARPredictorRemoteService <0x100df98b0>: Query queue is not running.
+ARPredictorRemoteService <0x100b0dbf0>: Query queue is not running.
+ARPredictorRemoteService <0x100d09920>: Query queue is not running.
+ARPredictorRemoteService <0x100b29bd0>: Query queue is not running.
+→ .inactive
+→ .active
+🔄 Phase transition: ready -> ready
+🔍 isTransitioning: false
+🔍 immersiveSpaceState: closed
+✅ Phase transition complete: ready
+✅ Phase transition completed: ready
+🔄 Phase transition: ready -> intro
+🔍 isTransitioning: false
+🔍 immersiveSpaceState: closed
+🚨 LoadingView disappeared
+🎯 Managing windows for phase: intro
+📊 Before state update - nav window open: false
+📊 Window states after update:
+  Main: true
+  Debug: true
+  Library: false
+  Builder: false
+  Phases:
+    AppPhase: intro
+    ScenePhase: active
+    LoadingPhase: completed
+cannot add handler to 0 from 1 - dropping
+🎯 PositioningSystem 582C18C7-4A2E-4DA3-913A-86F1F7C591D6 initializing...
+cannot add handler to 0 from 1 - dropping
+🎯 PositioningSystem 5260A50F-FCF3-425E-A4E2-3F50AE2C441C initializing...
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+
+=== IntroView Appeared ===
+cannot add handler to 0 from 1 - dropping
+
+=== Setting up IntroView ===
+📱 IntroViewModel: Setting up intro root
+✅ Added root to content
+
+=== Tracking State [Start Tracking Request] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x30233e4e0>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===
+
+🖐️ Starting hand tracking session
+Hand Provider State: initialized
+cannot add handler to 0 from 1 - dropping
+📱 IntroView: Starting environment setup
+📱 IntroViewModel: Starting environment setup
+📱 IntroViewModel: Attempting to load intro environment
+AssetLoadingManager: loadAsset(withName: intro_environment, category: introEnvironment)
+✅ Started tracking providers
+Final Hand Tracking State: true
+
+=== Tracking State [Post-Start] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x3024bf840>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: initialized
+🖐️ Hand Provider State: initialized
+=== End State Log ===
+
+✅ Phase transition complete: intro
+✅ Phase transition completed: intro
+🔄 Provider state changed to: paused
+
+=== Tracking State [Provider State Change [paused]] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: paused
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x3024bf840>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: paused
+🖐️ Hand Provider State: paused
+=== End State Log ===
+
+⏸️ Provider paused
+✅ IntroViewModel: Successfully loaded intro environment
+📱 IntroViewModel: Adding environment to root
+📱 IntroViewModel: Setting up individual entities
+🔍 Found logo: logo
+✅ Set logo scale to 0.5 and opacity to 0
+🔍 Found portalWarp: sh0100_v01_portalWarp3
+✅ Set portalWarp opacity to 0.6
+📱 IntroViewModel: Starting portal setup
+📱 Starting lab environment assembly
+✅ Using cached assembled lab
+✅ IntroViewModel: Successfully loaded assembled laboratory environment
+✅ IntroViewModel: Created portal
+✅ IntroViewModel: Portal setup complete
+✅ IntroViewModel: Environment setup complete
+✅ Environment setup complete
+📱 IntroView: Found SwiftUI attachments
+✅ Found portal for attachments
+📱 IntroViewModel: Setting up attachments
+🔍 Portal state - opacity: 0.0, position: SIMD3<Float>(0.0, -0.25, 0.0)
+📎 Found titleRoot in portal
+🔍 Before - titleEntity position: SIMD3<Float>(0.0, 0.0, 0.0), scale: SIMD3<Float>(1.0, 1.0, 1.0)
+🔍 After - titleEntity position: SIMD3<Float>(0.0, -0.15, 0.2), scale: SIMD3<Float>(5.0, 5.0, 5.0)
+📎 Added titleText to titleRoot
+📎 Found titleRoot in portal
+🔍 Before - labViewer position: SIMD3<Float>(0.0, 0.0, 0.0), scale: SIMD3<Float>(1.0, 1.0, 1.0)
+🔍 After - labViewer position: SIMD3<Float>(0.0, -0.4, 0.3), scale: SIMD3<Float>(5.0, 5.0, 5.0)
+📎 Added labViewer to titleRoot
+📱 IntroView: Starting animation sequence
+🎬 Animation Sequence: Starting at 2025-02-10 21:27:06 +0000
+🔍 Entity Check - skyDome: false, portalWarp: true, logo: true, portal: true
+❌ Sky fade: skyDome not found
+⏰ Sleeping for 19s before portal warp
+📍 Positioned entity 'IntroRoot' at SIMD3<Float>(-0.00046655693, -0.25868905, -1.0995196)
+✅ Successfully positioned entity: IntroRoot
+🔄 Provider state changed to: running
+
+=== Tracking State [Provider State Change [running]] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: running
+📍 Head Transform: simd_float4x4([[0.9999978, 0.0021033091, 0.00011179216, 0.0], [-0.0020815055, 0.99495524, -0.10029841, 0.0], [-0.00032218645, 0.100297965, 0.9949574, 0.0], [-0.00046459027, 1.2412752, -0.09951614, 1.0]])
+📍 Head Position - X: -0.00046459027, Y: 1.2412752, Z: -0.09951614
+🌎 World Provider State: running
+🖐️ Hand Provider State: running
+=== End State Log ===
+
+✅ Provider running
+Cannot find a BindPoint for any bind path: "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", ""
+🔄 Phase transition: intro -> playing
+🔍 isTransitioning: false
+🔍 immersiveSpaceState: open
+
+=== Pre-loading Playing Phase Assets ===
+📱 Pre-loading required assets for playing phase...
+🎯 Loading ADC template...
+AssetLoadingManager: loadAsset(withName: adc, category: adc)
+✅ ADC entity loaded, applying colors...
+
+🎯 Setting up ADC Template
+- Template entity: Root
+- Antibody Color: -1
+- Linker Color: -1
+- Payload Color: -1
+✅ ADC template stored in gameState
+✅ ADC template configured with colors
+🎯 Loading tutorial assets...
+AssetLoadingManager: loadAsset(withName: game_start_vo, category: attackCancerEnvironment)
+
+=== Tracking State [Pre-Stop] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: running
+📍 Head Transform: simd_float4x4([[0.99893284, 0.0018721827, 0.046148814, 0.0], [0.010347418, 0.9647088, -0.26311564, 0.0], [-0.045012787, 0.26331237, 0.9636599, 0.0], [0.00410935, 1.2220707, -0.10443193, 1.0]])
+📍 Head Position - X: 0.00410935, Y: 1.2220707, Z: -0.10443193
+🌎 World Provider State: running
+🖐️ Hand Provider State: running
+=== End State Log ===
+
+🔄 Provider state changed to: stopped
+
+=== Tracking State [Provider State Change [stopped]] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x3024bf840>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===
+
+⏹️ Provider stopped normally
+
+=== Tracking State [Post-Stop] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x3024bf840>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===
+
+✅ Tutorial assets cached
+=== Playing Phase Assets Ready ===
+
+
+=== Starting IntroViewModel Cleanup ===
+🗑️ Removing intro root entity
+🎯 Resetting positioning component
+✅ Completed IntroViewModel cleanup
+
+
+=== Starting Intro Environment Cleanup ===
+📊 Current template cache size: 6 entities
+📊 Current templates: attack_cancer_environment, assembled_lab, intro_environment, game_start_vo, cancer_cell, adc
+🗑️ Preparing to remove 2 intro assets:
+
+🗑️ Removing asset: intro_environment
+
+📝 Releasing entity: Root
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Root
+  - Child count: 8
+  - Has components: yes
+
+📝 Releasing entity: sh0100_v01
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: sh0100_v01
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: PicturesRoot
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: intro
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: People_MSR
+  - Child count: 13
+  - Has components: yes
+
+📝 Releasing entity: p3
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: p3_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_005
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p3_mesh
+✅ Released entity: Plane_005
+
+  - Detaching from parent: p3
+✅ Released entity: p3_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p3
+
+
+📝 Releasing entity: p4
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: p4_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_007
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p4_mesh
+✅ Released entity: Plane_007
+
+  - Detaching from parent: p4
+✅ Released entity: p4_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p4
+
+
+📝 Releasing entity: p5
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: p5_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_006
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p5_mesh
+✅ Released entity: Plane_006
+
+  - Detaching from parent: p5
+✅ Released entity: p5_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p5
+
+
+📝 Releasing entity: p2
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: p2_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_004
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p2_mesh
+✅ Released entity: Plane_004
+
+  - Detaching from parent: p2
+✅ Released entity: p2_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p2
+
+
+📝 Releasing entity: p1
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: p1_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_003
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p1_mesh
+✅ Released entity: Plane_003
+
+  - Detaching from parent: p1
+✅ Released entity: p1_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p1
+
+
+📝 Releasing entity: p12
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: p12_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_005_005
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p12_mesh
+✅ Released entity: Plane_005_005
+
+  - Detaching from parent: p12
+✅ Released entity: p12_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p12
+
+
+📝 Releasing entity: p13
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: p13_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_005_006
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p13_mesh
+✅ Released entity: Plane_005_006
+
+  - Detaching from parent: p13
+✅ Released entity: p13_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p13
+
+  - Detaching from parent: intro
+✅ Released entity: People_MSR
+
+  - Detaching from parent: PicturesRoot
+✅ Released entity: intro
+
+  - Detaching from parent: sh0100_v01
+✅ Released entity: PicturesRoot
+
+  - Detaching from parent: sh0100_v01
+✅ Released entity: sh0100_v01
+
+  - Detaching from parent: Root
+✅ Released entity: sh0100_v01
+
+
+📝 Releasing entity: Audio
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: Orchestra
+  - Child count: 12
+  - Has components: yes
+
+📝 Releasing entity: PianoBusL
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Orchestra
+✅ Released entity: PianoBusL
+
+
+📝 Releasing entity: PianoBusR
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Orchestra
+✅ Released entity: PianoBusR
+
+
+📝 Releasing entity: Violin2
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Orchestra
+✅ Released entity: Violin2
+
+
+📝 Releasing entity: Violin1
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Orchestra
+✅ Released entity: Violin1
+
+
+📝 Releasing entity: Viola
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Orchestra
+✅ Released entity: Viola
+
+
+📝 Releasing entity: Xylophone
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Orchestra
+✅ Released entity: Xylophone
+
+  - Detaching from parent: Audio
+✅ Released entity: Orchestra
+
+  - Detaching from parent: Root
+✅ Released entity: Audio
+
+
+📝 Releasing entity: materials
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Root
+✅ Released entity: materials
+
+
+📝 Releasing entity: IntroWarp
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: M_jet
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: IntroWarp
+✅ Released entity: M_jet
+
+  - Detaching from parent: Root
+✅ Released entity: IntroWarp
+
+  - Detaching from parent: Root
+✅ Released entity: Root
+
+✅ Released entity: Root
+
+✅ Released asset: intro_environment
+⚠️ Asset not found in cache: intro_warp
+
+📊 Updated template cache size: 5 entities
+🔒 Remaining asset: attack_cancer_environment
+✅ Completed intro environment cleanup
+
+
+=== AttackCancerInstructionsView Setup ===
+📱 Instructions View: Setting up root entity
+📱 AttackCancerViewModel: Setting up root
+IBL URL: file:///private/var/containers/Bundle/Application/51F8E366-A9F8-4A70-BC05-30A77AFDE60C/PfizerOutdoCancer.app/metro_noord_2k.exr
+🎯 Managing windows for phase: playing
+📊 Before state update - nav window open: true
+📊 Window states after update:
+  Main: true
+  Debug: false
+  Library: false
+  Builder: false
+  Phases:
+    AppPhase: playing
+    ScenePhase: active
+    LoadingPhase: completed
+Unable to present another Immersive Space when one is already requested or connected
+
+=== Tracking State [Start Tracking Request] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x3024bf840>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===
+
+🖐️ Starting hand tracking session
+Hand Provider State: initialized
+✅ Started tracking providers
+Final Hand Tracking State: true
+
+=== Tracking State [Post-Start] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x302391d60>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: initialized
+🖐️ Hand Provider State: initialized
+=== End State Log ===
+
+✅ Phase transition complete: playing
+✅ Phase transition completed: playing
+✅ Instructions View: IBL setup complete
+✅ Instructions View: Found ADC template
+✅ Instructions View: Added ADC to display
+=== Instructions View Setup Complete ===
+
+📍 Positioned entity 'headTrackingRoot' at SIMD3<Float>(0.0034812717, 1.2449782, -1.0946729)
+✅ Successfully positioned entity: headTrackingRoot
+🌀 Portal warp: Starting at +19.064937949180603s
+🔍 PortalWarp reference check: false
+❌ Portal warp: portalWarp not found
+⏰ Sleeping for 75s before logo
+ARPredictorRemoteService <0x50a9782b0>: Query queue is not running.
+ARPredictorRemoteService <0x100dee850>: Query queue is not running.
+ARPredictorRemoteService <0x100b29bd0>: Query queue is not running.
+ARPredictorRemoteService <0x53d2593a0>: Query queue is not running.
+ARPredictorRemoteService <0x100d09920>: Query queue is not running.
+→ .inactive
+→ .active
+🔄 Phase transition: playing -> ready
+🔍 isTransitioning: false
+🔍 immersiveSpaceState: closed
+
+=== Starting AttackCancerViewModel Cleanup ===
+
+=== Tearing Down Game [Detailed] ===
+📊 Initial State:
+  - Hope Meter Running: false
+  - Tutorial Started: false
+  - Subscription Active: false
+  - Cell Parameters Count: 0
+⏹️ Stopping systems:
+  - Stopping hope meter
+🛑 Stopping Hope Meter
+  - Resetting tutorial state
+  - Reset tutorial state
+🗑️ Clearing cell parameters: 0
+
+🔍 Examining root entity: AttackCancerRoot
+  - Total children: 3
+🗑️ Removed cancer cells: 0
+
+🔄 Resetting game stats:
+  - Cells Destroyed: 0 → 0
+  - Total ADCs: 0 → 0
+  - Total Taps: 0 → 0
+  - Total Hits: 0 → 0
+🔄 Resetting first ADC flag: false → false
+✅ Game tear down complete
+
+🗑️ Removing root entity
+✅ Completed AttackCancerViewModel cleanup
+
+
+=== Starting Attack Cancer Environment Cleanup ===
+📊 Current template cache size: 5 entities
+📊 Current templates: attack_cancer_environment, assembled_lab, game_start_vo, cancer_cell, adc
+🗑️ Preparing to remove 1 attack cancer VO assets:
+
+🗑️ Removing asset: game_start_vo
+
+📝 Releasing entity: Root
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Root
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: VO
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Root
+✅ Released entity: VO
+
+  - Detaching from parent: Root
+✅ Released entity: Root
+
+✅ Released entity: Root
+
+✅ Released asset: game_start_vo
+
+📊 Updated template cache size: 4 entities
+🔒 Remaining asset: attack_cancer_environment
+✅ Completed attack cancer environment cleanup
+
+✅ Phase transition complete: ready
+✅ Phase transition completed: ready
+
+=== Tracking State [Pre-Stop] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x302391d60>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: paused
+🖐️ Hand Provider State: paused
+=== End State Log ===
+
+🎯 Managing windows for phase: ready
+📊 Before state update - nav window open: false
+📊 Window states after update:
+  Main: true
+  Debug: false
+  Library: false
+  Builder: false
+  Phases:
+    AppPhase: ready
+    ScenePhase: active
+    LoadingPhase: completed
+cannot add handler to 0 from 1 - dropping
+
+=== Tracking State [Post-Stop] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x302391d60>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===
+
+🔄 Phase transition: ready -> intro
+🔍 isTransitioning: false
+🔍 immersiveSpaceState: closed
+🚨 LoadingView disappeared
+🎯 Managing windows for phase: intro
+📊 Before state update - nav window open: false
+📊 Window states after update:
+  Main: true
+  Debug: true
+  Library: false
+  Builder: false
+  Phases:
+    AppPhase: intro
+    ScenePhase: active
+    LoadingPhase: completed
+cannot add handler to 0 from 1 - dropping
+🎯 PositioningSystem F6D1242B-BB7E-4CAF-A4D9-D3F9D25AD699 initializing...
+cannot add handler to 0 from 1 - dropping
+🎯 PositioningSystem E698AED2-41A5-4C39-9224-52B3777C94B0 initializing...
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+
+=== IntroView Appeared ===
+cannot add handler to 0 from 1 - dropping
+
+=== Setting up IntroView ===
+📱 IntroViewModel: Setting up intro root
+✅ Added root to content
+📱 IntroView: Starting environment setup
+📱 IntroViewModel: Starting environment setup
+📱 IntroViewModel: Attempting to load intro environment
+AssetLoadingManager: loadAsset(withName: intro_environment, category: introEnvironment)
+
+=== Tracking State [Start Tracking Request] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x302391d60>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===
+
+🖐️ Starting hand tracking session
+Hand Provider State: initialized
+cannot add handler to 0 from 1 - dropping
+✅ Started tracking providers
+Final Hand Tracking State: true
+
+=== Tracking State [Post-Start] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x302390500>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: paused
+🖐️ Hand Provider State: paused
+=== End State Log ===
+
+✅ Phase transition complete: intro
+✅ Phase transition completed: intro
+🔄 Provider state changed to: paused
+
+=== Tracking State [Provider State Change [paused]] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: paused
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x302390500>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: paused
+🖐️ Hand Provider State: paused
+=== End State Log ===
+
+⏸️ Provider paused
+✅ IntroViewModel: Successfully loaded intro environment
+📱 IntroViewModel: Adding environment to root
+📱 IntroViewModel: Setting up individual entities
+🔍 Found logo: logo
+✅ Set logo scale to 0.5 and opacity to 0
+🔍 Found portalWarp: sh0100_v01_portalWarp3
+✅ Set portalWarp opacity to 0.6
+📱 IntroViewModel: Starting portal setup
+📱 Starting lab environment assembly
+✅ Using cached assembled lab
+✅ IntroViewModel: Successfully loaded assembled laboratory environment
+✅ IntroViewModel: Created portal
+✅ IntroViewModel: Portal setup complete
+✅ IntroViewModel: Environment setup complete
+✅ Environment setup complete
+📱 IntroView: Found SwiftUI attachments
+✅ Found portal for attachments
+📱 IntroViewModel: Setting up attachments
+🔍 Portal state - opacity: 0.0, position: SIMD3<Float>(0.0, -0.25, 0.0)
+📎 Found titleRoot in portal
+🔍 Before - titleEntity position: SIMD3<Float>(0.0, 0.0, 0.0), scale: SIMD3<Float>(1.0, 1.0, 1.0)
+🔍 After - titleEntity position: SIMD3<Float>(0.0, -0.15, 0.2), scale: SIMD3<Float>(5.0, 5.0, 5.0)
+📎 Added titleText to titleRoot
+📎 Found titleRoot in portal
+🔍 Before - labViewer position: SIMD3<Float>(0.0, 0.0, 0.0), scale: SIMD3<Float>(1.0, 1.0, 1.0)
+🔍 After - labViewer position: SIMD3<Float>(0.0, -0.4, 0.3), scale: SIMD3<Float>(5.0, 5.0, 5.0)
+📎 Added labViewer to titleRoot
+📱 IntroView: Starting animation sequence
+🎬 Animation Sequence: Starting at 2025-02-10 21:27:18 +0000
+🔍 Entity Check - skyDome: false, portalWarp: true, logo: true, portal: true
+❌ Sky fade: skyDome not found
+⏰ Sleeping for 19s before portal warp
+📍 Positioned entity 'IntroRoot' at SIMD3<Float>(-0.0039185314, -0.2594508, -1.0940251)
+✅ Successfully positioned entity: IntroRoot
+🔄 Provider state changed to: running
+
+=== Tracking State [Provider State Change [running]] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: running
+📍 Head Transform: simd_float4x4([[0.9999714, 0.0074925893, 0.0011181178, 0.0], [-0.007316141, 0.9934447, -0.114080004, 0.0], [-0.001965559, 0.11406854, 0.99347097, 0.0], [-0.003931535, 1.2405745, -0.093990676, 1.0000001]])
+📍 Head Position - X: -0.003931535, Y: 1.2405745, Z: -0.093990676
+🌎 World Provider State: running
+🖐️ Hand Provider State: running
+=== End State Log ===
+
+✅ Provider running
+Cannot find a BindPoint for any bind path: "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", ""
+🔄 Phase transition: intro -> playing
+🔍 isTransitioning: false
+🔍 immersiveSpaceState: open
+
+=== Pre-loading Playing Phase Assets ===
+📱 Pre-loading required assets for playing phase...
+🎯 Loading ADC template...
+AssetLoadingManager: loadAsset(withName: adc, category: adc)
+✅ ADC entity loaded, applying colors...
+
+🎯 Setting up ADC Template
+- Template entity: Root
+- Antibody Color: -1
+- Linker Color: -1
+- Payload Color: -1
+✅ ADC template stored in gameState
+✅ ADC template configured with colors
+🎯 Loading tutorial assets...
+AssetLoadingManager: loadAsset(withName: game_start_vo, category: attackCancerEnvironment)
+
+=== Tracking State [Pre-Stop] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: running
+📍 Head Transform: simd_float4x4([[0.9990426, 0.0014626887, 0.043724597, 0.0], [0.010411214, 0.9627793, -0.27008834, 0.0], [-0.042492207, 0.27028498, 0.96184224, 0.0], [0.004728008, 1.2215275, -0.10439033, 1.0]])
+📍 Head Position - X: 0.004728008, Y: 1.2215275, Z: -0.10439033
+🌎 World Provider State: running
+🖐️ Hand Provider State: running
+=== End State Log ===
+
+🔄 Provider state changed to: stopped
+
+=== Tracking State [Provider State Change [stopped]] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x302390500>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===
+
+⏹️ Provider stopped normally
+
+=== Tracking State [Post-Stop] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x302390500>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===
+
+✅ Tutorial assets cached
+=== Playing Phase Assets Ready ===
+
+
+=== Starting IntroViewModel Cleanup ===
+🗑️ Removing intro root entity
+🎯 Resetting positioning component
+✅ Completed IntroViewModel cleanup
+
+
+=== Starting Intro Environment Cleanup ===
+📊 Current template cache size: 6 entities
+📊 Current templates: attack_cancer_environment, assembled_lab, intro_environment, game_start_vo, cancer_cell, adc
+🗑️ Preparing to remove 2 intro assets:
+
+🗑️ Removing asset: intro_environment
+
+📝 Releasing entity: Root
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Root
+  - Child count: 8
+  - Has components: yes
+
+📝 Releasing entity: sh0100_v01
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: sh0100_v01
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: PicturesRoot
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: intro
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: People_MSR
+  - Child count: 13
+  - Has components: yes
+
+📝 Releasing entity: p3
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: p3_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_005
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p3_mesh
+✅ Released entity: Plane_005
+
+  - Detaching from parent: p3
+✅ Released entity: p3_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p3
+
+
+📝 Releasing entity: p4
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: p4_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_007
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p4_mesh
+✅ Released entity: Plane_007
+
+  - Detaching from parent: p4
+✅ Released entity: p4_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p4
+
+
+📝 Releasing entity: p5
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: p5_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_006
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p5_mesh
+✅ Released entity: Plane_006
+
+  - Detaching from parent: p5
+✅ Released entity: p5_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p5
+
+
+📝 Releasing entity: p2
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: p2_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_004
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p2_mesh
+✅ Released entity: Plane_004
+
+  - Detaching from parent: p2
+✅ Released entity: p2_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p2
+
+
+📝 Releasing entity: p1
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: p1_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_003
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p1_mesh
+✅ Released entity: Plane_003
+
+  - Detaching from parent: p1
+✅ Released entity: p1_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p1
+
+
+📝 Releasing entity: p12
+
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: p12_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_005_005
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p12_mesh
+✅ Released entity: Plane_005_005
+
+  - Detaching from parent: p12
+✅ Released entity: p12_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p12
+
+
+📝 Releasing entity: p13
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: p13_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_005_006
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p13_mesh
+✅ Released entity: Plane_005_006
+
+  - Detaching from parent: p13
+✅ Released entity: p13_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p13
+
+  - Detaching from parent: intro
+✅ Released entity: People_MSR
+
+  - Detaching from parent: PicturesRoot
+✅ Released entity: intro
+
+  - Detaching from parent: sh0100_v01
+✅ Released entity: PicturesRoot
+
+  - Detaching from parent: sh0100_v01
+✅ Released entity: sh0100_v01
+
+  - Detaching from parent: Root
+✅ Released entity: sh0100_v01
+
+
+📝 Releasing entity: Audio
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: Orchestra
+  - Child count: 12
+  - Has components: yes
+
+📝 Releasing entity: PianoBusL
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Orchestra
+✅ Released entity: PianoBusL
+
+
+📝 Releasing entity: PianoBusR
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Orchestra
+✅ Released entity: PianoBusR
+
+
+📝 Releasing entity: Violin2
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Orchestra
+✅ Released entity: Violin2
+
+
+📝 Releasing entity: Violin1
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Orchestra
+✅ Released entity: Violin1
+
+
+📝 Releasing entity: Viola
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Orchestra
+✅ Released entity: Viola
+
+
+📝 Releasing entity: Xylophone
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Orchestra
+✅ Released entity: Xylophone
+
+  - Detaching from parent: Audio
+✅ Released entity: Orchestra
+
+  - Detaching from parent: Root
+✅ Released entity: Audio
+
+
+📝 Releasing entity: materials
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Root
+✅ Released entity: materials
+
+
+📝 Releasing entity: IntroWarp
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: M_jet
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: IntroWarp
+✅ Released entity: M_jet
+
+  - Detaching from parent: Root
+✅ Released entity: IntroWarp
+
+  - Detaching from parent: Root
+✅ Released entity: Root
+
+✅ Released entity: Root
+
+✅ Released asset: intro_environment
+⚠️ Asset not found in cache: intro_warp
+
+📊 Updated template cache size: 5 entities
+🔒 Remaining asset: attack_cancer_environment
+✅ Completed intro environment cleanup
+
+
+=== AttackCancerInstructionsView Setup ===
+📱 Instructions View: Setting up root entity
+📱 AttackCancerViewModel: Setting up root
+🧹 Cleaning up app state
+
+=== Tearing Down Game [Detailed] ===
+📊 Initial State:
+  - Hope Meter Running: false
+  - Tutorial Started: false
+  - Subscription Active: false
+  - Cell Parameters Count: 0
+⏹️ Stopping systems:
+  - Stopping hope meter
+🛑 Stopping Hope Meter
+  - Resetting tutorial state
+  - Reset tutorial state
+🗑️ Clearing cell parameters: 0
+
+🔍 Examining root entity: AttackCancerRoot
+  - Total children: 1
+IBL URL: file:///private/var/containers/Bundle/Application/51F8E366-A9F8-4A70-BC05-30A77AFDE60C/PfizerOutdoCancer.app/metro_noord_2k.exr
+🗑️ Removed cancer cells: 0
+
+🔄 Resetting game stats:
+  - Cells Destroyed: 0 → 0
+  - Total ADCs: 0 → 0
+  - Total Taps: 0 → 0
+  - Total Hits: 0 → 0
+🔄 Resetting first ADC flag: false → false
+✅ Game tear down complete
+
+cannot add handler to 0 from 1 - dropping
+
+=== Tracking State [Start Tracking Request] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x302390500>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===
+
+🖐️ Starting hand tracking session
+Hand Provider State: initialized
+✅ Started tracking providers
+Final Hand Tracking State: true
+
+=== Tracking State [Post-Start] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x3023e17c0>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: initialized
+🖐️ Hand Provider State: initialized
+=== End State Log ===
+
+✅ Phase transition complete: playing
+✅ Phase transition completed: playing
+✅ Instructions View: IBL setup complete
+✅ Instructions View: Found ADC template
+✅ Instructions View: Added ADC to display
+=== Instructions View Setup Complete ===
+
+📍 Positioned entity 'headTrackingRoot' at SIMD3<Float>(0.0040661707, 1.2385924, -1.0984253)
+✅ Successfully positioned entity: headTrackingRoot
+ARPredictorRemoteService <0x10a718be0>: Query queue is not running.
+ARPredictorRemoteService <0x100f4e0c0>: Query queue is not running.
+ARPredictorRemoteService <0x179d52530>: Query queue is not running.
+ARPredictorRemoteService <0x100b20aa0>: Query queue is not running.
+ARPredictorRemoteService <0x10c694ac0>: Query queue is not running.
+ARPredictorRemoteService <0x100b29bd0>: Query queue is not running.
+ARPredictorRemoteService <0x100d09920>: Query queue is not running.
+🎯 Managing windows for phase: playing
+📊 Before state update - nav window open: true
+📊 Window states after update:
+  Main: true
+  Debug: false
+  Library: false
+  Builder: false
+  Phases:
+    AppPhase: playing
+    ScenePhase: active
+    LoadingPhase: completed
+> Resetting to phase: READY
+🔄 Phase transition: playing -> ready
+🔍 isTransitioning: false
+🔍 immersiveSpaceState: closed
+
+=== Starting AttackCancerViewModel Cleanup ===
+
+=== Tearing Down Game [Detailed] ===
+📊 Initial State:
+  - Hope Meter Running: false
+  - Tutorial Started: false
+  - Subscription Active: false
+  - Cell Parameters Count: 0
+⏹️ Stopping systems:
+  - Stopping hope meter
+🛑 Stopping Hope Meter
+  - Resetting tutorial state
+  - Reset tutorial state
+🗑️ Clearing cell parameters: 0
+
+🔍 Examining root entity: AttackCancerRoot
+  - Total children: 3
+🗑️ Removed cancer cells: 0
+
+🔄 Resetting game stats:
+  - Cells Destroyed: 0 → 0
+  - Total ADCs: 0 → 0
+  - Total Taps: 0 → 0
+  - Total Hits: 0 → 0
+🔄 Resetting first ADC flag: false → false
+✅ Game tear down complete
+
+🗑️ Removing root entity
+✅ Completed AttackCancerViewModel cleanup
+
+
+=== Starting Attack Cancer Environment Cleanup ===
+📊 Current template cache size: 5 entities
+📊 Current templates: attack_cancer_environment, assembled_lab, game_start_vo, cancer_cell, adc
+🗑️ Preparing to remove 1 attack cancer VO assets:
+
+🗑️ Removing asset: game_start_vo
+
+📝 Releasing entity: Root
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Root
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: VO
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Root
+✅ Released entity: VO
+
+  - Detaching from parent: Root
+✅ Released entity: Root
+
+✅ Released entity: Root
+
+✅ Released asset: game_start_vo
+
+📊 Updated template cache size: 4 entities
+🔒 Remaining asset: attack_cancer_environment
+✅ Completed attack cancer environment cleanup
+
+✅ Phase transition complete: ready
+✅ Phase transition completed: ready
+✅ App state cleanup completed
+
+=== Tracking State [Pre-Stop] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x3023e17c0>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: paused
+🖐️ Hand Provider State: paused
+=== End State Log ===
+
+
+=== Tracking State [Pre-Stop] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x3023e17c0>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===
+
+🎯 PositioningSystem 67C62255-2D03-4FA3-98DF-70739BDD4EAB initializing...
+cannot add handler to 0 from 1 - dropping
+
+=== Processing Hand Updates ===
+Should Process Hand Tracking: true
+Hand Provider State: stopped
+🖐️ Starting hand tracking updates
+
+=== AttackCancerView Setup ===
+📱 AttackCancerView: Setting up root
+📱 AttackCancerViewModel: Setting up root
+✅ Root entity created: AttackCancerRoot
+
+=== Setting up Environment ===
+🎯 Setting up AttackCancerView environment...
+IBL URL: file:///private/var/containers/Bundle/Application/51F8E366-A9F8-4A70-BC05-30A77AFDE60C/PfizerOutdoCancer.app/metro_noord_2k.exr
+
+=== Tracking State [Post-Stop] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x3023e17c0>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===
+
+
+=== Tracking State [Post-Stop] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x3023e17c0>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===
+
+
+=== Tearing Down Game [Detailed] ===
+📊 Initial State:
+  - Hope Meter Running: false
+  - Tutorial Started: false
+  - Subscription Active: false
+  - Cell Parameters Count: 0
+⏹️ Stopping systems:
+  - Stopping hope meter
+🛑 Stopping Hope Meter
+  - Resetting tutorial state
+  - Reset tutorial state
+🗑️ Clearing cell parameters: 0
+
+🔍 Examining root entity: AttackCancerRoot
+  - Total children: 1
+🗑️ Removed cancer cells: 0
+
+🔄 Resetting game stats:
+  - Cells Destroyed: 0 → 0
+  - Total ADCs: 0 → 0
+  - Total Taps: 0 → 0
+  - Total Hits: 0 → 0
+🔄 Resetting first ADC flag: false → false
+✅ Game tear down complete
+
+[NetworkComponent] Trying to process with outdated syncable that has already been unbound, guid=331444374729040801
+[NetworkComponent] Cannot find component's entity (guid=1376819859708644520, typeID=1965534933, type=AnchorComponent, entity=0x106343480).
+[NetworkComponent] Cannot find component's entity (guid=12582738380742505455, typeID=295756909031380028, type=CustomComponentRCPInputTargetComponent, entity=0x1063701d0).
+[NetworkComponent] Cannot find component's entity (guid=3154779422057212670, typeID=295756909031380028, type=CustomComponentRCPInputTargetComponent, entity=0x10636c180).
+[NetworkComponent] Cannot find component's entity (guid=16109835255727136898, typeID=295756909031380028, type=CustomComponentRCPInputTargetComponent, entity=0x54b874c30).
+[NetworkComponent] Cannot find component's entity (guid=3152969736226740240, typeID=295756909031380028, type=CustomComponentRCPInputTargetComponent, entity=0x54b874a50).
+[NetworkComponent] Trying to process with outdated syncable that has already been unbound, guid=331444374729040801
+🎯 Managing windows for phase: ready
+📊 Before state update - nav window open: false
+📊 Window states after update:
+  Main: true
+  Debug: false
+  Library: false
+  Builder: false
+  Phases:
+    AppPhase: ready
+    ScenePhase: active
+    LoadingPhase: completed
+AssetLoadingManager: loadAsset(withName: attack_cancer_environment, category: attackCancerEnvironment)
+setting up collisions
+setting up collisions in Root
+✅ Environment setup complete
+✅ Environment setup complete
+🌀 Portal warp: Starting at +19.010596990585327s
+🔍 PortalWarp reference check: false
+❌ Portal warp: portalWarp not found
+⏰ Sleeping for 75s before logo
+🔄 Phase transition: ready -> intro
+🔍 isTransitioning: false
+🔍 immersiveSpaceState: closed
+🚨 LoadingView disappeared
+🎯 Managing windows for phase: intro
+📊 Before state update - nav window open: false
+📊 Window states after update:
+  Main: true
+  Debug: true
+  Library: false
+  Builder: false
+  Phases:
+    AppPhase: intro
+    ScenePhase: active
+    LoadingPhase: completed
+cannot add handler to 0 from 1 - dropping
+🎯 PositioningSystem 233B9E05-C392-49BD-83CA-6922A96CE99F initializing...
+cannot add handler to 0 from 1 - dropping
+🎯 PositioningSystem A36892A1-0B20-4E00-908E-5D5C63CA8310 initializing...
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+
+=== IntroView Appeared ===
+cannot add handler to 0 from 1 - dropping
+
+=== Setting up IntroView ===
+📱 IntroViewModel: Setting up intro root
+✅ Added root to content
+📱 IntroView: Starting environment setup
+📱 IntroViewModel: Starting environment setup
+📱 IntroViewModel: Attempting to load intro environment
+AssetLoadingManager: loadAsset(withName: intro_environment, category: introEnvironment)
+cannot add handler to 0 from 1 - dropping
+
+=== Tracking State [Start Tracking Request] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x3023e17c0>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===
+
+🖐️ Starting hand tracking session
+Hand Provider State: initialized
+✅ Started tracking providers
+Final Hand Tracking State: true
+
+=== Tracking State [Post-Start] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+⚠️ No device anchor available
+🌎 World Provider State: running
+🖐️ Hand Provider State: running
+=== End State Log ===
+
+✅ Phase transition complete: intro
+✅ Phase transition completed: intro
+🔄 Provider state changed to: paused
+
+=== Tracking State [Provider State Change [paused]] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: paused
+⚠️ No device anchor available
+🌎 World Provider State: running
+🖐️ Hand Provider State: running
+=== End State Log ===
+
+⏸️ Provider paused
+🔄 Provider state changed to: running
+
+=== Tracking State [Provider State Change [running]] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: running
+⚠️ No device anchor available
+🌎 World Provider State: running
+🖐️ Hand Provider State: running
+=== End State Log ===
+
+✅ Provider running
+✅ IntroViewModel: Successfully loaded intro environment
+📱 IntroViewModel: Adding environment to root
+📱 IntroViewModel: Setting up individual entities
+🔍 Found logo: logo
+✅ Set logo scale to 0.5 and opacity to 0
+🔍 Found portalWarp: sh0100_v01_portalWarp3
+✅ Set portalWarp opacity to 0.6
+📱 IntroViewModel: Starting portal setup
+📱 Starting lab environment assembly
+✅ Using cached assembled lab
+✅ IntroViewModel: Successfully loaded assembled laboratory environment
+✅ IntroViewModel: Created portal
+✅ IntroViewModel: Portal setup complete
+✅ IntroViewModel: Environment setup complete
+✅ Environment setup complete
+📱 IntroView: Found SwiftUI attachments
+✅ Found portal for attachments
+📱 IntroViewModel: Setting up attachments
+🔍 Portal state - opacity: 0.0, position: SIMD3<Float>(0.0, -0.25, 0.0)
+📎 Found titleRoot in portal
+🔍 Before - titleEntity position: SIMD3<Float>(0.0, 0.0, 0.0), scale: SIMD3<Float>(1.0, 1.0, 1.0)
+🔍 After - titleEntity position: SIMD3<Float>(0.0, -0.15, 0.2), scale: SIMD3<Float>(5.0, 5.0, 5.0)
+📎 Added titleText to titleRoot
+📎 Found titleRoot in portal
+🔍 Before - labViewer position: SIMD3<Float>(0.0, 0.0, 0.0), scale: SIMD3<Float>(1.0, 1.0, 1.0)
+🔍 After - labViewer position: SIMD3<Float>(0.0, -0.4, 0.3), scale: SIMD3<Float>(5.0, 5.0, 5.0)
+📎 Added labViewer to titleRoot
+📱 IntroView: Starting animation sequence
+🎬 Animation Sequence: Starting at 2025-02-10 21:27:25 +0000
+🔍 Entity Check - skyDome: false, portalWarp: true, logo: true, portal: true
+❌ Sky fade: skyDome not found
+⏰ Sleeping for 19s before portal warp
+📍 Positioned entity 'IntroRoot' at SIMD3<Float>(0.00014564644, -0.2488842, -1.1006583)
+✅ Successfully positioned entity: IntroRoot
+Cannot find a BindPoint for any bind path: "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", ""
+🔄 Phase transition: intro -> playing
+🔍 isTransitioning: false
+🔍 immersiveSpaceState: open
+
+=== Pre-loading Playing Phase Assets ===
+📱 Pre-loading required assets for playing phase...
+🎯 Loading ADC template...
+AssetLoadingManager: loadAsset(withName: adc, category: adc)
+✅ ADC entity loaded, applying colors...
+
+🎯 Setting up ADC Template
+- Template entity: Root
+- Antibody Color: -1
+- Linker Color: -1
+- Payload Color: -1
+✅ ADC template stored in gameState
+✅ ADC template configured with colors
+🎯 Loading tutorial assets...
+AssetLoadingManager: loadAsset(withName: game_start_vo, category: attackCancerEnvironment)
+
+=== Tracking State [Pre-Stop] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: running
+📍 Head Transform: simd_float4x4([[0.9992498, 0.0042416453, 0.038495, 0.0], [0.0059292093, 0.9655105, -0.26029676, 0.0], [-0.038271423, 0.26032972, 0.964761, 0.0], [0.0053397706, 1.2229292, -0.11735592, 1.0]])
+📍 Head Position - X: 0.0053397706, Y: 1.2229292, Z: -0.11735592
+🌎 World Provider State: running
+🖐️ Hand Provider State: running
+=== End State Log ===
+
+🔄 Provider state changed to: stopped
+
+=== Tracking State [Provider State Change [stopped]] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x3024afc00>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===
+
+⏹️ Provider stopped normally
+
+=== Tracking State [Post-Stop] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x3024afc00>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===
+
+✅ Tutorial assets cached
+=== Playing Phase Assets Ready ===
+
+
+=== Starting IntroViewModel Cleanup ===
+🗑️ Removing intro root entity
+🎯 Resetting positioning component
+✅ Completed IntroViewModel cleanup
+
+
+=== Starting Intro Environment Cleanup ===
+📊 Current template cache size: 6 entities
+📊 Current templates: attack_cancer_environment, assembled_lab, intro_environment, game_start_vo, cancer_cell, adc
+🗑️ Preparing to remove 2 intro assets:
+
+🗑️ Removing asset: intro_environment
+
+📝 Releasing entity: Root
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Root
+  - Child count: 8
+  - Has components: yes
+
+📝 Releasing entity: sh0100_v01
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: sh0100_v01
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: PicturesRoot
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: intro
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: People_MSR
+  - Child count: 13
+  - Has components: yes
+
+📝 Releasing entity: p3
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: p3_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_005
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p3_mesh
+✅ Released entity: Plane_005
+
+  - Detaching from parent: p3
+✅ Released entity: p3_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p3
+
+
+📝 Releasing entity: p4
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: p4_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_007
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p4_mesh
+✅ Released entity: Plane_007
+
+  - Detaching from parent: p4
+✅ Released entity: p4_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p4
+
+
+📝 Releasing entity: p5
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: p5_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_006
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p5_mesh
+✅ Released entity: Plane_006
+
+  - Detaching from parent: p5
+✅ Released entity: p5_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p5
+
+
+📝 Releasing entity: p2
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: p2_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_004
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p2_mesh
+✅ Released entity: Plane_004
+
+  - Detaching from parent: p2
+✅ Released entity: p2_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p2
+
+
+📝 Releasing entity: p1
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: p1_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_003
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p1_mesh
+✅ Released entity: Plane_003
+
+  - Detaching from parent: p1
+✅ Released entity: p1_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p1
+
+
+📝 Releasing entity: p12
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: p12_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_005_005
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p12_mesh
+✅ Released entity: Plane_005_005
+
+  - Detaching from parent: p12
+✅ Released entity: p12_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p12
+
+
+📝 Releasing entity: p13
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: p13_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_005_006
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p13_mesh
+✅ Released entity: Plane_005_006
+
+  - Detaching from parent: p13
+✅ Released entity: p13_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p13
+
+  - Detaching from parent: intro
+✅ Released entity: People_MSR
+
+  - Detaching from parent: PicturesRoot
+✅ Released entity: intro
+
+  - Detaching from parent: sh0100_v01
+✅ Released entity: PicturesRoot
+
+  - Detaching from parent: sh0100_v01
+✅ Released entity: sh0100_v01
+
+  - Detaching from parent: Root
+✅ Released entity: sh0100_v01
+
+
+📝 Releasing entity: Audio
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: Orchestra
+  - Child count: 12
+  - Has components: yes
+
+📝 Releasing entity: PianoBusL
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Orchestra
+✅ Released entity: PianoBusL
+
+
+📝 Releasing entity: PianoBusR
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Orchestra
+✅ Released entity: PianoBusR
+
+
+📝 Releasing entity: Violin2
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Orchestra
+✅ Released entity: Violin2
+
+
+📝 Releasing entity: Violin1
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Orchestra
+✅ Released entity: Violin1
+
+
+📝 Releasing entity: Viola
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Orchestra
+✅ Released entity: Viola
+
+
+📝 Releasing entity: Xylophone
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Orchestra
+✅ Released entity: Xylophone
+
+  - Detaching from parent: Audio
+✅ Released entity: Orchestra
+
+  - Detaching from parent: Root
+✅ Released entity: Audio
+
+
+📝 Releasing entity: materials
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Root
+✅ Released entity: materials
+
+
+📝 Releasing entity: IntroWarp
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: M_jet
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: IntroWarp
+✅ Released entity: M_jet
+
+  - Detaching from parent: Root
+✅ Released entity: IntroWarp
+
+  - Detaching from parent: Root
+✅ Released entity: Root
+
+✅ Released entity: Root
+
+✅ Released asset: intro_environment
+⚠️ Asset not found in cache: intro_warp
+
+📊 Updated template cache size: 5 entities
+🔒 Remaining asset: attack_cancer_environment
+✅ Completed intro environment cleanup
+
+
+=== AttackCancerInstructionsView Setup ===
+📱 Instructions View: Setting up root entity
+📱 AttackCancerViewModel: Setting up root
+IBL URL: file:///private/var/containers/Bundle/Application/51F8E366-A9F8-4A70-BC05-30A77AFDE60C/PfizerOutdoCancer.app/metro_noord_2k.exr
+
+=== Tracking State [Start Tracking Request] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x3024afc00>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===
+
+🖐️ Starting hand tracking session
+Hand Provider State: initialized
+✅ Started tracking providers
+Final Hand Tracking State: true
+
+=== Tracking State [Post-Start] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x30239cd20>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: initialized
+🖐️ Hand Provider State: initialized
+=== End State Log ===
+
+✅ Phase transition complete: playing
+✅ Phase transition completed: playing
+✅ Instructions View: IBL setup complete
+✅ Instructions View: Found ADC template
+✅ Instructions View: Added ADC to display
+=== Instructions View Setup Complete ===
+
+📍 Positioned entity 'headTrackingRoot' at SIMD3<Float>(0.0036847293, 1.2373022, -1.1139865)
+✅ Successfully positioned entity: headTrackingRoot
+ARPredictorRemoteService <0x50a9a8070>: Query queue is not running.
+ARPredictorRemoteService <0x53d308120>: Query queue is not running.
+ARPredictorRemoteService <0x100b29bd0>: Query queue is not running.
+ARPredictorRemoteService <0x100d09920>: Query queue is not running.
+ARPredictorRemoteService <0x55af6c920>: Query queue is not running.
+🎯 Managing windows for phase: playing
+📊 Before state update - nav window open: true
+📊 Window states after update:
+  Main: true
+  Debug: false
+  Library: false
+  Builder: false
+  Phases:
+    AppPhase: playing
+    ScenePhase: active
+    LoadingPhase: completed
+🎯 PositioningSystem BB6DF5EB-83C0-4E8A-A8DD-05F484BA989E initializing...
+cannot add handler to 0 from 1 - dropping
+
+=== Processing Hand Updates ===
+Should Process Hand Tracking: true
+Hand Provider State: paused
+🖐️ Starting hand tracking updates
+
+=== AttackCancerView Setup ===
+📱 AttackCancerView: Setting up root
+📱 AttackCancerViewModel: Setting up root
+✅ Root entity created: AttackCancerRoot
+
+=== Setting up Environment ===
+🎯 Setting up AttackCancerView environment...
+IBL URL: file:///private/var/containers/Bundle/Application/51F8E366-A9F8-4A70-BC05-30A77AFDE60C/PfizerOutdoCancer.app/metro_noord_2k.exr
+🔄 Provider state changed to: running
+
+=== Tracking State [Provider State Change [running]] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: running
+⚠️ No device anchor available
+🌎 World Provider State: running
+🖐️ Hand Provider State: running
+=== End State Log ===
+
+✅ Provider running
+📍 Positioned entity 'headTrackingRoot' at SIMD3<Float>(0.0023817837, 1.2503939, -1.1026685)
+✅ Successfully positioned entity: headTrackingRoot
+AssetLoadingManager: loadAsset(withName: attack_cancer_environment, category: attackCancerEnvironment)
+setting up collisions
+setting up collisions in Root
+🎯 Setting up collision subscription
+✅ Collision subscription set up
+✅ Environment setup complete
+✅ Environment setup complete
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+🎓 Starting tutorial sequence...
+🎓 Tutorial state changed - Starting tutorial...
+
+=== Starting Tutorial Sequence ===
+📱 Tutorial: Loading game start VO
+AssetLoadingManager: loadAsset(withName: game_start_vo, category: attackCancerEnvironment)
+✅ Tutorial: Retrieved game start VO
+🎯 Tutorial: Found VO parent
+✅ Tutorial: Added VO to scene
+✅ Tutorial: Found tutorial cancer cell
+
+=== Setting up Tutorial Cancer Cell ===
+✅ Tutorial: Cancer cell setup complete
+✅ Tutorial: ADC sequence initiated
+
+=== Starting Tutorial ADC Sequence ===
+cannot add handler to 0 from 1 - dropping
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "entities[].Transform.transform"
+Cannot find a BindPoint for any bind path: "", "", ""
+🚀 Firing tutorial ADC 1/10
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Left hand tap detected
+Found cancer cell with ID: 777
+Found attach point: attach_1
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: 0
+Current hit count: 1
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 1
+Required hits: 10
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: 1
+Current hit count: 2
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 2
+Required hits: 10
+📊 Cell 777: 2/10 hits
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: 2
+Current hit count: 3
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 3
+Required hits: 10
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: 3
+Current hit count: 4
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 4
+Required hits: 10
+Failed to set override status for bind point component member.
+🚀 Firing tutorial ADC 2/10
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 777
+Found attach point: attach_11
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: 4
+Current hit count: 5
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 5
+Required hits: 10
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: 5
+Current hit count: 6
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 6
+Required hits: 10
+📊 Cell 777: 6/10 hits
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: 6
+Current hit count: 7
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 7
+Required hits: 10
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: 7
+Current hit count: 8
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 8
+Required hits: 10
+Failed to set override status for bind point component member.
+🚀 Firing tutorial ADC 3/10
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 777
+Found attach point: attach_13
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: 8
+Current hit count: 9
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 9
+Required hits: 10
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: 9
+Current hit count: 10
+Tutorial cell impact - using scale: 1e-05, impulse: 1.1920929e-13
+New hit count: 10
+Required hits: 10
+=== Cancer Cell Death Triggered ===
+💀 Cell is destroyed
+✨ Updated particle emitter isEmitting to: false
+🌀 Portal warp: Starting at +19.14377498626709s
+🔍 PortalWarp reference check: false
+❌ Portal warp: portalWarp not found
+⏰ Sleeping for 75s before logo
+Failed to set override status for bind point component member.
+🚀 Firing tutorial ADC 4/10
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 777
+No available attach point found
+DEBUG: Root entity details:
+- Name: AttackCancerRoot
+- World position: SIMD3<Float>(0.0, 0.0, 0.0)
+- Local position: SIMD3<Float>(0.0, 0.0, 0.0)
+DEBUG: HeadPosition target details:
+- Local position set: SIMD3<Float>(0.08064532, 2.2539485, -5.7348948)
+- World position after add: SIMD3<Float>(0.08064532, 2.2539485, -5.7348948)
+- Parent entity: AttackCancerRoot
+✅ Untargeted ADC spawned successfully
+FINISH ✨ Stopped particle emitter
+🚀 Firing tutorial ADC 5/10
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 777
+No available attach point found
+DEBUG: Root entity details:
+- Name: AttackCancerRoot
+- World position: SIMD3<Float>(0.0, 0.0, 0.0)
+- Local position: SIMD3<Float>(0.0, 0.0, 0.0)
+DEBUG: HeadPosition target details:
+- Local position set: SIMD3<Float>(-1.3609521, 2.1567054, -5.8373137)
+- World position after add: SIMD3<Float>(-1.3609521, 2.1567054, -5.8373137)
+- Parent entity: AttackCancerRoot
+✅ Untargeted ADC spawned successfully
+FINISH ✨ Removed particle emitter component
+FINISH ✨ Removed cancer cell component
+✨ Removing entity from scene
+🚀 Firing tutorial ADC 6/10
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Spawning untargeted ADC
+DEBUG: Root entity details:
+- Name: AttackCancerRoot
+- World position: SIMD3<Float>(0.0, 0.0, 0.0)
+- Local position: SIMD3<Float>(0.0, 0.0, 0.0)
+DEBUG: HeadPosition target details:
+- Local position set: SIMD3<Float>(-0.39588094, 1.1585032, -5.573216)
+- World position after add: SIMD3<Float>(-0.39588094, 1.1585032, -5.573216)
+- Parent entity: AttackCancerRoot
+✅ Untargeted ADC spawned successfully
+🚀 Firing tutorial ADC 7/10
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Spawning untargeted ADC
+DEBUG: Root entity details:
+- Name: AttackCancerRoot
+- World position: SIMD3<Float>(0.0, 0.0, 0.0)
+- Local position: SIMD3<Float>(0.0, 0.0, 0.0)
+DEBUG: HeadPosition target details:
+- Local position set: SIMD3<Float>(0.26065898, 1.8815545, -5.923892)
+- World position after add: SIMD3<Float>(0.26065898, 1.8815545, -5.923892)
+- Parent entity: AttackCancerRoot
+✅ Untargeted ADC spawned successfully
+🌀 Portal warp: Starting at +19.062777042388916s
+🔍 PortalWarp reference check: false
+❌ Portal warp: portalWarp not found
+⏰ Sleeping for 75s before logo
+🚀 Firing tutorial ADC 8/10
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Spawning untargeted ADC
+DEBUG: Root entity details:
+- Name: AttackCancerRoot
+- World position: SIMD3<Float>(0.0, 0.0, 0.0)
+- Local position: SIMD3<Float>(0.0, 0.0, 0.0)
+DEBUG: HeadPosition target details:
+- Local position set: SIMD3<Float>(0.85264254, 1.8883375, -5.8714013)
+- World position after add: SIMD3<Float>(0.85264254, 1.8883375, -5.8714013)
+- Parent entity: AttackCancerRoot
+✅ Untargeted ADC spawned successfully
+🚀 Firing tutorial ADC 9/10
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Spawning untargeted ADC
+DEBUG: Root entity details:
+- Name: AttackCancerRoot
+- World position: SIMD3<Float>(0.0, 0.0, 0.0)
+- Local position: SIMD3<Float>(0.0, 0.0, 0.0)
+DEBUG: HeadPosition target details:
+- Local position set: SIMD3<Float>(1.5906179, 1.2178688, -5.7826605)
+- World position after add: SIMD3<Float>(1.5906179, 1.2178688, -5.7826605)
+- Parent entity: AttackCancerRoot
+✅ Untargeted ADC spawned successfully
+🚀 Firing tutorial ADC 10/10
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Spawning untargeted ADC
+DEBUG: Root entity details:
+- Name: AttackCancerRoot
+- World position: SIMD3<Float>(0.0, 0.0, 0.0)
+- Local position: SIMD3<Float>(0.0, 0.0, 0.0)
+DEBUG: HeadPosition target details:
+- Local position set: SIMD3<Float>(-1.4134142, 1.2162188, -5.6490855)
+- World position after add: SIMD3<Float>(-1.4134142, 1.2162188, -5.6490855)
+- Parent entity: AttackCancerRoot
+✅ Untargeted ADC spawned successfully
+✅ Tutorial ADC sequence complete
+⏱️ Waiting for 24s mark...
+🎯 Opening hope meter utility window
+🎮 Setting up cancer cells
+
+=== Initializing Cell States ===
+AssetLoadingManager: loadAsset(withName: cancer_cell, category: cancerCell)
+Creating parameters for cell 0
+Required hits: 7
+Total parameters after append: 1
+Added CancerCellStateComponent with parameters
+Added ClosureComponent for state updates
+🎯 PositioningSystem 76D4C00A-94E7-4561-9F63-E5D2AD08F83F initializing...
+cannot add handler to 0 from 1 - dropping
+Cannot find a BindPoint for any bind path: "", "", ""
+cannot add handler to 0 from 1 - dropping
+Creating parameters for cell 1
+Required hits: 8
+Total parameters after append: 2
+Added CancerCellStateComponent with parameters
+Added ClosureComponent for state updates
+Cannot find a BindPoint for any bind path: "", "", ""
+=== Finished Spawning ===
+Total parameters created: 2
+Initial cellsDestroyed count: 0
+🎯 Cell 0 initialized - Required hits: 7
+🎯 Cell 1 initialized - Required hits: 4
+Failed to set override status for bind point component member.
+Failed to set override status for bind point component member.
+🎮 Starting Attack Cancer Game
+✅ Set tutorial complete to true
+🕒 Starting Hope Meter
+🛑 Stopping Hope Meter
+cannot add handler to 0 from 1 - dropping
+🎮 Starting Attack Cancer Game
+✅ Set tutorial complete to true
+🕒 Starting Hope Meter
+🛑 Stopping Hope Meter
+
+=== Tapped Entity ===
+Entity name: top
+Right hand tap detected
+Spawning untargeted ADC
+DEBUG: Root entity details:
+- Name: AttackCancerRoot
+- World position: SIMD3<Float>(0.0, 0.0, 0.0)
+- Local position: SIMD3<Float>(0.0, 0.0, 0.0)
+DEBUG: HeadPosition target details:
+- Local position set: SIMD3<Float>(1.7654772, 1.4072945, -5.5323334)
+- World position after add: SIMD3<Float>(1.7654772, 1.4072945, -5.5323334)
+- Parent entity: AttackCancerRoot
+✅ Untargeted ADC spawned successfully
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 0
+Found attach point: attach_1
+Failed to set override status for bind point component member.
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 0
+Found attach point: attach_10
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 0
+Found attach point: attach_9
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 0
+Found attach point: attach_7
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 0
+Found attach point: attach_15
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 0
+💥 ADC hit cell 0
+Current hit count: 0
+Current hit count: 1
+New hit count: 0
+Required hits: 7
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 0
+💥 ADC hit cell 0
+Current hit count: 0
+Current hit count: 2
+New hit count: 0
+Required hits: 7
+📊 Cell 0: 2/7 hits
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 0
+💥 ADC hit cell 0
+Current hit count: 0
+Current hit count: 3
+New hit count: 0
+Required hits: 7
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 0
+💥 ADC hit cell 0
+Current hit count: 0
+Current hit count: 4
+New hit count: 0
+Required hits: 7
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 0
+Found attach point: attach_2
+Failed to set override status for bind point component member.
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 0
+Found attach point: attach_17
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 0
+Found attach point: attach_16
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 0
+💥 ADC hit cell 0
+Current hit count: 0
+Current hit count: 5
+New hit count: 0
+Required hits: 7
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 0
+💥 ADC hit cell 0
+Current hit count: 0
+Current hit count: 6
+New hit count: 0
+Required hits: 7
+📊 Cell 0: 6/7 hits
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 0
+💥 ADC hit cell 0
+Current hit count: 0
+Current hit count: 7
+New hit count: 0
+Required hits: 7
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 0
+💥 ADC hit cell 0
+Current hit count: 0
+Current hit count: 8
+New hit count: 0
+Required hits: 7
+=== Cancer Cell Death Triggered ===
+💀 Cell is destroyed
+✨ Updated particle emitter isEmitting to: false
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+💥 ADC hit cell 0
+Current hit count: 0
+Current hit count: 9
+New hit count: 0
+Required hits: 7
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+💥 ADC hit cell 0
+Current hit count: 0
+Current hit count: 10
+New hit count: 0
+Required hits: 7
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 0
+Found attach point: attach_8
+Failed to set override status for bind point component member.
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 0
+Found attach point: attach_18
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 0
+Found attach point: attach_3
+Failed to set override status for bind point component member.
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 0
+No available attach point found
+DEBUG: Root entity details:
+- Name: AttackCancerRoot
+- World position: SIMD3<Float>(0.0, 0.0, 0.0)
+- Local position: SIMD3<Float>(0.0, 0.0, 0.0)
+DEBUG: HeadPosition target details:
+- Local position set: SIMD3<Float>(0.8312571, 1.4928095, -5.6852684)
+- World position after add: SIMD3<Float>(0.8312571, 1.4928095, -5.6852684)
+- Parent entity: AttackCancerRoot
+✅ Untargeted ADC spawned successfully
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 1
+💥 ADC hit cell 1
+Current hit count: 0
+Current hit count: 1
+New hit count: 0
+Required hits: 8
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 1
+💥 ADC hit cell 1
+Current hit count: 0
+Current hit count: 2
+New hit count: 0
+Required hits: 8
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 1
+💥 ADC hit cell 1
+Current hit count: 0
+Current hit count: 3
+New hit count: 0
+Required hits: 8
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 1
+💥 ADC hit cell 1
+Current hit count: 0
+Current hit count: 4
+New hit count: 0
+Required hits: 8
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 1
+💥 ADC hit cell 1
+Current hit count: 0
+Current hit count: 5
+New hit count: 0
+Required hits: 8
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 1
+💥 ADC hit cell 1
+Current hit count: 0
+Current hit count: 6
+New hit count: 0
+Required hits: 8
+=== Cancer Cell Death Triggered ===
+💀 Cell is destroyed
+✨ Updated particle emitter isEmitting to: false
+Failed to set override status for bind point component member.
+FINISH ✨ Stopped particle emitter
+FINISH ✨ Stopped particle emitter
+FINISH ✨ Removed particle emitter component
+FINISH ✨ Removed cancer cell component
+✨ Removing entity from scene
+FINISH ✨ Removed particle emitter component
+FINISH ✨ Removed cancer cell component
+✨ Removing entity from scene
+ARPredictorRemoteService <0x53d30b030>: Query queue is not running.
+ARPredictorRemoteService <0x100f36960>: Query queue is not running.
+ARPredictorRemoteService <0x100b20aa0>: Query queue is not running.
+ARPredictorRemoteService <0x10a715e40>: Query queue is not running.
+ARPredictorRemoteService <0x100b29bd0>: Query queue is not running.
+ARPredictorRemoteService <0x100d09920>: Query queue is not running.
+🔄 Provider state changed to: paused
+
+=== Tracking State [Provider State Change [paused]] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: paused
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x30239cd20>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: paused
+🖐️ Hand Provider State: paused
+=== End State Log ===
+
+⏸️ Provider paused
+→ .background
+🧹 Cleaning up app state
+
+=== Tearing Down Game [Detailed] ===
+📊 Initial State:
+  - Hope Meter Running: true
+  - Tutorial Started: true
+  - Subscription Active: true
+  - Cell Parameters Count: 2
+⏹️ Stopping systems:
+  - Stopping hope meter
+🛑 Stopping Hope Meter
+  - Resetting tutorial state
+  - Reset tutorial state
+🔄 Cancelling collision subscription
+🗑️ Clearing cell parameters: 2
+
+🔍 Examining root entity: AttackCancerRoot
+  - Total children: 33
+ARPredictorRemoteService <0x55af6c920>: Query queue is not running.
+🗑️ Removed cancer cells: 2
+
+🔄 Resetting game stats:
+  - Cells Destroyed: 0 → 0
+  - Total ADCs: 23 → 0
+  - Total Taps: 13 → 0
+  - Total Hits: 0 → 0
+🔄 Resetting first ADC flag: true → false
+✅ Game tear down complete
+
+
+=== Tearing Down Game [Detailed] ===
+📊 Initial State:
+  - Hope Meter Running: false
+  - Tutorial Started: false
+  - Subscription Active: false
+  - Cell Parameters Count: 0
+⏹️ Stopping systems:
+  - Stopping hope meter
+🛑 Stopping Hope Meter
+  - Resetting tutorial state
+  - Reset tutorial state
+🗑️ Clearing cell parameters: 0
+
+🔍 Examining root entity: AttackCancerRoot
+  - Total children: 12
+🗑️ Removed cancer cells: 0
+
+🔄 Resetting game stats:
+  - Cells Destroyed: 0 → 0
+  - Total ADCs: 0 → 0
+  - Total Taps: 0 → 0
+  - Total Hits: 0 → 0
+🔄 Resetting first ADC flag: false → false
+✅ Game tear down complete
+
+> Resetting to phase: READY
+🔄 Phase transition: playing -> ready
+🔍 isTransitioning: false
+🔍 immersiveSpaceState: closed
+
+=== Starting AttackCancerViewModel Cleanup ===
+
+=== Tearing Down Game [Detailed] ===
+📊 Initial State:
+  - Hope Meter Running: false
+  - Tutorial Started: false
+  - Subscription Active: false
+  - Cell Parameters Count: 0
+⏹️ Stopping systems:
+  - Stopping hope meter
+🛑 Stopping Hope Meter
+  - Resetting tutorial state
+  - Reset tutorial state
+🗑️ Clearing cell parameters: 0
+
+🔍 Examining root entity: AttackCancerRoot
+  - Total children: 12
+🗑️ Removed cancer cells: 0
+
+🔄 Resetting game stats:
+  - Cells Destroyed: 0 → 0
+  - Total ADCs: 0 → 0
+  - Total Taps: 0 → 0
+  - Total Hits: 0 → 0
+🔄 Resetting first ADC flag: false → false
+✅ Game tear down complete
+
+🗑️ Removing root entity
+✅ Completed AttackCancerViewModel cleanup
+
+
+=== Starting Attack Cancer Environment Cleanup ===
+📊 Current template cache size: 5 entities
+📊 Current templates: attack_cancer_environment, assembled_lab, game_start_vo, cancer_cell, adc
+🗑️ Preparing to remove 1 attack cancer VO assets:
+
+🗑️ Removing asset: game_start_vo
+
+📝 Releasing entity: Root
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Root
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: VO
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Root
+✅ Released entity: VO
+
+  - Detaching from parent: Root
+✅ Released entity: Root
+
+✅ Released entity: Root
+
+✅ Released asset: game_start_vo
+
+📊 Updated template cache size: 4 entities
+🔒 Remaining asset: attack_cancer_environment
+✅ Completed attack cancer environment cleanup
+
+✅ Phase transition complete: ready
+✅ Phase transition completed: ready
+✅ App state cleanup completed
+cannot add handler to 0 from 1 - dropping
+
+=== Tracking State [Pre-Stop] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: paused
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x30239cd20>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: paused
+🖐️ Hand Provider State: paused
+=== End State Log ===
+
+
+=== Tracking State [Pre-Stop] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: paused
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x30239cd20>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===
+
+🎯 Managing windows for phase: ready
+📊 Before state update - nav window open: false
+📊 Window states after update:
+  Main: true
+  Debug: false
+  Library: false
+  Builder: false
+  Phases:
+    AppPhase: ready
+    ScenePhase: background
+    LoadingPhase: completed
+cannot add handler to 0 from 1 - dropping
+
+=== Tracking State [Post-Stop] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: paused
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x30239cd20>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===
+
+
+=== Tracking State [Post-Stop] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: paused
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x30239cd20>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===
