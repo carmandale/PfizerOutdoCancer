@@ -8,6 +8,7 @@
 import Foundation
 import RealityKit
 import RealityKitContent
+import SwiftUI
 
 /// Represents the result of loading an asset
 enum LoadResult {
@@ -42,6 +43,24 @@ enum LoadingState {
     case error(Error)
 }
 
+// Add the Equatable conformance in an extension
+extension LoadingState: Equatable {
+    static func ==(lhs: LoadingState, rhs: LoadingState) -> Bool {
+        switch (lhs, rhs) {
+        case (.notStarted, .notStarted):
+            return true
+        case (.loading(let p1), .loading(let p2)):
+            return p1 == p2
+        case (.completed, .completed):
+            return true
+        case (.error, .error): // Ignore error details
+            return true
+        default:
+            return false
+        }
+    }
+}
+
 /// Add at the top level, before the AssetLoadingManager class
 enum AssetError: Error {
     case resourceNotFound
@@ -53,6 +72,7 @@ enum AssetError: Error {
 
 /// Manages the loading and instantiation of assets in the lab environment
 @MainActor
+@Observable
 final class AssetLoadingManager {
     // MARK: - Properties
     
@@ -75,7 +95,7 @@ final class AssetLoadingManager {
     internal let labObjectsPath = "Assets/Lab/Objects"
     
     /// Current loading state
-    private var loadingState: LoadingState = .notStarted
+    var loadingState: LoadingState = .notStarted
     
     /// The current state of asset loading
     var state: LoadingState { loadingState }
@@ -87,26 +107,35 @@ final class AssetLoadingManager {
         print("\n=== Starting Intro Environment Cleanup ===")
         
         // Log initial state
+        #if DEBUG
         print("📊 Current template cache size: \(entityTemplates.count) entities")
         print("📊 Current templates: \(entityTemplates.keys.joined(separator: ", "))")
+        #endif
         
         // Remove from entity templates
         let keysToRemove = [
             "intro_environment",
             "intro_warp",
         ]
-        
+        #if DEBUG
         print("🗑️ Preparing to remove \(keysToRemove.count) intro assets:")
+        #endif
         for key in keysToRemove {
             if let entity = entityTemplates[key] {
+                #if DEBUG
                 print("\n🗑️ Removing asset: \(key)")
+                #endif
                 // Use releaseEntity for thorough cleanup including audio
                 releaseEntity(entity)
                 // Remove from templates after release
-                entityTemplates.removeValue(forKey: key)
+                entityTemplates.removeValue(forKey: key) // Remove immediately after release
+                #if DEBUG
                 print("✅ Released asset: \(key)")
+                #endif
             } else {
+                #if DEBUG
                 print("⚠️ Asset not found in cache: \(key)")
+                #endif
             }
         }
         
@@ -121,10 +150,11 @@ final class AssetLoadingManager {
     /// Releases an entity and all its resources
     func releaseEntity(_ entity: Entity) {
         // 1. Log the hierarchy before removal for debugging
+        #if DEBUG
         print("\n📝 Releasing entity: \(entity.name)")
         print("  - Child count: \(entity.children.count)")
         print("  - Has components: \(entity.components.isEmpty ? "no" : "yes")")
-        
+        #endif
         // 2. Recursively release all children first
         for child in entity.children {
             releaseEntity(child)
@@ -132,7 +162,9 @@ final class AssetLoadingManager {
         
         // 3. Stop any active audio playback
         if let controller = audioControllers[entity.id] {
+            #if DEBUG
             print("  - Stopping audio playback for entity: \(entity.name)")
+            #endif
             controller.stop()
             audioControllers.removeValue(forKey: entity.id)
         }
@@ -142,11 +174,14 @@ final class AssetLoadingManager {
         
         // 5. Remove from parent
         if let parent = entity.parent {
+            #if DEBUG
             print("  - Detaching from parent: \(parent.name)")
+            #endif
             entity.removeFromParent()
         }
-        
+        #if DEBUG
         print("✅ Released entity: \(entity.name)\n")
+        #endif
     }
     
     /// Releases lab environment assets asynchronously
@@ -154,7 +189,10 @@ final class AssetLoadingManager {
         print("\n=== Starting Lab Environment Cleanup ===")
         
         // Log initial state
+        #if DEBUG
         print("📊 Current template cache size: \(entityTemplates.count) entities")
+        print("📊 Current templates: \(entityTemplates.keys.joined(separator: ", "))")
+        #endif
         
         // Get all keys except assembled_lab
         let keysToRemove = entityTemplates.keys.filter { $0 != "assembled_lab" }
@@ -162,12 +200,16 @@ final class AssetLoadingManager {
         print("🗑️ Preparing to remove \(keysToRemove.count) assets after lab phase:")
         for key in keysToRemove {
             if let entity = entityTemplates[key] {
+                #if DEBUG
                 print("\n🗑️ Removing asset: \(key)")
+                #endif
                 // Use new releaseEntity function for thorough cleanup
                 releaseEntity(entity)
                 // Remove from templates after release
                 entityTemplates.removeValue(forKey: key)
+                #if DEBUG
                 print("✅ Released asset: \(key)")
+                #endif
             }
         }
         
@@ -232,7 +274,7 @@ final class AssetLoadingManager {
             if let entity = entityTemplates[key] {
                 print("\n🗑️ Removing asset: \(key)")
                 releaseEntity(entity)
-                entityTemplates.removeValue(forKey: key)
+                entityTemplates.removeValue(forKey: key) // Remove immediately
                 print("✅ Released asset: \(key)")
             } else {
                 print("⚠️ Asset not found in cache: \(key)")
@@ -433,6 +475,7 @@ final class AssetLoadingManager {
 
     /// Loads an asset by name on demand and caches it.
     func loadAsset(withName name: String, category: AssetCategory) async throws -> Entity {
+        print("AssetLoadingManager: loadAsset(withName: \(name), category: \(category))")
         // For the assembled lab, use the specialized loader
         if name == "assembled_lab" {
             return try await loadAssembledLab()
@@ -469,77 +512,9 @@ final class AssetLoadingManager {
         return entity.clone(recursive: true)
     }
 
-
     /// Instantiates an asset, returning a cloned instance.
     func instantiateAsset(withName name: String, category: AssetCategory) async throws -> Entity {
         return try await loadAsset(withName: name, category: category)
-    }
-
-    /// TODO remove this once we are sure the assets are loaded on demand
-    /// Load all assets required for the entire app
-    func loadAssets() async throws {
-        loadingState = .loading(progress: 0)
-        failedAssets.removeAll() // Clear previous failures
-        
-        var completedAssets = 0
-        var totalAssets = 0  // Initialize task count
-        
-        do {
-            try await withThrowingTaskGroup(of: LoadResult.self) { group in
-                // Load different categories in parallel, updating totalAssets
-             loadIntroEnvironmentAssets(group: &group, taskCount: &totalAssets)
-             loadIntroWarpAssets(group: &group, taskCount: &totalAssets)
-             loadLogoAssets(group: &group, taskCount: &totalAssets)
-             loadTitleAssets(group: &group, taskCount: &totalAssets)
-              loadLabEnvironmentAssets(group: &group, taskCount: &totalAssets)
-              loadLabVO(group: &group, taskCount: &totalAssets)
-            //   loadLabAudio(group: &group, taskCount: &totalAssets)
-              loadLabEquipmentAssets(group: &group, taskCount: &totalAssets)
-//               loadBuildADCEnvironmentAssets(group: &group, taskCount: &totalAssets)
-              loadBuildADCAssets(group: &group, taskCount: &totalAssets)
-           //    loadBuildADCAudio(group: &group, taskCount: &totalAssets)
-              loadAttackCancerEnvironmentAssets(group: &group, taskCount: &totalAssets)
-              loadAttackCancerGameStartVO(group: &group, taskCount: &totalAssets)
-              loadCancerCellAssets(group: &group, taskCount: &totalAssets)
-               loadTreatmentAssets(group: &group, taskCount: &totalAssets)
-              loadOutroEnvironmentAssets(group: &group, taskCount: &totalAssets)
-                
-                // Process results with error handling
-                for try await result in group {
-                    completedAssets += 1
-                    
-                    switch result {
-                    case .success(let entity, let key, _):
-                        entityTemplates[key] = entity
-                        // Success already logged by the loader
-                        
-                    case .failure(let key, let category, let error):
-                        failedAssets.append(FailedAsset(key: key, category: category, error: error))
-                        // Failure already logged by the loader
-                    }
-                    
-                    let progress = Float(completedAssets) / Float(totalAssets)
-                    loadingState = .loading(progress: progress)
-                }
-            }
-            
-            // After loading completes, report failures
-            if !failedAssets.isEmpty {
-                print("\n=== Asset Loading Report ===")
-                print("Failed to load \(failedAssets.count) assets:")
-                for failure in failedAssets {
-                    print("- \(failure.key) (\(failure.category)): \(failure.error)")
-                }
-                print("========================\n")
-            }
-            
-            loadingState = .completed
-            
-        } catch {
-            print("Error in task group: \(error)")
-            loadingState = .error(error)
-            throw error
-        }
     }
 
     /// Stores an audio controller for later cleanup

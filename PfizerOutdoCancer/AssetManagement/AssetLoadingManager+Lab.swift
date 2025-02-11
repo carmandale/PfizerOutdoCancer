@@ -103,8 +103,9 @@ extension AssetLoadingManager {
         // Load the empty lab scene
         let emptyScene = try await Entity(named: "\(labObjectsPath)/lab_empties", in: realityKitContentBundle)
         
-        // Find all empty transforms
-        let emptyTransforms = findEmptyTransforms(in: emptyScene)
+        // Find all empty transforms and get the total count
+        let (emptyTransforms, totalCount) = findEmptyTransforms(in: emptyScene)
+        var loadedCount = 0
         
         // Process each empty transform
         for empty in emptyTransforms {
@@ -118,6 +119,11 @@ extension AssetLoadingManager {
                 
                 // Configure the instance
                 configureLabInstance(instance, for: empty)
+
+                // Update progress
+                loadedCount += 1
+                let progress = Float(loadedCount) / Float(totalCount)
+                loadingState = .loading(progress: progress)
             }
         }
         
@@ -135,7 +141,7 @@ extension AssetLoadingManager {
     
     // MARK: - Private Helper Methods
     
-    private func findEmptyTransforms(in scene: Entity) -> [Entity] {
+    private func findEmptyTransforms(in scene: Entity) -> ([Entity], Int) {
         var empties: [Entity] = []
         
         func traverse(entity: Entity) {
@@ -149,7 +155,7 @@ extension AssetLoadingManager {
         }
         
         traverse(entity: scene)
-        return empties
+        return (empties, empties.count) // Return both the array and the count
     }
     
     private func extractAssetName(from name: String) -> String? {
@@ -183,7 +189,8 @@ extension AssetLoadingManager {
             print("✅ Using cached assembled lab")
             return cached.clone(recursive: true)
         }
-        
+        loadingState = .loading(progress: 0.0)
+
         let assetRoot = Entity()
         
         // Use existing assembly logic
@@ -199,7 +206,7 @@ extension AssetLoadingManager {
         
         // Cache the assembled lab
         entityTemplates["assembled_lab"] = assetRoot
-        
+        loadingState = .completed
         print("✅ Completed lab environment assembly")
         return assetRoot.clone(recursive: true)
     }

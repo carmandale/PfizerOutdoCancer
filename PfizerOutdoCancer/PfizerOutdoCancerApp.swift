@@ -29,41 +29,21 @@ struct PfizerOutdoCancerApp: App {
                 .environment(appModel)
                 .environment(adcDataModel)
                 .onChange(of: scenePhase) { _, newPhase in
-                        switch newPhase {
-                        case .background:
-                            Task {
-                                print("→ .background")
-                                // Stop tracking and close immersive space
-                                await cleanupAppState()
-                                
-                                // Ensure game state is cleaned up
-                                if appModel.currentPhase == .playing {
-                                    appModel.gameState.tearDownGame()
-                                }
-                            }
-                        case .inactive:
-                            Task {
-                                print("→ .inactive")
-                                // No additional cleanup needed here
-                            }
-                        case .active:
-                            Task {
-                                print("→ .active")
-                                // Add small delay to ensure cleanup completes
-                                try? await Task.sleep(nanoseconds: 200_000_000) // 200ms delay
-//                                print("I waited 200ms and I am still in the active state")
-//                                print("I am in the \(appModel.currentPhase) phase")
-//                                print("I am in the \(scenePhase) scene phase")
-//                                print("not doing anything else until I figure this out")
-                                // Always transition to ready state
-                                 await appModel.transitionToPhase(.ready)
-                            }
-                        default:
-                            break
+                    switch newPhase {
+                    case .background:
+                        Task {
+                            print("→ .background")
+                            // Keep only the essential cleanup here
+                            await cleanupAppState()
                         }
+                    case .inactive:
+                        print("→ .inactive")
+                    case .active:
+                        print("→ .active")
+                    default:
+                        break
                     }
-//                .transition(Appear())
-                
+                }
         }
         .defaultSize(width: 800, height: 800)
         .windowStyle(.plain)
@@ -127,152 +107,164 @@ struct PfizerOutdoCancerApp: App {
         Group {
 
             ImmersiveSpace(id: "IntroSpace") {
-                IntroView()
-                    .environment(appModel)
-                    .environment(adcDataModel)
-                    .onAppear {
-                        appModel.immersiveSpaceState = .open
-                    }
-                    .onDisappear {
-                        if appModel.immersiveSpaceDismissReason == .manual {
-                            // We dismissed it, just update state
-                            appModel.immersiveSpaceState = .closed
-                        } else {
-                            // System dismissed it (Digital Crown), clean up
-                            Task {
-                                await cleanupAppState()
-                            }
+                if appModel.currentPhase == .intro {
+                    IntroView()
+                        .environment(appModel)
+                        .environment(adcDataModel)
+                        .onAppear {
+                            appModel.immersiveSpaceState = .open
                         }
-                        // Reset for next time
-                        appModel.immersiveSpaceDismissReason = nil
-                    }
+                        .onDisappear {
+                            if appModel.immersiveSpaceDismissReason == .manual {
+                                // We dismissed it, just update state
+                                appModel.immersiveSpaceState = .closed
+                            } else {
+                                // System dismissed it (Digital Crown), clean up
+                                Task {
+                                    await cleanupAppState()
+                                }
+                            }
+                            // Reset for next time
+                            appModel.immersiveSpaceDismissReason = nil
+                        }
+                }
+                
             }
             .immersionStyle(selection: $appModel.introStyle, in: .mixed)
 
             ImmersiveSpace(id: "OutroSpace") {
-                OutroView()
-                    .environment(appModel)
-                    .onAppear {
-                        appModel.immersiveSpaceState = .open
-                    }
-                    .onDisappear {
-                        if appModel.immersiveSpaceDismissReason == .manual {
-                            // We dismissed it, just update state
-                            appModel.immersiveSpaceState = .closed
-                        } else {
-                            // System dismissed it (Digital Crown), clean up
-                            print("I am in the outro space in the onDisappear else block and think that I have been dismissed")
-                             Task {
-                                 await cleanupAppState()
-                             }
+                if appModel.currentPhase == .outro {
+                    OutroView()
+                        .environment(appModel)
+                        .onAppear {
+                            appModel.immersiveSpaceState = .open
                         }
-                        // Reset for next time
-                        appModel.immersiveSpaceDismissReason = nil
-                    }
+                        .onDisappear {
+                            if appModel.immersiveSpaceDismissReason == .manual {
+                                // We dismissed it, just update state
+                                appModel.immersiveSpaceState = .closed
+                            } else {
+                                // System dismissed it (Digital Crown), clean up
+                                print("I am in the outro space in the onDisappear else block and think that I have been dismissed")
+                                 Task {
+                                     await cleanupAppState()
+                                 }
+                            }
+                            // Reset for next time
+                            appModel.immersiveSpaceDismissReason = nil
+                        }
+                }
+                
             }
             .immersionStyle(selection: $appModel.outroStyle, in: .mixed)
 
-            ImmersiveSpace(id: "LabSpace") {
-                LabView()
-                    .environment(appModel)
-                    .environment(adcDataModel)
-                    .onAppear {
-                        appModel.immersiveSpaceState = .open
-                    }
-                    .onDisappear {
-                        if appModel.immersiveSpaceDismissReason == .manual {
-                            // We dismissed it, just update state
-                            appModel.immersiveSpaceState = .closed
-                        } else {
-                            // System dismissed it (Digital Crown), clean up
-                            Task {
-                                await cleanupAppState()
+            
+                ImmersiveSpace(id: "LabSpace") {
+                    if appModel.currentPhase == .lab  {
+                        LabView()
+                            .environment(appModel)
+                            .environment(adcDataModel)
+                            .onAppear {
+                                appModel.immersiveSpaceState = .open
                             }
-                        }
-                        // Reset for next time
-                        appModel.immersiveSpaceDismissReason = nil
+                            .onDisappear {
+                                if appModel.immersiveSpaceDismissReason == .manual {
+                                    // We dismissed it, just update state
+                                    appModel.immersiveSpaceState = .closed
+                                } else {
+                                    // System dismissed it (Digital Crown), clean up
+                                    Task {
+                                        await cleanupAppState()
+                                    }
+                                }
+                                // Reset for next time
+                                appModel.immersiveSpaceDismissReason = nil
+                            }
                     }
-            }
-            .immersionStyle(selection: $appModel.labStyle, in: .full)
-            .upperLimbVisibility(.visible)
+                    
+                }
+                .immersionStyle(selection: $appModel.labStyle, in: .full)
+                .upperLimbVisibility(.visible)
+            
             
             ImmersiveSpace(id: "BuildingSpace") {
-                ADCOptimizedImmersive()
-                    .environment(appModel)
-                    .environment(adcDataModel)
-                    .onAppear {
-                        appModel.immersiveSpaceState = .open
-                    }
-                    .onDisappear {
-                        if appModel.immersiveSpaceDismissReason == .manual {
-                            // We dismissed it, just update state
-                            appModel.immersiveSpaceState = .closed
-                        } else {
-                            // System dismissed it (Digital Crown), clean up
-                            Task {
-                                // Ensure builder instructions are closed first
-                                // appModel.isBuilderInstructionsOpen = false
-                                await cleanupAppState()
-                            }
+                if appModel.currentPhase == .building && !appModel.isBuilderInstructionsOpen {
+                    ADCOptimizedImmersive()
+                        .environment(appModel)
+                        .environment(adcDataModel)
+                        .onAppear {
+                            appModel.immersiveSpaceState = .open
                         }
-                        // Reset for next time
-                        appModel.immersiveSpaceDismissReason = nil
-                    }
+                        .onDisappear {
+                            if appModel.immersiveSpaceDismissReason == .manual {
+                                // We dismissed it, just update state
+                                appModel.immersiveSpaceState = .closed
+                            } else {
+                                // System dismissed it (Digital Crown), clean up
+                                Task {
+                                    // Ensure builder instructions are closed first
+                                    // appModel.isBuilderInstructionsOpen = false
+                                    await cleanupAppState()
+                                }
+                            }
+                            // Reset for next time
+                            appModel.immersiveSpaceDismissReason = nil
+                        }
+                }
+                
             }
             .immersionStyle(selection: $appModel.buildingStyle, in: .mixed)
 
             ImmersiveSpace(id: "AttackSpace") {
-                AttackCancerView()
-                    .environment(appModel)
-                    .environment(adcDataModel)
-                    .onAppear {
-                        appModel.immersiveSpaceState = .open
-                    }
-                    .onDisappear {
-                        if appModel.immersiveSpaceDismissReason == .manual {
-                            // We dismissed it, just update state
-                            appModel.immersiveSpaceState = .closed
-                        } else {
-                            // System dismissed it (Digital Crown), clean up
-                            Task {
-                                await cleanupAppState()
-                            }
+                if appModel.currentPhase == .playing || appModel.currentPhase == .completed {
+                    AttackCancerView()
+                        .environment(appModel)
+                        .environment(adcDataModel)
+                        .onAppear {
+                            appModel.immersiveSpaceState = .open
                         }
-                        // Reset for next time
-                        appModel.immersiveSpaceDismissReason = nil
-                    }
+                        .onDisappear {
+                            if appModel.immersiveSpaceDismissReason == .manual {
+                                // We dismissed it, just update state
+                                appModel.immersiveSpaceState = .closed
+                            } else {
+                                // System dismissed it (Digital Crown), clean up
+                                Task {
+                                    await cleanupAppState()
+                                }
+                            }
+                            // Reset for next time
+                            appModel.immersiveSpaceDismissReason = nil
+                        }
+                }
+                
             }
             .immersionStyle(selection: $appModel.attackStyle, in: .progressive)
             .upperLimbVisibility(.visible)
             
             // MARK: PHASE CHANGE
             // Single onChange handler for phase transitions
-            // .onChange(of: appModel.currentPhase) { oldPhase, newPhase in
-            //     if oldPhase == newPhase { return }
-                
-            //     Task {
-            //         // Ensure this runs on the main actor by either wrapping the Task as shown
-            //         // or by calling a @MainActor function.
-            //         await updateImmersiveSpace(for: newPhase, from: oldPhase)
-            //         await handleWindowsForPhase(newPhase)
-            //     }
-            // }
-
             .onChange(of: appModel.currentPhase) { oldPhase, newPhase in
                 if oldPhase == newPhase { return }
-                
+
                 Task {
                     if oldPhase.needsImmersiveSpace && !newPhase.shouldKeepPreviousSpace {
                         if appModel.immersiveSpaceState == .open {
                             appModel.immersiveSpaceDismissReason = .manual
                             await dismissImmersiveSpace()
+                            appModel.immersiveSpaceState = .closed
                         }
                     }
-                    
+
                     await handleWindowsForPhase(newPhase)
-                    
+
                     if newPhase.needsImmersiveSpace && !newPhase.shouldKeepPreviousSpace {
                         await openImmersiveSpace(id: newPhase.spaceId)
+                    }
+                    if newPhase == .building {
+                        // Explicitly set the immersive space state to closed 
+                        // so that ADCView sees a clean state for manual launch.
+                        appModel.immersiveSpaceState = .closed
                     }
                 }
             }
@@ -447,43 +439,22 @@ struct PfizerOutdoCancerApp: App {
         print("  Phases:")
         print("    AppPhase: \(appModel.currentPhase)")
         print("    ScenePhase: \(scenePhase)")
-        print("    LoadingPhase: \(appModel.loadingState)")
+        print("    LoadingPhase: \(appModel.assetLoadingManager.loadingState)")
     }
 
-    @MainActor
-    func updateImmersiveSpace(for newPhase: AppPhase, from oldPhase: AppPhase) async {
-        if oldPhase.needsImmersiveSpace && !newPhase.shouldKeepPreviousSpace {
-            if appModel.immersiveSpaceState == .open {
-                appModel.immersiveSpaceDismissReason = .manual
-                await dismissImmersiveSpace()
-            } else {
-                await openImmersiveSpace(id: newPhase.spaceId)
-            }
-        }
-    }
-    
     // MARK: - App State Management
     private func cleanupAppState() async {
         print("🧹 Cleaning up app state")
         
-        // 1. Stop any running game systems first
-        if appModel.currentPhase == .playing {
-            appModel.gameState.tearDownGame()
-        }
-        
-        // 2. Close immersive space if open
+        // 1. Close immersive space if open
         if appModel.immersiveSpaceState == .open {
             appModel.immersiveSpaceDismissReason = .manual
             await dismissImmersiveSpace()
             appModel.immersiveSpaceState = .closed
         }
         
-        // 3. Stop tracking
+        // 2. Stop tracking
         appModel.trackingManager.stopTracking()
-        
-        // 4. Reset phase to ready
-        print("> Resetting to phase: READY")
-        await appModel.transitionToPhase(.ready)
         
         print("✅ App state cleanup completed")
     }

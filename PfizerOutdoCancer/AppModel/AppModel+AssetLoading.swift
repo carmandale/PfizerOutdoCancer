@@ -5,6 +5,13 @@
 //  Created by Dale Carman on 12/10/24.
 //
 
+import SwiftUI
+
+// Define a generic error to use
+enum AppError: Error {
+    case genericLoadingError
+}
+
 extension AppModel {
     // MARK: - Asset Loading
     
@@ -22,49 +29,86 @@ extension AppModel {
         return false
     }
     
+    struct AssetToLoad {
+        let name: String
+        let category: AssetCategory
+        let weight: Float  // Relative weight for progress calculation
+    }
+    
     func startLoading() async {
         print("\n=== Starting Initial Asset Loading ===")
+        print("🔍 Current phase: \(currentPhase)")
+        print("🔍 Loading state: \(assetLoadingManager.loadingState)")
         do {
+            print("🔄 Starting prepareIntroPhase...")
             try await prepareIntroPhase()
+            print("✅ prepareIntroPhase completed")
+            print("🔄 Transitioning to .ready...")
             await transitionToPhase(.ready)
+            print("✅ Transition to .ready completed")
         } catch {
             print("❌ Error loading initial assets: \(error)")
-            loadingState = .error
+            assetLoadingManager.loadingState = .error(error)
             await transitionToPhase(.error)
         }
     }
     
-    func prepareIntroPhase() async throws {
+    func prepareIntroPhase() async {
         print("\n=== Preparing Intro Phase ===")
-        loadingState = .loading
-        loadingProgress = 0
+        print("🔍 Current phase before loading: \(currentPhase)")
+        print("🔍 Loading state: \(assetLoadingManager.loadingState)")
         
-        // All assets to preload
-        let assetsToLoad = [
-            // Intro assets
-            ("intro_environment", AssetCategory.introEnvironment),
-            ("intro_warp", AssetCategory.introEnvironment),
-            
-            // Playing phase essential assets (no audio)
-            ("attack_cancer_environment", AssetCategory.attackCancerEnvironment),
-            ("adc", AssetCategory.adc),
-            ("cancer_cell", AssetCategory.cancerCell),
-            
-            // Essential lab asset
-            ("assembled_lab", AssetCategory.labEnvironment)
-        ]
+        var introAssets: [String] = []
+        introAssets.append(contentsOf: [
+            "intro_environment",
+            "intro_warp",
+        ])
         
-        // Load all assets with progress
-        for (index, (asset, category)) in assetsToLoad.enumerated() {
-            print("📱 Loading asset: \(asset)")
-            try await assetLoadingManager.loadAsset(withName: asset, category: category)
-            let progress = Float(index + 1) / Float(assetsToLoad.count)
-            loadingProgress = progress
-            print("✅ Loaded \(asset) - Progress: \(progress)")
+        var attackAssets: [String] = []
+        attackAssets.append(contentsOf: [
+            "attack_cancer_environment",
+            "adc",
+            "cancer_cell"
+        ])
+        
+        var labAssets: [String] = []
+        labAssets.append(contentsOf: [
+            "assembled_lab"
+        ])
+        
+        let allAssets = introAssets + attackAssets + labAssets
+        
+        var completedAssets = 0
+        
+        // Load intro environment assets
+        for key in allAssets {
+            print("📱 Loading asset: \(key)")
+            
+            let category: AssetCategory
+            if introAssets.contains(key) {
+                category = .introEnvironment
+            } else if attackAssets.contains(key) {
+                category = .attackCancerEnvironment
+            } else if labAssets.contains(key) {
+                category = .labEnvironment
+            } else {
+                // Default case, should not happen
+                print("⚠️ Unknown asset category for key: \(key)")
+                continue
+            }
+            
+            do {
+                _ = try await assetLoadingManager.loadAsset(withName: key, category: category)
+                completedAssets += 1
+                let progress = Float(completedAssets) / Float(allAssets.count)
+                print("✅ Loaded \(key) - Progress: \(progress)")
+            } catch {
+                print("❌ Failed to load \(key): \(error)")
+                // Use the generic error here
+                assetLoadingManager.loadingState = .error(AppError.genericLoadingError)
+                return // Exit the function on error
+            }
         }
-        
-        loadingProgress = 1.0
-        loadingState = .completed
-        print("✅ Initial asset loading complete")
+        print("✅ prepareIntroPhase completed")
     }
 }
