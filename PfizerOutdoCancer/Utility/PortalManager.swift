@@ -8,6 +8,7 @@ final class PortalManager {
         let root = Entity()
 
         let portalRoot = Entity()
+        portalRoot.name = "portalRoot"
         portalRoot.position.y = 1.5
         portalRoot.position.z = -1.5
         
@@ -36,6 +37,7 @@ final class PortalManager {
 
         // Create the entity that stores the content within the portal.
         let world = Entity()
+        world.name = "world"
 
         // Shrink the portal world and update the position
         // to make it fit into the portal view.

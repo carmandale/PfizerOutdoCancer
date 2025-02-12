@@ -7,8 +7,9 @@ struct IntroView: View {
     @Environment(AppModel.self) private var appModel
     @Environment(ADCDataModel.self) var dataModel
     @Environment(\.dismissWindow) private var dismissWindow
+    @Environment(\.openWindow) private var openWindow
     
-    @State private var introTintIntensity: Double = 0.02 {
+    @State private var introTintIntensity: Double = 0.01 {
         didSet {
             print("introTintIntensity changed to: \(introTintIntensity)")
             // Consider adding a breakpoint here to inspect the call stack
@@ -19,6 +20,11 @@ struct IntroView: View {
         let tintColor = Color(red: introTintIntensity, green: introTintIntensity, blue: introTintIntensity)
         return SurroundingsEffect.colorMultiply(tintColor)
     }
+
+    @State var handTrackedEntity: Entity = {
+        let handAnchor = AnchorEntity(.hand(.left, location: .aboveHand))
+        return handAnchor
+    }()
     
     var body: some View {
         @Bindable var appModel = appModel
@@ -35,6 +41,11 @@ struct IntroView: View {
             ))
             content.add(root)
             print("✅ Added root to content")
+            content.add(handTrackedEntity)
+            if let attachmentEntity = attachments.entity(for: "navToggle") {
+                attachmentEntity.components[BillboardComponent.self] = .init()
+                handTrackedEntity.addChild(attachmentEntity)
+            }
             
             // Handle environment and attachments in Task
             Task { @MainActor in
@@ -62,6 +73,7 @@ struct IntroView: View {
                             
                             // Set up attachments on portal
                             appModel.introState.setupAttachments(
+                                in: root,
                                 for: portal,
                                 titleEntity: titleEntity,
                                 labViewerEntity: labViewerEntity
@@ -73,9 +85,38 @@ struct IntroView: View {
                             appModel.introState.isSetupComplete = true
                         }
                     }
+
+                    // set up the lab attachments
+                    // Now that environment is loaded, set up attachments
+                    if let adcButton = attachments.entity(for: "ADCBuilderViewerButton"),
+                       let attackButton = attachments.entity(for: "AttackCancerViewerButton") {
+                        
+                        // Find attachment points and set up buttons
+                        if let builderTarget = root.findEntity(named: "ADCBuilderAttachment") {
+                            print("🎯 Found ADCBuilderAttachment target")
+                            builderTarget.addChild(adcButton)
+                            adcButton.components.set(BillboardComponent())
+                            appModel.labState.adcBuilderViewerButtonEntity = adcButton
+                        } else {
+                            print("❌ ADCBuilderAttachment target not found")
+                        }
+                        
+                        if let attackTarget = root.findEntity(named: "AttackCancerAttachment") {
+                            print("🎯 Found AttackCancerAttachment target")
+                            attackTarget.addChild(attackButton)
+                            attackButton.components.set(BillboardComponent())
+                            appModel.labState.attackCancerViewerButtonEntity = attackButton
+                        } else {
+                            print("❌ AttackCancerAttachment target not found")
+                        }
+                    }
+
+                    
+
                 } catch {
                     print("❌ IntroView: Setup failed: \(error)")
                 }
+                
             }
         } attachments: {
             Attachment(id: "titleText") {
@@ -87,22 +128,78 @@ struct IntroView: View {
             Attachment(id: "navToggle") {
                 NavToggleView()
             }
+            Attachment(id: "ADCBuilderViewerButton") {
+                ADCBuilderViewerButton()
+            }
+            Attachment(id: "AttackCancerViewerButton") {
+                AttackCancerViewerButton()
+            }
+            Attachment(id: "AttachmentContent") {
+                HStack(spacing: 12) {
+                    Button(action: {
+                        appModel.isNavWindowOpen.toggle()
+                        openWindow(id: AppModel.navWindowId)
+                    }, label: {
+                        Image(systemName: "arrow.2.circlepath.circle")
+                    })
+
+                }
+                .opacity(appModel.isNavWindowOpen ? 0 : 1)
+            }
         }
         .preferredSurroundingsEffect(surroundingsEffect)
+
         .onAppear {
             print("\n=== IntroView Appeared ===")
-            
-            // withAnimation(.linear(duration: 30.0)) {
-            //     print(">>> IntroView: Fading in intro tint intensity to %.2f\n", 0.02)
-            //     introTintIntensity = 0.02
-            // }
+            dismissWindow(id: AppModel.navWindowId)
+            // Ensure library window starts closed
+            appModel.updateLibraryWindowState(isOpen: false)
         }
+        .onDisappear {
+            // Cleanup is now handled by AssetLoadingManager during phase transitions
+        }
+        .onChange(of: appModel.labState.isLibraryOpen) { _, isOpen in
+            if isOpen {
+                openWindow(id: AppModel.libraryWindowId)
+                appModel.updateLibraryWindowState(isOpen: true)
+            } else {
+                dismissWindow(id: AppModel.libraryWindowId)
+                appModel.updateLibraryWindowState(isOpen: false)
+            }
+        }
+        .gesture(
+            SpatialTapGesture()
+                .targetedToAnyEntity()
+                .onEnded { value in
+                    appModel.labState.handleTap(on: value.entity)
+                }
+        )
         // Keep tracking tasks separate
         .task {
             await appModel.trackingManager.processWorldTrackingUpdates()
         }
         .task {
+            await appModel.trackingManager.processHandTrackingUpdates()
+        }
+        .task {
             await appModel.trackingManager.monitorTrackingEvents()
+        }
+        // start the lab environment when readyToStartLab becomes true
+        .onChange(of: appModel.readyToStartLab) { _, newValue in
+            if newValue {
+                if let root = appModel.introState.introRootEntity {
+                    Task { @MainActor in
+                        do {
+                            try await appModel.labState.setupInitialLabEnvironment(in: root)
+                            try await appModel.labState.setupLabEnvironment(in: root)
+                        } catch {
+                            print("❌ Error setting up lab environment: \(error)")
+                        }
+                    }
+                } else {
+                    print("❌ Intro root entity not available for lab setup")
+                }
+            }
         }
     }
 }

@@ -191,10 +191,10 @@ extension ADCMovementSystem {
         // Check for near-zero length or NaN components
         if vectorLength < 1e-6 || vector.x.isNaN || vector.y.isNaN || vector.z.isNaN {
             #if DEBUG
-            print("⚠️ Vector normalization failed:")
-            print("Vector: \(vector)")
-            print("Length: \(vectorLength)")
-            print("Using default vector: \(defaultVector)")
+            // print("⚠️ Vector normalization failed:")
+            // print("Vector: \(vector)")
+            // print("Length: \(vectorLength)")
+            // print("Using default vector: \(defaultVector)")
             #endif
             return defaultVector
         }
@@ -207,9 +207,9 @@ extension ADCMovementSystem {
         let vector = surfacePoint - center
         
         #if DEBUG
-        print("Surface Normal Calculation:")
-        print("Vector: \(vector)")
-        print("Vector Length: \(length(vector))")
+        // print("Surface Normal Calculation:")
+        // print("Vector: \(vector)")
+        // print("Vector Length: \(length(vector))")
         #endif
         
         return safeNormalize(vector)

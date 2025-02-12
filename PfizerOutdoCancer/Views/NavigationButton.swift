@@ -68,20 +68,23 @@ struct VisionNavigationButtonStyle: ButtonStyle {
                         style: .continuous
                     )
                     .fill(.thinMaterial)
+                    .hoverEffect(.lift)
                 }
                 .glassBackgroundEffect()
+                
         }
         // Animate the scale when the button is pressed.
-        .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
+        .scaleEffect(configuration.isPressed ? AppModel.UIConstants.buttonPressScale : 1.0)
         .animation(.easeOut(duration: 0.4), value: configuration.isPressed)
         // (Optional) Animate hover effects if needed.
-        .hoverEffect { effect, isActive, proxy in
-            effect
-                .animation(.easeInOut(duration: AppModel.UIConstants.buttonHoverDuration)) {
-                    $0.scaleEffect(isActive ? scaleEffect : 1.0)
-                }
-        }
-        .hoverEffectGroup()
+//        .hoverEffect { effect, isActive, proxy in
+//            effect
+//                .animation(.easeInOut(duration: AppModel.UIConstants.buttonHoverDuration)) {
+//                    $0.scaleEffect(isActive ? scaleEffect : 1.0)
+//                }
+//        }
+        // .hoverEffect(.lift)
+        // .hoverEffectGroup()
         // Start the continuous rotation animation for the gradient borders.
         .onAppear {
             withAnimation(.linear(duration: 4).repeatForever(autoreverses: false)) {

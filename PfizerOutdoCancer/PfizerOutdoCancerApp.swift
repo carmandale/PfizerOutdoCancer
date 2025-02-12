@@ -29,21 +29,53 @@ struct PfizerOutdoCancerApp: App {
                 .environment(appModel)
                 .environment(adcDataModel)
                 .onChange(of: scenePhase) { _, newPhase in
-                    switch newPhase {
-                    case .background:
-                        Task {
-                            print("→ .background")
-                            // Keep only the essential cleanup here
-                            await cleanupAppState()
+                        switch newPhase {
+                        case .background:
+                            Task {
+                                print("→ .background")
+                                // Stop tracking and close immersive space
+                                await cleanupAppState()
+                                
+                                // Ensure game state is cleaned up
+                                if appModel.currentPhase == .playing {
+                                    await appModel.gameState.tearDownGame()
+                                }
+                            }
+                        case .inactive:
+                            Task {
+                                print("→ .inactive")
+                                // No additional cleanup needed here
+                            }
+                        case .active:
+                            Task {
+                                print("→ .active")
+                                // Add small delay to ensure cleanup completes
+                                try? await Task.sleep(nanoseconds: 200_000_000) // 200ms delay
+                                print("I am in the \(appModel.currentPhase) phase")
+                                print("I am in the \(scenePhase) scene phase")
+                                // Always transition to ready state
+                                 await appModel.transitionToPhase(.ready)
+                            }
+                        default:
+                            break
                         }
-                    case .inactive:
-                        print("→ .inactive")
-                    case .active:
-                        print("→ .active")
-                    default:
-                        break
                     }
-                }
+                // .onChange(of: scenePhase) { _, newPhase in
+                //     switch newPhase {
+                //     case .background:
+                //         Task {
+                //             print("→ .background")
+                //             // Keep only the essential cleanup here
+                //             await cleanupAppState()
+                //         }
+                //     case .inactive:
+                //         print("→ .inactive")
+                //     case .active:
+                //         print("→ .active")
+                //     default:
+                //         break
+                //     }
+                // }
         }
         .defaultSize(width: 800, height: 800)
         .windowStyle(.plain)
@@ -59,12 +91,7 @@ struct PfizerOutdoCancerApp: App {
             }
         }
         .defaultSize(CGSize(width: 800, height: 600))
-//        .defaultWindowPlacement { _, context in
-//            if let mainWindow = context.windows.first {
-//                return WindowPlacement(.leading(mainWindow))
-//            }
-//            return WindowPlacement(.none)
-//        }
+
         .persistentSystemOverlays(appModel.isLibraryWindowOpen ? .visible : .hidden)
 
 
@@ -259,11 +286,16 @@ struct PfizerOutdoCancerApp: App {
                     await handleWindowsForPhase(newPhase)
 
                     if newPhase.needsImmersiveSpace && !newPhase.shouldKeepPreviousSpace {
-                        await openImmersiveSpace(id: newPhase.spaceId)
+                        if newPhase == .playing || newPhase == .outro {
+                            // Add a short delay to allow asset preloading and state updates to settle.
+                            try? await Task.sleep(nanoseconds: 150_000_000) // 150ms delay
+                            print("Transitioning into \(newPhase); delay elapsed. Proceeding to open immersive space.")
+                        }
+                        let result = await openImmersiveSpace(id: newPhase.spaceId)
+                        print("openImmersiveSpace result for \(newPhase): \(result)")
                     }
                     if newPhase == .building {
-                        // Explicitly set the immersive space state to closed 
-                        // so that ADCView sees a clean state for manual launch.
+                        // Explicitly set the immersive space state to closed so that manual launch works.
                         appModel.immersiveSpaceState = .closed
                     }
                 }
@@ -289,7 +321,7 @@ struct PfizerOutdoCancerApp: App {
         RealityKitContent.MovementComponent.registerComponent()
         RealityKitContent.UIAttachmentComponent.registerComponent()
         RealityKitContent.ADCComponent.registerComponent()
-        RealityKitContent.BreathingComponent.registerComponent()
+        // RealityKitContent.BreathingComponent.registerComponent()
         RealityKitContent.CellPhysicsComponent.registerComponent()
         RealityKitContent.MicroscopeViewerComponent.registerComponent()
     //        RealityKitContent.GestureComponent.registerComponent()
@@ -300,18 +332,22 @@ struct PfizerOutdoCancerApp: App {
         HitCountComponent.registerComponent()
         UIStateSyncSystem.registerSystem()
 
+        // Register new CancerCellMovementData component
+        CancerCellMovementData.registerComponent()
+        CancerCellSpeedBoostSystem.registerSystem()
+
         /// Register systems
         AttachmentSystem.registerSystem()
-        BreathingSystem.registerSystem()
+        // BreathingSystem.registerSystem()
         CancerCellSystem.registerSystem()
         MovementSystem.registerSystem()
         UIAttachmentSystem.registerSystem()
         ADCMovementSystem.registerSystem()
         UIStabilizerSystem.registerSystem()
         AntigenSystem.registerSystem()
-        SwirlingSystem.registerSystem()
-        TraceComponent.registerComponent()
-        TraceSystem.registerSystem()
+        // SwirlingSystem.registerSystem()
+        // TraceComponent.registerComponent()
+        // TraceSystem.registerSystem()
         RotationComponent.registerComponent()
         RotationSystem.registerSystem()
 
@@ -365,12 +401,12 @@ struct PfizerOutdoCancerApp: App {
                 appModel.isNavWindowOpen = false
             }
             
-        case .intro:
+        case .intro: break
             // Handle other windows
-            if !appModel.isNavWindowOpen {
-                openWindow(id: AppModel.navWindowId)
-                appModel.isNavWindowOpen = true
-            }
+//            if !appModel.isNavWindowOpen {
+//                openWindow(id: AppModel.navWindowId)
+//                appModel.isNavWindowOpen = true
+//            }
         case .outro:
             if appModel.isNavWindowOpen {
                 dismissWindow(id: AppModel.navWindowId)
@@ -395,12 +431,12 @@ struct PfizerOutdoCancerApp: App {
             appModel.isHopeMeterUtilityWindowOpen = false
 //            openWindow(id: AppModel.mainWindowId)
             
-        case .lab:
+        case .lab: break
 
-            if !appModel.isNavWindowOpen {
-                openWindow(id: AppModel.navWindowId)
-                appModel.isNavWindowOpen = true
-            }
+//            if !appModel.isNavWindowOpen {
+//                openWindow(id: AppModel.navWindowId)
+//                appModel.isNavWindowOpen = true
+//            }
         case .building:
             if appModel.isNavWindowOpen {
                 print("closing nav window")

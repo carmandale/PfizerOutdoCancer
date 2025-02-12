@@ -10,7 +10,7 @@
 
 def Xform "Root"
 {
-    reorder nameChildren = ["IntroAnimation", "sh0100_v01", "Audio", "RCP_BehaviorsContainer", "OnAddedToScene", "materials", "M_jet", "Orchestra", "SFX", "Voice", "Model_Sorting_Group", "card_Transform", "IntroParticles", "Narrator"]
+    reorder nameChildren = ["IntroAnimation", "sh0100_v01", "Audio", "RCP_BehaviorsContainer", "OnAddedToScene", "materials", "Orchestra", "SFX", "Voice", "Model_Sorting_Group", "AudioMixGroups", "SkySphere", "logo", "ExtraItems", "Narrator"]
     def RealityKitTimeline "IntroAnimation"
     {
         reorder nameChildren = ["Track12", "Track2", "Track13", "Track16", "Track3", "Track4", "Track", "Track5", "Track6", "Track7", "Track8"]
@@ -387,7 +387,7 @@ def Xform "Root"
                 string actionKind = "enable"
                 uniform token info:id = "E5BC426A-E24A-41E3-86F1-418A20853BBF"
                 double startTime = 43.34341064393558
-                rel target = </Root/ADC_particles>
+                rel target = </Root/ExtraItems/ADC_particles>
             }
 
             def RealityKitAction "Disable_Entity"
@@ -395,7 +395,7 @@ def Xform "Root"
                 string actionKind = "disable"
                 uniform token info:id = "2F0F359B-F611-461A-A0E5-B92233AC2EC5"
                 double startTime = 0
-                rel target = </Root/ADC_particles>
+                rel target = </Root/ExtraItems/ADC_particles>
             }
         }
 
@@ -434,7 +434,7 @@ def Xform "Root"
                 string actionKind = "disable"
                 uniform token info:id = "607C0987-1A4E-494D-BC7E-59E6431D4BC2"
                 double startTime = 0
-                rel target = </Root/ADC_particles2>
+                rel target = </Root/ExtraItems/ADC_particles2>
             }
 
             def RealityKitAction "Enable_Entity"
@@ -442,7 +442,7 @@ def Xform "Root"
                 string actionKind = "enable"
                 uniform token info:id = "A9745344-D273-4CCF-B72C-F4BB08DBC230"
                 double startTime = 80
-                rel target = </Root/ADC_particles2>
+                rel target = </Root/ExtraItems/ADC_particles2>
             }
         }
 
@@ -3236,102 +3236,6 @@ def Xform "Root"
         token depthPass = "postPass"
     }
 
-    def "IntroWarp" (
-        active = true
-        prepend references = @IntroWarp.usda@
-    )
-    {
-        float3 xformOp:scale = (1, 1, 1)
-
-        over "sh0100_v01_portalWarp2"
-        {
-            rel material:binding (
-                bindMaterialAs = "strongerThanDescendants"
-            )
-
-            over "PortalWarp_MSR"
-            {
-                over "PortalWarp2_endCap"
-                {
-                    over "Cylinder_002" (
-                        prepend apiSchemas = ["MaterialBindingAPI"]
-                    )
-                    {
-                        rel material:binding = </Root/IntroWarp/M_jet/JetMaterial> (
-                            bindMaterialAs = "weakerThanDescendants"
-                        )
-
-                        def RealityKitComponent "MeshSorting"
-                        {
-                            rel group = </Root/Model_Sorting_Group>
-                            token info:id = "RealityKit.MeshSorting"
-                            int priorityInGroup = 1
-                        }
-                    }
-                }
-
-                over "PortalWarp2"
-                {
-                    over "Cylinder" (
-                        prepend apiSchemas = ["MaterialBindingAPI"]
-                    )
-                    {
-                        rel material:binding = </Root/IntroWarp/M_jet/JetMaterial> (
-                            bindMaterialAs = "weakerThanDescendants"
-                        )
-
-                        def RealityKitComponent "MeshSorting"
-                        {
-                            rel group = </Root/Model_Sorting_Group>
-                            token info:id = "RealityKit.MeshSorting"
-                            int priorityInGroup = 2
-                        }
-                    }
-                }
-            }
-        }
-
-        def RealityKitComponent "HierarchicalFade"
-        {
-            uniform token info:id = "RealityKit.HierarchicalFade"
-            float opacity = 1
-        }
-
-        over "M_jet"
-        {
-            over "JetMaterial"
-            {
-                float inputs:TunnelMapAmount = 0
-            }
-        }
-
-        over "sh0100_v01_portalWarp3"
-        {
-            over "PortalWarp3"
-            {
-                over "Sphere"
-                {
-                    def RealityKitComponent "MeshSorting"
-                    {
-                        rel group = </Root/Model_Sorting_Group>
-                        token info:id = "RealityKit.MeshSorting"
-                        int priorityInGroup = 2
-                    }
-                }
-
-                over "portalMesh"
-                {
-                    def RealityKitComponent "MeshSorting"
-                    {
-                        rel group = </Root/Model_Sorting_Group>
-                        token info:id = "RealityKit.MeshSorting"
-                        int priorityInGroup = 3
-                    }
-                }
-            }
-        }
-    }
-
     def RealityKitComponent "AudioMixGroups"
     {
         uniform token info:id = "RealityKit.AudioMixGroups"
@@ -3372,44 +3276,6 @@ def Xform "Root"
         }
     }
 
-    def "ADC_particles" (
-        active = true
-        prepend references = @Assets/Intro/ADC_particles.usda@
-    )
-    {
-        float3 xformOp:scale = (1, 1, 1)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-        over "ParticleEmitter"
-        {
-            def RealityKitComponent "MeshSorting"
-            {
-                rel group = </Root/Model_Sorting_Group>
-                token info:id = "RealityKit.MeshSorting"
-                int priorityInGroup = 1
-            }
-        }
-    }
-
-    def "ADC_particles2" (
-        active = true
-        prepend references = @Assets/Intro/ADC_particles2.usda@
-    )
-    {
-        float3 xformOp:scale = (1, 1, 1)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-        over "ParticleEmitter"
-        {
-            def RealityKitComponent "MeshSorting"
-            {
-                rel group = </Root/Model_Sorting_Group>
-                token info:id = "RealityKit.MeshSorting"
-                int priorityInGroup = 2
-            }
-        }
-    }
-
     def "SkySphere" (
         active = false
         prepend references = @SkySphere.usdz@
@@ -3447,7 +3313,7 @@ def Xform "Root"
 
     def "logo" (
         active = true
-        prepend references = @logo.usda@
+        references = @logo.usda@
     )
     {
         float3 xformOp:scale = (1, 1, 1)
@@ -3473,6 +3339,151 @@ def Xform "Root"
         def RealityKitComponent "HierarchicalFade"
         {
             uniform token info:id = "RealityKit.HierarchicalFade"
+        }
+    }
+
+    def Xform "ExtraItems" (
+        active = true
+    )
+    {
+        def "IntroWarp" (
+            active = true
+            references = @IntroWarp.usda@
+        )
+        {
+            quatf xformOp:orient = (1, 0, 0, 0)
+            float3 xformOp:scale = (1, 1, 1)
+            float3 xformOp:translate = (0, 0, 0)
+
+            over "sh0100_v01_portalWarp2"
+            {
+                rel material:binding (
+                    bindMaterialAs = "strongerThanDescendants"
+                )
+
+                over "PortalWarp_MSR"
+                {
+                    over "PortalWarp2_endCap"
+                    {
+                        over "Cylinder_002" (
+                            prepend apiSchemas = ["MaterialBindingAPI"]
+                        )
+                        {
+                            rel material:binding = </Root/IntroWarp/M_jet/JetMaterial> (
+                                bindMaterialAs = "weakerThanDescendants"
+                            )
+
+                            def RealityKitComponent "MeshSorting"
+                            {
+                                rel group = </Root/Model_Sorting_Group>
+                                token info:id = "RealityKit.MeshSorting"
+                                int priorityInGroup = 1
+                            }
+                        }
+                    }
+
+                    over "PortalWarp2"
+                    {
+                        over "Cylinder" (
+                            prepend apiSchemas = ["MaterialBindingAPI"]
+                        )
+                        {
+                            rel material:binding = </Root/IntroWarp/M_jet/JetMaterial> (
+                                bindMaterialAs = "weakerThanDescendants"
+                            )
+
+                            def RealityKitComponent "MeshSorting"
+                            {
+                                rel group = </Root/Model_Sorting_Group>
+                                token info:id = "RealityKit.MeshSorting"
+                                int priorityInGroup = 2
+                            }
+                        }
+                    }
+                }
+            }
+
+            def RealityKitComponent "HierarchicalFade"
+            {
+                uniform token info:id = "RealityKit.HierarchicalFade"
+                float opacity = 1
+            }
+
+            over "M_jet"
+            {
+                over "JetMaterial"
+                {
+                    float inputs:TunnelMapAmount = 1
+                }
+            }
+
+            over "sh0100_v01_portalWarp3"
+            {
+                over "PortalWarp3"
+                {
+                    over "Sphere"
+                    {
+                        def RealityKitComponent "MeshSorting"
+                        {
+                            rel group = </Root/Model_Sorting_Group>
+                            token info:id = "RealityKit.MeshSorting"
+                            int priorityInGroup = 2
+                        }
+                    }
+
+                    over "portalMesh"
+                    {
+                        def RealityKitComponent "MeshSorting"
+                        {
+                            rel group = </Root/Model_Sorting_Group>
+                            token info:id = "RealityKit.MeshSorting"
+                            int priorityInGroup = 3
+                        }
+                    }
+                }
+            }
+        }
+
+        def "ADC_particles" (
+            active = true
+            references = @Assets/Intro/ADC_particles.usda@
+        )
+        {
+            quatf xformOp:orient = (1, 0, 0, 0)
+            float3 xformOp:scale = (1, 1, 1)
+            float3 xformOp:translate = (0, 0, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            over "ParticleEmitter"
+            {
+                def RealityKitComponent "MeshSorting"
+                {
+                    rel group = </Root/Model_Sorting_Group>
+                    token info:id = "RealityKit.MeshSorting"
+                    int priorityInGroup = 1
+                }
+            }
+        }
+
+        def "ADC_particles2" (
+            active = true
+            references = @Assets/Intro/ADC_particles2.usda@
+        )
+        {
+            quatf xformOp:orient = (1, 0, 0, 0)
+            float3 xformOp:scale = (1, 1, 1)
+            float3 xformOp:translate = (0, 0, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            over "ParticleEmitter"
+            {
+                def RealityKitComponent "MeshSorting"
+                {
+                    rel group = </Root/Model_Sorting_Group>
+                    token info:id = "RealityKit.MeshSorting"
+                    int priorityInGroup = 2
+                }
+            }
         }
     }
 }

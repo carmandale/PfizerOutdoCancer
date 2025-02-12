@@ -3,68 +3,8 @@ import RealityKit
 import RealityKitContent
 
 extension AssetLoadingManager {
-    internal func loadLabEnvironmentAssets(group: inout ThrowingTaskGroup<LoadResult, Error>, taskCount: inout Int) {
-        group.addTask { () async throws -> LoadResult in
-            print("Starting to load and assemble LabEnvironment")
-            let assetRoot = await Entity()
-            
-            do {
-                // Load lab environment base
-                print("Loading base LabEnvironment")
-                let labEnvironmentScene = try await self.loadEntity(named: "LabEnvironment")
-                await assetRoot.addChild(labEnvironmentScene)
-                
-                // Load and add lab equipment
-                print("Assembling lab equipment")
-                let equipmentScene = try await self.loadPopulatedLabScene()
-                await assetRoot.addChild(equipmentScene)
-                
-                // Setup IBL lighting
-                print("Setting up IBL lighting")
-                try await IBLUtility.addImageBasedLighting(to: assetRoot, imageName: "lab_v005")
-                
-                // Store the actual environment
-//                await self.setLaboratory(assetRoot)
-                
-                print("Successfully assembled complete LabEnvironment")
-                return .success(entity: assetRoot, key: "lab_environment", category: .labEnvironment)
-            } catch {
-                print("Failed to load LabEnvironment: \(error)")
-                return .failure(key: "lab_environment", category: .labEnvironment, error: error)
-            }
-        }
-        taskCount += 1
-    }
-    
-    internal func loadLabVO(group: inout ThrowingTaskGroup<LoadResult, Error>, taskCount: inout Int) {
-        group.addTask {
-            print("Starting to load Lab VO")
-            do {
-                let entity = try await Entity(named: "LabVO", in: realityKitContentBundle)
-                print("Successfully loaded Lab VO")
-                return .success(entity: entity, key: "lab_vo", category: .labEnvironment)
-            } catch {
-                print("Failed to load Lab VO: \(error)")
-                return .failure(key: "lab_vo", category: .labEnvironment, error: error)
-            }
-        }
-        taskCount += 1
-    }
-    
-    internal func loadLabAudio(group: inout ThrowingTaskGroup<LoadResult, Error>, taskCount: inout Int) {
-        group.addTask {
-            print("Starting to load Lab Audio")
-            do {
-                let entity = try await Entity(named: "LabAudio", in: realityKitContentBundle)
-                print("Successfully loaded Lab Audio")
-                return .success(entity: entity, key: "lab_audio", category: .labEnvironment)
-            } catch {
-                print("Failed to load Lab Audio: \(error)")
-                return .failure(key: "lab_audio", category: .labEnvironment, error: error)
-            }
-        }
-        taskCount += 1
-    }
+
+
     
     internal func loadLabEquipmentAssets(group: inout ThrowingTaskGroup<LoadResult, Error>, taskCount: inout Int) {
         let labAssets = [

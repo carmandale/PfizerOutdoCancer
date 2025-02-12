@@ -33,7 +33,7 @@ extension AppModel {
         static let buttonPaddingHorizontal: CGFloat = 24
         static let buttonPaddingVertical: CGFloat = 16
         static let buttonExpandScale: CGFloat = 1.1
-        static let buttonPressScale: CGFloat = 0.95
+        static let buttonPressScale: CGFloat = 0.9
         
         // Animation Durations
         static let buttonHoverDuration: CGFloat = 0.2
@@ -139,6 +139,7 @@ final class AppModel {
     var isBuilderInstructionsOpen = false
     var isBuilderWindowOpen = false
     var isLoadingWindowOpen = false
+    var readyToStartLab: Bool = false
 
     // MARK: - Immersion Style
     var introStyle: ImmersionStyle = .mixed
@@ -236,28 +237,21 @@ final class AppModel {
         hopeMeterTimer?.invalidate()
         hopeMeterTimer = nil
         
-        // Calculate how many seconds are left until full (100%)
-        let currentProgress = (gameState.hopeMeterDuration - gameState.hopeMeterTimeLeft) / gameState.hopeMeterDuration
-        let remainingProgress = 1.0 - currentProgress
-        
-        // Create a high-frequency timer for smooth animation
-        // We'll update 60 times during the 1-second animation
-        let updateInterval = 1.0 / 60.0
-        let progressPerUpdate = remainingProgress / 60.0
-        
-        // Animate the progress up to 100% over 1 second
-        for _ in 0..<60 {
-            let newTimeLeft = gameState.hopeMeterTimeLeft - (gameState.hopeMeterDuration * progressPerUpdate)
-            gameState.hopeMeterTimeLeft = max(0, newTimeLeft)  // Ensure we don't go below 0
-            try? await Task.sleep(for: .seconds(updateInterval))
+        // Animate the hope meter to completion using SwiftUI's withAnimation over 2 seconds.
+        // This assumes that the UI is bound to gameState.hopeMeterTimeLeft.
+        await MainActor.run {
+            withAnimation(.easeInOut(duration: 2.0)) {
+                gameState.hopeMeterTimeLeft = 0
+            }
         }
         
-        // Ensure we hit exactly 0 (100% progress)
-        gameState.hopeMeterTimeLeft = 0
+        // Wait for 2 seconds after the animation completes.
+        try? await Task.sleep(nanoseconds: 2_000_000_000)
         
-        // Complete the game
-        gameState.isHopeMeterRunning = false
-        await transitionToPhase(.completed)
+        // Mark the hope meter as finished.
+        await MainActor.run {
+            gameState.isHopeMeterRunning = false
+        }
     }
     
     deinit {
@@ -307,7 +301,7 @@ final class AppModel {
         await preloadAssets(for: newPhase, adcDataModel: adcDataModel)
 
         // 3. Clean up the *current* phase (guarantee completion with await)
-        await cleanupCurrentPhase()
+        await cleanupCurrentPhase(for: newPhase)
 
         // 4. *Now* set the new phase
         currentPhase = newPhase
@@ -377,7 +371,7 @@ final class AppModel {
     }
 
 
-    private func cleanupCurrentPhase() async {
+    private func cleanupCurrentPhase(for newPhase: AppPhase) async {
         switch currentPhase {
         case .intro:
             introState.cleanup()
@@ -385,23 +379,30 @@ final class AppModel {
         case .lab:
             labState.cleanup()
             await assetLoadingManager.releaseLabEnvironment()
-        case .playing, .completed:
-            gameState.cleanup()
-            await assetLoadingManager.releaseAttackCancerEnvironment()
+        case .playing:
+            if newPhase != .completed {
+                print("I am in the playing phase and I am not transitioning to completed so I am cleaning up")
+                await gameState.cleanup()
+                await assetLoadingManager.releaseAttackCancerEnvironment()
+            } else {
+                print("I am in the playing phase and transitioning to completed, so preserving immersive assets")
+            }
+        case .completed:
+            if newPhase != .outro {
+                print("I am in the completed phase and transitioning to \(newPhase); cleaning up normally.")
+                await gameState.cleanup()
+                await assetLoadingManager.releaseAttackCancerEnvironment()
+            } else {
+                print("Transitioning from completed to outro; preserving immersive assets for AttackCancerView.")
+                // Do not call cleanup so that the completed phase's assets remain for the outro.
+            }
         case .outro:
             outroState.cleanup()
             await assetLoadingManager.releaseOutroEnvironment()
         case .ready, .loading, .building, .error:
-            break // No cleanup needed
+            break // No cleanup needed.
         }
     }
-    
-    // Keep all other existing methods...
-    
-    // Remove ARKit session management code that's moved to TrackingSessionManager:
-    // - runARKitSession()
-    // - monitorSessionEvents()
-    // - arkitSession and provider properties
     
     var isTutorialStarted: Bool = false
     

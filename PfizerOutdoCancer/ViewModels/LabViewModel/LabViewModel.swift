@@ -47,33 +47,33 @@ final class LabViewModel {
         return root
     }
     
-    func setupInitialEnvironment() async throws {
+    func setupInitialLabEnvironment(in root: Entity) async throws {
         print("📱 LabViewModel: Setting up initial environment")
-        
-        guard let root = mainEntity else {
-            print("❌ LabViewModel: No root entity for initial environment")
-            return
-        }
-        
-        // Load the complete assembled lab
-        print("📱 Loading assembled lab environment")
-        let labEnvironment = try await appModel.assetLoadingManager.loadAssembledLab()
-        root.addChild(labEnvironment)
-        print("🏢 Assembled Lab Environment added to MainEntity")
-        print("📍 Lab Environment position: \(labEnvironment.position)")
+        let labEnvironment = root.findEntity(named: "assembled_lab")!
+//        guard let root = mainEntity else {
+//            print("❌ LabViewModel: No root entity for initial environment")
+//            return
+//        }
+//        
+//        // Load the complete assembled lab
+//        print("📱 Loading assembled lab environment")
+//        let labEnvironment = try await appModel.assetLoadingManager.loadAssembledLab()
+//        root.addChild(labEnvironment)
+//        print("🏢 Assembled Lab Environment added to MainEntity")
+//        print("📍 Lab Environment position: \(labEnvironment.position)")
         
         // Configure the interactive devices
         configureInteractiveDevices(in: labEnvironment)
     }
     
     // MARK: - Environment Setup
-    func setupEnvironment() async throws {
+    func setupLabEnvironment(in root: Entity) async throws {
         print("📱 LabViewModel: Starting environment setup")
         
-        guard let root = mainEntity else {
-            print("❌ LabViewModel: No root entity for environment setup")
-            throw AssetError.resourceNotFound
-        }
+//        guard let root = mainEntity else {
+//            print("❌ LabViewModel: No root entity for environment setup")
+//            throw AssetError.resourceNotFound
+//        }
         
         print("\n=== Configuring ADC Button Visibility ===")
         if appModel.hasBuiltADC {

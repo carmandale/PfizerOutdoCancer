@@ -443,4 +443,59 @@ extension Entity {
     func stopRotation() {
         components.remove(RotationComponent.self)
     }
+    
+    /// Animates the entity's absolute position and scale from its current state to a target state.
+    /// - Parameters:
+    ///   - targetPosition: The absolute target position (default: [0, 0, 0])
+    ///   - targetScale: The absolute target scale (default: [1, 1, 1])
+    ///   - duration: Animation duration in seconds
+    ///   - delay: Optional delay before starting the animation (in seconds)
+    ///   - timing: Animation timing curve (default: .easeInOut)
+    ///   - waitForCompletion: If true, waits for the animation to complete before returning
+    func animateAbsolutePositionAndScale(to targetPosition: SIMD3<Float> = SIMD3<Float>(0, 0, 0),
+                                           scale targetScale: SIMD3<Float> = SIMD3<Float>(1, 1, 1),
+                                           duration: TimeInterval,
+                                           delay: TimeInterval = 0,
+                                           timing: RealityKit.AnimationTimingFunction = .easeInOut,
+                                           waitForCompletion: Bool = false) async {
+        // Handle delay first
+        if delay > 0 {
+            try? await Task.sleep(for: .seconds(delay))
+        }
+        
+        let startTransform = transform
+        var endTransform = transform
+        // Set absolute target values
+        endTransform.translation = targetPosition
+        endTransform.scale = targetScale
+        
+        // For non-animated changes (duration = 0), apply the transform immediately
+        guard duration > 0 else {
+            transform = endTransform
+            return
+        }
+        
+        // Build the animation using FromToByAnimation, animating the entire transform
+        let animation = FromToByAnimation(
+            from: startTransform,
+            to: endTransform,
+            duration: duration,
+            timing: timing,
+            bindTarget: .transform
+        )
+        
+        do {
+            let resource = try AnimationResource.generate(with: animation)
+            playAnimation(resource)
+            
+            // Optionally wait for the animation to complete
+            if waitForCompletion {
+                try? await Task.sleep(for: .seconds(duration))
+            }
+        } catch {
+            print("⚠️ Could not generate absolute position and scale animation: \(error.localizedDescription)")
+            // Fall back to directly setting the transform
+            transform = endTransform
+        }
+    }
 }

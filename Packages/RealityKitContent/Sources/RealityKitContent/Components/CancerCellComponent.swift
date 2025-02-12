@@ -95,10 +95,15 @@ public class CancerCellSystem: System {
     // Query to match cancer cell entities.
     static let query = EntityQuery(where: .has(CancerCellStateComponent.self))
 
+    // NEW: A static shared reference for easy access.
+    public static var shared: CancerCellSystem?
+    
     // NEW: Add a public closure property to notify when a cell is destroyed.
     public var onCellDestroyed: (() -> Void)?
     
-    required public init(scene: RealityKit.Scene) {}
+    required public init(scene: RealityKit.Scene) {
+        CancerCellSystem.shared = self
+    }
     
     /// Update cancer cell entities.
     public func update(context: SceneUpdateContext) {

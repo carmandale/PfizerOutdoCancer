@@ -1,8 +1,7 @@
 {
-  "advancedEditorSelectedIdentifier" : "BehaviorsPluginID",
+  "advancedEditorSelectedIdentifier" : "ProjectBrowser",
   "openSceneRelativePaths" : [
-    "Assets\/Lab\/People\/3D_people_scene.usda",
-    "LabEnvironment.usda"
+    "IntroEnvironment.usda"
   ],
   "recentIdentifiers" : {
     "00353439-B084-4161-BDD3-58325B62FD61" : [
@@ -7204,6 +7203,50 @@
     ],
     "8F147A5E-21A3-494D-B8D5-156DE567ADE6" : [
       {
+        "date" : 760996214.780102,
+        "title" : "Untitled",
+        "transform" : [
+          0.18370351,
+          -7.5123205e-09,
+          0.98298174,
+          0,
+          0.6658093,
+          0.7356734,
+          -0.12442904,
+          0,
+          -0.72315365,
+          0.6773363,
+          0.13514578,
+          0,
+          -5.8528395,
+          7.668724,
+          3.2676992,
+          1
+        ]
+      },
+      {
+        "date" : 760996212.422799,
+        "title" : "Untitled",
+        "transform" : [
+          0.18370351,
+          -7.5123205e-09,
+          0.98298174,
+          0,
+          0.6658093,
+          0.7356734,
+          -0.12442904,
+          0,
+          -0.72315365,
+          0.6773363,
+          0.13514578,
+          0,
+          -7.262664,
+          7.2945175,
+          -2.400672,
+          1
+        ]
+      },
+      {
         "date" : 760894387.300776,
         "title" : "Untitled",
         "transform" : [
@@ -7376,50 +7419,6 @@
           -0.42245364,
           1.1312941,
           0.66633964,
-          1
-        ]
-      },
-      {
-        "date" : 760834389.596636,
-        "title" : "Untitled",
-        "transform" : [
-          0.9895337,
-          -4.426248e-09,
-          -0.14430241,
-          0,
-          -0.08793048,
-          0.7929023,
-          -0.6029711,
-          0,
-          0.114417754,
-          0.60934883,
-          0.7846035,
-          0,
-          -0.12257856,
-          3.9120839,
-          0.3850925,
-          1
-        ]
-      },
-      {
-        "date" : 760834387.400285,
-        "title" : "Untitled",
-        "transform" : [
-          0.9912326,
-          -3.4987413e-09,
-          -0.13212924,
-          0,
-          -0.06094827,
-          0.8872558,
-          -0.4572335,
-          0,
-          0.11723247,
-          0.46127778,
-          0.8794767,
-          0,
-          -0.07912493,
-          3.3351073,
-          0.9875536,
           1
         ]
       }
@@ -11970,5 +11969,5 @@
   "sceneViewportBackgroundColors" : {
 
   },
-  "selectedSceneRelativePath" : "LabEnvironment.usda"
+  "selectedSceneRelativePath" : "IntroEnvironment.usda"
 }

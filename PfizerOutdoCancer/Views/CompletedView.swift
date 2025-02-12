@@ -8,6 +8,8 @@ struct CompletedView: View {
     @Environment(\.openWindow) private var openWindow
     @Environment(\.dismissWindow) private var dismissWindow
     @State private var animateStats = false
+
+    @State private var opacity: Double = 0  // Add state for opacity
     
     private var stats: (destroyed: Int, deployed: Int, score: Int) {
         let gameState = appModel.gameState
@@ -44,6 +46,9 @@ struct CompletedView: View {
                     NavigationButton(
                         title: "Continue",
                         action: {
+                            print("=== Continue Button Pressed ===")
+                            print("Current Phase: \(appModel.currentPhase)")
+                            print("Immersive Space State: \(appModel.immersiveSpaceState)")
                             await appModel.transitionToPhase(.outro)
                         },
                         font: .title,
@@ -55,17 +60,29 @@ struct CompletedView: View {
         }
         .padding(64)
         .frame(maxWidth: 500)
-        .clipShape(RoundedRectangle(cornerRadius: 20))
         .glassBackgroundEffect()
-        .padding(32)
+        // .clipShape(RoundedRectangle(cornerRadius: 20))
+        // .padding(32)
         .onAppear {
+            print("=== CompletedView Appeared ===")
+            print("🔍 Immersive Space State: \(appModel.immersiveSpaceState)")
             dismissWindow(id: AppModel.navWindowId)
             
             withAnimation(.easeOut) {
                 animateStats = true
             }
         }
-        .transition(Appear())
+        .opacity(opacity)  // Apply opacity
+        .onAppear {
+            withAnimation(.easeIn(duration: 0.5)) {
+                opacity = 1.0
+            }
+        }
+        .onDisappear {
+            withAnimation(.easeOut(duration: 1.0)) {
+                opacity = 0.0
+            }
+        }
     }
     
     // Helper functions moved outside of body
@@ -83,7 +100,7 @@ struct CompletedView: View {
         }
         .frame(width: 372)
         .padding()
-        .clipShape(RoundedRectangle(cornerRadius: 12))
+        // .clipShape(RoundedRectangle(cornerRadius: 12))
     }
 }
 

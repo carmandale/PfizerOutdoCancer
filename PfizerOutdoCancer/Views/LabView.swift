@@ -27,8 +27,8 @@ struct LabView: View {
             // Setup environment in a task after root is configured
             Task { @MainActor in
                 do {
-                    try await appModel.labState.setupInitialEnvironment()
-                    try await appModel.labState.setupEnvironment()
+                    try await appModel.labState.setupInitialLabEnvironment(in: root)
+                    try await appModel.labState.setupLabEnvironment(in: root)
                     
                     // Now that environment is loaded, set up attachments
                     if let adcButton = attachments.entity(for: "ADCBuilderViewerButton"),

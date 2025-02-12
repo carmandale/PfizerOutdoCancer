@@ -72,14 +72,16 @@ struct AttackCancerView: View {
 //                }
 //            }
         }
-        .onChange(of: appModel.gameState.cellsDestroyed) { _, newValue in
-            if newValue >= appModel.gameState.cellParameters.count {
-                print("🎯 All game cells destroyed (\(newValue)/\(appModel.gameState.cellParameters.count))")
-                Task {
-                    await appModel.accelerateHopeMeterToCompletion()
-                }
-            }
-        }
+        // .onChange(of: appModel.gameState.cellsDestroyed) { _, newValue in
+        //     // Compute the number of game cells only (excluding tutorial cells).
+        //     let totalGameCells = appModel.gameState.cellParameters.filter { !$0.isTutorialCell }.count
+        //     if totalGameCells > 0, newValue >= totalGameCells {
+        //         print("🎯 onChange - All game cells destroyed (\(newValue)/\(totalGameCells))")
+        //         Task {
+        //             await appModel.accelerateHopeMeterToCompletion()
+        //         }
+        //     }
+        // }
         .task {
             await appModel.trackingManager.processWorldTrackingUpdates()
         }
@@ -121,13 +123,14 @@ struct AttackCancerView: View {
             dismissWindow(id: AppModel.navWindowId)
         }
         .onDisappear {
-            // First tear down the game state
-            appModel.gameState.tearDownGame()
-            
-            // Then trigger phase transition
-            // Task {
-            //     await appModel.transitionToPhase(.ready)
-            // }
+            // Only perform teardown if not transitioning to a preserving state (e.g., .completed)
+            if appModel.currentPhase != .completed {
+                Task {
+                    await appModel.gameState.tearDownGame()
+                }
+            } else {
+                print("🚫 Skipping tearDownGame() for completed phase to preserve immersive assets")
+            }
         }
         .onChange(of: appModel.isTutorialStarted) { _, started in
             // Only start tutorial if it wasn't already started during initial setup

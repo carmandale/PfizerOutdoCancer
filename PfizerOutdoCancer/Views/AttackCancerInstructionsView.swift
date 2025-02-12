@@ -17,6 +17,8 @@ struct AttackCancerInstructionsView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.openWindow) private var openWindow
     
+    @State private var opacity: Double = 0  // Add state for opacity
+    
     var body: some View {
         var adcEntity = Entity()
         
@@ -107,7 +109,17 @@ struct AttackCancerInstructionsView: View {
                     // .padding(30)
                 }
                 .padding(.bottom, 100)
-                .transition(Appear())
+                .opacity(opacity)  // Apply opacity
+                .onAppear {
+                    withAnimation(.easeIn(duration: 2.0)) {
+                        opacity = 1.0
+                    }
+                }
+                .onDisappear {
+                    withAnimation(.easeOut(duration: 1.0)) {
+                        opacity = 0.0
+                    }
+                }
             }
         }
         .frame(minWidth: 800)

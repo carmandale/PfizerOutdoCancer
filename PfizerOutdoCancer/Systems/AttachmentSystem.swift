@@ -74,21 +74,21 @@ public struct AttachmentSystem: System {
                 approachPosition: approachPosition!
             ) else { continue }
             #if DEBUG
-            print("📊 Attachment Point Score - Point: \(entity.name), Score: \(score)")
+//            print("📊 Attachment Point Score - Point: \(entity.name), Score: \(score)")
             #endif
             
             if score > bestScore {
                 bestScore = score
                 bestPoint = entity
                 #if DEBUG
-                print("✨ New best attachment point - Score: \(score)")
+//                print("✨ New best attachment point - Score: \(score)")
                 #endif
             }
         }
         
         if let bestPoint = bestPoint {
             #if DEBUG
-            print("🎯 Selected attachment point: \(bestPoint.name) with score: \(bestScore)")
+//            print("🎯 Selected attachment point: \(bestPoint.name) with score: \(bestScore)")
             #endif
         }
         

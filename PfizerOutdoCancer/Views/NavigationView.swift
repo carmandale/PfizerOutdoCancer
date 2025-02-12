@@ -25,16 +25,14 @@ struct NavigationView: View {
         .opacity(appModel.isNavWindowOpen ? 1 : 0)
         .animation(.default, value: appModel.isNavWindowOpen)
         
-        .onChange(of: scenePhase, initial: true) {
-                    switch scenePhase {
-                    case .inactive, .background:
-                        appModel.isNavWindowOpen = false
-                    case .active:
-                        appModel.isNavWindowOpen = true
-                    @unknown default:
-                        appModel.isNavWindowOpen = false
-                    }
-                }
+        .onChange(of: scenePhase, initial: true) { oldPhase, newPhase in
+            switch newPhase {
+            case .inactive, .background:
+                appModel.isNavWindowOpen = false
+            default:
+                break
+            }
+        }
     }
     
     private func handleNavigation(for title: String) async {

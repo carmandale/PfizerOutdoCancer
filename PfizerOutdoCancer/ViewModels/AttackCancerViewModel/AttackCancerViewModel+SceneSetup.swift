@@ -5,6 +5,14 @@ import RealityKitContent
 extension AttackCancerViewModel {
     // MARK: - Setup Functions
     func setupRoot() -> Entity {
+        // Reset the cleanup state for a new game session.
+        cleanupState = .none
+        // Reset any additional flags required for starting fresh
+        appModel.isTutorialStarted = false
+        tutorialComplete = false
+        // (Optionally also reset any other flags that must be restarted)
+        print("🔄 Starting new game session: cleanupState reset to .none, tutorial flags reset")
+
         print("📱 AttackCancerViewModel: Setting up root")
         let root = Entity()
         root.name = "AttackCancerRoot"
@@ -18,6 +26,8 @@ extension AttackCancerViewModel {
             offsetZ: -1.0
         ))
         root.addChild(headTrackingRoot)
+        print("✅ HeadTrackingRoot added to root")
+        print("World Position of HeadTrackingRoot: \(headTrackingRoot.position(relativeTo: nil))")
         
         rootEntity = root
         return root
@@ -40,9 +50,9 @@ extension AttackCancerViewModel {
                 withName: "attack_cancer_environment",
                 category: .attackCancerEnvironment
             )
-
+            
             root.addChild(environment)
-
+            
             print("setting up collisions")
             setupCollisions(in: environment)
             
@@ -52,6 +62,18 @@ extension AttackCancerViewModel {
             print("❌ Error setting up AttackCancerView environment: \(error)")
             environmentLoaded = false
         }
+        
+        // NEW: Retrieve the shared CancerCellSystem (set via automatic registration)
+        if let cancerSystem = CancerCellSystem.shared {
+            self.cancerCellSystem = cancerSystem
+            // Assign the onCellDestroyed closure.
+            cancerSystem.onCellDestroyed = { [weak self] in
+                guard let self = self else { return }
+                self.cellsDestroyed += 1
+                print("Incremented cellsDestroyed to \(self.cellsDestroyed)")
+                self.checkGameConditions()
+            }
+        }
     }
     
     func setupIBL(in root: Entity) async {
@@ -59,16 +81,6 @@ extension AttackCancerViewModel {
             try await IBLUtility.addImageBasedLighting(to: root, imageName: "metro_noord_2k")
         } catch {
             print("Failed to setup IBL: \(error)")
-        }
-
-        // NEW: Find the CancerCellSystem in the scene and assign its callback.
-        if let cancerSystem = root.scene?.systems.first(where: { $0 is CancerCellSystem }) as? CancerCellSystem {
-            cancerSystem.onCellDestroyed = { [weak self] in
-                guard let self = self else { return }
-                self.cellsDestroyed += 1
-                print("Incremented cellsDestroyed to \(self.cellsDestroyed)")
-                self.checkGameConditions()
-            }
         }
     }
     
@@ -182,7 +194,6 @@ extension AttackCancerViewModel {
             )
             let maxCells = maxCancerCells
             await spawnCancerCells(in: root, from: cancerCellTemplate, count: maxCells)
-//            setupUIAttachments(in: root, attachments: attachments, count: maxCells)
             
             // Update required hits and setup hit tracking
             for i in 0..<maxCells {
@@ -198,9 +209,7 @@ extension AttackCancerViewModel {
             for (index, params) in cellParameters.enumerated() {
                 print("  Cell \(index): isTutorialCell=\(params.isTutorialCell), isDestroyed=\(params.isDestroyed)") // ADDED LOG
             }
-            
-            // print("🎮 Game Content Setup Complete - Starting Hope Meter")
-            // appModel.startHopeMeter()
+
         } catch {
             print("❌ Failed to load cancer cell template: \(error)")
         }

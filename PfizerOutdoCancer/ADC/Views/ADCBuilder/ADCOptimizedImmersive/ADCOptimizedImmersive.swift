@@ -658,7 +658,7 @@ struct ADCOptimizedImmersive: View {
             self.adcLinkers.forEach { $0.isEnabled = false }
             
             // Create sort group for all ADC components
-            self.adcSortGroup = ModelSortGroup(depthPass: .prePass)
+            self.adcSortGroup = ModelSortGroup(depthPass: .postPass)
             os_log(.debug, "ITR..setupEntitiesAndMaterials(): ✅ Created ADC sort group")
         } catch {
             os_log(.error, "ITR..setupEntitiesAndMaterials(): ❌ Failed to load antibody scene: \(error)")

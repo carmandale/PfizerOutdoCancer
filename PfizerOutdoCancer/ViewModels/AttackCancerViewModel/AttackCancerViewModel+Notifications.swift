@@ -20,48 +20,22 @@ extension AttackCancerViewModel {
     // No longer needed: setupNotifications, handleCancerCellUpdate, notifyCellStateChanged, notifyGameStateChanged, notifyScoreChanged
 
     func checkGameConditions() {
-        // Only check game completion if the game is actually active
-        guard isGameActive else {
-            #if DEBUG
-            print("\n⚠️ Game State Check (NOT ACTIVE):")
-            print("  - Tutorial Complete: \(tutorialComplete)")
-            print("  - Hope Meter Running: \(isHopeMeterRunning)")
-            print("  - Game Active: false\n")
-            #endif
-            return
-        }
-        
-        #if DEBUG
-        print("\n🎮 Game State Active:")
-        print("  - Tutorial Complete: \(tutorialComplete)")
-        print("  - Hope Meter Running: \(isHopeMeterRunning)")
-        print("  - Game Active: true")
-        #endif
-        
-        // Check if all *game* cells are destroyed (exclude tutorial cell)
-        let gameCells = cellParameters.filter { !$0.isTutorialCell }
-        let destroyedGameCells = gameCells.filter { $0.isDestroyed }.count
-
+        // Instead, use the global cellsDestroyed counter updated by the CancerCellSystem.
+        let totalGameCells = cellParameters.filter { !$0.isTutorialCell }.count
         #if DEBUG
         print("\n=== Game Completion Check ===")
-        print("📊 Game Cells Status:")
-        for (index, cell) in gameCells.enumerated() {
-            print("  Game Cell \(index):")
-            print("    - Is Destroyed: \(cell.isDestroyed)")
-            print("    - Hit Count: \(cell.hitCount)/\(cell.requiredHits)")
-        }
-        print("\n📈 Summary:")
-        print("  - Total game cells: \(gameCells.count)")
-        print("  - Destroyed game cells: \(destroyedGameCells)")
-        print("  - All cells destroyed: \(destroyedGameCells >= gameCells.count)")
-        print("=== End Completion Check ===\n")
+        print("  - Total game cells: \(totalGameCells)")
+        print("  - Global destroyed cells: \(cellsDestroyed)")
         #endif
-
-        if destroyedGameCells >= gameCells.count {
+        
+        if totalGameCells > 0, cellsDestroyed >= totalGameCells {
             print("✅✅✅ ALL GAME CELLS DESTROYED! Condition met!")
             Task { @MainActor in
                 print("🎯 All game cells destroyed - accelerating hope meter")
                 await appModel.accelerateHopeMeterToCompletion()
+                // Wait for an additional 2 seconds after accelerateHopeMeterToCompletion finishes.
+                try? await Task.sleep(nanoseconds: 2_000_000_000)
+                await appModel.transitionToPhase(.completed)
             }
         }
     }

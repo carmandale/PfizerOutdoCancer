@@ -65,45 +65,45 @@ extension AttackCancerViewModel {
             print("Added CancerCellStateComponent with parameters")
             
             // Add ClosureComponent for state updates
-            cell.components.set(
-                ClosureComponent { [weak self] _ in
-                    guard let self = self,
-                          let stateComponent = cell.components[CancerCellStateComponent.self],
-                          let cellID = stateComponent.parameters.cellID,
-                          cellID < self.cellParameters.count else { return }
+            // cell.components.set(
+            //     ClosureComponent { [weak self] _ in
+            //         guard let self = self,
+            //               let stateComponent = cell.components[CancerCellStateComponent.self],
+            //               let cellID = stateComponent.parameters.cellID,
+            //               cellID < self.cellParameters.count else { return }
                     
-                    // Get reference to the correct parameters instance
-                    let parameters = self.cellParameters[cellID]
-                    let wasDestroyed = parameters.isDestroyed
+            //         // Get reference to the correct parameters instance
+            //         let parameters = self.cellParameters[cellID]
+            //         let wasDestroyed = parameters.isDestroyed
                     
-                    // Update state
-                    parameters.hitCount = stateComponent.parameters.hitCount
-                    parameters.isDestroyed = stateComponent.parameters.isDestroyed
+            //         // Update state
+            //         parameters.hitCount = stateComponent.parameters.hitCount
+            //         parameters.isDestroyed = stateComponent.parameters.isDestroyed
                     
-                    #if DEBUG
-                    print("\n=== Cell State Change ===")
-                    print("📊 Cell \(cellID):")
-                    print("  - Tutorial Cell: \(parameters.isTutorialCell)")
-                    print("  - Was Destroyed: \(wasDestroyed)")
-                    print("  - Is Destroyed: \(parameters.isDestroyed)")
-                    print("  - Hit Count: \(parameters.hitCount)/\(parameters.requiredHits)")
-                    #endif
+            //         #if DEBUG
+            //         print("\n=== Cell State Change ===")
+            //         print("📊 Cell \(cellID):")
+            //         print("  - Tutorial Cell: \(parameters.isTutorialCell)")
+            //         print("  - Was Destroyed: \(wasDestroyed)")
+            //         print("  - Is Destroyed: \(parameters.isDestroyed)")
+            //         print("  - Hit Count: \(parameters.hitCount)/\(parameters.requiredHits)")
+            //         #endif
                     
-                    // Track when a non-tutorial cell is newly destroyed
-                    if !stateComponent.parameters.isTutorialCell && stateComponent.parameters.isDestroyed && !wasDestroyed {
-                        Task { @MainActor in
-                            self.cellsDestroyed += 1
-                            print("🎯 Game cell \(cellID) destroyed - Total destroyed: \(self.cellsDestroyed)")
-                            self.checkGameConditions()
-                        }
-                    } else if parameters.isDestroyed {
-                        print("⚠️ Cell \(cellID) destroyed but not counted because:")
-                        print("  - Tutorial Cell: \(parameters.isTutorialCell)")
-                        print("  - Was Already Destroyed: \(wasDestroyed)")
-                    }
-                }
-            )
-            print("Added ClosureComponent for state updates")
+            //         // Track when a non-tutorial cell is newly destroyed
+            //         if !stateComponent.parameters.isTutorialCell && stateComponent.parameters.isDestroyed && !wasDestroyed {
+            //             Task { @MainActor in
+            //                 self.cellsDestroyed += 1
+            //                 print("🎯 Game cell \(cellID) destroyed - Total destroyed: \(self.cellsDestroyed)")
+            //                 self.checkGameConditions()
+            //             }
+            //         } else if parameters.isDestroyed {
+            //             print("⚠️ Cell \(cellID) destroyed but not counted because:")
+            //             print("  - Tutorial Cell: \(parameters.isTutorialCell)")
+            //             print("  - Was Already Destroyed: \(wasDestroyed)")
+            //         }
+            //     }
+            // )
+            // print("Added ClosureComponent for state updates")
             
             root.addChild(cell)
             setupAttachmentPoints(for: cell, complexCell: complexCell, cellID: index)
@@ -211,16 +211,19 @@ extension AttackCancerViewModel {
         // REF: Direction calculation matches reference Entity+Planet.swift calculateVelocity()
         let orbitDirection = SIMD3<Float>(
             cos(theta),   // X component
-            0,           // No vertical velocity
-            -sin(theta)  // Z component
+            0,            // No vertical velocity
+            -sin(theta)   // Z component
         )
         
         // REF: Angular velocity = [0, 1, 0] * 0.3 in reference Entity+Planet.swift
         let motionComponent = PhysicsMotionComponent(
             linearVelocity: orbitDirection * orbitSpeed,
-            angularVelocity: [Float.random(in: -0...1), Float.random(in: -1...1), Float.random(in: -0...1)] * 1.0  // Add random tumbling
+            angularVelocity: [Float.random(in: -0...1), Float.random(in: -1...1), Float.random(in: -1...1)] * 1.0  // Add random tumbling
         )
         cell.components.set(motionComponent)
+        
+        // NEW: Store the base velocity for later speed adjustments in the speed boost system.
+        cell.components.set(CancerCellMovementData(baseLinearVelocity: orbitDirection * orbitSpeed))
     }
     
     private func setupCellIdentification(_ cell: Entity, cellID: Int) {
@@ -290,18 +293,18 @@ extension AttackCancerViewModel {
             }
             
             // Add ClosureComponent for state updates
-            complexCell.components.set(
-                ClosureComponent { [weak self] _ in
-                    guard let self = self,
-                          let stateComponent = complexCell.components[CancerCellStateComponent.self],
-                          let cellID = stateComponent.parameters.cellID,
-                          cellID < self.cellParameters.count else { return }
+            // complexCell.components.set(
+            //     ClosureComponent { [weak self] _ in
+            //         guard let self = self,
+            //               let stateComponent = complexCell.components[CancerCellStateComponent.self],
+            //               let cellID = stateComponent.parameters.cellID,
+            //               cellID < self.cellParameters.count else { return }
                     
-                    // Directly update the corresponding parameters in the array.
-                    self.cellParameters[cellID].hitCount = stateComponent.parameters.hitCount
-                    self.cellParameters[cellID].isDestroyed = stateComponent.parameters.isDestroyed
-                }
-            )
+            //         // Directly update the corresponding parameters in the array.
+            //         self.cellParameters[cellID].hitCount = stateComponent.parameters.hitCount
+            //         self.cellParameters[cellID].isDestroyed = stateComponent.parameters.isDestroyed
+            //     }
+            // )
 //            print("Added ClosureComponent for state updates")
             
             setupAttachmentPoints(for: cell, complexCell: complexCell, cellID: 777)

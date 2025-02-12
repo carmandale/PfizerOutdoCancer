@@ -7,6 +7,7 @@ struct HopeMeterUtilityView: View {
     
     private let height: CGFloat = 30
     private let fontSize: CGFloat = 20
+    @State private var progressOpacity: Double = 0
     
     var progress: CGFloat {
         1.0 - (CGFloat(appModel.gameState.hopeMeterTimeLeft) / CGFloat(appModel.gameState.hopeMeterDuration))
@@ -41,13 +42,19 @@ struct HopeMeterUtilityView: View {
                     NavigationButton(
                         title: "Start",
                         action: {
-                            appModel.startAttackCancerGame()
+                            withAnimation(.easeInOut(duration: 0.5)) {
+                                appModel.startAttackCancerGame()
+                            }
                         },
                         font: .title,
                         width: 250
                     )
                     .fontWeight(.bold)
                     .padding(.vertical, 30)
+                    .transition(.asymmetric(
+                        insertion: .opacity.combined(with: .scale),
+                        removal: .opacity.combined(with: .scale).combined(with: .move(edge: .leading))
+                    ))
                 } else {
                     ZStack(alignment: .leading) {
                         // Background rectangle
@@ -55,11 +62,17 @@ struct HopeMeterUtilityView: View {
                             .fill(Color("LightBlue200"))
                             .frame(height: height)
                         
-                        // Progress rectangle
+                        // Progress rectangle using masking
                         RoundedRectangle(cornerRadius: height / 2)
                             .fill(Color("gradient600"))
-                            .frame(width: 598 * progress, height: height)
-                            .animation(.linear(duration: 0.5), value: progress)
+                            .frame(height: height)
+                            .mask(
+                                GeometryReader { geometry in
+                                    RoundedRectangle(cornerRadius: height / 2)
+                                        .frame(width: geometry.size.width * progress)
+                                        .animation(.linear(duration: 0.5), value: progress)
+                                }
+                            )
                         
                         // Percentage text
                         Text("\(percentage)%")
@@ -70,7 +83,16 @@ struct HopeMeterUtilityView: View {
                     }
                     .frame(width: 598)
                     .padding(.vertical, 30)
-                    .transition(Appear())
+                    .opacity(progressOpacity)
+                    .onAppear {
+                        withAnimation(.easeIn(duration: 0.7)) {
+                            progressOpacity = 1.0
+                        }
+                    }
+                    .transition(.asymmetric(
+                        insertion: .opacity.combined(with: .scale).combined(with: .move(edge: .trailing)),
+                        removal: .opacity.combined(with: .scale)
+                    ))
                 }
             }
             .frame(width: 648)

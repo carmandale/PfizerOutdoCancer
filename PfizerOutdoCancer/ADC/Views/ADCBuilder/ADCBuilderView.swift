@@ -161,7 +161,7 @@ struct ADCBuilderView: View {
                                 }
                         }
                         .glassBackgroundEffect()
-                        .opacity(dataModel.isVOPlaying ? 0.2 : 1.0)
+                        .opacity(dataModel.isVOPlaying ? 0.1 : 1.0)
                         .disabled(dataModel.isVOPlaying)
                         .animation(.easeInOut(duration: 0.5), value: dataModel.isVOPlaying)
                     }
@@ -204,7 +204,7 @@ struct ADCBuilderView: View {
                                 }
                         }
                         .glassBackgroundEffect()
-                        .opacity(!dataModel.isCurrentStepComplete || dataModel.isVOPlaying ? 0.2 : 1.0)
+                        .opacity(!dataModel.isCurrentStepComplete || dataModel.isVOPlaying ? 0.1 : 1.0)
                         .disabled(!dataModel.isCurrentStepComplete || dataModel.isVOPlaying)
                         .animation(.easeInOut(duration: 0.5), value: dataModel.isVOPlaying)
                     }

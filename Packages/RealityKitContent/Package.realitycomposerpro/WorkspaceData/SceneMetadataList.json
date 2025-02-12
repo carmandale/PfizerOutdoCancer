@@ -5834,17 +5834,6 @@
       [
         "7A10AC9D-F4E1-4FB8-A276-43FB7670B088",
         "Root",
-        "IntroWarp",
-        "sh0100_v01_portalWarp3",
-        "PortalWarp3"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "7A10AC9D-F4E1-4FB8-A276-43FB7670B088",
-        "Root",
         "Audio",
         "Violin1"
       ],
@@ -5867,15 +5856,6 @@
         "selectedAudioFilePrim" : {
           "string" : "\/Root\/Audio\/Cymbal\/Cymbal_wav"
         }
-      },
-      [
-        "7A10AC9D-F4E1-4FB8-A276-43FB7670B088",
-        "Root",
-        "IntroWarp"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
       },
       [
         "7A10AC9D-F4E1-4FB8-A276-43FB7670B088",
@@ -6181,16 +6161,6 @@
         "selectedAudioFilePrim" : {
           "string" : "\/Root\/Audio\/SFX\/SpinFX1\/SpinFX1_wav"
         }
-      },
-      [
-        "7A10AC9D-F4E1-4FB8-A276-43FB7670B088",
-        "Root",
-        "IntroWarp",
-        "sh0100_v01_portalWarp3"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
       },
       [
         "7A10AC9D-F4E1-4FB8-A276-43FB7670B088",
@@ -6635,16 +6605,6 @@
         "sh0100_v01_portalWarp2",
         "PortalWarp_MSR",
         "PortalWarp2"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "7A10AC9D-F4E1-4FB8-A276-43FB7670B088",
-        "Root",
-        "IntroWarp",
-        "M_jet"
       ],
       {
         "isExpanded" : true,
