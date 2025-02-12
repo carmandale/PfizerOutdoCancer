@@ -67,7 +67,12 @@ extension ADCOptimizedImmersive {
         // Create voice-over entity with spatial audio - attached to main view entity
         let voiceOverSource = Entity()
         voiceOverSource.name = "VoiceOverSource"
-        voiceOverSource.components.set(SpatialAudioComponent(directivity: .beam(focus: 1.0)))
+
+        // Conditionally set up the audio entity to be spatial or channel-based
+        if !useChannelAudioForVO { // Only add the spatial component if NOT using channel audio
+            voiceOverSource.components.set(SpatialAudioComponent(directivity: .beam(focus: 1.0)))
+        }
+
         if let mainEntity {
             mainEntity.addChild(voiceOverSource)
         }

@@ -207,6 +207,18 @@ final class AttackCancerViewModel {
         print("✅ Completed AttackCancerViewModel cleanup\n")
     }
 
+    // NEW: Reset function to be called at the start of a new game session.
+    func resetCleanupForNewSession() {
+        // Reset cleanup flags and other related state if needed.
+        cleanupState = .none
+        isCleaningUp = false
+        // Optionally, reinitialize other game state if necessary.
+        // For example, you might want to clear cell parameters and reset counters—
+        // however, ensure that this reset does not conflict with the
+        // app’s intended state management.
+        print("🔄 AttackCancerViewModel: Cleanup state has been reset for new session.")
+    }
+
     private func resetGameState() async {
         print("\n🔄 Resetting game stats:")
         print("  - Cells Destroyed: \(cellsDestroyed) → 0")

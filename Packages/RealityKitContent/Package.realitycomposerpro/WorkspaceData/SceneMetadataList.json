@@ -257,16 +257,6 @@
       [
         "1C8A319C-C3C8-4EB5-B82E-7B452D913E6D",
         "Root",
-        "outro_people_v01",
-        "PicturesRoot"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "1C8A319C-C3C8-4EB5-B82E-7B452D913E6D",
-        "Root",
         "Outro_v02",
         "Track5"
       ],
@@ -308,50 +298,8 @@
       [
         "1C8A319C-C3C8-4EB5-B82E-7B452D913E6D",
         "Root",
-        "outro_v01",
-        "logo_MSR"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "1C8A319C-C3C8-4EB5-B82E-7B452D913E6D",
-        "Root",
-        "outro_v01"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "1C8A319C-C3C8-4EB5-B82E-7B452D913E6D",
-        "Root",
-        "outro_v01",
-        "outro_MSR",
-        "change_MSR",
-        "textSides"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "1C8A319C-C3C8-4EB5-B82E-7B452D913E6D",
-        "Root",
         "Outro_v02",
         "Track2"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "1C8A319C-C3C8-4EB5-B82E-7B452D913E6D",
-        "Root",
-        "outro_people_v01",
-        "PicturesRoot",
-        "outro"
       ],
       {
         "isExpanded" : true,
@@ -368,17 +316,6 @@
         "selectedAudioFilePrim" : {
           "string" : "\/Root\/vo\/outro01_mp3"
         }
-      },
-      [
-        "1C8A319C-C3C8-4EB5-B82E-7B452D913E6D",
-        "Root",
-        "outro_v01",
-        "logo_MSR",
-        "logo_offset"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
       },
       [
         "1C8A319C-C3C8-4EB5-B82E-7B452D913E6D",
@@ -486,17 +423,6 @@
       [
         "1C8A319C-C3C8-4EB5-B82E-7B452D913E6D",
         "Root",
-        "outro_v01",
-        "outro_MSR",
-        "change_MSR"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "1C8A319C-C3C8-4EB5-B82E-7B452D913E6D",
-        "Root",
         "hope_MSR",
         "hope_v01",
         "Text"
@@ -546,18 +472,6 @@
         "Root",
         "M_jet",
         "JetMaterial"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "1C8A319C-C3C8-4EB5-B82E-7B452D913E6D",
-        "Root",
-        "outro_v01",
-        "outro_MSR",
-        "change_MSR",
-        "TextFace_001"
       ],
       {
         "isExpanded" : true,
@@ -703,8 +617,8 @@
       [
         "1C8A319C-C3C8-4EB5-B82E-7B452D913E6D",
         "Root",
-        "outro_v01",
-        "outro_MSR"
+        "Outro_v02",
+        "Track4"
       ],
       {
         "isExpanded" : true,
@@ -727,32 +641,9 @@
       [
         "1C8A319C-C3C8-4EB5-B82E-7B452D913E6D",
         "Root",
-        "Outro_v02",
-        "Track4"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "1C8A319C-C3C8-4EB5-B82E-7B452D913E6D",
-        "Root",
         "outro_v01",
         "_materials",
         "Pfizer_Logo_White_RGB"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "1C8A319C-C3C8-4EB5-B82E-7B452D913E6D",
-        "Root",
-        "outro_people_v01",
-        "PicturesRoot",
-        "outro",
-        "People_MSR",
-        "group_001"
       ],
       {
         "isExpanded" : true,
@@ -886,32 +777,11 @@
       [
         "1C8A319C-C3C8-4EB5-B82E-7B452D913E6D",
         "Root",
-        "outro_people_v01",
-        "PicturesRoot",
-        "outro",
-        "People_MSR"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "1C8A319C-C3C8-4EB5-B82E-7B452D913E6D",
-        "Root",
         "outro_v01",
         "PicturesRoot",
         "outro",
         "People_MSR",
         "p1"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "1C8A319C-C3C8-4EB5-B82E-7B452D913E6D",
-        "Root",
-        "outro_people_v01"
       ],
       {
         "isExpanded" : true,

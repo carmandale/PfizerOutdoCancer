@@ -137,6 +137,7 @@ struct PfizerOutdoCancerApp: App {
             ImmersiveSpace(id: "IntroSpace") {
                 if appModel.currentPhase == .intro {
                     IntroView()
+//                        .preferredSurroundingsEffect(.ultraDark)
                         .environment(appModel)
                         .environment(adcDataModel)
                         .upperLimbVisibility(.visible)

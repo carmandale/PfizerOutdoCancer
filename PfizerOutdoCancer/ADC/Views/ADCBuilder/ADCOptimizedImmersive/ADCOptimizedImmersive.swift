@@ -81,6 +81,8 @@ struct ADCOptimizedImmersive: View {
     
     @State var timer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
     @State var isCameraInitialized = false
+
+    @State var useChannelAudioForVO: Bool = true
     
     // let antibodyAttachmentOffset: SIMD3<Float> = SIMD3(-0.5, 0, 0)
     let linkerAttachmentOffset: SIMD3<Float> = SIMD3(0.25, 0, 0)

@@ -145,7 +145,7 @@ struct IntroView: View {
                 .opacity(appModel.isNavWindowOpen ? 0 : 1)
             }
         }
-        .preferredSurroundingsEffect(surroundingsEffect)
+//        .preferredSurroundingsEffect(surroundingsEffect)
 
         .onAppear {
             print("\n=== IntroView Appeared ===")

@@ -26,6 +26,13 @@ final class OutroViewModel {
     // Dependencies
     var appModel: AppModel!
     
+    // Animation control flags (from intro)
+    var shouldUseSky = true
+    var skyDarkness: Float = 0.98  // Same value as intro
+    
+    // Entity references (from intro)
+    private var skyDome: Entity?
+    
     // MARK: - Setup Methods
     func setupOutroRoot() -> Entity {
         print("📱 OutroViewModel: Setting up root entity")
@@ -57,6 +64,9 @@ final class OutroViewModel {
             outroEnvironmentEntity = environment
             print("✅ OutroViewModel: Added environment to root")
             
+            // Setup sky dome
+            setupSkyDome(in: environment)
+            
             // IBL
             do {
                 print("📱 OutroViewModel: Setting up IBL lighting")
@@ -67,8 +77,38 @@ final class OutroViewModel {
             }
             
             isSetupComplete = true
+            
+            // Start sky animation once environment is ready
+            await startSkyAnimation()
+            
         } catch {
             print("❌ OutroViewModel: Failed to load outro environment: \(error)")
+        }
+    }
+    
+    private func setupSkyDome(in environment: Entity) {
+        if let sky = environment.findEntity(named: "SkySphere") {
+            print("🔍 Found skyDome: \(sky.name)")
+            skyDome = sky
+            sky.opacity = 0
+            print("✅ Set skyDome opacity to 0")
+        } else {
+            print("❌ Could not find SkySphere in environment")
+        }
+    }
+    
+    // MARK: - Animation Methods
+    func startSkyAnimation() async {
+        print("🌌 Sky: Starting animation")
+        if shouldUseSky {
+            if let s = skyDome {
+                print("🔍 Sky initial opacity: \(s.opacity)")
+                await s.fadeOpacity(to: skyDarkness, duration: 10.0)
+                print("🌌 Sky: Completed fade animation")
+                print("🔍 Sky final opacity: \(s.opacity)")
+            } else {
+                print("❌ Sky: skyDome not found")
+            }
         }
     }
     

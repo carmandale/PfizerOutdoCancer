@@ -3277,7 +3277,6 @@ def Xform "Root"
     }
 
     def "SkySphere" (
-        active = false
         prepend references = @SkySphere.usdz@
     )
     {
