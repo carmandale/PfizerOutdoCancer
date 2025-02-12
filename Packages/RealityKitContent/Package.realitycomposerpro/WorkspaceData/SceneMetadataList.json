@@ -298,6 +298,27 @@
       [
         "1C8A319C-C3C8-4EB5-B82E-7B452D913E6D",
         "Root",
+        "outro_v01"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "1C8A319C-C3C8-4EB5-B82E-7B452D913E6D",
+        "Root",
+        "outro_v01",
+        "outro_MSR",
+        "change_MSR",
+        "textSides"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "1C8A319C-C3C8-4EB5-B82E-7B452D913E6D",
+        "Root",
         "Outro_v02",
         "Track2"
       ],
@@ -423,6 +444,17 @@
       [
         "1C8A319C-C3C8-4EB5-B82E-7B452D913E6D",
         "Root",
+        "outro_v01",
+        "outro_MSR",
+        "change_MSR"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "1C8A319C-C3C8-4EB5-B82E-7B452D913E6D",
+        "Root",
         "hope_MSR",
         "hope_v01",
         "Text"
@@ -472,6 +504,18 @@
         "Root",
         "M_jet",
         "JetMaterial"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "1C8A319C-C3C8-4EB5-B82E-7B452D913E6D",
+        "Root",
+        "outro_v01",
+        "outro_MSR",
+        "change_MSR",
+        "TextFace_001"
       ],
       {
         "isExpanded" : true,
@@ -633,6 +677,16 @@
         "People_MSR",
         "p1",
         "p1_mesh"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "1C8A319C-C3C8-4EB5-B82E-7B452D913E6D",
+        "Root",
+        "outro_v01",
+        "outro_MSR"
       ],
       {
         "isExpanded" : true,
@@ -3882,17 +3936,6 @@
       [
         "5A285654-8574-4F5E-8283-AB6C523CABE6",
         "Root",
-        "LabAudio",
-        "AUDIO_transforms",
-        "Room_ambience"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "5A285654-8574-4F5E-8283-AB6C523CABE6",
-        "Root",
         "peopleRoot",
         "people",
         "South",
@@ -3946,16 +3989,6 @@
       [
         "5A285654-8574-4F5E-8283-AB6C523CABE6",
         "Root"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "5A285654-8574-4F5E-8283-AB6C523CABE6",
-        "Root",
-        "_3D_people_scene",
-        "ADC_xform_1"
       ],
       {
         "isExpanded" : true,
@@ -4263,9 +4296,8 @@
       [
         "5A285654-8574-4F5E-8283-AB6C523CABE6",
         "Root",
-        "_3D_people_scene",
-        "peopleRoot",
-        "DanAndGabi_003"
+        "LabAudio",
+        "AUDIO_26"
       ],
       {
         "isExpanded" : true,
@@ -4274,8 +4306,8 @@
       [
         "5A285654-8574-4F5E-8283-AB6C523CABE6",
         "Root",
-        "LabAudio",
-        "AUDIO_26"
+        "_3D_people_scene",
+        "peopleRoot"
       ],
       {
         "isExpanded" : true,
@@ -4305,8 +4337,9 @@
       [
         "5A285654-8574-4F5E-8283-AB6C523CABE6",
         "Root",
-        "_3D_people_scene",
-        "peopleRoot"
+        "LabAudio",
+        "AUDIO_transforms",
+        "Room_ambience"
       ],
       {
         "isExpanded" : true,
@@ -5581,15 +5614,6 @@
       [
         "7A10AC9D-F4E1-4FB8-A276-43FB7670B088",
         "Root",
-        "Narrator"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "7A10AC9D-F4E1-4FB8-A276-43FB7670B088",
-        "Root",
         "IntroMusic",
         "Track"
       ],
@@ -5868,15 +5892,6 @@
       [
         "7A10AC9D-F4E1-4FB8-A276-43FB7670B088",
         "Root",
-        "SkySphere"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "7A10AC9D-F4E1-4FB8-A276-43FB7670B088",
-        "Root",
         "IntroWarp",
         "sh0100_v01_portalWarp2",
         "PortalWarp_MSR",
@@ -5959,6 +5974,16 @@
         "selectedAudioFilePrim" : {
           "string" : "\/Root\/Audio\/Cello\/Cello_wav"
         }
+      },
+      [
+        "7A10AC9D-F4E1-4FB8-A276-43FB7670B088",
+        "Root",
+        "sh0100_v01",
+        "sh0100_v01"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
       },
       [
         "7A10AC9D-F4E1-4FB8-A276-43FB7670B088",
@@ -13032,6 +13057,18 @@
         "ECF4DC85-1C33-4CDE-A78A-D2B66EAD5D0B",
         "Root",
         "M_glow"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      }
+    ]
+  },
+  "EDABA5CA-5E83-465F-870F-381B26F5B91E" : {
+    "objectMetadataList" : [
+      [
+        "EDABA5CA-5E83-465F-870F-381B26F5B91E",
+        "Root"
       ],
       {
         "isExpanded" : true,

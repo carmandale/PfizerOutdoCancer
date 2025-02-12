@@ -507,7 +507,7 @@ final class IntroViewModel {
                 
                 // Enable large room reverb and inspect hierarchy
                 introRootEntity!.enableLargeRoomReverb()
-                appModel.assetLoadingManager.inspectEntityHierarchy(introRootEntity!)
+                // appModel.assetLoadingManager.inspectEntityHierarchy(introRootEntity!)
 
                 appModel.readyToStartLab = true
                 print("readyToStartLab set to \(appModel.readyToStartLab)")

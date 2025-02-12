@@ -41,11 +41,11 @@ struct IntroView: View {
             ))
             content.add(root)
             print("✅ Added root to content")
-            content.add(handTrackedEntity)
-            if let attachmentEntity = attachments.entity(for: "navToggle") {
-                attachmentEntity.components[BillboardComponent.self] = .init()
-                handTrackedEntity.addChild(attachmentEntity)
-            }
+            // content.add(handTrackedEntity)
+            // if let attachmentEntity = attachments.entity(for: "navToggle") {
+            //     attachmentEntity.components[BillboardComponent.self] = .init()
+            //     handTrackedEntity.addChild(attachmentEntity)
+            // }
             
             // Handle environment and attachments in Task
             Task { @MainActor in
@@ -57,14 +57,14 @@ struct IntroView: View {
                     print("✅ Environment setup complete")
                     
                     // Now that environment is loaded, handle attachments
-                    if let titleEntity = attachments.entity(for: "titleText"),
-                       let navToggleEntity = attachments.entity(for: "navToggle") {
+                    if let titleEntity = attachments.entity(for: "titleText")
+                       {
                         print("📱 IntroView: Found SwiftUI attachments")
                         
                         // Store attachments in view model
                         appModel.introState.titleEntity = titleEntity
                         // appModel.introState.labViewerEntity = labViewerEntity
-                        appModel.introState.navToggleEntity = navToggleEntity
+                        // appModel.introState.navToggleEntity = navToggleEntity
                         
                         // Get portal and set up attachments
                         if let portal = appModel.introState.getPortal() {
@@ -123,9 +123,9 @@ struct IntroView: View {
             // Attachment(id: "labViewer") {
             //     LabViewerButton()
             // }
-            Attachment(id: "navToggle") {
-                NavToggleView()
-            }
+            // Attachment(id: "navToggle") {
+            //     NavToggleView()
+            // }
             Attachment(id: "ADCBuilderViewerButton") {
                 ADCBuilderViewerButton()
             }
@@ -171,7 +171,7 @@ struct IntroView: View {
             SpatialTapGesture()
                 .targetedToAnyEntity()
                 .onEnded { value in
-                    appModel.labState.handleTap(on: value.entity)
+//                    appModel.labState.handleTap(on: value.entity)
                 }
         )
         // Keep tracking tasks separate

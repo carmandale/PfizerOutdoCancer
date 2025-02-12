@@ -644,7 +644,7 @@ struct ADCOptimizedImmersive: View {
                 withName: "antibody_scene",
                 category: .buildADCEnvironment
             )
-            os_log(.debug, "ADCOptimizedImmersive: Antibody scene loaded successfully: %@", String(describing: antibodyScene))
+            os_log(.debug, "ADCOptimizedImmersive: Antibody scene loaded successfully")
             self.antibodyRootEntity = antibodyScene
             // Optionally log some identifying property:
             if let name = antibodyScene.name as String? {

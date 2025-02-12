@@ -10,6 +10,7 @@ extension AttackCancerViewModel {
         // Reset any additional flags required for starting fresh
         appModel.isTutorialStarted = false
         tutorialComplete = false
+        isSetupComplete = false
         // (Optionally also reset any other flags that must be restarted)
         print("🔄 Starting new game session: cleanupState reset to .none, tutorial flags reset")
 

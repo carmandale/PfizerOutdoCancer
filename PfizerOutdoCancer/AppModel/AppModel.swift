@@ -301,6 +301,11 @@ final class AppModel {
         // 2. Pre-load assets for the *new* phase *before* any cleanup
         await preloadAssets(for: newPhase, adcDataModel: adcDataModel)
 
+        if newPhase == .playing {
+            // Before starting the playing session, reinitialize game state.
+            gameState.resetCleanupForNewSession()
+        }
+
         // 3. Clean up the *current* phase (guarantee completion with await)
         await cleanupCurrentPhase(for: newPhase)
 

@@ -117,7 +117,7 @@ struct AttackCancerInstructionsView: View {
                 }
                 .onDisappear {
                     withAnimation(.easeOut(duration: 1.0)) {
-                        opacity = 0.0
+                        opacity = 1.0
                     }
                 }
             }

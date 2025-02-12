@@ -21,42 +21,44 @@ struct CompletedView: View {
     }
     
     var body: some View {
-        VStack(spacing: 32) {
-            // Header
-            VStack(spacing: 8) {
-                Text("Mission Complete")
-                    .font(.largeTitle)
-                    .bold()
-                
-                Text("Outstanding work!")
-                    .font(.title2)
-                    .foregroundStyle(.secondary)
-            }
-            .padding(.top, 16)
-            
-            // Stats
-            VStack(spacing: 16) {
-                statRow("ADCs Deployed", value: stats.deployed, icon: "arrow.up.forward")
-            }
-            .padding(.vertical, 20)
-            
-            // Buttons
-            VStack(spacing: 12) {
-                HStack(spacing: 12) {
-                    NavigationButton(
-                        title: "Continue",
-                        action: {
-                            print("=== Continue Button Pressed ===")
-                            print("Current Phase: \(appModel.currentPhase)")
-                            print("Immersive Space State: \(appModel.immersiveSpaceState)")
-                            await appModel.transitionToPhase(.outro)
-                        },
-                        font: .title,
-                        scaleEffect: AppModel.UIConstants.buttonExpandScale
-                    )
-                    .fontWeight(.bold)
-                }
-            }
+        VStack {
+            VStack(spacing: 32) {
+                        // Header
+                        VStack(spacing: 8) {
+                            Text("Mission Complete")
+                                .font(.largeTitle)
+                                .bold()
+                            
+                            Text("Outstanding work!")
+                                .font(.title2)
+                                .foregroundStyle(.secondary)
+                        }
+                        .padding(.top, 16)
+                        
+                        // Stats
+                        VStack(spacing: 16) {
+                            statRow("ADCs Deployed", value: stats.deployed, icon: "arrow.up.forward")
+                        }
+                        .padding(.vertical, 20)
+                        
+                        // Buttons
+                        VStack(spacing: 12) {
+                            HStack(spacing: 12) {
+                                NavigationButton(
+                                    title: "Continue",
+                                    action: {
+                                        print("=== Continue Button Pressed ===")
+                                        print("Current Phase: \(appModel.currentPhase)")
+                                        print("Immersive Space State: \(appModel.immersiveSpaceState)")
+                                        await appModel.transitionToPhase(.outro)
+                                    },
+                                    font: .title,
+                                    scaleEffect: AppModel.UIConstants.buttonExpandScale
+                                )
+                                .fontWeight(.bold)
+                            }
+                        }
+                    }
         }
         .padding(64)
         .frame(maxWidth: 500)

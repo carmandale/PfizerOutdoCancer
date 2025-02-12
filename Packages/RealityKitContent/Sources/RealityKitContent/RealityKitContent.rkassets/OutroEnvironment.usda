@@ -495,18 +495,10 @@ def Xform "Root"
             prepend apiSchemas = ["MaterialBindingAPI"]
         )
         {
-            rel material:binding = </Root/M_change/M_change> (
-                bindMaterialAs = "strongerThanDescendants"
-            )
-
             over "change_MSR" (
                 prepend apiSchemas = ["MaterialBindingAPI"]
             )
             {
-                rel material:binding = </Root/M_change/M_change> (
-                    bindMaterialAs = "strongerThanDescendants"
-                )
-
                 over "Text_003"
                 {
                     reorder nameChildren = ["Text_004", "Material_002_1"]
@@ -535,10 +527,18 @@ def Xform "Root"
                     }
                 }
 
-                over "textSides"
+                over "textSides" (
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                )
                 {
-                    over "Text_005"
+                    over "Text_005" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
                     {
+                        rel material:binding = </Root/M_change/M_change_1> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+
                         def RealityKitComponent "MeshSorting"
                         {
                             rel group = </Root/Model_Sorting_Group_1>
@@ -548,10 +548,18 @@ def Xform "Root"
                     }
                 }
 
-                over "TextFace_001"
+                over "TextFace_001" (
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                )
                 {
-                    over "Text_006"
+                    over "Text_006" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
                     {
+                        rel material:binding = </Root/M_change/M_change> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+
                         def RealityKitComponent "MeshSorting"
                         {
                             rel group = </Root/Model_Sorting_Group_1>
@@ -1752,9 +1760,38 @@ def Xform "Root"
 
         over "M_change"
         {
-            token cullMode = "none" (
+            token cullMode = "back" (
                 allowedTokens = ["unspecified", "none", "front", "back"]
             )
+        }
+
+        def Material "M_change_1" (
+            prepend references = </Root/M_change/M_change>
+        )
+        {
+            token cullMode = "back" (
+                allowedTokens = ["unspecified", "none", "front", "back"]
+            )
+            token outputs:mtlx:surface
+            token outputs:realitykit:vertex
+            token outputs:surface.connect = </Root/M_change/M_change_1/Principled_BSDF.outputs:surface>
+            float2 ui:nodegraph:node:pos = (20, 20)
+            int ui:nodegraph:node:stackingOrder = 1
+            custom string userProperties:blender:data_name = "Material.002"
+
+            def Shader "Principled_BSDF"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                float inputs:clearcoat = 1
+                float inputs:clearcoatRoughness = 0.2564151
+                color3f inputs:diffuseColor = (0, 0.3005438, 1)
+                float inputs:ior = 1.5
+                float inputs:metallic = 0
+                float inputs:opacity = 1
+                float inputs:roughness = 0.5
+                float inputs:specular = 0.5
+                token outputs:surface
+            }
         }
     }
 
@@ -1772,7 +1809,7 @@ def Xform "Root"
     {
         float2 ui:nodegraph:node:pos = (20, 20)
         int ui:nodegraph:node:stackingOrder = 1
-        float3 xformOp:scale = (1, 1, 1)
+        float3 xformOp:scale = (10, 10, 10)
 
         over "SkySphere_mat"
         {

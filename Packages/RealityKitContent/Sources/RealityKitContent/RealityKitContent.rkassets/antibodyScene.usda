@@ -239,5 +239,11 @@ def Xform "Root"
         uniform asset file = @Audio/bubblepop.mp3@
         uniform bool shouldLoop = 0
     }
+
+    def RealityKitComponent "EnvironmentLightingConfiguration"
+    {
+        float environmentLightingWeight = 0
+        uniform token info:id = "RealityKit.EnvironmentLightingConfiguration"
+    }
 }
 

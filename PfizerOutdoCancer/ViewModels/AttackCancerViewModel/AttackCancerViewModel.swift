@@ -137,6 +137,9 @@ final class AttackCancerViewModel {
         // Clear gameplay state
         cellParameters.removeAll()
         
+        // Clear debounce dictionary
+        debounce.removeAll()
+
         // Remove gameplay entities
         if let root = rootEntity {
             print("\n🔍 Examining root entity: \(root.name)")
@@ -215,7 +218,7 @@ final class AttackCancerViewModel {
         // Optionally, reinitialize other game state if necessary.
         // For example, you might want to clear cell parameters and reset counters—
         // however, ensure that this reset does not conflict with the
-        // app’s intended state management.
+        // app's intended state management.
         print("🔄 AttackCancerViewModel: Cleanup state has been reset for new session.")
     }
 

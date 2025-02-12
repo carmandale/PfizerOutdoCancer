@@ -53,7 +53,7 @@ final class LabViewModel {
         if isIntro != nil {
             // Intro mode - find existing lab and configure devices
             let labEnvironment = root.findEntity(named: "assembled_lab")!
-            configureInteractiveDevices(in: labEnvironment)
+//            configureInteractiveDevices(in: labEnvironment)
         } else {
             // Lab mode - load and set up the complete lab
             guard let root = mainEntity else {

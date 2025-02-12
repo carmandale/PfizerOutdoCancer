@@ -80,7 +80,7 @@ struct PfizerOutdoCancerApp: App {
         }
         .defaultSize(width: 800, height: 800)
         .windowStyle(.plain)
-        .persistentSystemOverlays(appModel.currentPhase == .loading || appModel.currentPhase == .ready || appModel.currentPhase == .building ? .visible : .hidden)
+        .persistentSystemOverlays(appModel.currentPhase == .loading || appModel.currentPhase == .ready ? .visible : .hidden)
         .windowResizability(.contentSize)
         
         WindowGroup(id: AppModel.libraryWindowId) {
@@ -504,6 +504,16 @@ struct PfizerOutdoCancerApp: App {
         
         // 2. Stop tracking
         appModel.trackingManager.stopTracking()
+
+        // Introduce a small delay *before* resetting immersiveSpaceDismissReason
+        // This gives the onDisappear handler time to execute.
+        await Task.yield() // Try yielding first.  This is often enough.
+        // OR, if yielding isn't sufficient:
+        // try? await Task.sleep(nanoseconds: 50_000_000) // 50ms delay
+
+        // *Now* reset the state:
+        appModel.immersiveSpaceState = .closed // Set to closed *after* the delay
+        appModel.immersiveSpaceDismissReason = nil // Reset for next time
         
         print("✅ App state cleanup completed")
     }

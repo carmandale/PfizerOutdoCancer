@@ -3299,7 +3299,7 @@ def Xform "Root"
         def RealityKitComponent "HierarchicalFade"
         {
             uniform token info:id = "RealityKit.HierarchicalFade"
-            float opacity = 0.80006206
+            float opacity = 0.80441034
         }
 
         def RealityKitComponent "MeshSorting"

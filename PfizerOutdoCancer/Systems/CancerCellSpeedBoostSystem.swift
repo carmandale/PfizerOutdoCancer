@@ -1,72 +1,69 @@
 import RealityKit
 import simd
 
+/// A system that boosts the speed of cancer cell entities based on their world X and Z positions.
+/// The idea is:
+/// • If a cell is behind the user (z ≥ 0), it is given full boost.
+/// • If a cell is in front (z < 0):
+///    – If it is to the left (x < 0), the boost factor is interpolated based on how far left it is.
+///    – If it is to the right (x ≥ 0), no boost is applied.
 public class CancerCellSpeedBoostSystem: System {
-    // Query for entities that have both the CancerCellMovementData (for orbiting)
-    // and a PhysicsMotionComponent (for current velocity) components.
-    static let query = EntityQuery(where: .has(CancerCellMovementData.self) && .has(PhysicsMotionComponent.self))
     
-    // A head tracking entity to get the current head position.
-    private let headEntity: Entity
+    // MARK: - Configuration
+    private struct BoostConfig {
+        static let maxBoostMultiplier: Float = 2.5   // Full boost multiplies base speed by 2.5
+        static let lerpSharpness: Float = 4.0        // Controls how quickly the velocity adjusts
+        // For front cells, we interpolate boost over a horizontal range.
+        // For example, cells with x ≤ -1.0 (in front left) get full boost; cells with x ≥ 0 get no boost.
+        static let frontBoostRange: Float = 1.0
+    }
     
-    // Boost parameters:
-    // When a cell’s relative X is less than leftZoneThreshold, we boost its speed.
-    private let leftZoneThreshold: Float = -0.2  // Adjust as needed (in world units)
-    private let boostMultiplier: Float = 5.0       // Full boost multiplier when fully left
-    private let lerpFactor: Float = 0.8            // Controls smoothing of velocity changes
+    // MARK: - Query Setup
+    private static let query = EntityQuery(where:
+        .has(CancerCellMovementData.self) &&
+        .has(PhysicsMotionComponent.self)
+    )
     
     public required init(scene: Scene) {
-        // Create the head tracking entity.
-        headEntity = Entity()
-        headEntity.components.set(PositioningComponent())
-        
-        // Attach the head tracking entity if AttackCancerRoot exists.
-        if let attackCancerRoot = scene.findEntity(named: "AttackCancerRoot") {
-            attackCancerRoot.addChild(headEntity)
-        } else {
-            // In non-playing phases, the root might not be present.
-            // We silently ignore to prevent log spam.
-        }
+        // No additional initialization is required.
     }
     
     public func update(context: SceneUpdateContext) {
-        // Only run this system when AttackCancerRoot is present
-        guard let _ = context.scene.findEntity(named: "AttackCancerRoot") else { return }
-        
-        let deltaTime = Float(context.deltaTime)
+        let dt = Float(context.deltaTime)
         
         for entity in context.scene.performQuery(Self.query) {
             guard var motion = entity.components[PhysicsMotionComponent.self],
                   let movementData = entity.components[CancerCellMovementData.self] else { continue }
             
-            // Compute the cell's relative position with respect to the head.
-            let headWorldPos = headEntity.position(relativeTo: nil)
-            let cellWorldPos = entity.position(relativeTo: nil)
-            let relativePos = cellWorldPos - headWorldPos
+            // Get the cell's world position.
+            let cellPos = entity.position(relativeTo: nil)
+            // Debug print the position.
+            print("[Boost Debug] Entity \(entity.name): cellPos = \(cellPos)")
             
-            // Determine the target boost multiplier.
-            // In this version, if the cell is sufficiently on the left, we apply the full boost.
-            // (You could also implement a blending zone if desired.)
-            var targetMultiplier: Float = 1.0
-            if relativePos.x < leftZoneThreshold {
-                targetMultiplier = boostMultiplier
+            // Determine the desired boost factor.
+            let boostFactor: Float
+            if cellPos.z >= 0 {
+                // Rear cells (z ≥ 0) get full boost.
+                boostFactor = BoostConfig.maxBoostMultiplier
+                print("[Boost Debug] Entity \(entity.name): Rear cell, applying full boost (\(boostFactor)).")
+            } else {
+                // For front cells (z < 0), we interpolate based on x.
+                // If cellPos.x ≤ -frontBoostRange, then full boost.
+                // If cellPos.x ≥ 0, then no boost.
+                let normalized: Float = simd_clamp((0 - cellPos.x) / BoostConfig.frontBoostRange, 0, 1)
+                boostFactor = 1.0 + (BoostConfig.maxBoostMultiplier - 1.0) * normalized
+                print("[Boost Debug] Entity \(entity.name): Front cell, normalized leftness = \(normalized), boostFactor = \(boostFactor)")
             }
             
-            // Retrieve the cell's base orbit velocity (the direction of its orbit).
-            let baseVelocity = movementData.baseLinearVelocity
-            // Compute the desired velocity by scaling the base velocity by the target multiplier.
-            let desiredVelocity = simd_normalize(baseVelocity) * (simd_length(baseVelocity) * targetMultiplier)
+            // Compute the target (boosted) velocity, preserving the direction.
+            let targetVelocity = movementData.baseLinearVelocity * boostFactor
             
-            // Smoothly blend between the current velocity and the desired velocity.
-            // Multiplying lerpFactor by deltaTime helps keep the interpolation frame-rate independent.
-            let t = lerpFactor * deltaTime
-            let newVelocity = simd_mix(motion.linearVelocity, desiredVelocity, SIMD3<Float>(repeating: t))
-            motion.linearVelocity = newVelocity
-            
-            // Apply only very mild angular damping so that cells don't spin excessively,
-            // but still retain some orbital rotation.
-            let angularDampingFactor: Float = 0.98  // Adjust closer to 1.0 for less damping.
-            motion.angularVelocity *= angularDampingFactor
+            // Smoothly interpolate from the current velocity to the target velocity.
+            motion.linearVelocity = simd_mix(
+                motion.linearVelocity,
+                targetVelocity,
+                SIMD3<Float>(repeating: dt * BoostConfig.lerpSharpness)
+            )
             
             entity.components.set(motion)
         }

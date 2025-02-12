@@ -128,6 +128,36 @@ def Xform "Root"
                     }
                 }
             }
+
+            over "Gary" (
+                customData = {
+                    float3 rotationEulerHint = (-1.5707966, -1.3800476, 0.0000011003315)
+                }
+            )
+            {
+                quatf xformOp:orient = (0.5453427, -0.5453424, -0.45011297, -0.45011252)
+                float3 xformOp:translate = (2.2879767, 0.54537934, 7.138828)
+            }
+
+            over "AshtonAndCat" (
+                customData = {
+                    float3 rotationEulerHint = (-1.5707963, 0, 0)
+                }
+            )
+            {
+                quatf xformOp:orient = (0.70710677, -0.7071067, 0, 0)
+                float3 xformOp:translate = (0.44984418, 4.527738e-7, 7.811375)
+            }
+
+            over "Andrew_002" (
+                customData = {
+                    float3 rotationEulerHint = (-1.5707963, 0, 0)
+                }
+            )
+            {
+                quatf xformOp:orient = (0.70710677, -0.7071067, 0, 0)
+                float3 xformOp:translate = (-0.15860677, 9.610901e-7, 7.7450767)
+            }
         }
 
         over "ADC_xform_1"
@@ -263,6 +293,12 @@ def Xform "Root"
                 }
             }
         }
+    }
+
+    def RealityKitComponent "EnvironmentLightingConfiguration"
+    {
+        float environmentLightingWeight = 0
+        uniform token info:id = "RealityKit.EnvironmentLightingConfiguration"
     }
 }
 

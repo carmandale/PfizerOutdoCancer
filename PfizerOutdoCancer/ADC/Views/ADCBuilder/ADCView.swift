@@ -78,8 +78,8 @@ struct ADCView: View {
                                     appModel.immersiveSpaceState = .inTransition
                                     os_log(.debug, "ADCView: Attempting to dismiss current immersive space.")
                                     await dismissImmersiveSpace()
-                                    os_log(.debug, "ADCView: Immersive space dismissed. Waiting 300ms before opening new immersive space.")
-                                    try? await Task.sleep(nanoseconds: 300_000_000) // 300ms delay
+                                    os_log(.debug, "ADCView: Immersive space dismissed. Waiting 500ms before opening new immersive space.")
+                                    try? await Task.sleep(nanoseconds: 500_000_000) // 500ms delay
                                     os_log(.debug, "ADCView: Now trying to open immersive space with id: %@", AppModel.buildingSpaceId)
                                     switch await openImmersiveSpace(id: AppModel.buildingSpaceId) {
                                     case .opened:
