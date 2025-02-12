@@ -7,6 +7,7 @@
 
 import SwiftUI
 import RealityKitContent
+import os
 
 @main
 struct PfizerOutdoCancerApp: App {
@@ -83,7 +84,7 @@ struct PfizerOutdoCancerApp: App {
         .windowResizability(.contentSize)
         
         WindowGroup(id: AppModel.libraryWindowId) {
-            if appModel.currentPhase == .lab {
+            if appModel.currentPhase == .lab || appModel.currentPhase == .intro {
             LibraryView()
                 .environment(appModel)
                 .environment(adcDataModel)
@@ -138,6 +139,7 @@ struct PfizerOutdoCancerApp: App {
                     IntroView()
                         .environment(appModel)
                         .environment(adcDataModel)
+                        .upperLimbVisibility(.visible)
                         .onAppear {
                             appModel.immersiveSpaceState = .open
                         }
@@ -278,7 +280,12 @@ struct PfizerOutdoCancerApp: App {
                     if oldPhase.needsImmersiveSpace && !newPhase.shouldKeepPreviousSpace {
                         if appModel.immersiveSpaceState == .open {
                             appModel.immersiveSpaceDismissReason = .manual
-                            await dismissImmersiveSpace()
+                            do {
+                                try await dismissImmersiveSpace()
+                                os_log(.debug, "🧹 **onChange Function**: Immersive space dismissed successfully.")
+                            } catch {
+                                os_log(.info, "🧹 **onChange Function**: Dismiss immersive space called but none was open (or already dismissed): %@", error.localizedDescription)
+                            }
                             appModel.immersiveSpaceState = .closed
                         }
                     }
@@ -485,7 +492,12 @@ struct PfizerOutdoCancerApp: App {
         // 1. Close immersive space if open
         if appModel.immersiveSpaceState == .open {
             appModel.immersiveSpaceDismissReason = .manual
-            await dismissImmersiveSpace()
+            do {
+                try await dismissImmersiveSpace()
+                os_log(.debug, "🧹 **cleanupAppState**: Immersive space dismissed successfully.")
+            } catch {
+                os_log(.info, "🧹 **cleanupAppState**: Dismiss immersive space called but none was open (or already dismissed): %@", error.localizedDescription)
+            }
             appModel.immersiveSpaceState = .closed
         }
         

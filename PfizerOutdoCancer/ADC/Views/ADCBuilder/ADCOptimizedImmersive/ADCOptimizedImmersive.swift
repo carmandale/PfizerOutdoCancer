@@ -624,15 +624,17 @@ struct ADCOptimizedImmersive: View {
     private func setupEntitiesAndMaterials() async {
         // Get outline material
         do {
-                let materialEntity = try await Entity(named: "Materials/M_outline.usda", in: realityKitContentBundle)
-                if let sphereEntity = materialEntity.findEntity(named: "Sphere"),
-                   let material = sphereEntity.components[ModelComponent.self]?.materials.first as? ShaderGraphMaterial {
-                    os_log(.debug, "ITR..RealityView(): ✅ Successfully loaded outline material")
-                    self.outlineMaterial = material
-                }
-            } catch {
-                os_log(.error, "ITR..RealityView(): ❌ Failed to load outline material: \(error)")
+            let materialEntity = try await Entity(named: "Materials/M_outline.usda", in: realityKitContentBundle)
+            if let sphereEntity = materialEntity.findEntity(named: "Sphere"),
+               let material = sphereEntity.components[ModelComponent.self]?.materials.first as? ShaderGraphMaterial {
+                os_log(.debug, "ADCOptimizedImmersive: Successfully loaded outline material")
+                self.outlineMaterial = material
+            } else {
+                os_log(.error, "ADCOptimizedImmersive: Could not find sphere or material in M_outline.usda")
             }
+        } catch {
+            os_log(.error, "ADCOptimizedImmersive: Failed to load outline material with error: %@", error.localizedDescription)
+        }
         
         // Get antibody scene from asset manager
         do {
@@ -640,12 +642,12 @@ struct ADCOptimizedImmersive: View {
                 withName: "antibody_scene",
                 category: .buildADCEnvironment
             )
-            guard antibodyScene != nil else {
-                print("Failed to load antibody scene")
-                return
-            }
+            os_log(.debug, "ADCOptimizedImmersive: Antibody scene loaded successfully: %@", String(describing: antibodyScene))
             self.antibodyRootEntity = antibodyScene
-            
+            // Optionally log some identifying property:
+            if let name = antibodyScene.name as String? {
+                os_log(.debug, "ADCOptimizedImmersive: Antibody scene name: %@", name)
+            }
             prepareAntibodyEntities()
             
             await prepareLinkerEntities()
@@ -654,14 +656,13 @@ struct ADCOptimizedImmersive: View {
                 prepareTargetEntities(antibodyScene: rootEntity)
             }
             
-            // Ensure linkers start disabled
             self.adcLinkers.forEach { $0.isEnabled = false }
             
             // Create sort group for all ADC components
             self.adcSortGroup = ModelSortGroup(depthPass: .postPass)
-            os_log(.debug, "ITR..setupEntitiesAndMaterials(): ✅ Created ADC sort group")
+            os_log(.debug, "ADCOptimizedImmersive: Created ADC sort group successfully")
         } catch {
-            os_log(.error, "ITR..setupEntitiesAndMaterials(): ❌ Failed to load antibody scene: \(error)")
+            os_log(.error, "ADCOptimizedImmersive: Failed to load antibody scene with error: %@", error.localizedDescription)
         }
     }
 }

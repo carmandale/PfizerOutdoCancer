@@ -11,8 +11,8 @@ public class CancerCellSpeedBoostSystem: System {
     private let headEntity: Entity
     
     // Boost parameters.
-    private let boostMultiplier: Float = 1.1      // 10% speed boost when behind.
-    private let lerpFactor: Float = 0.1           // Interpolation factor to smooth the transition.
+    private let boostMultiplier: Float = 5.0      // 50% speed boost when behind.
+    private let lerpFactor: Float = 0.8           // Interpolation factor to smooth the transition.
     
     public required init(scene: RealityKit.Scene) {
         // Create a new head tracking anchor entity.
@@ -27,11 +27,11 @@ public class CancerCellSpeedBoostSystem: System {
         }
     }
     
-    public func update(context: SceneUpdateContext) {
+     public func update(context: SceneUpdateContext) {
         // Iterate over each cancer cell entity.
         for entity in context.entities(matching: Self.query, updatingSystemWhen: .rendering) {
             guard var motion = entity.components[PhysicsMotionComponent.self],
-                  let movementData = entity.components[CancerCellMovementData.self]
+                let movementData = entity.components[CancerCellMovementData.self]
             else { continue }
             
             // Calculate the current world positions for the head and the cell.
@@ -41,12 +41,32 @@ public class CancerCellSpeedBoostSystem: System {
             // Compute the cell's position relative to the head.
             let relativePosition = cellWorldPos - headWorldPos
             
-            // We assume that in the head coordinate space, -Z is forward.
-            // So if relativePosition.z > 0, the cell is behind the user.
-            let isBehind = relativePosition.z > 0
+            // In our head coordinate space, -Z is forward.
+            // Define zones:
+            let behindZone: Float = 0.2      // If relativePosition.z >= 0.2, cell is fully behind.
+            let crossingZone: Float = -0.1     // If between 0.2 and -0.1, cell is crossing.
+            let frontBlendZone: Float = -1.0   // If between -0.1 and -1.0, blend from full boost to normal.
+            var targetMultiplier: Float = 1.0
+            var effectiveLerp: Float = 0.0
             
-            // Set the target multiplier—boost if behind, otherwise use normal speed (multiplier 1.0).
-            let targetMultiplier: Float = isBehind ? boostMultiplier : 1.0
+            if relativePosition.z >= behindZone {
+                // Fully behind: apply full boost.
+                targetMultiplier = boostMultiplier
+                effectiveLerp = lerpFactor
+            } else if relativePosition.z >= crossingZone {
+                // In the crossing zone: maintain full boosted speed (no gradual slowdown yet).
+                targetMultiplier = boostMultiplier
+                effectiveLerp = 0.0
+            } else if relativePosition.z >= frontBlendZone {
+                // Gradually blend from boosted to normal speed.
+                let t = (abs(relativePosition.z) - abs(crossingZone)) / (abs(frontBlendZone) - abs(crossingZone))
+                targetMultiplier = boostMultiplier * (1 - t) + 1.0 * t
+                effectiveLerp = lerpFactor * (1 - t)
+            } else {
+                // Fully in front: no boost.
+                targetMultiplier = 1.0
+                effectiveLerp = 0.0
+            }
             
             // Calculate the intended (base) velocity from the stored movement data.
             let baseVelocity = movementData.baseLinearVelocity
@@ -54,10 +74,19 @@ public class CancerCellSpeedBoostSystem: System {
             
             // Smoothly interpolate between the current velocity and the desired velocity.
             let currentVelocity = motion.linearVelocity
-            let newVelocity = simd_mix(currentVelocity, desiredVelocity, SIMD3<Float>(repeating: lerpFactor))
-            motion.linearVelocity = newVelocity
+            let newVelocity = simd_mix(currentVelocity, desiredVelocity, SIMD3<Float>(repeating: effectiveLerp))
             
-            // Update the entity's motion component.
+            #if DEBUG
+            if relativePosition.z > 0 {
+                print("[CancerCellSpeedBoostSystem DEBUG] \(entity.name): relativePosition.z: \(relativePosition.z) => targetMultiplier: \(targetMultiplier), effectiveLerp: \(effectiveLerp)")
+                print("[CancerCellSpeedBoostSystem DEBUG] \(entity.name): currentVelocity: \(currentVelocity), desiredVelocity: \(desiredVelocity), newVelocity: \(newVelocity)")
+            } else {
+                print("[CancerCellSpeedBoostSystem DEBUG] \(entity.name): in front - relativePosition.z: \(relativePosition.z)")
+            }
+            #endif
+            
+            // Update the motion component.
+            motion.linearVelocity = newVelocity
             entity.components.set(motion)
         }
     }

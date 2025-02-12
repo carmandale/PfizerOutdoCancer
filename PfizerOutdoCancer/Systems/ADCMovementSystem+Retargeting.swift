@@ -235,7 +235,7 @@ extension ADCMovementSystem {
             ) else { continue }
             
             #if DEBUG
-            print("📊 Antigen Score - Distance: \(length(attachPosition - currentPosition)), Score: \(score)")
+            // print("📊 Antigen Score - Distance: \(length(attachPosition - currentPosition)), Score: \(score)")
             #endif
             
             if score > bestScore {
@@ -249,10 +249,10 @@ extension ADCMovementSystem {
         
         #if DEBUG
         if let target = bestTarget {
-            print("\n🎯 Selected target:")
-            print("Cell ID: \(target.1)")
-            print("Attachment Point: \(target.0.name)")
-            print("Final Score: \(bestScore)")
+            // print("\n🎯 Selected target:")
+            // print("Cell ID: \(target.1)")
+            // print("Attachment Point: \(target.0.name)")
+            // print("Final Score: \(bestScore)")
         }
         #endif
         

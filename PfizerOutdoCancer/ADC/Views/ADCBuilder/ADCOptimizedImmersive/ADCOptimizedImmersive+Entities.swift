@@ -21,15 +21,17 @@ extension ADCOptimizedImmersive {
                 
                 // Set initial position with proper transform
                 antibodyRoot.position = antibodyRoot.position + antibodyRootOffset
-                antibodyRoot.transform.translation = [antibodyRoot.transform.translation.x,
-                                                   antibodyRoot.transform.translation.y,
-                                                   antibodyRoot.transform.translation.z]
+                // Commenting out second transform to avoid double-application
+                // antibodyRoot.transform.translation = [antibodyRoot.transform.translation.x,
+                //                                    antibodyRoot.transform.translation.y,
+                //                                    antibodyRoot.transform.translation.z]
                 
                 // Add mainViewEntity as child with proper transform
                 mainViewEntity.position = mainViewEntity.position //  + antibodyAttachmentOffset
-                mainViewEntity.transform.translation = [mainViewEntity.transform.translation.x,
-                                                     mainViewEntity.transform.translation.y,
-                                                     mainViewEntity.transform.translation.z]
+                // Commenting out second transform to avoid double-application
+                // mainViewEntity.transform.translation = [mainViewEntity.transform.translation.x,
+                //                                      mainViewEntity.transform.translation.y,
+                //                                      mainViewEntity.transform.translation.z]
                 antibodyRoot.addChild(mainViewEntity)
                 
                 // Set up gesture component with proper configuration

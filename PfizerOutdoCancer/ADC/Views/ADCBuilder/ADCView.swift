@@ -1,4 +1,5 @@
 import SwiftUI
+import os
 
 struct ADCView: View {
     @Environment(AppModel.self) private var appModel
@@ -73,38 +74,45 @@ struct ADCView: View {
                         action: {
                             Task { @MainActor in
                                 switch appModel.immersiveSpaceState {
-                                    case .open:
-                                        appModel.immersiveSpaceState = .inTransition
-                                        await dismissImmersiveSpace()
-                                        // Insert a short delay to allow for complete teardown of the immersive space
-                                        try? await Task.sleep(nanoseconds: 150_000_000) // 150ms delay
-                                        // Now try opening the immersive space
-                                        switch await openImmersiveSpace(id: AppModel.buildingSpaceId) {
-                                            case .opened:
-                                                appModel.isBuilderInstructionsOpen = false
-                                                dismissWindow(id: AppModel.mainWindowId)
-                                                appModel.isMainWindowOpen = false
-                                            case .userCancelled, .error:
-                                                fallthrough
-                                            @unknown default:
-                                                appModel.immersiveSpaceState = .closed
-                                        }
-
-                                    case .closed:
-                                        appModel.immersiveSpaceState = .inTransition
-                                        switch await openImmersiveSpace(id: AppModel.buildingSpaceId) {
-                                            case .opened:
-                                                appModel.isBuilderInstructionsOpen = false
-                                                dismissWindow(id: AppModel.mainWindowId)
-                                                appModel.isMainWindowOpen = false
-                                            case .userCancelled, .error:
-                                                fallthrough
-                                            @unknown default:
-                                                appModel.immersiveSpaceState = .closed
-                                        }
-
-                                    case .inTransition:
-                                        break
+                                case .open:
+                                    appModel.immersiveSpaceState = .inTransition
+                                    os_log(.debug, "ADCView: Attempting to dismiss current immersive space.")
+                                    await dismissImmersiveSpace()
+                                    os_log(.debug, "ADCView: Immersive space dismissed. Waiting 300ms before opening new immersive space.")
+                                    try? await Task.sleep(nanoseconds: 300_000_000) // 300ms delay
+                                    os_log(.debug, "ADCView: Now trying to open immersive space with id: %@", AppModel.buildingSpaceId)
+                                    switch await openImmersiveSpace(id: AppModel.buildingSpaceId) {
+                                    case .opened:
+                                        os_log(.debug, "ADCView: immersive space open returned .opened")
+                                        appModel.isBuilderInstructionsOpen = false
+                                        dismissWindow(id: AppModel.mainWindowId)
+                                        appModel.isMainWindowOpen = false
+                                    case .userCancelled, .error:
+                                        fallthrough
+                                    @unknown default:
+                                        os_log(.error, "ADCView: immersive space open failed or unknown result; setting state to closed")
+                                        appModel.immersiveSpaceState = .closed
+                                    }
+                                    
+                                case .closed:
+                                    appModel.immersiveSpaceState = .inTransition
+                                    os_log(.debug, "ADCView: Immersive space currently closed. Attempting to open with id: %@", AppModel.buildingSpaceId)
+                                    switch await openImmersiveSpace(id: AppModel.buildingSpaceId) {
+                                    case .opened:
+                                        os_log(.debug, "ADCView: immersive space open returned .opened")
+                                        appModel.isBuilderInstructionsOpen = false
+                                        dismissWindow(id: AppModel.mainWindowId)
+                                        appModel.isMainWindowOpen = false
+                                    case .userCancelled, .error:
+                                        fallthrough
+                                    @unknown default:
+                                        os_log(.error, "ADCView: immersive space open failed for unknown reasons; setting state to closed")
+                                        appModel.immersiveSpaceState = .closed
+                                    }
+                                    
+                                case .inTransition:
+                                    os_log(.debug, "ADCView: immersive space is currently in transition; ignoring user action.")
+                                    break
                                 }
                             }
                         },

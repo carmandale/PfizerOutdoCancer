@@ -25,7 +25,7 @@ final class IntroViewModel {
     
     // Attachment entities
     var titleEntity: Entity?
-    var labViewerEntity: Entity?
+    // var labViewerEntity: Entity?
     var navToggleEntity: Entity?
     
     // Animation States
@@ -110,7 +110,7 @@ final class IntroViewModel {
         print("✅ IntroViewModel: Environment setup complete")
     }
     
-    func setupAttachments(in environment: Entity, for portal: Entity, titleEntity: Entity, labViewerEntity: Entity) {
+    func setupAttachments(in environment: Entity, for portal: Entity, titleEntity: Entity, labViewerEntity: Entity? = nil) {
         if let l = environment.findEntity(named: "logo") {
                 print("🔍 Found logo: \(l.name)")
                 logo = l
@@ -123,16 +123,16 @@ final class IntroViewModel {
                 titleRoot = t
                 print("📎 Created titleRoot")
                 // print("🔍 Before - titleEntity position: \(titleEntity.position), scale: \(titleEntity.transform.scale)")
-                titleEntity.position = [0, -0.75, 0.1]
-                titleEntity.transform.scale *= 5.0
+                titleEntity.position = [0, -1.2, 0.1]
+                titleEntity.transform.scale *= 10.0
                 print("🔍 After - titleEntity position: \(titleEntity.position), scale: \(titleEntity.transform.scale)")
                 t.addChild(titleEntity)
 
-                    labViewerEntity.position = [0, -1.0, 0.2]
-                labViewerEntity.transform.scale *= 5.0
-                print("🔍 After - labViewer position: \(labViewerEntity.position), scale: \(labViewerEntity.transform.scale)")
-                t.addChild(labViewerEntity)
-                print("📎 Added labViewer to titleRoot")
+                // labViewerEntity.position = [0, -1.0, 0.2]
+                // labViewerEntity.transform.scale *= 5.0
+                // print("🔍 After - labViewer position: \(labViewerEntity.position), scale: \(labViewerEntity.transform.scale)")
+                // t.addChild(labViewerEntity)
+                // print("📎 Added labViewer to titleRoot")
 
                 l.addChild(t)
                 print("📎 Added titleText to titleRoot")
@@ -373,31 +373,46 @@ final class IntroViewModel {
                    let introEnv = introEnvironment,
                    let root = introRootEntity,
                    let extras = root.findEntity(named: "ExtraItems"),
-                   let audio = root.findEntity(named: "Audio")
+                   let logoFadeOut = logo,
+                   let titleRootFadeOut = titleRoot
                 {
                     print("🌐 Starting concurrent animations for PortalRoot, World, and PortalPlane scale")
+                    let moveDuration = 20.0
                     
-                    async let animateWarp = warp.fadeOpacity(to: 0.0, duration: 10.0)
+                    async let _: () = warp.fadeOpacity(
+                        to: 0.0,
+                        duration: 10.0
+                    )
+                    
+                    async let _: () = logoFadeOut.fadeOpacity(
+                        to: 0.0,
+                        duration: 3.0
+                    )
+                    async let _: () = titleRootFadeOut.fadeOpacity(
+                        to: 0.0,
+                        duration: 3.0
+                    )
+//                    async let animateOutTitle = withAnimation { showTitleText = false }
 
-                    async let animatePortalRoot = portalRoot.animateAbsolutePositionAndScale(
+                    async let animatePortalRoot: () = portalRoot.animateAbsolutePositionAndScale(
                         to: SIMD3<Float>(0, 0, 0),
                         scale: SIMD3<Float>(1, 1, 1),
-                        duration: 10.0,
+                        duration: moveDuration,
                         timing: .easeInOut,
                         waitForCompletion: true
                     )
 
-                    async let animateWorld = portalWorld.animateAbsolutePositionAndScale(
+                    async let animateWorld: () = portalWorld.animateAbsolutePositionAndScale(
                         to: SIMD3<Float>(0, 0.25, 1),
                         scale: SIMD3<Float>(1, 1, 1),
-                        duration: 10.0,
+                        duration: moveDuration,
                         timing: .easeInOut,
                         waitForCompletion: true
                     )
 
-                    async let animatePortalPlaneScale = portalPlane2.animateScale(
+                    async let animatePortalPlaneScale: () = portalPlane2.animateScale(
                         to: 20.0,
-                        duration: 10.0,
+                        duration: moveDuration,
                         timing: .easeInOut,
                         waitForCompletion: true
                     )
@@ -407,29 +422,87 @@ final class IntroViewModel {
                     print("🌐 Completed concurrent animations for PortalRoot, World, and PortalPlane scale")
                     
                     // fade out the introEnvironment
+                    print("introEnvironment opacity started at \(introEnv.opacity)")
                     await introEnv.fadeOpacity(to: 0.0, duration: 5.0)
+                    print("introEnvironment opacity faded out to \(introEnv.opacity)")
 
                     // wait for 5 seconds
                     try? await Task.sleep(for: .seconds(5))
-                    
-                    // unparent the portalWorld from the portal
-                    portalWorld.removeFromParent()
-                    print("portalWorld unparented")
-                    // parent the portalWorld to scene root
-                    root.addChild(portalWorld)
-                    print( "portalWorld parented to root")
-//                    introEnv.isEnabled = false
-                    extras.isEnabled = false
-                    audio.isEnabled = false
-                    // portalRoot.isEnabled = false
-                    portalPlane2.isEnabled = false
-                    print("disabled intro environment and portal")
-                    appModel.readyToStartLab = true
-                    print("readyToStartLab set to \(appModel.readyToStartLab)")
-                    
-                    
 
                     
+                    
+                    // unparent the portalWorld from the portal and reparent it to the root while keeping its transform
+                    let worldTransform = portalWorld.transformMatrix(relativeTo: nil)
+                    portalWorld.removeFromParent()
+                    root.addChild(portalWorld)
+                    print("🛑 portalWorld position in world space PRE-TRANSFORM FIX is \(portalWorld.position(relativeTo: nil))")
+                    portalWorld.setTransformMatrix(worldTransform, relativeTo: nil)
+                    print("✅ portalWorld position in world space is \(portalWorld.position(relativeTo: nil))")
+
+                    // change the portal component to all the lab to spill out into the world
+                    if var portalComponent = portalPlane2.components[PortalComponent.self] {
+                        // Update the portal component's properties to "spill out"
+                        portalComponent.crossingMode = .plane(.positiveZ)
+                        // Reassign the updated component back to the entity
+                        portalPlane2.components.set(portalComponent)
+                    } else {
+                        print("❌ PortalComponent not found on portalPlane2.")
+                    }
+
+                    // print( "portalWorld parented to root")
+//                    introEnv.isEnabled = false
+//                    appModel.assetLoadingManager.inspectEntityHierarchy(introEnv)
+                    extras.isEnabled = false
+                    print("disabled extras in intro environment")
+                    
+                    // wait a little for the audio to finish before removing things
+                    try? await Task.sleep(for: .seconds(8))
+
+                    // Clean up audio entities
+                    if let audioEntity = introEnv.findEntity(named: "Audio") {
+                        print("🔊 Found Audio entity, beginning cleanup")
+                        
+                        // Recursively remove components from children first
+                        for child in audioEntity.children {
+                            child.components.removeAll()
+                            child.removeFromParent()
+                        }
+                        
+                        // Remove all components from audio entity
+                        audioEntity.components.removeAll()
+                        
+                        // Remove from parent
+                        audioEntity.removeFromParent()
+                        
+                        print("✅ Audio entity cleanup complete")
+                    }
+
+                    // Clean up extra items
+                    if let extrasEntity = root.findEntity(named: "ExtraItems") {
+                        print("🧹 Found ExtraItems entity, beginning cleanup")
+                        
+                        // Recursively remove components from children first
+                        for child in extrasEntity.children {
+                            child.components.removeAll()
+                            child.removeFromParent()
+                        }
+                        
+                        // Remove all components from extras entity
+                        extrasEntity.components.removeAll()
+                        
+                        // Remove from parent
+                        extrasEntity.removeFromParent()
+                        
+                        print("✅ ExtraItems cleanup complete")
+                    }
+                    
+                    // Enable the large room reverb effect when entering a new room
+                    root.enableLargeRoomReverb()
+                    appModel.assetLoadingManager.inspectEntityHierarchy(root)
+
+                    // ready to readyToStartLab
+                    appModel.readyToStartLab = true
+                    print("readyToStartLab set to \(appModel.readyToStartLab)")
 
                 } else {
                     print("❌ One or more entities for concurrent animations not found:")
@@ -492,7 +565,6 @@ final class IntroViewModel {
         
         // Clear attachment entities
         titleEntity = nil
-        labViewerEntity = nil
         navToggleEntity = nil
         
         // Reset state flags

@@ -54,7 +54,12 @@ final class PortalManager {
         root.addChild(world)
 
         // Set up the portal to show the content in the `world`.
-        portalPlane.components.set(PortalComponent(target: world))
+        var portalComp = PortalComponent(target: world)
+        portalComp.clippingMode = .disabled
+        portalComp.crossingMode = .disabled
+        portalPlane.components.set(portalComp)
+        
+        world.components[PortalCrossingComponent.self] = .init()
         
         portalRoot.addChild(portalPlane)
         root.addChild(portalRoot)

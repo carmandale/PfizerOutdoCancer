@@ -58,13 +58,12 @@ struct IntroView: View {
                     
                     // Now that environment is loaded, handle attachments
                     if let titleEntity = attachments.entity(for: "titleText"),
-                       let labViewerEntity = attachments.entity(for: "labViewer"),
                        let navToggleEntity = attachments.entity(for: "navToggle") {
                         print("📱 IntroView: Found SwiftUI attachments")
                         
                         // Store attachments in view model
                         appModel.introState.titleEntity = titleEntity
-                        appModel.introState.labViewerEntity = labViewerEntity
+                        // appModel.introState.labViewerEntity = labViewerEntity
                         appModel.introState.navToggleEntity = navToggleEntity
                         
                         // Get portal and set up attachments
@@ -75,8 +74,7 @@ struct IntroView: View {
                             appModel.introState.setupAttachments(
                                 in: root,
                                 for: portal,
-                                titleEntity: titleEntity,
-                                labViewerEntity: labViewerEntity
+                                titleEntity: titleEntity
                             )
                             
                             // Start animation sequence
@@ -122,9 +120,9 @@ struct IntroView: View {
             Attachment(id: "titleText") {
                 OutdoCancer(showTitle: $appModel.introState.showTitleText)
             }
-            Attachment(id: "labViewer") {
-                LabViewerButton()
-            }
+            // Attachment(id: "labViewer") {
+            //     LabViewerButton()
+            // }
             Attachment(id: "navToggle") {
                 NavToggleView()
             }
@@ -160,9 +158,11 @@ struct IntroView: View {
         }
         .onChange(of: appModel.labState.isLibraryOpen) { _, isOpen in
             if isOpen {
+                print(">>> Library window opened 🚪")
                 openWindow(id: AppModel.libraryWindowId)
                 appModel.updateLibraryWindowState(isOpen: true)
             } else {
+                print(">>> Library window closed")
                 dismissWindow(id: AppModel.libraryWindowId)
                 appModel.updateLibraryWindowState(isOpen: false)
             }
@@ -190,8 +190,8 @@ struct IntroView: View {
                 if let root = appModel.introState.introRootEntity {
                     Task { @MainActor in
                         do {
-                            try await appModel.labState.setupInitialLabEnvironment(in: root)
-                            try await appModel.labState.setupLabEnvironment(in: root)
+                            try await appModel.labState.setupInitialLabEnvironment(in: root, isIntro: true)
+                            try await appModel.labState.setupLabEnvironment(in: root, isIntro: true)
                         } catch {
                             print("❌ Error setting up lab environment: \(error)")
                         }

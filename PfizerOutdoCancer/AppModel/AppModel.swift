@@ -9,6 +9,7 @@ import SwiftUI
 import RealityKit
 import RealityKitContent
 import ARKit
+import os
 
 // MARK: - App Constants
 extension AppModel {
@@ -33,7 +34,7 @@ extension AppModel {
         static let buttonPaddingHorizontal: CGFloat = 24
         static let buttonPaddingVertical: CGFloat = 16
         static let buttonExpandScale: CGFloat = 1.1
-        static let buttonPressScale: CGFloat = 0.9
+        static let buttonPressScale: CGFloat = 0.85
         
         // Animation Durations
         static let buttonHoverDuration: CGFloat = 0.2
@@ -367,6 +368,18 @@ final class AppModel {
             } catch {
                 print("❌ Failed to pre-load outro environment: \(error)")
             }
+        } else if phase == .building {
+            os_log(.debug, "AppModel: Preloading Building Phase Assets...")
+            // Optionally trigger a preloading for building assets if needed (for example, loading "antibody_scene" here)
+            do {
+                let scene = try await assetLoadingManager.instantiateAsset(
+                    withName: "antibody_scene",
+                    category: .buildADCEnvironment
+                )
+                os_log(.debug, "AppModel: Preloaded antibody_scene for Building Phase: %@", String(describing: scene))
+            } catch {
+                os_log(.error, "AppModel: Failed to preload Building Phase asset 'antibody_scene': %@", error.localizedDescription)
+            }
         }
     }
 
@@ -374,8 +387,11 @@ final class AppModel {
     private func cleanupCurrentPhase(for newPhase: AppPhase) async {
         switch currentPhase {
         case .intro:
+            // now that intro and lab are combined, we need to cleanup both
             introState.cleanup()
             await assetLoadingManager.releaseIntroEnvironment()
+            labState.cleanup()
+            await assetLoadingManager.releaseLabEnvironment()
         case .lab:
             labState.cleanup()
             await assetLoadingManager.releaseLabEnvironment()

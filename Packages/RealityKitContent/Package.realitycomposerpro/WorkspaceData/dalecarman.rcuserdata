@@ -1,7 +1,8 @@
 {
-  "advancedEditorSelectedIdentifier" : "ProjectBrowser",
+  "advancedEditorSelectedIdentifier" : "BehaviorsPluginID",
   "openSceneRelativePaths" : [
-    "IntroEnvironment.usda"
+    "OutroEnvironment.usda",
+    "Assets\/Outro\/outro_v01.usdc"
   ],
   "recentIdentifiers" : {
     "00353439-B084-4161-BDD3-58325B62FD61" : [
@@ -8457,6 +8458,74 @@
         ]
       }
     ],
+    "A3A35611-208A-43BF-97BE-0AA072D057B3" : [
+      {
+        "date" : 761042472.344568,
+        "title" : "Untitled",
+        "transform" : [
+          1,
+          0,
+          -0,
+          0,
+          -0,
+          0.86536634,
+          -0.50113976,
+          0,
+          0,
+          0.50113976,
+          0.86536634,
+          0,
+          0.00018494562,
+          8.412469,
+          11.203715,
+          1
+        ]
+      },
+      {
+        "date" : 761042470.212742,
+        "title" : "Untitled",
+        "transform" : [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0.7071069,
+          -0.7071067,
+          0,
+          0,
+          0.7071067,
+          0.7071069,
+          0,
+          0,
+          7.3354206,
+          1.1503881,
+          1
+        ]
+      },
+      {
+        "date" : 761042466.236252,
+        "title" : "Untitled",
+        "transform" : [
+          1,
+          0,
+          -0,
+          0,
+          -0,
+          0.7071069,
+          -0.7071067,
+          0,
+          0,
+          0.7071067,
+          0.7071069,
+          0,
+          0,
+          9.194899,
+          4.719329,
+          1
+        ]
+      }
+    ],
     "A3DD4248-832E-457D-AECD-261D86190279" : [
       {
         "date" : 760777695.551465,
@@ -11969,5 +12038,5 @@
   "sceneViewportBackgroundColors" : {
 
   },
-  "selectedSceneRelativePath" : "IntroEnvironment.usda"
+  "selectedSceneRelativePath" : "OutroEnvironment.usda"
 }

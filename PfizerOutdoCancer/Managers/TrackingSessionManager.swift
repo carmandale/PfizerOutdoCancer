@@ -163,27 +163,29 @@ final class TrackingSessionManager {
     func monitorTrackingEvents() async {
         for await event in arkitSession.events {
             switch event {
-            case .dataProviderStateChanged(_, let newState, let error):
-                print("🔄 Provider state changed to: \(newState)")
+            case .dataProviderStateChanged(let provider, let newState, let error):
+                let providerName = provider is WorldTrackingProvider ? "World Tracking" :
+                                 provider is HandTrackingProvider ? "Hand Tracking" : "Unknown"
+                print("🔄 \(providerName) provider state changed to: \(newState)")
                 currentState = newState  // Track the current state
                 
                 // Log full state after any state change
-                await logTrackingState(context: "Provider State Change [\(newState)]")
+                await logTrackingState(context: "\(providerName) Provider State Change [\(newState)]")
                 
                 switch newState {
                 case .initialized:
-                    print("ℹ️ Provider initialized")
+                    print("ℹ️ \(providerName) provider initialized")
                 case .running:
-                    print("✅ Provider running")
+                    print("✅ \(providerName) provider running")
                     isTracking = true
                 case .paused:
-                    print("⏸️ Provider paused")
+                    print("⏸️ \(providerName) provider paused")
                 case .stopped:
                     if let error {
-                        print("❌ Provider stopped with error: \(error)")
+                        print("❌ \(providerName) provider stopped with error: \(error)")
                         providersStoppedWithError = true
                     } else {
-                        print("⏹️ Provider stopped normally")
+                        print("⏹️ \(providerName) provider stopped normally")
                     }
                     isTracking = false
                 @unknown default:

@@ -25,7 +25,7 @@ struct NavToggleView: View {
                     .shadow(radius: 2)
             }
         })
-        .buttonStyle(.plain)
+        .buttonStyle(ScalableButtonStyle())
         .glassBackgroundEffect()
         .hoverEffect { effect, isActive, proxy in
             effect
