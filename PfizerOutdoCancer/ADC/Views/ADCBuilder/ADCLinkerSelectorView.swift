@@ -22,15 +22,12 @@ struct ADCLinkerSelectorView: View {
                 
                 ADCCheckmarkButton(
                     action: {
-                            // Fill all remaining linkers with current selection
-//                        dataModel.fillAllLinkers()
-                            // Advance to next step
-//                            dataModel.adcBuildStep = 2
-                        
+                        // Advance to the next step (payload step)
+                        dataModel.adcBuildStep = 2  // may need dataModel.fillAllLinkers()
                     },
                     isEnabled: dataModel.selectedLinkerType != nil && dataModel.placedLinkerCount == 4
                 )
-                .disabled(noButton)
+                // .disabled(noButton)
                 
                 
             }

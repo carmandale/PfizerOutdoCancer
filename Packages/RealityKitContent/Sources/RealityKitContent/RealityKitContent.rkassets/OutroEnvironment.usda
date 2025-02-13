@@ -10,7 +10,7 @@
 
 def Xform "Root"
 {
-    reorder nameChildren = ["M_text", "hope_MSR", "Outro", "RCP_BehaviorsContainer", "OnAddedToScene", "Model_Sorting_Group", "ADC_particles", "ADC_particles2", "AudioMixGroups", "change_v02", "Audio", "Outro_v02"]
+    reorder nameChildren = ["M_text", "hope_MSR", "RCP_BehaviorsContainer", "OnAddedToScene", "Model_Sorting_Group", "ADC_particles", "ADC_particles2", "AudioMixGroups", "change_v02", "Audio", "Outro_v02"]
     def Material "M_text"
     {
         token outputs:mtlx:surface.connect = </Root/M_text/PBRSurface.outputs:out>
@@ -27,341 +27,6 @@ def Xform "Root"
             token outputs:out
             float2 ui:nodegraph:node:pos = (87.36719, 19.101562)
             int ui:nodegraph:node:stackingOrder = 5
-        }
-    }
-
-    def RealityKitTimeline "Outro"
-    {
-        reorder nameChildren = ["Track", "Track2", "Track12", "Track11", "Track4", "Track3", "Track5", "Track6", "Track7", "Track8", "Track9", "Track10"]
-        def RealityKitTrack "Track"
-        {
-            reorder nameChildren = ["outro_vo_1", "outro_v0_2"]
-            def RealityKitAction "outro_vo_1"
-            {
-                string actionKind = "audio"
-                string audioResourceName = "outro01_mp3"
-                bool controlPlayback = 1
-                double duration = 15.542854166666666
-                uniform token info:id = "D5280CE4-C378-4D9E-B3E7-5E25770F5C14"
-                double startTime = 5.688173200647529
-                rel target = </Root/Audio/vo>
-
-                def RealityKitStruct "handoffType"
-                {
-                }
-            }
-
-            def RealityKitAction "outro_v0_2"
-            {
-                string actionKind = "audio"
-                string audioResourceName = "outro02_mp3"
-                bool controlPlayback = 1
-                double duration = 9.874270833333334
-                uniform token info:id = "683445C9-5CDA-4B4C-A52F-8DB90E5B1109"
-                double startTime = 21.988400408399745
-                rel target = </Root/Audio/vo>
-
-                def RealityKitStruct "handoffType"
-                {
-                }
-            }
-        }
-
-        def RealityKitTrack "Track2"
-        {
-            def RealityKitAction "Transform_By_main"
-            {
-                string actionKind = "moveBy"
-                int blendLayer = 300
-                double duration = 92.629
-                uniform token info:id = "03CD62AD-E2C8-4D55-8818-94C2FFBB7686"
-                float3 position = (-0.0000018179421, -5, -0.000017184278)
-                double startTime = 0
-                rel target = </Root/hope_MSR/hope_v01>
-
-                def RealityKitStruct "timingFunction"
-                {
-                    token type = "easeInOut"
-                }
-            }
-        }
-
-        def RealityKitTrack "Track4"
-        {
-            reorder nameChildren = ["Show", "Hide", "Transform_By"]
-            def RealityKitAction "Show"
-            {
-                string actionKind = "show"
-                int blendLayer = 300
-                double duration = 5
-                uniform token info:id = "CF790808-9228-4A63-841A-561C8D24B5D4"
-                double startTime = 5.1169945681684
-                rel target = </Root/hope_MSR/hope_v01/logo_MSR>
-
-                def RealityKitStruct "timingFunction"
-                {
-                }
-            }
-
-            def RealityKitAction "Hide"
-            {
-                string actionKind = "hide"
-                int blendLayer = 300
-                double duration = 4
-                uniform token info:id = "A9198273-B1EE-4D91-AA58-C6D5EA362C30"
-                double startTime = 36
-                rel target = </Root/hope_MSR/hope_v01/logo_MSR>
-
-                def RealityKitStruct "timingFunction"
-                {
-                }
-            }
-
-            def RealityKitAction "Hide2"
-            {
-                string actionKind = "hide"
-                int blendLayer = 300
-                double duration = 3
-                uniform token info:id = "EB0A541F-5AD5-4D73-8C5A-38F64CFE6BAE"
-                double startTime = 23.53906190160718
-                rel target = </Root/change_v02>
-
-                def RealityKitStruct "timingFunction"
-                {
-                }
-            }
-
-            def RealityKitAction "Show2"
-            {
-                string actionKind = "show"
-                int blendLayer = 300
-                double duration = 3
-                uniform token info:id = "D7B2C367-D076-4854-8E02-BFBD394C8602"
-                double startTime = 0
-                rel target = </Root/change_v02>
-
-                def RealityKitStruct "timingFunction"
-                {
-                }
-            }
-        }
-
-        def RealityKitTrack "Track5"
-        {
-            def RealityKitAction "Show"
-            {
-                string actionKind = "show"
-                int blendLayer = 300
-                double duration = 3
-                uniform token info:id = "B9909091-242F-45E0-8950-944DE56ED7D2"
-                double startTime = 17.649022548317813
-                rel target = </Root/change_v02>
-
-                def RealityKitStruct "timingFunction"
-                {
-                }
-            }
-
-            def RealityKitAction "Hide"
-            {
-                string actionKind = "hide"
-                int blendLayer = 300
-                double duration = 5
-                uniform token info:id = "9061809B-17C1-4C50-AAAB-47873BEBF1F0"
-                double startTime = 21.22208992483894
-                rel target = </Root/change_v02>
-
-                def RealityKitStruct "timingFunction"
-                {
-                }
-            }
-
-            def RealityKitAction "Enable_Entity"
-            {
-                string actionKind = "enable"
-                uniform token info:id = "3129523B-A3EF-41FA-AB14-5CCE95698E64"
-                double startTime = 5.17459649924352
-                rel target = </Root/ADC_particles2>
-            }
-
-            def RealityKitAction "Disable_Entity"
-            {
-                string actionKind = "disable"
-                uniform token info:id = "ED7C3300-BCF0-47E1-83DE-72117B58ED14"
-                double startTime = 0
-                rel target = </Root/ADC_particles2>
-            }
-
-            def RealityKitAction "Show2"
-            {
-                string actionKind = "show"
-                int blendLayer = 300
-                double duration = 3
-                uniform token info:id = "1C9603F0-26E1-4251-93A9-63998D4566C6"
-                double startTime = 31.477796600460124
-                rel target = </Root/hope_MSR/hope_v01/sh0200_tagline_v01>
-
-                def RealityKitStruct "timingFunction"
-                {
-                }
-            }
-
-            def RealityKitAction "Hide2"
-            {
-                string actionKind = "hide"
-                int blendLayer = 300
-                double duration = 4
-                uniform token info:id = "649D8565-A9DB-4B5A-ABCE-D055BB157DE1"
-                double startTime = 36
-                rel target = </Root/hope_MSR/hope_v01/sh0200_tagline_v01>
-
-                def RealityKitStruct "timingFunction"
-                {
-                }
-            }
-        }
-
-        def RealityKitTrack "Track6"
-        {
-            def RealityKitAction "Bells1"
-            {
-                string actionKind = "audio"
-                string audioResourceName = "Bells_1_wav"
-                bool controlPlayback = 1
-                double duration = 92.62933333333334
-                uniform token info:id = "03DCAD68-A631-480C-8FDB-43ED8724AEF2"
-                double startTime = 0
-                rel target = </Root/Audio/Bells_1>
-
-                def RealityKitStruct "handoffType"
-                {
-                }
-            }
-        }
-
-        def RealityKitTrack "Track7"
-        {
-            def RealityKitAction "Bells2"
-            {
-                string actionKind = "audio"
-                string audioResourceName = "Bells_2_wav"
-                bool controlPlayback = 1
-                double duration = 92.62933333333334
-                uniform token info:id = "D7F1B767-ED73-44F4-B352-D23ABB84E4A9"
-                double startTime = 0
-                rel target = </Root/Audio/Bells_2>
-
-                def RealityKitStruct "handoffType"
-                {
-                }
-            }
-        }
-
-        def RealityKitTrack "Track8"
-        {
-            def RealityKitAction "Chimes1"
-            {
-                string actionKind = "audio"
-                string audioResourceName = "Chimes_1_wav"
-                bool controlPlayback = 1
-                double duration = 92.62933333333334
-                uniform token info:id = "16E5BABE-B51D-403E-B273-762A91E64609"
-                double startTime = 0
-                rel target = </Root/Audio/Chimes_1>
-
-                def RealityKitStruct "handoffType"
-                {
-                }
-            }
-        }
-
-        def RealityKitTrack "Track9"
-        {
-            def RealityKitAction "Chimes2"
-            {
-                string actionKind = "audio"
-                string audioResourceName = "Chimes_2_wav"
-                bool controlPlayback = 1
-                double duration = 92.62933333333334
-                uniform token info:id = "C47FD906-61B3-4BF4-B96D-C16480E2834E"
-                double startTime = 0
-                rel target = </Root/Audio/Chimes_2>
-
-                def RealityKitStruct "handoffType"
-                {
-                }
-            }
-        }
-
-        def RealityKitTrack "Track10"
-        {
-            def RealityKitAction "Piano"
-            {
-                string actionKind = "audio"
-                string audioResourceName = "Piano_wav"
-                bool controlPlayback = 1
-                double duration = 92.768
-                uniform token info:id = "29190D73-07C3-497E-A4DF-AE0444EDC02B"
-                double startTime = 0
-                rel target = </Root/Audio/Piano_1>
-
-                def RealityKitStruct "handoffType"
-                {
-                }
-            }
-        }
-
-        def RealityKitTrack "Track11"
-        {
-            def RealityKitAction "Transform_By_hope"
-            {
-                string actionKind = "moveBy"
-                int blendLayer = 300
-                double duration = 92.629
-                uniform token info:id = "124B2E58-8C15-4C73-A980-1AE4351D361A"
-                float3 position = (0, 0, 10)
-                double startTime = 0
-                rel target = </Root/hope_MSR/hope_v01/Text>
-
-                def RealityKitStruct "timingFunction"
-                {
-                }
-            }
-        }
-
-        def RealityKitTrack "Track12"
-        {
-            def RealityKitAction "Transform_By_logo"
-            {
-                string actionKind = "moveBy"
-                int blendLayer = 300
-                double duration = 92.629
-                uniform token info:id = "AC6AEEB3-07CD-4C29-AAA2-74B75293B65E"
-                double startTime = 0
-                rel target = </Root/hope_MSR/hope_v01/logo_MSR>
-
-                def RealityKitStruct "timingFunction"
-                {
-                }
-            }
-        }
-
-        def RealityKitTrack "Track3"
-        {
-            def RealityKitAction "Transform_By"
-            {
-                string actionKind = "moveBy"
-                int blendLayer = 300
-                double duration = 37.072382980676146
-                uniform token info:id = "F2E299CE-A4B6-4279-BED7-231E67D2FAD1"
-                float3 position = (0, -0.5, 0)
-                double startTime = 0
-                rel target = </Root/change_v02>
-
-                def RealityKitStruct "timingFunction"
-                {
-                }
-            }
         }
     }
 
@@ -409,8 +74,13 @@ def Xform "Root"
             {
                 rel group = </Root/Model_Sorting_Group_1>
                 token info:id = "RealityKit.MeshSorting"
-                int priorityInGroup = 5
+                int priorityInGroup = 2
             }
+        }
+
+        def RealityKitComponent "HierarchicalFade"
+        {
+            uniform token info:id = "RealityKit.HierarchicalFade"
         }
     }
 
@@ -428,8 +98,13 @@ def Xform "Root"
             {
                 rel group = </Root/Model_Sorting_Group_1>
                 token info:id = "RealityKit.MeshSorting"
-                int priorityInGroup = 4
+                int priorityInGroup = 1
             }
+        }
+
+        def RealityKitComponent "HierarchicalFade"
+        {
+            uniform token info:id = "RealityKit.HierarchicalFade"
         }
     }
 
@@ -541,7 +216,6 @@ def Xform "Root"
 
                         def RealityKitComponent "MeshSorting"
                         {
-                            rel group = </Root/Model_Sorting_Group_1>
                             token info:id = "RealityKit.MeshSorting"
                             int priorityInGroup = 1
                         }
@@ -562,11 +236,16 @@ def Xform "Root"
 
                         def RealityKitComponent "MeshSorting"
                         {
-                            rel group = </Root/Model_Sorting_Group_1>
                             token info:id = "RealityKit.MeshSorting"
                             int priorityInGroup = 2
                         }
                     }
+                }
+
+                def RealityKitComponent "HierarchicalFade"
+                {
+                    uniform token info:id = "RealityKit.HierarchicalFade"
+                    float opacity = 0
                 }
             }
 
@@ -695,7 +374,7 @@ def Xform "Root"
         def RealityKitComponent "HierarchicalFade"
         {
             uniform token info:id = "RealityKit.HierarchicalFade"
-            float opacity = 0
+            float opacity = 1
         }
 
         over "logo_MSR"
@@ -710,7 +389,7 @@ def Xform "Root"
                         {
                             rel group = </Root/Model_Sorting_Group_1>
                             token info:id = "RealityKit.MeshSorting"
-                            int priorityInGroup = 6
+                            int priorityInGroup = 3
                         }
                     }
                 }
@@ -729,7 +408,7 @@ def Xform "Root"
                         {
                             rel group = </Root/Model_Sorting_Group_1>
                             token info:id = "RealityKit.MeshSorting"
-                            int priorityInGroup = 25
+                            int priorityInGroup = 22
                         }
                     }
 
@@ -740,12 +419,18 @@ def Xform "Root"
                     }
                 }
             }
+
+            def RealityKitComponent "HierarchicalFade"
+            {
+                uniform token info:id = "RealityKit.HierarchicalFade"
+                float opacity = 0
+            }
         }
     }
 
     def RealityKitTimeline "Outro_v02"
     {
-        reorder nameChildren = ["Track", "Track2", "Track3", "Track4", "Track5", "Track6", "Track7", "Track8"]
+        reorder nameChildren = ["Track", "Track2", "Track3", "Track4", "Track5", "Track7", "Track8", "Track6", "Track9"]
         def RealityKitTrack "Track"
         {
             def RealityKitAction "Animation"
@@ -756,7 +441,7 @@ def Xform "Root"
                 double duration = 52.41666793823242
                 uniform token info:id = "BE8C9804-F17A-48D4-9A38-DC6215DA05AB"
                 bool separateAnimatedValue = 1
-                double startTime = 0
+                double startTime = 3
                 rel target = </Root/outro_v01>
 
                 def RealityKitStruct "handoffType"
@@ -774,7 +459,7 @@ def Xform "Root"
                 bool controlPlayback = 1
                 double duration = 52.427375
                 uniform token info:id = "D316FF4A-A7E2-448C-90C2-F30E7B429119"
-                double startTime = 0
+                double startTime = 2
                 rel target = </Root/AmbientAudio>
 
                 def RealityKitStruct "handoffType"
@@ -801,7 +486,7 @@ def Xform "Root"
                 string actionKind = "enable"
                 double duration = 0
                 uniform token info:id = "3129523B-A3EF-41FA-AB14-5CCE95698E64"
-                double startTime = 1.459591954574795
+                double startTime = 1.180420506637098
                 rel target = </Root/ADC_particles2>
                 float2 ui:nodegraph:node:pos = (20, 20)
                 int ui:nodegraph:node:stackingOrder = 1
@@ -818,7 +503,7 @@ def Xform "Root"
                 double duration = 52.41666793823242
                 uniform token info:id = "0259A874-D85D-447F-9336-7CBE283E485F"
                 bool separateAnimatedValue = 1
-                double startTime = 0
+                double startTime = 3
                 rel target = </Root/outro_people_v01>
 
                 def RealityKitStruct "handoffType"
@@ -837,37 +522,6 @@ def Xform "Root"
                 uniform token info:id = "79593AF8-A257-45DA-8374-DE252BDC9008"
                 double startTime = 46.82799594380535
                 rel target = </Root/outro_v01>
-
-                def RealityKitStruct "timingFunction"
-                {
-                }
-            }
-
-            def RealityKitAction "Show"
-            {
-                string actionKind = "show"
-                int blendLayer = 300
-                double duration = 5
-                uniform token info:id = "91286C4E-7D9C-46EA-B660-7A3C7E322A40"
-                double startTime = 0
-                rel target = </Root/outro_v01>
-
-                def RealityKitStruct "timingFunction"
-                {
-                }
-            }
-        }
-
-        def RealityKitTrack "Track6"
-        {
-            def RealityKitAction "Hide"
-            {
-                string actionKind = "hide"
-                int blendLayer = 300
-                double duration = 3
-                uniform token info:id = "3B5ED926-6EFE-4C1F-BBC0-ED028E4F9744"
-                double startTime = 47.00933815591165
-                rel target = </Root/IntroWarp>
 
                 def RealityKitStruct "timingFunction"
                 {
@@ -904,7 +558,7 @@ def Xform "Root"
                 int blendLayer = 300
                 double duration = 2
                 uniform token info:id = "9CB71277-CF33-405F-ADF4-B924DDCE8B0D"
-                double startTime = 35.57354075418307
+                double startTime = 34.75917321308321
                 rel target = </Root/outro_v01/logo_MSR/logo_offset/tagline>
 
                 def RealityKitStruct "timingFunction"
@@ -930,10 +584,72 @@ def Xform "Root"
             {
                 string actionKind = "show"
                 int blendLayer = 300
-                double duration = 3
+                double duration = 10
                 uniform token info:id = "579B6872-6F0C-4936-99DF-926FD6FC1D69"
-                double startTime = 0.6507962041989285
+                double startTime = 4.8630557693588585
                 rel target = </Root/outro_people_v01>
+
+                def RealityKitStruct "timingFunction"
+                {
+                }
+            }
+        }
+
+        def RealityKitTrack "Track6"
+        {
+            def RealityKitAction "Show"
+            {
+                string actionKind = "show"
+                int blendLayer = 300
+                double duration = 5
+                uniform token info:id = "1DC3C327-8CF1-43D8-84F2-80FEBFF1A706"
+                double startTime = 3.8995832379952367
+                rel target = </Root/outro_v01/outro_MSR/change_MSR>
+
+                def RealityKitStruct "timingFunction"
+                {
+                }
+            }
+
+            def RealityKitAction "Hide"
+            {
+                string actionKind = "hide"
+                int blendLayer = 300
+                double duration = 4
+                uniform token info:id = "C8646A96-9530-4B4B-8AC9-2C40C48CF60C"
+                double startTime = 50.51837920999096
+                rel target = </Root/ADC_particles2>
+
+                def RealityKitStruct "timingFunction"
+                {
+                }
+            }
+        }
+
+        def RealityKitTrack "Track9"
+        {
+            def RealityKitAction "Show"
+            {
+                string actionKind = "show"
+                int blendLayer = 300
+                double duration = 3
+                uniform token info:id = "10E63FC6-6BBB-4414-B2E9-F4C818FC000E"
+                double startTime = 12.944534939290525
+                rel target = </Root/outro_v01/logo_MSR>
+
+                def RealityKitStruct "timingFunction"
+                {
+                }
+            }
+
+            def RealityKitAction "Hide"
+            {
+                string actionKind = "hide"
+                int blendLayer = 300
+                double duration = 5
+                uniform token info:id = "3850AAE9-EF4F-4013-9E84-A5B42B033A9C"
+                double startTime = 49.93495988794009
+                rel target = </Root/ADC_particles>
 
                 def RealityKitStruct "timingFunction"
                 {
@@ -1254,35 +970,6 @@ def Xform "Root"
         }
     }
 
-    def "IntroWarp" (
-        active = true
-        references = @IntroWarp.usda@
-    )
-    {
-        float3 xformOp:scale = (1, 1, 1)
-
-        over "sh0100_v01_portalWarp3"
-        {
-            over "PortalWarp3"
-            {
-                over "portalMesh"
-                {
-                    def RealityKitComponent "MeshSorting"
-                    {
-                        rel group = </Root/Model_Sorting_Group_1>
-                        token info:id = "RealityKit.MeshSorting"
-                        int priorityInGroup = 3
-                    }
-                }
-            }
-        }
-
-        def RealityKitComponent "HierarchicalFade"
-        {
-            uniform token info:id = "RealityKit.HierarchicalFade"
-        }
-    }
-
     def "outro_people_v01" (
         active = true
         customData = {
@@ -1330,7 +1017,7 @@ def Xform "Root"
                                     {
                                         rel group = </Root/Model_Sorting_Group_1>
                                         token info:id = "RealityKit.MeshSorting"
-                                        int priorityInGroup = 12
+                                        int priorityInGroup = 9
                                     }
                                 }
                             }
@@ -1352,7 +1039,7 @@ def Xform "Root"
                                     {
                                         rel group = </Root/Model_Sorting_Group_1>
                                         token info:id = "RealityKit.MeshSorting"
-                                        int priorityInGroup = 11
+                                        int priorityInGroup = 8
                                     }
                                 }
                             }
@@ -1374,7 +1061,7 @@ def Xform "Root"
                                     {
                                         rel group = </Root/Model_Sorting_Group_1>
                                         token info:id = "RealityKit.MeshSorting"
-                                        int priorityInGroup = 7
+                                        int priorityInGroup = 4
                                     }
                                 }
                             }
@@ -1396,7 +1083,7 @@ def Xform "Root"
                                     {
                                         rel group = </Root/Model_Sorting_Group_1>
                                         token info:id = "RealityKit.MeshSorting"
-                                        int priorityInGroup = 10
+                                        int priorityInGroup = 7
                                     }
                                 }
                             }
@@ -1418,7 +1105,7 @@ def Xform "Root"
                                     {
                                         rel group = </Root/Model_Sorting_Group_1>
                                         token info:id = "RealityKit.MeshSorting"
-                                        int priorityInGroup = 9
+                                        int priorityInGroup = 6
                                     }
                                 }
                             }
@@ -1440,7 +1127,7 @@ def Xform "Root"
                                     {
                                         rel group = </Root/Model_Sorting_Group_1>
                                         token info:id = "RealityKit.MeshSorting"
-                                        int priorityInGroup = 8
+                                        int priorityInGroup = 5
                                     }
                                 }
                             }
@@ -1465,7 +1152,7 @@ def Xform "Root"
                                     {
                                         rel group = </Root/Model_Sorting_Group_1>
                                         token info:id = "RealityKit.MeshSorting"
-                                        int priorityInGroup = 19
+                                        int priorityInGroup = 16
                                     }
                                 }
                             }
@@ -1487,7 +1174,7 @@ def Xform "Root"
                                     {
                                         rel group = </Root/Model_Sorting_Group_1>
                                         token info:id = "RealityKit.MeshSorting"
-                                        int priorityInGroup = 21
+                                        int priorityInGroup = 18
                                     }
                                 }
                             }
@@ -1509,7 +1196,7 @@ def Xform "Root"
                                     {
                                         rel group = </Root/Model_Sorting_Group_1>
                                         token info:id = "RealityKit.MeshSorting"
-                                        int priorityInGroup = 24
+                                        int priorityInGroup = 21
                                     }
                                 }
                             }
@@ -1531,7 +1218,7 @@ def Xform "Root"
                                     {
                                         rel group = </Root/Model_Sorting_Group_1>
                                         token info:id = "RealityKit.MeshSorting"
-                                        int priorityInGroup = 23
+                                        int priorityInGroup = 20
                                     }
                                 }
                             }
@@ -1553,7 +1240,7 @@ def Xform "Root"
                                     {
                                         rel group = </Root/Model_Sorting_Group_1>
                                         token info:id = "RealityKit.MeshSorting"
-                                        int priorityInGroup = 22
+                                        int priorityInGroup = 19
                                     }
                                 }
                             }
@@ -1575,7 +1262,7 @@ def Xform "Root"
                                     {
                                         rel group = </Root/Model_Sorting_Group_1>
                                         token info:id = "RealityKit.MeshSorting"
-                                        int priorityInGroup = 20
+                                        int priorityInGroup = 17
                                     }
                                 }
                             }
@@ -1600,7 +1287,7 @@ def Xform "Root"
                                     {
                                         rel group = </Root/Model_Sorting_Group_1>
                                         token info:id = "RealityKit.MeshSorting"
-                                        int priorityInGroup = 13
+                                        int priorityInGroup = 10
                                     }
                                 }
                             }
@@ -1622,7 +1309,7 @@ def Xform "Root"
                                     {
                                         rel group = </Root/Model_Sorting_Group_1>
                                         token info:id = "RealityKit.MeshSorting"
-                                        int priorityInGroup = 17
+                                        int priorityInGroup = 14
                                     }
                                 }
                             }
@@ -1644,7 +1331,7 @@ def Xform "Root"
                                     {
                                         rel group = </Root/Model_Sorting_Group_1>
                                         token info:id = "RealityKit.MeshSorting"
-                                        int priorityInGroup = 18
+                                        int priorityInGroup = 15
                                     }
                                 }
                             }
@@ -1666,7 +1353,7 @@ def Xform "Root"
                                     {
                                         rel group = </Root/Model_Sorting_Group_1>
                                         token info:id = "RealityKit.MeshSorting"
-                                        int priorityInGroup = 16
+                                        int priorityInGroup = 13
                                     }
                                 }
                             }
@@ -1688,7 +1375,7 @@ def Xform "Root"
                                     {
                                         rel group = </Root/Model_Sorting_Group_1>
                                         token info:id = "RealityKit.MeshSorting"
-                                        int priorityInGroup = 14
+                                        int priorityInGroup = 11
                                     }
                                 }
                             }
@@ -1710,7 +1397,7 @@ def Xform "Root"
                                     {
                                         rel group = </Root/Model_Sorting_Group_1>
                                         token info:id = "RealityKit.MeshSorting"
-                                        int priorityInGroup = 15
+                                        int priorityInGroup = 12
                                     }
                                 }
                             }
@@ -1760,18 +1447,12 @@ def Xform "Root"
 
         over "M_change"
         {
-            token cullMode = "back" (
-                allowedTokens = ["unspecified", "none", "front", "back"]
-            )
         }
 
         def Material "M_change_1" (
             prepend references = </Root/M_change/M_change>
         )
         {
-            token cullMode = "back" (
-                allowedTokens = ["unspecified", "none", "front", "back"]
-            )
             token outputs:mtlx:surface
             token outputs:realitykit:vertex
             token outputs:surface.connect = </Root/M_change/M_change_1/Principled_BSDF.outputs:surface>

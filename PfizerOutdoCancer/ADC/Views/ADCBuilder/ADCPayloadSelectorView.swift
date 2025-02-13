@@ -22,14 +22,12 @@ struct ADCPayloadSelectorView: View {
                 
                 ADCCheckmarkButton(
                     action: {
-                            // Fill all remaining payloads with current selection
-//                        dataModel.fillAllPayloads()
-                            // Advance to next step
-//                            dataModel.adcBuildStep = 3
+                        // Advance to the next step (final step)
+                        dataModel.adcBuildStep = 3  // may need dataModel.fillAllPayloads()
                     },
                     isEnabled: dataModel.selectedPayloadType != nil && dataModel.placedPayloadCount == 4
                 )
-                .disabled(noButton)
+                // .disabled(noButton)
                 
                 
             }

@@ -96,9 +96,9 @@ struct AttackCancerView: View {
                 .targetedToAnyEntity()
                 .onEnded { value in
                     // Check if this is first tap and hope meter hasn't started
-                    if appModel.gameState.totalTaps == 0 && appModel.isHopeMeterUtilityWindowOpen {
-                        appModel.startAttackCancerGame()
-                    }
+//                    if appModel.gameState.totalTaps == 0 && appModel.isHopeMeterUtilityWindowOpen {
+//                        appModel.startAttackCancerGame()
+//                    }
                     
                     // Only handle taps if game is running
                     if appModel.gameState.isHopeMeterRunning {

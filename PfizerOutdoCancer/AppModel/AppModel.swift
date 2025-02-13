@@ -149,7 +149,7 @@ final class AppModel {
     var buildingStyle: ImmersionStyle = .mixed
     var attackStyle: ImmersionStyle = .progressive(
         0.1...1.0,
-        initialAmount: 0.65
+        initialAmount: 0.85
     )
 
     // MARK: - Asset Management

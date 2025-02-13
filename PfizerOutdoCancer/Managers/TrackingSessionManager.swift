@@ -164,8 +164,8 @@ final class TrackingSessionManager {
         for await event in arkitSession.events {
             switch event {
             case .dataProviderStateChanged(let provider, let newState, let error):
-                let providerName = provider is WorldTrackingProvider ? "World Tracking" :
-                                 provider is HandTrackingProvider ? "Hand Tracking" : "Unknown"
+                let providerName = (provider is WorldTrackingProvider) ? "World Tracking" :
+                                 (provider is HandTrackingProvider) ? "Hand Tracking" : "Unknown"
                 print("🔄 \(providerName) provider state changed to: \(newState)")
                 currentState = newState  // Track the current state
                 
@@ -233,7 +233,7 @@ extension TrackingSessionManager {
         print("🔄 Current Provider State: \(currentState)")
         
         // Get and log head position
-        if let deviceAnchor = try? await worldTrackingProvider.queryDeviceAnchor(atTimestamp: CACurrentMediaTime()) {
+        if let deviceAnchor = worldTrackingProvider.queryDeviceAnchor(atTimestamp: CACurrentMediaTime()) {
             print("📍 Head Transform: \(deviceAnchor.originFromAnchorTransform)")
             // Extract position components for easier reading
             let position = deviceAnchor.originFromAnchorTransform.columns.3

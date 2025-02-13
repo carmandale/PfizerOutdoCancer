@@ -1664,7 +1664,7 @@ def Xform "Root"
         active = true
     )
     {
-        reorder nameChildren = ["Orchestra", "SFX"]
+        reorder nameChildren = ["Orchestra", "SFX", "Narrator"]
         def Xform "Orchestra" (
             active = true
         )
@@ -2603,6 +2603,44 @@ def Xform "Root"
                 }
             }
         }
+
+        def Xform "Narrator" (
+            active = true
+            customData = {
+                float3 rotationEulerHint = (0, 3.1415927, 0)
+            }
+        )
+        {
+            quatf xformOp:orient = (-4.371139e-8, 0, 1, 0)
+            float3 xformOp:scale = (1, 1, 1)
+            float3 xformOp:translate = (1.2665987e-7, 1, -1.9362881)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            def RealityKitAudioFile "Andrew_Narrator_wav"
+            {
+                uniform asset file = @Assets/Intro/SpatialStems12122024/Andrew_Narrator.wav@
+                rel mixGroup = </Root/AudioMixGroups/Voices>
+                uniform bool shouldLoop = 0
+            }
+
+            def RealityKitComponent "SpatialAudio"
+            {
+                float directivityFocus = 1
+                uniform token info:id = "RealityKit.SpatialAudio"
+                float rolloffFactor = 0
+            }
+
+            def RealityKitComponent "AudioLibrary"
+            {
+                uniform token info:id = "RealityKit.AudioLibrary"
+
+                def RealityKitDict "resources"
+                {
+                    string[] keys = ["Andrew_Narrator_wav"]
+                    rel values = </Root/Audio/Narrator/Andrew_Narrator_wav>
+                }
+            }
+        }
     }
 
     def RealityKitTimeline "Orchestra"
@@ -3181,50 +3219,13 @@ def Xform "Root"
                 double duration = 144
                 uniform token info:id = "C2574DA6-6DED-482F-ABCD-6588270D72D2"
                 double startTime = 0
-                rel target = </Root/Narrator>
+                rel target = </Root/Audio/Narrator>
                 float2 ui:nodegraph:node:pos = (20, 20)
                 int ui:nodegraph:node:stackingOrder = 1
 
                 def RealityKitStruct "handoffType"
                 {
                 }
-            }
-        }
-    }
-
-    def Xform "Narrator" (
-        active = true
-        customData = {
-            float3 rotationEulerHint = (0, 3.1415927, 0)
-        }
-    )
-    {
-        quatf xformOp:orient = (-4.371139e-8, 0, 1, 0)
-        float3 xformOp:translate = (1.2665987e-7, 1, -1.9362881)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-        def RealityKitAudioFile "Andrew_Narrator_wav"
-        {
-            uniform asset file = @Assets/Intro/SpatialStems12122024/Andrew_Narrator.wav@
-            rel mixGroup = </Root/AudioMixGroups/Voices>
-            uniform bool shouldLoop = 0
-        }
-
-        def RealityKitComponent "SpatialAudio"
-        {
-            float directivityFocus = 1
-            uniform token info:id = "RealityKit.SpatialAudio"
-            float rolloffFactor = 0
-        }
-
-        def RealityKitComponent "AudioLibrary"
-        {
-            uniform token info:id = "RealityKit.AudioLibrary"
-
-            def RealityKitDict "resources"
-            {
-                string[] keys = ["Andrew_Narrator_wav"]
-                rel values = </Root/Narrator/Andrew_Narrator_wav>
             }
         }
     }
@@ -3277,7 +3278,7 @@ def Xform "Root"
     }
 
     def "SkySphere" (
-        prepend references = @SkySphere.usdz@
+        references = @SkySphere.usdz@
     )
     {
         float3 xformOp:scale = (1, 1, 1)
@@ -3345,104 +3346,6 @@ def Xform "Root"
         active = true
     )
     {
-        def "IntroWarp" (
-            active = true
-            references = @IntroWarp.usda@
-        )
-        {
-            quatf xformOp:orient = (1, 0, 0, 0)
-            float3 xformOp:scale = (1, 1, 1)
-            float3 xformOp:translate = (0, 0, 0)
-
-            over "sh0100_v01_portalWarp2"
-            {
-                rel material:binding (
-                    bindMaterialAs = "strongerThanDescendants"
-                )
-
-                over "PortalWarp_MSR"
-                {
-                    over "PortalWarp2_endCap"
-                    {
-                        over "Cylinder_002" (
-                            prepend apiSchemas = ["MaterialBindingAPI"]
-                        )
-                        {
-                            rel material:binding = </Root/IntroWarp/M_jet/JetMaterial> (
-                                bindMaterialAs = "weakerThanDescendants"
-                            )
-
-                            def RealityKitComponent "MeshSorting"
-                            {
-                                rel group = </Root/Model_Sorting_Group>
-                                token info:id = "RealityKit.MeshSorting"
-                                int priorityInGroup = 1
-                            }
-                        }
-                    }
-
-                    over "PortalWarp2"
-                    {
-                        over "Cylinder" (
-                            prepend apiSchemas = ["MaterialBindingAPI"]
-                        )
-                        {
-                            rel material:binding = </Root/IntroWarp/M_jet/JetMaterial> (
-                                bindMaterialAs = "weakerThanDescendants"
-                            )
-
-                            def RealityKitComponent "MeshSorting"
-                            {
-                                rel group = </Root/Model_Sorting_Group>
-                                token info:id = "RealityKit.MeshSorting"
-                                int priorityInGroup = 2
-                            }
-                        }
-                    }
-                }
-            }
-
-            def RealityKitComponent "HierarchicalFade"
-            {
-                uniform token info:id = "RealityKit.HierarchicalFade"
-                float opacity = 1
-            }
-
-            over "M_jet"
-            {
-                over "JetMaterial"
-                {
-                    float inputs:TunnelMapAmount = 1
-                }
-            }
-
-            over "sh0100_v01_portalWarp3"
-            {
-                over "PortalWarp3"
-                {
-                    over "Sphere"
-                    {
-                        def RealityKitComponent "MeshSorting"
-                        {
-                            rel group = </Root/Model_Sorting_Group>
-                            token info:id = "RealityKit.MeshSorting"
-                            int priorityInGroup = 2
-                        }
-                    }
-
-                    over "portalMesh"
-                    {
-                        def RealityKitComponent "MeshSorting"
-                        {
-                            rel group = </Root/Model_Sorting_Group>
-                            token info:id = "RealityKit.MeshSorting"
-                            int priorityInGroup = 3
-                        }
-                    }
-                }
-            }
-        }
-
         def "ADC_particles" (
             active = true
             references = @Assets/Intro/ADC_particles.usda@

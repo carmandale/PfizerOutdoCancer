@@ -1,64 +1,71 @@
 import RealityKit
 import simd
 
-/// A system that boosts the speed of cancer cell entities based on their world X and Z positions.
-/// The idea is:
-/// • If a cell is behind the user (z ≥ 0), it is given full boost.
-/// • If a cell is in front (z < 0):
-///    – If it is to the left (x < 0), the boost factor is interpolated based on how far left it is.
-///    – If it is to the right (x ≥ 0), no boost is applied.
 public class CancerCellSpeedBoostSystem: System {
-    
-    // MARK: - Configuration
+
     private struct BoostConfig {
-        static let maxBoostMultiplier: Float = 2.5   // Full boost multiplies base speed by 2.5
-        static let lerpSharpness: Float = 4.0        // Controls how quickly the velocity adjusts
-        // For front cells, we interpolate boost over a horizontal range.
-        // For example, cells with x ≤ -1.0 (in front left) get full boost; cells with x ≥ 0 get no boost.
-        static let frontBoostRange: Float = 1.0
+        static let maxBoostMultiplier: Float = 20.5
+        static let lerpSharpness: Float = 4.0
+        static let gravityMagnitude: Float = 0.1
     }
     
-    // MARK: - Query Setup
     private static let query = EntityQuery(where:
-        .has(CancerCellMovementData.self) &&
         .has(PhysicsMotionComponent.self)
     )
     
-    public required init(scene: Scene) {
-        // No additional initialization is required.
-    }
+    public required init(scene: Scene) {}
     
     public func update(context: SceneUpdateContext) {
         let dt = Float(context.deltaTime)
         
+        // If you have a specific user Entity, get its position.
+        // Otherwise assume the user is at (0,0,0).
+        let userPos = SIMD3<Float>(0, 0, 0)
+        
         for entity in context.scene.performQuery(Self.query) {
-            guard var motion = entity.components[PhysicsMotionComponent.self],
-                  let movementData = entity.components[CancerCellMovementData.self] else { continue }
+            guard var motion = entity.components[PhysicsMotionComponent.self] else { continue }
             
-            // Get the cell's world position.
-            let cellPos = entity.position(relativeTo: nil)
-            // Debug print the position.
-            print("[Boost Debug] Entity \(entity.name): cellPos = \(cellPos)")
+            // 1) Current offset from user
+            let worldPos = entity.position(relativeTo: nil)
+            let offset   = worldPos - userPos
             
-            // Determine the desired boost factor.
-            let boostFactor: Float
-            if cellPos.z >= 0 {
-                // Rear cells (z ≥ 0) get full boost.
-                boostFactor = BoostConfig.maxBoostMultiplier
-                print("[Boost Debug] Entity \(entity.name): Rear cell, applying full boost (\(boostFactor)).")
-            } else {
-                // For front cells (z < 0), we interpolate based on x.
-                // If cellPos.x ≤ -frontBoostRange, then full boost.
-                // If cellPos.x ≥ 0, then no boost.
-                let normalized: Float = simd_clamp((0 - cellPos.x) / BoostConfig.frontBoostRange, 0, 1)
-                boostFactor = 1.0 + (BoostConfig.maxBoostMultiplier - 1.0) * normalized
-                print("[Boost Debug] Entity \(entity.name): Front cell, normalized leftness = \(normalized), boostFactor = \(boostFactor)")
-            }
+            // 2) Radius + angle
+            let radius = simd_length(offset)
+            // angle in [-π, π], with angle=0 meaning “behind user” if we do atan2(x,z).
+            // (Because if x=0 and z>0 => angle=0 => that is “back” in your coordinate scheme.)
+            let angle  = atan2(offset.x, offset.z)
             
-            // Compute the target (boosted) velocity, preserving the direction.
-            let targetVelocity = movementData.baseLinearVelocity * boostFactor
+            // 3) Recompute tangential orbit direction each frame so they keep circling
+            let orbitDirection = SIMD3<Float>(
+                cos(angle),
+                0,
+                -sin(angle)
+            )
             
-            // Smoothly interpolate from the current velocity to the target velocity.
+            // 4) Base orbital speed
+            let baseOrbitSpeed = sqrt(BoostConfig.gravityMagnitude / radius) * 0.5
+            
+            // 5) Smoothly define a speed‐boost factor based on angle
+            //
+            //    Example:  f(angle) = 1 + (maxBoost - 1)*((cos(angle)+1)/2)
+            //
+            //    This yields:
+            //      angle=0 (behind user)   => cos(0)=1  => raw=1.0 => boost= max
+            //      angle=±π (front user)   => cos(±π)=-1 => raw=0.0 => boost= 1 (none)
+            //      angle=±π/2 (left/right) => cos(±π/2)=0 => raw=0.5 => midrange
+            //
+            let rawFactor  = (cos(angle) + 1) * 0.5  // in [0..1]
+            var boostFactor = 1 + (
+                BoostConfig.maxBoostMultiplier - 1
+            ) * rawFactor
+            
+            // 6) Final velocity
+            let targetVelocity = orbitDirection * (baseOrbitSpeed * boostFactor)
+
+            // Ensure at least some minimal speed-up in front
+            boostFactor = max(boostFactor, 1.5)
+            
+            // 7) Smoothly lerp from current to target so it doesn’t jerk
             motion.linearVelocity = simd_mix(
                 motion.linearVelocity,
                 targetVelocity,

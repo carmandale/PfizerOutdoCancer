@@ -27,10 +27,12 @@ struct CompletedView: View {
                         VStack(spacing: 8) {
                             Text("Mission Complete")
                                 .font(.largeTitle)
+                                .foregroundColor(Color.black)
                                 .bold()
                             
                             Text("Outstanding work!")
                                 .font(.title2)
+                                .foregroundColor(Color.black)
                                 .foregroundStyle(.secondary)
                         }
                         .padding(.top, 16)
@@ -61,8 +63,8 @@ struct CompletedView: View {
                     }
         }
         .padding(64)
-        .frame(maxWidth: 500)
-        .glassBackgroundEffect()
+//        .frame(maxWidth: 500)
+//        .glassBackgroundEffect()
         // .clipShape(RoundedRectangle(cornerRadius: 20))
         // .padding(32)
         .onAppear {
@@ -92,11 +94,13 @@ struct CompletedView: View {
         HStack {
             Label(title, systemImage: icon)
                 .font(.title2)
+                .foregroundColor(Color.black)
                 .bold()
                 .foregroundStyle(.secondary)
             Spacer()
             Text("\(value)")
                 .font(.title)
+                .foregroundColor(Color.black)
                 .bold()
                 .monospacedDigit()
         }

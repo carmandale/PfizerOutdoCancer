@@ -48,8 +48,12 @@ extension AttackCancerViewModel {
             }
         } else {
             // No valid cancer cell target - spawn untargeted ADC
-            print("Spawning untargeted ADC")
+        if Double.random(in: 0..<1) < 0.1 {
+            print("Spawning untargeted ADC based on random chance")
             await spawnUntargetedADC(from: spawnPosition)
+        } else {
+            print("Skipping untargeted ADC spawn due to random chance")
+        }
         }
     }
 
@@ -58,8 +62,8 @@ extension AttackCancerViewModel {
         content.add(appModel.trackingManager.handTrackingManager.setupContentEntity())
         
         // Create a separate anchor for the HopeMeter UI
-        let uiAnchor = AnchorEntity(.hand(.left, location: .aboveHand))
-        content.add(uiAnchor)
+//        let uiAnchor = AnchorEntity(.hand(.left, location: .aboveHand))
+//        content.add(uiAnchor)
         
         // if let attachmentEntity = attachments.entity(for: "HopeMeter") {
         //     attachmentEntity.components[BillboardComponent.self] = BillboardComponent()

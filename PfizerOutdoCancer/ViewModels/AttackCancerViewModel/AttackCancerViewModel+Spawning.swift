@@ -206,7 +206,9 @@ extension AttackCancerViewModel {
         // Calculate orbital velocity exactly like reference
         // REF: orbitSpeed = sqrt(gravityMagnitude / radius) in reference Entity+Planet.swift calculateVelocity()
         let gravityMagnitude: Float = 0.1
-        let orbitSpeed = sqrt(gravityMagnitude / radius) * 0.5
+        let baseSpeed = sqrt(gravityMagnitude / radius) * 0.5
+        let minSpeed: Float = 0.15 // or whatever feels right
+        let orbitSpeed = max(baseSpeed, minSpeed)
         
         // REF: Direction calculation matches reference Entity+Planet.swift calculateVelocity()
         let orbitDirection = SIMD3<Float>(
@@ -216,9 +218,24 @@ extension AttackCancerViewModel {
         )
         
         // REF: Angular velocity = [0, 1, 0] * 0.3 in reference Entity+Planet.swift
+        let rx = Float.random(in: -1...1)
+        let ry = Float.random(in: -1...1)
+        let rz = Float.random(in: -1...1)
+        var spin = SIMD3<Float>(rx, ry, rz)
+
+        // If length is tiny, normalize to some minimum spin
+        let minSpinMagnitude: Float = 0.5
+        let spinLength = simd_length(spin)
+        if spinLength < 0.001 {
+            // re-randomize or just pick a default axis
+            spin = SIMD3<Float>(0,1,0)
+        } else if spinLength < minSpinMagnitude {
+            spin = normalize(spin) * minSpinMagnitude
+        }
+
         let motionComponent = PhysicsMotionComponent(
             linearVelocity: orbitDirection * orbitSpeed,
-            angularVelocity: [Float.random(in: -0...1), Float.random(in: -1...1), Float.random(in: -1...1)] * 1.0  // Add random tumbling
+            angularVelocity: spin
         )
         cell.components.set(motionComponent)
         

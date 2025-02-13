@@ -167,31 +167,8 @@ extension ADCOptimizedImmersive {
             await playPopSound()
             workingEntity.opacity = 0
         }
-        
-        // Only advance if VO is not playing
-        if !dataModel.isVOPlaying {
-            let oldStep = dataModel.adcBuildStep
-            try? await Task.sleep(for: .milliseconds(500))
-            dataModel.adcBuildStep = nextStep
-            
-            // Reset selection for next step if needed
-            switch entityType {
-            case .linker:
-                dataModel.selectedPayloadType = nil
-            case .payload:
-                // No reset needed for payload as it's the final step
-                break
-            }
-            
-            // Play VO for new step if step changed
-            if oldStep != dataModel.adcBuildStep {
-                do {
-                    try await playSpatialAudio(step: dataModel.adcBuildStep)
-                } catch {
-                    os_log(.error, "ITR..handleFinalEntityPlacement(): ❌ Failed to play VO: \(error)")
-                }
-            }
-        }
+        // Removed auto advancement logic.
+        // The user must press the checkmark button to advance to the next step.
     }
     
     func createPayloadGestureComponent(payloadEntity: Entity, payloadTarget: Entity) -> ADCGestureComponent {

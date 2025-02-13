@@ -18,7 +18,7 @@ final class IntroViewModel {
     private var animationTask: Task<Void, Never>?
     
     // Entity references
-    private var portalWarp: Entity?
+//    private var portalWarp: Entity?
     private var portal: Entity?
     private var skyDome: Entity?
     private var logo: Entity?
@@ -56,22 +56,6 @@ final class IntroViewModel {
     func setupEnvironment(in root: Entity) async {
         print("📱 IntroViewModel: Starting environment setup")
         
-        // Set up hand tracking
-//        let handTrackingEntity = appModel.trackingManager.handTrackingManager.setupContentEntity()
-//        root.addChild(handTrackingEntity)
-        
-        // Create a separate anchor for the nav toggle UI
-        let uiAnchor = AnchorEntity(.hand(.left, location: .aboveHand))
-        root.addChild(uiAnchor)
-        
-        // Attach nav toggle to left hand
-        if let navToggleEntity = navToggleEntity {
-            navToggleEntity.components[BillboardComponent.self] = BillboardComponent()
-            navToggleEntity.scale *= 0.6
-            navToggleEntity.position.z -= 0.02
-            uiAnchor.addChild(navToggleEntity)
-        }
-        
         // Load intro environment using on-demand API through appModel.assetLoadingManager
         print("📱 IntroViewModel: Attempting to load intro environment")
         var environment: Entity
@@ -87,28 +71,10 @@ final class IntroViewModel {
             return
         }
         
-//       var lab: Entity
-//       do {
-//           lab = try await appModel.assetLoadingManager.instantiateAsset(withName: "assembled_lab", category: AssetCategory.introEnvironment)
-//           print("✅ Assembled lab found")
-//           assembledLab = lab
-////           lab.position.z -= 0.25
-////           lab.position.y -= 1.425
-//           lab.opacity = 1
-//           lab.isEnabled = false
-//           root.addChild(lab)
-//           print("📱 IntroViewModel: Adding lab to root")
-//           
-//       } catch {
-//           print("❌ Assembled lab not found: Error loading assembled lab: \(error)")
-//           return
-//       }
-        
         // Find and setup entities
         print("📱 IntroViewModel: Setting up individual entities")
         setupSkyDome(in: environment)
-        // setupLogo(in: environment)
-        await setupPortalWarp(in: environment)
+//        await setupPortalWarp(in: environment)
         await setupPortal(in: root)
         
         print("✅ IntroViewModel: Environment setup complete")
@@ -132,12 +98,6 @@ final class IntroViewModel {
                 print("🔍 After - titleEntity position: \(titleEntity.position), scale: \(titleEntity.transform.scale)")
                 t.addChild(titleEntity)
 
-                // labViewerEntity.position = [0, -1.0, 0.2]
-                // labViewerEntity.transform.scale *= 5.0
-                // print("🔍 After - labViewer position: \(labViewerEntity.position), scale: \(labViewerEntity.transform.scale)")
-                // t.addChild(labViewerEntity)
-                // print("📎 Added labViewer to titleRoot")
-
                 l.addChild(t)
                 print("📎 Added titleText to titleRoot")
 
@@ -145,10 +105,6 @@ final class IntroViewModel {
                 print("❌ Could not find logo in environment")
             }
         }
-    }
-
-    private func setupLogo(in environment: Entity, titleEntity: Entity, labViewerEntity: Entity) {
-        
     }
     
     // MARK: - Private Setup Methods
@@ -163,23 +119,23 @@ final class IntroViewModel {
         }
     }
     
-    private func setupPortalWarp(in environment: Entity) async {
-        if let warp = environment.findEntity(named: "sh0100_v01_portalWarp3") {
-            print("🔍 Found portalWarp: \(warp.name)")
-            portalWarp = warp
-            warp.opacity = 0
-            print("✅ Set portalWarp opacity to \(warp.opacity)")
-            
-            // Find and store shader material
-            if let component = warp.components[ModelComponent.self],
-               let material = component.materials.first as? ShaderGraphMaterial {
-                self.material = material
-                print("✅ Found and stored shader material")
-            }
-        } else {
-            print("❌ Could not find portalWarp in environment")
-        }
-    }
+//    private func setupPortalWarp(in environment: Entity) async {
+//        if let warp = environment.findEntity(named: "sh0100_v01_portalWarp3") {
+//            print("🔍 Found portalWarp: \(warp.name)")
+//            portalWarp = warp
+//            warp.opacity = 0
+//            print("✅ Set portalWarp opacity to \(warp.opacity)")
+//            
+//            // Find and store shader material
+//            if let component = warp.components[ModelComponent.self],
+//               let material = component.materials.first as? ShaderGraphMaterial {
+//                self.material = material
+//                print("✅ Found and stored shader material")
+//            }
+//        } else {
+//            print("❌ Could not find portalWarp in environment")
+//        }
+//    }
     
     private func setupPortal(in root: Entity) async {
         print("📱 IntroViewModel: Starting portal setup")
@@ -290,7 +246,7 @@ final class IntroViewModel {
         animationTask = Task { @MainActor in
             let start = Date()
             print("🎬 Animation Sequence: Starting at \(start)")
-            print("🔍 Entity Check - skyDome: \(skyDome != nil), portalWarp: \(portalWarp != nil), logo: \(logo != nil), portal: \(portal != nil)")
+            print("🔍 Entity Check - skyDome: \(skyDome != nil), logo: \(logo != nil), portal: \(portal != nil)")
             
             // Example helper guard to ensure an entity is still in the scene (if needed)
             func ensureValidEntity(_ entity: Entity?, with name: String) -> Bool {
@@ -322,21 +278,21 @@ final class IntroViewModel {
             }
             
             // Portal warp fade (24s)
-            print("⏰ Sleeping for 19s before portal warp")
-            try? await Task.sleep(for: .seconds(19))
+            print("⏰ Sleeping for 29s before portal warp")
+            try? await Task.sleep(for: .seconds(29)) // changed from 19 to 29 since removed portalWarp
             
             // Check that portalWarp is still valid
-            guard ensureValidEntity(portalWarp, with: "portalWarp") else { return }
-            print("🌀 Portal warp: Starting at +\(Date().timeIntervalSince(start))s")
-            print("🔍 PortalWarp reference check: \(portalWarp != nil)")
-            if let warp = portalWarp {
-                print("🔍 Warp initial opacity: \(warp.opacity)")
-                await warp.fadeOpacity(to: 0.5, duration: 10.0)
-                print("🌀 Portal warp: Completed fade animation")
-                print("🔍 Warp final opacity: \(warp.opacity)")
-            } else {
-                print("❌ Portal warp: portalWarp not found")
-            }
+//            guard ensureValidEntity(portalWarp, with: "portalWarp") else { return }
+//            print("🌀 Portal warp: Starting at +\(Date().timeIntervalSince(start))s")
+//            print("🔍 PortalWarp reference check: \(portalWarp != nil)")
+//            if let warp = portalWarp {
+//                print("🔍 Warp initial opacity: \(warp.opacity)")
+//                await warp.fadeOpacity(to: 0.1, duration: 10.0)
+//                print("🌀 Portal warp: Completed fade animation")
+//                print("🔍 Warp final opacity: \(warp.opacity)")
+//            } else {
+//                print("❌ Portal warp: portalWarp not found")
+//            }
             
             guard !Task.isCancelled else {
                 print("🛑 Animation sequence cancelled before logo")
@@ -358,9 +314,14 @@ final class IntroViewModel {
                 print("🔍 Logo final opacity: \(l.opacity)")
                 try? await Task.sleep(for: .seconds(5))
                 print("📝 Title: Showing at +\(Date().timeIntervalSince(start))s")
-                withAnimation {
+                print("About to set showTitleText, current value: \(showTitleText)")
+                
+                // Small delay to let the view hierarchy settle before updating the flag
+                try? await Task.sleep(for: .milliseconds(100))
+                withAnimation(.easeInOut(duration: 0.5)) {
                     showTitleText = true
                 }
+                print("Updated showTitleText to \(showTitleText)")
             } else {
                 print("❌ Logo: logo not found")
             }
@@ -397,7 +358,7 @@ final class IntroViewModel {
                 guard let portalRoot = p.findEntity(named: "portalRoot"),
                       let portalWorld = p.findEntity(named: "world"),
                       let portalPlane2 = p.findEntity(named: "portalPlane"),
-                      ensureValidEntity(portalWarp, with: "portalWarp"),
+//                      ensureValidEntity(portalWarp, with: "portalWarp"),
                       ensureValidEntity(introEnvironment, with: "introEnvironment"),
                       ensureValidEntity(introRootEntity, with: "introRootEntity"),
                       let extras = introRootEntity?.findEntity(named: "ExtraItems"),
@@ -422,7 +383,7 @@ final class IntroViewModel {
                 let moveDuration = 20.0
                 
                 async let _: () = skyDome!.fadeOpacity(to: 0.0, duration: 10.0)
-                async let _: () = portalWarp!.fadeOpacity(to: 0.0, duration: 10.0)
+//                async let _: () = portalWarp!.fadeOpacity(to: 0.0, duration: 10.0)
                 async let _: () = logo!.fadeOpacity(to: 0.0, duration: 3.0)
                 async let _: () = titleRoot!.fadeOpacity(to: 0.0, duration: 3.0)
                 async let animatePortalRoot: () = portalRoot.animateAbsolutePositionAndScale(
@@ -447,6 +408,11 @@ final class IntroViewModel {
                     timing: .easeInOut,
                     waitForCompletion: true
                 )
+                
+                // async let animatePortalPlanePosition: () = portalPlane2.animatePosition(
+                //     to: SIMD3<Float>(0, 0, -10),
+                //     duration: moveDuration
+                // )
 
                 _ = await (animatePortalRoot, animateWorld, animatePortalPlaneScale)
                 
@@ -461,12 +427,21 @@ final class IntroViewModel {
                 try? await Task.sleep(for: .seconds(5))
                 
                 // Unparent the portalWorld from the portal and reparent it to the root while preserving its transform
-//                let worldTransform = portalWorld.transformMatrix(relativeTo: nil)
-//                portalWorld.removeFromParent()
-//                introRootEntity!.addChild(portalWorld)
-//                print("🛑 portalWorld position in world space PRE-TRANSFORM FIX is \(portalWorld.position(relativeTo: nil))")
-//                portalWorld.setTransformMatrix(worldTransform, relativeTo: nil)
-//                print("✅ portalWorld position in world space is \(portalWorld.position(relativeTo: nil))")
+                if let lab = assembledLab {
+                    // Capture the current transform of the lab in world space
+                    let worldTransform = lab.transformMatrix(relativeTo: nil)
+                    
+                    // Remove the lab from its current parent
+                    lab.removeFromParent()
+                    
+                    // Reparent the lab to the intro root entity
+                    introRootEntity!.addChild(lab)
+                    print("🛑 assembledLab position in world space PRE-TRANSFORM FIX is \(lab.position(relativeTo: nil))")
+                    
+                    // Restore the lab's transform
+                    lab.setTransformMatrix(worldTransform, relativeTo: nil)
+                    print("✅ assembledLab position in world space is \(lab.position(relativeTo: nil))")
+                }
 
                 // Change the portal component to spill out into the world
                 if var portalComponent = portalPlane2.components[PortalComponent.self] {
@@ -475,34 +450,19 @@ final class IntroViewModel {
                 } else {
                     print("❌ PortalComponent not found on portalPlane2.")
                 }
-
-                extras.isEnabled = false
-                print("disabled extras in intro environment")
                 
-                try? await Task.sleep(for: .seconds(8))
-
-                // Clean up audio entities
-                if let audioEntity = introEnvironment!.findEntity(named: "Audio") {
-                    print("🔊 Found Audio entity, beginning cleanup")
-                    for child in audioEntity.children {
-                        child.components.removeAll()
-                        child.removeFromParent()
-                    }
-                    audioEntity.components.removeAll()
-                    audioEntity.removeFromParent()
-                    print("✅ Audio entity cleanup complete")
+                if let portalEnv = self.portal {
+                    print("\n 🔍 Inspecting portal hierarchy \n")
+                    self.appModel.assetLoadingManager.inspectEntityHierarchy(portalEnv)
+                    portalEnv.removeFromParent()
+                    self.portal = nil
+                    print("Removed portal completely from the scene as we transition to lab.")
                 }
 
-                // Clean up extra items
-                if let extrasEntity = introRootEntity!.findEntity(named: "ExtraItems") {
-                    print("🧹 Found ExtraItems entity, beginning cleanup")
-                    for child in extrasEntity.children {
-                        child.components.removeAll()
-                        child.removeFromParent()
-                    }
-                    extrasEntity.components.removeAll()
-                    extrasEntity.removeFromParent()
-                    print("✅ ExtraItems cleanup complete")
+                if let introEnv = introEnvironment {
+                    introEnv.removeFromParent()
+                    introEnvironment = nil
+                    print("Removed introEnvironment completely from the scene as we transition to lab.")
                 }
                 
                 // Enable large room reverb and inspect hierarchy
@@ -551,7 +511,7 @@ final class IntroViewModel {
         scene = nil
         
         // Clear entity references
-        portalWarp = nil
+//        portalWarp = nil
         portal = nil
         skyDome = nil
         logo = nil

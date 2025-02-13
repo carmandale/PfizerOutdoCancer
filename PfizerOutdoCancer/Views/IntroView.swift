@@ -16,6 +16,8 @@ struct IntroView: View {
         }
     }
     
+    @State private var showNavToggle: Bool = true
+    
     var surroundingsEffect: SurroundingsEffect? {
         let tintColor = Color(red: introTintIntensity, green: introTintIntensity, blue: introTintIntensity)
         return SurroundingsEffect.colorMultiply(tintColor)
@@ -41,11 +43,14 @@ struct IntroView: View {
             ))
             content.add(root)
             print("✅ Added root to content")
-            // content.add(handTrackedEntity)
-            // if let attachmentEntity = attachments.entity(for: "navToggle") {
-            //     attachmentEntity.components[BillboardComponent.self] = .init()
-            //     handTrackedEntity.addChild(attachmentEntity)
-            // }
+            
+             if showNavToggle {
+                 content.add(handTrackedEntity)
+                 if let attachmentEntity = attachments.entity(for: "navToggle") {
+                     attachmentEntity.components[BillboardComponent.self] = .init()
+                     handTrackedEntity.addChild(attachmentEntity)
+                 }
+             }
             
             // Handle environment and attachments in Task
             Task { @MainActor in
@@ -63,8 +68,6 @@ struct IntroView: View {
                         
                         // Store attachments in view model
                         appModel.introState.titleEntity = titleEntity
-                        // appModel.introState.labViewerEntity = labViewerEntity
-                        // appModel.introState.navToggleEntity = navToggleEntity
                         
                         // Get portal and set up attachments
                         if let portal = appModel.introState.getPortal() {
@@ -108,24 +111,21 @@ struct IntroView: View {
                             print("❌ AttackCancerAttachment target not found")
                         }
                     }
-
-                    
-
                 } catch {
                     print("❌ IntroView: Setup failed: \(error)")
                 }
-                
             }
         } attachments: {
             Attachment(id: "titleText") {
-                OutdoCancer(showTitle: $appModel.introState.showTitleText)
+                if appModel.introState.showTitleText {
+                    OutdoCancer(showTitle: $appModel.introState.showTitleText)
+                }
             }
-            // Attachment(id: "labViewer") {
-            //     LabViewerButton()
-            // }
-            // Attachment(id: "navToggle") {
-            //     NavToggleView()
-            // }
+            if showNavToggle {
+                Attachment(id: "navToggle") {
+                    NavToggleView()
+                }
+            }
             Attachment(id: "ADCBuilderViewerButton") {
                 ADCBuilderViewerButton()
             }
@@ -171,7 +171,7 @@ struct IntroView: View {
             SpatialTapGesture()
                 .targetedToAnyEntity()
                 .onEnded { value in
-//                    appModel.labState.handleTap(on: value.entity)
+                   appModel.labState.handleTap(on: value.entity)
                 }
         )
         // Keep tracking tasks separate

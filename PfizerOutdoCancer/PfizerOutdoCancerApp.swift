@@ -281,12 +281,8 @@ struct PfizerOutdoCancerApp: App {
                     if oldPhase.needsImmersiveSpace && !newPhase.shouldKeepPreviousSpace {
                         if appModel.immersiveSpaceState == .open {
                             appModel.immersiveSpaceDismissReason = .manual
-                            do {
-                                try await dismissImmersiveSpace()
-                                os_log(.debug, "🧹 **onChange Function**: Immersive space dismissed successfully.")
-                            } catch {
-                                os_log(.info, "🧹 **onChange Function**: Dismiss immersive space called but none was open (or already dismissed): %@", error.localizedDescription)
-                            }
+                            await dismissImmersiveSpace()
+                            os_log(.debug, "🧹 **onChange Function**: Immersive space dismissed successfully.")
                             appModel.immersiveSpaceState = .closed
                         }
                     }
@@ -493,12 +489,8 @@ struct PfizerOutdoCancerApp: App {
         // 1. Close immersive space if open
         if appModel.immersiveSpaceState == .open {
             appModel.immersiveSpaceDismissReason = .manual
-            do {
-                try await dismissImmersiveSpace()
-                os_log(.debug, "🧹 **cleanupAppState**: Immersive space dismissed successfully.")
-            } catch {
-                os_log(.info, "🧹 **cleanupAppState**: Dismiss immersive space called but none was open (or already dismissed): %@", error.localizedDescription)
-            }
+            await dismissImmersiveSpace()
+            os_log(.debug, "🧹 **cleanupAppState**: Immersive space dismissed successfully.")
             appModel.immersiveSpaceState = .closed
         }
         
