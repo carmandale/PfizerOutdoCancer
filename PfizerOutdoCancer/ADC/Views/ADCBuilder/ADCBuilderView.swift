@@ -129,89 +129,86 @@ struct ADCBuilderView: View {
                                 scaleEffect: AppModel.UIConstants.buttonExpandScale,
                                 width: 250
                             )
-                            // .opacity(dataModel.adcBuildStep == 3 ? 1 : 0)
                             .fontWeight(.bold)
-                            // .frame(width: 600)
                             .padding(.top, 10)
                             .padding(.bottom, 30)
                             .transition(Appear())
-
                         default:
                             EmptyView()
                         }
                     }
             // Updated navigation chevrons
-            if dataModel.adcBuildStep > 0 || dataModel.adcBuildStep < 3 {
-                HStack {
-                    // Back Chevron
-                    if dataModel.adcBuildStep > 0 && dataModel.adcBuildStep < 3 {
-                        Button(action: {
-                            withAnimation {
-                                print("Back Chevron Pressed on Step: \(dataModel.adcBuildStep)")
-                                dataModel.manualStepTransition = true
-                                print("manualStepTransition set to true = \(dataModel.manualStepTransition)")
-                                dataModel.adcBuildStep -= 1
-                            }
-                        }) {
-                            Image(systemName: "chevron.left")
-                                .font(.largeTitle)
-                                .foregroundColor(.white)
-                                .hoverEffect { effect, isActive, proxy in
-                                    effect.scaleEffect(!isActive ? 1.0 : AppModel.UIConstants.buttonExpandScale)
-                                }
-                        }
-                        .glassBackgroundEffect()
-                        .opacity(dataModel.isVOPlaying ? 0.1 : 1.0)
-                        .disabled(dataModel.isVOPlaying)
-                        .animation(.easeInOut(duration: 0.5), value: dataModel.isVOPlaying)
-                    }
+            // if dataModel.adcBuildStep > 0 || dataModel.adcBuildStep < 3 {
+            //     HStack {
+            //         // Back Chevron
+            //         if dataModel.adcBuildStep > 0 && dataModel.adcBuildStep < 3 {
+            //             Button(action: {
+            //                 withAnimation {
+            //                     print("Back Chevron Pressed on Step: \(dataModel.adcBuildStep)")
+            //                     dataModel.manualStepTransition = true
+            //                     print("manualStepTransition set to true = \(dataModel.manualStepTransition)")
+            //                     dataModel.adcBuildStep -= 1
+            //                 }
+            //             }) {
+            //                 Image(systemName: "chevron.left")
+            //                     .font(.largeTitle)
+            //                     .foregroundColor(.white)
+            //                     .hoverEffect { effect, isActive, proxy in
+            //                         effect.scaleEffect(!isActive ? 1.0 : AppModel.UIConstants.buttonExpandScale)
+            //                     }
+            //             }
+            //             .glassBackgroundEffect()
+            //             .opacity(dataModel.isVOPlaying ? 0.1 : 1.0)
+            //             .disabled(dataModel.isVOPlaying)
+            //             .animation(.easeInOut(duration: 0.5), value: dataModel.isVOPlaying)
+            //         }
                     
-                    Spacer()
+            //         Spacer()
                     
-                    // Forward Chevron
-                    if dataModel.adcBuildStep < 3 && !dataModel.isVOPlaying {
-                        Button(action: {
-                            withAnimation {
-                                print("Forward Chevron Pressed on Step: \(dataModel.adcBuildStep)")
-                                if dataModel.adcBuildStep == 0 {
-                                    if dataModel.antibodyVOCompleted && !dataModel.antibodyStepCompleted {
-                                        os_log("Forward: Natural transition for step 0 (VO will play), dataModel.antibodyVOCompleted:\(dataModel.antibodyVOCompleted), dataModel.antibodyStepCompleted: \(dataModel.antibodyStepCompleted)")
-                                        dataModel.adcBuildStep += 1
-                                        print("new build step is \(dataModel.adcBuildStep)")
-                                        dataModel.antibodyStepCompleted = true
-                                        print("antibodyStepCompleted = \(dataModel.antibodyStepCompleted)")
-                                    } else {
-                                        os_log("Forward: Manual transition for step 0 (VO will not be played), setting manualStepTransition, dataModel.antibodyVOCompleted:\(dataModel.antibodyVOCompleted), dataModel.antibodyStepCompleted: \(dataModel.antibodyStepCompleted)")
-                                        dataModel.manualStepTransition = true
-                                        print("manualStepTransition set to true = \(dataModel.manualStepTransition)")
-                                        dataModel.adcBuildStep += 1
-                                        print("new build step is \(dataModel.adcBuildStep)")
-                                    }
-                                } else {
-                                    os_log("Forward: Manual transition for step %d", dataModel.adcBuildStep, "dataModel.antibodyVOCompleted:\(dataModel.antibodyVOCompleted), dataModel.antibodyStepCompleted: \(dataModel.antibodyStepCompleted)")
-                                    dataModel.manualStepTransition = true
-                                    print("manualStepTransition set to true = \(dataModel.manualStepTransition)")
-                                    dataModel.adcBuildStep += 1
-                                    print("new build step is \(dataModel.adcBuildStep)")
-                                }
-                            }
-                        }) {
-                            Image(systemName: "chevron.right")
-                                .font(.largeTitle)
-                                .foregroundColor(.white)
-                                .hoverEffect { effect, isActive, proxy in
-                                    effect.scaleEffect(!isActive ? 1.0 : AppModel.UIConstants.buttonExpandScale)
-                                }
-                        }
-                        .glassBackgroundEffect()
-                        .opacity(!dataModel.isCurrentStepComplete || dataModel.isVOPlaying ? 0.1 : 1.0)
-                        .disabled(!dataModel.isCurrentStepComplete || dataModel.isVOPlaying)
-                        .animation(.easeInOut(duration: 0.5), value: dataModel.isVOPlaying)
-                    }
-                }
-                .padding(20)
-                .zIndex(0)
-            }
+            //         // Forward Chevron
+            //         if dataModel.adcBuildStep < 3 && !dataModel.isVOPlaying {
+            //             Button(action: {
+            //                 withAnimation {
+            //                     print("Forward Chevron Pressed on Step: \(dataModel.adcBuildStep)")
+            //                     if dataModel.adcBuildStep == 0 {
+            //                         if dataModel.antibodyVOCompleted && !dataModel.antibodyStepCompleted {
+            //                             os_log("Forward: Natural transition for step 0 (VO will play), dataModel.antibodyVOCompleted:\(dataModel.antibodyVOCompleted), dataModel.antibodyStepCompleted: \(dataModel.antibodyStepCompleted)")
+            //                             dataModel.adcBuildStep += 1
+            //                             print("new build step is \(dataModel.adcBuildStep)")
+            //                             dataModel.antibodyStepCompleted = true
+            //                             print("antibodyStepCompleted = \(dataModel.antibodyStepCompleted)")
+            //                         } else {
+            //                             os_log("Forward: Manual transition for step 0 (VO will not be played), setting manualStepTransition, dataModel.antibodyVOCompleted:\(dataModel.antibodyVOCompleted), dataModel.antibodyStepCompleted: \(dataModel.antibodyStepCompleted)")
+            //                             dataModel.manualStepTransition = true
+            //                             print("manualStepTransition set to true = \(dataModel.manualStepTransition)")
+            //                             dataModel.adcBuildStep += 1
+            //                             print("new build step is \(dataModel.adcBuildStep)")
+            //                         }
+            //                     } else {
+            //                         os_log("Forward: Manual transition for step %d", dataModel.adcBuildStep, "dataModel.antibodyVOCompleted:\(dataModel.antibodyVOCompleted), dataModel.antibodyStepCompleted: \(dataModel.antibodyStepCompleted)")
+            //                         dataModel.manualStepTransition = true
+            //                         print("manualStepTransition set to true = \(dataModel.manualStepTransition)")
+            //                         dataModel.adcBuildStep += 1
+            //                         print("new build step is \(dataModel.adcBuildStep)")
+            //                     }
+            //                 }
+            //             }) {
+            //                 Image(systemName: "chevron.right")
+            //                     .font(.largeTitle)
+            //                     .foregroundColor(.white)
+            //                     .hoverEffect { effect, isActive, proxy in
+            //                         effect.scaleEffect(!isActive ? 1.0 : AppModel.UIConstants.buttonExpandScale)
+            //                     }
+            //             }
+            //             .glassBackgroundEffect()
+            //             .opacity(!dataModel.isCurrentStepComplete || dataModel.isVOPlaying ? 0.1 : 1.0)
+            //             .disabled(!dataModel.isCurrentStepComplete || dataModel.isVOPlaying)
+            //             .animation(.easeInOut(duration: 0.5), value: dataModel.isVOPlaying)
+            //         }
+            //     }
+            //     .padding(20)
+            //     .zIndex(0)
+            // }
         }
         .frame(width: 800)
         .frame(alignment: .top) // height: dataModel.isVOPlaying ? 350 : 700,

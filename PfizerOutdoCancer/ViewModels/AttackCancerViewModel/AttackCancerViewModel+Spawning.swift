@@ -4,8 +4,8 @@ import RealityKitContent
 
 extension AttackCancerViewModel {
     func spawnCancerCells(in root: Entity, from template: Entity, count: Int) async {
-//        print("\n=== Starting Cancer Cell Spawning ===")
-//        print("Target count: \(count)")
+        Logger.info("\n=== Starting Cancer Cell Spawning ===")
+        Logger.info("Target count: \(count)")
         
         // Create force entity with central gravity
         let forceEntity = createForceEntity()
@@ -31,13 +31,13 @@ extension AttackCancerViewModel {
             }
         }
         
-        print("=== Finished Spawning ===")
-        print("Total parameters created: \(cellParameters.count)")
-        print("Initial cellsDestroyed count: \(appModel.gameState.cellsDestroyed)")
+        Logger.info("=== Finished Spawning ===")
+        Logger.info("Total parameters created: \(cellParameters.count)")
+        Logger.info("Initial cellsDestroyed count: \(appModel.gameState.cellsDestroyed)")
     }
     
     private func spawnSingleCancerCell(in root: Entity, from template: Entity, index: Int, preferFront: Bool) async -> Entity? {
-//        print("\n=== Spawning Cancer Cell \(index) ===")
+        Logger.info("\n=== Spawning Cancer Cell \(index) ===")
         
         let cell = template.clone(recursive: true)
         cell.name = "cancer_cell_\(index)"
@@ -55,24 +55,24 @@ extension AttackCancerViewModel {
             
             // Create parameters on-demand
             let parameters = CancerCellParameters(cellID: index)
-            print("Creating parameters for cell \(index)")
-            print("Required hits: \(parameters.requiredHits)")
+            Logger.info("Creating parameters for cell \(index)")
+            Logger.info("Required hits: \(parameters.requiredHits)")
             cellParameters.append(parameters)
-            print("Total parameters after append: \(cellParameters.count)")
+            Logger.info("Total parameters after append: \(cellParameters.count)")
             
             // Add state component with reference to parameters
             cell.components.set(CancerCellStateComponent(parameters: parameters))
-            print("Added CancerCellStateComponent with parameters")
+            Logger.info("Added CancerCellStateComponent with parameters")
             
             root.addChild(cell)
             setupAttachmentPoints(for: cell, complexCell: complexCell, cellID: index)
 
             // Fade in after setup
             await complexCell.fadeOpacity(to: 1.0, duration: 0.5)
-           print("✅ Successfully spawned cell \(index)")
+            Logger.info("✅ Successfully spawned cell \(index)")
             return cell
         } else {
-            print("❌ Warning: Could not find cancerCell_complex entity")
+            Logger.error("❌ Warning: Could not find cancerCell_complex entity")
             return nil
         }
     }
@@ -89,7 +89,7 @@ extension AttackCancerViewModel {
         // REF: mask = .all.subtracting(.actualEarthGravity) in reference Entity+Planet.swift
         let forceEffect = ForceEffect(
             effect: gravity,
-            mask: .all.subtracting(.actualEarthGravity)  // Exactly like reference project
+            mask: .all.subtracting(.actualEarthGravity)
         )
         forceEntity.components.set(ForceEffectComponent(effects: [forceEffect]))
         return forceEntity
@@ -119,25 +119,11 @@ extension AttackCancerViewModel {
     }
     
     private func configureCellPhysics(_ cell: Entity) {
-        // First set of physics/collision components - Commented out as redundant
-        // let shape = ShapeResource.generateSphere(radius: 0.32)  // Match cell size
-        // let collisionComponent = CollisionComponent(
-        //     shapes: [shape],
-        //     filter: .init(group: .cancerCell, mask: .adc)
-        // )
-        // cell.components.set(collisionComponent)
-        
-        // var physicsBody = PhysicsBodyComponent(mode: .dynamic)
-        // physicsBody.isAffectedByGravity = false
-        // physicsBody.linearDamping = 0  // Higher damping to prevent too much movement
-        // physicsBody.massProperties.mass = 1.0
-        // cell.components[PhysicsBodyComponent.self] = physicsBody
-        
         // REF: Planet uses radius = 0.12 or 0.25 in reference project
         let shape2 = ShapeResource.generateSphere(radius: 0.32)  // Cancer cell size
         let collisionComponent2 = CollisionComponent(
             shapes: [shape2],
-            filter: .init(group: .cancerCell, mask: .all ) // [.adc, .cancerCell]
+            filter: .init(group: .cancerCell, mask: .all)
         )
         cell.components.set(collisionComponent2)
         
@@ -224,7 +210,7 @@ extension AttackCancerViewModel {
                         var attachPoint = entity.components[AttachmentPoint.self]!
                         attachPoint.cellID = cellID
                         entity.components[AttachmentPoint.self] = attachPoint
-                        // print("Set cellID \(cellID) for attachment point \(entity.name)")
+                        // Logger.info("Set cellID \(cellID) for attachment point \(entity.name)")
                         break
                     }
                     current = parent.parent
@@ -234,12 +220,12 @@ extension AttackCancerViewModel {
     }
     
     func setupTutorialCancerCell(_ cell: Entity) {
-        print("\n=== Setting up Tutorial Cancer Cell ===")
+        Logger.info("\n=== Setting up Tutorial Cancer Cell ===")
         
         if let complexCell = cell.findEntity(named: "cancerCell_complex") {
             // Setup all the physical aspects first (minus position and movement)
             // configureCellPhysics(complexCell)
-            configureTestCellPhysics(complexCell)
+            configureTestCellPhysics(complexCell, physicsEnabled: false)
             
             // Create parameters before calling setupCellIdentification
             let parameters = CancerCellParameters(cellID: 777)
@@ -248,49 +234,68 @@ extension AttackCancerViewModel {
             parameters.impactScale = CancerCellParameters.tutorialImpactScale  // Use reduced impact
             parameters.requiredHits = 10  // Set required hits for tutorial
             cellParameters.append(parameters)
-//            print("Total parameters after append: \(cellParameters.count)")
             
             // Create and set state component with our parameters
             let stateComponent = CancerCellStateComponent(parameters: parameters)
             complexCell.components.set(stateComponent)
-//            print("Added CancerCellStateComponent with parameters")
-            
-            // Now call setupCellIdentification which will skip creating new parameters
-            // since the state component already exists
-            // setupCellIdentification(complexCell, cellID: 0)
-
-            // Add damping only for tutorial cell
-            if var physicsBody = complexCell.components[PhysicsBodyComponent.self] {
-                physicsBody.linearDamping = 0.8
-                physicsBody.angularDamping = 0.5
-                // Tutorial cell should be more responsive to impacts
-                physicsBody.massProperties.mass = 0.1 // Lower mass = more responsive to impacts
-                complexCell.components[PhysicsBodyComponent.self] = physicsBody
-            }
-            
-            // Add ClosureComponent for state updates
-            // complexCell.components.set(
-            //     ClosureComponent { [weak self] _ in
-            //         guard let self = self,
-            //               let stateComponent = complexCell.components[CancerCellStateComponent.self],
-            //               let cellID = stateComponent.parameters.cellID,
-            //               cellID < self.cellParameters.count else { return }
-                    
-            //         // Directly update the corresponding parameters in the array.
-            //         self.cellParameters[cellID].hitCount = stateComponent.parameters.hitCount
-            //         self.cellParameters[cellID].isDestroyed = stateComponent.parameters.isDestroyed
-            //     }
-            // )
-//            print("Added ClosureComponent for state updates")
             
             setupAttachmentPoints(for: cell, complexCell: complexCell, cellID: 777)
-//            print("✅ Successfully configured tutorial cell")
         }
     }
     
-    // Insert new test cell configuration functions above spawnTestFireCell
+    // Modify spawnTestFireCell to use the new test configuration functions
+    func spawnTestFireCell(in root: Entity) async {
+         do {
+            Logger.info("📱 Test Fire Cell: Loading test_fire_cell")
+            let testFireScene = try await appModel.assetLoadingManager.instantiateAsset(
+                withName: "test_fire_cell",
+                category: .attackCancerEnvironment
+            )
+            Logger.info("✅ Test Fire Cell: Retrieved test_fire_cell")
+             
+             if let testFireCellParent = root.findEntity(named: "headTrackingRoot") {
+                 testFireScene.position = testFireCellParent.position
+             }
 
-    private func configureTestCellPhysics(_ cell: Entity) {
+            root.addChild(testFireScene)
+             
+             let index = 555
+             
+             if let complexCell = testFireScene.findEntity(named: "cancerCell_complex") {
+                 
+                 complexCell.opacity = 0
+                 
+                 // Setup all the physical aspects first (minus position and movement)
+                 // configureCellPhysics(complexCell)
+                 configureTestCellPhysics(complexCell, physicsEnabled: false)
+                 
+                 // Create parameters before calling setupCellIdentification
+                 let parameters = CancerCellParameters(cellID: index)
+                 parameters.isTutorialCell = true  // Mark as tutorial cell
+                 parameters.physicsEnabled = false  // Disable physics for tutorial cell
+                 parameters.impactScale = CancerCellParameters.tutorialImpactScale  // Use reduced impact
+                 parameters.requiredHits = 4  // Set required hits for tutorial
+                 cellParameters.append(parameters)
+                 
+                 // Create and set state component with our parameters
+                 let stateComponent = CancerCellStateComponent(parameters: parameters)
+                 complexCell.components.set(stateComponent)
+                 
+                 setupAttachmentPoints(for: testFireScene, complexCell: complexCell, cellID: index)
+                 
+                  // Fade in after setup
+                  await complexCell.fadeOpacity(to: 1.0, duration: 0.5)
+                  Logger.info("✅ Successfully spawned cell \(index)")
+
+                  // set isTestFireActive to true
+                  appModel.gameState.isTestFireActive = true
+             }
+        } catch {
+            Logger.error("❌ Test Fire: Failed to instantiate cancer cell template: \(error)")
+        }
+    }
+
+    private func configureTestCellPhysics(_ cell: Entity, physicsEnabled: Bool = true) {
         let shape = ShapeResource.generateSphere(radius: 0.32)  // Cancer cell size
         let collisionComponent = CollisionComponent(
             shapes: [shape],
@@ -298,14 +303,15 @@ extension AttackCancerViewModel {
         )
         cell.components.set(collisionComponent)
         
-        var physicsBody = PhysicsBodyComponent(shapes: [shape], mass: 0.1, mode: .dynamic)
-        physicsBody.isAffectedByGravity = false
-        physicsBody.linearDamping = 0.2
-        physicsBody.angularDamping = 0.0
-        cell.components[PhysicsBodyComponent.self] = physicsBody
-        
-        // Initialize motion component
-        cell.components.set(PhysicsMotionComponent())
+        // Only add the physics body and motion component if physics is enabled.
+        if physicsEnabled {
+            var physicsBody = PhysicsBodyComponent(shapes: [shape], mass: 1.0, mode: .dynamic)
+            physicsBody.isAffectedByGravity = false
+            physicsBody.linearDamping = 0
+            physicsBody.angularDamping = 0
+            cell.components[PhysicsBodyComponent.self] = physicsBody
+            cell.components.set(PhysicsMotionComponent())
+        }
     }
     
     private func configureTestCellMovement(_ cell: Entity) {
@@ -332,75 +338,5 @@ extension AttackCancerViewModel {
             angularVelocity: spin
         )
         cell.components.set(motionComponent)
-    }
-
-    // Modify spawnTestFireCell to use the new test configuration functions
-    func spawnTestFireCell(in root: Entity) async {
-        do {
-            // Instantiate the cancer cell template via assetLoadingManager
-            let cancerCellTemplate = try await appModel.assetLoadingManager.instantiateAsset(
-                withName: "cancer_cell",
-                category: .cancerCell
-            )
-            
-            // Clone the template for the test fire cell
-            let cell = cancerCellTemplate.clone(recursive: true)
-            cell.name = "cancer_cell_555"  // Mark the cell with ID 555
-
-            let index = 555
-            
-            // Find the complex cell entity within our clone
-            guard cell.findEntity(named: "cancerCell_complex") != nil else {
-                print("❌ Test Fire: Could not find cancerCell_complex in test cell.")
-                return
-            }
-            
-            if let complexCell = cell.findEntity(named: "cancerCell_complex") {
-                // Start with zero scale instead of zero opacity
-                // complexCell.transform.scale = .init(repeating: 0)
-                complexCell.opacity = 0
-                
-                // Setup all the physical aspects first
-                complexCell.position = SIMD3<Float>(0, 1.0, -0.5)
-                configureTestCellPhysics(complexCell)
-                configureTestCellMovement(complexCell)
-                setupCellIdentification(complexCell, cellID: index)
-                
-                // Create parameters on-demand
-                let parameters = CancerCellParameters(cellID: index)
-                parameters.isTutorialCell = true
-                parameters.impactScale = CancerCellParameters.tutorialImpactScale
-                parameters.requiredHits = 4
-                cellParameters.append(parameters)
-                print("Total parameters after append: \(cellParameters.count)")
-                
-                // Add state component with reference to parameters
-                cell.components.set(CancerCellStateComponent(parameters: parameters))
-                print("Added CancerCellStateComponent with parameters")
-                
-                root.addChild(cell)
-                setupAttachmentPoints(for: cell, complexCell: complexCell, cellID: index)
-
-                // Fade in after setup
-                await complexCell.fadeOpacity(to: 1.0, duration: 0.5)
-                print("✅ Successfully spawned cell \(index)")
-
-                // set isTestFireActive to true
-                appModel.gameState.isTestFireActive = true
-                
-                // Play the start button VO after cell is spawned
-                
-                print("⏱️ Wait for 10 seconds")
-                try? await Task.sleep(for: .seconds(15))
-                // await playStartButtonVO(in: root)
-            } else {
-                print("❌ Warning: Could not find cancerCell_complex entity")
-            }
-
-            
-            
-        } catch {
-            print("❌ Test Fire: Failed to instantiate cancer cell template: \(error)")
-        }
     }
 }

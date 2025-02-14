@@ -464,6 +464,7 @@ final class AssetLoadingManager {
         "adc": "ADC-spawn",  // ADC asset name
         "cancer_cell": "CancerCell-spawn",  // Cancer cell asset name
         "game_start_vo": "AttackCancerGameStart_VO",  // Tutorial/game start VO
+        "test_fire_cell": "TestFireCell",  // Test fire cell asset name
         "outro_environment": "OutroEnvironment"  // Outro environment asset
         // add further mappings as needed
     ]

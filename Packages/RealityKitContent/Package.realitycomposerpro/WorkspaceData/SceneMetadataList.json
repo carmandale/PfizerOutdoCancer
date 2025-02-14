@@ -12727,6 +12727,27 @@
       }
     ]
   },
+  "DC5F988A-AF05-4311-8903-C28ACC05710A" : {
+    "objectMetadataList" : [
+      [
+        "DC5F988A-AF05-4311-8903-C28ACC05710A",
+        "Root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "DC5F988A-AF05-4311-8903-C28ACC05710A",
+        "Root",
+        "TestFireCell"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      }
+    ]
+  },
   "DEB82524-F18E-400D-97A8-A6EB73D3DF32" : {
     "objectMetadataList" : [
       [

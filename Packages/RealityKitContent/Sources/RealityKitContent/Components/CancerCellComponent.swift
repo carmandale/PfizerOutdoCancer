@@ -119,6 +119,8 @@ public class CancerCellSystem: System {
                 print("=== Cancer Cell Death Triggered ===")
                 print("💀 Cell is destroyed")
                 print("Cell ID: \(String(describing: parameters.cellID))")
+                print("Hit Count: \(parameters.hitCount)")
+                print("Required Hits: \(parameters.requiredHits)")
                 
                 // Handle particle emitter: burst the emitter if found.
                 if let particleSystem = entity.findEntity(named: "ParticleEmitter"),

@@ -39,8 +39,18 @@ final class AttackCancerViewModel {
     var isSetupComplete = false
     var environmentLoaded = false
     var tutorialCancerCell: Entity?
+    var testFireCell: Entity?
     var tutorialComplete = false
     var isTestFireActive = false
+    var testFireComplete = false
+    var readyToStartGame = false
+
+
+    var shouldPlayStartButtonVO: Bool {
+        readyToStartGame && tutorialComplete
+    }
+
+    
     
     // Store subscription to prevent deallocation
     internal var subscription: Cancellable?
@@ -64,7 +74,7 @@ final class AttackCancerViewModel {
     
     var isGameActive: Bool {
         // Only consider the game active if both tutorial is complete AND hope meter is running
-        tutorialComplete && isHopeMeterRunning
+        tutorialComplete && testFireComplete && isHopeMeterRunning
     }
     
     // MARK: - ADC Properties
@@ -177,7 +187,7 @@ final class AttackCancerViewModel {
             }
         }
         
-        await resetGameState()
+        // await resetGameState()
         print("✅ Game tear down complete\n")
     }
 
@@ -236,28 +246,7 @@ final class AttackCancerViewModel {
         print("🔄 AttackCancerViewModel: Cleanup state has been reset for new session.")
     }
 
-    private func resetGameState() async {
-        print("\n🔄 Resetting game stats:")
-        print("  - Cells Destroyed: \(cellsDestroyed) → 0")
-        print("  - Total ADCs: \(totalADCsDeployed) → 0")
-        print("  - Total Taps: \(totalTaps) → 0")
-        print("  - Total Hits: \(totalHits) → 0")
-        
-        cellsDestroyed = 0
-        totalADCsDeployed = 0
-        totalTaps = 0
-        totalHits = 0
-        hopeMeterTimeLeft = hopeMeterDuration
-        isHopeMeterRunning = false
-        hasFirstADCBeenFired = false
 
-        // Reset the tutorial and test fire states for a new game session
-        appModel.isTutorialStarted = false
-        tutorialComplete = false
-        appModel.gameState.isTestFireActive = false
-        isTestFireActive = false
-        print("🔄 Reset tutorial state: isTutorialStarted: \(appModel.isTutorialStarted), tutorialComplete: \(tutorialComplete), isTestFireActive: \(isTestFireActive)")
-    }
 
     var progressiveAttack: ImmersionStyle = .progressive(
         0.1...0.8,
@@ -306,4 +295,6 @@ final class AttackCancerViewModel {
         }
         print("=== Alignment Validation Complete ===\n")
     }
+
+    
 }

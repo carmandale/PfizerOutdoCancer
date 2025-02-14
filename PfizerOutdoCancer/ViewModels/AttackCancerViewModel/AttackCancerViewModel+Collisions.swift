@@ -38,7 +38,7 @@ extension AttackCancerViewModel {
         print("🎯 Setting up collision subscription")
         // Store the SceneEventSubscription
         subscription = scene.subscribe(to: CollisionEvents.Began.self) { [weak self] event in
-//            print("💥 Collision event received")
+           print("💥 Collision event received")
             guard let self = self else { return }
             self.handleCollisionBegan(event)
         }
@@ -47,17 +47,6 @@ extension AttackCancerViewModel {
     
     // MARK: - Collision Handling
     func handleCollisionBegan(_ event: CollisionEvents.Began) {
-//        print("Collision between \(event.entityA.name) and \(event.entityB.name)")
-//        print("Entity A components: \(event.entityA.components)")
-//        print("Entity B components: \(event.entityB.components)")
-
-//        guard let adc = (event.entityA.findComponent(ofType: ADCComponent.self) ?? event.entityB.findComponent(ofType: ADCComponent.self)),
-//                let _ = (event.entityA.findComponent(ofType: CancerCellStateComponent.self) ?? event.entityB.findComponent(ofType: CancerCellStateComponent.self)) else {
-//                return
-//            }
-//            
-//        print("💥 ADC hit cell")
-        // You can now call your collision handling logic passing the correct entities
 
         guard shouldHandleCollision(event) else { return }
         

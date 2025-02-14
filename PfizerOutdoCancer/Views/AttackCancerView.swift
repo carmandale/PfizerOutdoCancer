@@ -14,6 +14,9 @@ struct AttackCancerView: View {
         @Bindable var appModel = appModel
         
         RealityView { content, attachments in
+
+            appModel.gameState.resetGameState()
+            print("🔄 Reset game state")
             print("\n=== AttackCancerView Setup ===")
             print("📱 AttackCancerView: Setting up root")
             let root = appModel.gameState.setupRoot()
@@ -68,7 +71,7 @@ struct AttackCancerView: View {
                 .targetedToAnyEntity()
                 .onEnded { value in
                     // Allow taps either if the game is running or if we're active in the test fire phase.
-                    if appModel.gameState.isHopeMeterRunning || appModel.gameState.isTestFireActive {
+                    if appModel.gameState.isGameActive || appModel.gameState.isTestFireActive {
                         let location3D = value.convert(value.location3D, from: .local, to: .scene)
                         appModel.gameState.totalTaps += 1
                         
@@ -78,6 +81,24 @@ struct AttackCancerView: View {
                     }
                 }
         )
+        .onChange(of: appModel.gameState.shouldPlayStartButtonVO) { _, isReady in
+            print("onChange: readyToStartGame changed to \(isReady)")
+            if isReady {
+                if let root = appModel.gameState.rootEntity {
+                    Task {
+                        // wait just a little to give it a breath...
+                        try? await Task.sleep(for: .milliseconds(300))
+
+                        print("\n>>> Playing start button VO...\n")
+                        await appModel.gameState.playStartButtonVO(in: root)
+                        
+                        self.appModel.isHopeMeterUtilityWindowOpen = true
+                        print("Hope meter utility window open = \(self.appModel.isHopeMeterUtilityWindowOpen)")
+                    }
+                    
+                }
+            }
+        }
         .onChange(of: scenePhase) { _, newPhase in
             // Let the app handle scene phase changes
         }

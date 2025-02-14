@@ -10,90 +10,15 @@
 
 def Xform "Root"
 {
-    reorder nameChildren = ["VO", "AttackCancerGameStart_VO", "RCP_BehaviorsContainer", "OnAddedToScene", "CancerCellSpin", "CancerCellFloat", "ADC_FloatAndSpin"]
+    reorder nameChildren = ["VO", "TestFireCell", "RCP_BehaviorsContainer", "OnAddedToScene", "CancerCellSpin", "CancerCellFloat"]
     quatf xformOp:orient = (1, 0, 0, 0)
     float3 xformOp:scale = (1, 1, 1)
     float3 xformOp:translate = (0, 0, 0)
     uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
-    def Xform "VO" (
-        active = true
-        customData = {
-            float3 rotationEulerHint = (0, 3.1415927, 0)
-        }
-    )
-    {
-        reorder nameChildren = ["AudioLibrary", "SpatialAudio", "Billboard", "BloodStream_VO_1_wav"]
-        quatf xformOp:orient = (-4.371139e-8, 0, 1, 0)
-        float3 xformOp:translate = (0, 0, 0)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-        def RealityKitComponent "AudioLibrary"
-        {
-            uniform token info:id = "RealityKit.AudioLibrary"
-
-            def RealityKitDict "resources"
-            {
-                string[] keys = ["tutorial_01_mp3", "yourTurn_mp3"]
-                rel values = [
-                    </Root/tutorial_01_mp3>,
-                    </Root/yourTurn_mp3>,
-                ]
-            }
-        }
-
-        def RealityKitComponent "SpatialAudio"
-        {
-            float directivityFocus = 0.28886506
-            uniform token info:id = "RealityKit.SpatialAudio"
-            float reverbLevel = -7.0828633
-            float rolloffFactor = 0.5
-        }
-
-        def RealityKitComponent "Billboard"
-        {
-            float blendFactor = 1
-            uniform token info:id = "RealityKit.Billboard"
-        }
-    }
-
-    def RealityKitTimeline "AttackCancerGameStart_VO"
+    def RealityKitTimeline "TestFireCell"
     {
         reorder nameChildren = ["Track2", "Track", "Track3", "Track4", "Track5"]
-        def RealityKitTrack "Track2"
-        {
-            reorder nameChildren = ["tutorial_01", "tutorial_02", "gameStart_01", "gameStart_02"]
-            def RealityKitAction "tutorial_01"
-            {
-                string actionKind = "audio"
-                string audioResourceName = "tutorial_01_mp3"
-                bool controlPlayback = 1
-                double duration = 23.4840625
-                uniform token info:id = "473D07A5-43D3-4D7B-BAB2-FB0433899B16"
-                double startTime = 0.490132622092407
-                rel target = </Root/VO>
-
-                def RealityKitStruct "handoffType"
-                {
-                }
-            }
-
-            def RealityKitAction "Play_Audio"
-            {
-                string actionKind = "audio"
-                string audioResourceName = "yourTurn_mp3"
-                bool controlPlayback = 1
-                double duration = 7.1314166666666665
-                uniform token info:id = "018665A8-329A-4A66-97E9-D5D9B55595C1"
-                double startTime = 25.311715951976705
-                rel target = </Root/VO>
-
-                def RealityKitStruct "handoffType"
-                {
-                }
-            }
-        }
-
         def RealityKitTrack "Track"
         {
             def RealityKitAction "Play_Timeline"
@@ -135,28 +60,6 @@ def Xform "Root"
                 rel timeline = </Root/ADC_FloatAndSpin>
             }
         }
-
-        def RealityKitTrack "Track5"
-        {
-            def RealityKitAction "Notification"
-            {
-                string actionKind = "notification"
-                double duration = 0
-                uniform token info:id = "278BC01A-BE25-4453-9E79-AD11CA9AA2C6"
-                string notificationName = "StartButtonTrigger"
-                double startTime = 24.83183747504016
-                rel target = </Root/CancerCell_spawn>
-            }
-
-            def RealityKitAction "Notification2"
-            {
-                string actionKind = "notification"
-                uniform token info:id = "37864AC3-F04A-4484-80C7-90B87984EF44"
-                string notificationName = "readyToStart"
-                double startTime = 32.502064121367916
-                rel target = </Root/VO>
-            }
-        }
     }
 
     def RealityKitComponent "RCP_BehaviorsContainer"
@@ -180,7 +83,7 @@ def Xform "Root"
         def Preliminary_Action "Action"
         {
             rel affectedObjects = </Root>
-            rel animationLibraryKey = </Root/AttackCancerGameStart_VO>
+            rel animationLibraryKey = </Root/TestFireCell>
             rel animationLibraryKeyOverrideKey = </Root/OnAddedToScene/Trigger>
             token info:id = "PlayTimeline"
             int loops = 0
@@ -298,48 +201,6 @@ def Xform "Root"
                 }
             }
         }
-    }
-
-    def "ADC_spawn" (
-        active = false
-        references = @ADC-spawn.usda@
-    )
-    {
-        float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (0, -0.25, 0)
-    }
-
-    def RealityKitTimeline "ADC_FloatAndSpin"
-    {
-        def RealityKitTrack "Track"
-        {
-            def RealityKitAction "Spin"
-            {
-                string actionKind = "spin"
-                int blendLayer = 400
-                double duration = 20
-                uniform token info:id = "72B80F28-C398-4F01-A4F9-56EA57AC96EB"
-                double startTime = 0
-                rel target = </Root/ADC_spawn>
-
-                def RealityKitStruct "timingFunction"
-                {
-                    token type = "linear"
-                }
-            }
-        }
-    }
-
-    def RealityKitAudioFile "tutorial_01_mp3"
-    {
-        uniform asset file = @Audio/AttackCancerGameInstructions/tutorial_01.mp3@
-        uniform bool shouldLoop = 0
-    }
-
-    def RealityKitAudioFile "yourTurn_mp3"
-    {
-        uniform asset file = @Audio/AttackCancerGameInstructions/yourTurn.mp3@
-        uniform bool shouldLoop = 0
     }
 }
 

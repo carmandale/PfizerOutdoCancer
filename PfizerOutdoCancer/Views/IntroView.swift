@@ -16,7 +16,7 @@ struct IntroView: View {
         }
     }
     
-    @State private var showNavToggle: Bool = false
+    @State private var showNavToggle: Bool = true
     
     var surroundingsEffect: SurroundingsEffect? {
         let tintColor = Color(red: introTintIntensity, green: introTintIntensity, blue: introTintIntensity)

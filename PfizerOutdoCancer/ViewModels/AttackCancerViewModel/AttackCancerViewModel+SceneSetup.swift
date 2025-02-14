@@ -7,14 +7,11 @@ extension AttackCancerViewModel {
     func setupRoot() -> Entity {
         // Reset the cleanup state for a new game session.
         cleanupState = .none
-        // Reset any additional flags required for starting fresh
-        appModel.isTutorialStarted = false
-        tutorialComplete = false
-        isSetupComplete = false
+        
         // (Optionally also reset any other flags that must be restarted)
-        print("🔄 Starting new game session: cleanupState reset to .none, tutorial flags reset")
+        Logger.info("🔄 Starting new game session: cleanupState reset to .none, tutorial flags reset")
 
-        print("📱 AttackCancerViewModel: Setting up root")
+        Logger.info("📱 AttackCancerViewModel: Setting up root")
         let root = Entity()
         root.name = "AttackCancerRoot"
         
@@ -27,21 +24,21 @@ extension AttackCancerViewModel {
             offsetZ: -1.0
         ))
         root.addChild(headTrackingRoot)
-        print("✅ HeadTrackingRoot added to root")
-        print("World Position of HeadTrackingRoot: \(headTrackingRoot.position(relativeTo: nil))")
+        Logger.info("✅ HeadTrackingRoot added to root")
+        Logger.info("World Position of HeadTrackingRoot: \(headTrackingRoot.position(relativeTo: nil))")
         
         rootEntity = root
         return root
     }
     
     func setupEnvironment(in root: Entity, attachments: RealityViewAttachments? = nil) async {
-        print("🎯 Setting up AttackCancerView environment...")
+        Logger.info("🎯 Setting up AttackCancerView environment...")
         
         // IBL
         do {
             try await IBLUtility.addImageBasedLighting(to: root, imageName: "metro_noord_2k")
         } catch {
-            print("Failed to setup IBL: \(error)")
+            Logger.error("Failed to setup IBL: \(error)")
             return
         }
         
@@ -54,13 +51,13 @@ extension AttackCancerViewModel {
             
             root.addChild(environment)
             
-            print("setting up collisions")
+            Logger.info("setting up collisions")
             setupCollisions(in: environment)
             
-            print("✅ Environment setup complete")
+            Logger.info("✅ Environment setup complete")
             environmentLoaded = true
         } catch {
-            print("❌ Error setting up AttackCancerView environment: \(error)")
+            Logger.error("❌ Error setting up AttackCancerView environment: \(error)")
             environmentLoaded = false
         }
         
@@ -71,15 +68,26 @@ extension AttackCancerViewModel {
             cancerSystem.onCellDestroyed = { [weak self] cellID in
                 guard let self = self else { return }
                 self.cellsDestroyed += 1
-                print("Incremented cellsDestroyed to \(self.cellsDestroyed)")
+                Logger.info("Incremented cellsDestroyed to \(self.cellsDestroyed)")
                 
                 // Check if this was the test fire cell (ID 555)
                 if cellID == 555 {
-                    print("Test fire cell (ID 555) was destroyed - opening hope meter window")
-                    Task { @MainActor in
-                        self.appModel.isHopeMeterUtilityWindowOpen = true
-                        await self.playStartButtonVO(in: root)
-                    }
+                    Logger.info("\nTest fire cell (ID 555) was destroyed")
+                    testFireComplete = true
+                    Logger.info(">>> Test fire complete - opening hope meter window...\n")
+
+                    readyToStartGame = true
+                    Logger.info(">>> Setting readyToStartGame to true...\n")
+
+                    // wait 2 seconds before setting isTestFireActive to false
+                    // try? await Task.sleep(for: .seconds(2))
+
+                    isTestFireActive = false
+                    Logger.info(">>> Setting isTestFireActive to false...\n")
+                    
+                    // only play the start button VO if the previous VO is finished.
+                    // moved this to the onChange
+                    
                 } else {
                     // For other cells, check game conditions
                     self.checkGameConditions()
@@ -92,79 +100,79 @@ extension AttackCancerViewModel {
         do {
             try await IBLUtility.addImageBasedLighting(to: root, imageName: "metro_noord_2k")
         } catch {
-            print("Failed to setup IBL: \(error)")
+            Logger.error("Failed to setup IBL: \(error)")
         }
     }
     
     func startTutorial(in root: Entity, attachments: RealityViewAttachments? = nil) async {
-        print("\n=== Starting Tutorial Sequence ===")
+        Logger.info("\n=== Starting Tutorial Sequence ===")
         
         // Ensure we have the scene reference
         scene = root.scene
         
         do {
-            print("📱 Tutorial: Loading game start VO")
+            Logger.info("📱 Tutorial: Loading game start VO")
             let gameStartVO = try await appModel.assetLoadingManager.instantiateAsset(
                 withName: "game_start_vo",
                 category: .attackCancerEnvironment
             )
-            print("✅ Tutorial: Retrieved game start VO")
+            Logger.info("✅ Tutorial: Retrieved game start VO")
             
             if let VO_parent = root.findEntity(named: "headTrackingRoot") {
-                print("🎯 Tutorial: Found VO parent")
+                Logger.info("🎯 Tutorial: Found VO parent")
                 VO_parent.addChild(gameStartVO)
                 root.addChild(VO_parent)
-                print("✅ Tutorial: Added VO to scene")
+                Logger.info("✅ Tutorial: Added VO to scene")
                 
                 // Find tutorial cancer cell using existing pattern
                 if let cell = gameStartVO.findEntity(named: "CancerCell_spawn") {
-                    print("✅ Tutorial: Found tutorial cancer cell")
+                    Logger.info("✅ Tutorial: Found tutorial cancer cell")
                     tutorialCancerCell = cell
                     
                     // Set up tutorial cell using ViewModel
                     setupTutorialCancerCell(cell)
-                    print("✅ Tutorial: Cancer cell setup complete")
+                    Logger.info("✅ Tutorial: Cancer cell setup complete")
                     
                     // Start ADC firing sequence
                     Task {
                         await fireTutorialADCs(in: root)
                     }
-                    print("✅ Tutorial: ADC sequence initiated")
+                    Logger.info("✅ Tutorial: ADC sequence initiated")
                     isSetupComplete = true
                 } else {
-                    print("❌ Tutorial: Could not find CancerCell_spawn")
+                    Logger.error("❌ Tutorial: Could not find CancerCell_spawn")
                 }
             } else {
-                print("❌ Tutorial: Could not find headTrackingRoot entity")
+                Logger.error("❌ Tutorial: Could not find headTrackingRoot entity")
             }
         } catch {
-            print("❌ Tutorial: Failed to load game start VO: \(error)")
+            Logger.error("❌ Tutorial: Failed to load game start VO: \(error)")
         }
     }
     
     internal func playStartButtonVO(in root: Entity) async {
-        print("\n=== Playing Start Button VO ===")
+        Logger.info("\n=== Playing Start Button VO ===")
         do {
             let startButtonVO = try await appModel.assetLoadingManager.instantiateAsset(
                 withName: "PressStart_VO",
                 category: .attackCancerEnvironment
             )
-            print("✅ Retrieved start button VO")
+            Logger.info("✅ Retrieved start button VO")
             
             if let VO_parent = root.findEntity(named: "headTrackingRoot") {
-                print("🎯 Found VO parent")
+                Logger.info("🎯 Found VO parent")
                 VO_parent.addChild(startButtonVO)
-                print("✅ Added start button VO to scene")
+                Logger.info("✅ Added start button VO to scene")
             } else {
-                print("❌ Could not find headTrackingRoot entity")
+                Logger.error("❌ Could not find headTrackingRoot entity")
             }
         } catch {
-            print("❌ Failed to load start button VO: \(error)")
+            Logger.error("❌ Failed to load start button VO: \(error)")
         }
     }
     
     private func fireTutorialADCs(in root: Entity, attachments: RealityViewAttachments? = nil) async {
-        print("\n=== Starting Tutorial ADC Sequence ===")
+        Logger.info("\n=== Starting Tutorial ADC Sequence ===")
         
         // Launch position is slightly offset to the right and above
         let launchPosition = SIMD3<Float>(0.25, 0.5, -0.25)
@@ -175,29 +183,39 @@ extension AttackCancerViewModel {
 
         // Find the cancerCell_complex within the tutorial cell
         guard let complexCell = tutorialCancerCell?.findEntity(named: "cancerCell_complex") else {
-            print("❌ Could not find cancerCell_complex in tutorial cell")
+            Logger.error("❌ Could not find cancerCell_complex in tutorial cell")
             return
         }
         
         for (index, delay) in tutorialADCDelays.enumerated() {
             try? await Task.sleep(for: .seconds(delay))
-            print("🚀 Firing tutorial ADC \(index + 1)/10")
+            Logger.info("🚀 Firing tutorial ADC \(index + 1)/10")
             await handleTap(
                 on: complexCell,
                 location: approachPosition,  // Use approach position for targeting
                 in: scene
             )
         }
-        print("✅ Tutorial ADC sequence complete")
+        Logger.info("✅ Tutorial ADC sequence complete")
         
-        // Wait until 24s mark
-        print("⏱️ Waiting for 24s mark...")
-        try? await Task.sleep(for: .seconds(4.2))  // 19s + 5s = 24s
+        Logger.info("⏱️ small delay before the test fire cell is spawned")
+        try? await Task.sleep(for: .seconds(4.2))  
         
-        print("\n🎯 Starting test fire sequence...\n")
+        // MARK: SPAWN TEST FIRE CELL
+        Logger.info("\n🎯 Starting test fire sequence...\n")
         Task { @MainActor in
             await spawnTestFireCell(in: root)
         }
+
+        // add a small delay to set readyToStartGame to true
+        try? await Task.sleep(for: .seconds(8))
+        
+        appModel.gameState.tutorialComplete = true
+        Logger.info("✅ Set tutorial complete to true")
+        
+        // set tutorial complete as a check so that the press start audio doesn't start too soon
+        
+        // set readyToStartGame to true in closure that checks for test fire completion
         
         // Test fire sequence active – deferring full game cell spawning until test fire is completed.
         // The full game setup will be triggered later (e.g., via UI when the start game button is pressed).
@@ -212,7 +230,7 @@ extension AttackCancerViewModel {
 
     @MainActor
     func setupGameContent(in root: Entity, attachments: RealityViewAttachments? = nil) async {
-        print("\n=== Initializing Cell States ===")
+        Logger.info("\n=== Initializing Cell States ===")
         
         // Reset game state before starting main game
         appModel.gameState.cellsDestroyed = 0
@@ -233,18 +251,18 @@ extension AttackCancerViewModel {
                 if let cell = root.findEntity(named: "cancer_cell_\(i)")?.findEntity(named: "cancerCell_complex") {
                     // Set initial required hits
                     if let stateComponent = cell.components[CancerCellStateComponent.self] {
-                        print("🎯 Cell \(i) initialized - Required hits: \(stateComponent.parameters.requiredHits)")
+                        Logger.info("🎯 Cell \(i) initialized - Required hits: \(stateComponent.parameters.requiredHits)")
                     }
                 }
             }
 
-            print("Cell Parameters after setup:") // ADDED LOG
+            Logger.info("Cell Parameters after setup:")
             for (index, params) in cellParameters.enumerated() {
-                print("  Cell \(index): isTutorialCell=\(params.isTutorialCell), isDestroyed=\(params.isDestroyed)") // ADDED LOG
+                Logger.info("  Cell \(index): isTutorialCell=\(params.isTutorialCell), isDestroyed=\(params.isDestroyed)")
             }
 
         } catch {
-            print("❌ Failed to load cancer cell template: \(error)")
+            Logger.error("❌ Failed to load cancer cell template: \(error)")
         }
     }
 }

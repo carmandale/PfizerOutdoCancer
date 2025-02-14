@@ -194,8 +194,7 @@ final class AppModel {
     
     func startAttackCancerGame() {
         print("🎮 Starting Attack Cancer Game (startAttackCancerGame called)")
-        gameState.tutorialComplete = true
-        print("✅ Set tutorial complete to true")
+        print("Starting Hope Meter")
         startHopeMeter()
     }
     
