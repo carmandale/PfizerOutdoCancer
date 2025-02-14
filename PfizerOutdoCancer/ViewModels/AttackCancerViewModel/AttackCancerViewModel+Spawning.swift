@@ -64,55 +64,12 @@ extension AttackCancerViewModel {
             cell.components.set(CancerCellStateComponent(parameters: parameters))
             print("Added CancerCellStateComponent with parameters")
             
-            // Add ClosureComponent for state updates
-            // cell.components.set(
-            //     ClosureComponent { [weak self] _ in
-            //         guard let self = self,
-            //               let stateComponent = cell.components[CancerCellStateComponent.self],
-            //               let cellID = stateComponent.parameters.cellID,
-            //               cellID < self.cellParameters.count else { return }
-                    
-            //         // Get reference to the correct parameters instance
-            //         let parameters = self.cellParameters[cellID]
-            //         let wasDestroyed = parameters.isDestroyed
-                    
-            //         // Update state
-            //         parameters.hitCount = stateComponent.parameters.hitCount
-            //         parameters.isDestroyed = stateComponent.parameters.isDestroyed
-                    
-            //         #if DEBUG
-            //         print("\n=== Cell State Change ===")
-            //         print("📊 Cell \(cellID):")
-            //         print("  - Tutorial Cell: \(parameters.isTutorialCell)")
-            //         print("  - Was Destroyed: \(wasDestroyed)")
-            //         print("  - Is Destroyed: \(parameters.isDestroyed)")
-            //         print("  - Hit Count: \(parameters.hitCount)/\(parameters.requiredHits)")
-            //         #endif
-                    
-            //         // Track when a non-tutorial cell is newly destroyed
-            //         if !stateComponent.parameters.isTutorialCell && stateComponent.parameters.isDestroyed && !wasDestroyed {
-            //             Task { @MainActor in
-            //                 self.cellsDestroyed += 1
-            //                 print("🎯 Game cell \(cellID) destroyed - Total destroyed: \(self.cellsDestroyed)")
-            //                 self.checkGameConditions()
-            //             }
-            //         } else if parameters.isDestroyed {
-            //             print("⚠️ Cell \(cellID) destroyed but not counted because:")
-            //             print("  - Tutorial Cell: \(parameters.isTutorialCell)")
-            //             print("  - Was Already Destroyed: \(wasDestroyed)")
-            //         }
-            //     }
-            // )
-            // print("Added ClosureComponent for state updates")
-            
             root.addChild(cell)
             setupAttachmentPoints(for: cell, complexCell: complexCell, cellID: index)
-            
-            // Scale in with spring animation instead of fade
-            // await complexCell.animateScale(from: 0, to: 1, duration: 0.5)
+
             // Fade in after setup
             await complexCell.fadeOpacity(to: 1.0, duration: 0.5)
-//            print("✅ Successfully spawned cell \(index)")
+           print("✅ Successfully spawned cell \(index)")
             return cell
         } else {
             print("❌ Warning: Could not find cancerCell_complex entity")
@@ -281,11 +238,13 @@ extension AttackCancerViewModel {
         
         if let complexCell = cell.findEntity(named: "cancerCell_complex") {
             // Setup all the physical aspects first (minus position and movement)
-            configureCellPhysics(complexCell)
+            // configureCellPhysics(complexCell)
+            configureTestCellPhysics(complexCell)
             
             // Create parameters before calling setupCellIdentification
             let parameters = CancerCellParameters(cellID: 777)
             parameters.isTutorialCell = true  // Mark as tutorial cell
+            parameters.physicsEnabled = false  // Disable physics for tutorial cell
             parameters.impactScale = CancerCellParameters.tutorialImpactScale  // Use reduced impact
             parameters.requiredHits = 10  // Set required hits for tutorial
             cellParameters.append(parameters)
@@ -326,6 +285,122 @@ extension AttackCancerViewModel {
             
             setupAttachmentPoints(for: cell, complexCell: complexCell, cellID: 777)
 //            print("✅ Successfully configured tutorial cell")
+        }
+    }
+    
+    // Insert new test cell configuration functions above spawnTestFireCell
+
+    private func configureTestCellPhysics(_ cell: Entity) {
+        let shape = ShapeResource.generateSphere(radius: 0.32)  // Cancer cell size
+        let collisionComponent = CollisionComponent(
+            shapes: [shape],
+            filter: .init(group: .cancerCell, mask: .all)
+        )
+        cell.components.set(collisionComponent)
+        
+        var physicsBody = PhysicsBodyComponent(shapes: [shape], mass: 0.1, mode: .dynamic)
+        physicsBody.isAffectedByGravity = false
+        physicsBody.linearDamping = 0.2
+        physicsBody.angularDamping = 0.0
+        cell.components[PhysicsBodyComponent.self] = physicsBody
+        
+        // Initialize motion component
+        cell.components.set(PhysicsMotionComponent())
+    }
+    
+    private func configureTestCellMovement(_ cell: Entity) {
+        // Set linear velocity to zero to avoid orbiting
+        let linearVelocity = SIMD3<Float>(0, 0, 0)
+        
+        // Calculate a random spin vector and reduce its intensity
+        let rx = Float.random(in: -1...1)
+        let ry = Float.random(in: -1...1)
+        let rz = Float.random(in: -1...1)
+        var spin = SIMD3<Float>(rx, ry, rz)
+        let minSpinMagnitude: Float = 0.5
+        let spinLength = simd_length(spin)
+        if spinLength < 0.001 {
+            spin = SIMD3<Float>(0, 1, 0)
+        } else if spinLength < minSpinMagnitude {
+            spin = normalize(spin) * minSpinMagnitude
+        }
+        // Scale spin to 60% for a visible, yet slowed, rotation
+        spin *= 0.6
+        
+        let motionComponent = PhysicsMotionComponent(
+            linearVelocity: linearVelocity,
+            angularVelocity: spin
+        )
+        cell.components.set(motionComponent)
+    }
+
+    // Modify spawnTestFireCell to use the new test configuration functions
+    func spawnTestFireCell(in root: Entity) async {
+        do {
+            // Instantiate the cancer cell template via assetLoadingManager
+            let cancerCellTemplate = try await appModel.assetLoadingManager.instantiateAsset(
+                withName: "cancer_cell",
+                category: .cancerCell
+            )
+            
+            // Clone the template for the test fire cell
+            let cell = cancerCellTemplate.clone(recursive: true)
+            cell.name = "cancer_cell_555"  // Mark the cell with ID 555
+
+            let index = 555
+            
+            // Find the complex cell entity within our clone
+            guard cell.findEntity(named: "cancerCell_complex") != nil else {
+                print("❌ Test Fire: Could not find cancerCell_complex in test cell.")
+                return
+            }
+            
+            if let complexCell = cell.findEntity(named: "cancerCell_complex") {
+                // Start with zero scale instead of zero opacity
+                // complexCell.transform.scale = .init(repeating: 0)
+                complexCell.opacity = 0
+                
+                // Setup all the physical aspects first
+                complexCell.position = SIMD3<Float>(0, 1.0, -0.5)
+                configureTestCellPhysics(complexCell)
+                configureTestCellMovement(complexCell)
+                setupCellIdentification(complexCell, cellID: index)
+                
+                // Create parameters on-demand
+                let parameters = CancerCellParameters(cellID: index)
+                parameters.isTutorialCell = true
+                parameters.impactScale = CancerCellParameters.tutorialImpactScale
+                parameters.requiredHits = 4
+                cellParameters.append(parameters)
+                print("Total parameters after append: \(cellParameters.count)")
+                
+                // Add state component with reference to parameters
+                cell.components.set(CancerCellStateComponent(parameters: parameters))
+                print("Added CancerCellStateComponent with parameters")
+                
+                root.addChild(cell)
+                setupAttachmentPoints(for: cell, complexCell: complexCell, cellID: index)
+
+                // Fade in after setup
+                await complexCell.fadeOpacity(to: 1.0, duration: 0.5)
+                print("✅ Successfully spawned cell \(index)")
+
+                // set isTestFireActive to true
+                appModel.gameState.isTestFireActive = true
+                
+                // Play the start button VO after cell is spawned
+                
+                print("⏱️ Wait for 10 seconds")
+                try? await Task.sleep(for: .seconds(15))
+                // await playStartButtonVO(in: root)
+            } else {
+                print("❌ Warning: Could not find cancerCell_complex entity")
+            }
+
+            
+            
+        } catch {
+            print("❌ Test Fire: Failed to instantiate cancer cell template: \(error)")
         }
     }
 }

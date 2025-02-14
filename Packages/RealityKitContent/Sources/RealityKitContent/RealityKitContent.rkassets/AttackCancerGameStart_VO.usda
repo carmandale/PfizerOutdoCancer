@@ -34,12 +34,13 @@ def Xform "Root"
 
             def RealityKitDict "resources"
             {
-                string[] keys = ["tutorial_01_mp3", "tutorial_02_mp3", "gameStart_01_mp3", "gameStart_02_mp3"]
+                string[] keys = ["tutorial_01_mp3", "tutorial_02_mp3", "gameStart_01_mp3", "gameStart_02_mp3", "yourTurn_mp3"]
                 rel values = [
                     </Root/tutorial_01_mp3>,
                     </Root/tutorial_02_mp3>,
                     </Root/gameStart_01_mp3>,
                     </Root/gameStart_02_mp3>,
+                    </Root/yourTurn_mp3>,
                 ]
             }
         }
@@ -80,44 +81,14 @@ def Xform "Root"
                 }
             }
 
-            def RealityKitAction "tutorial_02"
+            def RealityKitAction "Play_Audio"
             {
                 string actionKind = "audio"
-                string audioResourceName = "tutorial_02_mp3"
+                string audioResourceName = "yourTurn_mp3"
                 bool controlPlayback = 1
-                double duration = 6.504479166666667
-                uniform token info:id = "167BCF3B-00FF-4B56-990C-E6889FB9878D"
-                double startTime = 24.940079309446133
-                rel target = </Root/VO>
-
-                def RealityKitStruct "handoffType"
-                {
-                }
-            }
-
-            def RealityKitAction "gameStart_01"
-            {
-                string actionKind = "audio"
-                string audioResourceName = "gameStart_01_mp3"
-                bool controlPlayback = 1
-                double duration = 11.702854166666667
-                uniform token info:id = "1204D4D5-6D0E-4E69-901E-F61DE4B09CF2"
-                double startTime = 35.64808821888402
-                rel target = </Root/VO>
-
-                def RealityKitStruct "handoffType"
-                {
-                }
-            }
-
-            def RealityKitAction "gameStart_02"
-            {
-                string actionKind = "audio"
-                string audioResourceName = "gameStart_02_mp3"
-                bool controlPlayback = 1
-                double duration = 3.4220208333333333
-                uniform token info:id = "A62883DE-996D-40CC-B909-A085BE3370F6"
-                double startTime = 31.610204565763343
+                double duration = 7.1314166666666665
+                uniform token info:id = "018665A8-329A-4A66-97E9-D5D9B55595C1"
+                double startTime = 25.311715951976705
                 rel target = </Root/VO>
 
                 def RealityKitStruct "handoffType"
@@ -380,6 +351,12 @@ def Xform "Root"
     def RealityKitAudioFile "tutorial_02_mp3"
     {
         uniform asset file = @Audio/AttackCancerGameInstructions/tutorial_02.mp3@
+        uniform bool shouldLoop = 0
+    }
+
+    def RealityKitAudioFile "yourTurn_mp3"
+    {
+        uniform asset file = @Audio/AttackCancerGameInstructions/yourTurn.mp3@
         uniform bool shouldLoop = 0
     }
 }

@@ -68,11 +68,22 @@ extension AttackCancerViewModel {
         if let cancerSystem = CancerCellSystem.shared {
             self.cancerCellSystem = cancerSystem
             // Assign the onCellDestroyed closure.
-            cancerSystem.onCellDestroyed = { [weak self] in
+            cancerSystem.onCellDestroyed = { [weak self] cellID in
                 guard let self = self else { return }
                 self.cellsDestroyed += 1
                 print("Incremented cellsDestroyed to \(self.cellsDestroyed)")
-                self.checkGameConditions()
+                
+                // Check if this was the test fire cell (ID 555)
+                if cellID == 555 {
+                    print("Test fire cell (ID 555) was destroyed - opening hope meter window")
+                    Task { @MainActor in
+                        self.appModel.isHopeMeterUtilityWindowOpen = true
+                        await self.playStartButtonVO(in: root)
+                    }
+                } else {
+                    // For other cells, check game conditions
+                    self.checkGameConditions()
+                }
             }
         }
     }
@@ -131,6 +142,27 @@ extension AttackCancerViewModel {
         }
     }
     
+    internal func playStartButtonVO(in root: Entity) async {
+        print("\n=== Playing Start Button VO ===")
+        do {
+            let startButtonVO = try await appModel.assetLoadingManager.instantiateAsset(
+                withName: "PressStart_VO",
+                category: .attackCancerEnvironment
+            )
+            print("✅ Retrieved start button VO")
+            
+            if let VO_parent = root.findEntity(named: "headTrackingRoot") {
+                print("🎯 Found VO parent")
+                VO_parent.addChild(startButtonVO)
+                print("✅ Added start button VO to scene")
+            } else {
+                print("❌ Could not find headTrackingRoot entity")
+            }
+        } catch {
+            print("❌ Failed to load start button VO: \(error)")
+        }
+    }
+    
     private func fireTutorialADCs(in root: Entity, attachments: RealityViewAttachments? = nil) async {
         print("\n=== Starting Tutorial ADC Sequence ===")
         
@@ -160,15 +192,15 @@ extension AttackCancerViewModel {
         
         // Wait until 24s mark
         print("⏱️ Waiting for 24s mark...")
-        try? await Task.sleep(for: .seconds(2))  // 19s + 5s = 24s
+        try? await Task.sleep(for: .seconds(4.2))  // 19s + 5s = 24s
         
-        print("🎯 Opening hope meter utility window")
-        if !appModel.isHopeMeterUtilityWindowOpen {
-            appModel.isHopeMeterUtilityWindowOpen = true
+        print("\n🎯 Starting test fire sequence...\n")
+        Task { @MainActor in
+            await spawnTestFireCell(in: root)
         }
         
-        print("🎮 Setting up cancer cells")
-        await setupGameContent(in: root)
+        // Test fire sequence active – deferring full game cell spawning until test fire is completed.
+        // The full game setup will be triggered later (e.g., via UI when the start game button is pressed).
     }
     
     func handleGameStart(in root: Entity) async {
@@ -179,7 +211,7 @@ extension AttackCancerViewModel {
     }
 
     @MainActor
-    private func setupGameContent(in root: Entity, attachments: RealityViewAttachments? = nil) async {
+    func setupGameContent(in root: Entity, attachments: RealityViewAttachments? = nil) async {
         print("\n=== Initializing Cell States ===")
         
         // Reset game state before starting main game
@@ -215,5 +247,4 @@ extension AttackCancerViewModel {
             print("❌ Failed to load cancer cell template: \(error)")
         }
     }
-    
 }

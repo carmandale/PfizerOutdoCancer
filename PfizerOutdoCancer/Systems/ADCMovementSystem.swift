@@ -36,6 +36,9 @@ public class ADCMovementSystem: System {
     private static let retargetDuration: Float = 0.5
     static let numLookupSamples: Int = 100
     
+    // Target search parameters for orbiting ADCs
+    static let orbitingTargetSearchInterval: Double = 1.0  // Check for targets every second
+    
     // MARK: - Initialization
     required public init(scene: Scene) { }
     
@@ -448,61 +451,79 @@ public class ADCMovementSystem: System {
                 // Save updated component.
                 entity.components[ADCComponent.self] = adcComponent
             } else if adcComponent.state == .orbiting {
-            // Get the orbit center from headTrackingRoot or use a fallback.
-            let orbitCenter: SIMD3<Float>
-            if let headTrackingRoot = entity.scene?.findEntity(named: "headTrackingRoot") {
-                orbitCenter = headTrackingRoot.position(relativeTo: nil)
+                // Get the orbit center from headTrackingRoot or use a fallback.
+                let orbitCenter: SIMD3<Float>
+                if let headTrackingRoot = entity.scene?.findEntity(named: "headTrackingRoot") {
+                    orbitCenter = headTrackingRoot.position(relativeTo: nil)
+                } else {
+                    orbitCenter = [0, 1.5, 0]
+                }
+                
+                // Accumulate time since last target search
+                adcComponent.timeSinceLastTargetSearch += context.deltaTime
+                
+                // Check for new targets periodically
+                if adcComponent.timeSinceLastTargetSearch >= Self.orbitingTargetSearchInterval {
+                    // Reset the timer
+                    adcComponent.timeSinceLastTargetSearch = 0
+                    
+                    // Try to find a new target
+                    if Self.retargetADC(entity, &adcComponent, currentPosition: entity.position(relativeTo: nil), in: context.scene) {
+                        // Valid target found, transition to moving state
+                        adcComponent.state = .moving
+                        adcComponent.startWorldPosition = entity.position(relativeTo: nil)
+                        entity.components[ADCComponent.self] = adcComponent
+                        continue
+                    }
+                }
+                
+                // --- Update orbit angle in reverse (for counter-clockwise movement)
+                // Use only orbitSpeed (no division by orbitRadius here unless you specifically want that effect).
+                adcComponent.orbitTheta -= Float(context.deltaTime) * adcComponent.orbitSpeed
+                
+                // --- Organic Vertical Oscillation
+                // Lower the amplitude by scaling it down (for example, multiply by 0.5).
+                let verticalOscillation = (adcComponent.verticalOscillationAmplitude * 0.5) *
+                    sin(adcComponent.orbitTheta * adcComponent.verticalOscillationFrequency + adcComponent.verticalOscillationPhase)
+                
+                // Lower the orbit height (again, scale down the stored value).
+                let baseOrbitHeight = adcComponent.orbitHeight * 0.5
+                
+                // --- Calculate the target orbit position.
+                let targetX = orbitCenter.x + adcComponent.orbitRadius * cos(adcComponent.orbitTheta)
+                let targetZ = orbitCenter.z + adcComponent.orbitRadius * sin(adcComponent.orbitTheta)
+                let targetY = orbitCenter.y + baseOrbitHeight + verticalOscillation
+                let targetOrbitPosition = SIMD3<Float>(targetX, targetY, targetZ)
+                
+                // --- Smooth transition into orbiting.
+                if adcComponent.orbitTransitionProgress < 1.0 {
+                    adcComponent.orbitTransitionProgress += Float(context.deltaTime) / adcComponent.orbitTransitionDuration
+                    let t = ADCMovementSystem.smoothstep(0, 1, adcComponent.orbitTransitionProgress)
+                    entity.position = ADCMovementSystem.mix(adcComponent.orbitTransitionStartPosition, targetOrbitPosition, t: t)
+                } else {
+                    entity.position = targetOrbitPosition
+                }
+                
+                // --- Tumbling Rotation
+                // Update the tumble angle based on tumbleSpeed.
+                adcComponent.tumbleAngle += Float(context.deltaTime) * adcComponent.tumbleSpeed
+                // For tumbling, choose a fixed (or random per ADC) axis. Here we use a normalized axis [1, 1, 0].
+                let tumbleAxis = simd_normalize(SIMD3<Float>(1, 1, 0))
+                let tumbleRotation = simd_quatf(angle: adcComponent.tumbleAngle, axis: tumbleAxis)
+                
+                // --- Combine with Orbit Orientation
+                // Compute the orbit tangent for facing direction. (For a circle, tangent = (-sinθ, 0, cosθ))
+                let tangent = SIMD3<Float>(-sin(adcComponent.orbitTheta), 0, cos(adcComponent.orbitTheta))
+                let orbitOrientation = simd_quatf(from: [0, 0, 1], to: tangent)
+                // Apply the tumble rotation on top of the orbit-facing orientation.
+                entity.orientation = tumbleRotation * orbitOrientation
+                
+                // Update any other per-frame behavior (like protein spin).
+                ADCMovementSystem.updateProteinSpin(entity: entity, deltaTime: context.deltaTime)
+                
+                // Save the updated component.
+                entity.components[ADCComponent.self] = adcComponent
             } else {
-                orbitCenter = [0, 1.5, 0]
-            }
-            
-            // --- Update orbit angle in reverse (for counter-clockwise movement)
-            // Use only orbitSpeed (no division by orbitRadius here unless you specifically want that effect).
-            adcComponent.orbitTheta -= Float(context.deltaTime) * adcComponent.orbitSpeed
-            
-            // --- Organic Vertical Oscillation
-            // Lower the amplitude by scaling it down (for example, multiply by 0.5).
-            let verticalOscillation = (adcComponent.verticalOscillationAmplitude * 0.5) *
-                sin(adcComponent.orbitTheta * adcComponent.verticalOscillationFrequency + adcComponent.verticalOscillationPhase)
-            
-            // Lower the orbit height (again, scale down the stored value).
-            let baseOrbitHeight = adcComponent.orbitHeight * 0.5
-            
-            // --- Calculate the target orbit position.
-            let targetX = orbitCenter.x + adcComponent.orbitRadius * cos(adcComponent.orbitTheta)
-            let targetZ = orbitCenter.z + adcComponent.orbitRadius * sin(adcComponent.orbitTheta)
-            let targetY = orbitCenter.y + baseOrbitHeight + verticalOscillation
-            let targetOrbitPosition = SIMD3<Float>(targetX, targetY, targetZ)
-            
-            // --- Smooth transition into orbiting.
-            if adcComponent.orbitTransitionProgress < 1.0 {
-                adcComponent.orbitTransitionProgress += Float(context.deltaTime) / adcComponent.orbitTransitionDuration
-                let t = ADCMovementSystem.smoothstep(0, 1, adcComponent.orbitTransitionProgress)
-                entity.position = ADCMovementSystem.mix(adcComponent.orbitTransitionStartPosition, targetOrbitPosition, t: t)
-            } else {
-                entity.position = targetOrbitPosition
-            }
-            
-            // --- Tumbling Rotation
-            // Update the tumble angle based on tumbleSpeed.
-            adcComponent.tumbleAngle += Float(context.deltaTime) * adcComponent.tumbleSpeed
-            // For tumbling, choose a fixed (or random per ADC) axis. Here we use a normalized axis [1, 1, 0].
-            let tumbleAxis = simd_normalize(SIMD3<Float>(1, 1, 0))
-            let tumbleRotation = simd_quatf(angle: adcComponent.tumbleAngle, axis: tumbleAxis)
-            
-            // --- Combine with Orbit Orientation
-            // Compute the orbit tangent for facing direction. (For a circle, tangent = (-sinθ, 0, cosθ))
-            let tangent = SIMD3<Float>(-sin(adcComponent.orbitTheta), 0, cos(adcComponent.orbitTheta))
-            let orbitOrientation = simd_quatf(from: [0, 0, 1], to: tangent)
-            // Apply the tumble rotation on top of the orbit-facing orientation.
-            entity.orientation = tumbleRotation * orbitOrientation
-            
-            // Update any other per-frame behavior (like protein spin).
-            ADCMovementSystem.updateProteinSpin(entity: entity, deltaTime: context.deltaTime)
-            
-            // Save the updated component.
-            entity.components[ADCComponent.self] = adcComponent
-        } else {
                 #if DEBUG
 //                print("⚠️ Unknown ADC state - skipping update")
                 #endif

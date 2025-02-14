@@ -140,11 +140,17 @@ public struct ADCComponent: Component, Codable {
     /// The current angle in the orbit.
     public var orbitTheta: Float = 0.0
     
+    /// Time accumulated since last target search while orbiting
+    public var timeSinceLastTargetSearch: Double = 0.0
+    
     /// The tumble angle of the orbit.
     public var tumbleAngle: Float = 0.0
     
     /// The tumble speed of the orbit.
     public var tumbleSpeed: Float = 0.0
+    
+    /// The last time we searched for targets while orbiting
+    public var lastTargetSearchTime: Double? = nil
     
     // MARK: - Organic Orbiting Parameters (NEW)
     
@@ -208,7 +214,7 @@ public struct ADCComponent: Component, Codable {
         // Additional Retargeting and Path Data
         case previousPathLength, previousPathTangent, isRetargetedPath, wasRetargeted, hasCollided, compositeProgress
         // Orbiting Parameters
-        case orbitRadius, orbitHeight, orbitSpeed, orbitTheta, tumbleAngle, tumbleSpeed
+        case orbitRadius, orbitHeight, orbitSpeed, orbitTheta, tumbleAngle, tumbleSpeed, timeSinceLastTargetSearch, lastTargetSearchTime
         // Organic Orbiting Parameters (NEW)
         case verticalOscillationAmplitude, verticalOscillationFrequency, verticalOscillationPhase
         // Orbiting Transition Parameters (NEW)
@@ -246,6 +252,8 @@ public struct ADCComponent: Component, Codable {
         orbitHeight = try container.decodeIfPresent(Float.self, forKey: .orbitHeight) ?? 1.0
         orbitSpeed = try container.decode(Float.self, forKey: .orbitSpeed)
         orbitTheta = try container.decode(Float.self, forKey: .orbitTheta)
+        timeSinceLastTargetSearch = try container.decodeIfPresent(Double.self, forKey: .timeSinceLastTargetSearch) ?? 0.0
+        lastTargetSearchTime = try container.decodeIfPresent(Double.self, forKey: .lastTargetSearchTime)
         tumbleAngle = try container.decodeIfPresent(Float.self, forKey: .tumbleAngle) ?? 0.0
         tumbleSpeed = try container.decodeIfPresent(Float.self, forKey: .tumbleSpeed) ?? 0.0
         verticalOscillationAmplitude = try container.decodeIfPresent(Float.self, forKey: .verticalOscillationAmplitude) ?? 0.0
@@ -287,6 +295,8 @@ public struct ADCComponent: Component, Codable {
         try container.encodeIfPresent(orbitHeight, forKey: .orbitHeight)
         try container.encode(orbitSpeed, forKey: .orbitSpeed)
         try container.encode(orbitTheta, forKey: .orbitTheta)
+        try container.encodeIfPresent(timeSinceLastTargetSearch, forKey: .timeSinceLastTargetSearch)
+        try container.encodeIfPresent(lastTargetSearchTime, forKey: .lastTargetSearchTime)
         try container.encode(tumbleAngle, forKey: .tumbleAngle)
         try container.encode(tumbleSpeed, forKey: .tumbleSpeed)
         try container.encode(verticalOscillationAmplitude, forKey: .verticalOscillationAmplitude)

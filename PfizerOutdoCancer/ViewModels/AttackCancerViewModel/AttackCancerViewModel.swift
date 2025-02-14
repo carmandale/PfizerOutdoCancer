@@ -40,6 +40,7 @@ final class AttackCancerViewModel {
     var environmentLoaded = false
     var tutorialCancerCell: Entity?
     var tutorialComplete = false
+    var isTestFireActive = false
     
     // Store subscription to prevent deallocation
     internal var subscription: Cancellable?
@@ -128,6 +129,7 @@ final class AttackCancerViewModel {
         print("  - Hope Meter Running: \(isHopeMeterRunning)")
         print("  - Tutorial Started: \(appModel.isTutorialStarted)")
         print("  - Current Phase: \(appModel.currentPhase)")
+        print("  - Test Fire Active: \(isTestFireActive)")
         
         // Stop systems first
         appModel.stopHopeMeter()
@@ -152,6 +154,11 @@ final class AttackCancerViewModel {
                     removedCells += 1
                 }
             }
+            // Remove test fire cell if it exists
+            if let testFireCell = root.findEntity(named: "cancer_cell_555") {
+                testFireCell.removeFromParent()
+                removedCells += 1
+            }
             print("🗑️ Removed cancer cells: \(removedCells)")
             
             // Remove ADCs
@@ -159,6 +166,13 @@ final class AttackCancerViewModel {
                 let adcQuery = EntityQuery(where: .has(ADCComponent.self))
                 scene.performQuery(adcQuery).forEach { entity in
                     entity.removeFromParent()
+                }
+            }
+            
+            // Remove any VO entities from headTrackingRoot
+            if let VO_parent = root.findEntity(named: "headTrackingRoot") {
+                VO_parent.children.forEach { child in
+                    child.removeFromParent()
                 }
             }
         }
@@ -237,10 +251,12 @@ final class AttackCancerViewModel {
         isHopeMeterRunning = false
         hasFirstADCBeenFired = false
 
-        // Reset the tutorial state for a new game session
+        // Reset the tutorial and test fire states for a new game session
         appModel.isTutorialStarted = false
         tutorialComplete = false
-        print("🔄 Reset tutorial state: isTutorialStarted: \(appModel.isTutorialStarted), tutorialComplete: \(tutorialComplete)")
+        appModel.gameState.isTestFireActive = false
+        isTestFireActive = false
+        print("🔄 Reset tutorial state: isTutorialStarted: \(appModel.isTutorialStarted), tutorialComplete: \(tutorialComplete), isTestFireActive: \(isTestFireActive)")
     }
 
     var progressiveAttack: ImmersionStyle = .progressive(

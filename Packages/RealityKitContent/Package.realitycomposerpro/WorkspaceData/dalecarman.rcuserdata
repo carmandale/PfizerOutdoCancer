@@ -1,7 +1,7 @@
 {
   "advancedEditorSelectedIdentifier" : "BehaviorsPluginID",
   "openSceneRelativePaths" : [
-    "OutroEnvironment.usda"
+    "AttackCancerGameStart_VO.usda"
   ],
   "recentIdentifiers" : {
     "00353439-B084-4161-BDD3-58325B62FD61" : [
@@ -20,6 +20,9 @@
 
     ],
     "12B1BFDE-D45B-4A19-958C-624E0EE55CAE" : [
+
+    ],
+    "17A66227-7A0B-4B7B-89BD-500DE0F3FFEA" : [
 
     ],
     "1C8A319C-C3C8-4EB5-B82E-7B452D913E6D" : [
@@ -12173,5 +12176,5 @@
   "sceneViewportBackgroundColors" : {
 
   },
-  "selectedSceneRelativePath" : "OutroEnvironment.usda"
+  "selectedSceneRelativePath" : "AttackCancerGameStart_VO.usda"
 }

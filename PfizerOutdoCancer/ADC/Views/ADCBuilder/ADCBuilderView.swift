@@ -129,9 +129,9 @@ struct ADCBuilderView: View {
                                 scaleEffect: AppModel.UIConstants.buttonExpandScale,
                                 width: 250
                             )
-                            .opacity(dataModel.adcBuildStep == 3 ? 1 : 0)
+                            // .opacity(dataModel.adcBuildStep == 3 ? 1 : 0)
                             .fontWeight(.bold)
-                            .frame(width: 600)
+                            // .frame(width: 600)
                             .padding(.top, 10)
                             .padding(.bottom, 30)
                             .transition(Appear())

@@ -16,8 +16,8 @@ struct LibraryView: View {
     
     var body: some View {
         if appModel.isLibraryWindowOpen {
-            
-            WebView(url: URL(string: "https://cancer.pfizer.com/")!)
+            Screen()
+//            WebView(url: URL(string: "https://cancer.pfizer.com/")!)
         }
             
     }

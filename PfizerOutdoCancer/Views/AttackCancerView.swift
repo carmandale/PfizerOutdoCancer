@@ -52,36 +52,8 @@ struct AttackCancerView: View {
                 }
             }
         } attachments: {
-            // HopeMeter attachment
-            // Attachment(id: "HopeMeter") {
-            //     HopeMeterView()
-            // }
-            
-            // Cell counter attachments
-//            ForEach(0..<appModel.gameState.maxCancerCells, id: \.self) { i in
-//                Attachment(id: "\(i)") {
-//                    if i < cellStates.count {
-//                        HitCounterView(
-//                            hits: cellStates[i].hits,
-//                            requiredHits: cellStates[i].requiredHits,
-//                            isDestroyed: cellStates[i].isDestroyed
-//                        )
-//                    } else {
-//                        HitCounterView(hits: 0, requiredHits: 0, isDestroyed: false)
-//                    }
-//                }
-//            }
+
         }
-        // .onChange(of: appModel.gameState.cellsDestroyed) { _, newValue in
-        //     // Compute the number of game cells only (excluding tutorial cells).
-        //     let totalGameCells = appModel.gameState.cellParameters.filter { !$0.isTutorialCell }.count
-        //     if totalGameCells > 0, newValue >= totalGameCells {
-        //         print("🎯 onChange - All game cells destroyed (\(newValue)/\(totalGameCells))")
-        //         Task {
-        //             await appModel.accelerateHopeMeterToCompletion()
-        //         }
-        //     }
-        // }
         .task {
             await appModel.trackingManager.processWorldTrackingUpdates()
         }
@@ -95,13 +67,8 @@ struct AttackCancerView: View {
             SpatialTapGesture()
                 .targetedToAnyEntity()
                 .onEnded { value in
-                    // Check if this is first tap and hope meter hasn't started
-//                    if appModel.gameState.totalTaps == 0 && appModel.isHopeMeterUtilityWindowOpen {
-//                        appModel.startAttackCancerGame()
-//                    }
-                    
-                    // Only handle taps if game is running
-                    if appModel.gameState.isHopeMeterRunning {
+                    // Allow taps either if the game is running or if we're active in the test fire phase.
+                    if appModel.gameState.isHopeMeterRunning || appModel.gameState.isTestFireActive {
                         let location3D = value.convert(value.location3D, from: .local, to: .scene)
                         appModel.gameState.totalTaps += 1
                         
@@ -115,8 +82,15 @@ struct AttackCancerView: View {
             // Let the app handle scene phase changes
         }
         .onChange(of: appModel.isHopeMeterUtilityWindowOpen) { _, isOpen in
+            print("onChange: isHopeMeterUtilityWindowOpen changed to \(isOpen)")
             if isOpen {
                 openWindow(id: AppModel.hopeMeterUtilityWindowId)
+                print("🎮 Setting up cancer cells")
+                if let root = appModel.gameState.rootEntity {
+                    Task {
+                        await appModel.gameState.setupGameContent(in: root)
+                    }
+                }
             }
         }
         .onAppear {

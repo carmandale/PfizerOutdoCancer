@@ -8,7 +8,6 @@ struct CompletedView: View {
     @Environment(\.openWindow) private var openWindow
     @Environment(\.dismissWindow) private var dismissWindow
     @State private var animateStats = false
-
     @State private var opacity: Double = 0  // Add state for opacity
     
     private var stats: (destroyed: Int, deployed: Int, score: Int) {
@@ -21,52 +20,50 @@ struct CompletedView: View {
     }
     
     var body: some View {
-        VStack {
-            VStack(spacing: 32) {
-                        // Header
-                        VStack(spacing: 8) {
-                            Text("Mission Complete")
-                                .font(.largeTitle)
-                                .foregroundColor(Color.black)
-                                .bold()
-                            
-                            Text("Outstanding work!")
-                                .font(.title2)
-                                .foregroundColor(Color.black)
-                                .foregroundStyle(.secondary)
-                        }
-                        .padding(.top, 16)
-                        
-                        // Stats
-                        VStack(spacing: 16) {
-                            statRow("ADCs Deployed", value: stats.deployed, icon: "arrow.up.forward")
-                        }
-                        .padding(.vertical, 20)
-                        
-                        // Buttons
-                        VStack(spacing: 12) {
-                            HStack(spacing: 12) {
-                                NavigationButton(
-                                    title: "Continue",
-                                    action: {
-                                        print("=== Continue Button Pressed ===")
-                                        print("Current Phase: \(appModel.currentPhase)")
-                                        print("Immersive Space State: \(appModel.immersiveSpaceState)")
-                                        await appModel.transitionToPhase(.outro)
-                                    },
-                                    font: .title,
-                                    scaleEffect: AppModel.UIConstants.buttonExpandScale
-                                )
-                                .fontWeight(.bold)
-                            }
-                        }
-                    }
+        VStack(spacing: 32) {
+            // Header
+            VStack(spacing: 8) {
+                Text("Mission Complete")
+                    .font(.largeTitle)
+                    .bold()
+                
+                Text("Outstanding work!")
+                    .font(.title2)
+                    .foregroundStyle(.secondary)
+            }
+            .padding(.top, 16)
+            
+            // Stats
+            VStack(spacing: 16) {
+//                statRow("Cancer Cells Destroyed", value: stats.destroyed, icon: "target")
+                statRow("ADCs Deployed", value: stats.deployed, icon: "arrow.up.forward")
+//                statRow("Final Score", value: stats.score, icon: "star.fill")
+            }
+            .padding(.vertical, 20)
+            
+            // Buttons
+            VStack(spacing: 12) {
+                HStack(spacing: 12) {
+                    NavigationButton(
+                        title: "Continue",
+                        action: {
+                            print("=== Continue Button Pressed ===")
+                            print("Current Phase: \(appModel.currentPhase)")
+                            print("Immersive Space State: \(appModel.immersiveSpaceState)")
+                            await appModel.transitionToPhase(.outro)
+                        },
+                        font: .title,
+                        scaleEffect: AppModel.UIConstants.buttonExpandScale
+                    )
+                    .fontWeight(.bold)
+                }
+            }
         }
         .padding(64)
-//        .frame(maxWidth: 500)
-//        .glassBackgroundEffect()
-        // .clipShape(RoundedRectangle(cornerRadius: 20))
-        // .padding(32)
+        .frame(maxWidth: 500)
+        .clipShape(RoundedRectangle(cornerRadius: 20))
+        .glassBackgroundEffect()
+        .padding(32)
         .onAppear {
             print("=== CompletedView Appeared ===")
             print("🔍 Immersive Space State: \(appModel.immersiveSpaceState)")
@@ -94,20 +91,19 @@ struct CompletedView: View {
         HStack {
             Label(title, systemImage: icon)
                 .font(.title2)
-                .foregroundColor(Color.black)
                 .bold()
                 .foregroundStyle(.secondary)
             Spacer()
             Text("\(value)")
                 .font(.title)
-                .foregroundColor(Color.black)
                 .bold()
                 .monospacedDigit()
         }
-        .frame(width: 372)
+        .frame(width: 372) // Width of both buttons (180 * 2) + spacing (12)
         .padding()
-        // .clipShape(RoundedRectangle(cornerRadius: 12))
+        .clipShape(RoundedRectangle(cornerRadius: 12))
     }
+
 }
 
 //// MARK: - Preview

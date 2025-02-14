@@ -1,11 +1,11 @@
-AppModel init() - Instance: ObjectIdentifier(0x0000000106104200)
+AppModel init() - Instance: ObjectIdentifier(0x000000012df05910)
 🏁 PfizerOutdoCancerApp init starting...
 📲 Setting AppModel in PositioningSystem...
 🔄 PositioningSystem.setAppModel called
 📝 Registering components and systems...
 ⚙️ Registering PositioningSystem...
 ✅ PfizerOutdoCancerApp init completed
-🎯 PositioningSystem C825CFA0-6661-44C4-B611-E92954AEBD9A initializing...
+🎯 PositioningSystem 7AAF8DF9-C08D-4735-BAFF-5C96BA025A30 initializing...
 nw_socket_initialize_socket [C1:2] setsockopt SO_NECP_CLIENTUUID failed [22: Invalid argument]
 nw_socket_initialize_socket setsockopt SO_NECP_CLIENTUUID failed [22: Invalid argument]
 nw_socket_copy_info [C1:2] getsockopt TCP_INFO failed [102: Operation not supported on socket]
@@ -46,7 +46,7 @@ AssetLoadingManager: loadAsset(withName: assembled_lab, category: labEnvironment
 onChange(of: LoadingState) action tried to update multiple times per frame.
 Invalid Material input type token
 Invalid Material input type token
-IBL URL: file:///private/var/containers/Bundle/Application/A7247520-6D23-40CB-9A11-CBFA1585C85F/PfizerOutdoCancer.app/lab_v005.exr
+IBL URL: file:///private/var/containers/Bundle/Application/B8ABD565-0EE1-4B93-AAE8-F8085AA6D5EC/PfizerOutdoCancer.app/lab_v005.exr
 ✅ Completed lab environment assembly
 ✅ Loaded assembled_lab - Progress: 1.0
 ✅ prepareIntroPhase completed
@@ -84,7 +84,7 @@ IBL URL: file:///private/var/containers/Bundle/Application/A7247520-6D23-40CB-9A
     ScenePhase: active
     LoadingPhase: completed
 cannot add handler to 0 from 1 - dropping
-🎯 PositioningSystem B94B46C0-E092-47ED-A519-567E78335B45 initializing...
+🎯 PositioningSystem E5507AE6-803D-4C7D-854E-9808EC56753E initializing...
 Initializing hosting entity without a context
 Initializing hosting entity without a context
 Initializing hosting entity without a context
@@ -102,6 +102,18 @@ Hand Provider State: initialized
 === Setting up IntroView ===
 📱 IntroViewModel: Setting up intro root
 ✅ Added root to content
+
+=== Tracking State [Start Tracking Request] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: false
+🔄 Current Provider State: initialized
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x301a8c280>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: initialized
+=== End State Log ===
+
+🖐️ Starting hand tracking session
+Hand Provider State: initialized
 📱 IntroView: Starting environment setup
 📱 IntroViewModel: Starting environment setup
 📱 IntroViewModel: Attempting to load intro environment
@@ -129,25 +141,6 @@ AssetLoadingManager: loadAsset(withName: intro_environment, category: introEnvir
 📱 IntroView: Starting animation sequence
 🎯 Found ADCBuilderAttachment target
 🎯 Found AttackCancerAttachment target
-
-=== Tracking State [Start Tracking Request] ===
-🎯 Tracking Enabled: false
-✋ Hand Tracking Enabled: false
-🔄 Current Provider State: initialized
-ar_world_tracking_provider_query_device_anchor_at_timestamp <0x302128140>: The device_anchor can only be queried when the world tracking provider is running.
-⚠️ No device anchor available
-🌎 World Provider State: initialized
-=== End State Log ===
-
-🖐️ Starting hand tracking session
-Hand Provider State: initialized
-🎬 Animation Sequence: Starting at 2025-02-13 19:17:26 +0000
-🔍 Entity Check - skyDome: true, logo: true, portal: true
-🌌 Sky: Starting at +3.4928321838378906e-05s
-🔍 Sky initial opacity: 0.0
-🌌 Sky: Completed fade animation
-🔍 Sky final opacity: 0.0
-⏰ Sleeping for 29s before portal warp
 cannot add handler to 0 from 1 - dropping
 ✅ Started tracking providers
 Final Hand Tracking State: true
@@ -156,13 +149,20 @@ Final Hand Tracking State: true
 🎯 Tracking Enabled: true
 ✋ Hand Tracking Enabled: true
 🔄 Current Provider State: initialized
-ar_world_tracking_provider_query_device_anchor_at_timestamp <0x30219fac0>: The device_anchor can only be queried when the world tracking provider is running.
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x301a2caa0>: The device_anchor can only be queried when the world tracking provider is running.
 ⚠️ No device anchor available
 🌎 World Provider State: paused
 🖐️ Hand Provider State: paused
 === End State Log ===
 
 ✅ Phase transition completed: intro
+🎬 Animation Sequence: Starting at 2025-02-13 23:55:54 +0000
+🔍 Entity Check - skyDome: true, logo: true, portal: true
+🌌 Sky: Starting at +4.696846008300781e-05s
+🔍 Sky initial opacity: 0.0
+🌌 Sky: Completed fade animation
+🔍 Sky final opacity: 0.0
+⏰ Sleeping for 29s before portal warp
 Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", ""
 Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
 Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
@@ -174,7 +174,7 @@ Cannot find a BindPoint for any bind path: "", "", "", ""
 🎯 Tracking Enabled: true
 ✋ Hand Tracking Enabled: true
 🔄 Current Provider State: paused
-ar_world_tracking_provider_query_device_anchor_at_timestamp <0x30219fac0>: The device_anchor can only be queried when the world tracking provider is running.
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x301a2caa0>: The device_anchor can only be queried when the world tracking provider is running.
 ⚠️ No device anchor available
 🌎 World Provider State: paused
 🖐️ Hand Provider State: paused
@@ -187,297 +187,826 @@ ar_world_tracking_provider_query_device_anchor_at_timestamp <0x30219fac0>: The d
 🎯 Tracking Enabled: true
 ✋ Hand Tracking Enabled: true
 🔄 Current Provider State: running
-📍 Head Transform: simd_float4x4([[0.9999756, 0.006602789, -0.0022418671, 0.0], [-0.0066165063, 0.999959, -0.0061825714, 0.0], [0.002200985, 0.0061972975, 0.9999782, 0.0], [-0.00035260408, 1.2627561, -0.098967575, 1.0]])
-📍 Head Position - X: -0.00035260408, Y: 1.2627561, Z: -0.098967575
+⚠️ No device anchor available
 🌎 World Provider State: running
 🖐️ Hand Provider State: running
 === End State Log ===
 
 ✅ Unknown provider running
-📍 Positioned entity 'IntroRoot' at SIMD3<Float>(-0.0003243615, -0.23724282, -1.0989382)
+📍 Positioned entity 'IntroRoot' at SIMD3<Float>(-0.0027366653, -0.23823583, -1.001449)
 ✅ Successfully positioned entity: IntroRoot
-Failed to set override status for bind point component member.
-⏰ Sleeping for 75s before logo
-🎯 Logo: Starting at +104.1872969865799s
-🔍 Logo reference check: true
-🔍 Logo initial opacity: 0.0
-🎯 Logo: Completed fade animation
-🔍 Logo final opacity: 0.0
-📝 Title: Showing at +109.18784594535828s
-About to set showTitleText, current value: false
-Updated showTitleText to true
-🌐 Portal: Starting at +109.29513692855835s
-🔍 Portal reference check: true
-🔍 Portal initial opacity: 0.0
-🌐 Portal: Completed fade animation
-🔍 Portal final opacity: 0.0
-🔔 OutdoCancer: Title text appeared
-Failed to set override status for bind point component member.
-🌐 Portal plane: Starting X scale animation at +114.32634997367859s
-🌐 Portal plane: Completed X scale animation
-Failed to set override status for bind point component member.
-Failed to set override status for bind point component member.
-🌐 Starting concurrent animations for PortalRoot, World, and PortalPlane scale
-Failed to set override status for bind point component member.
-Failed to set override status for bind point component member.
-Failed to set override status for bind point component member.
-Failed to set override status for bind point component member.
-Failed to set override status for bind point component member.
-Failed to set override status for bind point component member.
-🌐 Completed concurrent animations for PortalRoot, World, and PortalPlane scale
-🛑 assembledLab position in world space PRE-TRANSFORM FIX is SIMD3<Float>(-0.0003243615, -0.23724282, -1.0989382)
-✅ assembledLab position in world space is SIMD3<Float>(-0.0003243615, -0.23724282, -0.09893823)
-Cannot find a BindPoint for any bind path: "", "", "", "", ""
+🎯 PositioningSystem AA14A9D5-185A-4168-AEBF-09AB90C723ED initializing...
+cannot add handler to 0 from 1 - dropping
+cannot add handler to 0 from 1 - dropping
+🔄 Phase transition: intro -> playing
+🔍 isTransitioning: false
+🔍 immersiveSpaceState: open
 
- 🔍 Inspecting introEnvironment hierarchy 
+=== Pre-loading Playing Phase Assets ===
+📱 Pre-loading required assets for playing phase...
+🎯 Loading ADC template...
+AssetLoadingManager: loadAsset(withName: adc, category: adc)
+✅ ADC entity loaded, applying colors...
 
-Entity: Root
-Components: [RealityKit.SynchronizationComponent, RealityKit.Transform, RealityFoundation.AnimationLibraryComponent]
-  Entity: Root
-  Components: [RealityKit.SynchronizationComponent, RealityFoundation.AudioMixGroupsComponent, RealityFoundation.AnimationLibraryComponent, RealityKit.Transform]
-    Entity: sh0100_v01
-    Components: [RealityKit.SynchronizationComponent, RealityFoundation.AnimationLibraryComponent, RealityKit.Transform]
-      Entity: sh0100_v01
-      Components: [RealityKit.SynchronizationComponent, RealityFoundation.AnimationLibraryComponent, RealityKit.Transform]
-        Entity: PicturesRoot
-        Components: [RealityKit.SynchronizationComponent, RealityFoundation.AnimationLibraryComponent, RealityKit.Transform]
-          Entity: intro
-          Components: [RealityKit.SynchronizationComponent, RealityFoundation.AnimationLibraryComponent, RealityKit.Transform]
-            Entity: People_MSR
-            Components: [RealityKit.SynchronizationComponent, RealityFoundation.AnimationLibraryComponent, RealityKit.Transform]
-              Entity: p3
-              Components: [RealityKit.SynchronizationComponent, RealityFoundation.OpacityComponent, RealityFoundation.AnimationLibraryComponent, RealityKit.Transform]
-                Entity: p3_mesh
-                Components: [RealityKit.SynchronizationComponent, RealityFoundation.AnimationLibraryComponent, RealityKit.Transform]
-                  Entity: Plane_005
-                  Components: [RealityKit.SynchronizationComponent, RealityFoundation.ModelSortGroupComponent, RealityKit.ModelComponent, RealityKit.Transform]
-                Entity: p3_audio
-                Components: [RealityKit.SynchronizationComponent, RealityFoundation.SpatialAudioComponent, RealityFoundation.AudioLibraryComponent, RealityKit.Transform]
-              Entity: p4
-              Components: [RealityKit.SynchronizationComponent, RealityFoundation.OpacityComponent, RealityFoundation.AnimationLibraryComponent, RealityKit.Transform]
-                Entity: p4_mesh
-                Components: [RealityKit.SynchronizationComponent, RealityFoundation.AnimationLibraryComponent, RealityKit.Transform]
-                  Entity: Plane_007
-                  Components: [RealityKit.SynchronizationComponent, RealityFoundation.ModelSortGroupComponent, RealityKit.ModelComponent, RealityKit.Transform]
-                Entity: p4_audio
-                Components: [RealityKit.SynchronizationComponent, RealityFoundation.SpatialAudioComponent, RealityFoundation.AudioLibraryComponent, RealityKit.Transform]
-              Entity: p5
-              Components: [RealityKit.SynchronizationComponent, RealityFoundation.OpacityComponent, RealityFoundation.AnimationLibraryComponent, RealityKit.Transform]
-                Entity: p5_mesh
-                Components: [RealityKit.SynchronizationComponent, RealityFoundation.AnimationLibraryComponent, RealityKit.Transform]
-                  Entity: Plane_006
-                  Components: [RealityKit.SynchronizationComponent, RealityFoundation.ModelSortGroupComponent, RealityKit.ModelComponent, RealityKit.Transform]
-                Entity: p5_audio
-                Components: [RealityKit.SynchronizationComponent, RealityFoundation.SpatialAudioComponent, RealityFoundation.AudioLibraryComponent, RealityKit.Transform]
-              Entity: p2
-              Components: [RealityKit.SynchronizationComponent, RealityFoundation.OpacityComponent, RealityFoundation.AnimationLibraryComponent, RealityKit.Transform]
-                Entity: p2_mesh
-                Components: [RealityKit.SynchronizationComponent, RealityFoundation.AnimationLibraryComponent, RealityKit.Transform]
-                  Entity: Plane_004
-                  Components: [RealityKit.SynchronizationComponent, RealityFoundation.ModelSortGroupComponent, RealityKit.ModelComponent, RealityKit.Transform]
-                Entity: p2_audio
-                Components: [RealityKit.SynchronizationComponent, RealityFoundation.SpatialAudioComponent, RealityFoundation.AudioLibraryComponent, RealityKit.Transform]
-              Entity: p1
-              Components: [RealityKit.SynchronizationComponent, RealityFoundation.OpacityComponent, RealityFoundation.AnimationLibraryComponent, RealityKit.Transform]
-                Entity: p1_mesh
-                Components: [RealityKit.SynchronizationComponent, RealityFoundation.AnimationLibraryComponent, RealityKit.Transform]
-                  Entity: Plane_003
-                  Components: [RealityKit.SynchronizationComponent, RealityFoundation.ModelSortGroupComponent, RealityKit.ModelComponent, RealityKit.Transform]
-                Entity: p1_audio
-                Components: [RealityKit.SynchronizationComponent, RealityFoundation.SpatialAudioComponent, RealityFoundation.AudioLibraryComponent, RealityKit.Transform]
-              Entity: p12
-              Components: [RealityKit.SynchronizationComponent, RealityFoundation.OpacityComponent, RealityFoundation.AnimationLibraryComponent, RealityKit.Transform]
-                Entity: p12_mesh
-                Components: [RealityKit.SynchronizationComponent, RealityFoundation.AnimationLibraryComponent, RealityKit.Transform]
-                  Entity: Plane_005_005
-                  Components: [RealityKit.SynchronizationComponent, RealityFoundation.ModelSortGroupComponent, RealityKit.ModelComponent, RealityKit.Transform]
-              Entity: p13
-              Components: [RealityKit.SynchronizationComponent, RealityFoundation.OpacityComponent, RealityFoundation.AnimationLibraryComponent, RealityKit.Transform]
-                Entity: p13_mesh
-                Components: [RealityKit.SynchronizationComponent, RealityFoundation.AnimationLibraryComponent, RealityKit.Transform]
-                  Entity: Plane_005_006
-                  Components: [RealityKit.SynchronizationComponent, RealityFoundation.ModelSortGroupComponent, RealityKit.ModelComponent, RealityKit.Transform]
-              Entity: p11
-              Components: [RealityKit.SynchronizationComponent, RealityFoundation.OpacityComponent, RealityFoundation.AnimationLibraryComponent, RealityKit.Transform]
-                Entity: p11_mesh
-                Components: [RealityKit.SynchronizationComponent, RealityFoundation.AnimationLibraryComponent, RealityKit.Transform]
-                  Entity: Plane_005_004
-                  Components: [RealityKit.SynchronizationComponent, RealityFoundation.ModelSortGroupComponent, RealityKit.ModelComponent, RealityKit.Transform]
-              Entity: p10
-              Components: [RealityKit.SynchronizationComponent, RealityFoundation.OpacityComponent, RealityFoundation.AnimationLibraryComponent, RealityKit.Transform]
-                Entity: p10_mesh
-                Components: [RealityKit.SynchronizationComponent, RealityFoundation.AnimationLibraryComponent, RealityKit.Transform]
-                  Entity: Plane_005_003
-                  Components: [RealityKit.SynchronizationComponent, RealityFoundation.ModelSortGroupComponent, RealityKit.ModelComponent, RealityKit.Transform]
-              Entity: p7
-              Components: [RealityKit.SynchronizationComponent, RealityFoundation.OpacityComponent, RealityFoundation.AnimationLibraryComponent, RealityKit.Transform]
-                Entity: p7_mesh
-                Components: [RealityKit.SynchronizationComponent, RealityFoundation.AnimationLibraryComponent, RealityKit.Transform]
-                  Entity: Plane_005_001
-                  Components: [RealityKit.SynchronizationComponent, RealityFoundation.ModelSortGroupComponent, RealityKit.ModelComponent, RealityKit.Transform]
-              Entity: p9
-              Components: [RealityKit.SynchronizationComponent, RealityFoundation.OpacityComponent, RealityFoundation.AnimationLibraryComponent, RealityKit.Transform]
-                Entity: p9_mesh
-                Components: [RealityKit.SynchronizationComponent, RealityFoundation.AnimationLibraryComponent, RealityKit.Transform]
-                  Entity: Plane_005_002
-                  Components: [RealityKit.SynchronizationComponent, RealityFoundation.ModelSortGroupComponent, RealityKit.ModelComponent, RealityKit.Transform]
-              Entity: p8
-              Components: [RealityKit.SynchronizationComponent, RealityFoundation.OpacityComponent, RealityFoundation.AnimationLibraryComponent, RealityKit.Transform]
-                Entity: p8_mesh
-                Components: [RealityKit.SynchronizationComponent, RealityFoundation.AnimationLibraryComponent, RealityKit.Transform]
-                  Entity: Plane_006_001
-                  Components: [RealityKit.SynchronizationComponent, RealityFoundation.ModelSortGroupComponent, RealityKit.ModelComponent, RealityKit.Transform]
-              Entity: p6
-              Components: [RealityKit.SynchronizationComponent, RealityFoundation.OpacityComponent, RealityFoundation.AnimationLibraryComponent, RealityKit.Transform]
-                Entity: p6_mesh
-                Components: [RealityKit.SynchronizationComponent, RealityFoundation.AnimationLibraryComponent, RealityKit.Transform]
-                  Entity: Plane_003_001
-                  Components: [RealityKit.SynchronizationComponent, RealityFoundation.ModelSortGroupComponent, RealityKit.ModelComponent, RealityKit.Transform]
-                Entity: p6_audio
-                Components: [RealityKit.SynchronizationComponent, RealityFoundation.SpatialAudioComponent, RealityFoundation.AudioLibraryComponent, RealityKit.Transform]
-    Entity: Audio
-    Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-      Entity: Orchestra
-      Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-        Entity: PianoBusL
-        Components: [RealityKit.SynchronizationComponent, RealityFoundation.SpatialAudioComponent, RealityFoundation.AudioLibraryComponent, RealityKit.Transform]
-        Entity: PianoBusR
-        Components: [RealityKit.SynchronizationComponent, RealityFoundation.SpatialAudioComponent, RealityFoundation.AudioLibraryComponent, RealityKit.Transform]
-        Entity: Violin2
-        Components: [RealityKit.SynchronizationComponent, RealityFoundation.SpatialAudioComponent, RealityFoundation.AudioLibraryComponent, RealityKit.Transform]
-        Entity: Violin1
-        Components: [RealityKit.SynchronizationComponent, RealityFoundation.SpatialAudioComponent, RealityFoundation.AudioLibraryComponent, RealityKit.Transform]
-        Entity: Viola
-        Components: [RealityKit.SynchronizationComponent, RealityFoundation.SpatialAudioComponent, RealityFoundation.AudioLibraryComponent, RealityKit.Transform]
-        Entity: Xylophone
-        Components: [RealityKit.SynchronizationComponent, RealityFoundation.SpatialAudioComponent, RealityFoundation.AudioLibraryComponent, RealityKit.Transform]
-        Entity: Bell
-        Components: [RealityKit.SynchronizationComponent, RealityFoundation.SpatialAudioComponent, RealityFoundation.AudioLibraryComponent, RealityKit.Transform]
-        Entity: Cello
-        Components: [RealityKit.SynchronizationComponent, RealityFoundation.SpatialAudioComponent, RealityFoundation.AudioLibraryComponent, RealityKit.Transform]
-        Entity: Cymbal
-        Components: [RealityKit.SynchronizationComponent, RealityFoundation.SpatialAudioComponent, RealityFoundation.AudioLibraryComponent, RealityKit.Transform]
-        Entity: BreathRiserL
-        Components: [RealityKit.SynchronizationComponent, RealityFoundation.SpatialAudioComponent, RealityFoundation.AudioLibraryComponent, RealityKit.Transform]
-        Entity: BreathRiserR
-        Components: [RealityKit.SynchronizationComponent, RealityFoundation.SpatialAudioComponent, RealityFoundation.AudioLibraryComponent, RealityKit.Transform]
-        Entity: Timpani
-        Components: [RealityKit.SynchronizationComponent, RealityFoundation.SpatialAudioComponent, RealityFoundation.AudioLibraryComponent, RealityKit.Transform]
-      Entity: SFX
-      Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-        Entity: LightBeam2
-        Components: [RealityKit.SynchronizationComponent, RealityFoundation.SpatialAudioComponent, RealityFoundation.AudioLibraryComponent, RealityKit.Transform]
-        Entity: LightBeam1
-        Components: [RealityKit.SynchronizationComponent, RealityFoundation.SpatialAudioComponent, RealityFoundation.AudioLibraryComponent, RealityKit.Transform]
-        Entity: Reverb1L
-        Components: [RealityKit.SynchronizationComponent, RealityFoundation.SpatialAudioComponent, RealityFoundation.AudioLibraryComponent, RealityKit.Transform]
-        Entity: Reverb1R
-        Components: [RealityKit.SynchronizationComponent, RealityFoundation.SpatialAudioComponent, RealityFoundation.AudioLibraryComponent, RealityKit.Transform]
-        Entity: Reverb2L
-        Components: [RealityKit.SynchronizationComponent, RealityFoundation.SpatialAudioComponent, RealityFoundation.AudioLibraryComponent, RealityKit.Transform]
-        Entity: Reverb2R
-        Components: [RealityKit.SynchronizationComponent, RealityFoundation.SpatialAudioComponent, RealityFoundation.AudioLibraryComponent, RealityKit.Transform]
-        Entity: Reverb3L
-        Components: [RealityKit.SynchronizationComponent, RealityFoundation.SpatialAudioComponent, RealityFoundation.AudioLibraryComponent, RealityKit.Transform]
-        Entity: Reverb3R
-        Components: [RealityKit.SynchronizationComponent, RealityFoundation.SpatialAudioComponent, RealityFoundation.AudioLibraryComponent, RealityKit.Transform]
-        Entity: SpinFX1
-        Components: [RealityKit.SynchronizationComponent, RealityFoundation.SpatialAudioComponent, RealityFoundation.AudioLibraryComponent, RealityKit.Transform]
-        Entity: SpinFX2
-        Components: [RealityKit.SynchronizationComponent, RealityFoundation.SpatialAudioComponent, RealityFoundation.AudioLibraryComponent, RealityKit.Transform]
-        Entity: SpinFX3
-        Components: [RealityKit.SynchronizationComponent, RealityFoundation.SpatialAudioComponent, RealityFoundation.AudioLibraryComponent, RealityKit.Transform]
-      Entity: Narrator
-      Components: [RealityKit.SynchronizationComponent, RealityFoundation.SpatialAudioComponent, RealityFoundation.AudioLibraryComponent, RealityKit.Transform]
-    Entity: materials
-    Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-    Entity: SkySphere
-    Components: [RealityKit.SynchronizationComponent, RealityFoundation.OpacityComponent, RealityFoundation.ModelSortGroupComponent, RealityKit.ModelComponent, RealityKit.Transform]
-    Entity: logo
-    Components: [RealityKit.SynchronizationComponent, RealityFoundation.OpacityComponent, RealityKit.Transform]
-      Entity: card
-      Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-        Entity: Plane
-        Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-          Entity: Plane
-          Components: [RealityKit.SynchronizationComponent, RealityFoundation.ModelSortGroupComponent, RealityKit.ModelComponent, RealityKit.Transform]
-      Entity: titleRoot
-      Components: [RealityKit.Transform, RealityKit.SynchronizationComponent, RealityFoundation.OpacityComponent]
-        Entity: 
-        Components: [RealityKit.Transform, RealityKit.SynchronizationComponent]
-          Entity: SwiftUI.Root-5024228746776890134
-          Components: [RealityKit.Transform, RealityKit.SynchronizationComponent]
-            Entity: Window Context Entity, <SwiftUI.ViewHostingWindow: 0x172acca60>
-            Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-              Entity: <SwiftUI.ViewHostingWindow: 0x172acca60>
-              Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-                Entity: CALayerEntity (unnamed)
-                Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-                  Entity: CALayerEntity (unnamed)
-                  Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-                    Entity: <SwiftUI._UIInheritedView: 0x50a9528f0>
-                    Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-    Entity: ExtraItems
-    Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-      Entity: ADC_particles
-      Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-        Entity: ParticleEmitter
-        Components: [RealityKit.SynchronizationComponent, RealityFoundation.ParticleEmitterComponent, RealityFoundation.ModelSortGroupComponent, RealityKit.Transform]
-      Entity: ADC_particles2
-      Components: [RealityKit.SynchronizationComponent, RealityKit.Transform]
-        Entity: ParticleEmitter
-        Components: [RealityKit.SynchronizationComponent, RealityFoundation.ParticleEmitterComponent, RealityKit.AnchoringComponent, RealityFoundation.ModelSortGroupComponent, RealityKit.Transform]
-Removed introEnvironment completely from the scene as we transition to lab.
-readyToStartLab set to true
-🎬 Animation Sequence: Completed at +156.79754602909088s
-📱 LabViewModel: Setting up initial environment
+🎯 Setting up ADC Template
+- Template entity: Root
+- Antibody Color: -1
+- Linker Color: -1
+- Payload Color: -1
+✅ ADC template stored in gameState
+✅ ADC template configured with colors
+🎯 Loading tutorial assets...
+AssetLoadingManager: loadAsset(withName: game_start_vo, category: attackCancerEnvironment)
 
-=== Configuring Interactive Devices ===
-🔍 Found 19 potential interactive devices
-⚙️ Adding hover effect to: laptop with mesh: laptop_mesh
-⚙️ Adding hover effect to: laptop with mesh: laptop_mesh
-⚙️ Adding hover effect to: laptop with mesh: laptop_mesh
-⚙️ Adding hover effect to: laptop with mesh: laptop_mesh
-⚙️ Adding hover effect to: laptop with mesh: laptop_mesh
-⚙️ Adding hover effect to: laptop with mesh: laptop_mesh
-⚙️ Adding hover effect to: laptop with mesh: laptop_mesh
-⚙️ Adding hover effect to: laptop with mesh: laptop_mesh
-⚙️ Adding hover effect to: laptop with mesh: laptop_mesh
-⚙️ Adding hover effect to: laptop with mesh: laptop_mesh
-⚙️ Adding hover effect to: laptop with mesh: laptop_mesh
-⚙️ Adding hover effect to: pcMonitor with mesh: pcMonitor_mesh
-⚙️ Adding hover effect to: pcMonitor with mesh: pcMonitor_mesh
-⚙️ Adding hover effect to: pcMonitor with mesh: pcMonitor_mesh
-⚙️ Adding hover effect to: pcMonitor with mesh: pcMonitor_mesh
-⚙️ Adding hover effect to: pcMonitor with mesh: pcMonitor_mesh
-⚙️ Adding hover effect to: pcMonitor with mesh: pcMonitor_mesh
-⚙️ Adding hover effect to: pcMonitor with mesh: pcMonitor_mesh
-⚙️ Adding hover effect to: pcMonitor with mesh: pcMonitor_mesh
-📱 LabViewModel: Starting environment setup
+=== Tracking State [Pre-Stop] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: running
+📍 Head Transform: simd_float4x4([[0.92335486, 0.009634459, -0.38382694, 0.0], [-0.124833055, 0.9529047, -0.27638632, 0.0], [0.36308765, 0.30311695, 0.8810718, 0.0], [-0.039325915, 1.2284487, -0.015537028, 1.0]])
+📍 Head Position - X: -0.039325915, Y: 1.2284487, Z: -0.015537028
+🌎 World Provider State: running
+🖐️ Hand Provider State: running
+=== End State Log ===
 
-=== Configuring ADC Button Visibility ===
-🎯 First visit - following standard introduction flow
-AssetLoadingManager: loadAsset(withName: lab_vo, category: labEnvironment)
-🎙️ Lab VO added to MainEntity
-⏲️ Starting 30-second timer for ADC button visibility
-=== ADC Button Configuration Complete ===
+❌ Failed to load playing phase assets: resourceNotFound("AttackCancerGameStart_VO")
+🔄 AttackCancerViewModel: Cleanup state has been reset for new session.
 
-AssetLoadingManager: loadAsset(withName: lab_audio, category: labEnvironment)
-Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", ""
-🔊 Lab Audio added to MainEntity
-✅ LabViewModel: Environment setup complete
-Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", ""
-Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
-Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", ""
-Cannot find a BindPoint for any bind path: "", "", "", ""
-Cannot find a BindPoint for any bind path: "", "", "", "", "", ""
-Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", ""
-Cannot find a BindPoint for any bind path: "", "", "", ""
-ARPredictorRemoteService <0x105c08b50>: Query queue is not running.
-ARPredictorRemoteService <0x105b08260>: Query queue is not running.
-ARPredictorRemoteService <0x172965530>: Query queue is not running.
-ARPredictorRemoteService <0x105e15b80>: Query queue is not running.
-ARPredictorRemoteService <0x11316acb0>: Query queue is not running.
+=== Starting IntroViewModel Cleanup ===
+🛑 Cancelling animation sequence
+🗑️ Removing intro root entity
+🎯 Resetting positioning component
+Failed to set override status for bind point component member.
+✅ Completed IntroViewModel cleanup
+
+
+=== Starting Intro Environment Cleanup ===
+📊 Current template cache size: 6 entities
+📊 Current templates: cancer_cell, attack_cancer_environment, intro_warp, intro_environment, adc, assembled_lab
+🗑️ Preparing to remove 2 intro assets:
+
+🗑️ Removing asset: intro_environment
+
+📝 Releasing entity: Root
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Root
+  - Child count: 6
+  - Has components: yes
+
+📝 Releasing entity: sh0100_v01
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: sh0100_v01
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: PicturesRoot
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: intro
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: People_MSR
+  - Child count: 13
+  - Has components: yes
+
+📝 Releasing entity: p3
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: p3_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_005
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p3_mesh
+✅ Released entity: Plane_005
+
+  - Detaching from parent: p3
+✅ Released entity: p3_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p3
+
+
+📝 Releasing entity: p4
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: p4_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_007
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p4_mesh
+✅ Released entity: Plane_007
+
+  - Detaching from parent: p4
+✅ Released entity: p4_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p4
+
+
+📝 Releasing entity: p5
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: p5_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_006
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p5_mesh
+✅ Released entity: Plane_006
+
+  - Detaching from parent: p5
+✅ Released entity: p5_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p5
+
+
+📝 Releasing entity: p2
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: p2_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_004
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p2_mesh
+✅ Released entity: Plane_004
+
+  - Detaching from parent: p2
+✅ Released entity: p2_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p2
+
+
+📝 Releasing entity: p1
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: p1_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_003
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p1_mesh
+✅ Released entity: Plane_003
+
+  - Detaching from parent: p1
+✅ Released entity: p1_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p1
+
+
+📝 Releasing entity: p12
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: p12_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_005_005
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p12_mesh
+✅ Released entity: Plane_005_005
+
+  - Detaching from parent: p12
+✅ Released entity: p12_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p12
+
+
+📝 Releasing entity: p13
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: p13_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_005_006
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p13_mesh
+✅ Released entity: Plane_005_006
+
+  - Detaching from parent: p13
+✅ Released entity: p13_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p13
+
+  - Detaching from parent: intro
+✅ Released entity: People_MSR
+
+  - Detaching from parent: PicturesRoot
+✅ Released entity: intro
+
+  - Detaching from parent: sh0100_v01
+✅ Released entity: PicturesRoot
+
+  - Detaching from parent: sh0100_v01
+✅ Released entity: sh0100_v01
+
+  - Detaching from parent: Root
+✅ Released entity: sh0100_v01
+
+
+📝 Releasing entity: Audio
+  - Child count: 3
+  - Has components: yes
+
+📝 Releasing entity: Orchestra
+  - Child count: 12
+  - Has components: yes
+
+📝 Releasing entity: PianoBusL
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Orchestra
+✅ Released entity: PianoBusL
+
+
+📝 Releasing entity: PianoBusR
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Orchestra
+✅ Released entity: PianoBusR
+
+
+📝 Releasing entity: Violin2
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Orchestra
+✅ Released entity: Violin2
+
+
+📝 Releasing entity: Violin1
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Orchestra
+✅ Released entity: Violin1
+
+
+📝 Releasing entity: Viola
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Orchestra
+✅ Released entity: Viola
+
+
+📝 Releasing entity: Xylophone
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Orchestra
+✅ Released entity: Xylophone
+
+  - Detaching from parent: Audio
+✅ Released entity: Orchestra
+
+
+📝 Releasing entity: SFX
+  - Child count: 11
+  - Has components: yes
+
+📝 Releasing entity: LightBeam2
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: SFX
+✅ Released entity: LightBeam2
+
+
+📝 Releasing entity: LightBeam1
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: SFX
+✅ Released entity: LightBeam1
+
+
+📝 Releasing entity: Reverb1L
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: SFX
+✅ Released entity: Reverb1L
+
+
+📝 Releasing entity: Reverb1R
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: SFX
+✅ Released entity: Reverb1R
+
+
+📝 Releasing entity: Reverb2L
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: SFX
+✅ Released entity: Reverb2L
+
+
+📝 Releasing entity: Reverb2R
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: SFX
+✅ Released entity: Reverb2R
+
+  - Detaching from parent: Audio
+✅ Released entity: SFX
+
+  - Detaching from parent: Root
+✅ Released entity: Audio
+
+
+📝 Releasing entity: materials
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Root
+✅ Released entity: materials
+
+  - Detaching from parent: Root
+✅ Released entity: Root
+
+✅ Released entity: Root
+
+✅ Released asset: intro_environment
+
+🗑️ Removing asset: intro_warp
+
+📝 Releasing entity: Root
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Root
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: M_jet
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Root
+✅ Released entity: M_jet
+
+  - Detaching from parent: Root
+✅ Released entity: Root
+
+✅ Released entity: Root
+
+✅ Released asset: intro_warp
+
+📊 Updated template cache size: 4 entities
+🔒 Remaining asset: cancer_cell
+✅ Completed intro environment cleanup
+
+
+=== Starting LabViewModel Cleanup ===
+🔧 Removing ADC builder button
+🎯 Removing Attack Cancer button
+✅ Completed LabViewModel cleanup
+
+
+=== Starting Lab Environment Cleanup ===
+📊 Current template cache size: 4 entities
+📊 Current templates: cancer_cell, attack_cancer_environment, assembled_lab, adc
+🗑️ Preparing to remove 3 assets after lab phase:
+
+🗑️ Removing asset: cancer_cell
+
+📝 Releasing entity: Root
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Root
+  - Child count: 5
+  - Has components: yes
+
+📝 Releasing entity: M_body
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Root
+✅ Released entity: M_body
+
+
+📝 Releasing entity: M_veins
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Root
+✅ Released entity: M_veins
+
+
+📝 Releasing entity: M_stems
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Root
+✅ Released entity: M_stems
+
+  - Detaching from parent: Root
+✅ Released entity: Root
+
+✅ Released entity: Root
+
+✅ Released asset: cancer_cell
+
+🗑️ Removing asset: attack_cancer_environment
+
+📝 Releasing entity: Root
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Root
+  - Child count: 3
+  - Has components: yes
+
+📝 Releasing entity: bloodVessel_v004_clean
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: bloodVessel_curvedEnds
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: bloodVessel_low_001
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: bloodVessel_curvedEnds
+✅ Released entity: bloodVessel_low_001
+
+  - Detaching from parent: bloodVessel_v004_clean
+✅ Released entity: bloodVessel_curvedEnds
+
+  - Detaching from parent: Root
+✅ Released entity: bloodVessel_v004_clean
+
+
+📝 Releasing entity: SFX
+  - Child count: 8
+  - Has components: yes
+
+📝 Releasing entity: Left
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: SFX
+✅ Released entity: Left
+
+
+📝 Releasing entity: Right
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: SFX
+✅ Released entity: Right
+
+
+📝 Releasing entity: Front_Right_Upper
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: SFX
+✅ Released entity: Front_Right_Upper
+
+
+📝 Releasing entity: Front_Left_Upper
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: SFX
+✅ Released entity: Front_Left_Upper
+
+  - Detaching from parent: Root
+✅ Released entity: SFX
+
+  - Detaching from parent: Root
+✅ Released entity: Root
+
+✅ Released entity: Root
+
+✅ Released asset: attack_cancer_environment
+
+🗑️ Removing asset: adc
+
+📝 Releasing entity: Root
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: antibodyProtein_complex_assembled
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: antibodyProtein_complex_base
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: ADC_complex_001
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: ADC_complex
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: antibodyProtein_complex_assembled_clean
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: antibodyProtein_complex_base_clean
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: ADC_complex_001
+  - Child count: 5
+  - Has components: yes
+
+📝 Releasing entity: ADC_complex
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: ADC_complex
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: ADC_complex
+✅ Released entity: ADC_complex
+
+  - Detaching from parent: ADC_complex_001
+✅ Released entity: ADC_complex
+
+
+📝 Releasing entity: linker02_offset
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: payload02_xform
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: payload
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Transform
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: OuterSphere
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: M_glow
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: OuterSphere
+✅ Released entity: M_glow
+
+  - Detaching from parent: Transform
+✅ Released entity: OuterSphere
+
+  - Detaching from parent: payload
+✅ Released entity: Transform
+
+  - Detaching from parent: payload02_xform
+✅ Released entity: payload
+
+  - Detaching from parent: linker02_offset
+✅ Released entity: payload02_xform
+
+  - Detaching from parent: ADC_complex_001
+✅ Released entity: linker02_offset
+
+
+📝 Releasing entity: linker03_offset
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: payload03_xform
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: payload
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Transform
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: OuterSphere
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: M_glow
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: OuterSphere
+✅ Released entity: M_glow
+
+  - Detaching from parent: Transform
+✅ Released entity: OuterSphere
+
+  - Detaching from parent: payload
+✅ Released entity: Transform
+
+  - Detaching from parent: payload03_xform
+✅ Released entity: payload
+
+  - Detaching from parent: linker03_offset
+✅ Released entity: payload03_xform
+
+  - Detaching from parent: ADC_complex_001
+✅ Released entity: linker03_offset
+
+  - Detaching from parent: antibodyProtein_complex_base_clean
+✅ Released entity: ADC_complex_001
+
+  - Detaching from parent: antibodyProtein_complex_assembled_clean
+✅ Released entity: antibodyProtein_complex_base_clean
+
+  - Detaching from parent: ADC_complex
+✅ Released entity: antibodyProtein_complex_assembled_clean
+
+  - Detaching from parent: ADC_complex_001
+✅ Released entity: ADC_complex
+
+  - Detaching from parent: antibodyProtein_complex_base
+✅ Released entity: ADC_complex_001
+
+  - Detaching from parent: antibodyProtein_complex_assembled
+✅ Released entity: antibodyProtein_complex_base
+
+  - Detaching from parent: Root
+✅ Released entity: antibodyProtein_complex_assembled
+
+✅ Released entity: Root
+
+✅ Released asset: adc
+
+📊 Updated template cache size: 1 entities
+🔒 Remaining asset: assembled_lab
+✅ Completed aggressive lab cleanup
+
+🔄 Unknown provider state changed to: stopped
+
+=== Tracking State [Unknown Provider State Change [stopped]] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x301a2caa0>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===
+
+⏹️ Unknown provider stopped normally
+🛑 Animation sequence cancelled before logo
+
+=== Tracking State [Post-Stop] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x301a2caa0>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===
+
+
+=== AttackCancerInstructionsView Rotating ADC Setup ===
+📱 Instructions View: Setting up root entity
+🔄 Starting new game session: cleanupState reset to .none, tutorial flags reset
+📱 AttackCancerViewModel: Setting up root
+✅ HeadTrackingRoot added to root
+World Position of HeadTrackingRoot: SIMD3<Float>(0.0, 0.0, 0.0)
+IBL URL: file:///private/var/containers/Bundle/Application/B8ABD565-0EE1-4B93-AAE8-F8085AA6D5EC/PfizerOutdoCancer.app/metro_noord_2k.exr
+cannot add handler to 0 from 1 - dropping
+
+=== Tracking State [Start Tracking Request] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x301a2caa0>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===
+
+🖐️ Starting hand tracking session
+Hand Provider State: initialized
+✅ Started tracking providers
+Final Hand Tracking State: true
+
+=== Tracking State [Post-Start] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x301a28be0>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: initialized
+🖐️ Hand Provider State: initialized
+=== End State Log ===
+
+✅ Phase transition completed: playing
+✅ Instructions View: IBL setup complete
+✅ Instructions View: Found ADC template
+✅ Instructions View: Added ADC to display
+=== Instructions View Setup Complete ===
+
+📍 Positioned entity 'headTrackingRoot' at SIMD3<Float>(-0.031652246, 1.241256, -1.0117491)
+✅ Successfully positioned entity: headTrackingRoot
+ARPredictorRemoteService <0x12f405b30>: Query queue is not running.
+ARPredictorRemoteService <0x12f05fde0>: Query queue is not running.
+ARPredictorRemoteService <0x12f01f8e0>: Query queue is not running.
+ARPredictorRemoteService <0x12f617f10>: Query queue is not running.
+ARPredictorRemoteService <0x12f61c350>: Query queue is not running.
+ARPredictorRemoteService <0x512430fe0>: Query queue is not running.
+ARPredictorRemoteService <0x12f083280>: Query queue is not running.
+🧹 **onChange Function**: Immersive space dismissed successfully.
+🎯 Managing windows for phase: playing
+📊 Before state update - nav window open: true
+📊 Window states after update:
+  Main: true
+  Debug: false
+  Library: false
+  Builder: false
+  Phases:
+    AppPhase: playing
+    ScenePhase: active
+    LoadingPhase: completed
+Transitioning into playing; delay elapsed. Proceeding to open immersive space.
+🎯 PositioningSystem 6D6A9251-A2DC-4D8A-A394-869F6043672E initializing...
+openImmersiveSpace result for playing: opened
+cannot add handler to 0 from 1 - dropping
+
+=== Processing Hand Updates ===
+Should Process Hand Tracking: true
+Hand Provider State: paused
+🖐️ Starting hand tracking updates
+
+=== AttackCancerView Setup ===
+📱 AttackCancerView: Setting up root
+🔄 Starting new game session: cleanupState reset to .none, tutorial flags reset
+📱 AttackCancerViewModel: Setting up root
+✅ HeadTrackingRoot added to root
+World Position of HeadTrackingRoot: SIMD3<Float>(0.0, 0.0, 0.0)
+✅ Root entity created: AttackCancerRoot
+[NetworkComponent] Trying to process with outdated syncable that has already been unbound, guid=12056067892318777098
+[NetworkComponent] Trying to process with outdated syncable that has already been unbound, guid=13313656201156763791
+
+=== Setting up Environment ===
+🎯 Setting up AttackCancerView environment...
+IBL URL: file:///private/var/containers/Bundle/Application/B8ABD565-0EE1-4B93-AAE8-F8085AA6D5EC/PfizerOutdoCancer.app/metro_noord_2k.exr
+🔄 Unknown provider state changed to: running
+
+=== Tracking State [Unknown Provider State Change [running]] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: running
+⚠️ No device anchor available
+🌎 World Provider State: running
+🖐️ Hand Provider State: running
+=== End State Log ===
+
+✅ Unknown provider running
+📍 Positioned entity 'headTrackingRoot' at SIMD3<Float>(0.0012666732, 1.2680911, -1.0017171)
+✅ Successfully positioned entity: headTrackingRoot
+AssetLoadingManager: loadAsset(withName: attack_cancer_environment, category: attackCancerEnvironment)
+setting up collisions
+setting up collisions in Root
+🎯 Setting up collision subscription
+✅ Collision subscription set up
+✅ Environment setup complete
+✅ Environment setup complete
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+🎓 Starting tutorial sequence...
+🎓 Tutorial state changed - Starting tutorial...
+
+=== Starting Tutorial Sequence ===
+📱 Tutorial: Loading game start VO
+AssetLoadingManager: loadAsset(withName: game_start_vo, category: attackCancerEnvironment)
+cannot add handler to 0 from 1 - dropping
+❌ Tutorial: Failed to load game start VO: resourceNotFound("AttackCancerGameStart_VO")
+ARPredictorRemoteService <0x54d52fbc0>: Query queue is not running.
+ARPredictorRemoteService <0x12de0cb70>: Query queue is not running.
+ARPredictorRemoteService <0x12f61c350>: Query queue is not running.
+ARPredictorRemoteService <0x12f01f8e0>: Query queue is not running.
+ARPredictorRemoteService <0x12f405b30>: Query queue is not running.
 → .background
 🧹 Cleaning up app state
 🔄 Unknown provider state changed to: paused
@@ -486,33 +1015,53 @@ ARPredictorRemoteService <0x11316acb0>: Query queue is not running.
 🎯 Tracking Enabled: true
 ✋ Hand Tracking Enabled: true
 🔄 Current Provider State: paused
-ar_world_tracking_provider_query_device_anchor_at_timestamp <0x30219fac0>: The device_anchor can only be queried when the world tracking provider is running.
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x301a28be0>: The device_anchor can only be queried when the world tracking provider is running.
 ⚠️ No device anchor available
 🌎 World Provider State: paused
 🖐️ Hand Provider State: paused
 === End State Log ===
 
 ⏸️ Unknown provider paused
-🔔 OutdoCancer: Title text appeared
 🧹 **cleanupAppState**: Immersive space dismissed successfully.
+
+=== Tearing Down Game [Detailed] ===
+📊 Initial State:
+  - Hope Meter Running: false
+  - Tutorial Started: true
+  - Current Phase: playing
+  - Test Fire Active: false
+🛑 Stopping Hope Meter
+
+🔍 Examining root entity: AttackCancerRoot
+🗑️ Removed cancer cells: 0
+
+🔄 Resetting game stats:
+  - Cells Destroyed: 0 → 0
+  - Total ADCs: 0 → 0
+  - Total Taps: 0 → 0
+  - Total Hits: 0 → 0
+🔄 Reset tutorial state: isTutorialStarted: false, tutorialComplete: false, isTestFireActive: false
+✅ Game tear down complete
+
 
 === Tracking State [Pre-Stop] ===
 🎯 Tracking Enabled: true
 ✋ Hand Tracking Enabled: true
 🔄 Current Provider State: paused
-ar_world_tracking_provider_query_device_anchor_at_timestamp <0x30219fac0>: The device_anchor can only be queried when the world tracking provider is running.
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x301a28be0>: The device_anchor can only be queried when the world tracking provider is running.
 ⚠️ No device anchor available
 🌎 World Provider State: paused
 🖐️ Hand Provider State: paused
 === End State Log ===
 
 ✅ App state cleanup completed
+⚠️ Tear down already in progress or completed: gameOnly
 
 === Tracking State [Post-Stop] ===
 🎯 Tracking Enabled: false
 ✋ Hand Tracking Enabled: true
 🔄 Current Provider State: paused
-ar_world_tracking_provider_query_device_anchor_at_timestamp <0x30219fac0>: The device_anchor can only be queried when the world tracking provider is running.
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x301a28be0>: The device_anchor can only be queried when the world tracking provider is running.
 ⚠️ No device anchor available
 🌎 World Provider State: stopped
 🖐️ Hand Provider State: stopped

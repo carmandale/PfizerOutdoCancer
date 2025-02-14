@@ -99,7 +99,7 @@ public class CancerCellSystem: System {
     public static var shared: CancerCellSystem?
     
     // NEW: Add a public closure property to notify when a cell is destroyed.
-    public var onCellDestroyed: (() -> Void)?
+    public var onCellDestroyed: ((Int?) -> Void)?
     
     required public init(scene: RealityKit.Scene) {
         CancerCellSystem.shared = self
@@ -118,7 +118,7 @@ public class CancerCellSystem: System {
 
                 print("=== Cancer Cell Death Triggered ===")
                 print("💀 Cell is destroyed")
-                
+                print("Cell ID: \(String(describing: parameters.cellID))")
                 
                 // Handle particle emitter: burst the emitter if found.
                 if let particleSystem = entity.findEntity(named: "ParticleEmitter"),
@@ -178,7 +178,7 @@ public class CancerCellSystem: System {
                 }
 
                 // NEW: Call the closure if set to notify that this cell was destroyed.
-                onCellDestroyed?()
+                onCellDestroyed?(parameters.cellID)
                 
                 // Continue to the next entity.
                 continue
