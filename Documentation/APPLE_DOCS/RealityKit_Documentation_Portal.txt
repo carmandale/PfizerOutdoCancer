@@ -1,0 +1,83 @@
+Structure
+PortalComponent
+A component that turns mesh surfaces into portals to a different world.
+iOS 18.0+
+iPadOS 18.0+
+Mac Catalyst 18.0+
+macOS 15.0+
+visionOS 1.0+
+struct PortalComponent
+Overview
+A RealityKit portal defines a way to look into a different, immersive world. You define an entity as a portal when it also has a ModelComponent that contains a mesh part with PortalMaterial.
+To create a portal, set its targetEntity property to an entity with a WorldComponent. Entities under that world only render within the portal.
+let world = Entity()
+world.components.set(WorldComponent())
+
+
+let portal = Entity()
+portal.components.set(
+   ModelComponent(
+       mesh: .generatePlane(width: 0.5, height: 0.5, cornerRadius: 0.1),
+       materials: [PortalMaterial()]
+   )
+)
+portal.components.set(PortalComponent(target: world))
+
+
+content.add(world)
+content.add(portal)
+Clipping and Crossing
+You can enable clipping by configuring clippingMode to something other than PortalComponent.ClippingMode.disabled. For example, you can use PortalComponent.ClippingMode.plane(_:). This ensures that the contents of the portal world don’t render beyond the portal boundary, causing depth confusion.
+Entities inside the portal world with a PortalCrossingComponent can freely cross in and out of the portal boundary in any of the following platforms:
+iOS 18 and later
+macOS 15 and later
+visionOS 2 and later
+You can enable the crossing feature by configuring crossingMode to something other than PortalComponent.CrossingMode.disabled. Such as PortalComponent.CrossingMode.plane(_:).
+let world = Entity()
+world.components.set(WorldComponent())
+
+
+// Create an entity that doesn't cross beyond the portal bounds.
+let notCrossing = Entity()
+
+
+// Create an entity that crosses beyond the portal bounds.
+let willCross = Entity()
+willCross.components.set(PortalCrossingComponent())
+
+
+world.addChild(notCrossing)
+world.addChild(willCross)
+
+
+// Set up a crossable portal, without a near clip.
+let portal = Entity()
+portal.components.set(
+   ModelComponent(
+       mesh: .generatePlane(width: 0.5, height: 0.5, cornerRadius: 0.1),
+       materials: [PortalMaterial()]
+   )
+)
+var portalComp = PortalComponent(target: world)
+portalComp.clippingMode = .plane(.positiveZ)
+portalComp.crossingMode = .plane(.positiveZ)
+portal.components.set(portalComp)
+
+
+content.add(world)
+content.add(portal)
+The spaceships below have a PortalCrossingComponent.
+
+Play
+The spaceships below don’t have a PortalCrossingComponent.
+
+Play
+Lighting
+You define the lighting in a portal world with ImageBasedLightComponent and ImageBasedLightReceiverComponent.
+RealityKit provides a default IBL if you don’t specify one with ImageBasedLightReceiverComponent.
+Contents within a portal world don’t receive real-world probe lighting. However, you can achieve a similar effect in the portal world using VirtualEnvironmentProbeComponent.
+You can configure this virtual probe lighting contribution with EnvironmentLightingConfigurationComponent.
+Dynamic lights, such as PointLightComponent and DirectionalLightComponent, don’t cross world bounds.
+Different lighting environments light the portal crossing entities based on which side of the portal they are on:
+When inside the portal, the portal world’s lighting lights the entity.
+When outside the portal, the default world’s lighting lights the entity.

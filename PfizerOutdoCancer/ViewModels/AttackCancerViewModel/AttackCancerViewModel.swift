@@ -61,6 +61,7 @@ final class AttackCancerViewModel {
 //    var dataModel: ADCDataModel!
     
     // MARK: - Game Stats
+    var hitProbability: Double = 0.3
     var maxCancerCells: Int = 25
     var cellsDestroyed: Int = 0
     var totalADCsDeployed: Int = 0

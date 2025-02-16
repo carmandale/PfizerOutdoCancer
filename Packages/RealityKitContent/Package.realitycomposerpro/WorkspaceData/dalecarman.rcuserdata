@@ -1,7 +1,7 @@
 {
   "advancedEditorSelectedIdentifier" : "BehaviorsPluginID",
   "openSceneRelativePaths" : [
-    "TestFireCell.usda"
+    "OutroEnvironment.usda"
   ],
   "recentIdentifiers" : {
     "00353439-B084-4161-BDD3-58325B62FD61" : [
@@ -12179,5 +12179,5 @@
   "sceneViewportBackgroundColors" : {
 
   },
-  "selectedSceneRelativePath" : "TestFireCell.usda"
+  "selectedSceneRelativePath" : "OutroEnvironment.usda"
 }

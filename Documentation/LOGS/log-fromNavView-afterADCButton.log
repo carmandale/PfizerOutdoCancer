@@ -1,0 +1,1572 @@
+AppModel init() - Instance: ObjectIdentifier(0x0000000153e06740)
+🏁 PfizerOutdoCancerApp init starting...
+📲 Setting AppModel in PositioningSystem...
+🔄 PositioningSystem.setAppModel called
+📝 Registering components and systems...
+⚙️ Registering PositioningSystem...
+✅ PfizerOutdoCancerApp init completed
+🎯 PositioningSystem 327DCF1F-0054-4F43-BD0D-8FD80C01F3C6 initializing...
+nw_socket_initialize_socket [C1:2] setsockopt SO_NECP_CLIENTUUID failed [22: Invalid argument]
+nw_socket_initialize_socket setsockopt SO_NECP_CLIENTUUID failed [22: Invalid argument]
+nw_socket_copy_info [C1:2] getsockopt TCP_INFO failed [102: Operation not supported on socket]
+nw_socket_copy_info getsockopt TCP_INFO failed [102: Operation not supported on socket]
+cannot add handler to 0 from 1 - dropping
+
+=== Starting Initial Asset Loading ===
+🔍 Current phase: loading
+🔍 Loading state: notStarted
+🔄 Starting prepareIntroPhase...
+
+=== Preparing Intro Phase ===
+🔍 Current phase before loading: loading
+🔍 Loading state: notStarted
+📱 Loading asset: intro_environment
+AssetLoadingManager: loadAsset(withName: intro_environment, category: introEnvironment)
+cannot add handler to 0 from 1 - dropping
+cannot add handler to 0 from 1 - dropping
+cannot add handler to 0 from 1 - dropping
+Registering library (/System/Library/PrivateFrameworks/CoreRE.framework/default.metallib) that already exists in shader manager. Library will be overwritten.
+✅ Loaded intro_environment - Progress: 0.16666667
+📱 Loading asset: intro_warp
+AssetLoadingManager: loadAsset(withName: intro_warp, category: introEnvironment)
+✅ Loaded intro_warp - Progress: 0.33333334
+📱 Loading asset: attack_cancer_environment
+AssetLoadingManager: loadAsset(withName: attack_cancer_environment, category: attackCancerEnvironment)
+✅ Loaded attack_cancer_environment - Progress: 0.5
+📱 Loading asset: adc
+AssetLoadingManager: loadAsset(withName: adc, category: attackCancerEnvironment)
+✅ ADC template loaded (using inner Root with audio)
+✅ Loaded adc - Progress: 0.6666667
+📱 Loading asset: cancer_cell
+AssetLoadingManager: loadAsset(withName: cancer_cell, category: attackCancerEnvironment)
+✅ Loaded cancer_cell - Progress: 0.8333333
+📱 Loading asset: assembled_lab
+AssetLoadingManager: loadAsset(withName: assembled_lab, category: labEnvironment)
+📱 Starting lab environment assembly
+onChange(of: LoadingState) action tried to update multiple times per frame.
+Invalid Material input type token
+Invalid Material input type token
+IBL URL: file:///private/var/containers/Bundle/Application/53641378-96AC-4C40-A3E6-13460F6D8A17/PfizerOutdoCancer.app/lab_v005.exr
+✅ Completed lab environment assembly
+✅ Loaded assembled_lab - Progress: 1.0
+✅ prepareIntroPhase completed
+✅ prepareIntroPhase completed
+🔄 Transitioning to .ready...
+🔄 Phase transition: loading -> ready
+🔍 isTransitioning: false
+🔍 immersiveSpaceState: closed
+✅ Phase transition completed: ready
+✅ Transition to .ready completed
+🎯 Managing windows for phase: ready
+📊 Before state update - nav window open: false
+📊 Window states after update:
+  Main: true
+  Debug: false
+  Library: false
+  Builder: false
+  Phases:
+    AppPhase: ready
+    ScenePhase: active
+    LoadingPhase: completed
+🔄 Phase transition: ready -> intro
+🔍 isTransitioning: false
+🔍 immersiveSpaceState: closed
+🚨 LoadingView disappeared
+🎯 Managing windows for phase: intro
+📊 Before state update - nav window open: false
+📊 Window states after update:
+  Main: true
+  Debug: false
+  Library: false
+  Builder: false
+  Phases:
+    AppPhase: intro
+    ScenePhase: active
+    LoadingPhase: completed
+cannot add handler to 0 from 1 - dropping
+🎯 PositioningSystem D5CDB8F1-04D8-412C-A668-12111A2A1DC4 initializing...
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+
+=== IntroView Appeared ===
+openImmersiveSpace result for intro: opened
+cannot add handler to 0 from 1 - dropping
+
+=== Processing Hand Updates ===
+Should Process Hand Tracking: false
+Hand Provider State: initialized
+❌ Hand tracking updates disabled
+
+=== Setting up IntroView ===
+📱 IntroViewModel: Setting up intro root
+✅ Added root to content
+📱 IntroView: Starting environment setup
+📱 IntroViewModel: Starting environment setup
+📱 IntroViewModel: Attempting to load intro environment
+AssetLoadingManager: loadAsset(withName: intro_environment, category: introEnvironment)
+✅ IntroViewModel: Successfully loaded intro environment
+📱 IntroViewModel: Adding environment to root
+📱 IntroViewModel: Setting up individual entities
+🔍 Found skyDome: SkySphere
+✅ Set skyDome opacity to 0
+🔍 Found portalWarp: sh0100_v01_portalWarp3
+✅ Set portalWarp opacity to 0.0
+📱 IntroViewModel: Starting portal setup
+📱 Starting lab environment assembly
+✅ Using cached assembled lab
+✅ IntroViewModel: Successfully loaded assembled laboratory environment
+✅ IntroViewModel: Created portal
+✅ IntroViewModel: Portal setup complete
+✅ IntroViewModel: Environment setup complete
+✅ Environment setup complete
+📱 IntroView: Found SwiftUI attachments
+✅ Found portal for attachments
+🔍 Found logo: logo
+✅ Set logo scale to 0.5 and opacity to 0
+📎 Created titleRoot
+🔍 After - titleEntity position: SIMD3<Float>(0.0, -1.2, 0.1), scale: SIMD3<Float>(10.0, 10.0, 10.0)
+📎 Added titleText to titleRoot
+📱 IntroView: Starting animation sequence
+🎯 Found ADCBuilderAttachment target
+🎯 Found AttackCancerAttachment target
+
+=== Tracking State [Start Tracking Request] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: false
+🔄 Current Provider State: initialized
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x301618000>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: initialized
+=== End State Log ===
+
+🖐️ Starting hand tracking session
+Hand Provider State: initialized
+🎬 Animation Sequence: Starting at 2025-02-12 18:54:19 +0000
+🔍 Entity Check - skyDome: true, portalWarp: true, logo: true, portal: true
+🌌 Sky: Starting at +4.494190216064453e-05s
+🔍 Sky initial opacity: 0.0
+🌌 Sky: Completed fade animation
+🔍 Sky final opacity: 0.0
+⏰ Sleeping for 19s before portal warp
+Cannot find a BindPoint for any bind path: "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", ""
+✅ Started tracking providers
+Final Hand Tracking State: true
+
+=== Tracking State [Post-Start] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: initialized
+⚠️ No device anchor available
+🌎 World Provider State: running
+🖐️ Hand Provider State: running
+=== End State Log ===
+
+✅ Phase transition completed: intro
+🔄 Unknown provider state changed to: running
+
+=== Tracking State [Unknown Provider State Change [running]] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: running
+⚠️ No device anchor available
+🌎 World Provider State: running
+🖐️ Hand Provider State: running
+=== End State Log ===
+
+✅ Unknown provider running
+📍 Positioned entity 'IntroRoot' at SIMD3<Float>(-0.001465559, -0.49516547, -1.0978568)
+✅ Successfully positioned entity: IntroRoot
+Failed to set override status for bind point component member.
+🌀 Portal warp: Starting at +19.00733196735382s
+🔍 PortalWarp reference check: true
+🔍 Warp initial opacity: 0.0
+🌀 Portal warp: Completed fade animation
+🔍 Warp final opacity: 0.0
+⏰ Sleeping for 75s before logo
+Failed to set override status for bind point component member.
+🎯 Logo: Starting at +94.0508359670639s
+🔍 Logo reference check: true
+🔍 Logo initial opacity: 0.0
+🎯 Logo: Completed fade animation
+🔍 Logo final opacity: 0.0
+📝 Title: Showing at +99.05682694911957s
+🌐 Portal: Starting at +99.05689299106598s
+🔍 Portal reference check: true
+🔍 Portal initial opacity: 0.0
+🌐 Portal: Completed fade animation
+🔍 Portal final opacity: 0.0
+Failed to set override status for bind point component member.
+Failed to set override status for bind point component member.
+🌐 Portal plane: Starting X scale animation at +104.25094699859619s
+🌐 Portal plane: Completed X scale animation
+Failed to set override status for bind point component member.
+🌐 Starting concurrent animations for PortalRoot, World, and PortalPlane scale
+Failed to set override status for bind point component member.
+Failed to set override status for bind point component member.
+Failed to set override status for bind point component member.
+Failed to set override status for bind point component member.
+Failed to set override status for bind point component member.
+Failed to set override status for bind point component member.
+Failed to set override status for bind point component member.
+🌐 Completed concurrent animations for PortalRoot, World, and PortalPlane scale
+disabled extras in intro environment
+🔊 Found Audio entity, beginning cleanup
+✅ Audio entity cleanup complete
+🧹 Found ExtraItems entity, beginning cleanup
+✅ ExtraItems cleanup complete
+readyToStartLab set to true
+🎬 Animation Sequence: Completed at +139.65470898151398s
+📱 LabViewModel: Setting up initial environment
+
+=== Configuring Interactive Devices ===
+🔍 Found 19 potential interactive devices
+⚙️ Adding hover effect to: laptop with mesh: laptop_mesh
+⚙️ Adding hover effect to: laptop with mesh: laptop_mesh
+⚙️ Adding hover effect to: laptop with mesh: laptop_mesh
+⚙️ Adding hover effect to: laptop with mesh: laptop_mesh
+⚙️ Adding hover effect to: laptop with mesh: laptop_mesh
+⚙️ Adding hover effect to: laptop with mesh: laptop_mesh
+⚙️ Adding hover effect to: laptop with mesh: laptop_mesh
+⚙️ Adding hover effect to: laptop with mesh: laptop_mesh
+⚙️ Adding hover effect to: laptop with mesh: laptop_mesh
+⚙️ Adding hover effect to: laptop with mesh: laptop_mesh
+⚙️ Adding hover effect to: laptop with mesh: laptop_mesh
+⚙️ Adding hover effect to: pcMonitor with mesh: pcMonitor_mesh
+⚙️ Adding hover effect to: pcMonitor with mesh: pcMonitor_mesh
+⚙️ Adding hover effect to: pcMonitor with mesh: pcMonitor_mesh
+⚙️ Adding hover effect to: pcMonitor with mesh: pcMonitor_mesh
+⚙️ Adding hover effect to: pcMonitor with mesh: pcMonitor_mesh
+⚙️ Adding hover effect to: pcMonitor with mesh: pcMonitor_mesh
+⚙️ Adding hover effect to: pcMonitor with mesh: pcMonitor_mesh
+⚙️ Adding hover effect to: pcMonitor with mesh: pcMonitor_mesh
+📱 LabViewModel: Starting environment setup
+
+=== Configuring ADC Button Visibility ===
+🎯 First visit - following standard introduction flow
+AssetLoadingManager: loadAsset(withName: lab_vo, category: labEnvironment)
+🎙️ Lab VO added to MainEntity
+⏲️ Starting 30-second timer for ADC button visibility
+=== ADC Button Configuration Complete ===
+
+AssetLoadingManager: loadAsset(withName: lab_audio, category: labEnvironment)
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", ""
+🔊 Lab Audio added to MainEntity
+✅ LabViewModel: Environment setup complete
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", ""
+⏲️ Timer complete - showing ADC button
+🎯 PositioningSystem F92CC463-154C-4B52-8AE0-E86903A53F30 initializing...
+cannot add handler to 0 from 1 - dropping
+cannot add handler to 0 from 1 - dropping
+🔄 Phase transition: intro -> building
+🔍 isTransitioning: false
+🔍 immersiveSpaceState: open
+AppModel: Preloading Building Phase Assets...
+AssetLoadingManager: loadAsset(withName: antibody_scene, category: buildADCEnvironment)
+
+=== Tracking State [Pre-Stop] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: running
+📍 Head Transform: simd_float4x4([[0.8610752, -0.0048002466, -0.508455, 0.0], [-0.14959274, 0.9533106, -0.2623374, 0.0], [0.4859748, 0.30195346, 0.8201541, 0.0], [-0.06584287, 0.94908285, -0.1166085, 1.0]])
+📍 Head Position - X: -0.06584287, Y: 0.94908285, Z: -0.1166085
+🌎 World Provider State: running
+🖐️ Hand Provider State: running
+=== End State Log ===
+
+🔄 Unknown provider state changed to: stopped
+
+=== Tracking State [Unknown Provider State Change [stopped]] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x3016a63a0>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===
+
+⏹️ Unknown provider stopped normally
+
+=== Tracking State [Post-Stop] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x3016a63a0>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===
+
+AppModel: Preloaded antibody_scene for Building Phase: ▿ 'Root' : Entity, children: 1
+  ⟐ SynchronizationComponent
+  ⟐ Transform
+  ▿ 'Root' : Entity, children: 3
+    ⟐ SynchronizationComponent
+    ⟐ EnvironmentLightingConfigurationComponent
+    ⟐ Transform
+    ▿ 'antibodyProtein_complex_assembled' : Entity, children: 1
+      ⟐ SynchronizationComponent
+      ⟐ InputTargetComponent
+      ⟐ CollisionComponent
+      ⟐ AudioLibraryComponent
+      ⟐ Transform
+      ▿ 'antibodyProtein_complex_base' : Entity, children: 1
+        ⟐ SynchronizationComponent
+        ⟐ Transform
+        ▿ 'ADC_complex_001' : Entity, children: 1
+          ⟐ SynchronizationComponent
+          ⟐ ADCComponent
+          ⟐ Transform
+          ▿ 'ADC_complex' : Entity, children: 1
+            ⟐ SynchronizationComponent
+            ⟐ Transform
+            ▿ 'antibodyProtein_complex_assembled_clean' : Entity, children: 1
+              ⟐ SynchronizationComponent
+              ⟐ Transform
+              ▿ 'antibodyProtein_complex_base_clean' : Entity, children: 1
+                ⟐ SynchronizationComponent
+                ⟐ Transform
+                ▿ 'ADC_complex_001' : Entity, children: 5
+                  ⟐ SynchronizationComponent
+                  ⟐ Transform
+                  ▿ 'ADC_complex' : Entity, children: 1
+                    ⟐ SynchronizationComponent
+                    ⟐ Transform
+                    ▿ 'ADC_complex' : ModelEntity
+                      ⟐ SynchronizationComponent
+                      ⟐ ModelComponent
+                      ⟐ Transform
+                  ▿ 'linker02_offset' : Entity, children: 2
+                    ⟐ SynchronizationComponent
+                    ⟐ Transform
+                    ▿ 'payload02_xform' : Entity, children: 1
+                      ⟐ SynchronizationComponent
+                      ⟐ Transform
+                      ▿ 'payload' : Entity, children: 1
+                        ⟐ SynchronizationComponent
+                        ⟐ Transform
+                        ▿ 'Transform' : Entity, children: 2
+                          ⟐ SynchronizationComponent
+                          ⟐ Transform
+                          ▿ 'OuterSphere' : ModelEntity, children: 1
+                            ⟐ SynchronizationComponent
+                            ⟐ ModelComponent
+                            ⟐ Transform
+                            ▿ 'M_glow' : Entity
+                              ⟐ SynchronizationComponent
+                              ⟐ Transform
+                          ▿ 'InnerSphere' : ModelEntity, children: 1
+                            ⟐ SynchronizationComponent
+                            ⟐ ModelComponent
+                            ⟐ Transform
+                            ▿ 'M_inner_glow' : Entity
+                              ⟐ SynchronizationComponent
+                              ⟐ Transform
+                    ▿ 'linker02_xform' : Entity, children: 1
+                      ⟐ SynchronizationComponent
+                      ⟐ Transform
+                      ▿ 'linker' : Entity, children: 1
+                        ⟐ SynchronizationComponent
+                        ⟐ Transform
+                        ▿ 'linkerMesh_001' : Entity, children: 1
+                          ⟐ SynchronizationComponent
+                          ⟐ Transform
+                          ▿ 'linker' : Entity, children: 1
+                            ⟐ SynchronizationComponent
+                            ⟐ Transform
+                            ▿ 'linker' : ModelEntity
+                              ⟐ SynchronizationComponent
+                              ⟐ ModelComponent
+                              ⟐ Transform
+                  ▿ 'linker03_offset' : Entity, children: 2
+                    ⟐ SynchronizationComponent
+                    ⟐ Transform
+                    ▿ 'payload03_xform' : Entity, children: 1
+                      ⟐ SynchronizationComponent
+                      ⟐ Transform
+                      ▿ 'payload' : Entity, children: 1
+                        ⟐ SynchronizationComponent
+                        ⟐ Transform
+                        ▿ 'Transform' : Entity, children: 2
+                          ⟐ SynchronizationComponent
+                          ⟐ Transform
+                          ▿ 'OuterSphere' : ModelEntity, children: 1
+                            ⟐ SynchronizationComponent
+                            ⟐ ModelComponent
+                            ⟐ Transform
+                            ▿ 'M_glow' : Entity
+                              ⟐ SynchronizationComponent
+                              ⟐ Transform
+                          ▿ 'InnerSphere' : ModelEntity, children: 1
+                            ⟐ SynchronizationComponent
+                            ⟐ ModelComponent
+                            ⟐ Transform
+                            ▿ 'M_inner_glow' : Entity
+                              ⟐ SynchronizationComponent
+                              ⟐ Transform
+                    ▿ 'linker03_xform' : Entity, children: 1
+                      ⟐ SynchronizationComponent
+                      ⟐ Transform
+                      ▿ 'linker' : Entity, children: 1
+                        ⟐ SynchronizationComponent
+                        ⟐ Transform
+                        ▿ 'linkerMesh_001' : Entity, children: 1
+                          ⟐ SynchronizationComponent
+                          ⟐ Transform
+                          ▿ 'linker' : Entity, children: 1
+                            ⟐ SynchronizationComponent
+                            ⟐ Transform
+                            ▿ 'linker' : ModelEntity
+                              ⟐ SynchronizationComponent
+                              ⟐ ModelComponent
+                              ⟐ Transform
+                  ▿ 'linker01_offset' : Entity, children: 2
+                    ⟐ SynchronizationComponent
+                    ⟐ Transform
+                    ▿ 'payload01_xform' : Entity, children: 1
+                      ⟐ SynchronizationComponent
+                      ⟐ Transform
+                      ▿ 'payload' : Entity, children: 1
+                        ⟐ SynchronizationComponent
+                        ⟐ Transform
+                        ▿ 'Transform' : Entity, children: 2
+                          ⟐ SynchronizationComponent
+                          ⟐ Transform
+                          ▿ 'OuterSphere' : ModelEntity, children: 1
+                            ⟐ SynchronizationComponent
+                            ⟐ ModelComponent
+                            ⟐ Transform
+                            ▿ 'M_glow' : Entity
+                              ⟐ SynchronizationComponent
+                              ⟐ Transform
+                          ▿ 'InnerSphere' : ModelEntity, children: 1
+                            ⟐ SynchronizationComponent
+                            ⟐ ModelComponent
+                            ⟐ Transform
+                            ▿ 'M_inner_glow' : Entity
+                              ⟐ SynchronizationComponent
+                              ⟐ Transform
+                    ▿ 'linker01_xform' : Entity, children: 1
+                      ⟐ SynchronizationComponent
+                      ⟐ Transform
+                      ▿ 'linker' : Entity, children: 1
+                        ⟐ SynchronizationComponent
+                        ⟐ Transform
+                        ▿ 'linkerMesh_001' : Entity, children: 1
+                          ⟐ SynchronizationComponent
+                          ⟐ Transform
+                          ▿ 'linker' : Entity, children: 1
+                            ⟐ SynchronizationComponent
+                            ⟐ Transform
+                            ▿ 'linker' : ModelEntity
+                              ⟐ SynchronizationComponent
+                              ⟐ ModelComponent
+                              ⟐ Transform
+                  ▿ 'linker04_offset' : Entity, children: 2
+                    ⟐ SynchronizationComponent
+                    ⟐ Transform
+                    ▿ 'linker04_xform' : Entity, children: 1
+                      ⟐ SynchronizationComponent
+                      ⟐ Transform
+                      ▿ 'linker' : Entity, children: 1
+                        ⟐ SynchronizationComponent
+                        ⟐ Transform
+                        ▿ 'linkerMesh_001' : Entity, children: 1
+                          ⟐ SynchronizationComponent
+                          ⟐ Transform
+                          ▿ 'linker' : Entity, children: 1
+                            ⟐ SynchronizationComponent
+                            ⟐ Transform
+                            ▿ 'linker' : ModelEntity
+                              ⟐ SynchronizationComponent
+                              ⟐ ModelComponent
+                              ⟐ Transform
+                    ▿ 'payload04_xform' : Entity, children: 1
+                      ⟐ SynchronizationComponent
+                      ⟐ Transform
+                      ▿ 'payload' : Entity, children: 1
+                        ⟐ SynchronizationComponent
+                        ⟐ Transform
+                        ▿ 'Transform' : Entity, children: 2
+                          ⟐ SynchronizationComponent
+                          ⟐ Transform
+                          ▿ 'OuterSphere' : ModelEntity, children: 1
+                            ⟐ SynchronizationComponent
+                            ⟐ ModelComponent
+                            ⟐ Transform
+                            ▿ 'M_glow' : Entity
+                              ⟐ SynchronizationComponent
+                              ⟐ Transform
+                          ▿ 'InnerSphere' : ModelEntity, children: 1
+                            ⟐ SynchronizationComponent
+                            ⟐ ModelComponent
+                            ⟐ Transform
+                            ▿ 'M_inner_glow' : Entity
+                              ⟐ SynchronizationComponent
+                              ⟐ Transform
+    ▿ 'targetLinker' : Entity, children: 1
+      ⟐ SynchronizationComponent
+      ⟐ InputTargetComponent
+      ⟐ CollisionComponent
+      ⟐ Transform
+      ▿ 'linkerMesh_001' : Entity, children: 1
+        ⟐ SynchronizationComponent
+        ⟐ Transform
+        ▿ 'linker' : Entity, children: 1
+          ⟐ SynchronizationComponent
+          ⟐ Transform
+          ▿ 'linker' : ModelEntity
+            ⟐ SynchronizationComponent
+            ⟐ ModelComponent
+            ⟐ Transform
+    ▿ 'targetPayload' : Entity, children: 1
+      ⟐ SynchronizationComponent
+      ⟐ InputTargetComponent
+      ⟐ CollisionComponent
+      ⟐ Transform
+      ▿ 'Transform' : Entity, children: 2
+        ⟐ SynchronizationComponent
+        ⟐ Transform
+        ▿ 'OuterSphere' : ModelEntity, children: 1
+          ⟐ SynchronizationComponent
+          ⟐ ModelComponent
+          ⟐ Transform
+          ▿ 'M_glow' : Entity
+            ⟐ SynchronizationComponent
+            ⟐ Transform
+        ▿ 'InnerSphere' : ModelEntity, children: 1
+          ⟐ SynchronizationComponent
+          ⟐ ModelComponent
+          ⟐ Transform
+          ▿ 'M_inner_glow' : Entity
+            ⟐ SynchronizationComponent
+            ⟐ Transform
+
+=== Starting IntroViewModel Cleanup ===
+🛑 Cancelling animation sequence
+🗑️ Removing intro root entity
+🎯 Resetting positioning component
+✅ Completed IntroViewModel cleanup
+
+
+=== Starting Intro Environment Cleanup ===
+📊 Current template cache size: 9 entities
+📊 Current templates: adc, lab_audio, antibody_scene, intro_environment, assembled_lab, cancer_cell, lab_vo, intro_warp, attack_cancer_environment
+🗑️ Preparing to remove 2 intro assets:
+
+🗑️ Removing asset: intro_environment
+
+📝 Releasing entity: Root
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Root
+  - Child count: 7
+  - Has components: yes
+
+📝 Releasing entity: sh0100_v01
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: sh0100_v01
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: PicturesRoot
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: intro
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: People_MSR
+  - Child count: 13
+  - Has components: yes
+
+📝 Releasing entity: p3
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: p3_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_005
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p3_mesh
+✅ Released entity: Plane_005
+
+  - Detaching from parent: p3
+✅ Released entity: p3_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p3
+
+
+📝 Releasing entity: p4
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: p4_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_007
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p4_mesh
+✅ Released entity: Plane_007
+
+  - Detaching from parent: p4
+✅ Released entity: p4_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p4
+
+
+📝 Releasing entity: p5
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: p5_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_006
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p5_mesh
+✅ Released entity: Plane_006
+
+  - Detaching from parent: p5
+✅ Released entity: p5_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p5
+
+
+📝 Releasing entity: p2
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: p2_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_004
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p2_mesh
+✅ Released entity: Plane_004
+
+  - Detaching from parent: p2
+✅ Released entity: p2_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p2
+
+
+📝 Releasing entity: p1
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: p1_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_003
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p1_mesh
+✅ Released entity: Plane_003
+
+  - Detaching from parent: p1
+✅ Released entity: p1_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p1
+
+
+📝 Releasing entity: p12
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: p12_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_005_005
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p12_mesh
+✅ Released entity: Plane_005_005
+
+  - Detaching from parent: p12
+✅ Released entity: p12_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p12
+
+
+📝 Releasing entity: p13
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: p13_mesh
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Plane_005_006
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: p13_mesh
+✅ Released entity: Plane_005_006
+
+  - Detaching from parent: p13
+✅ Released entity: p13_mesh
+
+  - Detaching from parent: People_MSR
+✅ Released entity: p13
+
+  - Detaching from parent: intro
+✅ Released entity: People_MSR
+
+  - Detaching from parent: PicturesRoot
+✅ Released entity: intro
+
+  - Detaching from parent: sh0100_v01
+✅ Released entity: PicturesRoot
+
+  - Detaching from parent: sh0100_v01
+✅ Released entity: sh0100_v01
+
+  - Detaching from parent: Root
+✅ Released entity: sh0100_v01
+
+
+📝 Releasing entity: Audio
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: Orchestra
+  - Child count: 12
+  - Has components: yes
+
+📝 Releasing entity: PianoBusL
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Orchestra
+✅ Released entity: PianoBusL
+
+
+📝 Releasing entity: PianoBusR
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Orchestra
+✅ Released entity: PianoBusR
+
+
+📝 Releasing entity: Violin2
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Orchestra
+✅ Released entity: Violin2
+
+
+📝 Releasing entity: Violin1
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Orchestra
+✅ Released entity: Violin1
+
+
+📝 Releasing entity: Viola
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Orchestra
+✅ Released entity: Viola
+
+
+📝 Releasing entity: Xylophone
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Orchestra
+✅ Released entity: Xylophone
+
+  - Detaching from parent: Audio
+✅ Released entity: Orchestra
+
+  - Detaching from parent: Root
+✅ Released entity: Audio
+
+
+📝 Releasing entity: materials
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Root
+✅ Released entity: materials
+
+
+📝 Releasing entity: SkySphere
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Root
+✅ Released entity: SkySphere
+
+  - Detaching from parent: Root
+✅ Released entity: Root
+
+✅ Released entity: Root
+
+✅ Released asset: intro_environment
+
+🗑️ Removing asset: intro_warp
+
+📝 Releasing entity: Root
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Root
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: M_jet
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Root
+✅ Released entity: M_jet
+
+  - Detaching from parent: Root
+✅ Released entity: Root
+
+✅ Released entity: Root
+
+✅ Released asset: intro_warp
+
+📊 Updated template cache size: 7 entities
+🔒 Remaining asset: adc
+✅ Completed intro environment cleanup
+
+
+=== Starting LabViewModel Cleanup ===
+🔊 Removing lab audio entity
+🔧 Removing ADC builder button
+🎯 Removing Attack Cancer button
+✅ Completed LabViewModel cleanup
+
+
+=== Starting Lab Environment Cleanup ===
+📊 Current template cache size: 7 entities
+📊 Current templates: adc, lab_audio, antibody_scene, assembled_lab, cancer_cell, lab_vo, attack_cancer_environment
+🗑️ Preparing to remove 6 assets after lab phase:
+
+🗑️ Removing asset: adc
+
+📝 Releasing entity: Root
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: antibodyProtein_complex_assembled
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: antibodyProtein_complex_base
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: ADC_complex_001
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: ADC_complex
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: antibodyProtein_complex_assembled_clean
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: antibodyProtein_complex_base_clean
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: ADC_complex_001
+  - Child count: 5
+  - Has components: yes
+
+📝 Releasing entity: ADC_complex
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: ADC_complex
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: ADC_complex
+✅ Released entity: ADC_complex
+
+  - Detaching from parent: ADC_complex_001
+✅ Released entity: ADC_complex
+
+
+📝 Releasing entity: linker02_offset
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: payload02_xform
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: payload
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Transform
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: OuterSphere
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: M_glow
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: OuterSphere
+✅ Released entity: M_glow
+
+  - Detaching from parent: Transform
+✅ Released entity: OuterSphere
+
+  - Detaching from parent: payload
+✅ Released entity: Transform
+
+  - Detaching from parent: payload02_xform
+✅ Released entity: payload
+
+  - Detaching from parent: linker02_offset
+✅ Released entity: payload02_xform
+
+  - Detaching from parent: ADC_complex_001
+✅ Released entity: linker02_offset
+
+
+📝 Releasing entity: linker03_offset
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: payload03_xform
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: payload
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Transform
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: OuterSphere
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: M_glow
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: OuterSphere
+✅ Released entity: M_glow
+
+  - Detaching from parent: Transform
+✅ Released entity: OuterSphere
+
+  - Detaching from parent: payload
+✅ Released entity: Transform
+
+  - Detaching from parent: payload03_xform
+✅ Released entity: payload
+
+  - Detaching from parent: linker03_offset
+✅ Released entity: payload03_xform
+
+  - Detaching from parent: ADC_complex_001
+✅ Released entity: linker03_offset
+
+  - Detaching from parent: antibodyProtein_complex_base_clean
+✅ Released entity: ADC_complex_001
+
+  - Detaching from parent: antibodyProtein_complex_assembled_clean
+✅ Released entity: antibodyProtein_complex_base_clean
+
+  - Detaching from parent: ADC_complex
+✅ Released entity: antibodyProtein_complex_assembled_clean
+
+  - Detaching from parent: ADC_complex_001
+✅ Released entity: ADC_complex
+
+  - Detaching from parent: antibodyProtein_complex_base
+✅ Released entity: ADC_complex_001
+
+  - Detaching from parent: antibodyProtein_complex_assembled
+✅ Released entity: antibodyProtein_complex_base
+
+  - Detaching from parent: Root
+✅ Released entity: antibodyProtein_complex_assembled
+
+✅ Released entity: Root
+
+✅ Released asset: adc
+
+🗑️ Removing asset: lab_audio
+
+📝 Releasing entity: Root
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Root
+  - Child count: 4
+  - Has components: yes
+
+📝 Releasing entity: AUDIO_transforms
+  - Child count: 18
+  - Has components: yes
+
+📝 Releasing entity: Keyboard1
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: AUDIO_transforms
+✅ Released entity: Keyboard1
+
+
+📝 Releasing entity: Keyboard2
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: AUDIO_transforms
+✅ Released entity: Keyboard2
+
+
+📝 Releasing entity: Beaker
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: AUDIO_transforms
+✅ Released entity: Beaker
+
+
+📝 Releasing entity: Paperwork1
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: AUDIO_transforms
+✅ Released entity: Paperwork1
+
+
+📝 Releasing entity: Paperwork1_1
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: AUDIO_transforms
+✅ Released entity: Paperwork1_1
+
+
+📝 Releasing entity: Beaker_1
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: AUDIO_transforms
+✅ Released entity: Beaker_1
+
+
+📝 Releasing entity: Keyboard3
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: AUDIO_transforms
+✅ Released entity: Keyboard3
+
+
+📝 Releasing entity: Keyboard4
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: AUDIO_transforms
+✅ Released entity: Keyboard4
+
+
+📝 Releasing entity: Keyboard5
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: AUDIO_transforms
+✅ Released entity: Keyboard5
+
+  - Detaching from parent: Root
+✅ Released entity: AUDIO_transforms
+
+
+📝 Releasing entity: Keyboard
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Root
+✅ Released entity: Keyboard
+
+  - Detaching from parent: Root
+✅ Released entity: Root
+
+✅ Released entity: Root
+
+✅ Released asset: lab_audio
+
+🗑️ Removing asset: antibody_scene
+
+📝 Releasing entity: Root
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Root
+  - Child count: 3
+  - Has components: yes
+
+📝 Releasing entity: antibodyProtein_complex_assembled
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: antibodyProtein_complex_base
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: ADC_complex_001
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: ADC_complex
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: antibodyProtein_complex_assembled_clean
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: antibodyProtein_complex_base_clean
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: ADC_complex_001
+  - Child count: 5
+  - Has components: yes
+
+📝 Releasing entity: ADC_complex
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: ADC_complex
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: ADC_complex
+✅ Released entity: ADC_complex
+
+  - Detaching from parent: ADC_complex_001
+✅ Released entity: ADC_complex
+
+
+📝 Releasing entity: linker02_offset
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: payload02_xform
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: payload
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Transform
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: OuterSphere
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: M_glow
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: OuterSphere
+✅ Released entity: M_glow
+
+  - Detaching from parent: Transform
+✅ Released entity: OuterSphere
+
+  - Detaching from parent: payload
+✅ Released entity: Transform
+
+  - Detaching from parent: payload02_xform
+✅ Released entity: payload
+
+  - Detaching from parent: linker02_offset
+✅ Released entity: payload02_xform
+
+  - Detaching from parent: ADC_complex_001
+✅ Released entity: linker02_offset
+
+
+📝 Releasing entity: linker03_offset
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: payload03_xform
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: payload
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Transform
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: OuterSphere
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: M_glow
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: OuterSphere
+✅ Released entity: M_glow
+
+  - Detaching from parent: Transform
+✅ Released entity: OuterSphere
+
+  - Detaching from parent: payload
+✅ Released entity: Transform
+
+  - Detaching from parent: payload03_xform
+✅ Released entity: payload
+
+  - Detaching from parent: linker03_offset
+✅ Released entity: payload03_xform
+
+  - Detaching from parent: ADC_complex_001
+✅ Released entity: linker03_offset
+
+  - Detaching from parent: antibodyProtein_complex_base_clean
+✅ Released entity: ADC_complex_001
+
+  - Detaching from parent: antibodyProtein_complex_assembled_clean
+✅ Released entity: antibodyProtein_complex_base_clean
+
+  - Detaching from parent: ADC_complex
+✅ Released entity: antibodyProtein_complex_assembled_clean
+
+  - Detaching from parent: ADC_complex_001
+✅ Released entity: ADC_complex
+
+  - Detaching from parent: antibodyProtein_complex_base
+✅ Released entity: ADC_complex_001
+
+  - Detaching from parent: antibodyProtein_complex_assembled
+✅ Released entity: antibodyProtein_complex_base
+
+  - Detaching from parent: Root
+✅ Released entity: antibodyProtein_complex_assembled
+
+
+📝 Releasing entity: targetLinker
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: linkerMesh_001
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: linker
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: linker
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: linker
+✅ Released entity: linker
+
+  - Detaching from parent: linkerMesh_001
+✅ Released entity: linker
+
+  - Detaching from parent: targetLinker
+✅ Released entity: linkerMesh_001
+
+  - Detaching from parent: Root
+✅ Released entity: targetLinker
+
+  - Detaching from parent: Root
+✅ Released entity: Root
+
+✅ Released entity: Root
+
+✅ Released asset: antibody_scene
+
+🗑️ Removing asset: cancer_cell
+
+📝 Releasing entity: Root
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Root
+  - Child count: 5
+  - Has components: yes
+
+
+📝 Releasing entity: M_body
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Root
+✅ Released entity: M_body
+
+
+📝 Releasing entity: M_veins
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Root
+✅ Released entity: M_veins
+
+
+📝 Releasing entity: M_stems
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Root
+✅ Released entity: M_stems
+
+  - Detaching from parent: Root
+✅ Released entity: Root
+
+✅ Released entity: Root
+
+✅ Released asset: cancer_cell
+
+🗑️ Removing asset: lab_vo
+
+📝 Releasing entity: Root
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Root
+  - Child count: 3
+  - Has components: yes
+
+📝 Releasing entity: VO_1
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Root
+✅ Released entity: VO_1
+
+
+📝 Releasing entity: VO_2
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Root
+✅ Released entity: VO_2
+
+  - Detaching from parent: Root
+✅ Released entity: Root
+
+✅ Released entity: Root
+
+✅ Released asset: lab_vo
+
+🗑️ Removing asset: attack_cancer_environment
+
+📝 Releasing entity: Root
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Root
+  - Child count: 3
+  - Has components: yes
+
+📝 Releasing entity: bloodVessel_v004_clean
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: bloodVessel_curvedEnds
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: bloodVessel_low_001
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: bloodVessel_curvedEnds
+✅ Released entity: bloodVessel_low_001
+
+  - Detaching from parent: bloodVessel_v004_clean
+✅ Released entity: bloodVessel_curvedEnds
+
+  - Detaching from parent: Root
+✅ Released entity: bloodVessel_v004_clean
+
+
+📝 Releasing entity: SFX
+  - Child count: 8
+  - Has components: yes
+
+📝 Releasing entity: Left
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: SFX
+✅ Released entity: Left
+
+
+📝 Releasing entity: Right
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: SFX
+✅ Released entity: Right
+
+
+📝 Releasing entity: Front_Right_Upper
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: SFX
+✅ Released entity: Front_Right_Upper
+
+
+📝 Releasing entity: Front_Left_Upper
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: SFX
+✅ Released entity: Front_Left_Upper
+
+  - Detaching from parent: Root
+✅ Released entity: SFX
+
+  - Detaching from parent: Root
+✅ Released entity: Root
+
+✅ Released entity: Root
+
+✅ Released asset: attack_cancer_environment
+
+📊 Updated template cache size: 1 entities
+🔒 Remaining asset: assembled_lab
+✅ Completed aggressive lab cleanup
+
+
+=== Tracking State [Start Tracking Request] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x3016a63a0>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===
+
+🖐️ Starting hand tracking session
+Hand Provider State: initialized
+✅ Started tracking providers
+Final Hand Tracking State: true
+
+=== Tracking State [Post-Start] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x30168fca0>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: initialized
+🖐️ Hand Provider State: initialized
+=== End State Log ===
+
+✅ Phase transition completed: building
+ARPredictorRemoteService <0x156416280>: Query queue is not running.
+ARPredictorRemoteService <0x545a72430>: Query queue is not running.
+ARPredictorRemoteService <0x156417250>: Query queue is not running.
+ARPredictorRemoteService <0x545a721c0>: Query queue is not running.
+ARPredictorRemoteService <0x156447850>: Query queue is not running.
+🧹 **onChange Function**: Immersive space dismissed successfully.
+🎯 Managing windows for phase: building
+📊 Before state update - nav window open: true
+closing nav window
+📊 Window states after update:
+  Main: true
+  Debug: false
+  Library: false
+  Builder: false
+  Phases:
+    AppPhase: building
+    ScenePhase: active
+    LoadingPhase: completed
+[NetworkComponent] Trying to process with outdated syncable that has already been unbound, guid=17509113995540977677
+ADCView: Immersive space currently closed. Attempting to open with id: BuildingSpace
+🎯 PositioningSystem F7244F10-5D26-4F2F-A063-32F9F9E824BB initializing...
+ADCView: immersive space open returned .opened
+cannot add handler to 0 from 1 - dropping
+Initializing hosting entity without a context
+ITR..MainEntity initial position: SIMD3<Float>(0.0, 0.0, 0.0)
+IBL URL: file:///private/var/containers/Bundle/Application/53641378-96AC-4C40-A3E6-13460F6D8A17/PfizerOutdoCancer.app/metro_noord_2k.exr
+cannot add handler to 0 from 1 - dropping
+🔄 Unknown provider state changed to: running
+
+=== Tracking State [Unknown Provider State Change [running]] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: running
+⚠️ No device anchor available
+🌎 World Provider State: running
+🖐️ Hand Provider State: running
+=== End State Log ===
+
+✅ Unknown provider running
+📍 Positioned entity 'MainEntity' at SIMD3<Float>(-0.00051140785, 1.0101795, -1.0996209)
+✅ Successfully positioned entity: MainEntity
+ADCOptimizedImmersive: Successfully loaded outline material
+AssetLoadingManager: loadAsset(withName: antibody_scene, category: buildADCEnvironment)
+ADCOptimizedImmersive: Antibody scene loaded successfully
+ADCOptimizedImmersive: Antibody scene name: Root
+ITR..prepareAntibodyEntities(): ✅ Stored original antibody material
+ITR..prepareAntibodyEntities(): ✅ Applied outline material
+ITR..prepareLinkerEntities(): ✅ Stored original ShaderGraphMaterial
+ITR..prepareLinkerEntities(): Applying outline material to linker
+ITR..prepareLinkerEntities(): Applying outline material to linker
+ITR..prepareLinkerEntities(): Applying outline material to linker
+ITR..prepareLinkerEntities(): Applying outline material to linker
+ITR..prepareLinkerEntities(): ✅ Added sort components to linkers with order 20
+ITR..preparePayloadEntities(): ✅ Stored original inner PBR material for payload InnerSphere
+ITR..preparePayloadEntities(): ✅ Stored original outer shader material for payload OuterSphere
+ITR..preparePayloadEntities(): 📝 Available shader parameters for OuterSphere: glowColor
+ITR..preparePayloadEntities(): ✅ Stored original inner PBR material for payload InnerSphere
+ITR..preparePayloadEntities(): ✅ Stored original outer shader material for payload OuterSphere
+ITR..preparePayloadEntities(): 📝 Available shader parameters for OuterSphere: glowColor
+ITR..preparePayloadEntities(): ✅ Stored original inner PBR material for payload InnerSphere
+ITR..preparePayloadEntities(): ✅ Stored original outer shader material for payload OuterSphere
+ITR..preparePayloadEntities(): 📝 Available shader parameters for OuterSphere: glowColor
+ITR..preparePayloadEntities(): ✅ Stored original inner PBR material for payload InnerSphere
+ITR..preparePayloadEntities(): ✅ Stored original outer shader material for payload OuterSphere
+ITR..preparePayloadEntities(): 📝 Available shader parameters for OuterSphere: glowColor
+ITR..preparePayloadEntities(): ✅ Found 4 inner payloads and 4 outer payloads
+ITR..attachPopSoundToTarget(): No pop sound entity available
+ITR..attachPopSoundToTarget(): No pop sound entity available
+ITR..prepareTargetEntities(): ✅ Applied outline material to draggable linker
+ITR..prepareTargetEntities(): ✅ Applied outline material to draggable payload
+ADCOptimizedImmersive: Created ADC sort group successfully
+ITR..ADCOptimizedImmersive: ✅ Successfully loaded pop sound
+ITR..ADCOptimizedImmersive: ✅ Successfully prepared pop sound controller
+ITR..ADCOptimizedImmersive: ✅ Successfully detached pop sound from main entity
+ITR..ADCOptimizedImmersive: ✅ Successfully loaded VO1
+ITR..ADCOptimizedImmersive: ✅ Successfully loaded VO2
+ITR..ADCOptimizedImmersive: ✅ Successfully loaded VO3
+ITR..ADCOptimizedImmersive: ✅ Successfully loaded VO4
+ITR..ADCOptimizedImmersive: ✅ Successfully loaded completion sound
+ITR..ADCOptimizedImmersive: ✅ Successfully loaded nice job sound
+ITR..ADCOptimizedImmersive: ✅ Successfully set up voice over entity
+ITR..playSpatialAudio(): Playing spatial audio for step 0
+ITR..playSpatialAudio(): Started playing VO for step 0
+Message from debugger: killed

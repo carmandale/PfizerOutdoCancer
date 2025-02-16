@@ -1,0 +1,77 @@
+# RealityKit Particle System Control Guide
+
+## Overview
+This guide explains how to access and control particle systems in RealityKit, specifically focusing on starting and stopping particle emission.
+
+## Prerequisites
+1. A USDZ file with a particle emitter defined (typically named "ParticleEmitter")
+2. The particle emitter should be added as a child entity to your main entity
+
+## Steps to Control Particle Emission
+
+### 1. Finding the Particle Emitter
+To access the particle emitter, you need to:
+1. Find the particle emitter entity by name
+2. Access its ParticleEmitterComponent
+
+```swift
+if let particleSystem = entity.findEntity(named: "ParticleEmitter"),
+   var emitter = particleSystem.components[ParticleEmitterComponent.self] {
+    // Work with the emitter here
+}
+```
+
+### 2. Controlling Emission
+The ParticleEmitterComponent has an `isEmitting` property that controls particle emission:
+
+```swift
+// Start emission
+emitter.isEmitting = true
+
+// Stop emission
+emitter.isEmitting = false
+```
+
+### 3. Applying Changes
+After modifying the emitter, you must set the component back on the entity:
+
+```swift
+particleSystem.components.set(emitter)
+```
+
+## Complete Example
+Here's a complete example of toggling a particle emitter:
+
+```swift
+// Find and toggle particle emitter
+if let particleSystem = entity.findEntity(named: "ParticleEmitter"),
+   var emitter = particleSystem.components[ParticleEmitterComponent.self] {
+    // Toggle emission state
+    emitter.isEmitting = !emitter.isEmitting
+    particleSystem.components.set(emitter)
+    print("✨ Updated particle emitter isEmitting to: \(emitter.isEmitting)")
+} else {
+    print("⚠️ Could not find particle emitter")
+}
+```
+
+## Important USDZ Settings
+Key particle system settings in your USDZ file:
+- `spawnOccasion`: Controls when particles spawn ("OnBirth", "OnUpdate")
+- `loops`: Set to false for one-shot effects, true for continuous
+- `emissionDuration`: How long particles emit for
+- `burstCount`: Number of particles in a burst (if using "OnBirth")
+- `birthRate`: Particles spawned per second (if using "OnUpdate")
+
+## Best Practices
+1. Always check if the particle system exists before trying to modify it
+2. Remember to set the component back after making changes
+3. Consider using a flag in your component to track emission state
+4. Add debug prints to verify emission state changes
+5. For one-shot effects, consider using Task.sleep to wait for particles to complete
+
+## Common Issues
+1. Particle emitter not found: Verify the entity name matches exactly
+2. Changes not visible: Ensure you're setting the component back on the entity
+3. Particles not emitting: Check both isEmitting and loops properties
+4. Particles stop too soon: Verify emissionDuration and loops settings

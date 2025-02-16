@@ -109,6 +109,7 @@
 				883ED1502D15E5C80015B5FD /* Sources */,
 				883ED1512D15E5C80015B5FD /* Frameworks */,
 				8834F16D2D349ED800379788 /* Resources */,
+				88B2CCDF2D60E532001E038A /* SwiftLint */,
 			);
 			buildRules = (
 			);
@@ -206,6 +207,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		88B2CCDF2D60E532001E038A /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n    # Change directory to your source folder\n    cd \"${SRCROOT}/PfizerOutdoCancer\"\n    # Lint only the current directory (which now contains only Swift files you want)\n    swiftlint lint --path .  \nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		883ED1502D15E5C80015B5FD /* Sources */ = {

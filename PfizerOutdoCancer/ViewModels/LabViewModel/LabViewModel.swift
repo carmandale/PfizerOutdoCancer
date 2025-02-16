@@ -86,23 +86,21 @@ final class LabViewModel {
         }
         
         print("\n=== Configuring ADC Button Visibility ===")
-        if appModel.hasBuiltADC {
-            print("🎯 ADC previously built - showing button immediately")
-            print("🔇 Skipping lab VO playback")
-            shouldShowADCButton = true
-        } else {
-            print("🎯 First visit - following standard introduction flow")
-            // Load and play VO
-            let labVO = try await appModel.assetLoadingManager.instantiateAsset(
-                withName: "lab_vo",
-                category: .labEnvironment
-            )
-            root.addChild(labVO)
-            print("🎙️ Lab VO added to MainEntity")
-            
-            // Start the timer for ADC button
+        // Set ADC button visibility based on previous build
+        shouldShowADCButton = appModel.hasBuiltADC
+        print("🎯 ADC Button visibility set to: \(shouldShowADCButton)")
+        
+        // Load and play VO (now plays every time)
+        let labVO = try await appModel.assetLoadingManager.instantiateAsset(
+            withName: "lab_vo",
+            category: .labEnvironment
+        )
+        root.addChild(labVO)
+        print("🎙️ Lab VO added to MainEntity")
+        
+        // Only start the timer for ADC button if it's not already visible
+        if !shouldShowADCButton {
             print("⏲️ Starting 30-second timer for ADC button visibility")
-            shouldShowADCButton = false  // Ensure it starts hidden
             Task {
                 try? await Task.sleep(for: .seconds(38))
                 print("⏲️ Timer complete - showing ADC button")
@@ -111,6 +109,7 @@ final class LabViewModel {
                 }
             }
         }
+        
         print("=== ADC Button Configuration Complete ===\n")
         
         let labAudio = try await appModel.assetLoadingManager.instantiateAsset(

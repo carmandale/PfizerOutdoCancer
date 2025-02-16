@@ -48,7 +48,7 @@ extension AttackCancerViewModel {
             }
         } else {
             // No valid cancer cell target - spawn untargeted ADC
-        if Double.random(in: 0..<1) < 0.1 {
+        if Double.random(in: 0..<1) < hitProbability {
             print("Spawning untargeted ADC based on random chance")
             await spawnUntargetedADC(from: spawnPosition)
         } else {

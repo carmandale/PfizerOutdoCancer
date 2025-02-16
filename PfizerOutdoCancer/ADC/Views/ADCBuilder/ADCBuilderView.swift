@@ -7,6 +7,8 @@ struct ADCBuilderView: View {
     @Environment(\.openWindow) private var openWindow
     @Environment(\.dismissWindow) private var dismissWindow
     @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
+    
+    @FocusState private var isFocused: Bool
 
 
     let titles = ["Antibodies", "Linker", "Payload", "ADC Ready"]
@@ -89,131 +91,143 @@ struct ADCBuilderView: View {
             }
             .padding(.bottom, !dataModel.isVOPlaying ? 30 : 20)
             
+
+                
+            
             // Selector views or navigation button
             if !dataModel.isVOPlaying { // && dataModel.hasInitialVOCompleted
                         switch dataModel.adcBuildStep {
                         case 0:
                                 ADCSelectorView()
                                     .opacity(dataModel.hasInitialVOCompleted ? 1 : 0)
+                                    .opacity(dataModel.adcBuildStep == 0 ? 1 : 0)
+                                    .allowsHitTesting(dataModel.adcBuildStep == 0 ? true : false)
                                     .transition(Appear())
                         case 1:
                             ADCLinkerSelectorView()
+                                    .opacity(dataModel.adcBuildStep == 1 ? 1 : 0)
+                                    .allowsHitTesting(dataModel.adcBuildStep == 1 ? true : false)
                                     .transition(Appear())
                         case 2:
                             ADCPayloadSelectorView()
+                                    .opacity(dataModel.adcBuildStep == 2 ? 1 : 0)
+                                    .allowsHitTesting(dataModel.adcBuildStep == 2 ? true : false)
                                     .transition(Appear())
-
-                        case 3:
-                            NavigationButton(
-                                title: "Attack Cancer",
-                                action: {
-                                    Task {
-                                        // Log final color summary before attack
-                                        os_log(.debug, "ADC Final Color Summary (Attack Button Pressed):")
-                                        os_log(.debug, "- Antibody Color: \(dataModel.selectedADCAntibody ?? -1)")
-                                        os_log(.debug, "- Linker Color: \(dataModel.selectedLinkerType ?? -1)")
-                                        os_log(.debug, "- Payload Color: \(dataModel.selectedPayloadType ?? -1)")
-                                        
-                                        appModel.hasBuiltADC = true
-
-                                        if !appModel.isMainWindowOpen {
-                                            openWindow(id: AppModel.mainWindowId)
-                                            appModel.isMainWindowOpen = true
-                                            appModel.isInstructionsWindowOpen = true
-                                        }
-                                        await dismissImmersiveSpace()
-                                        await appModel.transitionToPhase(.playing, adcDataModel: dataModel)
-                                    }
-                                },
-                                font: .title,
-                                scaleEffect: AppModel.UIConstants.buttonExpandScale,
-                                width: 250
-                            )
-                            .fontWeight(.bold)
-                            .padding(.top, 10)
-                            .padding(.bottom, 30)
-                            .transition(Appear())
                         default:
                             EmptyView()
                         }
                     }
+
             // Updated navigation chevrons
-            // if dataModel.adcBuildStep > 0 || dataModel.adcBuildStep < 3 {
-            //     HStack {
-            //         // Back Chevron
-            //         if dataModel.adcBuildStep > 0 && dataModel.adcBuildStep < 3 {
-            //             Button(action: {
-            //                 withAnimation {
-            //                     print("Back Chevron Pressed on Step: \(dataModel.adcBuildStep)")
-            //                     dataModel.manualStepTransition = true
-            //                     print("manualStepTransition set to true = \(dataModel.manualStepTransition)")
-            //                     dataModel.adcBuildStep -= 1
-            //                 }
-            //             }) {
-            //                 Image(systemName: "chevron.left")
-            //                     .font(.largeTitle)
-            //                     .foregroundColor(.white)
-            //                     .hoverEffect { effect, isActive, proxy in
-            //                         effect.scaleEffect(!isActive ? 1.0 : AppModel.UIConstants.buttonExpandScale)
-            //                     }
-            //             }
-            //             .glassBackgroundEffect()
-            //             .opacity(dataModel.isVOPlaying ? 0.1 : 1.0)
-            //             .disabled(dataModel.isVOPlaying)
-            //             .animation(.easeInOut(duration: 0.5), value: dataModel.isVOPlaying)
-            //         }
+             if dataModel.adcBuildStep > 0 || dataModel.adcBuildStep < 3 {
+                 HStack {
+                     // Back Chevron
+                     if dataModel.adcBuildStep > 0 && dataModel.adcBuildStep < 3 {
+                         Button(action: {
+                             withAnimation {
+                                 print("Back Chevron Pressed on Step: \(dataModel.adcBuildStep)")
+                                 dataModel.manualStepTransition = true
+                                 print("manualStepTransition set to true = \(dataModel.manualStepTransition)")
+                                 dataModel.adcBuildStep -= 1
+                             }
+                         }) {
+                             Image(systemName: "chevron.left")
+                                 .font(.largeTitle)
+                                 .foregroundColor(.white)
+                                 .hoverEffect { effect, isActive, proxy in
+                                     effect.scaleEffect(!isActive ? 1.0 : AppModel.UIConstants.buttonExpandScale)
+                                 }
+                         }
+                         .glassBackgroundEffect()
+                         .opacity(dataModel.isVOPlaying ? 0.1 : 1.0)
+                         .disabled(dataModel.isVOPlaying)
+                         .animation(.easeInOut(duration: 0.5), value: dataModel.isVOPlaying)
+                     }
                     
-            //         Spacer()
+                     Spacer()
                     
-            //         // Forward Chevron
-            //         if dataModel.adcBuildStep < 3 && !dataModel.isVOPlaying {
-            //             Button(action: {
-            //                 withAnimation {
-            //                     print("Forward Chevron Pressed on Step: \(dataModel.adcBuildStep)")
-            //                     if dataModel.adcBuildStep == 0 {
-            //                         if dataModel.antibodyVOCompleted && !dataModel.antibodyStepCompleted {
-            //                             os_log("Forward: Natural transition for step 0 (VO will play), dataModel.antibodyVOCompleted:\(dataModel.antibodyVOCompleted), dataModel.antibodyStepCompleted: \(dataModel.antibodyStepCompleted)")
-            //                             dataModel.adcBuildStep += 1
-            //                             print("new build step is \(dataModel.adcBuildStep)")
-            //                             dataModel.antibodyStepCompleted = true
-            //                             print("antibodyStepCompleted = \(dataModel.antibodyStepCompleted)")
-            //                         } else {
-            //                             os_log("Forward: Manual transition for step 0 (VO will not be played), setting manualStepTransition, dataModel.antibodyVOCompleted:\(dataModel.antibodyVOCompleted), dataModel.antibodyStepCompleted: \(dataModel.antibodyStepCompleted)")
-            //                             dataModel.manualStepTransition = true
-            //                             print("manualStepTransition set to true = \(dataModel.manualStepTransition)")
-            //                             dataModel.adcBuildStep += 1
-            //                             print("new build step is \(dataModel.adcBuildStep)")
-            //                         }
-            //                     } else {
-            //                         os_log("Forward: Manual transition for step %d", dataModel.adcBuildStep, "dataModel.antibodyVOCompleted:\(dataModel.antibodyVOCompleted), dataModel.antibodyStepCompleted: \(dataModel.antibodyStepCompleted)")
-            //                         dataModel.manualStepTransition = true
-            //                         print("manualStepTransition set to true = \(dataModel.manualStepTransition)")
-            //                         dataModel.adcBuildStep += 1
-            //                         print("new build step is \(dataModel.adcBuildStep)")
-            //                     }
-            //                 }
-            //             }) {
-            //                 Image(systemName: "chevron.right")
-            //                     .font(.largeTitle)
-            //                     .foregroundColor(.white)
-            //                     .hoverEffect { effect, isActive, proxy in
-            //                         effect.scaleEffect(!isActive ? 1.0 : AppModel.UIConstants.buttonExpandScale)
-            //                     }
-            //             }
-            //             .glassBackgroundEffect()
-            //             .opacity(!dataModel.isCurrentStepComplete || dataModel.isVOPlaying ? 0.1 : 1.0)
-            //             .disabled(!dataModel.isCurrentStepComplete || dataModel.isVOPlaying)
-            //             .animation(.easeInOut(duration: 0.5), value: dataModel.isVOPlaying)
-            //         }
-            //     }
-            //     .padding(20)
-            //     .zIndex(0)
-            // }
+                     // Forward Chevron
+                     if dataModel.adcBuildStep < 3 && !dataModel.isVOPlaying {
+                         Button(action: {
+                             withAnimation {
+                                 print("Forward Chevron Pressed on Step: \(dataModel.adcBuildStep)")
+                                 if dataModel.adcBuildStep == 0 {
+                                     if dataModel.antibodyVOCompleted && !dataModel.antibodyStepCompleted {
+                                         os_log("Forward: Natural transition for step 0 (VO will play), dataModel.antibodyVOCompleted:\(dataModel.antibodyVOCompleted), dataModel.antibodyStepCompleted: \(dataModel.antibodyStepCompleted)")
+                                         dataModel.adcBuildStep += 1
+                                         print("new build step is \(dataModel.adcBuildStep)")
+                                         dataModel.antibodyStepCompleted = true
+                                         print("antibodyStepCompleted = \(dataModel.antibodyStepCompleted)")
+                                     } else {
+                                         os_log("Forward: Manual transition for step 0 (VO will not be played), setting manualStepTransition, dataModel.antibodyVOCompleted:\(dataModel.antibodyVOCompleted), dataModel.antibodyStepCompleted: \(dataModel.antibodyStepCompleted)")
+                                         dataModel.manualStepTransition = true
+                                         print("manualStepTransition set to true = \(dataModel.manualStepTransition)")
+                                         dataModel.adcBuildStep += 1
+                                         print("new build step is \(dataModel.adcBuildStep)")
+                                     }
+                                 } else {
+                                     os_log("Forward: Manual transition for step %d", dataModel.adcBuildStep, "dataModel.antibodyVOCompleted:\(dataModel.antibodyVOCompleted), dataModel.antibodyStepCompleted: \(dataModel.antibodyStepCompleted)")
+                                     dataModel.manualStepTransition = true
+                                     print("manualStepTransition set to true = \(dataModel.manualStepTransition)")
+                                     dataModel.adcBuildStep += 1
+                                     print("new build step is \(dataModel.adcBuildStep)")
+                                 }
+                             }
+                         }) {
+                             Image(systemName: "chevron.right")
+                                 .font(.largeTitle)
+                                 .foregroundColor(.white)
+                                 .hoverEffect { effect, isActive, proxy in
+                                     effect.scaleEffect(!isActive ? 1.0 : AppModel.UIConstants.buttonExpandScale)
+                                 }
+                         }
+                         .glassBackgroundEffect()
+                         .opacity(!dataModel.isCurrentStepComplete || dataModel.isVOPlaying ? 0.1 : 1.0)
+                         .disabled(!dataModel.isCurrentStepComplete || dataModel.isVOPlaying)
+                         .animation(.easeInOut(duration: 0.5), value: dataModel.isVOPlaying)
+                     }
+                 }
+                 .padding(20)
+                 .zIndex(0)
+             }
+            
+            if !dataModel.isVOPlaying && dataModel.adcBuildStep == 3 {
+                NavigationButton(
+                    title: "Attack Cancer",
+                    action: {
+                        Task {
+                            // Log final color summary before attack
+                            os_log(.debug, "ADC Final Color Summary (Attack Button Pressed):")
+                            os_log(.debug, "- Antibody Color: \(dataModel.selectedADCAntibody ?? -1)")
+                            os_log(.debug, "- Linker Color: \(dataModel.selectedLinkerType ?? -1)")
+                            os_log(.debug, "- Payload Color: \(dataModel.selectedPayloadType ?? -1)")
+                            
+                            appModel.hasBuiltADC = true
+                            
+                            if !appModel.isMainWindowOpen {
+                                openWindow(id: AppModel.mainWindowId)
+                                appModel.isMainWindowOpen = true
+                                appModel.isInstructionsWindowOpen = true
+                            }
+                            await dismissImmersiveSpace()
+                            await appModel.transitionToPhase(.playing, adcDataModel: dataModel)
+                        }
+                    },
+                    font: .title,
+                    scaleEffect: AppModel.UIConstants.buttonExpandScale,
+                    width: 250
+                )
+                .fontWeight(.bold)
+                .padding(.top, 10)
+                .padding(.bottom, 30)
+                .contentShape(Capsule())
+                .zIndex(1)
+                .opacity(dataModel.adcBuildStep == 3 ? 1 : 0)
+            }
         }
         .frame(width: 800)
         .frame(alignment: .top) // height: dataModel.isVOPlaying ? 350 : 700,
-        .glassBackgroundEffect()
-        .clipShape(RoundedRectangle(cornerRadius: 20))
+        .glassBackgroundEffect() // must have this for the background glass and rounded corners
         .animation(.spring(response: 0.5, dampingFraction: 0.7), value: dataModel.isVOPlaying)
     }
 }
