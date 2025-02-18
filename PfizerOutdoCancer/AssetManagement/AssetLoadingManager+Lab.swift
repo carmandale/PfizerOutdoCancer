@@ -135,14 +135,19 @@ extension AssetLoadingManager {
         
         // Use existing assembly logic
         let labEnvironmentScene = try await loadEntity(named: "LabEnvironment")
-        await assetRoot.addChild(labEnvironmentScene)
+        assetRoot.addChild(labEnvironmentScene)
         
         // Use existing equipment population
         let equipmentScene = try await loadPopulatedLabScene()
-        await assetRoot.addChild(equipmentScene)
+        assetRoot.addChild(equipmentScene)
         
         // Use existing IBL setup
-        try await IBLUtility.addImageBasedLighting(to: assetRoot, imageName: "lab_v005")
+        try await IBLUtility
+            .addImageBasedLighting(
+                to: assetRoot,
+                imageName: "lab_v005",
+                intensity: 1.0
+            )
         
         // Cache the assembled lab
         entityTemplates["assembled_lab"] = assetRoot

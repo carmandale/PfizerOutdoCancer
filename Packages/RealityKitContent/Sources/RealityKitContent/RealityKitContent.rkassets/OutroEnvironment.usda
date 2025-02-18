@@ -76,11 +76,30 @@ def Xform "Root"
                 token info:id = "RealityKit.MeshSorting"
                 int priorityInGroup = 2
             }
+
+            def RealityKitComponent "Billboard"
+            {
+                float blendFactor = 1
+                uniform token info:id = "RealityKit.Billboard"
+            }
         }
 
         def RealityKitComponent "HierarchicalFade"
         {
             uniform token info:id = "RealityKit.HierarchicalFade"
+        }
+
+        over "Transform"
+        {
+            over "ParticleEmitter"
+            {
+                def RealityKitComponent "MeshSorting"
+                {
+                    rel group = </Root/Model_Sorting_Group_1>
+                    token info:id = "RealityKit.MeshSorting"
+                    int priorityInGroup = 1
+                }
+            }
         }
     }
 
@@ -100,11 +119,30 @@ def Xform "Root"
                 token info:id = "RealityKit.MeshSorting"
                 int priorityInGroup = 1
             }
+
+            def RealityKitComponent "Billboard"
+            {
+                float blendFactor = 1
+                uniform token info:id = "RealityKit.Billboard"
+            }
         }
 
         def RealityKitComponent "HierarchicalFade"
         {
             uniform token info:id = "RealityKit.HierarchicalFade"
+        }
+
+        over "Transform"
+        {
+            over "ParticleEmitter"
+            {
+                def RealityKitComponent "MeshSorting"
+                {
+                    rel group = </Root/Model_Sorting_Group_1>
+                    token info:id = "RealityKit.MeshSorting"
+                    int priorityInGroup = 2
+                }
+            }
         }
     }
 
@@ -584,7 +622,7 @@ def Xform "Root"
             {
                 string actionKind = "show"
                 int blendLayer = 300
-                double duration = 10
+                double duration = 5
                 uniform token info:id = "579B6872-6F0C-4936-99DF-926FD6FC1D69"
                 double startTime = 4.8630557693588585
                 rel target = </Root/outro_people_v01>

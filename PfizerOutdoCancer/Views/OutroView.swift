@@ -16,6 +16,7 @@ import RealityKitContent
 /// A RealityView that creates an immersive lab environment with spatial audio and IBL lighting
 struct OutroView: View {
     @Environment(AppModel.self) private var appModel
+    @Environment(ADCDataModel.self) var dataModel
     @Environment(\.dismissWindow) private var dismissWindow
     @Environment(\.openWindow) private var openWindow
     
@@ -71,8 +72,8 @@ struct OutroView: View {
         .task {
             // Wait for environment animation to complete
             try? await Task.sleep(for: .seconds(55))
-            print("🎯 OutroView: Transitioning to ready")
-            await appModel.transitionToPhase(.ready)
+            print("🎯 OutroView: Transitioning to intro")
+            await appModel.transitionToPhase(.intro, adcDataModel: dataModel)
         }
         .onAppear {
             print("\n=== OutroView Appeared ===")

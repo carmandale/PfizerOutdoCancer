@@ -12,7 +12,13 @@ struct OutdoCancer: View {
     
     var body: some View {
         VStack {
-            if showTitle {
+            ZStack {
+                // Invisible placeholder text to maintain consistent layout
+                Text("Let's Outdo Cancer")
+                    .font(.extraLargeTitle)
+                    .opacity(1)
+                
+                if showTitle {
                     Text("Let's Outdo Cancer")
                         .font(.extraLargeTitle)
                         .transition(WordByWordTransition(
@@ -21,14 +27,17 @@ struct OutdoCancer: View {
                             extraBounce: 0.2
                         ))
                 }
+            }
+            .padding()
+            .frame(width: 600, height: 200)
         }
-        .frame(width: 600, height: 200)
+        
     }
 }
 
-#Preview {
-    @Previewable @State var isVisible: Bool = true
-    
-    return OutdoCancer(showTitle: $isVisible)
-}
+//#Preview {
+//    @Previewable @State var isVisible: Bool = true
+//    
+//    return OutdoCancer(showTitle: $isVisible)
+//}
 

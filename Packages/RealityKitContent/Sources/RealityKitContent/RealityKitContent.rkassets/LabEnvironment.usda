@@ -10,7 +10,7 @@
 
 def Xform "Root"
 {
-    reorder nameChildren = ["SkySphere", "lab", "LabAttachments", "Ahsan_002", "People", "adc_spin", "lab_1", "adc_spin_1"]
+    reorder nameChildren = ["SkySphere", "lab", "LabAttachments", "_3D_people_scene", "adc_spin", "lab_1", "RCP_BehaviorsContainer", "OnAddedToScene", "Reverb", "adc_spin_1", "EnvironmentLightingConfiguration", "ADC_placer"]
     def "SkySphere" (
         active = true
         customData = {
@@ -299,6 +299,39 @@ def Xform "Root"
     {
         float environmentLightingWeight = 0
         uniform token info:id = "RealityKit.EnvironmentLightingConfiguration"
+    }
+
+    def Xform "ADC_placer" (
+        active = true
+    )
+    {
+        float3 xformOp:translate = (0.115358174, 1.0508499, -0.6431079)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def Sphere "Sphere" (
+            active = false
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </Root/ADC_placer/Sphere/DefaultMaterial>
+            double radius = 0.1
+            quatf xformOp:orient = (1, 0, 0, 0)
+            float3 xformOp:scale = (1, 1, 1)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            def Material "DefaultMaterial"
+            {
+                token outputs:surface.connect = </Root/ADC_placer/Sphere/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
+
+                def Shader "DefaultSurfaceShader"
+                {
+                    uniform token info:id = "UsdPreviewSurface"
+                    color3f inputs:diffuseColor = (1, 1, 1)
+                    float inputs:roughness = 0.75
+                    token outputs:surface
+                }
+            }
+        }
     }
 }
 

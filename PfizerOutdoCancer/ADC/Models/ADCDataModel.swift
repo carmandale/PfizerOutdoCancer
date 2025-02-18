@@ -4,6 +4,19 @@ import SwiftUI
 
 @Observable
 class ADCDataModel {
+    // Positioning state
+    var isRootSetupComplete = false
+    var isEnvironmentSetupComplete = false
+    var isHeadTrackingRootReady = false
+    var shouldUpdateHeadPosition = false
+    var isPositioningComplete = false
+    
+    var isReadyForInteraction: Bool {
+        isRootSetupComplete && 
+        isEnvironmentSetupComplete && 
+        isHeadTrackingRootReady
+    }
+    
     // Color selections for ADC components
     var selectedADCAntibody: Int? = nil
     public var selectedADCLinker: Int? = nil
@@ -120,7 +133,49 @@ class ADCDataModel {
         isVOPlaying = false
         hasInitialVOCompleted = false
         showSelector = false
+        
+        // Reset positioning state
+        isPositioningComplete = false
     }
+    
+    // MARK: - Setup Methods
+    func setupRoot() -> Entity {
+        // Reset state tracking first
+        isRootSetupComplete = false
+        isEnvironmentSetupComplete = false
+        isHeadTrackingRootReady = false
+        isPositioningComplete = false
+        
+        Logger.info("🔄 Starting new ADC session: tracking states reset")
+        Logger.info("📱 ADCDataModel: Setting up root")
+        
+        let root = Entity()
+        root.name = "MainEntity"
+        root.position = AppModel.PositioningDefaults.building.position
+        
+        root.components.set(PositioningComponent(
+            offsetX: 0,
+            offsetY: 0,
+            offsetZ: -1.0,
+            needsPositioning: false,
+            shouldAnimate: false,
+            animationDuration: 0.0
+        ))
+        
+        Logger.info("""
+        
+        ✅ Root Setup Complete
+        ├─ Root Entity: \(root.name)
+        ├─ Position: \(root.position(relativeTo: nil))
+        └─ Positioning: Ready for explicit updates
+        """)
+        
+        isRootSetupComplete = true
+        isHeadTrackingRootReady = true
+        return root
+    }
+    
+    // MARK: - Color selections for ADC components
 }
 
 public enum ADCUIAttachments {

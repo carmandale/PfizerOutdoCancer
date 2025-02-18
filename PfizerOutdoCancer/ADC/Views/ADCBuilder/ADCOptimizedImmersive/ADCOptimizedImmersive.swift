@@ -32,9 +32,6 @@ struct ADCOptimizedImmersive: View {
     // Audio system
     @State internal var bubblePopSound = false
     
-    // System 2 (disabled)
-    //@State internal var audioStorage: ADCAudioStorage?
-    
     @State var mainEntity: Entity?
     @State var mainViewEntity = Entity()
     @State var antibodyRootEntity: Entity?
@@ -109,53 +106,16 @@ struct ADCOptimizedImmersive: View {
     
     var body: some View {
         RealityView { content, attachments in
-        let contentRef = content
-            Task { @MainActor in
-                
-                
-                let masterEntity = Entity()
-                self.mainEntity = masterEntity
-
-                masterEntity.components.set(PositioningComponent(
-                    offsetX: 0, // 0.125,
-                    offsetY: 0,
-                    offsetZ: -1.0
-                ))
-                
-                masterEntity.name = "MainEntity"
-                contentRef.add(masterEntity)
-                
-                os_log(.debug, "ITR..MainEntity initial position: %@", String(describing: masterEntity.position))
-                
-                // IBL
-                do {
-                    try await IBLUtility.addImageBasedLighting(to: masterEntity, imageName: "metro_noord_2k")
-                } catch {
-                    print("Failed to setup IBL: \(error)")
-                }
-
-                // Load materials and entities
-                await setupEntitiesAndMaterials()
-                
-                setupAttachments(attachments: attachments)
+            let root = dataModel.setupRoot()
+            mainEntity = root
+            content.add(root)
             
-                // Now that attachments are set up, prepare audio
+            Task { @MainActor in
+                await setupEntitiesAndMaterials(in: root)
+                setupAttachments(attachments: attachments)
                 await prepareAudioEntities()
-                
-                shouldAddADCAttachment = true
-                shouldAddMainViewAttachment = true
-                
-                antibodyRootEntity?.isEnabled = true
-                antibodyEntity?.isEnabled = false
-                antibodyEntity?.opacity = 0
-                dataModel.adcBuildStep = 0
-                
-                // Play audio for initial step
-                do {
-                    try await playSpatialAudio(step: 0)
-                } catch {
-                    os_log(.error, "ITR..ADCOptimizedImmersive: ❌ Failed to play initial VO: \(error)")
-                }
+                dataModel.isEnvironmentSetupComplete = true
+                dataModel.shouldUpdateHeadPosition = true
             }
         } update: { content, attachments in
             // updateADC()
@@ -169,7 +129,6 @@ struct ADCOptimizedImmersive: View {
             dismissWindow(id: AppModel.navWindowId)
         }
         .onDisappear {
-            //audioStorage?.cleanup() // Clean up new audio system (disabled)
             mainEntity?.removeFromParent()
             mainEntity = nil
         }
@@ -178,6 +137,50 @@ struct ADCOptimizedImmersive: View {
         }
         .task {
             await appModel.trackingManager.monitorTrackingEvents()
+        }
+        // Position update handler
+        .onChange(of: dataModel.shouldUpdateHeadPosition) { _, shouldUpdate in
+            if shouldUpdate && dataModel.isReadyForInteraction {
+                if let root = mainEntity {
+                    Logger.info("""
+                    
+                    🎯 Head Position Update Requested
+                    ├─ Current World Position: \(root.position(relativeTo: nil))
+                    ├─ Root Setup: \(dataModel.isRootSetupComplete ? "✅" : "❌")
+                    ├─ Environment: \(dataModel.isEnvironmentSetupComplete ? "✅" : "❌")
+                    └─ HeadTracking: \(dataModel.isHeadTrackingRootReady ? "✅" : "❌")
+                    """)
+                    
+                    Task {
+                        root.checkHeadPosition(animated: true, duration: 0.5)
+                        dataModel.shouldUpdateHeadPosition = false
+                        dataModel.isPositioningComplete = true  // Set after animation completes
+                    }
+                }
+            }
+        }
+        // Setup continuation handler
+        .onChange(of: dataModel.isPositioningComplete) { _, complete in
+            if complete {
+                Task { @MainActor in
+                    
+                    
+                    shouldAddADCAttachment = true
+                    shouldAddMainViewAttachment = true
+                    
+                    antibodyRootEntity?.isEnabled = true
+                    antibodyEntity?.isEnabled = false
+                    antibodyEntity?.opacity = 0
+                    dataModel.adcBuildStep = 0
+                    
+                    // Play audio for initial step
+                    do {
+                        try await playSpatialAudio(step: 0)
+                    } catch {
+                        os_log(.error, "ITR..ADCOptimizedImmersive: ❌ Failed to play initial VO: \(error)")
+                    }
+                }
+            }
         }
         .onChange(of: appModel.currentPhase) { oldPhase, newPhase in
             if oldPhase == .building && newPhase != .building {
@@ -337,33 +340,31 @@ struct ADCOptimizedImmersive: View {
                                     os_log(.debug, "ITR..Found ADC_complex_001, starting animation sequence")
                                     os_log(.debug, "ITR..Initial ADC position: %@", String(describing: adcComplexEntity.position))
                                     
-                                    do {
-                                        // Move antibody up
-                                        try await adcComplexEntity.animatePosition(
-                                            to: SIMD3(-0.4, 0, 0),
-                                            duration: 1.0,
-                                            timing: .easeInOut,
-                                            waitForCompletion: true
-                                        )
-                                        os_log(.debug, "ITR..ADC position after move: %@", String(describing: adcComplexEntity.position))
-                                        
-                                        // Start rotation
-                                        os_log(.debug, "ITR..Starting ADC rotation")
-                                        adcComplexEntity.startContinuousRotation(speed: 0.5, axis: .xAxis)
-                                        
-                                        // Move main view back
-                                        os_log(.debug, "ITR..Moving main view back to original position")
-                                        try await mainViewEntity.animatePositionAndRotation(
-                                            position: SIMD3(0.5, 0, -0.2),
-                                            rotation: 0,
-                                            duration: 1.0,
-                                            timing: .easeInOut,
-                                            waitForCompletion: true
-                                        )
-                                        os_log(.debug, "ITR..Main view returned to original position")
-                                    } catch {
-                                        os_log(.error, "ITR..❌ Animation sequence failed: %@", error.localizedDescription)
-                                    }
+                                    
+                                    // Move antibody up
+                                    await adcComplexEntity.animatePosition(
+                                        to: SIMD3(-0.4, 0, 0),
+                                        duration: 1.0,
+                                        timing: .easeInOut,
+                                        waitForCompletion: true
+                                    )
+                                    os_log(.debug, "ITR..ADC position after move: %@", String(describing: adcComplexEntity.position))
+                                    
+                                    // Start rotation
+                                    os_log(.debug, "ITR..Starting ADC rotation")
+                                    adcComplexEntity.startContinuousRotation(speed: 0.5, axis: .xAxis)
+                                    
+                                    // Move main view back
+                                    os_log(.debug, "ITR..Moving main view back to original position")
+                                    await mainViewEntity.animatePositionAndRotation(
+                                        position: SIMD3(0.5, 0, -0.2),
+                                        rotation: 0,
+                                        duration: 1.0,
+                                        timing: .easeInOut,
+                                        waitForCompletion: true
+                                    )
+                                    os_log(.debug, "ITR..Main view returned to original position")
+                                    
                                 } else {
                                     os_log(.error, "ITR..❌ Could not find ADC_complex_001 entity")
                                 }
@@ -443,7 +444,7 @@ struct ADCOptimizedImmersive: View {
                         
 //                        try? await mainEntity.animatePosition(to: SIMD3(-0.125, 0, 0), duration: 1.0, delay: 0.0)
 //                        os_log(.debug, "ITR..Attempting to animate main view position")
-                        try? await mainViewEntity.animatePositionAndRotation(
+                        await mainViewEntity.animatePositionAndRotation(
                             position: SIMD3(-0.5, 0, 0.2),
                             rotation: 30,
                             duration: 1.0,
@@ -453,7 +454,7 @@ struct ADCOptimizedImmersive: View {
                         // After position animation, fade in antibody with delay
                         if let antibodyEntity = antibodyEntity {
                             os_log(.debug, "ITR..antibodyEntity exists, fading in")
-                            try? await antibodyEntity.fadeOpacity(to: 1, duration: 1.0, delay: 1.0)
+                            await antibodyEntity.fadeOpacity(to: 1, duration: 1.0, delay: 1.0)
                             antibodyEntity.isEnabled = true
                             os_log(.debug, "ITR..antibodyEntity fade complete, isEnabled set to true")
                         }
@@ -463,7 +464,7 @@ struct ADCOptimizedImmersive: View {
                         if let linkerEntity = linkerEntity {
                             os_log(.debug, "ITR..linkerEntity exists, isEnabled: \(linkerEntity.isEnabled)")
                             // Fade in entities
-                            try? await linkerEntity.fadeOpacity(to: 1, duration: 1.0)
+                            await linkerEntity.fadeOpacity(to: 1, duration: 1.0)
                             linkerEntity.isEnabled = true
                             os_log(.debug, "ITR..linkerEntity fade complete, isEnabled set to true")
                         } else {
@@ -474,7 +475,7 @@ struct ADCOptimizedImmersive: View {
                         if let payloadEntity = payloadEntity {
                             os_log(.debug, "ITR..Attempting to fade in payloadEntity")
                             os_log(.debug, "ITR..payload.isEnabled: \(payloadEntity.isEnabled)")
-                            try? await payloadEntity.fadeOpacity(to: 1, duration: 1.0)
+                            await payloadEntity.fadeOpacity(to: 1, duration: 1.0)
                             payloadEntity.isEnabled = true
                         }
                     default:
@@ -623,7 +624,19 @@ struct ADCOptimizedImmersive: View {
         payloadAttachmentEntity?.isEnabled = !currentStepComplete
     }
     
-    private func setupEntitiesAndMaterials() async {
+    private func setupEntitiesAndMaterials(in root: Entity) async {
+        // Add IBL setup first
+        do {
+            try await IBLUtility
+                .addImageBasedLighting(
+                    to: root,
+                    imageName: "metro_noord_2k",
+                    intensity: 0.5
+                )
+            os_log(.debug, "ADCOptimizedImmersive: Successfully setup IBL lighting")
+        } catch {
+            os_log(.error, "ADCOptimizedImmersive: Failed to setup IBL with error: %@", error.localizedDescription)
+        }
         // Get outline material
         do {
             let materialEntity = try await Entity(named: "Materials/M_outline.usda", in: realityKitContentBundle)

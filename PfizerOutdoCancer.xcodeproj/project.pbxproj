@@ -225,7 +225,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n    # Change directory to your source folder\n    cd \"${SRCROOT}/PfizerOutdoCancer\"\n    # Lint only the current directory (which now contains only Swift files you want)\n    swiftlint lint --path .  \nfi\n";
+			shellScript = "if which swiftlint >/dev/null; then\n    # Change directory to your source folder\n    cd \"${SRCROOT}/PfizerOutdoCancer\"\n    # Lint only the current directory\n    swiftlint lint --path .\n    # Touch a dummy file to indicate the script ran\n    touch \"${SRCROOT}/PfizerOutdoCancer/.swiftlint-dummy-output\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

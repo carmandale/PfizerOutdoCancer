@@ -6,6 +6,20 @@ import Combine
 @Observable
 @MainActor
 final class AttackCancerViewModel {
+    // MARK: - State Tracking
+    var isRootSetupComplete: Bool = false
+    var isEnvironmentSetupComplete: Bool = false
+    var shouldUpdateHeadPosition: Bool = false
+    var isHeadTrackingRootReady: Bool = false
+    var isPositioningComplete: Bool = false
+    
+    // Track when we're fully ready for interactions
+    var isReadyForInteraction: Bool {
+        isRootSetupComplete && 
+        isEnvironmentSetupComplete && 
+        isHeadTrackingRootReady
+    }
+    
     // MARK: - Collision Filters
     static var adcFilter: CollisionFilter {
         let adcMask = CollisionGroup.all.subtracting(adcGroup)
@@ -116,21 +130,42 @@ final class AttackCancerViewModel {
         // Initialize hopeMeterTimeLeft
         self.hopeMeterTimeLeft = hopeMeterDuration
     }
-
-    // MARK: - Cleanup
+    
+    // MARK: - Cleanup and Reset Functions
+    
+    /// Tracks the current state of cleanup operations
     enum CleanupState {
-        case none
-        case gameOnly    // For tearDownGame
-        case complete    // For full cleanup
+        case none        // No cleanup in progress
+        case gameOnly    // tearDownGame() in progress/complete
+        case complete    // full cleanup() in progress/complete
     }
-
+    
+    /// Current cleanup state
     var cleanupState: CleanupState = .none
+    
+    /// Flag to prevent concurrent cleanup operations
     private var isCleaningUp = false
 
+    /// Tears down the current game session's content while preserving the core system.
+    /// Use this for cleaning up game-specific content without full system shutdown.
+    ///
+    /// Responsibilities:
+    /// - Removes game entities (cells, ADCs)
+    /// - Cleans up VO content
+    /// - Resets positioning components
+    /// - Cancels game-specific subscriptions
+    /// - Does NOT clear core system references
+    /// - Does NOT remove root entities
+    /// - Does NOT affect app model connections
+    ///
+    /// Call this when:
+    /// - Transitioning between game phases
+    /// - Ending a game session
+    /// - Preparing for a new game session
     func tearDownGame() async {
         // Prevent duplicate teardown
         guard cleanupState == .none else {
-            print("⚠️ Tear down already in progress or completed: \(cleanupState)")
+            Logger.debug("⚠️ Tear down already in progress or completed: \(cleanupState)")
             return
         }
         
@@ -182,9 +217,22 @@ final class AttackCancerViewModel {
             
             // Remove any VO entities from headTrackingRoot
             if let VO_parent = root.findEntity(named: "headTrackingRoot") {
+                Logger.info("\n🎯 Cleaning up head tracking root")
+                // Remove all child entities
                 VO_parent.children.forEach { child in
                     child.removeFromParent()
                 }
+                
+                // Reset positioning component to clean state
+                if var positioningComponent = VO_parent.components[PositioningComponent.self] {
+                    Logger.info("├─ Resetting PositioningComponent state")
+                    positioningComponent.needsPositioning = false
+                    positioningComponent.shouldAnimate = false
+                    positioningComponent.animationDuration = 0.0
+                    VO_parent.components[PositioningComponent.self] = positioningComponent
+                }
+                
+                Logger.info("└─ Head tracking cleanup complete")
             }
         }
         
@@ -192,9 +240,23 @@ final class AttackCancerViewModel {
         print("✅ Game tear down complete\n")
     }
 
+    /// Performs complete system cleanup and shutdown.
+    /// Use this for full system teardown when leaving the game entirely.
+    ///
+    /// Responsibilities:
+    /// - Performs game teardown first
+    /// - Removes all entities including root
+    /// - Clears all system references
+    /// - Resets all flags to initial state
+    /// - Prepares system for complete shutdown
+    ///
+    /// Call this when:
+    /// - Exiting the game completely
+    /// - Transitioning to a different app section
+    /// - Requiring complete system reset
     func cleanup() async {
         guard !isCleaningUp else {
-            print("⚠️ Cleanup already in progress")
+            Logger.debug("⚠️ Cleanup already in progress")
             return
         }
         guard cleanupState != .complete else {
@@ -229,6 +291,7 @@ final class AttackCancerViewModel {
         isSetupComplete = false
         hasFirstADCBeenFired = false
         environmentLoaded = false
+        isPositioningComplete = false
         
         cleanupState = .complete
         isCleaningUp = false

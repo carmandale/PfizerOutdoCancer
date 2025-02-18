@@ -40,12 +40,8 @@ extension ADCOptimizedImmersive {
                 
                 // Set up audio with proper resource handling
                 if let resource = popAudioFileResource {
-                    do {
-                        self.popAudioPlaybackController = try popAudioEntity?.prepareAudio(resource)
-                        os_log(.debug, "ITR..prepareAntibodyEntities(): ✅ Audio prepared successfully")
-                    } catch {
-                        os_log(.error, "ITR..prepareAntibodyEntities(): ❌ Failed to prepare audio: \(error)")
-                    }
+                    self.popAudioPlaybackController = popAudioEntity?.prepareAudio(resource)
+                    os_log(.debug, "ITR..prepareAntibodyEntities(): ✅ Audio prepared successfully")
                 }
                 
                 // Store original material with proper type checking

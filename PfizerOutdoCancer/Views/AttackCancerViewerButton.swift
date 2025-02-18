@@ -98,10 +98,10 @@ struct AttackCancerViewerButton: View {
                             cycleTheme()
                         } else {
                             Task {
-                                if !appModel.isMainWindowOpen {
-                                    openWindow(id: AppModel.mainWindowId)
-                                    appModel.isMainWindowOpen = true
-                                }
+                                // if !appModel.isMainWindowOpen {
+                                //     openWindow(id: AppModel.mainWindowId)
+                                //     appModel.isMainWindowOpen = true
+                                // }
                                 appModel.isInstructionsWindowOpen = true
                                 await appModel.transitionToPhase(.playing, adcDataModel: dataModel)
                             }

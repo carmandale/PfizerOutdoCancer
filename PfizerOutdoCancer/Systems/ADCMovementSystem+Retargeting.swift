@@ -248,7 +248,7 @@ extension ADCMovementSystem {
         }
         
         #if DEBUG
-        if let target = bestTarget {
+        if bestTarget != nil {
             // print("\n🎯 Selected target:")
             // print("Cell ID: \(target.1)")
             // print("Attachment Point: \(target.0.name)")

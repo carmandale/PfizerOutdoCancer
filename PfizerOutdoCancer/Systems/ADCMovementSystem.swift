@@ -404,7 +404,7 @@ public class ADCMovementSystem: System {
                     if let cellID = adcComponent.targetCellID,
                        let cancerCell = Self.findParentCancerCell(for: targetEntity, in: context.scene),
                        let stateComponent = cancerCell.components[CancerCellStateComponent.self] {
-                        let previousHits = stateComponent.parameters.hitCount
+                        let _ = stateComponent.parameters.hitCount
                         stateComponent.parameters.hitCount += 1
                         stateComponent.parameters.wasJustHit = true
                         
@@ -450,6 +450,8 @@ public class ADCMovementSystem: System {
                 
                 // Save updated component.
                 entity.components[ADCComponent.self] = adcComponent
+                
+                // MARK: ORBITING
             } else if adcComponent.state == .orbiting {
                 // Get the orbit center from headTrackingRoot or use a fallback.
                 let orbitCenter: SIMD3<Float>
@@ -471,6 +473,8 @@ public class ADCMovementSystem: System {
                     if Self.retargetADC(entity, &adcComponent, currentPosition: entity.position(relativeTo: nil), in: context.scene) {
                         // Valid target found, transition to moving state
                         adcComponent.state = .moving
+                        adcComponent.lookupTable = nil
+                        adcComponent.traveledDistance = 0.0
                         adcComponent.startWorldPosition = entity.position(relativeTo: nil)
                         entity.components[ADCComponent.self] = adcComponent
                         continue

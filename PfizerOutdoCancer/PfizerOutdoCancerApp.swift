@@ -54,8 +54,8 @@ struct PfizerOutdoCancerApp: App {
                                 try? await Task.sleep(nanoseconds: 200_000_000) // 200ms delay
                                 print("I am in the \(appModel.currentPhase) phase")
                                 print("I am in the \(scenePhase) scene phase")
-                                // Always transition to ready state
-                                 await appModel.transitionToPhase(.ready)
+                                // Always transition to intro state
+                                 await appModel.transitionToPhase(.intro, adcDataModel: adcDataModel)
                             }
                         default:
                             break
@@ -135,7 +135,7 @@ struct PfizerOutdoCancerApp: App {
         Group {
 
             ImmersiveSpace(id: "IntroSpace") {
-                if appModel.currentPhase == .intro {
+                if appModel.currentPhase == .intro || appModel.currentPhase == .ready {
                     IntroView()
 //                        .preferredSurroundingsEffect(.ultraDark)
                         .environment(appModel)
@@ -160,12 +160,13 @@ struct PfizerOutdoCancerApp: App {
                 }
                 
             }
-            .immersionStyle(selection: $appModel.introStyle, in: .mixed)
+            .immersionStyle(selection: $appModel.introStyle, in: .progressive)
 
             ImmersiveSpace(id: "OutroSpace") {
                 if appModel.currentPhase == .outro {
                     OutroView()
                         .environment(appModel)
+                        .environment(adcDataModel)
                         .onAppear {
                             appModel.immersiveSpaceState = .open
                         }
@@ -186,7 +187,7 @@ struct PfizerOutdoCancerApp: App {
                 }
                 
             }
-            .immersionStyle(selection: $appModel.outroStyle, in: .mixed)
+            .immersionStyle(selection: $appModel.outroStyle, in: .progressive)
 
             
                 ImmersiveSpace(id: "LabSpace") {
@@ -489,13 +490,23 @@ struct PfizerOutdoCancerApp: App {
         // 1. Close immersive space if open
         if appModel.immersiveSpaceState == .open {
             appModel.immersiveSpaceDismissReason = .manual
+            if let activeSpace = appModel.currentImmersiveSpace {
+                Logger.debug("""
+                
+                    === Attempting to dismiss Immersive Space ===
+                    Current Phase: \(appModel.currentPhase)
+                    Active Space: \(String(describing: activeSpace))
+                
+                """)
+            }
             await dismissImmersiveSpace()
+            Logger.debug("=== Finished Dismiss Attempt ===\n")
             os_log(.debug, "🧹 **cleanupAppState**: Immersive space dismissed successfully.")
             appModel.immersiveSpaceState = .closed
         }
         
         // 2. Stop tracking
-        appModel.trackingManager.stopTracking()
+        await appModel.trackingManager.stopTracking()
 
         // Introduce a small delay *before* resetting immersiveSpaceDismissReason
         // This gives the onDisappear handler time to execute.

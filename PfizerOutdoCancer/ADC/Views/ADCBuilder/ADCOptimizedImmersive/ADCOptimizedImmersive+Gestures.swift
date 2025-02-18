@@ -71,7 +71,7 @@ extension ADCOptimizedImmersive {
                     dataModel.placedLinkerCount += 1
                     Task { @MainActor in
                         attachPopSoundToTarget(finishedEntity)
-                        await playPopSound()
+                        playPopSound()
                     }
                     
                     Task { @MainActor in
@@ -164,7 +164,7 @@ extension ADCOptimizedImmersive {
         // Play pop sound while entity is still in final position
         if let workingEntity = workingEntity {
             attachPopSoundToTarget(workingEntity)
-            await playPopSound()
+            playPopSound()
             workingEntity.opacity = 0
         }
         // Removed auto advancement logic.
@@ -203,7 +203,7 @@ extension ADCOptimizedImmersive {
                     dataModel.selectedADCPayload = dataModel.selectedPayloadType
                     Task { @MainActor in
                         attachPopSoundToTarget(finishedEntity)
-                        await playPopSound()
+                        playPopSound()
                     }
                     dataModel.placedPayloadCount += 1
                     

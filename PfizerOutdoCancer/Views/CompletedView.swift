@@ -59,11 +59,11 @@ struct CompletedView: View {
                 }
             }
         }
-        .padding(64)
+//        .padding(64)
         .frame(maxWidth: 500)
-        .clipShape(RoundedRectangle(cornerRadius: 20))
+//        .clipShape(RoundedRectangle(cornerRadius: 20))
         .glassBackgroundEffect()
-        .padding(32)
+//        .padding(32)
         .onAppear {
             print("=== CompletedView Appeared ===")
             print("🔍 Immersive Space State: \(appModel.immersiveSpaceState)")
@@ -99,9 +99,9 @@ struct CompletedView: View {
                 .bold()
                 .monospacedDigit()
         }
-        .frame(width: 372) // Width of both buttons (180 * 2) + spacing (12)
-        .padding()
-        .clipShape(RoundedRectangle(cornerRadius: 12))
+//        .frame(width: 372) // Width of both buttons (180 * 2) + spacing (12)
+//        .padding()
+//        .clipShape(RoundedRectangle(cornerRadius: 12))
     }
 
 }

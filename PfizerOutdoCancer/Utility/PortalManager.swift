@@ -12,12 +12,12 @@ final class PortalManager {
         portalRoot.position.y = 1.5
         portalRoot.position.z = -1.5
         
-        let titleRoot = Entity()
-        titleRoot.name = "titleRoot"
-        titleRoot.scale *= 0.5
-        titleRoot.position.z = 0.1
+        // let titleRoot = Entity()
+        // titleRoot.name = "titleRoot"
+        // titleRoot.scale *= 0.5
+        // titleRoot.position.z = 0.1
         
-        portalRoot.addChild(titleRoot)
+        // portalRoot.addChild(titleRoot)
         
         let portalPlane = ModelEntity(
             mesh: .generatePlane(width: 2.0, height: 1.0, cornerRadius: 0.3),

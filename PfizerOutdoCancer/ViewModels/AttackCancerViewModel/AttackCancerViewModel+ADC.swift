@@ -155,13 +155,10 @@ extension AttackCancerViewModel {
         attachPoint.isUntargeted = true
         
         // Add components using proper lifecycle management
-        do {
-            // try await headPosition.components.set(positioning)
-            try await headPosition.components.set(attachPoint)
-        } catch {
-            print("⚠️ Failed to set components on headPosition: \(error.localizedDescription)")
-        }
         
+        // try await headPosition.components.set(positioning)
+        headPosition.components.set(attachPoint)
+       
         // Add headPosition to the scene's root to avoid ADC root offset
         print("DEBUG: Root entity details:")
         print("- Name: \(root.name)")
@@ -207,12 +204,10 @@ extension AttackCancerViewModel {
         adcComponent.arcHeightFactor = Float.random(in: ADCMovementSystem.arcHeightRange)
         
         // Add components using proper lifecycle management
-        do {
-            try await adc.components.set(collision)
-            try await adc.components.set(adcComponent)
-        } catch {
-            print("⚠️ Failed to set components on ADC: \(error.localizedDescription)")
-        }
+        
+        adc.components.set(collision)
+        adc.components.set(adcComponent)
+     
         
         // Set initial position
         adc.position = position

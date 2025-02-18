@@ -4,6 +4,7 @@ struct LoadingView: View {
     @Environment(AppModel.self) private var appModel
     @Environment(\.dismissWindow) private var dismissWindow
     @State private var showTitle = false
+    @State private var viewOpacity: Double = 1.0
     @Namespace private var logoNamespace
     
     var body: some View {
@@ -18,12 +19,20 @@ struct LoadingView: View {
             }
         }
         .frame(width: 800, height: 600)
+        .opacity(viewOpacity)
         .animation(.easeInOut(duration: 0.5), value: appModel.assetLoadingManager.loadingState)
         .onChange(of: appModel.assetLoadingManager.loadingState) { oldState, newState in
             // print("Loading state changed from \(oldState) to \(newState)")
             // print("Loading progress: \(appModel.loadingProgress)")
             withAnimation(.easeInOut(duration: 0.2)) {
                 appModel.displayedProgress = appModel.loadingProgress
+            }
+        }
+        .onChange(of: appModel.introState.isSetupComplete) { _, complete in
+            if complete {
+                withAnimation(.easeOut(duration: 1.0)) {
+                    viewOpacity = 0.0
+                }
             }
         }
         .onDisappear {

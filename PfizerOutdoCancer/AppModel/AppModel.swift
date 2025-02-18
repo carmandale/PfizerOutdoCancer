@@ -27,6 +27,20 @@ extension AppModel {
     nonisolated static let buildingSpaceId = "BuildingSpace"
     nonisolated static let attackSpaceId = "AttackSpace"
     
+    enum PositioningDefaults {
+        case intro
+        case building
+        case playing
+        
+        var position: SIMD3<Float> {
+            switch self {
+            case .intro:    return SIMD3<Float>(0.0, -1.5, -1.0)
+            case .building: return SIMD3<Float>(0.0, 1.2, -1.0)
+            case .playing:  return SIMD3<Float>(0.0, 1.5, -1.0)
+            }
+        }
+    }
+    
     // MARK: - Global UI Settings
     enum UIConstants {
         // Button Dimensions
@@ -54,14 +68,14 @@ enum AppPhase: String, CaseIterable, Codable, Sendable, Equatable {
     case error
     
     var needsImmersiveSpace: Bool {
-        return self != .loading && self != .error && self != .ready && self != .building 
+        return self != .loading && self != .error && self != .building 
     }
     
     var needsHandTracking: Bool {
         switch self {
-        case .intro, .lab, .building, .playing:
+        case .intro, .lab, .building, .playing, .ready:
             return true
-        case .loading, .completed, .outro, .ready, .error:
+        case .loading, .completed, .outro, .error:
             return false
         }
     }
@@ -78,7 +92,8 @@ enum AppPhase: String, CaseIterable, Codable, Sendable, Equatable {
         case .building: return AppModel.buildingSpaceId
         case .playing, .completed: return AppModel.attackSpaceId
         case .outro: return AppModel.outroSpaceId
-        case .loading, .ready, .error: return ""
+        case .ready: return AppModel.introSpaceId
+        case .loading, .error: return ""
         }
     }
     
@@ -143,8 +158,14 @@ final class AppModel {
     var readyToStartLab: Bool = false
 
     // MARK: - Immersion Style
-    var introStyle: ImmersionStyle = .mixed
-    var outroStyle: ImmersionStyle = .mixed
+    var introStyle: ImmersionStyle = .progressive(
+        0.1...1.0,
+        initialAmount: 0.5
+    )
+    var outroStyle: ImmersionStyle = .progressive(
+        0.1...1.0,
+        initialAmount: 0.5
+    )
     var labStyle: ImmersionStyle = .full
     var buildingStyle: ImmersionStyle = .mixed
     var attackStyle: ImmersionStyle = .progressive(
@@ -178,7 +199,7 @@ final class AppModel {
     }
     
     // MARK: - Space Management
-    @ObservationIgnored private var currentImmersiveSpace: String?
+    var currentImmersiveSpace: String?
     @ObservationIgnored private(set) var isTransitioning = false
     
     var hasImmersiveSpace: Bool {
@@ -193,8 +214,8 @@ final class AppModel {
     }
     
     func startAttackCancerGame() {
-        print("🎮 Starting Attack Cancer Game (startAttackCancerGame called)")
-        print("Starting Hope Meter")
+        Logger.debug("🎮 Starting Attack Cancer Game (startAttackCancerGame called)")
+        Logger.debug("Starting Hope Meter")
         startHopeMeter()
     }
     
@@ -202,7 +223,7 @@ final class AppModel {
     @ObservationIgnored private var hopeMeterTimer: Timer?
     
     func startHopeMeter() {
-        print("🕒 Starting Hope Meter (startHopeMeter called)")
+        Logger.debug("🕒 Starting Hope Meter (startHopeMeter called)")
         stopHopeMeter() // Ensure any existing timer is cleaned up
         
         gameState.hopeMeterTimeLeft = gameState.hopeMeterDuration // Reset timer
@@ -223,7 +244,7 @@ final class AppModel {
     }
     
     func stopHopeMeter() {
-        print("🛑 Stopping Hope Meter")
+        Logger.debug("🛑 Stopping Hope Meter")
         hopeMeterTimer?.invalidate()
         hopeMeterTimer = nil
         gameState.isHopeMeterRunning = false
@@ -231,7 +252,7 @@ final class AppModel {
     
     @MainActor
     func accelerateHopeMeterToCompletion() async {
-        print("🚀 Accelerating hope meter to completion")
+        Logger.debug("🚀 Accelerating hope meter to completion")
         
         // Stop the normal timer
         hopeMeterTimer?.invalidate()
@@ -273,28 +294,51 @@ final class AppModel {
         self.labState.appModel = self
         self.outroState.appModel = self
         self.gameState.handTracking = self.trackingManager.handTrackingManager
-        print("AppModel init() - Instance: \(ObjectIdentifier(self))")
+        self.trackingManager.appModel = self  // Set the reference to AppModel
+        Logger.debug("AppModel init() - Instance: \(ObjectIdentifier(self))")
     }
     
     // MARK: - Phase Management
     @MainActor
     func transitionToPhase(_ newPhase: AppPhase, adcDataModel: ADCDataModel? = nil) async {
-        print("🔄 Phase transition: \(currentPhase) -> \(newPhase)")
-        print("🔍 isTransitioning: \(isTransitioning)")
-        print("🔍 immersiveSpaceState: \(immersiveSpaceState)")
+        Logger.info("""
+        
+        🔄 === PHASE TRANSITION START ===
+        ├─ From: \(currentPhase)
+        ├─ To: \(newPhase)
+        ├─ Current Tracking State: \(trackingManager.worldTrackingProvider.state)
+        ├─ Has Hand Tracking: \(currentPhase.needsHandTracking)
+        └─ Will Need Hand Tracking: \(newPhase.needsHandTracking)
+        """)
+        
+        Logger.debug("🔄 Phase transition: \(currentPhase) -> \(newPhase)")
+        Logger.debug("🔍 isTransitioning: \(isTransitioning)")
+        Logger.debug("🔍 immersiveSpaceState: \(immersiveSpaceState)")
         guard !isTransitioning else {
-            print("⚠️ Already transitioning, skipping")
+            Logger.debug("⚠️ Already transitioning, skipping")
             return
         }
         isTransitioning = true
         defer {
             isTransitioning = false
-            print("✅ Phase transition completed: \(newPhase)")
+            Logger.debug("✅ Phase transition completed: \(newPhase)")
         }
 
         // 1. Stop tracking if we're in a phase that uses it
         if currentPhase.needsHandTracking {
-            trackingManager.stopTracking()
+            Logger.info("🛑 Stopping tracking for phase transition")
+            await trackingManager.stopTracking()
+            
+            // Wait for tracking to fully stop
+            for _ in 0..<10 { // Maximum 1 second wait
+                if case .stopped = trackingManager.worldTrackingProvider.state {
+                    Logger.info("✅ Tracking stopped successfully")
+                    break
+                }
+                try? await Task.sleep(for: .milliseconds(100))
+            }
+            
+            Logger.info("📊 Post-Stop Tracking State: \(trackingManager.worldTrackingProvider.state)")
         }
 
         // 2. Pre-load assets for the *new* phase *before* any cleanup
@@ -308,69 +352,112 @@ final class AppModel {
         // 3. Clean up the *current* phase (guarantee completion with await)
         await cleanupCurrentPhase(for: newPhase)
 
-        // 4. *Now* set the new phase
+        // Set the new phase before starting tracking
         currentPhase = newPhase
 
-        // 5. Start tracking if the new phase needs it
+        // 4. Start tracking if the new phase needs it
         if newPhase.needsHandTracking {
             // Add a small delay to ensure ARKit has time to clean up
             try? await Task.sleep(for: .milliseconds(100))
             try? await trackingManager.startTracking(needsHandTracking: newPhase.needsHandTracking)
+            
+            do {
+                try await trackingManager.waitForTrackingToRun()
+                Logger.info("✅ Tracking started successfully")
+            } catch {
+                Logger.error("""
+                
+                ❌ Failed to start tracking
+                ├─ Error: \(error)
+                ├─ Phase: \(newPhase)
+                └─ Current State: \(trackingManager.worldTrackingProvider.state)
+                """)
+                // Continue with the phase transition even if tracking fails
+                // The system will attempt to recover in subsequent frames
+            }
+            
+            // Wait for tracking to be running
+            for _ in 0..<10 { // Maximum 1 second wait
+                if case .running = trackingManager.worldTrackingProvider.state {
+                    break
+                }
+                try? await Task.sleep(for: .milliseconds(100))
+            }
+            
+            // Log final tracking state
+            await trackingManager.logTrackingState(context: "Post-Transition")
         }
     }
 
     private func preloadAssets(for phase: AppPhase, adcDataModel: ADCDataModel?) async {
-        if phase == .playing {
-            print("\n=== Pre-loading Playing Phase Assets ===")
-            print("📱 Pre-loading required assets for playing phase...")
+        if phase == .intro || phase == .playing {
+            Logger.debug("\n=== Preparing ADC for intro and playing ===")
             if let adcDataModel = adcDataModel {
                 do {
                     // Load and configure ADC template
-                    print("🎯 Loading ADC template...")
+                    Logger.debug("🎯 Loading ADC template...")
                     let adcEntity = try await assetLoadingManager.instantiateAsset(
                         withName: "adc",
                         category: .adc
                     )
-                    print("✅ ADC entity loaded, applying colors...")
+                    Logger.debug("✅ ADC entity loaded, applying colors...")
                     gameState.setADCTemplate(adcEntity, dataModel: adcDataModel)
-                    print("✅ ADC template configured with colors")
+                    Logger.debug("✅ ADC template configured with colors")
+                    
+                    // Pass template to lab state if we have built an ADC
+                    labState.adcTemplate = gameState.adcTemplate
+                    Logger.debug("✅ ADC template passed to lab state")
+                    
 
+                } catch {
+                    Logger.debug("❌ Failed to load playing phase assets: \(error)")
+                }
+            } else {
+                Logger.debug("❌ No ADCDataModel available for playing phase")
+            }
+        }
+        if phase == .playing {
+            Logger.debug("\n=== Pre-loading Playing Phase Assets ===")
+            Logger.debug("📱 Pre-loading required assets for playing phase...")
+            if let adcDataModel = adcDataModel {
+                do {
+                    
                     // Ensure tutorial asset is loaded and cached
-                    print("🎯 Loading tutorial assets...")
+                    Logger.debug("🎯 Loading tutorial assets...")
                     _ = try await assetLoadingManager.instantiateAsset(
                         withName: "game_start_vo",
                         category: .attackCancerEnvironment
                     )
-                    print("✅ Tutorial assets cached")
+                    Logger.debug("✅ Tutorial assets cached")
 
                     // ADDED: Load and cache attack_cancer_environment
-                    print("🎯 Loading attack_cancer_environment...")
+                    Logger.debug("🎯 Loading attack_cancer_environment...")
                     _ = try await assetLoadingManager.instantiateAsset(
                         withName: "attack_cancer_environment",
                         category: .attackCancerEnvironment
                     )
-                    print("✅ attack_cancer_environment cached")
+                    Logger.debug("✅ attack_cancer_environment cached")
                     try? await Task.sleep(for: .milliseconds(100)) // Small delay
-                    print("✅✅✅ Playing Phase Assets Ready (with delay) ===\n") // More emphatic message
+                    Logger.debug("✅✅✅ Playing Phase Assets Ready (with delay) ===\n") // More emphatic message
 
                 } catch {
-                    print("❌ Failed to load playing phase assets: \(error)")
+                    Logger.debug("❌ Failed to load playing phase assets: \(error)")
                 }
             } else {
-                print("❌ No ADCDataModel available for playing phase")
+                Logger.debug("❌ No ADCDataModel available for playing phase")
             }
         } else if phase == .outro {
-            print("\n=== Pre-loading Outro Phase Assets ===")
-            print("📱 Pre-loading outro environment...")
+            Logger.debug("\n=== Pre-loading Outro Phase Assets ===")
+            Logger.debug("📱 Pre-loading outro environment...")
             do {
                 _ = try await assetLoadingManager.instantiateAsset(
                     withName: "outro_environment",
                     category: .outroEnvironment
                 )
-                print("✅ Outro environment cached")
-                print("=== Outro Phase Assets Ready ===\n")
+                Logger.debug("✅ Outro environment cached")
+                Logger.debug("=== Outro Phase Assets Ready ===\n")
             } catch {
-                print("❌ Failed to pre-load outro environment: \(error)")
+                Logger.debug("❌ Failed to pre-load outro environment: \(error)")
             }
         } else if phase == .building {
             os_log(.debug, "AppModel: Preloading Building Phase Assets...")
@@ -401,19 +488,19 @@ final class AppModel {
             await assetLoadingManager.releaseLabEnvironment()
         case .playing:
             if newPhase != .completed {
-                print("I am in the playing phase and I am not transitioning to completed so I am cleaning up")
+                Logger.debug("I am in the playing phase and I am not transitioning to completed so I am cleaning up")
                 await gameState.cleanup()
                 await assetLoadingManager.releaseAttackCancerEnvironment()
             } else {
-                print("I am in the playing phase and transitioning to completed, so preserving immersive assets")
+                Logger.debug("I am in the playing phase and transitioning to completed, so preserving immersive assets")
             }
         case .completed:
             if newPhase != .outro {
-                print("I am in the completed phase and transitioning to \(newPhase); cleaning up normally.")
+                Logger.debug("I am in the completed phase and transitioning to \(newPhase); cleaning up normally.")
                 await gameState.cleanup()
                 await assetLoadingManager.releaseAttackCancerEnvironment()
             } else {
-                print("Transitioning from completed to outro; preserving immersive assets for AttackCancerView.")
+                Logger.debug("Transitioning from completed to outro; preserving immersive assets for AttackCancerView.")
                 // Do not call cleanup so that the completed phase's assets remain for the outro.
             }
         case .outro:

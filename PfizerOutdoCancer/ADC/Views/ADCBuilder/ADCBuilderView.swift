@@ -218,7 +218,7 @@ struct ADCBuilderView: View {
                     width: 250
                 )
                 .fontWeight(.bold)
-                .padding(.top, 10)
+                // .padding(.top, 10)
                 .padding(.bottom, 30)
                 .contentShape(Capsule())
                 .zIndex(1)

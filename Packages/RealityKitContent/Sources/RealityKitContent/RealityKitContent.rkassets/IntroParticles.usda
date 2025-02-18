@@ -39,7 +39,7 @@ def Xform "Root"
                 reorder nameChildren = ["Sphere", "ParticleEmitter"]
                 quatf xformOp:orient = (1, 0, 0, 0)
                 float3 xformOp:scale = (1, 1, 1)
-                float3 xformOp:translate = (1, 0, 0)
+                float3 xformOp:translate = (0, 0, 0)
                 uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
                 def Sphere "Sphere" (

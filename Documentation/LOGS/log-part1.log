@@ -1,0 +1,208 @@
+AppModel init() - Instance: ObjectIdentifier(0x0000000123e0a400)
+🏁 PfizerOutdoCancerApp init starting...
+📲 Setting AppModel in PositioningSystem...
+🔄 PositioningSystem.setAppModel called
+📝 Registering components and systems...
+⚙️ Registering PositioningSystem...
+✅ PfizerOutdoCancerApp init completed
+🎯 PositioningSystem 1C59B31C-BE68-4870-A3B4-3FEB9C1510A5 initializing...
+nw_socket_initialize_socket [C1:2] setsockopt SO_NECP_CLIENTUUID failed [22: Invalid argument]
+nw_socket_initialize_socket setsockopt SO_NECP_CLIENTUUID failed [22: Invalid argument]
+nw_socket_copy_info [C1:2] getsockopt TCP_INFO failed [102: Operation not supported on socket]
+nw_socket_copy_info getsockopt TCP_INFO failed [102: Operation not supported on socket]
+cannot add handler to 0 from 1 - dropping
+
+=== Starting Initial Asset Loading ===
+🔍 Current phase: loading
+🔍 Loading state: notStarted
+🔄 Starting prepareIntroPhase...
+
+=== Preparing Intro Phase ===
+🔍 Current phase before loading: loading
+🔍 Loading state: notStarted
+📱 Loading asset: intro_environment
+AssetLoadingManager: loadAsset(withName: intro_environment, category: introEnvironment)
+cannot add handler to 0 from 1 - dropping
+cannot add handler to 0 from 1 - dropping
+cannot add handler to 0 from 1 - dropping
+Registering library (/System/Library/PrivateFrameworks/CoreRE.framework/default.metallib) that already exists in shader manager. Library will be overwritten.
+✅ Loaded intro_environment - Progress: 0.16666667
+📱 Loading asset: intro_warp
+AssetLoadingManager: loadAsset(withName: intro_warp, category: introEnvironment)
+✅ Loaded intro_warp - Progress: 0.33333334
+📱 Loading asset: attack_cancer_environment
+AssetLoadingManager: loadAsset(withName: attack_cancer_environment, category: attackCancerEnvironment)
+✅ Loaded attack_cancer_environment - Progress: 0.5
+📱 Loading asset: adc
+AssetLoadingManager: loadAsset(withName: adc, category: attackCancerEnvironment)
+✅ ADC template loaded (using inner Root with audio)
+✅ Loaded adc - Progress: 0.6666667
+📱 Loading asset: cancer_cell
+AssetLoadingManager: loadAsset(withName: cancer_cell, category: attackCancerEnvironment)
+✅ Loaded cancer_cell - Progress: 0.8333333
+📱 Loading asset: assembled_lab
+AssetLoadingManager: loadAsset(withName: assembled_lab, category: labEnvironment)
+📱 Starting lab environment assembly
+onChange(of: LoadingState) action tried to update multiple times per frame.
+Invalid Material input type token
+Invalid Material input type token
+IBL URL: file:///private/var/containers/Bundle/Application/3F21A58F-3EB9-476C-95EE-1C582B038CED/PfizerOutdoCancer.app/lab_v005.exr
+✅ Completed lab environment assembly
+✅ Loaded assembled_lab - Progress: 1.0
+✅ prepareIntroPhase completed
+✅ prepareIntroPhase completed
+🔄 Transitioning to .intro...
+🔄 Phase transition: loading -> intro
+🔍 isTransitioning: false
+🔍 immersiveSpaceState: closed
+🎯 Managing windows for phase: intro
+📊 Before state update - nav window open: false
+📊 Window states after update:
+  Main: true
+  Debug: false
+  Library: false
+  Builder: false
+  Phases:
+    AppPhase: intro
+    ScenePhase: active
+    LoadingPhase: completed
+🎯 PositioningSystem 135B9322-4E26-4152-900A-B2622C43D541 initializing...
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+
+=== IntroView Appeared ===
+openImmersiveSpace result for intro: opened
+cannot add handler to 0 from 1 - dropping
+
+=== Processing Hand Updates ===
+Should Process Hand Tracking: false
+Hand Provider State: initialized
+❌ Hand tracking updates disabled
+
+=== Setting up IntroView ===
+🔄 Starting new intro session: tracking states reset
+📱 IntroViewModel: Setting up root
+
+✅ Root Setup Complete
+├─ Root Entity: IntroRoot
+├─ Position: SIMD3<Float>(0.0, -1.5, -1.0)
+└─ Positioning: Ready for explicit updates
+✅ Added root to content
+📱 IntroView: Starting environment setup
+📱 IntroViewModel: Starting environment setup
+📱 IntroViewModel: Attempting to load intro environment
+AssetLoadingManager: loadAsset(withName: intro_environment, category: introEnvironment)
+✅ IntroViewModel: Successfully loaded intro environment
+✅ Environment setup complete
+📱 IntroViewModel: Setting up individual entities
+🔍 Found skyDome: SkySphere
+✅ Set skyDome opacity to 0
+📱 IntroViewModel: Starting portal setup
+📱 Starting lab environment assembly
+✅ Using cached assembled lab
+✅ IntroViewModel: Successfully loaded assembled laboratory environment
+✅ IntroViewModel: Created portal
+✅ IntroViewModel: Portal setup complete
+✅ IntroViewModel: Environment setup complete
+✅ Environment setup complete
+📱 IntroView: Found SwiftUI attachments
+🎯 Found ADCBuilderAttachment target
+🎯 Found AttackCancerAttachment target
+
+=== Tracking State [Start Tracking Request] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: false
+🔄 Current Provider State: initialized
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x3007a8000>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: initialized
+=== End State Log ===
+
+🖐️ Starting hand tracking session
+Hand Provider State: initialized
+✅ Started tracking providers
+Final Hand Tracking State: true
+
+=== Tracking State [Post-Start] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: initialized
+📍 Head Transform: simd_float4x4([[0.99995285, 0.009513705, -0.0019195711, 0.0], [-0.009545945, 0.99980026, -0.017559899, 0.0], [0.0017521321, 0.017577428, 0.99984384, 0.0], [-0.00045068748, 1.27582, -0.10126814, 1.0]])
+📍 Head Position - X: -0.00045068748, Y: 1.27582, Z: -0.10126814
+🌎 World Provider State: running
+🖐️ Hand Provider State: running
+=== End State Log ===
+
+✅ Phase transition completed: intro
+✅ Transition to .intro completed
+🔄 Unknown provider state changed to: running
+
+=== Tracking State [Unknown Provider State Change [running]] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: running
+📍 Head Transform: simd_float4x4([[0.9999528, 0.009502985, -0.0019782372, 0.0], [-0.009536384, 0.99979925, -0.017621245, 0.0], [0.001810346, 0.017639283, 0.99984264, 0.0], [-0.0004530254, 1.275813, -0.10127989, 0.99999994]])
+📍 Head Position - X: -0.0004530254, Y: 1.275813, Z: -0.10127989
+🌎 World Provider State: running
+🖐️ Hand Provider State: running
+=== End State Log ===
+
+✅ Unknown provider running
+Cannot find a BindPoint for any bind path: "", "", "", "", ""
+
+=== Start Button Pressed ===
+Current Phase: intro
+isReadyForInteraction: true
+Setting shouldUpdateHeadPosition = true
+
+🔄 Starting position update for entity 'IntroRoot'
+├─ Current Position: SIMD3<Float>(0.0, -1.5, -1.0)
+├─ Animated: ✅
+└─ Duration: 0.5s
+
+📍 Positioning entity 'IntroRoot'
+├─ From: SIMD3<Float>(0.0, -1.5, -1.0)
+├─ To: SIMD3<Float>(3.2704324e-05, -0.22311926, -1.0953941)
+├─ Offsets: [0.0, -1.5, -1.0]
+├─ Distance: 1.8027756m
+└─ Method: Animated (0.5s)
+
+✨ Position update complete for 'IntroRoot'
+├─ Final Position: SIMD3<Float>(0.0, -1.5, -1.0)
+└─ Status: Success
+
+✨ Position update complete for 'IntroRoot'
+├─ Final Position: SIMD3<Float>(3.26735e-05, -1.722909, -2.0943618)
+└─ Status: Success
+Failed to set override status for bind point component member.
+
+✨ Positioning Complete
+├─ Phase: intro
+├─ ImmersiveSpaceState: open
+├─ Root Entity: IntroRoot
+└─ Environment Ready: ✅
+✅ Found portal for attachments
+🔍 Found logo: logo
+✅ Set logo scale to 0.5 and opacity to 0
+📎 Created titleRoot
+🔍 After - titleEntity position: SIMD3<Float>(0.0, 0.0, 0.0), scale: SIMD3<Float>(1.0, 1.0, 1.0)
+📎 Added titleText to titleRoot
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", ""
+🎬 Animation Sequence: Starting at 2025-02-17 19:37:09 +0000
+🔍 Entity Check - skyDome: true, logo: true, portal: true
+🌌 Sky: Starting at +0.00010907649993896484s
+🔍 Sky initial opacity: 0.0
+🌌 Sky: Completed fade animation
+🔍 Sky final opacity: 0.0
+⏰ Sleeping for 29s before portal warp
+Failed to set override status for bind point component member.
+Message from debugger: killed

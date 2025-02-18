@@ -495,7 +495,7 @@ final class AssetLoadingManager {
         
         // Special handling for ADC asset
         if name == "adc" {
-            if let innerRoot = await entity.children.first {
+            if let innerRoot = entity.children.first {
                 print("✅ ADC template loaded (using inner Root with audio)")
                 // Cache the inner root as the ADC template
                 entityTemplates[name] = innerRoot

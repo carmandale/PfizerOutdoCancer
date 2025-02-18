@@ -15,7 +15,7 @@ struct ContentView: View {
     var body: some View {
         Group {
             switch appModel.currentPhase {
-            case .loading, .ready:
+            case .loading, .ready, .intro:
                 LoadingView()
             case .building:
                 ADCView()
@@ -38,7 +38,7 @@ struct ContentView: View {
         }
         .task {
             if appModel.currentPhase == .loading {
-                await appModel.startLoading()
+                await appModel.startLoading(adcDataModel: adcDataModel)
             }
         }
         .onAppear {

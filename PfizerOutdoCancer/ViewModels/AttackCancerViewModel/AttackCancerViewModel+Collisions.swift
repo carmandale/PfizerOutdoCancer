@@ -38,7 +38,7 @@ extension AttackCancerViewModel {
         print("🎯 Setting up collision subscription")
         // Store the SceneEventSubscription
         subscription = scene.subscribe(to: CollisionEvents.Began.self) { [weak self] event in
-           print("💥 Collision event received")
+        //    print("💥 Collision event received")
             guard let self = self else { return }
             self.handleCollisionBegan(event)
         }

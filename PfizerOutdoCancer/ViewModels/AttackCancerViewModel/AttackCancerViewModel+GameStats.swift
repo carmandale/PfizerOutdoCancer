@@ -4,17 +4,37 @@ import RealityKit
 
 extension AttackCancerViewModel {
     // MARK: - Game Methods
+
+    /// Resets game state variables to their initial values without affecting entities or scene content.
+    /// Use this when you want to restart the game state while keeping the current scene setup.
+    ///
+    /// Responsibilities:
+    /// - Resets game statistics (scores, counters)
+    /// - Resets state flags (tutorial state, game phase)
+    /// - Resets head positioning state
+    /// - Does NOT modify any entities or scene content
+    /// - Does NOT affect system connections or subscriptions
+    ///
+    /// Call this when:
+    /// - Starting a new game session
+    /// - Restarting after game over
+    /// - Resetting tutorial state
     func resetGameState() {
-        print("\n🔄 Resetting game stats:")
-        print("  - Cells Destroyed: \(cellsDestroyed) → 0")
-        print("  - Total ADCs: \(totalADCsDeployed) → 0")
-        print("  - Total Taps: \(totalTaps) → 0")
-        print("  - Total Hits: \(totalHits) → 0")
+        Logger.debug("""
+        
+        🔄 Resetting Game State
+        ├─ Cells Destroyed: \(cellsDestroyed) → 0
+        ├─ Total ADCs: \(totalADCsDeployed) → 0
+        ├─ Total Taps: \(totalTaps) → 0
+        ├─ Total Hits: \(totalHits) → 0
+        └─ Head Positioning: Resetting tracking state
+        """)
 
         cellsDestroyed = 0
         totalADCsDeployed = 0
         totalTaps = 0
         totalHits = 0
+        
         hopeMeterTimeLeft = hopeMeterDuration
         isHopeMeterRunning = false
         hasFirstADCBeenFired = false
@@ -24,6 +44,21 @@ extension AttackCancerViewModel {
             cellParameters[i].hitCount = 0
             cellParameters[i].isDestroyed = false
         }
+        
+        // Reset head positioning state
+        isRootSetupComplete = false
+        isEnvironmentSetupComplete = false
+        isHeadTrackingRootReady = false
+        shouldUpdateHeadPosition = false
+        
+        Logger.debug("""
+        
+        🎯 Head Positioning Reset Complete
+        ├─ Root Setup: \(isRootSetupComplete ? "✅" : "❌")
+        ├─ Environment: \(isEnvironmentSetupComplete ? "✅" : "❌")
+        ├─ Head Tracking: \(isHeadTrackingRootReady ? "✅" : "❌")
+        └─ Update Pending: \(shouldUpdateHeadPosition ? "✅" : "❌")
+        """)
         
         // Reset hope meter
         hopeMeterTimeLeft = hopeMeterDuration

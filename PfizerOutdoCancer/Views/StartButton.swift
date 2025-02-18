@@ -18,15 +18,11 @@ struct StartButton: View {
             title: "Start",
             action: {
                 Task {
-                    // Dismiss any open windows first
-                    dismissWindow(id: AppModel.navWindowId)
-                    appModel.isNavWindowOpen = false
-                    
-                    if !appModel.isMainWindowOpen {
-                        openWindow(id: AppModel.mainWindowId)
-                        appModel.isMainWindowOpen = true
-                    }
-                    await appModel.transitionToPhase(.intro)
+                    Logger.info("\n=== Start Button Pressed ===")
+                    Logger.info("Current Phase: \(appModel.currentPhase)")
+                    Logger.info("isReadyForInteraction: \(appModel.introState.isReadyForInteraction)")
+                    Logger.info("Setting shouldUpdateHeadPosition = true")
+                    appModel.introState.shouldUpdateHeadPosition = true
                 }
             },
             font: .title,

@@ -8,37 +8,57 @@ extension AttackCancerViewModel {
         // Reset the cleanup state for a new game session.
         cleanupState = .none
         
-        // (Optionally also reset any other flags that must be restarted)
-        Logger.info("🔄 Starting new game session: cleanupState reset to .none, tutorial flags reset")
-
+        // Reset state tracking
+        isRootSetupComplete = false
+        isEnvironmentSetupComplete = false
+        isHeadTrackingRootReady = false
+        isPositioningComplete = false
+        
+        Logger.info("🔄 Starting new game session: cleanupState and tracking states reset")
         Logger.info("📱 AttackCancerViewModel: Setting up root")
+        
         let root = Entity()
         root.name = "AttackCancerRoot"
+        // root.position = AppModel.PositioningDefaults.playing.position
         
         // Keep headTrackingRoot setup - needed for AttackCancer functionality
         let headTrackingRoot = Entity()
+        headTrackingRoot.position = AppModel.PositioningDefaults.playing.position
         headTrackingRoot.name = "headTrackingRoot"
         headTrackingRoot.components.set(PositioningComponent(
             offsetX: 0,
             offsetY: 0,
-            offsetZ: -1.0
+            offsetZ: -1.0,
+            needsPositioning: false,
+            shouldAnimate: false,
+            animationDuration: 0.0
         ))
         root.addChild(headTrackingRoot)
-        Logger.info("✅ HeadTrackingRoot added to root")
-        Logger.info("World Position of HeadTrackingRoot: \(headTrackingRoot.position(relativeTo: nil))")
+        
+        Logger.info("""
+        
+        ✅ Root Setup Complete
+        ├─ Root Entity: \(root.name)
+        ├─ HeadTracking Root: Added
+        ├─ Position: \(headTrackingRoot.position(relativeTo: nil))
+        └─ Positioning: Ready for explicit updates
+        """)
         
         rootEntity = root
+        isRootSetupComplete = true
+        isHeadTrackingRootReady = true
         return root
     }
     
     func setupEnvironment(in root: Entity, attachments: RealityViewAttachments? = nil) async {
-        Logger.info("🎯 Setting up AttackCancerView environment...")
+        Logger.info("\n🎯 Setting up AttackCancerView environment...")
         
         // IBL
         do {
             try await IBLUtility.addImageBasedLighting(to: root, imageName: "metro_noord_2k")
         } catch {
             Logger.error("Failed to setup IBL: \(error)")
+            isEnvironmentSetupComplete = false
             return
         }
         
@@ -54,11 +74,20 @@ extension AttackCancerViewModel {
             Logger.info("setting up collisions")
             setupCollisions(in: environment)
             
-            Logger.info("✅ Environment setup complete")
+            Logger.info("""
+            
+            ✅ Environment Setup Complete
+            ├─ IBL: Configured
+            ├─ Environment: Loaded
+            └─ Collisions: Setup
+            """)
+            
             environmentLoaded = true
+            isEnvironmentSetupComplete = true
         } catch {
             Logger.error("❌ Error setting up AttackCancerView environment: \(error)")
             environmentLoaded = false
+            isEnvironmentSetupComplete = false
         }
         
         // NEW: Retrieve the shared CancerCellSystem (set via automatic registration)
@@ -119,7 +148,7 @@ extension AttackCancerViewModel {
             Logger.info("✅ Tutorial: Retrieved game start VO")
             
             if let VO_parent = root.findEntity(named: "headTrackingRoot") {
-                Logger.info("🎯 Tutorial: Found VO parent")
+                Logger.info("�� Tutorial: Found VO parent")
                 VO_parent.addChild(gameStartVO)
                 root.addChild(VO_parent)
                 Logger.info("✅ Tutorial: Added VO to scene")
@@ -175,7 +204,7 @@ extension AttackCancerViewModel {
         Logger.info("\n=== Starting Tutorial ADC Sequence ===")
         
         // Launch position is slightly offset to the right and above
-        let launchPosition = SIMD3<Float>(0.25, 0.5, -0.25)
+        _ = SIMD3<Float>(0.25, 0.5, -0.25)
         
         // Calculate approach vector that points towards the cell from slightly in front
         // This ensures ADCs prefer antigens facing the player's view

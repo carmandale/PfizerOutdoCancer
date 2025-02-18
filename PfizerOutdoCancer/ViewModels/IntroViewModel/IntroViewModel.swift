@@ -18,14 +18,13 @@ final class IntroViewModel {
     private var animationTask: Task<Void, Never>?
     
     // Entity references
-//    private var portalWarp: Entity?
     private var portal: Entity?
     private var skyDome: Entity?
     private var logo: Entity?
     private var titleRoot: Entity?
     private var material: ShaderGraphMaterial?
     private var assembledLab: Entity?
-    private var introEnvironment: Entity?
+    var introEnvironment: Entity?
     
     // Attachment entities
     var titleEntity: Entity?
@@ -43,12 +42,56 @@ final class IntroViewModel {
     // Dependencies
     var appModel: AppModel!
     
+    // Root setup flags
+    var isRootSetupComplete = false
+    var isEnvironmentSetupComplete = false
+    var isHeadTrackingRootReady = false
+    var shouldUpdateHeadPosition = false
+    var isPositioningComplete = false
+    var isPositioningInProgress = false  // Add positioning progress flag
+    
+    var isReadyForInteraction: Bool {
+        isRootSetupComplete && 
+        isEnvironmentSetupComplete && 
+        isHeadTrackingRootReady
+    }
+    
     // MARK: - Setup Methods
-    func setupIntroRoot() -> Entity {
-        print("📱 IntroViewModel: Setting up intro root")
+    func setupRoot() -> Entity {  // Renamed from setupIntroRoot
+        // Reset state tracking first
+        isRootSetupComplete = false
+        isEnvironmentSetupComplete = false
+        isHeadTrackingRootReady = false
+        isPositioningComplete = false
+        isPositioningInProgress = false  // Reset positioning progress state
+        
+        Logger.info("🔄 Starting new intro session: tracking states reset")
+        Logger.info("📱 IntroViewModel: Setting up root")
+        
         let root = Entity()
         root.name = "IntroRoot"
+        root.position = AppModel.PositioningDefaults.intro.position
+        
+        root.components.set(PositioningComponent(
+            offsetX: 0,
+            offsetY: -1.5,  // Maintain intro's specific offset
+            offsetZ: -1.0,
+            needsPositioning: false,
+            shouldAnimate: false,
+            animationDuration: 0.0
+        ))
+        
+        Logger.info("""
+        
+        ✅ Root Setup Complete
+        ├─ Root Entity: \(root.name)
+        ├─ Position: \(root.position(relativeTo: nil))
+        └─ Positioning: Ready for explicit updates
+        """)
+        
         introRootEntity = root
+        isRootSetupComplete = true
+        isHeadTrackingRootReady = true
         return root
     }
     
@@ -62,10 +105,11 @@ final class IntroViewModel {
         do {
             environment = try await appModel.assetLoadingManager.instantiateAsset(withName: "intro_environment", category: AssetCategory.introEnvironment)
             print("✅ IntroViewModel: Successfully loaded intro environment")
-            // Add environment to root
+            // Store but don't add to root yet
             introEnvironment = environment
-            print("📱 IntroViewModel: Adding environment to root")
-            root.addChild(environment)
+            
+            isEnvironmentSetupComplete = true
+            print("✅ Environment setup complete")
         } catch {
             print("❌ IntroViewModel: Error loading intro environment: \(error)")
             return
@@ -74,7 +118,6 @@ final class IntroViewModel {
         // Find and setup entities
         print("📱 IntroViewModel: Setting up individual entities")
         setupSkyDome(in: environment)
-//        await setupPortalWarp(in: environment)
         await setupPortal(in: root)
         
         print("✅ IntroViewModel: Environment setup complete")
@@ -89,12 +132,9 @@ final class IntroViewModel {
                 print("✅ Set logo scale to 0.5 and opacity to 0")
 
                 // Add text attachment to titleRoot
-                if let t = portal.findEntity(named: "titleRoot") {
+                if let t = environment.findEntity(named: "outdoCancer") {
                 titleRoot = t
                 print("📎 Created titleRoot")
-                // print("🔍 Before - titleEntity position: \(titleEntity.position), scale: \(titleEntity.transform.scale)")
-                titleEntity.position = [0, -1.2, 0.1]
-                titleEntity.transform.scale *= 10.0
                 print("🔍 After - titleEntity position: \(titleEntity.position), scale: \(titleEntity.transform.scale)")
                 t.addChild(titleEntity)
 
@@ -118,24 +158,6 @@ final class IntroViewModel {
             print("❌ Could not find SkySphere in environment")
         }
     }
-    
-//    private func setupPortalWarp(in environment: Entity) async {
-//        if let warp = environment.findEntity(named: "sh0100_v01_portalWarp3") {
-//            print("🔍 Found portalWarp: \(warp.name)")
-//            portalWarp = warp
-//            warp.opacity = 0
-//            print("✅ Set portalWarp opacity to \(warp.opacity)")
-//            
-//            // Find and store shader material
-//            if let component = warp.components[ModelComponent.self],
-//               let material = component.materials.first as? ShaderGraphMaterial {
-//                self.material = material
-//                print("✅ Found and stored shader material")
-//            }
-//        } else {
-//            print("❌ Could not find portalWarp in environment")
-//        }
-//    }
     
     private func setupPortal(in root: Entity) async {
         print("📱 IntroViewModel: Starting portal setup")
@@ -239,6 +261,9 @@ final class IntroViewModel {
     
     // MARK: - Animation Methods
     func runAnimationSequence() async {
+        // // Request head position update before starting animation sequence
+        // shouldUpdateHeadPosition = true
+        
         // Cancel any existing animation task
         animationTask?.cancel()
         
@@ -249,6 +274,7 @@ final class IntroViewModel {
             print("🔍 Entity Check - skyDome: \(skyDome != nil), logo: \(logo != nil), portal: \(portal != nil)")
             
             // Example helper guard to ensure an entity is still in the scene (if needed)
+            @MainActor
             func ensureValidEntity(_ entity: Entity?, with name: String) -> Bool {
                 if let e = entity, e.parent != nil {
                     return true
@@ -271,7 +297,6 @@ final class IntroViewModel {
                     print("🔍 Sky initial opacity: \(s.opacity)")
                     await s.fadeOpacity(to: skyDarkness, duration: 10.0)
                     print("🌌 Sky: Completed fade animation")
-                    print("🔍 Sky final opacity: \(s.opacity)")
                 } else {
                     print("❌ Sky: skyDome not found")
                 }
@@ -280,19 +305,6 @@ final class IntroViewModel {
             // Portal warp fade (24s)
             print("⏰ Sleeping for 29s before portal warp")
             try? await Task.sleep(for: .seconds(29)) // changed from 19 to 29 since removed portalWarp
-            
-            // Check that portalWarp is still valid
-//            guard ensureValidEntity(portalWarp, with: "portalWarp") else { return }
-//            print("🌀 Portal warp: Starting at +\(Date().timeIntervalSince(start))s")
-//            print("🔍 PortalWarp reference check: \(portalWarp != nil)")
-//            if let warp = portalWarp {
-//                print("🔍 Warp initial opacity: \(warp.opacity)")
-//                await warp.fadeOpacity(to: 0.1, duration: 10.0)
-//                print("🌀 Portal warp: Completed fade animation")
-//                print("🔍 Warp final opacity: \(warp.opacity)")
-//            } else {
-//                print("❌ Portal warp: portalWarp not found")
-//            }
             
             guard !Task.isCancelled else {
                 print("🛑 Animation sequence cancelled before logo")
@@ -358,10 +370,9 @@ final class IntroViewModel {
                 guard let portalRoot = p.findEntity(named: "portalRoot"),
                       let portalWorld = p.findEntity(named: "world"),
                       let portalPlane2 = p.findEntity(named: "portalPlane"),
-//                      ensureValidEntity(portalWarp, with: "portalWarp"),
                       ensureValidEntity(introEnvironment, with: "introEnvironment"),
                       ensureValidEntity(introRootEntity, with: "introRootEntity"),
-                      let extras = introRootEntity?.findEntity(named: "ExtraItems"),
+                      let _ = introRootEntity?.findEntity(named: "ExtraItems"),
                       ensureValidEntity(logo, with: "logo"),
                       ensureValidEntity(titleRoot, with: "titleRoot"),
                       ensureValidEntity(skyDome, with: "skyDome")
@@ -383,7 +394,6 @@ final class IntroViewModel {
                 let moveDuration = 20.0
                 
                 async let _: () = skyDome!.fadeOpacity(to: 0.0, duration: 10.0)
-//                async let _: () = portalWarp!.fadeOpacity(to: 0.0, duration: 10.0)
                 async let _: () = logo!.fadeOpacity(to: 0.0, duration: 3.0)
                 async let _: () = titleRoot!.fadeOpacity(to: 0.0, duration: 3.0)
                 async let animatePortalRoot: () = portalRoot.animateAbsolutePositionAndScale(
@@ -409,19 +419,11 @@ final class IntroViewModel {
                     waitForCompletion: true
                 )
                 
-                // async let animatePortalPlanePosition: () = portalPlane2.animatePosition(
-                //     to: SIMD3<Float>(0, 0, -10),
-                //     duration: moveDuration
-                // )
 
                 _ = await (animatePortalRoot, animateWorld, animatePortalPlaneScale)
                 
                 print("🌐 Completed concurrent animations for PortalRoot, World, and PortalPlane scale")
                 
-                // Fade out the introEnvironment
-//                print("introEnvironment opacity started at \(introEnvironment!.opacity)")
-//                await introEnvironment!.fadeOpacity(to: 0.0, duration: 5.0)
-//                print("introEnvironment opacity faded out to \(introEnvironment!.opacity)")
 
                 // Wait for 5 seconds
                 try? await Task.sleep(for: .seconds(5))
@@ -526,6 +528,11 @@ final class IntroViewModel {
         shouldDimSurroundings = false
         isSetupComplete = false
         environmentLoaded = false
+        
+        // Reset ALL positioning-related states
+        isPositioningComplete = false
+        isPositioningInProgress = false
+        shouldUpdateHeadPosition = false  // Reset this flag too
         
         print("✅ Completed IntroViewModel cleanup\n")
     }

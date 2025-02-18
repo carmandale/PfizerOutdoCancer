@@ -35,22 +35,17 @@ extension AppModel {
         let weight: Float  // Relative weight for progress calculation
     }
     
-    func startLoading() async {
+    func startLoading(adcDataModel: ADCDataModel) async {
         print("\n=== Starting Initial Asset Loading ===")
         print("🔍 Current phase: \(currentPhase)")
         print("🔍 Loading state: \(assetLoadingManager.loadingState)")
-        do {
-            print("🔄 Starting prepareIntroPhase...")
-            try await prepareIntroPhase()
-            print("✅ prepareIntroPhase completed")
-            print("🔄 Transitioning to .ready...")
-            await transitionToPhase(.ready)
-            print("✅ Transition to .ready completed")
-        } catch {
-            print("❌ Error loading initial assets: \(error)")
-            assetLoadingManager.loadingState = .error(error)
-            await transitionToPhase(.error)
-        }
+        
+        print("🔄 Starting prepareIntroPhase...")
+        await prepareIntroPhase()
+        print("✅ prepareIntroPhase completed")
+        print("🔄 Transitioning to .intro...")
+        await transitionToPhase(.intro, adcDataModel: adcDataModel)
+        print("✅ Transition to .intro completed")
     }
     
     func prepareIntroPhase() async {

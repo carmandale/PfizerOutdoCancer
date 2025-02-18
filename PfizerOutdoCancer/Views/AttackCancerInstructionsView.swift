@@ -89,11 +89,15 @@ struct AttackCancerInstructionsView: View {
                         title: appModel.isTutorialStarted ? "Attack Cancer!" : "Start Tutorial",
                         action: {
                             if !appModel.isTutorialStarted {
-                                print("🎓 Starting tutorial sequence...")
+                                Logger.info("\n🎓 Initiating tutorial sequence...")
+                                // Request head position update when ready
+                                appModel.gameState.shouldUpdateHeadPosition = true
                                 appModel.isTutorialStarted = true
                                 appModel.isInstructionsWindowOpen = false
                             } else {
-                                print("🎮 Tutorial complete - Starting game...")
+                                Logger.info("\n🎮 Starting game sequence...")
+                                // Request head position update when ready
+                                appModel.gameState.shouldUpdateHeadPosition = true
                                 appModel.startAttackCancerGame()
                                 appModel.isInstructionsWindowOpen = false
                                 if !appModel.isHopeMeterUtilityWindowOpen {

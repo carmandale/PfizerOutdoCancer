@@ -14,14 +14,13 @@ struct AttackCancerView: View {
         @Bindable var appModel = appModel
         
         RealityView { content, attachments in
-
             appModel.gameState.resetGameState()
-            print("🔄 Reset game state")
-            print("\n=== AttackCancerView Setup ===")
-            print("📱 AttackCancerView: Setting up root")
+            Logger.info("🔄 Reset game state")
+            Logger.info("\n=== AttackCancerView Setup ===")
+            Logger.info("📱 AttackCancerView: Setting up root")
             let root = appModel.gameState.setupRoot()
             root.name = "AttackCancerRoot"
-            print("✅ Root entity created: \(root.name)")
+            Logger.info("✅ Root entity created: \(root.name)")
 
             // let decoy = Entity()
             // decoy.name = "Decoy"
@@ -39,20 +38,9 @@ struct AttackCancerView: View {
             
             // Setup environment in a task after root is configured
             Task { @MainActor in
-                print("\n=== Setting up Environment ===")
+                Logger.info("\n=== Setting up Environment ===")
                 await appModel.gameState.setupEnvironment(in: root, attachments: attachments)
-                print("✅ Environment setup complete")
-                
-                // If tutorial is already started, begin it
-                if appModel.isTutorialStarted {
-                    print("\n🎓 Starting tutorial sequence...")
-                    await appModel.gameState.startTutorial(in: root, attachments: attachments)
-                }
-                
-                // If game should start, handle it
-                if appModel.shouldStartGame {
-                    await appModel.gameState.handleGameStart(in: root)
-                }
+                Logger.info("✅ Environment setup complete")
             }
         } attachments: {
 
@@ -82,18 +70,18 @@ struct AttackCancerView: View {
                 }
         )
         .onChange(of: appModel.gameState.shouldPlayStartButtonVO) { _, isReady in
-            print("onChange: readyToStartGame changed to \(isReady)")
+            Logger.info("onChange: readyToStartGame changed to \(isReady)")
             if isReady {
                 if let root = appModel.gameState.rootEntity {
                     Task {
                         // wait just a little to give it a breath...
                         try? await Task.sleep(for: .milliseconds(300))
 
-                        print("\n>>> Playing start button VO...\n")
+                        Logger.info("\n>>> Playing start button VO...\n")
                         await appModel.gameState.playStartButtonVO(in: root)
                         
                         self.appModel.isHopeMeterUtilityWindowOpen = true
-                        print("Hope meter utility window open = \(self.appModel.isHopeMeterUtilityWindowOpen)")
+                        Logger.info("Hope meter utility window open = \(self.appModel.isHopeMeterUtilityWindowOpen)")
                     }
                     
                 }
@@ -103,10 +91,10 @@ struct AttackCancerView: View {
             // Let the app handle scene phase changes
         }
         .onChange(of: appModel.isHopeMeterUtilityWindowOpen) { _, isOpen in
-            print("onChange: isHopeMeterUtilityWindowOpen changed to \(isOpen)")
+            Logger.info("onChange: isHopeMeterUtilityWindowOpen changed to \(isOpen)")
             if isOpen {
                 openWindow(id: AppModel.hopeMeterUtilityWindowId)
-                print("🎮 Setting up cancer cells")
+                Logger.info("🎮 Setting up cancer cells")
                 if let root = appModel.gameState.rootEntity {
                     Task {
                         await appModel.gameState.setupGameContent(in: root)
@@ -124,24 +112,48 @@ struct AttackCancerView: View {
                     await appModel.gameState.tearDownGame()
                 }
             } else {
-                print("🚫 Skipping tearDownGame() for completed phase to preserve immersive assets")
-            }
-        }
-        .onChange(of: appModel.isTutorialStarted) { _, started in
-            // Only start tutorial if it wasn't already started during initial setup
-            if started && !appModel.gameState.isSetupComplete,
-               let root = appModel.gameState.rootEntity,
-               let attachments = appModel.gameState.storedAttachments {
-                print("🎓 Tutorial state changed - Starting tutorial...")
-                Task {
-                    await appModel.gameState.startTutorial(in: root, attachments: attachments)
-                }
+                Logger.info("🚫 Skipping tearDownGame() for completed phase to preserve immersive assets")
             }
         }
         .onChange(of: appModel.shouldStartGame) { _, shouldStart in
             if shouldStart, let root = appModel.gameState.rootEntity {
                 Task {
                     await appModel.gameState.handleGameStart(in: root)
+                }
+            }
+        }
+        .onChange(of: appModel.gameState.shouldUpdateHeadPosition) { _, shouldUpdate in
+            if shouldUpdate && appModel.gameState.isReadyForInteraction {
+                if let root = appModel.gameState.rootEntity,
+                   let headTrackingRoot = root.findEntity(named: "headTrackingRoot") {
+                    Logger.info("""
+                    
+                    🎯 Head Position Update Requested
+                    ├─ Phase: \(appModel.currentPhase)
+                    ├─ Current World Position: \(headTrackingRoot.position(relativeTo: nil))
+                    ├─ Root Setup: \(appModel.gameState.isRootSetupComplete ? "✅" : "❌")
+                    ├─ Environment: \(appModel.gameState.isEnvironmentSetupComplete ? "✅" : "❌")
+                    └─ HeadTracking: \(appModel.gameState.isHeadTrackingRootReady ? "✅" : "❌")
+                    """)
+                    
+                    Task {
+                        headTrackingRoot.checkHeadPosition(animated: true, duration: 0.5)
+                        appModel.gameState.shouldUpdateHeadPosition = false
+                        appModel.gameState.isPositioningComplete = true  // Set after animation completes
+                    }
+                }
+            }
+        }
+        .onChange(of: appModel.gameState.isPositioningComplete) { _, complete in
+            if complete {
+                Task { @MainActor in
+                    // If tutorial should start, start it now
+                    if appModel.isTutorialStarted && !appModel.gameState.isSetupComplete,
+                       let root = appModel.gameState.rootEntity,
+                       let attachments = appModel.gameState.storedAttachments {
+                        Logger.info("🎓 Starting tutorial after positioning complete...")
+                        await appModel.gameState.startTutorial(in: root, attachments: attachments)
+                    }
                 }
             }
         }

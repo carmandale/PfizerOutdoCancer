@@ -82,6 +82,92 @@ public func update(context: SceneUpdateContext) {
 - Validate head position (with fallbacks if translation is too small or high).
 - Reset `needsPositioning` to false upon a successful update.
 
+### 3. AttackCancer State Management
+```swift
+// In AttackCancerViewModel
+// State tracking for positioning readiness
+var isRootSetupComplete: Bool = false
+var isEnvironmentSetupComplete: Bool = false
+var isHeadTrackingRootReady: Bool = false
+
+// Composite state for interaction readiness
+var isReadyForInteraction: Bool {
+    isRootSetupComplete && 
+    isEnvironmentSetupComplete && 
+    isHeadTrackingRootReady
+}
+
+// Setup sequence with state tracking
+func setupRoot() -> Entity {
+    // Reset state tracking first
+    isRootSetupComplete = false
+    isEnvironmentSetupComplete = false
+    isHeadTrackingRootReady = false
+    
+    let root = Entity()
+    let headTrackingRoot = Entity()
+    headTrackingRoot.components.set(PositioningComponent(
+        offsetX: 0,
+        offsetY: 0,
+        offsetZ: -1.0,
+        needsPositioning: false
+    ))
+    
+    // Update state after successful setup
+    isRootSetupComplete = true
+    isHeadTrackingRootReady = true
+    return root
+}
+```
+
+### State Management Best Practices
+1. **State Initialization:**
+   - Reset all state flags at the start of setup
+   - Track individual component states separately
+   - Use composite state for complex conditions
+
+2. **State Dependencies:**
+   - Environment must be ready before positioning
+   - Root setup must complete before tracking
+   - All states must be true before interaction
+
+3. **Reset Scheme:**
+   - Reset states when transitioning between phases
+   - Clear states before new setup sequences
+   - Maintain state consistency during cleanup
+
+4. **Position Update Triggers:**
+   - Only trigger updates when all states are ready
+   - Check `isReadyForInteraction` before updates
+   - Reset `shouldUpdateHeadPosition` after updates
+
+5. **Logging and Validation:**
+   - Log state changes for debugging
+   - Include state information in position logs
+   - Validate state before critical operations
+
+Example state-aware position update:
+```swift
+.onChange(of: shouldUpdateHeadPosition) { _, shouldUpdate in
+    if shouldUpdate && isReadyForInteraction {
+        if let headTrackingRoot = root.findEntity(named: "headTrackingRoot") {
+            Logger.info("""
+            
+            🎯 Head Position Update Requested
+            ├─ Phase: \(currentPhase)
+            ├─ Current World Position: \(headTrackingRoot.position(relativeTo: nil))
+            ├─ Root Setup: \(isRootSetupComplete ? "✅" : "❌")
+            ├─ Environment: \(isEnvironmentSetupComplete ? "✅" : "❌")
+            └─ HeadTracking: \(isHeadTrackingRootReady ? "✅" : "❌")
+            """)
+            
+            headTrackingRoot.checkHeadPosition(animated: true)
+            shouldUpdateHeadPosition = false
+        }
+    }
+}
+```
+
 ## Usage Example
 
 ```swift
@@ -114,4 +200,71 @@ headTrackingRoot.checkHeadPosition(animated: true, duration: 0.5)
    - Ensure changes do not conflict with animations or state transitions.
 
 By following these instructions, head-based positioning will be more precise and visually smooth, aligning with visionOS 2 best practices.
+
+## Implementation Examples
+
+### 1. IntroView Implementation
+```swift
+// In IntroView.swift
+RealityView { content, attachments in
+    // Create fresh root entity
+    let root = appModel.introState.setupIntroRoot()
+    root.components.set(PositioningComponent(
+        offsetX: 0,
+        offsetY: -1.5,  // Adjust Y offset for intro view height
+        offsetZ: -1.0,
+        needsPositioning: false,  // Start false, enable when ready
+        shouldAnimate: true,
+        animationDuration: 0.5
+    ))
+    content.add(root)
+}
+```
+
+### 2. ADCOptimizedImmersive Implementation
+```swift
+// In ADCOptimizedImmersive.swift
+RealityView { content, attachments in
+    let masterEntity = Entity()
+    masterEntity.components.set(PositioningComponent(
+        offsetX: 0,
+        offsetY: 0,
+        offsetZ: -1.0,
+        needsPositioning: false,  // Will be triggered by state changes
+        shouldAnimate: true,
+        animationDuration: 0.5
+    ))
+    masterEntity.name = "MainEntity"
+    contentRef.add(masterEntity)
+}
+```
+
+### Key Implementation Points
+1. **Component Setup:**
+   - Set `needsPositioning = false` initially
+   - Configure appropriate offsets for your view
+   - Enable animation with suitable duration
+
+2. **Position Updates:**
+   - Trigger updates by setting `needsPositioning = true`
+   - System handles animation and position validation
+   - Logs provide feedback on start and completion
+
+3. **Animation Control:**
+   - Use `isAnimating` flag to prevent duplicate logs
+   - System automatically manages animation state
+   - Position updates complete when animation finishes
+
+4. **Best Practices:**
+   - Keep offsets view-specific (e.g., lower Y for IntroView)
+   - Use animation for smooth transitions
+   - Monitor logs for positioning feedback
+   - Let system handle device anchor validation
+
+5. **Validation:**
+   - System enforces min/max distances
+   - Automatically clamps positions to valid range
+   - Provides debug logging for invalid positions
+
+By following these implementation steps, you ensure consistent head-based positioning across different views while maintaining smooth animations and proper distance constraints.
 

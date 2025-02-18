@@ -1,0 +1,760 @@
+// successful view
+
+🔄 === PHASE TRANSITION START ===
+├─ From: loading
+├─ To: intro
+├─ Current Tracking State: initialized
+├─ Has Hand Tracking: false
+└─ Will Need Hand Tracking: true
+🔄 Phase transition: loading -> intro
+🔍 isTransitioning: false
+🔍 immersiveSpaceState: closed
+🎯 Managing windows for phase: intro
+📊 Before state update - nav window open: false
+📊 Window states after update:
+  Main: true
+  Debug: false
+  Library: false
+  Builder: false
+  Phases:
+    AppPhase: intro
+    ScenePhase: active
+    LoadingPhase: completed
+🎯 PositioningSystem A8AB107F-DEFD-448E-AA24-FF39AA261E87 initializing...
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+
+=== IntroView Appeared ===
+openImmersiveSpace result for intro: opened
+cannot add handler to 0 from 1 - dropping
+
+=== Tracking State [Start Tracking Request] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: false
+🔄 Current Provider State: initialized
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x3008ec280>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: initialized
+=== End State Log ===
+
+
+🖐️ Configuring Tracking Session
+├─ World Tracking: Enabled
+├─ Hand Tracking: Enabled
+└─ Provider State: initialized
+
+=== Processing Hand Updates ===
+Should Process Hand Tracking: true
+Hand Provider State: initialized
+🖐️ Starting hand tracking updates
+
+=== Setting up IntroView ===
+
+=== hasBuiltSDC = false ===
+🔄 Starting new intro session: tracking states reset
+📱 IntroViewModel: Setting up root
+
+✅ Root Setup Complete
+├─ Root Entity: IntroRoot
+├─ Position: SIMD3<Float>(0.0, -1.5, -1.0)
+└─ Positioning: Ready for explicit updates
+✅ Added root to content
+📱 IntroView: Starting environment setup
+📱 IntroViewModel: Starting environment setup
+📱 IntroViewModel: Attempting to load intro environment
+AssetLoadingManager: loadAsset(withName: intro_environment, category: introEnvironment)
+✅ IntroViewModel: Successfully loaded intro environment
+✅ Environment setup complete
+📱 IntroViewModel: Setting up individual entities
+🔍 Found skyDome: SkySphere
+✅ Set skyDome opacity to 0
+📱 IntroViewModel: Starting portal setup
+📱 Starting lab environment assembly
+✅ Using cached assembled lab
+✅ IntroViewModel: Successfully loaded assembled laboratory environment
+✅ IntroViewModel: Created portal
+✅ IntroViewModel: Portal setup complete
+✅ IntroViewModel: Environment setup complete
+✅ Environment setup complete
+📱 IntroView: Found SwiftUI attachments
+🎯 Found ADCBuilderAttachment target
+🎯 Found AttackCancerAttachment target
+
+=== Tracking State [Post-Start] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: initialized
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x30084b980>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: paused
+🖐️ Hand Provider State: paused
+=== End State Log ===
+
+Cannot find a BindPoint for any bind path: "", "", "", "", ""
+
+🔄 Provider State Change
+├─ Provider: World Tracking
+├─ From: initialized
+├─ To: paused
+├─ Error: none
+└─ Current Phase: intro
+
+🔄 Provider State Change
+├─ Provider: Hand Tracking
+├─ From: initialized
+├─ To: paused
+├─ Error: none
+└─ Current Phase: intro
+
+=== Tracking State [Provider State Change [paused]] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: paused
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x30084b980>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: paused
+🖐️ Hand Provider State: paused
+=== End State Log ===
+
+⏸️ Providers paused
+
+🔄 Provider State Change
+├─ Provider: World Tracking
+├─ From: paused
+├─ To: running
+├─ Error: none
+└─ Current Phase: intro
+
+🔄 Provider State Change
+├─ Provider: Hand Tracking
+├─ From: paused
+├─ To: running
+├─ Error: none
+└─ Current Phase: intro
+
+=== Tracking State [Provider State Change [running]] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: running
+📍 Head Transform: simd_float4x4([[0.99994826, -0.001376894, -0.010077323, 0.0], [0.0019140871, 0.9985663, 0.053492624, 0.0], [0.009989219, -0.05350915, 0.99851733, 0.0], [0.00250526, 1.1226848, -0.106995456, 0.9999999]])
+📍 Head Position - X: 0.00250526, Y: 1.1226848, Z: -0.106995456
+🌎 World Provider State: running
+🖐️ Hand Provider State: running
+=== End State Log ===
+
+✅ Providers running
+
+=== Tracking State [Post-Transition] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: running
+📍 Head Transform: simd_float4x4([[0.99999505, -0.0029899043, -0.0010261987, 0.0], [0.0030330666, 0.998982, 0.045009393, 0.0], [0.0008906623, -0.045012318, 0.9989861, 0.0], [0.0061833635, 1.1219847, -0.10941984, 1.0]])
+📍 Head Position - X: 0.0061833635, Y: 1.1219847, Z: -0.10941984
+🌎 World Provider State: running
+🖐️ Hand Provider State: running
+=== End State Log ===
+
+✅ Phase transition completed: intro
+✅ Transition to .intro completed
+
+=== Start Button Pressed ===
+Current Phase: intro
+isReadyForInteraction: true
+Setting shouldUpdateHeadPosition = true
+
+🎯 Head Position Update Triggered
+├─ shouldUpdate: true
+├─ isReadyForInteraction: true
+├─ isPositioningInProgress: false
+├─ Current Phase: intro
+├─ Tracking State: running
+└─ Has Device Anchor: true
+
+🎯 Starting Head Position Update
+├─ Current Position: SIMD3<Float>(0.0, -1.5, -1.0)
+├─ Tracking State: running
+├─ isPositioningInProgress: false
+└─ isPositioningComplete: false
+
+🔄 Starting position update for entity 'IntroRoot'
+├─ Current Position: SIMD3<Float>(0.0, -1.5, -1.0)
+├─ Animated: ✅
+└─ Duration: 0.5s
+
+📍 Positioning entity 'IntroRoot'
+├─ From: SIMD3<Float>(0.0, -1.5, -1.0)
+├─ To: SIMD3<Float>(0.0021434203, -0.381315, -1.1089904)
+├─ Offsets: [0.0, -1.5, -1.0]
+├─ Distance: 1.8027756m
+└─ Method: Animated (0.5s)
+
+✨ Position update complete for 'IntroRoot'
+├─ Final Position: SIMD3<Float>(0.0, -1.5, -1.0)
+└─ Status: Success
+
+✨ Position update complete for 'IntroRoot'
+├─ Final Position: SIMD3<Float>(0.0021434203, -0.381315, -1.1089904)
+└─ Status: Success
+Failed to set override status for bind point component member.
+
+✨ Head Position Update Complete
+├─ Final Position: SIMD3<Float>(0.0021434203, -0.381315, -1.1089904)
+├─ Tracking State: running
+├─ isPositioningInProgress: true
+└─ isPositioningComplete: false
+
+✨ Positioning Complete
+├─ Phase: intro
+├─ ImmersiveSpaceState: open
+├─ Root Entity: IntroRoot
+└─ Environment Ready: Root
+✅ Found portal for attachments
+🔍 Found logo: logo
+✅ Set logo scale to 0.5 and opacity to 0
+📎 Created titleRoot
+🔍 After - titleEntity position: SIMD3<Float>(0.0, 0.0, 0.0), scale: SIMD3<Float>(1.0, 1.0, 1.0)
+📎 Added titleText to titleRoot
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", ""
+🎬 Animation Sequence: Starting at 2025-02-18 13:01:36 +0000
+🔍 Entity Check - skyDome: true, logo: true, portal: true
+🌌 Sky: Starting at +5.2928924560546875e-05s
+🔍 Sky initial opacity: 0.0
+🌌 Sky: Completed fade animation
+⏰ Sleeping for 29s before portal warp
+Failed to set override status for bind point component member.
+⏰ Sleeping for 75s before logo
+🎯 Logo: Starting at +104.22947692871094s
+🔍 Logo reference check: true
+🔍 Logo initial opacity: 0.0
+🎯 Logo: Completed fade animation
+🔍 Logo final opacity: 0.0
+📝 Title: Showing at +109.27193200588226s
+About to set showTitleText, current value: false
+Updated showTitleText to true
+🌐 Portal: Starting at +109.38384902477264s
+🔍 Portal reference check: true
+🔍 Portal initial opacity: 0.0
+🌐 Portal: Completed fade animation
+🔍 Portal final opacity: 0.0
+Failed to set override status for bind point component member.
+Failed to set override status for bind point component member.
+🌐 Portal plane: Starting X scale animation at +114.43031299114227s
+🌐 Portal plane: Completed X scale animation
+Failed to set override status for bind point component member.
+🌐 Starting concurrent animations for PortalRoot, World, and PortalPlane scale
+Failed to set override status for bind point component member.
+Failed to set override status for bind point component member.
+Failed to set override status for bind point component member.
+Failed to set override status for bind point component member.
+Failed to set override status for bind point component member.
+Failed to set override status for bind point component member.
+🌐 Completed concurrent animations for PortalRoot, World, and PortalPlane scale
+🛑 assembledLab position in world space PRE-TRANSFORM FIX is SIMD3<Float>(0.0021434203, -0.381315, -1.1089904)
+✅ assembledLab position in world space is SIMD3<Float>(0.0021434203, -0.381315, -0.10899043)
+
+ 🔍 Inspecting portal hierarchy 
+
+Entity: 
+Components: [RealityKit.Transform, RealityKit.SynchronizationComponent, RealityFoundation.OpacityComponent]
+  Entity: world
+  Components: [RealityKit.Transform, RealityKit.SynchronizationComponent, RealityFoundation.WorldComponent]
+  Entity: portalRoot
+  Components: [RealityKit.Transform, RealityKit.SynchronizationComponent]
+    Entity: portalPlane
+    Components: [RealityKit.Transform, RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityFoundation.PortalComponent]
+Removed portal completely from the scene as we transition to lab.
+Removed introEnvironment completely from the scene as we transition to lab.
+readyToStartLab set to true
+🎬 Animation Sequence: Completed at +142.03269696235657s
+
+🔄 Starting Lab Setup in IntroView
+├─ hasBuiltADC: false
+├─ Current Phase: intro
+└─ readyToStartLab: true
+📱 LabViewModel: Setting up initial environment
+
+=== Configuring Interactive Devices ===
+🔍 Found 19 potential interactive devices
+⚙️ Adding hover effect to: laptop with mesh: laptop_mesh
+⚙️ Adding hover effect to: laptop with mesh: laptop_mesh
+⚙️ Adding hover effect to: laptop with mesh: laptop_mesh
+⚙️ Adding hover effect to: laptop with mesh: laptop_mesh
+⚙️ Adding hover effect to: laptop with mesh: laptop_mesh
+⚙️ Adding hover effect to: laptop with mesh: laptop_mesh
+⚙️ Adding hover effect to: laptop with mesh: laptop_mesh
+⚙️ Adding hover effect to: laptop with mesh: laptop_mesh
+⚙️ Adding hover effect to: laptop with mesh: laptop_mesh
+⚙️ Adding hover effect to: laptop with mesh: laptop_mesh
+⚙️ Adding hover effect to: laptop with mesh: laptop_mesh
+⚙️ Adding hover effect to: pcMonitor with mesh: pcMonitor_mesh
+⚙️ Adding hover effect to: pcMonitor with mesh: pcMonitor_mesh
+⚙️ Adding hover effect to: pcMonitor with mesh: pcMonitor_mesh
+⚙️ Adding hover effect to: pcMonitor with mesh: pcMonitor_mesh
+⚙️ Adding hover effect to: pcMonitor with mesh: pcMonitor_mesh
+⚙️ Adding hover effect to: pcMonitor with mesh: pcMonitor_mesh
+⚙️ Adding hover effect to: pcMonitor with mesh: pcMonitor_mesh
+⚙️ Adding hover effect to: pcMonitor with mesh: pcMonitor_mesh
+
+=== Lab Environment Setup ===
+📱 LabViewModel: Starting environment setup
+🔍 isIntro parameter: Optional(true)
+
+🔍 ADC Button State Check
+├─ hasBuiltADC: false
+├─ Current shouldShowADCButton: false
+└─ isIntro Mode: Optional(true)
+🎯 ADC Button visibility set to: false
+
+⏲️ Starting 30-second timer for ADC button visibility
+├─ Current shouldShowADCButton: false
+└─ hasBuiltADC: false
+
+🎙️ Attempting to load lab VO...
+AssetLoadingManager: loadAsset(withName: lab_vo, category: labEnvironment)
+Cannot find a BindPoint for any bind path: "", "", "", "", ""
+✅ Lab VO asset loaded successfully
+✅ Lab VO added to root entity
+
+🔊 Loading lab audio Spatial Ambience...
+AssetLoadingManager: loadAsset(withName: lab_audio, category: labEnvironment)
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", ""
+✅ Lab Audio added to MainEntity
+
+✅ Lab Environment Setup Complete
+├─ isSetupComplete: true
+├─ shouldShowADCButton: false
+└─ hasBuiltADC: false
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", ""
+⏲️ Timer complete - showing ADC button
+builder window status: false
+setting builder window status to true
+
+
+// 2nd failed view
+
+🔄 === PHASE TRANSITION START ===
+├─ From: outro
+├─ To: intro
+├─ Current Tracking State: stopped
+├─ Has Hand Tracking: false
+└─ Will Need Hand Tracking: true
+🔄 Phase transition: outro -> intro
+🔍 isTransitioning: false
+🔍 immersiveSpaceState: open
+
+=== Starting OutroViewModel Cleanup ===
+✅ Completed OutroViewModel cleanup
+
+
+=== Starting Outro Environment Cleanup ===
+📊 Current template cache size: 9 entities
+📊 Current templates: outro_environment, cancer_cell, adc, antibody_scene, game_start_vo, assembled_lab, test_fire_cell, attack_cancer_environment, PressStart_VO
+🗑️ Preparing to remove 1 outro assets:
+
+🗑️ Removing asset: outro_environment
+
+📝 Releasing entity: Root
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Root
+  - Child count: 10
+  - Has components: yes
+
+📝 Releasing entity: ADC_particles
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: ParticleEmitter
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: ADC_particles
+✅ Released entity: ParticleEmitter
+
+  - Detaching from parent: Root
+✅ Released entity: ADC_particles
+
+
+📝 Releasing entity: ADC_particles2
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: ParticleEmitter
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: ADC_particles2
+✅ Released entity: ParticleEmitter
+
+  - Detaching from parent: Root
+✅ Released entity: ADC_particles2
+
+
+📝 Releasing entity: outro_v01
+  - Child count: 3
+  - Has components: yes
+
+📝 Releasing entity: logo_MSR
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: logo_offset
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: tagline
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Text_001
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: tagline
+✅ Released entity: Text_001
+
+  - Detaching from parent: logo_offset
+✅ Released entity: tagline
+
+  - Detaching from parent: logo_MSR
+✅ Released entity: logo_offset
+
+  - Detaching from parent: outro_v01
+✅ Released entity: logo_MSR
+
+
+📝 Releasing entity: outro_MSR
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: change_MSR
+  - Child count: 2
+  - Has components: yes
+
+📝 Releasing entity: TextFace_001
+  - Child count: 1
+  - Has components: yes
+
+📝 Releasing entity: Text_006
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: TextFace_001
+✅ Released entity: Text_006
+
+  - Detaching from parent: change_MSR
+✅ Released entity: TextFace_001
+
+  - Detaching from parent: outro_MSR
+✅ Released entity: change_MSR
+
+  - Detaching from parent: outro_v01
+✅ Released entity: outro_MSR
+
+  - Detaching from parent: Root
+✅ Released entity: outro_v01
+
+
+📝 Releasing entity: AmbientAudio
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Root
+✅ Released entity: AmbientAudio
+
+
+📝 Releasing entity: M_spatial_picture
+  - Child count: 0
+  - Has components: yes
+  - Detaching from parent: Root
+✅ Released entity: M_spatial_picture
+
+  - Detaching from parent: Root
+✅ Released entity: Root
+
+✅ Released entity: Root
+
+✅ Released asset: outro_environment
+
+📊 Updated template cache size: 8 entities
+🔒 Remaining asset: cancer_cell
+✅ Completed outro environment cleanup
+
+I am in the outro space in the onDisappear else block and think that I have been dismissed
+
+=== Tracking State [Start Tracking Request] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x3008bc960>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===
+
+
+🖐️ Configuring Tracking Session
+├─ World Tracking: Enabled
+├─ Hand Tracking: Enabled
+└─ Provider State: stopped
+🧹 Cleaning up app state
+cannot add handler to 0 from 1 - dropping
+
+=== Tracking State [Post-Start] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x3008529e0>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: initialized
+🖐️ Hand Provider State: initialized
+=== End State Log ===
+
+
+=== Tracking State [Post-Transition] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+⚠️ No device anchor available
+🌎 World Provider State: running
+🖐️ Hand Provider State: running
+=== End State Log ===
+
+✅ Phase transition completed: intro
+ARPredictorRemoteService <0x1080353c0>: Query queue is not running.
+ARPredictorRemoteService <0x104e20610>: Query queue is not running.
+ARPredictorRemoteService <0x10802ef80>: Query queue is not running.
+ARPredictorRemoteService <0x104f1a8f0>: Query queue is not running.
+ARPredictorRemoteService <0x1080170e0>: Query queue is not running.
+🧹 **onChange Function**: Immersive space dismissed successfully.
+🎯 Managing windows for phase: intro
+📊 Before state update - nav window open: false
+📊 Window states after update:
+  Main: true
+  Debug: false
+  Library: false
+  Builder: false
+  Phases:
+    AppPhase: intro
+    ScenePhase: active
+    LoadingPhase: completed
+=== Finished Dismiss Attempt ===
+🧹 **cleanupAppState**: Immersive space dismissed successfully.
+
+🛑 Stopping Tracking Session
+├─ Current State: stopped
+├─ World Provider: paused
+└─ Hand Provider: paused
+
+=== Tracking State [Pre-Stop] ===
+🎯 Tracking Enabled: true
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x3008529e0>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: paused
+🖐️ Hand Provider State: paused
+=== End State Log ===
+
+✅ App state cleanup completed
+🎯 PositioningSystem 133FBF75-0B72-4789-B171-1639ED2DF012 initializing...
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+
+=== IntroView Appeared ===
+openImmersiveSpace result for intro: opened
+cannot add handler to 0 from 1 - dropping
+
+=== Processing Hand Updates ===
+Should Process Hand Tracking: true
+Hand Provider State: stopped
+🖐️ Starting hand tracking updates
+
+=== Setting up IntroView ===
+
+=== hasBuiltSDC = true ===
+🔄 Starting new intro session: tracking states reset
+📱 IntroViewModel: Setting up root
+
+✅ Root Setup Complete
+├─ Root Entity: IntroRoot
+├─ Position: SIMD3<Float>(0.0, -1.5, -1.0)
+└─ Positioning: Ready for explicit updates
+✅ Added root to content
+📱 IntroView: Starting environment setup
+📱 IntroViewModel: Starting environment setup
+📱 IntroViewModel: Attempting to load intro environment
+AssetLoadingManager: loadAsset(withName: intro_environment, category: introEnvironment)
+
+=== Tracking State [Post-Stop] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x3008529e0>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===
+
+✅ IntroViewModel: Successfully loaded intro environment
+✅ Environment setup complete
+📱 IntroViewModel: Setting up individual entities
+🔍 Found skyDome: SkySphere
+✅ Set skyDome opacity to 0
+📱 IntroViewModel: Starting portal setup
+📱 Starting lab environment assembly
+✅ Using cached assembled lab
+✅ IntroViewModel: Successfully loaded assembled laboratory environment
+✅ IntroViewModel: Created portal
+✅ IntroViewModel: Portal setup complete
+✅ IntroViewModel: Environment setup complete
+✅ Environment setup complete
+📱 IntroView: Found SwiftUI attachments
+🎯 Found ADCBuilderAttachment target
+🎯 Found AttackCancerAttachment target
+Cannot find a BindPoint for any bind path: "", "", "", "", ""
+
+=== Start Button Pressed ===
+Current Phase: intro
+isReadyForInteraction: true
+Setting shouldUpdateHeadPosition = true
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x3008529e0>: The device_anchor can only be queried when the world tracking provider is running.
+
+🎯 Head Position Update Triggered
+├─ shouldUpdate: true
+├─ isReadyForInteraction: true
+├─ isPositioningInProgress: false
+├─ Current Phase: intro
+├─ Tracking State: stopped
+└─ Has Device Anchor: false
+
+🎯 Starting Head Position Update
+├─ Current Position: SIMD3<Float>(0.0, -1.5, -1.0)
+├─ Tracking State: stopped
+├─ isPositioningInProgress: false
+└─ isPositioningComplete: false
+
+✨ Head Position Update Complete
+├─ Final Position: SIMD3<Float>(0.0, -1.5, -1.0)
+├─ Tracking State: stopped
+├─ isPositioningInProgress: true
+└─ isPositioningComplete: false
+
+✨ Positioning Complete
+├─ Phase: intro
+├─ ImmersiveSpaceState: open
+├─ Root Entity: IntroRoot
+└─ Environment Ready: Root
+✅ Found portal for attachments
+🔍 Found logo: logo
+✅ Set logo scale to 0.5 and opacity to 0
+📎 Created titleRoot
+🔍 After - titleEntity position: SIMD3<Float>(0.0, 0.0, 0.0), scale: SIMD3<Float>(1.0, 1.0, 1.0)
+📎 Added titleText to titleRoot
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", ""
+🎬 Animation Sequence: Starting at 2025-02-18 13:08:48 +0000
+🔍 Entity Check - skyDome: true, logo: true, portal: true
+🌌 Sky: Starting at +6.99758529663086e-05s
+🔍 Sky initial opacity: 0.0
+🌌 Sky: Completed fade animation
+⏰ Sleeping for 29s before portal warp
+Failed to set override status for bind point component member.
+⏰ Sleeping for 75s before logo
+de-activating session 70057 after timeout
+🎯 Logo: Starting at +104.26851999759674s
+🔍 Logo reference check: true
+🔍 Logo initial opacity: 0.0
+🎯 Logo: Completed fade animation
+🔍 Logo final opacity: 0.0
+📝 Title: Showing at +109.39314603805542s
+About to set showTitleText, current value: false
+Updated showTitleText to true
+🌐 Portal: Starting at +109.50010204315186s
+🔍 Portal reference check: true
+🔍 Portal initial opacity: 0.0
+🌐 Portal: Completed fade animation
+🔍 Portal final opacity: 0.0
+Failed to set override status for bind point component member.
+Failed to set override status for bind point component member.
+🌐 Portal plane: Starting X scale animation at +114.67784893512726s
+🌐 Portal plane: Completed X scale animation
+Failed to set override status for bind point component member.
+🌐 Starting concurrent animations for PortalRoot, World, and PortalPlane scale
+Failed to set override status for bind point component member.
+Failed to set override status for bind point component member.
+Failed to set override status for bind point component member.
+Failed to set override status for bind point component member.
+Failed to set override status for bind point component member.
+Failed to set override status for bind point component member.
+🌐 Completed concurrent animations for PortalRoot, World, and PortalPlane scale
+🛑 assembledLab position in world space PRE-TRANSFORM FIX is SIMD3<Float>(0.0, -1.5, -1.0)
+✅ assembledLab position in world space is SIMD3<Float>(0.0, -1.5, 0.0)
+
+ 🔍 Inspecting portal hierarchy 
+
+Entity: 
+Components: [RealityKit.Transform, RealityKit.SynchronizationComponent, RealityFoundation.OpacityComponent]
+  Entity: world
+  Components: [RealityKit.Transform, RealityKit.SynchronizationComponent, RealityFoundation.WorldComponent]
+  Entity: portalRoot
+  Components: [RealityKit.Transform, RealityKit.SynchronizationComponent]
+    Entity: portalPlane
+    Components: [RealityKit.Transform, RealityKit.SynchronizationComponent, RealityKit.ModelComponent, RealityFoundation.PortalComponent]
+Removed portal completely from the scene as we transition to lab.
+Removed introEnvironment completely from the scene as we transition to lab.
+readyToStartLab set to true
+🎬 Animation Sequence: Completed at +142.15042901039124s
+Cannot find a BindPoint for any bind path: "", "", "", "", ""
+ARPredictorRemoteService <0x1080353c0>: Query queue is not running.
+ARPredictorRemoteService <0x104fd79b0>: Query queue is not running.
+ARPredictorRemoteService <0x104bab4c0>: Query queue is not running.
+ARPredictorRemoteService <0x10802ef80>: Query queue is not running.
+           PHASEEngine.mm:1625  Insufficient permissions to access root object by UUID
+→ .background
+🧹 Cleaning up app state
+=== Finished Dismiss Attempt ===
+🧹 **cleanupAppState**: Immersive space dismissed successfully.
+
+🛑 Stopping Tracking Session
+├─ Current State: stopped
+├─ World Provider: stopped
+└─ Hand Provider: stopped
+
+=== Tracking State [Pre-Stop] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x3008529e0>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===
+
+✅ App state cleanup completed
+
+=== Tracking State [Post-Stop] ===
+🎯 Tracking Enabled: false
+✋ Hand Tracking Enabled: true
+🔄 Current Provider State: stopped
+ar_world_tracking_provider_query_device_anchor_at_timestamp <0x3008529e0>: The device_anchor can only be queried when the world tracking provider is running.
+⚠️ No device anchor available
+🌎 World Provider State: stopped
+🖐️ Hand Provider State: stopped
+=== End State Log ===

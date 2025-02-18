@@ -24,37 +24,36 @@ struct LabView: View {
             let root = appModel.labState.setupRoot()
             content.add(root)
             
-            // Setup environment in a task after root is configured
             Task { @MainActor in
-                do {
-                    try await appModel.labState.setupInitialLabEnvironment(in: root)
-                    try await appModel.labState.setupLabEnvironment(in: root)
-                    
-                    // Now that environment is loaded, set up attachments
-                    if let adcButton = attachments.entity(for: "ADCBuilderViewerButton"),
-                       let attackButton = attachments.entity(for: "AttackCancerViewerButton") {
-                        
-                        // Find attachment points and set up buttons
-                        if let builderTarget = root.findEntity(named: "ADCBuilderAttachment") {
-                            print("🎯 Found ADCBuilderAttachment target")
-                            builderTarget.addChild(adcButton)
-                            adcButton.components.set(BillboardComponent())
-                            appModel.labState.adcBuilderViewerButtonEntity = adcButton
-                        } else {
-                            print("❌ ADCBuilderAttachment target not found")
-                        }
-                        
-                        if let attackTarget = root.findEntity(named: "AttackCancerAttachment") {
-                            print("🎯 Found AttackCancerAttachment target")
-                            attackTarget.addChild(attackButton)
-                            attackButton.components.set(BillboardComponent())
-                            appModel.labState.attackCancerViewerButtonEntity = attackButton
-                        } else {
-                            print("❌ AttackCancerAttachment target not found")
-                        }
-                    }
-                } catch {
-                    print("❌ LabView: Failed to setup environment: \(error)")
+                // Setup initial environment
+                try? await appModel.labState.setupInitialLabEnvironment(in: root)
+                try? await appModel.labState.setupLabEnvironment(in: root)
+                
+                // Setup ADC placer if we have a built ADC
+                appModel.labState.setupADCPlacer(in: root)
+            }
+            
+            // Now that environment is loaded, set up attachments
+            if let adcButton = attachments.entity(for: "ADCBuilderViewerButton"),
+               let attackButton = attachments.entity(for: "AttackCancerViewerButton") {
+                
+                // Find attachment points and set up buttons
+                if let builderTarget = root.findEntity(named: "ADCBuilderAttachment") {
+                    print("🎯 Found ADCBuilderAttachment target")
+                    builderTarget.addChild(adcButton)
+                    adcButton.components.set(BillboardComponent())
+                    appModel.labState.adcBuilderViewerButtonEntity = adcButton
+                } else {
+                    print("❌ ADCBuilderAttachment target not found")
+                }
+                
+                if let attackTarget = root.findEntity(named: "AttackCancerAttachment") {
+                    print("🎯 Found AttackCancerAttachment target")
+                    attackTarget.addChild(attackButton)
+                    attackButton.components.set(BillboardComponent())
+                    appModel.labState.attackCancerViewerButtonEntity = attackButton
+                } else {
+                    print("❌ AttackCancerAttachment target not found")
                 }
             }
         } attachments: {

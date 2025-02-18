@@ -1,3 +1,8 @@
+//
+//  TrackingSessionManager.swift
+//  VisionOS Only – Revised for clean session restarts
+//
+
 import ARKit
 import RealityKit
 import SwiftUI
@@ -7,7 +12,8 @@ import QuartzCore
 @MainActor
 final class TrackingSessionManager {
     // MARK: - Properties
-    let arkitSession = ARKitSession()
+    // Making this a variable so we can reinitialize it on stop.
+    var arkitSession = ARKitSession()
     var worldTrackingProvider = WorldTrackingProvider()
     var handTrackingProvider: HandTrackingProvider!
     
@@ -23,8 +29,11 @@ final class TrackingSessionManager {
     private(set) var rightHandAnchor: HandAnchor?
     var shouldProcessHandTracking: Bool = false
     
-    // Add HandTrackingManager
+    // HandTrackingManager
     let handTrackingManager: HandTrackingManager
+    
+    // Weak reference to AppModel
+    weak var appModel: AppModel?
     
     init() {
         handTrackingManager = HandTrackingManager(trackingManager: nil)
@@ -35,102 +44,111 @@ final class TrackingSessionManager {
     func startTracking(needsHandTracking: Bool = false) async throws {
         await logTrackingState(context: "Start Tracking Request")
         
-        #if targetEnvironment(simulator)
-        // Do nothing in simulator
-        print("⚠️ Hand tracking not available in simulator")
-        return
-        #else
-        // If already tracking with the same hand tracking state, do nothing
+        // If already tracking with the same state, skip starting a new session.
         if isTracking && shouldProcessHandTracking == needsHandTracking {
-            print("⚠️ Already tracking with same state - skipping")
+            Logger.info("⚠️ Already tracking with same state - skipping")
+            await logTrackingState(context: "Skipped Start (Already Tracking)")
             return
         }
         
-        // Wait for previous session to fully stop
+        // If already tracking, stop the previous session.
         if isTracking {
-            print("🛑 Stopping previous tracking session")
-            stopTracking()
-            // Wait for the provider to enter stopped state via monitorTrackingEvents
-            for _ in 0..<10 { // Maximum 1 second wait
-                if !isTracking {
-                    break
-                }
+            Logger.info("🛑 Stopping previous tracking session")
+            await stopTracking()
+            for _ in 0..<10 { // Wait up to 1 second
+                if !isTracking { break }
                 try await Task.sleep(for: .milliseconds(100))
             }
             await logTrackingState(context: "Post-Stop Check")
         }
         
-        // Create new providers for this session
+        // Reinitialize providers to guarantee fresh state.
         worldTrackingProvider = WorldTrackingProvider()
-        
         let providers: [any DataProvider]
         if needsHandTracking {
             shouldProcessHandTracking = true
             handTrackingProvider = HandTrackingProvider()
             providers = [worldTrackingProvider, handTrackingProvider]
-            print("🖐️ Starting hand tracking session")
-            print("Hand Provider State: \(handTrackingProvider.state)")
+            Logger.info("""
+            
+            🖐️ Configuring Tracking Session
+            ├─ World Tracking: Enabled
+            ├─ Hand Tracking: Enabled
+            └─ Provider State: \(currentState)
+            """)
         } else {
             shouldProcessHandTracking = false
             providers = [worldTrackingProvider]
-            print("🌎 Starting world tracking only")
+            Logger.info("""
+            
+            🌎 Configuring Tracking Session
+            ├─ World Tracking: Enabled
+            ├─ Hand Tracking: Disabled
+            └─ Provider State: \(currentState)
+            """)
         }
         
         providersStoppedWithError = false
-        try await arkitSession.run(providers)
-        isTracking = true
-        print("✅ Started tracking providers")
-        print("Final Hand Tracking State: \(shouldProcessHandTracking)")
         
+        // For VisionOS, simply run the ARKit session with the providers.
+        try await arkitSession.run(providers)
+        
+        isTracking = true
         await logTrackingState(context: "Post-Start")
-        #endif
     }
     
-    func stopTracking() {
-        #if targetEnvironment(simulator)
-        // Do nothing in simulator
-        return
-        #else
-        Task {
-            await logTrackingState(context: "Pre-Stop")
-            
-            arkitSession.stop()
-            isTracking = false
-            
-            // Give a moment for state to update
-            try? await Task.sleep(for: .milliseconds(100))
-            await logTrackingState(context: "Post-Stop")
+    func stopTracking() async {
+        Logger.info("🛑 Stopping Tracking Session")
+        arkitSession.stop()
+        isTracking = false
+        
+        // Reinitialize arkitSession to clear any stale state.
+        arkitSession = ARKitSession()
+        
+        // Wait until the world tracking provider state is confirmed as stopped.
+        let startTime = Date()
+        while true {
+            if case .stopped = worldTrackingProvider.state { break }
+            if Date().timeIntervalSince(startTime) > 2.0 { break }
+            try? await Task.sleep(nanoseconds: 100_000_000) // 100ms delay
         }
-        #endif
+        await logTrackingState(context: "Post-Stop")
+    }
+    
+    func waitForTrackingToRun(timeout: TimeInterval = 2.0) async throws {
+        let startTime = Date()
+        while true {
+            if case .running = self.worldTrackingProvider.state {
+                return
+            }
+            if Date().timeIntervalSince(startTime) > timeout {
+                throw TrackingError.timedOut
+            }
+            try await Task.sleep(nanoseconds: 100_000_000) // 100ms delay
+        }
     }
     
     // MARK: - Update Processing
     func processWorldTrackingUpdates() async {
-        #if targetEnvironment(simulator)
-        // Do nothing in simulator
-        return
-        #else
         for await _ in worldTrackingProvider.anchorUpdates {
-            // Process world tracking updates
+            // Process world tracking updates.
         }
-        #endif
     }
     
     func processHandTrackingUpdates() async {
-        print("\n=== Processing Hand Updates ===")
-        print("Should Process Hand Tracking: \(shouldProcessHandTracking)")
-        print("Hand Provider State: \(handTrackingProvider?.state ?? .initialized)")
+        Logger.info("""
         
-        #if targetEnvironment(simulator)
-        // Do nothing in simulator
-        return
-        #else
+        === Processing Hand Updates ===
+        ├─ Should Process Hand Tracking: \(shouldProcessHandTracking)
+        └─ Hand Provider State: \(handTrackingProvider?.state ?? DataProviderState.initialized)
+        """)
+        
         guard shouldProcessHandTracking else {
-            print("❌ Hand tracking updates disabled")
+            Logger.info("❌ Hand tracking updates disabled")
             return
         }
         
-        print("🖐️ Starting hand tracking updates")
+        Logger.info("🖐️ Starting hand tracking updates")
         for await update in handTrackingProvider.anchorUpdates {
             let handAnchor = update.anchor
             switch update.event {
@@ -138,54 +156,76 @@ final class TrackingSessionManager {
                 switch handAnchor.chirality {
                 case .left:
                     leftHandAnchor = handAnchor
-//                    print("👈 Left hand \(update.event == .added ? "added" : "updated")")
                 case .right:
                     rightHandAnchor = handAnchor
-//                    print("👉 Right hand \(update.event == .added ? "added" : "updated")")
                 }
                 handTrackingManager.updateHandAnchors(left: leftHandAnchor, right: rightHandAnchor)
             case .removed:
                 switch handAnchor.chirality {
                 case .left:
                     leftHandAnchor = nil
-                    print("❌ Left hand removed")
+                    Logger.info("❌ Left hand removed")
                 case .right:
                     rightHandAnchor = nil
-                    print("❌ Right hand removed")
+                    Logger.info("❌ Right hand removed")
                 }
                 handTrackingManager.updateHandAnchors(left: leftHandAnchor, right: rightHandAnchor)
             }
         }
-        #endif
     }
     
     // MARK: - Event Monitoring
     func monitorTrackingEvents() async {
         for await event in arkitSession.events {
             switch event {
-            case .dataProviderStateChanged(let provider, let newState, let error):
-                let providerName = (provider is WorldTrackingProvider) ? "World Tracking" :
-                                 (provider is HandTrackingProvider) ? "Hand Tracking" : "Unknown"
-                print("🔄 \(providerName) provider state changed to: \(newState)")
-                currentState = newState  // Track the current state
+            case .dataProviderStateChanged(let providers, let newState, let error):
+                for provider in providers {
+                    let providerName: String
+                    if provider is WorldTrackingProvider {
+                        providerName = "World Tracking"
+                    } else if provider is HandTrackingProvider {
+                        providerName = "Hand Tracking"
+                    } else {
+                        providerName = "Unknown"
+                    }
+                    
+                    Logger.info("""
+                    
+                    🔄 Provider State Change
+                    ├─ Provider: \(providerName)
+                    ├─ From: \(currentState)
+                    ├─ To: \(newState)
+                    ├─ Error: \(error?.localizedDescription ?? "none")
+                    └─ Current Phase: \(appModel?.currentPhase ?? .loading)
+                    """)
+                }
                 
-                // Log full state after any state change
-                await logTrackingState(context: "\(providerName) Provider State Change [\(newState)]")
+                currentState = newState
+                await logTrackingState(context: "Provider State Change [\(newState)]")
                 
                 switch newState {
                 case .initialized:
-                    print("ℹ️ \(providerName) provider initialized")
+                    Logger.info("ℹ️ Providers initialized")
                 case .running:
-                    print("✅ \(providerName) provider running")
+                    Logger.info("✅ Providers running")
                     isTracking = true
                 case .paused:
-                    print("⏸️ \(providerName) provider paused")
+                    Logger.info("⏸️ Providers paused")
                 case .stopped:
-                    if let error {
-                        print("❌ \(providerName) provider stopped with error: \(error)")
+                    if let error = error {
+                        Logger.info("""
+                        
+                        ❌ Providers Stopped with Error
+                        ├─ Error: \(error)
+                        └─ State: \(currentState)
+                        """)
                         providersStoppedWithError = true
                     } else {
-                        print("⏹️ \(providerName) provider stopped normally")
+                        Logger.info("""
+                        
+                        ⏹️ Providers Stopped Normally
+                        └─ State: \(currentState)
+                        """)
                     }
                     isTracking = false
                 @unknown default:
@@ -195,7 +235,12 @@ final class TrackingSessionManager {
             case .authorizationChanged(let type, let status):
                 if type == .worldSensing {
                     worldSensingAuthorizationStatus = status
-                    print("🔐 World sensing authorization changed: \(status)")
+                    Logger.info("""
+                    
+                    🔐 Authorization Changed
+                    ├─ Type: World Sensing
+                    └─ Status: \(status)
+                    """)
                 }
                 
             default:
@@ -217,51 +262,50 @@ extension TrackingSessionManager {
         case capabilitiesUnavailable(String)
         case providerError(Error)
         case authorizationDenied
+        case timedOut
     }
 }
 
 // MARK: - Enhanced Logging
 extension TrackingSessionManager {
-    /// Logs the current tracking state with detailed position and state information
-    /// - Parameter context: A string describing the context of when this log is being made
     func logTrackingState(context: String) async {
-        print("\n=== Tracking State [\(context)] ===")
+        Logger.info("""
         
-        // Log tracking flags
-        print("🎯 Tracking Enabled: \(isTracking)")
-        print("✋ Hand Tracking Enabled: \(shouldProcessHandTracking)")
-        print("🔄 Current Provider State: \(currentState)")
+        === Tracking State [\(context)] ===
+        ├─ Tracking Enabled: \(isTracking)
+        ├─ Hand Tracking Enabled: \(shouldProcessHandTracking)
+        └─ Current Provider State: \(currentState)
+        """)
         
-        // Get and log head position
         if let deviceAnchor = worldTrackingProvider.queryDeviceAnchor(atTimestamp: CACurrentMediaTime()) {
-            print("📍 Head Transform: \(deviceAnchor.originFromAnchorTransform)")
-            // Extract position components for easier reading
-            let position = deviceAnchor.originFromAnchorTransform.columns.3
-            print("📍 Head Position - X: \(position.x), Y: \(position.y), Z: \(position.z)")
+            Logger.info("""
+            
+            📍 Device Anchor Info
+            ├─ Head Transform: \(deviceAnchor.originFromAnchorTransform)
+            ├─ Position X: \(deviceAnchor.originFromAnchorTransform.columns.3.x)
+            ├─ Position Y: \(deviceAnchor.originFromAnchorTransform.columns.3.y)
+            └─ Position Z: \(deviceAnchor.originFromAnchorTransform.columns.3.z)
+            """)
         } else {
-            print("⚠️ No device anchor available")
+            Logger.info("⚠️ No device anchor available")
         }
         
-        // Log provider states
-        print("🌎 World Provider State: \(worldTrackingProvider.state)")
-        if let handState = handTrackingProvider?.state {
-            print("🖐️ Hand Provider State: \(handState)")
-        }
+        Logger.info("""
         
-        // Log any error states
-        if providersStoppedWithError {
-            print("❌ Providers stopped with error")
-        }
-        
-        print("=== End State Log ===\n")
+        🌐 Provider States
+        ├─ World Provider: \(worldTrackingProvider.state)
+        ├─ Hand Provider: \(handTrackingProvider?.state ?? DataProviderState.initialized)
+        └─ Stopped with Error: \(providersStoppedWithError)
+        """)
     }
     
-    /// Logs the transition between two phases
-    /// - Parameters:
-    ///   - from: The phase we're transitioning from
-    ///   - to: The phase we're transitioning to
     func logTransition(from: String, to: String) async {
-        print("\n🔄 === Phase Transition [\(from) -> \(to)] ===")
+        Logger.info("""
+        
+        🔄 Phase Transition
+        ├─ From: \(from)
+        └─ To: \(to)
+        """)
         await logTrackingState(context: "Pre-Transition")
     }
-} 
+}

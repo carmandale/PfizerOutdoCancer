@@ -498,4 +498,81 @@ extension Entity {
             transform = endTransform
         }
     }
+    
+    /// Animates the entity's absolute position from its current position to a target position.
+    /// - Parameters:
+    ///   - targetPosition: The absolute target position
+    ///   - duration: Animation duration in seconds
+    ///   - delay: Optional delay before starting the animation (in seconds)
+    ///   - timing: Animation timing curve (default: .easeInOut)
+    ///   - waitForCompletion: If true, waits for the animation to complete before returning
+    func animateAbsolutePosition(to targetPosition: SIMD3<Float>,
+                                duration: TimeInterval,
+                                delay: TimeInterval = 0,
+                                timing: RealityKit.AnimationTimingFunction = .easeInOut,
+                                waitForCompletion: Bool = false) async {
+        // Handle delay first
+        if delay > 0 {
+            try? await Task.sleep(for: .seconds(delay))
+        }
+        
+        let startTransform = transform
+        var endTransform = transform
+        // Set absolute target position
+        endTransform.translation = targetPosition
+        
+        // For non-animated changes (duration = 0), apply the transform immediately
+        guard duration > 0 else {
+            transform = endTransform
+            return
+        }
+        
+        // Build the animation using FromToByAnimation
+        let animation = FromToByAnimation(
+            from: startTransform,
+            to: endTransform,
+            duration: duration,
+            timing: timing,
+            bindTarget: .transform
+        )
+        
+        do {
+            let resource = try AnimationResource.generate(with: animation)
+            playAnimation(resource)
+            
+            // Optionally wait for the animation to complete
+            if waitForCompletion {
+                try? await Task.sleep(for: .seconds(duration))
+            }
+        } catch {
+            print("⚠️ Could not generate absolute position animation: \(error.localizedDescription)")
+            // Fall back to directly setting the transform
+            transform = endTransform
+        }
+    }
+    
+    /// Triggers a head position update for an entity with a PositioningComponent
+    /// - Parameters:
+    ///   - animated: Whether to animate the position change
+    ///   - duration: Animation duration in seconds (only used if animated is true)
+    func checkHeadPosition(animated: Bool = false, duration: TimeInterval = 0.5) {
+        guard var positioningComponent = components[PositioningComponent.self] else {
+            Logger.debug("⚠️ Cannot check head position: No PositioningComponent found on entity '\(name)'")
+            return 
+        }
+        
+        Logger.debug("""
+        
+        🎯 Requesting head position update for entity '\(name)'
+        ├─ Current World Position: \(position(relativeTo: nil))
+        ├─ Offsets: [\(positioningComponent.offsetX), \(positioningComponent.offsetY), \(positioningComponent.offsetZ)]
+        ├─ Animated: \(animated ? "✅" : "❌")
+        └─ Duration: \(animated ? "\(duration)s" : "immediate")
+        """)
+        
+        positioningComponent.needsPositioning = true
+        positioningComponent.shouldAnimate = animated
+        positioningComponent.animationDuration = animated ? duration : 0.0
+        components[PositioningComponent.self] = positioningComponent
+    }
 }

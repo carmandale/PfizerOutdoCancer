@@ -86,7 +86,7 @@ public struct AttachmentSystem: System {
             }
         }
         
-        if let bestPoint = bestPoint {
+        if bestPoint != nil {
             #if DEBUG
 //            print("🎯 Selected attachment point: \(bestPoint.name) with score: \(bestScore)")
             #endif
