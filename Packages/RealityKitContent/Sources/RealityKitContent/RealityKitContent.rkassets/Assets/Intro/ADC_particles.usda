@@ -10,85 +10,66 @@
 
 def Xform "Root"
 {
-    def Xform "Transform" (
-        active = true
+    def Xform "ParticleEmitter" (
+        customData = {
+            float3 rotationEulerHint = (1.5707964, 0, 0)
+        }
     )
     {
-        float2 ui:nodegraph:node:pos = (20, 20)
-        int ui:nodegraph:node:stackingOrder = 1
-        quatf xformOp:orient = (1, 0, 0, 0)
-        float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (0, 1.5, -35.978)
+        quatf xformOp:orient = (0.70710677, 0.70710677, 0, 0)
+        float3 xformOp:translate = (-2.9802322e-8, 1.4999887, -35.97795)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
-        def Xform "ParticleEmitter" (
-            customData = {
-                float3 rotationEulerHint = (1.5707964, 0, 0)
-            }
-        )
+        def RealityKitComponent "VFXEmitter"
         {
-            quatf xformOp:orient = (0.70710677, 0.7071067, 0, 0)
-            float3 xformOp:scale = (0.99999994, 0.99999994, 0.99999994)
-            float3 xformOp:translate = (-2.9802322e-8, -0.0000113248825, 0.000049591064)
-            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            token info:id = "RealityKit.VFXEmitter"
 
-            def RealityKitComponent "VFXEmitter"
+            def RealityKitStruct "currentState"
             {
-                token info:id = "RealityKit.VFXEmitter"
+                bool isSpawningEnabled = 1
+                bool spawnInheritParentColor = 1
+                token spawnOccasion = "OnUpdate"
 
-                def RealityKitStruct "currentState"
+                def RealityKitStruct "mainEmitter"
                 {
-                    bool isSpawningEnabled = 1
-                    bool spawnInheritParentColor = 1
-                    token spawnOccasion = "OnUpdate"
+                    float3 acceleration = (0, 0, 0.2)
+                    token billboardMode = "BillboardYAligned"
+                    float birthRate = 10
+                    token blendMode = "Additive"
+                    float4 endColorA = (0.0013006331, 0.032195132, 1, 1)
+                    float4 endColorB = (0.18205251, 0.31924036, 1, 1)
+                    float noiseStrength = 2
+                    token opacityOverLife = "GradualFadeInOut"
+                    asset particleImage = @textures/pfizer-logo-color-small.png@
+                    double particleLifeSpan = 20
+                    float particleSize = 0.2
+                    float particleSizeVariation = 0.1
+                    float3 radialGravityCenter = (0, 0, 0)
+                    float radialGravityStrength = -0.25
+                    float sizeMultiplierAtEndOfLifespanPower = 2
+                    float4 startColorA = (1, 1, 1, 1)
+                    float4 startColorB = (0.10395561, 0.18016414, 1, 1)
+                    float stretchFactor = 0.6858984
+                    bool useEndColor = 1
+                    bool useEndColorRange = 1
+                    bool useStartColorRange = 1
+                    float vortexStrength = 0
+                }
 
-                    def RealityKitStruct "mainEmitter"
-                    {
-                        float3 acceleration = (0, 0, 0.2)
-                        token billboardMode = "BillboardYAligned"
-                        float birthRate = 10
-                        token blendMode = "Additive"
-                        float4 endColorA = (0.0013006331, 0.032195132, 1, 1)
-                        float4 endColorB = (0.18205251, 0.31924036, 1, 1)
-                        float noiseStrength = 2
-                        token opacityOverLife = "GradualFadeInOut"
-                        asset particleImage = @textures/pfizer-logo-color-small.png@
-                        double particleLifeSpan = 20
-                        float particleSize = 0.2
-                        float particleSizeVariation = 0.1
-                        float3 radialGravityCenter = (0, 0, 0)
-                        float radialGravityStrength = -0.125
-                        float sizeMultiplierAtEndOfLifespanPower = 2
-                        float4 startColorA = (1, 1, 1, 1)
-                        float4 startColorB = (0.10395561, 0.18016414, 1, 1)
-                        float stretchFactor = 0.6858984
-                        bool useEndColor = 1
-                        bool useEndColorRange = 1
-                        bool useStartColorRange = 1
-                        float vortexStrength = 0
-                    }
-
-                    def RealityKitStruct "spawnedEmitter"
-                    {
-                        float3 acceleration = (0, -0.04, 0)
-                        token animationRepeatMode = "AutoReverse"
-                        token blendMode = "Additive"
-                        float dampingFactor = 3
-                        bool isAnimated = 1
-                        float noiseAnimationSpeed = 0.25
-                        float noiseStrength = 0.1
-                        float particleAngularVelocity = 0.25
-                        asset particleImage = @../../ParticleEmitterPresetTextures/twinkle.exr@
-                        float spreadingAngle = 0
-                    }
+                def RealityKitStruct "spawnedEmitter"
+                {
+                    float3 acceleration = (0, -0.04, 0)
+                    token animationRepeatMode = "AutoReverse"
+                    token blendMode = "Additive"
+                    float dampingFactor = 3
+                    bool isAnimated = 1
+                    float noiseAnimationSpeed = 0.25
+                    float noiseStrength = 0.1
+                    float particleAngularVelocity = 0.25
+                    asset particleImage = @../../ParticleEmitterPresetTextures/twinkle.exr@
+                    float spreadingAngle = 0
                 }
             }
-        }
-
-        def RealityKitComponent "Billboard"
-        {
-            float blendFactor = 1
-            uniform token info:id = "RealityKit.Billboard"
         }
     }
 }

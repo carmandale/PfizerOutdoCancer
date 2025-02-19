@@ -16,16 +16,10 @@ struct OutdoCancer: View {
                 // Invisible placeholder text to maintain consistent layout
                 Text("Let's Outdo Cancer")
                     .font(.extraLargeTitle)
-                    .opacity(1)
+                    .opacity(0)
                 
                 if showTitle {
-                    Text("Let's Outdo Cancer")
-                        .font(.extraLargeTitle)
-                        .transition(WordByWordTransition(
-                            totalDuration: 2.0,
-                            elementDuration: 0.8,
-                            extraBounce: 0.2
-                        ))
+                    AnimatedText()
                 }
             }
             .padding()
@@ -35,9 +29,14 @@ struct OutdoCancer: View {
     }
 }
 
-//#Preview {
-//    @Previewable @State var isVisible: Bool = true
-//    
-//    return OutdoCancer(showTitle: $isVisible)
-//}
-
+struct AnimatedText: View {
+    var body: some View {
+        Text("Let's Outdo Cancer")
+            .font(.extraLargeTitle)
+            .transition(WordByWordTransition(
+                totalDuration: 2.0,
+                elementDuration: 0.8,
+                extraBounce: 0.2
+            ))
+    }
+}

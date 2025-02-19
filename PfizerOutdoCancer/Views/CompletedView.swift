@@ -18,72 +18,70 @@ struct CompletedView: View {
             score: gameState.score
         )
     }
-    
+        
     var body: some View {
-        VStack(spacing: 32) {
-            // Header
-            VStack(spacing: 8) {
-                Text("Mission Complete")
-                    .font(.largeTitle)
-                    .bold()
-                
-                Text("Outstanding work!")
-                    .font(.title2)
-                    .foregroundStyle(.secondary)
-            }
-            .padding(.top, 16)
+        
+        NavigationStack {
+            VStack(spacing: 20) {
+                VStack(spacing: 10) {
+                    // Title
+                    Text("Mission Complete")
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .padding(.bottom, 30)
+
+                    Text("Outstanding work!")
+                        .font(.title2)
+                        .foregroundStyle(.secondary)
+
+                    // Stats
+                    VStack {
+                        statRow("ADCs Deployed", value: stats.deployed, icon: "arrow.up.forward")
+                    }
+                    .padding(.vertical, 20)
+                    .padding(.horizontal, 64)
             
-            // Stats
-            VStack(spacing: 16) {
-//                statRow("Cancer Cells Destroyed", value: stats.destroyed, icon: "target")
-                statRow("ADCs Deployed", value: stats.deployed, icon: "arrow.up.forward")
-//                statRow("Final Score", value: stats.score, icon: "star.fill")
-            }
-            .padding(.vertical, 20)
-            
-            // Buttons
-            VStack(spacing: 12) {
-                HStack(spacing: 12) {
-                    NavigationButton(
-                        title: "Continue",
-                        action: {
-                            print("=== Continue Button Pressed ===")
-                            print("Current Phase: \(appModel.currentPhase)")
-                            print("Immersive Space State: \(appModel.immersiveSpaceState)")
-                            await appModel.transitionToPhase(.outro)
-                        },
-                        font: .title,
-                        scaleEffect: AppModel.UIConstants.buttonExpandScale
-                    )
-                    .fontWeight(.bold)
+                    // Buttons
+                    VStack {
+                        NavigationButton(
+                            title: "Continue",
+                            action: {
+                                Logger.info("=== Starting Transition to Outro ===")
+                                Logger.info("Current Phase: \(appModel.currentPhase)")
+                                Logger.info("Immersive Space State: \(appModel.immersiveSpaceState)")
+                                
+                                // Start fade out sequence
+                                withAnimation(.easeOut(duration: 1.0)) {
+                                    opacity = 0.0
+                                }
+                                
+                                // After window fades, transition to outro
+                                Task {
+                                    try? await Task.sleep(for: .seconds(1.0))
+                                    await appModel.transitionToPhase(.outro)
+                                }
+                            },
+                            font: .title,
+                            scaleEffect: AppModel.UIConstants.buttonExpandScale
+                        )
+                        .fontWeight(.bold)
+                    }
+                }
+                .opacity(opacity)  // Apply opacity
+                .onAppear {
+                    withAnimation(.easeIn(duration: 2.0)) {
+                        opacity = 1.0
+                    }
+                }
+                .onDisappear {
+                    withAnimation(.easeOut(duration: 1.0)) {
+                        opacity = 1.0
+                    }
                 }
             }
         }
-//        .padding(64)
-        .frame(maxWidth: 500)
-//        .clipShape(RoundedRectangle(cornerRadius: 20))
-        .glassBackgroundEffect()
-//        .padding(32)
-        .onAppear {
-            print("=== CompletedView Appeared ===")
-            print("🔍 Immersive Space State: \(appModel.immersiveSpaceState)")
-            dismissWindow(id: AppModel.navWindowId)
-            
-            withAnimation(.easeOut) {
-                animateStats = true
-            }
-        }
-        .opacity(opacity)  // Apply opacity
-        .onAppear {
-            withAnimation(.easeIn(duration: 0.5)) {
-                opacity = 1.0
-            }
-        }
-        .onDisappear {
-            withAnimation(.easeOut(duration: 1.0)) {
-                opacity = 0.0
-            }
-        }
+        .frame(minWidth: 500)
+        .frame(minHeight: 500)
     }
     
     // Helper functions moved outside of body
@@ -99,16 +97,5 @@ struct CompletedView: View {
                 .bold()
                 .monospacedDigit()
         }
-//        .frame(width: 372) // Width of both buttons (180 * 2) + spacing (12)
-//        .padding()
-//        .clipShape(RoundedRectangle(cornerRadius: 12))
     }
-
 }
-
-//// MARK: - Preview
-//#Preview {
-//    CompletedView()
-//        .environment(AppModel())  // Using your existing AppModel
-//        .environment(ADCDataModel())
-//}

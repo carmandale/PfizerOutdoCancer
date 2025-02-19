@@ -97,7 +97,33 @@ def Xform "Root"
         references = @LabAttachments.usda@
     )
     {
+        reorder nameChildren = ["Attachments", "Capsule"]
         float3 xformOp:scale = (1, 1, 1)
+
+        over "Attachments"
+        {
+            over "AttackCancerAttachment"
+            {
+                float3 xformOp:translate = (0.115, 1.187183, -0.643)
+
+                over "Capsule" (
+                    active = false
+                )
+                {
+                }
+            }
+
+            over "ADCBuilderAttachment"
+            {
+                float3 xformOp:translate = (0.35901877, 1.5110943, -0.46554923)
+
+                over "Capsule" (
+                    active = false
+                )
+                {
+                }
+            }
+        }
     }
 
     def "_3D_people_scene" (
@@ -112,21 +138,6 @@ def Xform "Root"
             over "DanAndGabi_003"
             {
                 reorder nameChildren = ["ADC_spawn", "_materials", "ObjectCapture"]
-                def "ADC_spawn" (
-                    active = true
-                    references = @ADC-spawn.usda@
-                )
-                {
-                    quatf xformOp:orient = (-0.35792115, -0.35792112, 0.60982966, 0.60982996)
-                    float3 xformOp:scale = (0.9999998, 0.9999998, 0.99999994)
-                    float3 xformOp:translate = (-0.09401405, 0.36117482, 1.3349537)
-
-                    over "RealityKitContent_ADCComponent" (
-                        active = false
-                    )
-                    {
-                    }
-                }
             }
 
             over "Gary" (
@@ -162,21 +173,11 @@ def Xform "Root"
 
         over "ADC_xform_1"
         {
-            def "ADC_spawn" (
-                active = true
-                references = @ADC-spawn.usda@
-            )
-            {
-                float2 ui:nodegraph:node:pos = (20, 20)
-                int ui:nodegraph:node:stackingOrder = 1
-                float3 xformOp:scale = (0.9999998, 0.9999998, 0.99999994)
+        }
 
-                over "RealityKitContent_ADCComponent" (
-                    active = false
-                )
-                {
-                }
-            }
+        over "ADC_xform"
+        {
+            reorder nameChildren = ["ADC_spawn", "Sphere"]
         }
     }
 
@@ -305,6 +306,7 @@ def Xform "Root"
         active = true
     )
     {
+        reorder nameChildren = ["ADC_spawn", "Sphere"]
         float3 xformOp:translate = (0.115358174, 1.0508499, -0.6431079)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 

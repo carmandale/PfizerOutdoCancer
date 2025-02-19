@@ -244,7 +244,7 @@ def Xform "Root"
             {
                 float directivityFocus = 0
                 uniform token info:id = "RealityKit.SpatialAudio"
-                float rolloffFactor = 1.5183215
+                float rolloffFactor = 1
             }
         }
 
@@ -275,7 +275,7 @@ def Xform "Root"
             {
                 float directivityFocus = 0
                 uniform token info:id = "RealityKit.SpatialAudio"
-                float rolloffFactor = 1.4846158
+                float rolloffFactor = 1
             }
         }
 
@@ -304,9 +304,9 @@ def Xform "Root"
 
             def RealityKitComponent "SpatialAudio"
             {
-                float directivityFocus = 0.67592263
+                float directivityFocus = 1
                 uniform token info:id = "RealityKit.SpatialAudio"
-                float rolloffFactor = 1.5
+                float rolloffFactor = 1
             }
         }
 
@@ -335,9 +335,9 @@ def Xform "Root"
 
             def RealityKitComponent "SpatialAudio"
             {
-                float directivityFocus = 0.7276584
+                float directivityFocus = 1
                 uniform token info:id = "RealityKit.SpatialAudio"
-                float rolloffFactor = 1.5
+                float rolloffFactor = 1
             }
         }
 
@@ -366,9 +366,9 @@ def Xform "Root"
 
             def RealityKitComponent "SpatialAudio"
             {
-                float directivityFocus = 0.6796168
+                float directivityFocus = 1
                 uniform token info:id = "RealityKit.SpatialAudio"
-                float rolloffFactor = 1.5
+                float rolloffFactor = 1
             }
         }
 
@@ -397,33 +397,37 @@ def Xform "Root"
 
             def RealityKitComponent "SpatialAudio"
             {
-                float directivityFocus = 0.7
+                float directivityFocus = 1
                 uniform token info:id = "RealityKit.SpatialAudio"
-                float rolloffFactor = 1.5
+                float rolloffFactor = 1
             }
         }
 
         def RealityKitAudioFile "Ambience_1_cm_L_wav"
         {
             uniform asset file = @Audio/Blood_Vessel_Ambience_11252024/Ambience 1.cm.L.wav@
+            rel mixGroup = </Root/AudioMixGroups/MixGroup>
             uniform bool shouldLoop = 0
         }
 
         def RealityKitAudioFile "Ambience_1_cm_R_wav"
         {
             uniform asset file = @Audio/Blood_Vessel_Ambience_11252024/Ambience 1.cm.R.wav@
+            rel mixGroup = </Root/AudioMixGroups/MixGroup>
             uniform bool shouldLoop = 0
         }
 
         def RealityKitAudioFile "Ambience_2_cm_L_wav"
         {
             uniform asset file = @Audio/Blood_Vessel_Ambience_11252024/Ambience 2.cm.L.wav@
+            rel mixGroup = </Root/AudioMixGroups/MixGroup>
             uniform bool shouldLoop = 0
         }
 
         def RealityKitAudioFile "Ambience_2_cm_R_wav"
         {
             uniform asset file = @Audio/Blood_Vessel_Ambience_11252024/Ambience 2.cm.R.wav@
+            rel mixGroup = </Root/AudioMixGroups/MixGroup>
             uniform bool shouldLoop = 0
         }
 
@@ -454,9 +458,9 @@ def Xform "Root"
 
             def RealityKitComponent "SpatialAudio"
             {
-                float directivityFocus = 0.67592263
+                float directivityFocus = 1
                 uniform token info:id = "RealityKit.SpatialAudio"
-                float rolloffFactor = 1.5
+                float rolloffFactor = 1
             }
         }
 
@@ -487,33 +491,37 @@ def Xform "Root"
 
             def RealityKitComponent "SpatialAudio"
             {
-                float directivityFocus = 0.7276584
+                float directivityFocus = 1
                 uniform token info:id = "RealityKit.SpatialAudio"
-                float rolloffFactor = 1.5
+                float rolloffFactor = 1
             }
         }
 
         def RealityKitAudioFile "Ambience_3_cm_L_wav"
         {
             uniform asset file = @Audio/Blood_Vessel_Ambience_11252024/Ambience 3.cm.L.wav@
+            rel mixGroup = </Root/AudioMixGroups/MixGroup>
             uniform bool shouldLoop = 0
         }
 
         def RealityKitAudioFile "Ambience_3_cm_R_wav"
         {
             uniform asset file = @Audio/Blood_Vessel_Ambience_11252024/Ambience 3.cm.R.wav@
+            rel mixGroup = </Root/AudioMixGroups/MixGroup>
             uniform bool shouldLoop = 0
         }
 
         def RealityKitAudioFile "Heartbeat_cm_L_wav"
         {
             uniform asset file = @Audio/Blood_Vessel_Ambience_11252024/Heartbeat.cm.L.wav@
+            rel mixGroup = </Root/AudioMixGroups/MixGroup>
             uniform bool shouldLoop = 0
         }
 
         def RealityKitAudioFile "Heartbeat_cm_R_wav"
         {
             uniform asset file = @Audio/Blood_Vessel_Ambience_11252024/Heartbeat.cm.R.wav@
+            rel mixGroup = </Root/AudioMixGroups/MixGroup>
             uniform bool shouldLoop = 0
         }
     }
@@ -1010,6 +1018,18 @@ def Xform "Root"
             {
                 uniform token info:id = "RealityKit.InputTarget"
             }
+        }
+    }
+
+    def RealityKitComponent "AudioMixGroups"
+    {
+        uniform token info:id = "RealityKit.AudioMixGroups"
+
+        def RealityKitAudioMixGroup "MixGroup"
+        {
+            float gain = -8.492126
+            bool mute = 0
+            float speed = 1
         }
     }
 }

@@ -16,9 +16,9 @@ struct ADCSelectorView: View {
                 
                 ADCCheckmarkButton(
                     action: {
-                        print("ITR..Checkmark button pressed")
-                         dataModel.adcBuildStep = 1
-                            // dataModel.selectedLinkerType = 0
+                        // Update step state and advance
+                        dataModel.stepStates[0].checkmarkClicked = true
+                        dataModel.adcBuildStep = 1
                     },
                     isEnabled: dataModel.selectedADCAntibody != nil
                 )
@@ -39,10 +39,7 @@ struct ADCSelectorView: View {
                     }) {
                         print("ITR..Button 0 antibody pressed")
                         dataModel.selectedADCAntibody = 0
-                        // Task {
-                        //     try? await Task.sleep(for: .milliseconds(1000))
-                        //     dataModel.adcBuildStep = 1
-                        // }
+                        dataModel.stepStates[0].colorSelected = true
                     }
                     ADCButtonSquareWithOutline(imageName: "antibody1",
                                            outlineColor: Color.white,
@@ -53,10 +50,7 @@ struct ADCSelectorView: View {
                     }) {
                         print("ITR..Button 1 antibody pressed")
                         dataModel.selectedADCAntibody = 1
-                        // Task {
-                        //     try? await Task.sleep(for: .milliseconds(1000))
-                        //     dataModel.adcBuildStep = 1
-                        // }
+                        dataModel.stepStates[0].colorSelected = true
                     }
                     ADCButtonSquareWithOutline(imageName: "antibody2",
                                            outlineColor: Color.white,
@@ -67,10 +61,7 @@ struct ADCSelectorView: View {
                     }) {
                         print("ITR..Button 2 antibody pressed")
                         dataModel.selectedADCAntibody = 2
-                        // Task {
-                        //     try? await Task.sleep(for: .milliseconds(1000))
-                        //     dataModel.adcBuildStep = 1
-                        // }
+                        dataModel.stepStates[0].colorSelected = true
                     }
                 }
                 .padding(.bottom, 30)

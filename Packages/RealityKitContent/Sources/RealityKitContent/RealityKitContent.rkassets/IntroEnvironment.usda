@@ -387,7 +387,7 @@ def Xform "Root"
                 string actionKind = "enable"
                 uniform token info:id = "E5BC426A-E24A-41E3-86F1-418A20853BBF"
                 double startTime = 43.34341064393558
-                rel target = </Root/ExtraItems/ADC_particles>
+                rel target = </Root/ExtraItems/Particles_xform_01/Transform/ADC_particles>
             }
 
             def RealityKitAction "Disable_Entity"
@@ -395,7 +395,7 @@ def Xform "Root"
                 string actionKind = "disable"
                 uniform token info:id = "2F0F359B-F611-461A-A0E5-B92233AC2EC5"
                 double startTime = 0
-                rel target = </Root/ExtraItems/ADC_particles>
+                rel target = </Root/ExtraItems/Particles_xform_01/Transform/ADC_particles>
             }
         }
 
@@ -435,7 +435,7 @@ def Xform "Root"
                 string actionKind = "disable"
                 uniform token info:id = "607C0987-1A4E-494D-BC7E-59E6431D4BC2"
                 double startTime = 0
-                rel target = </Root/ExtraItems/ADC_particles2>
+                rel target = </Root/ExtraItems/Particles_xform_01/Transform/ADC_particles2>
             }
 
             def RealityKitAction "Enable_Entity"
@@ -443,7 +443,7 @@ def Xform "Root"
                 string actionKind = "enable"
                 uniform token info:id = "A9745344-D273-4CCF-B72C-F4BB08DBC230"
                 double startTime = 80
-                rel target = </Root/ExtraItems/ADC_particles2>
+                rel target = </Root/ExtraItems/Particles_xform_01/Transform/ADC_particles2>
             }
         }
 
@@ -510,7 +510,7 @@ def Xform "Root"
                 int blendLayer = 300
                 double duration = 5
                 uniform token info:id = "B3CE2483-757E-43BE-A5C6-A1FB5167BE18"
-                double startTime = 127.07730086920739
+                double startTime = 114.01675237724362
                 rel target = </Root/ExtraItems>
 
                 def RealityKitStruct "timingFunction"
@@ -3334,13 +3334,14 @@ def Xform "Root"
         references = @logo.usda@
     )
     {
+        reorder nameChildren = ["card", "HierarchicalFade", "TitleHolder"]
         float3 xformOp:scale = (1, 1, 1)
         float3 xformOp:translate = (0, 1.5, -1.4)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
         over "card"
         {
-            reorder nameChildren = ["outdoCancer", "Plane", "M_card"]
+            reorder nameChildren = ["outdoCancer", "Plane", "M_card", "TitleHolder"]
             over "Plane"
             {
                 over "Plane"
@@ -3349,7 +3350,7 @@ def Xform "Root"
                     {
                         rel group = </Root/Model_Sorting_Group>
                         token info:id = "RealityKit.MeshSorting"
-                        int priorityInGroup = 16
+                        int priorityInGroup = 17
                     }
                 }
             }
@@ -3364,13 +3365,19 @@ def Xform "Root"
                 float3 xformOp:translate = (0, -0.1, -0.5661044)
                 uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
-                over "card"
+                over "card" (
+                    customData = {
+                        float3 rotationEulerHint = (-1.5707964, 0, 0)
+                    }
+                )
                 {
+                    quatf xformOp:orient = (0.70710677, -0.70710677, 0, 0)
+                    float3 xformOp:scale = (0.72900134, 0.72900134, 0.72900134)
+                    float3 xformOp:translate = (0, 0.07323312, 4.1723233e-8)
+
                     over "Plane"
                     {
-                        over "Plane" (
-                            active = false
-                        )
+                        over "Plane"
                         {
                             def RealityKitComponent "MeshSorting"
                             {
@@ -3381,12 +3388,19 @@ def Xform "Root"
                         }
                     }
                 }
+
+                def RealityKitComponent "Billboard"
+                {
+                    float blendFactor = 0
+                    uniform token info:id = "RealityKit.Billboard"
+                }
             }
         }
 
         def RealityKitComponent "HierarchicalFade"
         {
             uniform token info:id = "RealityKit.HierarchicalFade"
+            float opacity = 1
         }
     }
 
@@ -3394,78 +3408,189 @@ def Xform "Root"
         active = true
     )
     {
-        def "ADC_particles" (
-            active = true
-            references = @Assets/Intro/ADC_particles.usda@
-        )
-        {
-            reorder nameChildren = ["ParticleEmitter", "Transform"]
-            quatf xformOp:orient = (1, 0, 0, 0)
-            float3 xformOp:scale = (1, 1, 1)
-            float3 xformOp:translate = (0, 0, 0)
-            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-            over "ParticleEmitter"
-            {
-                def RealityKitComponent "MeshSorting"
-                {
-                    rel group = </Root/Model_Sorting_Group>
-                    token info:id = "RealityKit.MeshSorting"
-                    int priorityInGroup = 1
-                }
-            }
-
-            over "Transform"
-            {
-                over "ParticleEmitter"
-                {
-                    def RealityKitComponent "MeshSorting"
-                    {
-                        rel group = </Root/Model_Sorting_Group>
-                        token info:id = "RealityKit.MeshSorting"
-                        int priorityInGroup = 1
-                    }
-                }
-            }
-        }
-
-        def "ADC_particles2" (
-            active = true
-            references = @Assets/Intro/ADC_particles2.usda@
-        )
-        {
-            quatf xformOp:orient = (1, 0, 0, 0)
-            float3 xformOp:scale = (1, 1, 1)
-            float3 xformOp:translate = (0, 0, 0)
-            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-            over "ParticleEmitter"
-            {
-                def RealityKitComponent "MeshSorting"
-                {
-                    rel group = </Root/Model_Sorting_Group>
-                    token info:id = "RealityKit.MeshSorting"
-                    int priorityInGroup = 2
-                }
-            }
-
-            over "Transform"
-            {
-                over "ParticleEmitter"
-                {
-                    def RealityKitComponent "MeshSorting"
-                    {
-                        rel group = </Root/Model_Sorting_Group>
-                        token info:id = "RealityKit.MeshSorting"
-                        int priorityInGroup = 2
-                    }
-                }
-            }
-        }
-
+        reorder nameChildren = ["ADC_particles", "ADC_particles2", "HierarchicalFade", "Particles_xform_01"]
         def RealityKitComponent "HierarchicalFade"
         {
             uniform token info:id = "RealityKit.HierarchicalFade"
+        }
+
+        def Xform "Particles_xform_01" (
+            active = true
+        )
+        {
+            reorder nameChildren = ["Billboard", "Transform"]
+            quatf xformOp:orient = (1, 0, 0, 0)
+            float3 xformOp:scale = (1, 1, 1)
+            float3 xformOp:translate = (0, 1.5, -35.978)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            def RealityKitComponent "Billboard"
+            {
+                float blendFactor = 1
+                uniform token info:id = "RealityKit.Billboard"
+            }
+
+            def Xform "Transform" (
+                active = true
+            )
+            {
+                reorder nameChildren = ["Cylinder", "Cube", "ADC_particles", "ADC_particles2"]
+                quatf xformOp:orient = (1, 0, 0, 0)
+                float3 xformOp:scale = (1, 1, 1)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                def Cylinder "Cylinder" (
+                    active = false
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                    customData = {
+                        float3 rotationEulerHint = (1.5707964, 0, 0)
+                    }
+                )
+                {
+                    uniform token axis = "Y"
+                    double height = 60
+                    rel material:binding = </Root/ExtraItems/Particles_xform_01/Transform/Cylinder/DefaultMaterial>
+                    double radius = 0.01
+                    quatf xformOp:orient = (0.70710677, 0.7071067, 0, 0)
+                    float3 xformOp:scale = (0.99999994, 0.99999994, 0.99999994)
+                    float3 xformOp:translate = (0, -0.000033140182, 29.940086)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                    def Material "DefaultMaterial"
+                    {
+                        token outputs:surface.connect = </Root/ExtraItems/Particles_xform_01/Transform/Cylinder/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
+
+                        def Shader "DefaultSurfaceShader"
+                        {
+                            uniform token info:id = "UsdPreviewSurface"
+                            color3f inputs:diffuseColor = (1, 1, 1)
+                            float inputs:roughness = 0.75
+                            token outputs:surface
+                        }
+                    }
+                }
+
+                def Cube "Cube" (
+                    active = false
+                    prepend apiSchemas = ["MaterialBindingAPI"]
+                )
+                {
+                    rel material:binding = </Root/ExtraItems/Particles_xform_01/Transform/Cube/DefaultMaterial>
+                    double size = 0.2
+                    quatf xformOp:orient = (0.99999994, 0, 0, 0)
+                    float3 xformOp:scale = (30.264143, 30.264143, 1)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                    def Material "DefaultMaterial"
+                    {
+                        token outputs:surface.connect = </Root/ExtraItems/Particles_xform_01/Transform/Cube/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
+
+                        def Shader "DefaultSurfaceShader"
+                        {
+                            uniform token info:id = "UsdPreviewSurface"
+                            color3f inputs:diffuseColor = (1, 1, 1)
+                            float inputs:roughness = 0.75
+                            token outputs:surface
+                        }
+                    }
+                }
+
+                def "ADC_particles" (
+                    active = true
+                    references = @Assets/Intro/ADC_particles.usda@
+                )
+                {
+                    reorder nameChildren = ["ParticleEmitter", "Transform"]
+                    quatf xformOp:orient = (1, 0, 0, 0)
+                    float3 xformOp:scale = (1, 1, 1)
+                    float3 xformOp:translate = (0, -1.5, 35.978)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                    over "ParticleEmitter"
+                    {
+                        def RealityKitComponent "MeshSorting"
+                        {
+                            rel group = </Root/Model_Sorting_Group>
+                            token info:id = "RealityKit.MeshSorting"
+                            int priorityInGroup = 1
+                        }
+                    }
+
+                    over "Transform"
+                    {
+                        over "ParticleEmitter"
+                        {
+                            def RealityKitComponent "MeshSorting"
+                            {
+                                rel group = </Root/Model_Sorting_Group>
+                                token info:id = "RealityKit.MeshSorting"
+                                int priorityInGroup = 1
+                            }
+
+                            over "VFXEmitter"
+                            {
+                                over "currentState"
+                                {
+                                    over "mainEmitter"
+                                    {
+                                        float radialGravityStrength = 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                def "ADC_particles2" (
+                    active = true
+                    references = @Assets/Intro/ADC_particles2.usda@
+                )
+                {
+                    quatf xformOp:orient = (1, 0, 0, 0)
+                    float3 xformOp:scale = (1, 1, 1)
+                    float3 xformOp:translate = (0, -1.5, 35.978)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                    over "ParticleEmitter"
+                    {
+                        def RealityKitComponent "MeshSorting"
+                        {
+                            rel group = </Root/Model_Sorting_Group>
+                            token info:id = "RealityKit.MeshSorting"
+                            int priorityInGroup = 2
+                        }
+                    }
+
+                    over "Transform"
+                    {
+                        over "ParticleEmitter"
+                        {
+                            def RealityKitComponent "MeshSorting"
+                            {
+                                rel group = </Root/Model_Sorting_Group>
+                                token info:id = "RealityKit.MeshSorting"
+                                int priorityInGroup = 2
+                            }
+
+                            over "VFXEmitter"
+                            {
+                                over "currentState"
+                                {
+                                    over "mainEmitter"
+                                    {
+                                        float radialGravityStrength = 0
+                                    }
+                                }
+                            }
+                        }
+
+                        over "Billboard"
+                        {
+                            float blendFactor = 0
+                        }
+                    }
+                }
+            }
         }
     }
 }

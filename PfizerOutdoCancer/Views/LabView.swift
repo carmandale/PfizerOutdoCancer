@@ -30,7 +30,7 @@ struct LabView: View {
                 try? await appModel.labState.setupLabEnvironment(in: root)
                 
                 // Setup ADC placer if we have a built ADC
-                appModel.labState.setupADCPlacer(in: root)
+                await appModel.labState.setupADCPlacer(in: root)
             }
             
             // Now that environment is loaded, set up attachments

@@ -125,9 +125,8 @@ struct ADCBuilderView: View {
                      if dataModel.adcBuildStep > 0 && dataModel.adcBuildStep < 3 {
                          Button(action: {
                              withAnimation {
-                                 print("Back Chevron Pressed on Step: \(dataModel.adcBuildStep)")
+                                 // Back navigation is always manual (no VO)
                                  dataModel.manualStepTransition = true
-                                 print("manualStepTransition set to true = \(dataModel.manualStepTransition)")
                                  dataModel.adcBuildStep -= 1
                              }
                          }) {
@@ -139,9 +138,8 @@ struct ADCBuilderView: View {
                                  }
                          }
                          .glassBackgroundEffect()
-                         .opacity(dataModel.isVOPlaying ? 0.1 : 1.0)
-                         .disabled(dataModel.isVOPlaying)
-                         .animation(.easeInOut(duration: 0.5), value: dataModel.isVOPlaying)
+                         .opacity(dataModel.canMoveBack ? 1.0 : 0.1)
+                         .disabled(!dataModel.canMoveBack)
                      }
                     
                      Spacer()
@@ -150,27 +148,18 @@ struct ADCBuilderView: View {
                      if dataModel.adcBuildStep < 3 && !dataModel.isVOPlaying {
                          Button(action: {
                              withAnimation {
-                                 print("Forward Chevron Pressed on Step: \(dataModel.adcBuildStep)")
-                                 if dataModel.adcBuildStep == 0 {
-                                     if dataModel.antibodyVOCompleted && !dataModel.antibodyStepCompleted {
-                                         os_log("Forward: Natural transition for step 0 (VO will play), dataModel.antibodyVOCompleted:\(dataModel.antibodyVOCompleted), dataModel.antibodyStepCompleted: \(dataModel.antibodyStepCompleted)")
-                                         dataModel.adcBuildStep += 1
-                                         print("new build step is \(dataModel.adcBuildStep)")
-                                         dataModel.antibodyStepCompleted = true
-                                         print("antibodyStepCompleted = \(dataModel.antibodyStepCompleted)")
+                                 let nextStep = dataModel.adcBuildStep + 1
+                                 
+                                 // If this step is complete and next step's VO hasn't been played,
+                                 // do a natural transition (will play VO)
+                                 if dataModel.stepStates[dataModel.adcBuildStep].checkmarkClicked {
+                                     if !dataModel.stepStates[nextStep].voPlayed {
+                                         dataModel.manualStepTransition = false
                                      } else {
-                                         os_log("Forward: Manual transition for step 0 (VO will not be played), setting manualStepTransition, dataModel.antibodyVOCompleted:\(dataModel.antibodyVOCompleted), dataModel.antibodyStepCompleted: \(dataModel.antibodyStepCompleted)")
+                                         // VO has been played, do manual transition
                                          dataModel.manualStepTransition = true
-                                         print("manualStepTransition set to true = \(dataModel.manualStepTransition)")
-                                         dataModel.adcBuildStep += 1
-                                         print("new build step is \(dataModel.adcBuildStep)")
                                      }
-                                 } else {
-                                     os_log("Forward: Manual transition for step %d", dataModel.adcBuildStep, "dataModel.antibodyVOCompleted:\(dataModel.antibodyVOCompleted), dataModel.antibodyStepCompleted: \(dataModel.antibodyStepCompleted)")
-                                     dataModel.manualStepTransition = true
-                                     print("manualStepTransition set to true = \(dataModel.manualStepTransition)")
                                      dataModel.adcBuildStep += 1
-                                     print("new build step is \(dataModel.adcBuildStep)")
                                  }
                              }
                          }) {
@@ -182,9 +171,8 @@ struct ADCBuilderView: View {
                                  }
                          }
                          .glassBackgroundEffect()
-                         .opacity(!dataModel.isCurrentStepComplete || dataModel.isVOPlaying ? 0.1 : 1.0)
-                         .disabled(!dataModel.isCurrentStepComplete || dataModel.isVOPlaying)
-                         .animation(.easeInOut(duration: 0.5), value: dataModel.isVOPlaying)
+                         .opacity(dataModel.canMoveForward ? 1.0 : 0.1)
+                         .disabled(!dataModel.canMoveForward)
                      }
                  }
                  .padding(20)

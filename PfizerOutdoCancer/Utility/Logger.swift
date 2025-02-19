@@ -24,4 +24,10 @@ public struct Logger {
         let log = OSLog(subsystem: subsystem, category: "FAULT")
         os_log("%@", log: log, type: .fault, message)
     }
+    
+    // New function for audio logging
+    public static func audio(_ message: String) {
+        let log = OSLog(subsystem: subsystem, category: "AUDIO")
+        os_log("%@", log: log, type: .debug, message)
+    }
 } 

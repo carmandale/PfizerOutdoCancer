@@ -64,7 +64,14 @@ final class AttackCancerViewModel {
         readyToStartGame && tutorialComplete
     }
 
-    
+    // MARK: - Properties for Audio
+    var endGameAudioSource: Entity?
+    var endGameAudioResource: AudioFileResource?
+    var endGameAudioController: AudioPlaybackController?
+
+    // MARK: - Transition Properties
+    var isTransitioningOut = false
+    var transitionOpacity: Float = 1.0
     
     // Store subscription to prevent deallocation
     internal var subscription: Cancellable?
@@ -72,7 +79,6 @@ final class AttackCancerViewModel {
     // Dependencies
     var appModel: AppModel!
     var handTracking: HandTrackingManager!
-//    var dataModel: ADCDataModel!
     
     // MARK: - Game Stats
     var hitProbability: Double = 0.3
@@ -182,6 +188,15 @@ final class AttackCancerViewModel {
         subscription?.cancel()
         subscription = nil
         
+        // Stop any playing audio
+        Logger.audio("Stopping end game audio playback...")
+        endGameAudioController?.stop()
+        endGameAudioController = nil
+        if let audioSource = endGameAudioSource {
+            audioSource.removeFromParent()
+            Logger.audio("Removed audio source from parent")
+        }
+        
         // Clear gameplay state
         cellParameters.removeAll()
         
@@ -287,6 +302,12 @@ final class AttackCancerViewModel {
         instructionsRootEntity = nil
         adcTemplate = nil
         
+        // Clear audio system references
+        Logger.audio("Clearing audio system references...")
+        endGameAudioSource = nil
+        endGameAudioResource = nil
+        endGameAudioController = nil
+        
         // Reset flags
         isSetupComplete = false
         hasFirstADCBeenFired = false
@@ -309,13 +330,6 @@ final class AttackCancerViewModel {
         // app's intended state management.
         print("🔄 AttackCancerViewModel: Cleanup state has been reset for new session.")
     }
-
-
-
-    var progressiveAttack: ImmersionStyle = .progressive(
-        0.1...0.8,
-        initialAmount: 0.3
-    )
 
     func findCancerCell(withID id: Int) -> Entity? {
         // First check if ID is valid
@@ -360,5 +374,24 @@ final class AttackCancerViewModel {
         print("=== Alignment Validation Complete ===\n")
     }
 
-    
+    /// Fades out the entire scene gracefully
+    /// - Returns: Void
+    @MainActor
+    func fadeOutScene() async {
+        Logger.info("🎬 Starting scene fade out")
+        
+        guard let root = rootEntity else {
+            Logger.debug("⚠️ No root entity found for fade out")
+            return
+        }
+        
+        await root.fadeOpacity(
+            to: 0.0,
+            duration: 2.0,
+            timing: .easeInOut,
+            waitForCompletion: true
+        )
+        
+        Logger.info("✨ Scene fade out complete")
+    }
 }

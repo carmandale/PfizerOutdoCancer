@@ -22,8 +22,9 @@ struct ADCLinkerSelectorView: View {
                 
                 ADCCheckmarkButton(
                     action: {
-                        // Advance to the next step (payload step)
-                        dataModel.adcBuildStep = 2  // may need dataModel.fillAllLinkers()
+                        // Update step state and advance
+                        dataModel.stepStates[1].checkmarkClicked = true
+                        dataModel.adcBuildStep = 2
                     },
                     isEnabled: dataModel.selectedLinkerType != nil && dataModel.placedLinkerCount == 4
                 )
@@ -44,7 +45,7 @@ struct ADCLinkerSelectorView: View {
                     }) {
                         print("ITR..Button 0 pressed")
                         dataModel.selectedLinkerType = 0
-
+                        dataModel.stepStates[1].colorSelected = true
                     }
                     ADCButtonSquareWithOutline(imageName: "linkers1",
                                             outlineColor: Color.white,
@@ -55,6 +56,7 @@ struct ADCLinkerSelectorView: View {
                     }) {
                         print("ITR..Button 1 pressed")
                         dataModel.selectedLinkerType = 1
+                        dataModel.stepStates[1].colorSelected = true
                     }
                     ADCButtonSquareWithOutline(imageName: "linkers2",
                                             outlineColor: Color.white,
@@ -65,6 +67,7 @@ struct ADCLinkerSelectorView: View {
                     }) {
                         print("ITR..Button 2 pressed")
                         dataModel.selectedLinkerType = 2
+                        dataModel.stepStates[1].colorSelected = true
                     }
                 }
                 .padding(.bottom, 30)

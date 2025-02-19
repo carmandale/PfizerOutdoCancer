@@ -17,6 +17,19 @@ class ADCDataModel {
         isHeadTrackingRootReady
     }
     
+    // New Step State Management
+    struct StepState {
+        var colorSelected: Bool = false
+        var checkmarkClicked: Bool = false
+        var voPlayed: Bool = false
+    }
+    
+    var stepStates: [StepState] = [
+        StepState(), // Antibody
+        StepState(), // Linker
+        StepState(), // Payload
+    ]
+    
     // Color selections for ADC components
     var selectedADCAntibody: Int? = nil
     public var selectedADCLinker: Int? = nil
@@ -50,17 +63,60 @@ class ADCDataModel {
         3: 16.0   // VO4
     ]
     
+    // Updated Navigation Control
+    var canMoveForward: Bool {
+        if isVOPlaying { return false }
+        
+        let nextStep = adcBuildStep + 1
+        if nextStep >= stepStates.count { return true }
+        
+        // If VO hasn't played for next step, require current step completion
+        if !stepStates[nextStep].voPlayed {
+            return stepStates[adcBuildStep].checkmarkClicked
+        }
+        
+        // If VO has played for next step, allow navigation
+        return true
+    }
+    
+    var canMoveBack: Bool {
+        return adcBuildStep > 0 && !isVOPlaying
+    }
+    
     var isCurrentStepComplete: Bool {
+        guard adcBuildStep < stepStates.count else { return true }
+        
         switch adcBuildStep {
-        case 0:
-            return selectedADCAntibody != nil
-        case 1:
-            return selectedLinkerType != nil && linkersWorkingIndex == 3
-        case 2:
-            return selectedPayloadType != nil && payloadsWorkingIndex == 3
+        case 0:  // Antibody
+            return selectedADCAntibody != nil && stepStates[0].checkmarkClicked
+        case 1:  // Linker
+            return selectedLinkerType != nil && 
+                   linkersWorkingIndex == 3 && 
+                   stepStates[1].checkmarkClicked
+        case 2:  // Payload
+            return selectedPayloadType != nil && 
+                   payloadsWorkingIndex == 3 && 
+                   stepStates[2].checkmarkClicked
         default:
             return true
         }
+    }
+    
+    // VO Management
+    func markVOCompleted(for step: Int) {
+        // Only mark steps 0-2 in stepStates
+        guard step < stepStates.count else { return }
+        stepStates[step].voPlayed = true
+        
+        // Maintain compatibility with existing antibody flags
+        if step == 0 {
+            antibodyVOCompleted = true
+        }
+    }
+    
+    func shouldPlayVO(for step: Int) -> Bool {
+        guard step < stepStates.count else { return false }
+        return !stepStates[step].voPlayed
     }
     
     // Fill all linker positions with currently selected linker type
@@ -134,6 +190,9 @@ class ADCDataModel {
         hasInitialVOCompleted = false
         showSelector = false
         
+        // Reset step states
+        stepStates = [StepState(), StepState(), StepState()]
+        
         // Reset positioning state
         isPositioningComplete = false
     }
@@ -174,8 +233,6 @@ class ADCDataModel {
         isHeadTrackingRootReady = true
         return root
     }
-    
-    // MARK: - Color selections for ADC components
 }
 
 public enum ADCUIAttachments {

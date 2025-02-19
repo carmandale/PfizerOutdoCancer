@@ -72,8 +72,8 @@ struct OutroView: View {
         .task {
             // Wait for environment animation to complete
             try? await Task.sleep(for: .seconds(55))
-            print("🎯 OutroView: Transitioning to intro")
-            await appModel.transitionToPhase(.intro, adcDataModel: dataModel)
+            print("🎯 OutroView: Transitioning to loading")
+            await appModel.transitionToPhase(.loading)
         }
         .onAppear {
             print("\n=== OutroView Appeared ===")

@@ -51,13 +51,19 @@ final class TrackingSessionManager {
             return
         }
         
-        // If already tracking, stop the previous session.
+        // If already tracking, stop the previous session and verify cleanup
         if isTracking {
             Logger.info("🛑 Stopping previous tracking session")
             await stopTracking()
-            for _ in 0..<10 { // Wait up to 1 second
-                if !isTracking { break }
-                try await Task.sleep(for: .milliseconds(100))
+            do {
+                try await waitForCleanup()
+                if !verifyProviderState(expectRunning: false) {
+                    Logger.error("❌ Provider state verification failed after cleanup")
+                    throw TrackingError.cleanupFailed
+                }
+            } catch {
+                Logger.error("❌ Cleanup failed: \(error)")
+                throw TrackingError.cleanupFailed
             }
             await logTrackingState(context: "Post-Stop Check")
         }
@@ -74,7 +80,8 @@ final class TrackingSessionManager {
             🖐️ Configuring Tracking Session
             ├─ World Tracking: Enabled
             ├─ Hand Tracking: Enabled
-            └─ Provider State: \(currentState)
+            ├─ Provider State: \(currentState)
+            └─ Previous Tracking: \(isTracking ? "Active" : "Inactive")
             """)
         } else {
             shouldProcessHandTracking = false
@@ -84,17 +91,31 @@ final class TrackingSessionManager {
             🌎 Configuring Tracking Session
             ├─ World Tracking: Enabled
             ├─ Hand Tracking: Disabled
-            └─ Provider State: \(currentState)
+            ├─ Provider State: \(currentState)
+            └─ Previous Tracking: \(isTracking ? "Active" : "Inactive")
             """)
         }
         
         providersStoppedWithError = false
         
-        // For VisionOS, simply run the ARKit session with the providers.
-        try await arkitSession.run(providers)
-        
-        isTracking = true
-        await logTrackingState(context: "Post-Start")
+        do {
+            // For VisionOS, simply run the ARKit session with the providers.
+            try await arkitSession.run(providers)
+            
+            // Wait for and verify running state
+            try await waitForTrackingToRun()
+            if !verifyProviderState(expectRunning: true) {
+                Logger.error("❌ Provider state verification failed after start")
+                throw TrackingError.failedToStart
+            }
+            
+            isTracking = true
+            await logTrackingState(context: "Post-Start")
+        } catch {
+            Logger.error("❌ Failed to start tracking: \(error)")
+            isTracking = false
+            throw TrackingError.failedToStart
+        }
     }
     
     func stopTracking() async {
@@ -105,13 +126,13 @@ final class TrackingSessionManager {
         // Reinitialize arkitSession to clear any stale state.
         arkitSession = ARKitSession()
         
-        // Wait until the world tracking provider state is confirmed as stopped.
-        let startTime = Date()
-        while true {
-            if case .stopped = worldTrackingProvider.state { break }
-            if Date().timeIntervalSince(startTime) > 2.0 { break }
-            try? await Task.sleep(nanoseconds: 100_000_000) // 100ms delay
+        // Wait for cleanup
+        do {
+            try await waitForCleanup()
+        } catch {
+            Logger.error("❌ Cleanup timeout: \(error)")
         }
+        
         await logTrackingState(context: "Post-Stop")
     }
     
@@ -126,6 +147,44 @@ final class TrackingSessionManager {
             }
             try await Task.sleep(nanoseconds: 100_000_000) // 100ms delay
         }
+    }
+    
+    /// Waits for tracking providers to reach a stopped state
+    /// - Parameter timeout: Maximum time to wait for cleanup (default: 1.0 seconds)
+    /// - Throws: TrackingError.cleanupTimeout if providers don't stop within timeout
+    func waitForCleanup(timeout: TimeInterval = 1.0) async throws {
+        let startTime = Date()
+        while Date().timeIntervalSince(startTime) < timeout {
+            if case .stopped = worldTrackingProvider.state {
+                if !shouldProcessHandTracking || handTrackingProvider?.state == .stopped {
+                    return
+                }
+            }
+            try await Task.sleep(for: .milliseconds(50))
+        }
+        throw TrackingError.cleanupTimeout
+    }
+    
+    /// Verifies the current state of tracking providers
+    /// - Parameter expectRunning: Whether providers should be in running state
+    /// - Returns: true if providers are in expected state
+    func verifyProviderState(expectRunning: Bool) -> Bool {
+        let worldState = worldTrackingProvider.state
+        let handState = handTrackingProvider?.state
+        
+        let worldOK = expectRunning ? worldState == .running : worldState == .stopped
+        let handOK = !shouldProcessHandTracking || 
+                    (expectRunning ? handState == .running : handState == .stopped)
+        
+        Logger.debug("""
+        🔍 Provider State Verification
+        ├─ Expected State: \(expectRunning ? "Running" : "Stopped")
+        ├─ World Provider: \(worldOK ? "✅" : "❌") [\(worldState)]
+        ├─ Hand Tracking Needed: \(shouldProcessHandTracking)
+        └─ Hand Provider: \(handOK ? "✅" : "❌") [\(handState ?? .stopped)]
+        """)
+        
+        return worldOK && handOK
     }
     
     // MARK: - Update Processing
@@ -259,10 +318,13 @@ final class TrackingSessionManager {
 // MARK: - Errors
 extension TrackingSessionManager {
     enum TrackingError: Error {
-        case capabilitiesUnavailable(String)
-        case providerError(Error)
-        case authorizationDenied
         case timedOut
+        case cleanupTimeout
+        case failedToStop
+        case failedToStart
+        case providerNotAvailable
+        case invalidState
+        case cleanupFailed
     }
 }
 

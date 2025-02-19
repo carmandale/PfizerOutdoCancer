@@ -102,6 +102,30 @@ final class AssetLoadingManager {
     
     // MARK: - Public Methods
     
+    /// Resets the asset loading manager to its initial state
+    func reset() {
+        print("\n=== Resetting AssetLoadingManager ===")
+        // Reset loading state
+        loadingState = .notStarted
+        
+        // Clear failed assets
+        failedAssets.removeAll()
+        
+        // Release all cached entities
+        for (key, entity) in entityTemplates {
+            print("🗑️ Releasing asset: \(key)")
+            releaseEntity(entity)
+        }
+        
+        // Clear templates
+        entityTemplates.removeAll()
+        
+        // Clear audio controllers
+        audioControllers.removeAll()
+        
+        print("✅ AssetLoadingManager reset complete\n")
+    }
+    
     /// Releases intro environment assets asynchronously
     func releaseIntroEnvironment() async {
         print("\n=== Starting Intro Environment Cleanup ===")

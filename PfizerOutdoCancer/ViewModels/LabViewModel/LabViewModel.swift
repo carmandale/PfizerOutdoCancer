@@ -50,8 +50,51 @@ final class LabViewModel {
         return root
     }
     
+    // MARK: extra ADCs
+    func setupExtraADCs(in root: Entity) async {
+        // Ensure ADC template exists
+        guard let template = appModel.gameState.adcTemplate else {
+            Logger.info("❌ ADC Template not found, skipping extra ADC placements")
+            return
+        }
+        
+        // Recursive function to find all entities with names containing "ADC_xform"
+        func findADCTransforms(in entity: Entity) -> [Entity] {
+            var results: [Entity] = []
+            if entity.name.contains("ADC_xform") {
+                results.append(entity)
+            }
+            for child in entity.children {
+                results.append(contentsOf: findADCTransforms(in: child))
+            }
+            return results
+        }
+        
+        let adcTransforms = findADCTransforms(in: root)
+        var placedCount = 0
+        
+        for transform in adcTransforms {
+            // Clone the ADC template
+            let adcClone = template.clone(recursive: true)
+            
+            // Generate a random rotation speed between 0.5 and 2.0
+            let randomSpeed = Float.random(in: 0.5...2.0)
+            
+            // Create and configure a RotationComponent with the random speed
+            var rotation = RotationComponent()  // assuming RotationComponent has a mutable property 'rotationSpeed'
+            rotation.speed = randomSpeed
+            adcClone.components.set(rotation)
+            
+            // Add the cloned ADC as a child of the transform entity
+            transform.addChild(adcClone)
+            placedCount += 1
+        }
+        
+        Logger.info("✅ setupExtraADCs: Placed \(placedCount) ADC clones")
+    }
+
     // MARK: Interactive ADC
-    func setupADCPlacer(in root: Entity) {
+    func setupADCPlacer(in root: Entity) async {
         Logger.info("""
         
         🎯 Setting up ADC Placer
@@ -60,7 +103,7 @@ final class LabViewModel {
         """)
         
         // Only proceed if we have a built ADC
-        var shouldProceed = true // appModel.hasBuiltADC
+        let shouldProceed = true // appModel.hasBuiltADC
         
         guard shouldProceed,
               let placerEntity = root.findEntity(named: "ADC_placer"),
@@ -92,7 +135,7 @@ final class LabViewModel {
         adc.components.set(ADCGestureComponent(
             canDrag: true,
             pivotOnDrag: false,
-            canScale: false,
+            canScale: true,
             canRotate: true
         ))
 
@@ -103,6 +146,8 @@ final class LabViewModel {
         
         // Add to scene at placer location
         placerEntity.addChild(adc)
+        adc.opacity = 0
+        await adc.fadeOpacity(to: 1.0, duration: 1.0)
         
         Logger.info("""
         
@@ -123,33 +168,35 @@ final class LabViewModel {
             let labEnvironment = root.findEntity(named: "assembled_lab")!
             configureInteractiveDevices(in: labEnvironment)
 
-            Logger.debug("Attempting to setup interactive ADC for user")
-            setupADCPlacer(in: root)
+            // Logger.debug("Attempting to setup interactive ADC for user")
+            // await setupADCPlacer(in: root)
+            // await setupExtraADCs(in: root)
+
 
             Logger.debug("calling setupLabEnvironment")
             try await setupLabEnvironment(in: root, isIntro: isIntro)
         } else {
             // Lab mode - load and set up the complete lab
-            guard let root = mainEntity else {
-                print("❌ LabViewModel: No root entity for initial environment")
-                return
-            }
-            
-            // Load the complete assembled lab
-            print("📱 Loading assembled lab environment")
-            let labEnvironment = try await appModel.assetLoadingManager.loadAssembledLab()
-            root.addChild(labEnvironment)
-            print("🏢 Assembled Lab Environment added to MainEntity")
-            print("📍 Lab Environment position: \(labEnvironment.position)")
-            
-            // Configure the interactive devices
-            configureInteractiveDevices(in: labEnvironment)
-
-            Logger.debug("Attempting to setup interactive ADC for user")
-            setupADCPlacer(in: root)
-
-            Logger.debug("calling setupLabEnvironment")
-            try await setupLabEnvironment(in: root, isIntro: isIntro)
+//            guard let root = mainEntity else {
+//                print("❌ LabViewModel: No root entity for initial environment")
+//                return
+//            }
+//            
+//            // Load the complete assembled lab
+//            print("📱 Loading assembled lab environment")
+//            let labEnvironment = try await appModel.assetLoadingManager.loadAssembledLab()
+//            root.addChild(labEnvironment)
+//            print("🏢 Assembled Lab Environment added to MainEntity")
+//            print("📍 Lab Environment position: \(labEnvironment.position)")
+//            
+//            // Configure the interactive devices
+//            configureInteractiveDevices(in: labEnvironment)
+//
+//            Logger.debug("Attempting to setup interactive ADC for user")
+//            setupADCPlacer(in: root)
+//
+//            Logger.debug("calling setupLabEnvironment")
+//            try await setupLabEnvironment(in: root, isIntro: isIntro)
         }
     }
     
@@ -158,8 +205,9 @@ final class LabViewModel {
         Logger.info("\n=== Lab Environment Setup ===")
         Logger.info("📱 LabViewModel: Starting environment setup")
         Logger.info("🔍 isIntro parameter: \(String(describing: isIntro))")
+        
 
-        let showADC = true
+        let showADC = appModel.hasBuiltADC // set to true to debug 
         
         if isIntro == nil {
             // Lab mode - check for main entity

@@ -36,6 +36,14 @@ struct ContentView: View {
                 EmptyView()
             }
         }
+        .onChange(of: appModel.currentPhase) { oldPhase, newPhase in
+            if newPhase == .loading {
+                // Reset loading state and re-trigger loading process
+                Task {
+                    await appModel.startLoading(adcDataModel: adcDataModel)
+                }
+            }
+        }
         .task {
             if appModel.currentPhase == .loading {
                 await appModel.startLoading(adcDataModel: adcDataModel)

@@ -20,7 +20,7 @@ struct StartButton: View {
                 Task {
                     Logger.info("\n=== Start Button Pressed ===")
                     Logger.info("Current Phase: \(appModel.currentPhase)")
-                    Logger.info("isReadyForInteraction: \(appModel.introState.isReadyForInteraction)")
+                    Logger.info("isReadyForInteraction: \(appModel.introState.isReadyForHeadTracking)")
                     Logger.info("Setting shouldUpdateHeadPosition = true")
                     appModel.introState.shouldUpdateHeadPosition = true
                 }

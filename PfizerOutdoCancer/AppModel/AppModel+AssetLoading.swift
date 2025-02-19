@@ -40,6 +40,9 @@ extension AppModel {
         print("🔍 Current phase: \(currentPhase)")
         print("🔍 Loading state: \(assetLoadingManager.loadingState)")
         
+        // Reset the asset loading manager
+        // assetLoadingManager.reset()
+        
         print("🔄 Starting prepareIntroPhase...")
         await prepareIntroPhase()
         print("✅ prepareIntroPhase completed")

@@ -127,6 +127,13 @@ extension ADCOptimizedImmersive {
     func playSpatialAudio(step: Int) async throws {
         os_log(.debug, "ITR..playSpatialAudio(): Playing spatial audio for step \(step)")
         
+        // Only check VO played state for steps 0-2
+        if step != 3 {  // Skip check for step 3
+            if step < dataModel.stepStates.count && dataModel.stepStates[step].voPlayed {
+                return
+            }
+        }
+
         dataModel.isVOPlaying = true
         dataModel.voiceOverProgress = 0.0
         
@@ -174,6 +181,7 @@ extension ADCOptimizedImmersive {
                 currentVOController?.completionHandler = {
                     dataModel.voiceOverProgress = 0.0
                     dataModel.isVOPlaying = false
+                    dataModel.markVOCompleted(for: step)  // Mark VO as completed
                     continuation.resume()
                 }
                 currentVOController?.play()
@@ -213,6 +221,7 @@ extension ADCOptimizedImmersive {
             currentVOController?.completionHandler = {
                 dataModel.voiceOverProgress = 0.0
                 dataModel.isVOPlaying = false
+                dataModel.markVOCompleted(for: step)  // Mark VO as completed
                 continuation.resume()
             }
             currentVOController?.play()

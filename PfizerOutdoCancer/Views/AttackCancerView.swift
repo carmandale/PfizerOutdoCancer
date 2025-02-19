@@ -21,16 +21,6 @@ struct AttackCancerView: View {
             let root = appModel.gameState.setupRoot()
             root.name = "AttackCancerRoot"
             Logger.info("✅ Root entity created: \(root.name)")
-
-            // let decoy = Entity()
-            // decoy.name = "Decoy"
-            // decoy.components.set(PositioningComponent(
-            //     offsetX: 0,
-            //     offsetY: 0,
-            //     offsetZ: -1.0
-            // ))
-            // root.addChild(decoy)
-            // print("✅ Decoy entity added to root")
             
             content.add(root)
             appModel.gameState.storedAttachments = attachments
@@ -155,6 +145,13 @@ struct AttackCancerView: View {
                         await appModel.gameState.startTutorial(in: root, attachments: attachments)
                     }
                 }
+            }
+        }
+        .onChange(of: appModel.gameState.isHopeMeterRunning) { _, isRunning in
+            if !isRunning {
+                Logger.info("Hope meter stopped - closing utility window")
+                dismissWindow(id: AppModel.hopeMeterUtilityWindowId)
+                appModel.isHopeMeterUtilityWindowOpen = false
             }
         }
     }

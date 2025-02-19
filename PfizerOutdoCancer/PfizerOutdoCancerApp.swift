@@ -23,6 +23,9 @@ struct PfizerOutdoCancerApp: App {
     @Environment(\.dismissWindow) private var dismissWindow
     @Environment(\.scenePhase) private var scenePhase
     
+    @State private var immersionStyle: ImmersionStyle =
+        .progressive(0.0...1.0, initialAmount: 0.5)
+    
     var body: some Scene {
         // Now $appModel references will work correctly
         WindowGroup(id: AppModel.mainWindowId) {
@@ -30,53 +33,10 @@ struct PfizerOutdoCancerApp: App {
                 .environment(appModel)
                 .environment(adcDataModel)
                 .onChange(of: scenePhase) { _, newPhase in
-                        switch newPhase {
-                        case .background:
-                            Task {
-                                print("→ .background")
-                                // Stop tracking and close immersive space
-                                await cleanupAppState()
-                                
-                                // Ensure game state is cleaned up
-                                if appModel.currentPhase == .playing {
-                                    await appModel.gameState.tearDownGame()
-                                }
-                            }
-                        case .inactive:
-                            Task {
-                                print("→ .inactive")
-                                // No additional cleanup needed here
-                            }
-                        case .active:
-                            Task {
-                                print("→ .active")
-                                // Add small delay to ensure cleanup completes
-                                try? await Task.sleep(nanoseconds: 200_000_000) // 200ms delay
-                                print("I am in the \(appModel.currentPhase) phase")
-                                print("I am in the \(scenePhase) scene phase")
-                                // Always transition to intro state
-                                 await appModel.transitionToPhase(.intro, adcDataModel: adcDataModel)
-                            }
-                        default:
-                            break
-                        }
+                    Task {
+                        await handleScenePhaseChange(to: newPhase)
                     }
-                // .onChange(of: scenePhase) { _, newPhase in
-                //     switch newPhase {
-                //     case .background:
-                //         Task {
-                //             print("→ .background")
-                //             // Keep only the essential cleanup here
-                //             await cleanupAppState()
-                //         }
-                //     case .inactive:
-                //         print("→ .inactive")
-                //     case .active:
-                //         print("→ .active")
-                //     default:
-                //         break
-                //     }
-                // }
+                }
         }
         .defaultSize(width: 800, height: 800)
         .windowStyle(.plain)
@@ -142,6 +102,14 @@ struct PfizerOutdoCancerApp: App {
                         .environment(adcDataModel)
                         .upperLimbVisibility(.visible)
                         .onAppear {
+                            // After 3 seconds, animate immersion to full (100%) over 5 seconds
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                                withAnimation(.easeInOut(duration: 5)) {
+                                    immersionStyle = .progressive(0.0...1.0, initialAmount: 1.0)
+                                }
+                            }
+                        }
+                        .onAppear {
                             appModel.immersiveSpaceState = .open
                         }
                         .onDisappear {
@@ -160,7 +128,11 @@ struct PfizerOutdoCancerApp: App {
                 }
                 
             }
-            .immersionStyle(selection: $appModel.introStyle, in: .progressive)
+//            .immersionStyle(selection: $appModel.introStyle, in: .progressive)
+//            .immersionStyle(selection: $immersionStyle,
+//                                in: .progressive(0.0...1.0, initialAmount: 0.5))
+            .immersionStyle(selection: $appModel.introStyle, in: .mixed)
+            
 
             ImmersiveSpace(id: "OutroSpace") {
                 if appModel.currentPhase == .outro {
@@ -187,7 +159,7 @@ struct PfizerOutdoCancerApp: App {
                 }
                 
             }
-            .immersionStyle(selection: $appModel.outroStyle, in: .progressive)
+            .immersionStyle(selection: $appModel.outroStyle, in: .mixed)
 
             
                 ImmersiveSpace(id: "LabSpace") {
@@ -486,38 +458,92 @@ struct PfizerOutdoCancerApp: App {
     // MARK: - App State Management
     private func cleanupAppState() async {
         print("🧹 Cleaning up app state")
+        Logger.info("""
         
-        // 1. Close immersive space if open
+        === Cleaning Up App State ===
+        ├─ Current Phase: \(appModel.currentPhase)
+        ├─ Immersive Space: \(appModel.immersiveSpaceState)
+        └─ Tracking Active: \(appModel.trackingManager.worldTrackingProvider.state)
+        """)
+        
+        // 1. Stop tracking first to ensure clean provider state
+        await appModel.trackingManager.stopTracking()
+        
+        do {
+            // Wait for tracking to fully stop with verification
+            try await appModel.trackingManager.waitForCleanup()
+            if !appModel.trackingManager.verifyProviderState(expectRunning: false) {
+                Logger.error("❌ Tracking cleanup verification failed during app state cleanup")
+            }
+        } catch {
+            Logger.error("❌ Tracking cleanup failed during app state cleanup: \(error)")
+        }
+
+        // 2. Close immersive space if open
         if appModel.immersiveSpaceState == .open {
             appModel.immersiveSpaceDismissReason = .manual
             if let activeSpace = appModel.currentImmersiveSpace {
                 Logger.debug("""
                 
-                    === Attempting to dismiss Immersive Space ===
-                    Current Phase: \(appModel.currentPhase)
-                    Active Space: \(String(describing: activeSpace))
-                
+                === Attempting to dismiss Immersive Space ===
+                Current Phase: \(appModel.currentPhase)
+                Active Space: \(String(describing: activeSpace))
                 """)
             }
+            
             await dismissImmersiveSpace()
             Logger.debug("=== Finished Dismiss Attempt ===\n")
-            os_log(.debug, "🧹 **cleanupAppState**: Immersive space dismissed successfully.")
             appModel.immersiveSpaceState = .closed
         }
-        
-        // 2. Stop tracking
-        await appModel.trackingManager.stopTracking()
 
-        // Introduce a small delay *before* resetting immersiveSpaceDismissReason
-        // This gives the onDisappear handler time to execute.
-        await Task.yield() // Try yielding first.  This is often enough.
-        // OR, if yielding isn't sufficient:
-        // try? await Task.sleep(nanoseconds: 50_000_000) // 50ms delay
-
-        // *Now* reset the state:
-        appModel.immersiveSpaceState = .closed // Set to closed *after* the delay
-        appModel.immersiveSpaceDismissReason = nil // Reset for next time
+        // 3. Wait briefly to ensure cleanup completes
+        try? await Task.sleep(for: .milliseconds(100))
         
-        print("✅ App state cleanup completed")
+        // 4. Reset state
+        appModel.immersiveSpaceState = .closed
+        appModel.immersiveSpaceDismissReason = nil
+        
+        Logger.info("""
+        
+        === App State Cleanup Complete ===
+        ├─ Immersive Space: \(appModel.immersiveSpaceState)
+        └─ Tracking State: \(appModel.trackingManager.worldTrackingProvider.state)
+        """)
+    }
+
+    // MARK: - Scene Phase Management
+    private func handleScenePhaseChange(to newPhase: ScenePhase) async {
+        Logger.info("""
+        
+        === Scene Phase Change ===
+        ├─ To: \(newPhase)
+        ├─ Current App Phase: \(appModel.currentPhase)
+        └─ Tracking State: \(appModel.trackingManager.worldTrackingProvider.state)
+        """)
+        
+        switch newPhase {
+        case .background:
+            // 1. Stop tracking and cleanup
+            await cleanupAppState()
+            
+            // 2. Clean up game state if needed
+            if appModel.currentPhase == .playing {
+                await appModel.gameState.tearDownGame()
+            }
+            
+        case .inactive:
+            // No additional cleanup needed
+            break
+            
+        case .active:
+            // 1. Ensure previous cleanup is complete
+            try? await Task.sleep(for: .milliseconds(200))
+            
+            // 2. Always transition to intro with fresh tracking
+            await appModel.transitionToPhase(.loading, adcDataModel: adcDataModel)
+            
+        @unknown default:
+            break
+        }
     }
 }

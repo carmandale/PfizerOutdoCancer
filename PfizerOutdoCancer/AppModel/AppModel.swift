@@ -158,19 +158,13 @@ final class AppModel {
     var readyToStartLab: Bool = false
 
     // MARK: - Immersion Style
-    var introStyle: ImmersionStyle = .progressive(
-        0.1...1.0,
-        initialAmount: 0.5
-    )
-    var outroStyle: ImmersionStyle = .progressive(
-        0.1...1.0,
-        initialAmount: 0.5
-    )
+    var introStyle: ImmersionStyle = .mixed
+    var outroStyle: ImmersionStyle = .mixed
     var labStyle: ImmersionStyle = .full
     var buildingStyle: ImmersionStyle = .mixed
     var attackStyle: ImmersionStyle = .progressive(
         0.1...1.0,
-        initialAmount: 1.0
+        initialAmount: 0.85
     )
 
     // MARK: - Asset Management
@@ -237,6 +231,9 @@ final class AppModel {
                     self.gameState.hopeMeterTimeLeft -= 1
                 } else {
                     self.stopHopeMeter()
+                    await self.gameState.hopeMeterDidRunOut()
+                    // wait a second for the sound and then transition
+                    try? await Task.sleep(for: .milliseconds(2000))
                     await self.transitionToPhase(.completed)
                 }
             }
@@ -319,8 +316,8 @@ final class AppModel {
             return
         }
         isTransitioning = true
-        defer {
-            isTransitioning = false
+        defer { 
+            isTransitioning = false 
             Logger.debug("✅ Phase transition completed: \(newPhase)")
         }
 
@@ -329,63 +326,80 @@ final class AppModel {
             Logger.info("🛑 Stopping tracking for phase transition")
             await trackingManager.stopTracking()
             
-            // Wait for tracking to fully stop
-            for _ in 0..<10 { // Maximum 1 second wait
-                if case .stopped = trackingManager.worldTrackingProvider.state {
-                    Logger.info("✅ Tracking stopped successfully")
-                    break
+            do {
+                // Wait for tracking to fully stop with verification
+                try await trackingManager.waitForCleanup()
+                if !trackingManager.verifyProviderState(expectRunning: false) {
+                    Logger.error("❌ Tracking cleanup verification failed")
+                    // Continue with transition but log the error
                 }
-                try? await Task.sleep(for: .milliseconds(100))
+            } catch {
+                Logger.error("❌ Tracking cleanup failed: \(error)")
+                // Continue with transition but log the error
             }
             
             Logger.info("📊 Post-Stop Tracking State: \(trackingManager.worldTrackingProvider.state)")
         }
 
-        // 2. Pre-load assets for the *new* phase *before* any cleanup
+        // 2. Pre-load assets for the new phase before cleanup
         await preloadAssets(for: newPhase, adcDataModel: adcDataModel)
 
         if newPhase == .playing {
-            // Before starting the playing session, reinitialize game state.
             gameState.resetCleanupForNewSession()
         }
 
-        // 3. Clean up the *current* phase (guarantee completion with await)
+        // 3. Clean up current phase
         await cleanupCurrentPhase(for: newPhase)
 
-        // Set the new phase before starting tracking
+        // 4. Set the new phase before starting tracking
         currentPhase = newPhase
 
-        // 4. Start tracking if the new phase needs it
+        // 5. Start tracking if needed with retry logic
         if newPhase.needsHandTracking {
-            // Add a small delay to ensure ARKit has time to clean up
-            try? await Task.sleep(for: .milliseconds(100))
-            try? await trackingManager.startTracking(needsHandTracking: newPhase.needsHandTracking)
-            
+            await startTrackingWithRetry(for: newPhase)
+        }
+    }
+
+    /// Attempts to start tracking with retry logic
+    private func startTrackingWithRetry(for phase: AppPhase) async {
+        let maxRetries = 3
+        var trackingStarted = false
+        
+        for attempt in 1...maxRetries {
             do {
-                try await trackingManager.waitForTrackingToRun()
-                Logger.info("✅ Tracking started successfully")
+                // Add a small delay between attempts
+                if attempt > 1 {
+                    try await Task.sleep(for: .milliseconds(100))
+                }
+                
+                try await trackingManager.startTracking(needsHandTracking: phase.needsHandTracking)
+                
+                // Verify tracking state
+                if trackingManager.verifyProviderState(expectRunning: true) {
+                    trackingStarted = true
+                    Logger.info("✅ Tracking started successfully on attempt \(attempt)")
+                    break
+                } else {
+                    Logger.error("❌ Provider state verification failed on attempt \(attempt)")
+                }
             } catch {
                 Logger.error("""
                 
-                ❌ Failed to start tracking
+                ❌ Tracking start failed (Attempt \(attempt)/\(maxRetries))
                 ├─ Error: \(error)
-                ├─ Phase: \(newPhase)
-                └─ Current State: \(trackingManager.worldTrackingProvider.state)
+                ├─ Phase: \(phase)
+                └─ Provider State: \(trackingManager.worldTrackingProvider.state)
                 """)
-                // Continue with the phase transition even if tracking fails
-                // The system will attempt to recover in subsequent frames
-            }
-            
-            // Wait for tracking to be running
-            for _ in 0..<10 { // Maximum 1 second wait
-                if case .running = trackingManager.worldTrackingProvider.state {
-                    break
+                
+                if attempt == maxRetries {
+                    Logger.error("❌ All tracking start attempts failed")
                 }
-                try? await Task.sleep(for: .milliseconds(100))
             }
-            
-            // Log final tracking state
-            await trackingManager.logTrackingState(context: "Post-Transition")
+        }
+        
+        if !trackingStarted {
+            Logger.error("❌ Failed to start tracking after \(maxRetries) attempts")
+            // Consider transitioning to error state or implementing recovery logic
         }
     }
 
@@ -419,7 +433,7 @@ final class AppModel {
         if phase == .playing {
             Logger.debug("\n=== Pre-loading Playing Phase Assets ===")
             Logger.debug("📱 Pre-loading required assets for playing phase...")
-            if let adcDataModel = adcDataModel {
+            if adcDataModel != nil {
                 do {
                     
                     // Ensure tutorial asset is loaded and cached
@@ -495,13 +509,14 @@ final class AppModel {
                 Logger.debug("I am in the playing phase and transitioning to completed, so preserving immersive assets")
             }
         case .completed:
-            if newPhase != .outro {
+            if newPhase == .outro {
+                await gameState.fadeOutScene()
+                try? await Task.sleep(for: .seconds(0.5))
+                // Note: We're already preserving assets for outro transition
+            } else {
                 Logger.debug("I am in the completed phase and transitioning to \(newPhase); cleaning up normally.")
                 await gameState.cleanup()
                 await assetLoadingManager.releaseAttackCancerEnvironment()
-            } else {
-                Logger.debug("Transitioning from completed to outro; preserving immersive assets for AttackCancerView.")
-                // Do not call cleanup so that the completed phase's assets remain for the outro.
             }
         case .outro:
             outroState.cleanup()

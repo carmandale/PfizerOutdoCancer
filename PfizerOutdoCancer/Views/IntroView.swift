@@ -9,7 +9,7 @@ struct IntroView: View {
     @Environment(\.dismissWindow) private var dismissWindow
     @Environment(\.openWindow) private var openWindow
     
-    @State private var introTintIntensity: Double = 0.01 {
+    @State private var introTintIntensity: Double = 0.2 {
         didSet {
             print("introTintIntensity changed to: \(introTintIntensity)")
             // Consider adding a breakpoint here to inspect the call stack
@@ -53,16 +53,9 @@ struct IntroView: View {
                 // Load environment first
                 print("📱 IntroView: Starting environment setup")
                 await appModel.introState.setupEnvironment(in: root)
+                
                 appModel.introState.environmentLoaded = true
                 print("✅ Environment setup complete")
-                
-                // Now that environment is loaded, handle attachments
-                if let titleEntity = attachments.entity(for: "titleText") {
-                    print("📱 IntroView: Found SwiftUI attachments")
-                    
-                    // Store attachments in view model
-                    appModel.introState.titleEntity = titleEntity
-                }
 
                 // set up the lab attachments
                 // Now that environment is loaded, set up attachments
@@ -90,9 +83,6 @@ struct IntroView: View {
                 }
             }
         } attachments: {
-            Attachment(id: "titleText") {
-                OutdoCancer(showTitle: $appModel.introState.showTitleText)
-            }
             if showNavToggle {
                 Attachment(id: "navToggle") {
                     NavToggleView()
@@ -117,17 +107,8 @@ struct IntroView: View {
                 .opacity(appModel.isNavWindowOpen ? 0 : 1)
             }
         }
-//        .preferredSurroundingsEffect(surroundingsEffect)
         .installGestures()
-        .onAppear {
-            print("\n=== IntroView Appeared ===")
-            dismissWindow(id: AppModel.navWindowId)
-            // Ensure library window starts closed
-            appModel.updateLibraryWindowState(isOpen: false)
-        }
-        .onDisappear {
-            // Cleanup is now handled by AssetLoadingManager during phase transitions
-        }
+        .preferredSurroundingsEffect(surroundingsEffect)
         .onChange(of: appModel.labState.isLibraryOpen) { _, isOpen in
             if isOpen {
                 print(">>> Library window opened 🚪")
@@ -163,7 +144,7 @@ struct IntroView: View {
                 
                 🎯 Head Position Update Triggered
                 ├─ shouldUpdate: \(shouldUpdate)
-                ├─ isReadyForInteraction: \(appModel.introState.isReadyForInteraction)
+                ├─ isReadyForHeadTracking: \(appModel.introState.isReadyForHeadTracking)
                 ├─ isPositioningInProgress: \(appModel.introState.isPositioningInProgress)
                 ├─ Current Phase: \(appModel.currentPhase)
                 ├─ Tracking State: \(appModel.trackingManager.worldTrackingProvider.state)
@@ -171,7 +152,7 @@ struct IntroView: View {
                 """)
             }
             
-            if shouldUpdate && appModel.introState.isReadyForInteraction && !appModel.introState.isPositioningInProgress {
+            if shouldUpdate && appModel.introState.isReadyForHeadTracking && !appModel.introState.isPositioningInProgress {
                 if let root = appModel.introState.introRootEntity {
                     // Ensure we're on MainActor
                     Task { @MainActor in
@@ -234,15 +215,13 @@ struct IntroView: View {
                         root.addChild(environment)
 
                         // Get portal and set up attachments
-                        if let portal = appModel.introState.getPortal(),
-                           let titleEntity = appModel.introState.titleEntity {
+                        if let portal = appModel.introState.getPortal() {
                             print("✅ Found portal for attachments")
                             
                             // Set up attachments on portal
                             appModel.introState.setupAttachments(
                                 in: root,
-                                for: portal,
-                                titleEntity: titleEntity
+                                for: portal
                             )
                         }
                         

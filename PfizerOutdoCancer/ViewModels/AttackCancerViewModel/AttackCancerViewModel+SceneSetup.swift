@@ -19,6 +19,7 @@ extension AttackCancerViewModel {
         
         let root = Entity()
         root.name = "AttackCancerRoot"
+        // root.enableLargeRoomReverb()
         // root.position = AppModel.PositioningDefaults.playing.position
         
         // Keep headTrackingRoot setup - needed for AttackCancer functionality
@@ -52,6 +53,9 @@ extension AttackCancerViewModel {
     
     func setupEnvironment(in root: Entity, attachments: RealityViewAttachments? = nil) async {
         Logger.info("\n🎯 Setting up AttackCancerView environment...")
+        
+        // prepare audio
+        await prepareEndGameAudio()
         
         // IBL
         do {
@@ -127,7 +131,7 @@ extension AttackCancerViewModel {
     
     func setupIBL(in root: Entity) async {
         do {
-            try await IBLUtility.addImageBasedLighting(to: root, imageName: "metro_noord_2k")
+            try await IBLUtility.addImageBasedLighting(to: root, imageName: "metro_noord_2k", intensity: 0.5)
         } catch {
             Logger.error("Failed to setup IBL: \(error)")
         }

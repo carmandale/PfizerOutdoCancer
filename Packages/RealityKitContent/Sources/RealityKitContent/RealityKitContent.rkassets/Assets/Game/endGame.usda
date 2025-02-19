@@ -1,0 +1,91 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 2.0 (448.60.4)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    def RealityKitAudioFile "Heartbeat_wav"
+    {
+        uniform asset file = @../../Audio/sfx/heartbeat.wav@
+        uniform bool shouldLoop = 1
+    }
+
+    def RealityKitAudioFile "Smashed_wav"
+    {
+        uniform asset file = @../../Audio/sfx/smashed.wav@
+        uniform bool shouldLoop = 0
+    }
+
+    def RealityKitAudioFile "bell_reverse_03_gleam_wav"
+    {
+        uniform asset file = @../../Audio/sfx/bell_reverse_03_gleam.wav@
+        uniform bool shouldLoop = 0
+    }
+
+    def RealityKitAudioFile "heartbeat_wav"
+    {
+        uniform asset file = @../../Audio/sfx/heartbeat.wav@
+        uniform bool shouldLoop = 0
+    }
+
+    def RealityKitAudioFile "heartbeat_progressive_slow_to_fast_wav"
+    {
+        uniform asset file = @../../Audio/sfx/heartbeat_progressive_slow_to_fast.wav@
+        uniform bool shouldLoop = 0
+    }
+
+    def RealityKitAudioFile "heartbeat_slow_wav"
+    {
+        uniform asset file = @../../Audio/sfx/heartbeat_slow.wav@
+        uniform bool shouldLoop = 0
+    }
+
+    def RealityKitAudioFile "hot_sizzle_reverb_wav"
+    {
+        uniform asset file = @../../Audio/sfx/hot_sizzle_reverb.wav@
+        uniform bool shouldLoop = 0
+    }
+
+    def RealityKitAudioFile "magic_zing_wav"
+    {
+        uniform asset file = @../../Audio/sfx/magic_zing.wav@
+        uniform bool shouldLoop = 0
+    }
+
+    def RealityKitAudioFile "reverse_gleam_high_frequency_wav"
+    {
+        uniform asset file = @../../Audio/sfx/reverse_gleam_high_frequency.wav@
+        uniform bool shouldLoop = 0
+    }
+
+    def RealityKitAudioFile "reverse_suck_wav"
+    {
+        uniform asset file = @../../Audio/sfx/reverse_suck.wav@
+        uniform bool shouldLoop = 0
+    }
+
+    def RealityKitAudioFile "rocky_build_up_wav"
+    {
+        uniform asset file = @../../Audio/sfx/rocky_build_up.wav@
+        uniform bool shouldLoop = 0
+    }
+
+    def RealityKitAudioFile "smashed_wav"
+    {
+        uniform asset file = @../../Audio/sfx/smashed.wav@
+        uniform bool shouldLoop = 0
+    }
+
+    def RealityKitAudioFile "tone_cross_wav"
+    {
+        uniform asset file = @../../Audio/sfx/tone_cross.wav@
+        uniform bool shouldLoop = 0
+    }
+}
+
