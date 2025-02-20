@@ -59,6 +59,9 @@ final class AttackCancerViewModel {
     var testFireComplete = false
     var readyToStartGame = false
 
+    // MARK: - Audio Debug Properties
+    var audioDebugCone: ModelEntity?
+    var isAudioDebugVisible: Bool = false
 
     var shouldPlayStartButtonVO: Bool {
         readyToStartGame && tutorialComplete
@@ -68,7 +71,14 @@ final class AttackCancerViewModel {
     var endGameAudioSource: Entity?
     var endGameAudioResource: AudioFileResource?
     var endGameAudioController: AudioPlaybackController?
-
+    var loadedAudioResources: [String: AudioFileResource] = [:]
+    
+    // MARK: - Sequence-specific Audio Properties
+    var endingSequenceAudioSource: Entity?
+    var victorySequenceAudioSource: Entity?
+    var endingSequenceController: AudioPlaybackController?
+    var victorySequenceController: AudioPlaybackController?
+    
     // MARK: - Transition Properties
     var isTransitioningOut = false
     var transitionOpacity: Float = 1.0

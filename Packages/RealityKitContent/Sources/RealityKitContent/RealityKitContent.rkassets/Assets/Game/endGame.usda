@@ -87,5 +87,17 @@ def Xform "Root"
         uniform asset file = @../../Audio/sfx/tone_cross.wav@
         uniform bool shouldLoop = 0
     }
+
+    def RealityKitAudioFile "Hope_Meter_Restored_wav"
+    {
+        uniform asset file = @../../Audio/sfx/Hope_Meter_Restored.wav@
+        uniform bool shouldLoop = 0
+    }
+
+    def RealityKitAudioFile "Mission_Accomplished_wav"
+    {
+        uniform asset file = @../../Audio/sfx/Mission_Accomplished.wav@
+        uniform bool shouldLoop = 0
+    }
 }
 

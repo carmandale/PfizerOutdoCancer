@@ -2,8 +2,50 @@ import SwiftUI
 import RealityKitContent
 import RealityKit
 
+// MARK: - Audio Sequence Types
+enum AudioSequenceType {
+    case ending
+    case victory
+}
+
 extension AttackCancerViewModel {
     // MARK: - Audio Setup
+    
+    /// Toggles the visibility of the audio debug cone
+    func toggleAudioDebugVisuals() {
+        isAudioDebugVisible.toggle()
+        audioDebugCone?.isEnabled = isAudioDebugVisible
+        Logger.audio("Audio debug visuals: \(isAudioDebugVisible ? "shown" : "hidden")")
+    }
+    
+    /// Creates a debug cone to visualize the audio source direction
+    func createAudioDebugCone() -> ModelEntity {
+        // Create a cone mesh with specified dimensions
+        let cone = MeshResource.generateCone(height: 0.2, radius: 0.1)
+        
+        // Create a red material
+        var material = PhysicallyBasedMaterial()
+        material.baseColor = .init(tint: .red, texture: nil)
+        material.roughness = 0.8
+        material.metallic = 0.0
+        
+        // Create the model entity
+        let debugCone = ModelEntity(mesh: cone, materials: [material])
+        
+        // Set transform
+        debugCone.transform = Transform(
+            scale: .one,
+            rotation: simd_quatf(angle: .pi / 2, axis: [1, 0, 0]) * // -90 degrees around X
+                     simd_quatf(angle: .pi, axis: [0, 1, 0]),      // 180 degrees around Y
+            translation: [0, 0, -0.1]
+        )
+        
+        // Initially disabled
+        debugCone.isEnabled = false
+        
+        return debugCone
+    }
+    
     func prepareEndGameAudio() async {
         Logger.audio("\n=== Preparing end game audio ===\n")
         
@@ -20,61 +62,135 @@ extension AttackCancerViewModel {
         }
         Logger.audio("✅ Found headTrackingRoot at position: \(headTrackingRoot.position)")
         
-        // Create and set up audio entity with spatial audio
-        let audioSource = Entity()
-        audioSource.name = "EndGameToneSource"
-        audioSource.position.z = 0.5
-        Logger.audio("Created EndGameToneSource entity")
+        // Create ending sequence source
+        let endingSource = Entity()
+        endingSource.name = "EndingSequenceSource"
+        endingSource.position = SIMD3<Float>(0, 0, 0.75)
+        endingSource.components.set(SpatialAudioComponent(gain: 1.0, directivity: .beam(focus: 1.0)))
         
-        audioSource.components.set(SpatialAudioComponent(
-            gain: 1.0,
-            directivity: .beam(focus: 1.0)
-        ))
-        Logger.audio("Added SpatialAudioComponent to EndGameToneSource")
+        // Create and add debug cone for ending sequence
+        let endingDebugCone = createAudioDebugCone()
+        endingSource.addChild(endingDebugCone)
+        self.audioDebugCone = endingDebugCone
+        Logger.audio("Added debug cone to ending sequence source")
         
-        // Load audio resource
+        headTrackingRoot.addChild(endingSource)
+        self.endingSequenceAudioSource = endingSource
+        Logger.audio("✅ Created ending sequence source")
+        
+        // Create victory sequence source
+        let victorySource = Entity()
+        victorySource.name = "VictorySequenceSource"
+        victorySource.position = SIMD3<Float>(0.5, 0, 0.75)  // Offset to the right
+        victorySource.components.set(SpatialAudioComponent(gain: 1.0, directivity: .beam(focus: 1.0)))
+        headTrackingRoot.addChild(victorySource)
+        self.victorySequenceAudioSource = victorySource
+        Logger.audio("✅ Created victory sequence source")
+        
+        // Load all audio resources
         do {
-            Logger.audio("Attempting to load tone_cross_wav from Assets/Game/endGame.usda...")
-            let resource = try await AudioFileResource(named: "/Root/tone_cross_wav", from: "Assets/Game/endGame.usda", in: realityKitContentBundle)
-            Logger.audio("✅ Successfully loaded tone_cross_wav")
+            // Load tone_cross
+            Logger.audio("Attempting to load tone_cross_wav...")
+            let toneCrossResource = try await AudioFileResource(named: "/Root/tone_cross_wav", from: "Assets/Game/endGame.usda", in: realityKitContentBundle)
+            loadedAudioResources["tone_cross"] = toneCrossResource
+            Logger.audio("✅ Successfully loaded tone_cross")
             
-            // Store our resources
-            self.endGameAudioSource = audioSource
-            self.endGameAudioResource = resource
+            // Load heartbeat
+            let heartbeatResource = try await AudioFileResource(named: "/Root/heartbeat_progressive_slow_to_fast_wav", from: "Assets/Game/endGame.usda", in: realityKitContentBundle)
+            loadedAudioResources["heartbeat"] = heartbeatResource
+            Logger.audio("✅ Successfully loaded heartbeat")
             
-            // Attach to headTrackingRoot immediately
-            headTrackingRoot.addChild(audioSource)
-            Logger.audio("✅ Added EndGameToneSource to headTrackingRoot")
+            // Load smashed
+            let smashedResource = try await AudioFileResource(named: "/Root/smashed_wav", from: "Assets/Game/endGame.usda", in: realityKitContentBundle)
+            loadedAudioResources["smashed"] = smashedResource
+            Logger.audio("✅ Successfully loaded smashed")
             
-            // Pre-prepare the controller
-            endGameAudioController = audioSource.prepareAudio(resource)
-            if endGameAudioController != nil {
-                Logger.audio("✅ Successfully prepared audio controller")
-            } else {
-                Logger.error("❌ Failed to prepare audio controller")
-            }
+            // Load magic_zing
+            let magicZingResource = try await AudioFileResource(named: "/Root/magic_zing_wav", from: "Assets/Game/endGame.usda", in: realityKitContentBundle)
+            loadedAudioResources["magic_zing"] = magicZingResource
+            Logger.audio("✅ Successfully loaded magic_zing")
             
-            Logger.audio("✅ End game audio fully prepared")
+            // Load hope meter restored
+            let hopeRestoredResource = try await AudioFileResource(named: "/Root/Hope_Meter_Restored_wav", from: "Assets/Game/endGame.usda", in: realityKitContentBundle)
+            loadedAudioResources["hope_restored"] = hopeRestoredResource
+            Logger.audio("✅ Successfully loaded hope_restored")
+            
+            Logger.audio("✅ End game audio fully prepared with \(loadedAudioResources.count) sounds")
         } catch {
-            Logger.error("❌ Failed to load tone_cross_wav: \(error.localizedDescription)")
+            Logger.error("❌ Failed to load audio resources: \(error.localizedDescription)")
             Logger.error("Error details: \(error)")
         }
     }
     
     // MARK: - Audio Playback
-    func playEndSound() async {
-        Logger.audio("\n=== Playing end game sound ===\n")
+    func playEndSound(_ soundName: String, forSequence sequenceType: AudioSequenceType) async {
+        Logger.audio("\n=== Playing sound: \(soundName) for sequence: \(sequenceType) ===\n")
         
-        // Since everything is prepared, we just need to play
-        if let controller = endGameAudioController {
-            // Stop any existing playback first
-            controller.stop()
-            
-            // Play the sound
-            controller.play()
-            Logger.audio("✅ Started playing end game tone")
-        } else {
-            Logger.error("❌ End game audio not prepared. Call prepareEndGameAudio first.")
+        let (audioSource, controller) = switch sequenceType {
+        case .ending:
+            (endingSequenceAudioSource, endingSequenceController)
+        case .victory:
+            (victorySequenceAudioSource, victorySequenceController)
         }
+        
+        guard let source = audioSource,
+              let resource = loadedAudioResources[soundName] else {
+            Logger.error("❌ Required resources not found for \(soundName)")
+            return
+        }
+        
+        // Stop current controller if it exists
+        controller?.stop()
+        
+        // Create new controller and store it
+        let newController = source.prepareAudio(resource)
+        newController.play()
+        
+        // Store the controller in the appropriate property
+        switch sequenceType {
+        case .ending:
+            endingSequenceController = newController
+        case .victory:
+            victorySequenceController = newController
+        }
+        
+        Logger.audio("✅ Started playing \(soundName) for \(sequenceType)")
+    }
+    
+    /// Plays a sequence of audio elements with specified pauses between them
+    /// - Parameters:
+    ///   - sequence: Array of tuples containing the sound name and the pause duration
+    ///   - type: The type of sequence being played (ending or victory)
+    func playAudioSequence(_ sequence: [(sound: String, pauseAfter: TimeInterval)], type: AudioSequenceType) async {
+        Logger.audio("\n=== Starting \(type) sequence with \(sequence.count) elements ===\n")
+        
+        for (index, element) in sequence.enumerated() {
+            await playEndSound(element.sound, forSequence: type)
+            
+            if element.pauseAfter > 0 {
+                Logger.audio("Pausing for \(element.pauseAfter) seconds after sound \(element.sound)")
+                try? await Task.sleep(for: .seconds(element.pauseAfter))
+            }
+            
+            Logger.audio("Completed playing sequence element \(index + 1)/\(sequence.count)")
+        }
+        
+        Logger.audio("✅ Audio sequence completed")
+    }
+    
+    /// Play hope_restored, wait 2 seconds, then play tone_cross
+    func playVictorySequence() async {
+        await playAudioSequence([
+            ("hope_restored", 2.0),
+            ("tone_cross", 0.0)
+        ], type: .victory)
+    }
+    
+    /// Play heartbeat, wait 19 seconds, then play magic_zing
+    func playEndingSequence() async {
+        await playAudioSequence([
+            ("heartbeat", 19.0),
+            ("magic_zing", 0.0)
+        ], type: .ending)
     }
 }

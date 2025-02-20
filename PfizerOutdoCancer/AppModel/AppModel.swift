@@ -223,6 +223,18 @@ final class AppModel {
         gameState.hopeMeterTimeLeft = gameState.hopeMeterDuration // Reset timer
         gameState.isHopeMeterRunning = true
         
+        // Create a task to trigger the ending sequence at 19 seconds
+        Task { @MainActor in
+            // Wait until 19 seconds remain (hopeMeterDuration - 19 seconds)
+            try? await Task.sleep(for: .seconds(gameState.hopeMeterDuration - 19))
+            
+            // Check if we're still running before playing
+            if gameState.isHopeMeterRunning {
+                Logger.debug("playingEndingSequence audio")
+                await gameState.playEndingSequence()
+            }
+        }
+        
         hopeMeterTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
             guard let self = self else { return }
             

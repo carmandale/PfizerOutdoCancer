@@ -33,7 +33,7 @@ extension AttackCancerViewModel {
             print("✅✅✅ ALL GAME CELLS DESTROYED! Condition met!")
             Task { @MainActor in
                 // Play the end game tone using our new function
-                await self.playEndSound()
+                await self.playEndSound("magic_zing", forSequence: .victory) // Added forSequence parameter
                 
                 // Delay a second to give the user a moment to look forward
                 try? await Task.sleep(for: .milliseconds(1000))
@@ -51,8 +51,41 @@ extension AttackCancerViewModel {
         Task { @MainActor in
             // Play the end game tone when hope meter runs out
             Logger.audio("\n=== playing end sound ===\n")
-            await self.playEndSound()
+            await self.playVictorySequence() // self.playEndSound("heartbeat") // Example of playing a different sound
             // Additional actions can be added here
+        }
+    }
+    
+    /// Monitor hope meter time and trigger events at specific thresholds
+    func checkHopeMeterThresholds() {
+        // Only check if the game is active
+        guard isGameActive else { return }
+        
+        // Check for 19 seconds remaining
+        if hopeMeterTimeLeft <= 19 && hopeMeterTimeLeft > 18 {
+            Logger.audio("Hope meter at 19 seconds - triggering ending sequence")
+            Task { @MainActor in
+                await playEndingSequence()
+            }
+        }
+    }
+    
+    /// Update hope meter time and check thresholds
+    func updateHopeMeter() {
+        guard isHopeMeterRunning else { return }
+        
+        // Update time left
+        hopeMeterTimeLeft = max(0, hopeMeterTimeLeft - 1/60)  // Assuming 60fps updates
+        
+        // Check for specific time thresholds
+        checkHopeMeterThresholds()
+        
+        // Check for hope meter running out
+        if hopeMeterTimeLeft <= 0 {
+            isHopeMeterRunning = false
+            Task { @MainActor in
+                await hopeMeterDidRunOut()
+            }
         }
     }
 }

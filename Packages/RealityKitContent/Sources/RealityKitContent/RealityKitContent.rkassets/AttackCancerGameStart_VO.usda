@@ -25,7 +25,6 @@ def Xform "Root"
     {
         reorder nameChildren = ["AudioLibrary", "SpatialAudio", "Billboard", "BloodStream_VO_1_wav"]
         quatf xformOp:orient = (-4.371139e-8, 0, 1, 0)
-        float3 xformOp:translate = (0, 0, 0.75)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
         def RealityKitComponent "AudioLibrary"
@@ -42,18 +41,18 @@ def Xform "Root"
             }
         }
 
-        def RealityKitComponent "SpatialAudio"
-        {
-            float directivityFocus = 1
-            uniform token info:id = "RealityKit.SpatialAudio"
-            float reverbLevel = 0
-            float rolloffFactor = 0
-        }
-
         def RealityKitComponent "Billboard"
         {
             float blendFactor = 1
             uniform token info:id = "RealityKit.Billboard"
+        }
+
+        def RealityKitComponent "SpatialAudio"
+        {
+            float directivityFocus = 0.28886506
+            uniform token info:id = "RealityKit.SpatialAudio"
+            float reverbLevel = -7.0828633
+            float rolloffFactor = 0.5
         }
     }
 

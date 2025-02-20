@@ -78,6 +78,9 @@ extension AttackCancerViewModel {
             Logger.info("setting up collisions")
             setupCollisions(in: environment)
             
+            // Set up the scene
+            scene = root.scene
+            
             Logger.info("""
             
             ✅ Environment Setup Complete
@@ -129,6 +132,7 @@ extension AttackCancerViewModel {
         }
     }
     
+    // convenience function for Instructions screen
     func setupIBL(in root: Entity) async {
         do {
             try await IBLUtility.addImageBasedLighting(to: root, imageName: "metro_noord_2k", intensity: 0.5)
@@ -152,7 +156,7 @@ extension AttackCancerViewModel {
             Logger.info("✅ Tutorial: Retrieved game start VO")
             
             if let VO_parent = root.findEntity(named: "headTrackingRoot") {
-                Logger.info("�� Tutorial: Found VO parent")
+                Logger.info("🎯 Tutorial: Found VO parent")
                 VO_parent.addChild(gameStartVO)
                 root.addChild(VO_parent)
                 Logger.info("✅ Tutorial: Added VO to scene")
