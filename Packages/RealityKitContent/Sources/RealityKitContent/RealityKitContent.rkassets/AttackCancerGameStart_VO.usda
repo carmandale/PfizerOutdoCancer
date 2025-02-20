@@ -25,7 +25,7 @@ def Xform "Root"
     {
         reorder nameChildren = ["AudioLibrary", "SpatialAudio", "Billboard", "BloodStream_VO_1_wav"]
         quatf xformOp:orient = (-4.371139e-8, 0, 1, 0)
-        float3 xformOp:translate = (0, 0, 0)
+        float3 xformOp:translate = (0, 0, 0.75)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
         def RealityKitComponent "AudioLibrary"

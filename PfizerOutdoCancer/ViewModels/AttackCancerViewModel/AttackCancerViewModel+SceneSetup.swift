@@ -59,7 +59,7 @@ extension AttackCancerViewModel {
         
         // IBL
         do {
-            try await IBLUtility.addImageBasedLighting(to: root, imageName: "metro_noord_2k")
+            try await IBLUtility.addImageBasedLighting(to: root, imageName: "metro_noord_2k", intensity: 0.5)
         } catch {
             Logger.error("Failed to setup IBL: \(error)")
             isEnvironmentSetupComplete = false
