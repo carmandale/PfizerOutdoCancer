@@ -374,11 +374,11 @@ extension Entity {
     ///   - timing: Animation timing curve (default: .easeInOut)
     ///   - waitForCompletion: If true, waits for the animation to complete before returning
     func animatePositionAndRotation(position: SIMD3<Float>,
-                                  rotation: Float,
-                                  duration: TimeInterval,
-                                  delay: TimeInterval = 0,
-                                  timing: RealityKit.AnimationTimingFunction = .easeInOut,
-                                  waitForCompletion: Bool = false) async {
+                                    rotation: Float,
+                                    duration: TimeInterval,
+                                    delay: TimeInterval = 0,
+                                    timing: RealityKit.AnimationTimingFunction = .easeInOut,
+                                    waitForCompletion: Bool = false) async {
         // Handle delay first, even for immediate changes
         if delay > 0 {
             try? await Task.sleep(for: .seconds(delay))
@@ -421,6 +421,62 @@ extension Entity {
             transform = endTransform
         }
     }
+
+    /// Animates an entity to an absolute position and Y rotation
+    /// - Parameters:
+    ///   - targetPosition: Absolute target position as SIMD3<Float>
+    ///   - targetYRotationDegrees: Absolute Y rotation in degrees (positive = clockwise)
+    ///   - duration: Animation duration in seconds
+    ///   - delay: Optional delay before starting (in seconds)
+    ///   - timing: Animation timing curve (default: .easeInOut)
+    ///   - waitForCompletion: If true, waits for animation to complete
+    func animateToPositionAndYRotation(targetPosition: SIMD3<Float>,
+                                       targetYRotationDegrees: Float,
+                                       duration: TimeInterval,
+                                       delay: TimeInterval = 0,
+                                       timing: RealityKit.AnimationTimingFunction = .easeInOut,
+                                       waitForCompletion: Bool = false) async {
+        if delay > 0 {
+            try? await Task.sleep(for: .seconds(delay))
+        }
+        
+        let startTransform = transform
+        Logger.debug("Start - Pos: \(startTransform.translation), Rot: \(startTransform.rotation.angle * 180 / .pi)° around \(startTransform.rotation.axis)")
+
+        var endTransform = Transform()
+        endTransform.translation = targetPosition
+        let rotationRadians = (targetYRotationDegrees * .pi) / 180
+        endTransform.rotation = simd_quatf(angle: rotationRadians, axis: SIMD3<Float>(0, 1, 0))
+        Logger.debug("End - Pos: \(endTransform.translation), Rot: \(endTransform.rotation.angle * 180 / .pi)° around \(endTransform.rotation.axis)")
+        
+        guard duration > 0 else {
+            transform = endTransform
+            return
+        }
+        
+        stopAllAnimations()
+
+        let animation = FromToByAnimation(
+            from: startTransform,
+            to: endTransform,
+            duration: duration,
+            timing: timing,
+            bindTarget: .transform
+        )
+        
+        do {
+            let resource = try AnimationResource.generate(with: animation)
+            playAnimation(resource)
+            Logger.debug("Animation started with duration: \(duration)s")
+            if waitForCompletion {
+                try? await Task.sleep(for: .seconds(duration))
+            }
+        } catch {
+            Logger.debug("⚠️ Could not generate animation: \(error.localizedDescription)")
+            transform = endTransform
+        }
+    }
+
     
     /// Starts continuous rotation around the specified axis
     /// - Parameters:

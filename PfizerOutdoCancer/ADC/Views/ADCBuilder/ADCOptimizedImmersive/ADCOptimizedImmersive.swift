@@ -356,9 +356,10 @@ struct ADCOptimizedImmersive: View {
                                     
                                     // Move main view back
                                     os_log(.debug, "ITR..Moving main view back to original position")
-                                    await mainViewEntity.performSpatialTransition(
-                                        toPosition: SIMD3(0.5, 0, -0.2),
-                                        rotation: 0,
+                                    // After some event (e.g., button tap), return to initial state
+                                    await mainViewEntity.animateToPositionAndYRotation(
+                                        targetPosition: SIMD3(0, 0, 0),
+                                        targetYRotationDegrees: 0,
                                         duration: 1.0,
                                         timing: .easeInOut,
                                         waitForCompletion: true
@@ -441,15 +442,18 @@ struct ADCOptimizedImmersive: View {
                         dataModel.hasInitialVOCompleted = true
                         dataModel.antibodyVOCompleted = true
                         
+                        // Reset entity
+                        mainViewEntity.transform = Transform.identity
+                        Logger.debug("Reset to Pos: \(mainViewEntity.transform.translation), Rot: \(mainViewEntity.transform.rotation.angle * 180 / .pi)°")
                         
-//                        try? await mainEntity.animatePosition(to: SIMD3(-0.125, 0, 0), duration: 1.0, delay: 0.0)
-//                        os_log(.debug, "ITR..Attempting to animate main view position")
-                        await mainViewEntity.performSpatialTransition(
-                            toPosition: SIMD3(-0.5, 0, 0.2),
-                            rotation: 30,
+                        // Move to target position and rotation
+                        await mainViewEntity.animateToPositionAndYRotation(
+                            targetPosition: SIMD3(-0.5, 0, 0.2),
+                            targetYRotationDegrees: 30,
                             duration: 1.0,
                             delay: 0.5,
-                            timing: .easeInOut
+                            timing: .easeInOut,
+                            waitForCompletion: true
                         )
                         
                         // After position animation, fade in antibody with delay
