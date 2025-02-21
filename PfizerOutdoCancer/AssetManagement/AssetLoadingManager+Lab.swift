@@ -151,7 +151,6 @@ extension AssetLoadingManager {
         
         // Cache the assembled lab
         entityTemplates["assembled_lab"] = assetRoot
-        loadingState = .completed
         print("✅ Completed lab environment assembly")
         return assetRoot.clone(recursive: true)
     }

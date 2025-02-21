@@ -81,11 +81,26 @@ extension AttackCancerViewModel {
         // Create victory sequence source
         let victorySource = Entity()
         victorySource.name = "VictorySequenceSource"
-        victorySource.position = SIMD3<Float>(0.5, 0, 0.75)  // Offset to the right
+        victorySource.position = SIMD3<Float>(0, 0, 0.75)  // Centered
         victorySource.components.set(SpatialAudioComponent(gain: 1.0, directivity: .beam(focus: 1.0)))
         headTrackingRoot.addChild(victorySource)
         self.victorySequenceAudioSource = victorySource
         Logger.audio("✅ Created victory sequence source")
+        
+        // Create great job sequence source
+        let greatJobSource = Entity()
+        greatJobSource.name = "GreatJobSequenceSource"
+        greatJobSource.position = SIMD3<Float>(0, 0, 0.75)
+        greatJobSource.components.set(SpatialAudioComponent(
+            gain: .init(0.0),           // 0.0 dB
+            directLevel: .init(0.0),    // 0.0 dB
+            reverbLevel: .init(-7.1),   // -7.1 dB
+            directivity: .beam(focus: 0.3),
+            distanceAttenuation: .rolloff(factor: 0.5)  // Rolloff Factor: 0.5
+        ))
+        headTrackingRoot.addChild(greatJobSource)
+        self.greatJobAudioSource = greatJobSource
+        Logger.audio("✅ Created great job sequence source")
         
         // Load all audio resources
         do {
@@ -114,6 +129,11 @@ extension AttackCancerViewModel {
             let hopeRestoredResource = try await AudioFileResource(named: "/Root/Hope_Meter_Restored_wav", from: "Assets/Game/endGame.usda", in: realityKitContentBundle)
             loadedAudioResources["hope_restored"] = hopeRestoredResource
             Logger.audio("✅ Successfully loaded hope_restored")
+            
+            // Load great job
+            let greatJobResource = try await AudioFileResource(named: "/Root/GreatJob_mp3", from: "PressStart_VO.usda", in: realityKitContentBundle)
+            loadedAudioResources["great_job"] = greatJobResource
+            Logger.audio("✅ Successfully loaded great_job")
             
             Logger.audio("✅ End game audio fully prepared with \(loadedAudioResources.count) sounds")
         } catch {
@@ -192,5 +212,27 @@ extension AttackCancerViewModel {
             ("heartbeat", 19.0),
             ("magic_zing", 0.0)
         ], type: .ending)
+    }
+    
+    /// Play the great job voice over
+    func playGreatJob() async {
+        Logger.audio("\n=== Playing Great Job VO ===\n")
+        
+        // Stop any existing playback
+        greatJobController?.stop()
+        
+        guard let source = greatJobAudioSource,
+              let resource = loadedAudioResources["great_job"] else {
+            Logger.error("❌ Required resources not found for great_job")
+            return
+        }
+        
+        // Create new controller and store it
+        let newController = source.prepareAudio(resource)
+        newController.play()
+        greatJobController = newController
+        hasPlayedGreatJob = true
+        
+        Logger.audio("✅ Started playing great_job")
     }
 }

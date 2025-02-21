@@ -34,7 +34,7 @@ def Xform "Root"
 
             def RealityKitDict "resources"
             {
-                string[] keys = ["tutorial_01_mp3", "tutorial_02_mp3", "gameStart_01_mp3", "gameStart_02_mp3", "yourTurn_mp3", "PressStart_mp3"]
+                string[] keys = ["tutorial_01_mp3", "tutorial_02_mp3", "gameStart_01_mp3", "gameStart_02_mp3", "yourTurn_mp3", "PressStart_mp3", "GreatJob_mp3"]
                 rel values = [
                     </Root/tutorial_01_mp3>,
                     </Root/tutorial_02_mp3>,
@@ -42,6 +42,7 @@ def Xform "Root"
                     </Root/gameStart_02_mp3>,
                     </Root/yourTurn_mp3>,
                     </Root/PressStart_mp3>,
+                    </Root/GreatJob_mp3>,
                 ]
             }
         }
@@ -125,7 +126,8 @@ def Xform "Root"
     {
         def RealityKitTrack "Track"
         {
-            def RealityKitAction "Play_Audio"
+            reorder nameChildren = ["PressStart", "gameStart02", "gameStart01"]
+            def RealityKitAction "PressStart"
             {
                 string actionKind = "audio"
                 string audioResourceName = "PressStart_mp3"
@@ -140,7 +142,7 @@ def Xform "Root"
                 }
             }
 
-            def RealityKitAction "Play_Audio2"
+            def RealityKitAction "gameStart02"
             {
                 string actionKind = "audio"
                 string audioResourceName = "gameStart_02_mp3"
@@ -155,7 +157,7 @@ def Xform "Root"
                 }
             }
 
-            def RealityKitAction "Play_Audio3"
+            def RealityKitAction "gameStart01"
             {
                 string actionKind = "audio"
                 string audioResourceName = "gameStart_01_mp3"
@@ -175,6 +177,12 @@ def Xform "Root"
     def RealityKitAudioFile "PressStart_mp3"
     {
         uniform asset file = @Audio/AttackCancerGameInstructions/PressStart.mp3@
+        uniform bool shouldLoop = 0
+    }
+
+    def RealityKitAudioFile "GreatJob_mp3"
+    {
+        uniform asset file = @Audio/AttackCancerGameInstructions/GreatJob.mp3@
         uniform bool shouldLoop = 0
     }
 }

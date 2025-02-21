@@ -33,7 +33,7 @@ extension AttackCancerViewModel {
                         await appModel.accelerateHopeMeterToCompletion()
                         try? await Task.sleep(for: .milliseconds(100))
                         await self.playEndSound("magic_zing", forSequence: .ending)
-                        await playVictorySequence()
+                        await self.playVictorySequence()
                         try? await Task.sleep(for: .milliseconds(1000))
                         await appModel.transitionToPhase(.completed)
                     }

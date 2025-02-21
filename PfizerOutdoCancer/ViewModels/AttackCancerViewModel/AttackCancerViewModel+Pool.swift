@@ -42,7 +42,7 @@ extension AttackCancerViewModel {
                 setupAttachmentPoints(for: cell, complexCell: complexCell, cellID: i)
 
                 Logger.info("\n=== Cancer Cell Pool \(i) Hierarchy ===")
-                appModel.assetLoadingManager.inspectEntityHierarchy(cell)
+                // appModel.assetLoadingManager.inspectEntityHierarchy(cell)
                 
                 // Pool-specific: add to available cells
                 availableCells.append(cell)

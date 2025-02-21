@@ -12,7 +12,6 @@ extension ADCMovementSystem {
                             currentPosition: SIMD3<Float>,
                             in scene: Scene) -> Bool {
         // Find new target
-        print("Retargeting ADC - Entity: \(entity.name), State: \(adcComponent.state), Current Position: \(currentPosition)")
         guard let (newTarget, newCellID) = findNewTarget(for: entity, currentPosition: currentPosition, in: scene) else {
             #if DEBUG
             print("⚠️ No valid targets found for retargeting")
@@ -54,6 +53,11 @@ extension ADCMovementSystem {
             #endif
         }
         
+        // NEW: Set up smooth transition from orbiting
+        adcComponent.orbitTransitionStartPosition = currentPosition
+        adcComponent.orbitTransitionProgress = 0.0
+        adcComponent.orbitTransitionDuration = 0.3 // Short, subtle transition
+        
         // Store current target position and set up interpolation
         if let currentTargetID = adcComponent.targetEntityID,
            let currentTarget = scene.findEntity(id: currentTargetID) {
@@ -90,6 +94,9 @@ extension ADCMovementSystem {
         // Update component with new target info using proper component update pattern
         adcComponent.targetEntityID = newTarget.id
         adcComponent.targetCellID = newCellID
+        adcComponent.state = .moving
+        adcComponent.startWorldPosition = currentPosition
+        adcComponent.wasRetargeted = true // Flag for transition
         
         // Update attachment point using proper component update pattern
         if let attachPoint = newTarget.components[AttachmentPoint.self] {
@@ -210,19 +217,24 @@ extension ADCMovementSystem {
         let entities = scene.performQuery(query)
         
         for entity in entities {
-            // First check the attachment point itself
             guard entity.isEnabled,
-                  let attachComponent = entity.components[AttachmentPoint.self],
-                  !attachComponent.isOccupied else {
+                let attachComponent = entity.components[AttachmentPoint.self],
+                !attachComponent.isOccupied else {
+                #if DEBUG
+                print("ℹ️ Skipping attachment point: disabled or occupied")
+                #endif
                 continue
             }
             
-            // Find and validate the cancer cell
             guard let cancerCell = findParentCancerCell(for: entity, in: scene),
-                cancerCell.isEnabled, // make sure it is enabled
-                  let stateComponent = cancerCell.components[CancerCellStateComponent.self],
-                  let cellID = stateComponent.parameters.cellID,
-                  !stateComponent.parameters.isDestroyed else {
+                cancerCell.isEnabled,
+                let stateComponent = cancerCell.components[CancerCellStateComponent.self],
+                let cellID = stateComponent.parameters.cellID,
+                !stateComponent.parameters.isDestroyed,
+                stateComponent.parameters.hitCount < stateComponent.parameters.requiredHits else {
+                #if DEBUG
+                print("ℹ️ Skipping cancer cell: not found, disabled, destroyed, or hit limit reached")
+                #endif
                 continue
             }
             

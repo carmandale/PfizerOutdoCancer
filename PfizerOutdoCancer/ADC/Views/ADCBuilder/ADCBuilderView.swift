@@ -207,7 +207,7 @@ struct ADCBuilderView: View {
                 )
                 .fontWeight(.bold)
                 // .padding(.top, 10)
-                .padding(.bottom, 30)
+                .padding(.bottom, 60)
                 .contentShape(Capsule())
                 .zIndex(1)
                 .opacity(dataModel.adcBuildStep == 3 ? 1 : 0)

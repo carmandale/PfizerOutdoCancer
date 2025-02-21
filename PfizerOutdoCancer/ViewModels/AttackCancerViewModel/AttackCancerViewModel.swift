@@ -61,7 +61,7 @@ final class AttackCancerViewModel {
 
     // MARK: - Audio Debug Properties
     var audioDebugCone: ModelEntity?
-    var isAudioDebugVisible: Bool = false
+    var isAudioDebugVisible: Bool = true
 
     var shouldPlayStartButtonVO: Bool {
         readyToStartGame && tutorialComplete
@@ -76,11 +76,14 @@ final class AttackCancerViewModel {
     // MARK: - Sequence-specific Audio Properties
     var endingSequenceAudioSource: Entity?
     var victorySequenceAudioSource: Entity?
+    var greatJobAudioSource: Entity?
     var endingSequenceController: AudioPlaybackController?
     var victorySequenceController: AudioPlaybackController?
+    var greatJobController: AudioPlaybackController?
     // Add flags to track if sequences have played
     var hasPlayedEndingSequence = false
     var hasPlayedVictorySequence = false
+    var hasPlayedGreatJob = false
     
     // MARK: - Transition Properties
     var isTransitioningOut = false
@@ -95,7 +98,7 @@ final class AttackCancerViewModel {
     
     // MARK: - Game Stats
     var hitProbability: Double = 0.3
-    var maxCancerCells: Int = 25
+    var maxCancerCells: Int = 20
     var cellsDestroyed: Int = 0
     var totalADCsDeployed: Int = 0
     var totalTaps: Int = 0
@@ -206,17 +209,53 @@ final class AttackCancerViewModel {
         subscription?.cancel()
         subscription = nil
         
-        // Stop any playing audio
-        Logger.audio("Stopping end game audio playback...")
+        // Stop all audio playback
+        Logger.audio("Stopping all audio playback...")
+        
+        // Stop and clear end game audio
         endGameAudioController?.stop()
         endGameAudioController = nil
         if let audioSource = endGameAudioSource {
             audioSource.removeFromParent()
-            Logger.audio("Removed audio source from parent")
+            Logger.audio("Removed end game audio source")
         }
+        
+        // Stop and clear ending sequence audio
+        endingSequenceController?.stop()
+        endingSequenceController = nil
+        if let audioSource = endingSequenceAudioSource {
+            audioSource.removeFromParent()
+            Logger.audio("Removed ending sequence audio source")
+        }
+        
+        // Stop and clear victory sequence audio
+        victorySequenceController?.stop()
+        victorySequenceController = nil
+        if let audioSource = victorySequenceAudioSource {
+            audioSource.removeFromParent()
+            Logger.audio("Removed victory sequence audio source")
+        }
+        
+        // Stop and clear great job audio
+        greatJobController?.stop()
+        greatJobController = nil
+        if let audioSource = greatJobAudioSource {
+            audioSource.removeFromParent()
+            Logger.audio("Removed great job audio source")
+        }
+        
+        // Reset sequence flags
+        hasPlayedEndingSequence = false
+        hasPlayedVictorySequence = false
+        hasPlayedGreatJob = false
+        Logger.audio("✅ Reset all sequence flags")
         
         // Clear gameplay state
         cellParameters.removeAll()
+        cellsDestroyed = 0
+        totalADCsDeployed = 0
+        totalTaps = 0
+        totalHits = 0
         
         // Clear debounce dictionary
         debounce.removeAll()
@@ -319,11 +358,42 @@ final class AttackCancerViewModel {
         instructionsRootEntity = nil
         adcTemplate = nil
         
-        // Clear audio system references
-        Logger.audio("Clearing audio system references...")
+        // Clear audio system references with detailed logging
+        Logger.audio("\n=== Clearing All Audio Systems ===")
+        
+        // Clear end game audio
         endGameAudioSource = nil
         endGameAudioResource = nil
         endGameAudioController = nil
+        Logger.audio("✅ Cleared end game audio system")
+        
+        // Clear sequence-specific audio
+        endingSequenceAudioSource = nil
+        endingSequenceController = nil
+        Logger.audio("✅ Cleared ending sequence audio system")
+        
+        victorySequenceAudioSource = nil
+        victorySequenceController = nil
+        Logger.audio("✅ Cleared victory sequence audio system")
+        
+        greatJobAudioSource = nil
+        greatJobController = nil
+        Logger.audio("✅ Cleared great job audio system")
+        
+        // Clear audio resources
+        loadedAudioResources.removeAll()
+        Logger.audio("✅ Cleared all loaded audio resources")
+        
+        // Clear audio flags
+        hasPlayedEndingSequence = false
+        hasPlayedVictorySequence = false
+        hasPlayedGreatJob = false
+        Logger.audio("✅ Reset all audio playback flags")
+        
+        // Clear debug visuals
+        audioDebugCone = nil
+        Logger.audio("✅ Cleared audio debug visuals")
+        Logger.audio("=== Audio System Cleanup Complete ===\n")
         
         // Reset flags
         isSetupComplete = false
@@ -331,22 +401,9 @@ final class AttackCancerViewModel {
         environmentLoaded = false
         isPositioningComplete = false
         
-        
         cleanupState = .complete
         isCleaningUp = false
         print("✅ Completed AttackCancerViewModel cleanup\n")
-    }
-
-    // NEW: Reset function to be called at the start of a new game session.
-    func resetCleanupForNewSession() {
-        // Reset cleanup flags and other related state if needed.
-        cleanupState = .none
-        isCleaningUp = false
-        // Optionally, reinitialize other game state if necessary.
-        // For example, you might want to clear cell parameters and reset counters—
-        // however, ensure that this reset does not conflict with the
-        // app's intended state management.
-        print("🔄 AttackCancerViewModel: Cleanup state has been reset for new session.")
     }
 
     func findCancerCell(withID id: Int) -> Entity? {

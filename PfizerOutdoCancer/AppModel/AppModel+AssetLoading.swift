@@ -40,8 +40,9 @@ extension AppModel {
         print("🔍 Current phase: \(currentPhase)")
         print("🔍 Loading state: \(assetLoadingManager.loadingState)")
         
-        // Reset the asset loading manager
-        // assetLoadingManager.reset()
+        // Initialize loading state and progress
+        displayedProgress = 0.0
+        assetLoadingManager.loadingState = .loading(progress: 0.0)
         
         print("🔄 Starting prepareIntroPhase...")
         await prepareIntroPhase()
@@ -100,6 +101,13 @@ extension AppModel {
                 completedAssets += 1
                 let progress = Float(completedAssets) / Float(allAssets.count)
                 print("✅ Loaded \(key) - Progress: \(progress)")
+                
+                // Update loading state based on progress
+                if progress >= 1.0 {
+                    assetLoadingManager.loadingState = .completed
+                } else {
+                    assetLoadingManager.loadingState = .loading(progress: progress)
+                }
             } catch {
                 print("❌ Failed to load \(key): \(error)")
                 // Use the generic error here

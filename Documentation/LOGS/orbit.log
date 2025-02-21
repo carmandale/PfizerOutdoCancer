@@ -1,0 +1,1652 @@
+
+
+=== Initializing Cancer Cell Pool ===
+
+=== Pre-creating Cancer Cell 0 ===
+Creating parameters for cell 0
+Required hits: 6
+Total parameters after append: 1
+Added CancerCellStateComponent with parameters
+
+✅ Successfully pre-created cell 1
+📦 Stored in pool: Entity named 'cancerCell_complex' with parent 'Root'
+=== Pool Initialization Complete ===
+Total cells pre-created: 2
+Total parameters created: 2
+✅ Pool pre-initialized with 2 cells
+
+=== Preparing end game audio ===
+✅ Found root entity: AttackCancerRoot
+✅ Found headTrackingRoot at position: SIMD3<Float>(0.0, 1.5, -1.0)
+Added debug cone to ending sequence source
+✅ Created ending sequence source
+✅ Created victory sequence source
+Attempting to load tone_cross_wav...
+✅ Successfully loaded tone_cross
+✅ Successfully loaded heartbeat
+✅ Successfully loaded smashed
+✅ Successfully loaded magic_zing
+✅ Successfully loaded hope_restored
+✅ End game audio fully prepared with 5 sounds
+
+✅ Environment Setup Complete
+├─ IBL: Configured
+├─ Environment: Loaded
+├─ Collisions: Setup
+├─ Cell Pool: Pre-initialized
+└─ End Game Audio: Loaded
+✅ Environment setup complete
+
+🎓 Initiating tutorial sequence...
+
+🎯 Head Position Update Requested
+├─ Phase: playing
+├─ Current World Position: SIMD3<Float>(0.0, 1.5, -1.0)
+├─ Root Setup: ✅
+├─ Environment: ✅
+└─ HeadTracking: ✅
+
+🎯 Requesting head position update for entity 'headTrackingRoot'
+├─ Current World Position: SIMD3<Float>(0.0, 1.5, -1.0)
+├─ Offsets: [0.0, 0.0, -1.0]
+├─ Animated: ✅
+└─ Duration: 0.5s
+
+🔄 Starting position update for entity 'headTrackingRoot'
+├─ Current Position: SIMD3<Float>(0.0, 1.5, -1.0)
+├─ Animated: ✅
+└─ Duration: 0.5s
+cannot add handler to 0 from 1 - dropping
+🎓 Starting tutorial after positioning complete...
+
+=== Starting Tutorial Sequence ===
+📱 Tutorial: Loading game start VO
+AssetLoadingManager: loadAsset(withName: game_start_vo, category: attackCancerEnvironment)
+
+📍 Positioning entity 'headTrackingRoot'
+├─ From: SIMD3<Float>(0.0, 1.5, -1.0)
+├─ To: SIMD3<Float>(-0.0017210152, 1.2664624, -1.0124124)
+├─ Offsets: [0.0, 0.0, -1.0]
+├─ Distance: 1.0m
+└─ Method: Animated (0.5s)
+
+✨ Position update complete for 'headTrackingRoot'
+├─ Final Position: SIMD3<Float>(0.0, 1.5, -1.0)
+└─ Status: Success
+✅ Tutorial: Retrieved game start VO
+🎯 Tutorial: Found VO parent
+✅ Tutorial: Added VO to scene
+✅ Tutorial: Found tutorial cancer cell
+
+=== Setting up Tutorial Cancer Cell ===
+✅ Tutorial: Cancer cell setup complete
+✅ Tutorial: ADC sequence initiated
+
+=== Starting Tutorial ADC Sequence ===
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "entities[].Transform.transform"
+Cannot find a BindPoint for any bind path: "", "", ""
+Failed to set override status for bind point component member.
+
+✨ Position update complete for 'headTrackingRoot'
+├─ Final Position: SIMD3<Float>(-0.0017210152, 1.2664624, -1.0124124)
+└─ Status: Success
+🚀 Firing tutorial ADC 1/10
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 777
+Found attach point: attach_1
+
+=== Spawning Natural ADC ===
+Start World Position: SIMD3<Float>(0.07447562, 0.70650804, -0.17499016)
+Target World Position: SIMD3<Float>(-0.008076606, 1.157642, -1.7195688)
+Target Cell ID: 777
+✅ ADC #1 Launched (Total Taps: 0)
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 0
+Current hit count: StateComponent 0
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 0
+Current hit count: StateComponent 0
+
+=== ADC Path Completion ===
+Final Progress: 0.9197091
+Total Distance Traveled: 1.6546879
+Path Length: 1.7977276
+Start Position: SIMD3<Float>(0.07447562, 0.70650804, -0.17499016)
+Final Position: SIMD3<Float>(-0.13154806, 1.371187, -1.6117278)
+Target Position: SIMD3<Float>(-0.14953399, 1.3072371, -1.7371554)
+✅ Found parent cancer cell - triggering hit animation
+
+=== ADC Attachment Process ===
+Attached ADC - Entity: Root, Position Relative to Target: SIMD3<Float>(8.5681684e-08, -0.08000005, 0.0)
+✅ Applied landing transform successfully
+🔄 Reparented ADC:
+Previous Parent: AttackCancerRoot
+New Parent: attach_1
+✅ ADC state updated to attached
+📊 Cell 777: 1/10 hits
+📢 Posted UpdateCancerCell notification for cell 777
+
+=== ADC Path Completion ===
+Final Progress: 0.9197091
+Total Distance Traveled: 1.6546879
+Path Length: 1.7977276
+Start Position: SIMD3<Float>(0.07447562, 0.70650804, -0.17499016)
+Final Position: SIMD3<Float>(-0.13154806, 1.371187, -1.6117278)
+Target Position: SIMD3<Float>(-0.14953399, 1.3072371, -1.7371554)
+✅ ADC completion process finished successfully
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 1
+Current hit count: StateComponent 1
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 1
+Current hit count: StateComponent 1
+Failed to set override status for bind point component member.
+🚀 Firing tutorial ADC 2/10
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Left hand tap detected
+Found cancer cell with ID: 777
+Found attach point: attach_11
+
+=== Spawning Natural ADC ===
+Start World Position: SIMD3<Float>(0.04100603, 0.7942272, -0.14200836)
+Target World Position: SIMD3<Float>(-0.028699357, 1.3088475, -1.7342169)
+Target Cell ID: 777
+✅ ADC #2 Launched (Total Taps: 0)
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 1
+Current hit count: StateComponent 1
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 1
+Current hit count: StateComponent 1
+
+=== ADC Path Completion ===
+Final Progress: 0.9337917
+Total Distance Traveled: 1.8554162
+Path Length: 1.9932897
+Start Position: SIMD3<Float>(0.04100603, 0.7942272, -0.14200836)
+Final Position: SIMD3<Float>(-0.007646618, 1.5518287, -1.6775874)
+Target Position: SIMD3<Float>(-0.011096219, 1.4660257, -1.786464)
+✅ Found parent cancer cell - triggering hit animation
+
+=== ADC Attachment Process ===
+Attached ADC - Entity: Root, Position Relative to Target: SIMD3<Float>(5.960466e-08, -0.07999997, 0.0)
+✅ Applied landing transform successfully
+🔄 Reparented ADC:
+Previous Parent: AttackCancerRoot
+New Parent: attach_11
+✅ ADC state updated to attached
+📊 Cell 777: 2/10 hits
+📢 Posted UpdateCancerCell notification for cell 777
+
+=== ADC Path Completion ===
+Final Progress: 0.9337917
+Total Distance Traveled: 1.8554162
+Path Length: 1.9932897
+Start Position: SIMD3<Float>(0.04100603, 0.7942272, -0.14200836)
+Final Position: SIMD3<Float>(-0.007646618, 1.5518287, -1.6775874)
+Target Position: SIMD3<Float>(-0.011096219, 1.4660257, -1.786464)
+✅ ADC completion process finished successfully
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 2
+Current hit count: StateComponent 2
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 2
+Current hit count: StateComponent 2
+Failed to set override status for bind point component member.
+🚀 Firing tutorial ADC 3/10
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Left hand tap detected
+Found cancer cell with ID: 777
+Found attach point: attach_13
+
+=== Spawning Natural ADC ===
+Start World Position: SIMD3<Float>(0.039521467, 0.81573397, -0.13954917)
+Target World Position: SIMD3<Float>(-0.023585415, 1.1688108, -1.7633235)
+Target Cell ID: 777
+✅ ADC #3 Launched (Total Taps: 0)
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 2
+Current hit count: StateComponent 2
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 2
+Current hit count: StateComponent 2
+
+=== ADC Path Completion ===
+Final Progress: 0.89577
+Total Distance Traveled: 1.7077167
+Path Length: 1.917781
+Start Position: SIMD3<Float>(0.039521467, 0.81573397, -0.13954917)
+Final Position: SIMD3<Float>(-0.018374678, 1.2882149, -1.6140289)
+Target Position: SIMD3<Float>(-0.025111357, 1.1615005, -1.7855964)
+✅ Found parent cancer cell - triggering hit animation
+
+=== ADC Attachment Process ===
+Attached ADC - Entity: Root, Position Relative to Target: SIMD3<Float>(5.960465e-08, -0.07999993, 4.4703487e-08)
+✅ Applied landing transform successfully
+🔄 Reparented ADC:
+Previous Parent: AttackCancerRoot
+New Parent: attach_13
+✅ ADC state updated to attached
+📊 Cell 777: 3/10 hits
+📢 Posted UpdateCancerCell notification for cell 777
+
+=== ADC Path Completion ===
+Final Progress: 0.89577
+Total Distance Traveled: 1.7077167
+Path Length: 1.917781
+Start Position: SIMD3<Float>(0.039521467, 0.81573397, -0.13954917)
+Final Position: SIMD3<Float>(-0.018374678, 1.2882149, -1.6140289)
+Target Position: SIMD3<Float>(-0.025111357, 1.1615005, -1.7855964)
+✅ ADC completion process finished successfully
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 3
+Current hit count: StateComponent 3
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 3
+Current hit count: StateComponent 3
+Failed to set override status for bind point component member.
+🚀 Firing tutorial ADC 4/10
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 777
+Found attach point: attach_14
+
+=== Spawning Natural ADC ===
+Start World Position: SIMD3<Float>(-0.064602524, 0.78811044, -0.1596022)
+Target World Position: SIMD3<Float>(0.027823733, 1.2286907, -1.7834504)
+Target Cell ID: 777
+✅ ADC #4 Launched (Total Taps: 0)
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 3
+Current hit count: StateComponent 3
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 3
+Current hit count: StateComponent 3
+
+=== ADC Path Completion ===
+Final Progress: 0.8945506
+Total Distance Traveled: 1.6675127
+Path Length: 1.8605064
+Start Position: SIMD3<Float>(-0.064602524, 0.78811044, -0.1596022)
+Final Position: SIMD3<Float>(0.094261445, 1.3298959, -1.6438093)
+Target Position: SIMD3<Float>(0.112988286, 1.2394028, -1.8187673)
+✅ Found parent cancer cell - triggering hit animation
+
+=== ADC Attachment Process ===
+Attached ADC - Entity: Root, Position Relative to Target: SIMD3<Float>(-5.9604645e-08, -0.07999992, 0.0)
+✅ Applied landing transform successfully
+🔄 Reparented ADC:
+Previous Parent: AttackCancerRoot
+New Parent: attach_14
+✅ ADC state updated to attached
+📊 Cell 777: 4/10 hits
+📢 Posted UpdateCancerCell notification for cell 777
+
+=== ADC Path Completion ===
+Final Progress: 0.8945506
+Total Distance Traveled: 1.6675127
+Path Length: 1.8605064
+Start Position: SIMD3<Float>(-0.064602524, 0.78811044, -0.1596022)
+Final Position: SIMD3<Float>(0.094261445, 1.3298959, -1.6438093)
+Target Position: SIMD3<Float>(0.112988286, 1.2394028, -1.8187673)
+✅ ADC completion process finished successfully
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 4
+Current hit count: StateComponent 4
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 4
+Current hit count: StateComponent 4
+Failed to set override status for bind point component member.
+🚀 Firing tutorial ADC 5/10
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 777
+Found attach point: attach_12
+
+=== Spawning Natural ADC ===
+Start World Position: SIMD3<Float>(-0.060992952, 0.79308546, -0.15943982)
+Target World Position: SIMD3<Float>(0.018997738, 1.1292934, -1.8147593)
+Target Cell ID: 777
+✅ ADC #5 Launched (Total Taps: 0)
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 4
+Current hit count: StateComponent 4
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 4
+Current hit count: StateComponent 4
+
+=== ADC Path Completion ===
+Final Progress: 0.9236037
+Total Distance Traveled: 1.6649616
+Path Length: 1.8021088
+Start Position: SIMD3<Float>(-0.060992952, 0.79308546, -0.15943982)
+Final Position: SIMD3<Float>(0.030978104, 1.261297, -1.6617498)
+Target Position: SIMD3<Float>(0.038585532, 1.2156035, -1.7860141)
+✅ Found parent cancer cell - triggering hit animation
+
+=== ADC Attachment Process ===
+Attached ADC - Entity: Root, Position Relative to Target: SIMD3<Float>(-5.9604638e-08, -0.07999968, 2.9802319e-08)
+✅ Applied landing transform successfully
+🔄 Reparented ADC:
+Previous Parent: AttackCancerRoot
+New Parent: attach_12
+✅ ADC state updated to attached
+📊 Cell 777: 5/10 hits
+📢 Posted UpdateCancerCell notification for cell 777
+
+=== ADC Path Completion ===
+Final Progress: 0.9236037
+Total Distance Traveled: 1.6649616
+Path Length: 1.8021088
+Start Position: SIMD3<Float>(-0.060992952, 0.79308546, -0.15943982)
+Final Position: SIMD3<Float>(0.030978104, 1.261297, -1.6617498)
+Target Position: SIMD3<Float>(0.038585532, 1.2156035, -1.7860141)
+✅ ADC completion process finished successfully
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 5
+Current hit count: StateComponent 5
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 5
+Current hit count: StateComponent 5
+Failed to set override status for bind point component member.
+🚀 Firing tutorial ADC 6/10
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 777
+Found attach point: attach_8
+
+=== Spawning Natural ADC ===
+Start World Position: SIMD3<Float>(-0.061662786, 0.78718305, -0.15712853)
+Target World Position: SIMD3<Float>(-0.015349379, 1.1554419, -1.8356454)
+Target Cell ID: 777
+✅ ADC #6 Launched (Total Taps: 0)
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 5
+Current hit count: StateComponent 5
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 5
+Current hit count: StateComponent 5
+
+=== ADC Path Completion ===
+Final Progress: 0.90959084
+Total Distance Traveled: 1.7544457
+Path Length: 1.9353379
+Start Position: SIMD3<Float>(-0.061662786, 0.78718305, -0.15712853)
+Final Position: SIMD3<Float>(-0.109397165, 1.3583871, -1.6855352)
+Target Position: SIMD3<Float>(-0.11414174, 1.2681512, -1.8374518)
+✅ Found parent cancer cell - triggering hit animation
+
+=== ADC Attachment Process ===
+Attached ADC - Entity: Root, Position Relative to Target: SIMD3<Float>(-1.1920929e-07, -0.08000016, 5.9604645e-08)
+✅ Applied landing transform successfully
+🔄 Reparented ADC:
+Previous Parent: AttackCancerRoot
+New Parent: attach_8
+✅ ADC state updated to attached
+📊 Cell 777: 6/10 hits
+📢 Posted UpdateCancerCell notification for cell 777
+
+=== ADC Path Completion ===
+Final Progress: 0.90959084
+Total Distance Traveled: 1.7544457
+Path Length: 1.9353379
+Start Position: SIMD3<Float>(-0.061662786, 0.78718305, -0.15712853)
+Final Position: SIMD3<Float>(-0.109397165, 1.3583871, -1.6855352)
+Target Position: SIMD3<Float>(-0.11414174, 1.2681512, -1.8374518)
+✅ ADC completion process finished successfully
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 6
+Current hit count: StateComponent 6
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 6
+Current hit count: StateComponent 6
+Failed to set override status for bind point component member.
+🚀 Firing tutorial ADC 7/10
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 777
+Found attach point: attach_17
+
+=== Spawning Natural ADC ===
+Start World Position: SIMD3<Float>(-0.0589514, 0.79006463, -0.15613237)
+Target World Position: SIMD3<Float>(-0.04821329, 1.1832595, -1.8100753)
+Target Cell ID: 777
+✅ ADC #7 Launched (Total Taps: 0)
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 6
+Current hit count: StateComponent 6
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 6
+Current hit count: StateComponent 6
+
+=== ADC Path Completion ===
+Final Progress: 0.92844564
+Total Distance Traveled: 1.7893426
+Path Length: 1.9335488
+Start Position: SIMD3<Float>(-0.0589514, 0.79006463, -0.15613237)
+Final Position: SIMD3<Float>(-0.14501454, 1.3712581, -1.7223767)
+Target Position: SIMD3<Float>(-0.15164733, 1.2927036, -1.8430855)
+✅ Found parent cancer cell - triggering hit animation
+
+=== ADC Attachment Process ===
+Attached ADC - Entity: Root, Position Relative to Target: SIMD3<Float>(0.0, -0.08000004, 2.3841858e-07)
+✅ Applied landing transform successfully
+🔄 Reparented ADC:
+Previous Parent: AttackCancerRoot
+New Parent: attach_17
+✅ ADC state updated to attached
+📊 Cell 777: 7/10 hits
+📢 Posted UpdateCancerCell notification for cell 777
+
+=== ADC Path Completion ===
+Final Progress: 0.92844564
+Total Distance Traveled: 1.7893426
+Path Length: 1.9335488
+Start Position: SIMD3<Float>(-0.0589514, 0.79006463, -0.15613237)
+Final Position: SIMD3<Float>(-0.14501454, 1.3712581, -1.7223767)
+Target Position: SIMD3<Float>(-0.15164733, 1.2927036, -1.8430855)
+✅ ADC completion process finished successfully
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 7
+Current hit count: StateComponent 7
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 7
+Current hit count: StateComponent 7
+Failed to set override status for bind point component member.
+🚀 Firing tutorial ADC 8/10
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 777
+Found attach point: attach_9
+
+=== Spawning Natural ADC ===
+Start World Position: SIMD3<Float>(-0.060978934, 0.78844076, -0.15479651)
+Target World Position: SIMD3<Float>(-0.053482752, 1.1682625, -1.8307922)
+Target Cell ID: 777
+✅ ADC #8 Launched (Total Taps: 0)
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 7
+Current hit count: StateComponent 7
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 7
+Current hit count: StateComponent 7
+
+=== ADC Path Completion ===
+Final Progress: 0.92604226
+Total Distance Traveled: 1.8351271
+Path Length: 1.9923106
+Start Position: SIMD3<Float>(-0.060978934, 0.78844076, -0.15479651)
+Final Position: SIMD3<Float>(-0.15051839, 1.3665471, -1.7350374)
+Target Position: SIMD3<Float>(-0.15766941, 1.2735207, -1.8612423)
+✅ Found parent cancer cell - triggering hit animation
+
+=== ADC Attachment Process ===
+Attached ADC - Entity: Root, Position Relative to Target: SIMD3<Float>(1.1920929e-07, -0.08000004, 0.0)
+✅ Applied landing transform successfully
+🔄 Reparented ADC:
+Previous Parent: AttackCancerRoot
+New Parent: attach_9
+✅ ADC state updated to attached
+📊 Cell 777: 8/10 hits
+📢 Posted UpdateCancerCell notification for cell 777
+
+=== ADC Path Completion ===
+Final Progress: 0.92604226
+Total Distance Traveled: 1.8351271
+Path Length: 1.9923106
+Start Position: SIMD3<Float>(-0.060978934, 0.78844076, -0.15479651)
+Final Position: SIMD3<Float>(-0.15051839, 1.3665471, -1.7350374)
+Target Position: SIMD3<Float>(-0.15766941, 1.2735207, -1.8612423)
+✅ ADC completion process finished successfully
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 8
+Current hit count: StateComponent 8
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 8
+Current hit count: StateComponent 8
+Failed to set override status for bind point component member.
+🚀 Firing tutorial ADC 9/10
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 777
+Found attach point: attach_6
+
+=== Spawning Natural ADC ===
+Start World Position: SIMD3<Float>(-0.060347885, 0.7840181, -0.15310831)
+Target World Position: SIMD3<Float>(0.048198983, 1.340669, -1.8438954)
+Target Cell ID: 777
+✅ ADC #9 Launched (Total Taps: 0)
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 8
+Current hit count: StateComponent 8
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 8
+Current hit count: StateComponent 8
+
+=== ADC Path Completion ===
+Final Progress: 0.9321468
+Total Distance Traveled: 1.7858661
+Path Length: 1.9077976
+Start Position: SIMD3<Float>(-0.060347885, 0.7840181, -0.15310831)
+Final Position: SIMD3<Float>(-0.0023299693, 1.4366302, -1.750407)
+Target Position: SIMD3<Float>(0.0018932947, 1.3983358, -1.8666782)
+✅ Found parent cancer cell - triggering hit animation
+
+=== ADC Attachment Process ===
+Attached ADC - Entity: Root, Position Relative to Target: SIMD3<Float>(-2.384186e-07, -0.07999993, -5.960465e-08)
+✅ Applied landing transform successfully
+🔄 Reparented ADC:
+Previous Parent: AttackCancerRoot
+New Parent: attach_6
+✅ ADC state updated to attached
+📊 Cell 777: 9/10 hits
+📢 Posted UpdateCancerCell notification for cell 777
+
+=== ADC Path Completion ===
+Final Progress: 0.9321468
+Total Distance Traveled: 1.7858661
+Path Length: 1.9077976
+Start Position: SIMD3<Float>(-0.060347885, 0.7840181, -0.15310831)
+Final Position: SIMD3<Float>(-0.0023299693, 1.4366302, -1.750407)
+Target Position: SIMD3<Float>(0.0018932947, 1.3983358, -1.8666782)
+✅ ADC completion process finished successfully
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 9
+Current hit count: StateComponent 9
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 9
+Current hit count: StateComponent 9
+Failed to set override status for bind point component member.
+🚀 Firing tutorial ADC 10/10
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 777
+Found attach point: attach_15
+
+=== Spawning Natural ADC ===
+Start World Position: SIMD3<Float>(-0.057519898, 0.77604675, -0.15501973)
+Target World Position: SIMD3<Float>(-0.18131663, 1.2732847, -1.9332278)
+Target Cell ID: 777
+✅ ADC #10 Launched (Total Taps: 0)
+✅ Tutorial ADC sequence complete
+⏱️ small delay before the test fire cell is spawned
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 9
+Current hit count: StateComponent 9
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 9
+Current hit count: StateComponent 9
+
+=== ADC Path Completion ===
+Final Progress: 0.93843645
+Total Distance Traveled: 2.0322993
+Path Length: 2.1739256
+Start Position: SIMD3<Float>(-0.057519898, 0.77604675, -0.15501973)
+Final Position: SIMD3<Float>(-0.1685513, 1.43436, -1.8512577)
+Target Position: SIMD3<Float>(-0.1758352, 1.3462181, -1.9625348)
+✅ Found parent cancer cell - triggering hit animation
+
+=== ADC Attachment Process ===
+Attached ADC - Entity: Root, Position Relative to Target: SIMD3<Float>(0.0, -0.07999997, 0.0)
+✅ Applied landing transform successfully
+🔄 Reparented ADC:
+Previous Parent: AttackCancerRoot
+New Parent: attach_15
+✅ ADC state updated to attached
+📊 Cell 777: 10/10 hits
+📢 Posted UpdateCancerCell notification for cell 777
+
+=== ADC Path Completion ===
+Final Progress: 0.93843645
+Total Distance Traveled: 2.0322993
+Path Length: 2.1739256
+Start Position: SIMD3<Float>(-0.057519898, 0.77604675, -0.15501973)
+Final Position: SIMD3<Float>(-0.1685513, 1.43436, -1.8512577)
+Target Position: SIMD3<Float>(-0.1758352, 1.3462181, -1.9625348)
+✅ ADC completion process finished successfully
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 10
+Current hit count: StateComponent 10
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 777
+💥 ADC hit cell 777
+Current hit count: cellParameters 10
+Current hit count: StateComponent 10
+=== Cancer Cell Death Triggered ===
+💀 Cell is destroyed
+Cell ID: Optional(777)
+Hit Count: 10
+Required Hits: 10
+✨ Updated particle emitter isEmitting to: false
+Incremented cellsDestroyed to 1
+Failed to set override status for bind point component member.
+Failed to set override status for bind point component member.
+FINISH ✨ Stopped particle emitter
+FINISH ✨ Removed particle emitter component
+FINISH ✨ Removed cancer cell component
+✨ Removing entity from scene
+
+🎯 Starting test fire sequence...
+📱 Test Fire Cell: Loading test_fire_cell
+AssetLoadingManager: loadAsset(withName: test_fire_cell, category: attackCancerEnvironment)
+✅ Test Fire Cell: Retrieved test_fire_cell
+
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 555
+Found attach point: attach_1
+
+=== Spawning Natural ADC ===
+Start World Position: SIMD3<Float>(0.08896073, 0.9282413, -0.19419146)
+Target World Position: SIMD3<Float>(-0.082904555, 1.2245045, -1.7158524)
+Target Cell ID: 555
+✅ ADC #11 Launched (Total Taps: 1)
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 555
+Found attach point: attach_6
+
+=== Spawning Natural ADC ===
+Start World Position: SIMD3<Float>(0.09891829, 0.9370668, -0.19522715)
+Target World Position: SIMD3<Float>(0.08282984, 1.3761575, -1.758811)
+Target Cell ID: 555
+✅ ADC #12 Launched (Total Taps: 2)
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 555
+Found attach point: attach_11
+
+=== Spawning Natural ADC ===
+Start World Position: SIMD3<Float>(0.10154431, 0.9406047, -0.19413292)
+Target World Position: SIMD3<Float>(0.16138603, 1.1966062, -1.7841676)
+Target Cell ID: 555
+✅ ADC #13 Launched (Total Taps: 3)
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 555
+Found attach point: attach_15
+
+=== Spawning Natural ADC ===
+Start World Position: SIMD3<Float>(0.1048262, 0.9415153, -0.20011407)
+Target World Position: SIMD3<Float>(-0.08302316, 1.0326868, -1.8748748)
+Target Cell ID: 555
+✅ ADC #14 Launched (Total Taps: 4)
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 555
+Found attach point: attach_14
+
+=== Spawning Natural ADC ===
+Start World Position: SIMD3<Float>(0.10044201, 0.9390424, -0.19991972)
+Target World Position: SIMD3<Float>(0.116190374, 1.0769364, -1.9166933)
+Target Cell ID: 555
+✅ ADC #15 Launched (Total Taps: 5)
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 555
+Found attach point: attach_5
+
+=== Spawning Natural ADC ===
+Start World Position: SIMD3<Float>(0.096686505, 0.9333989, -0.20384966)
+Target World Position: SIMD3<Float>(0.21537258, 1.4673471, -1.8859314)
+Target Cell ID: 555
+✅ ADC #16 Launched (Total Taps: 6)
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 555
+💥 ADC hit cell 555
+Current hit count: cellParameters 0
+Current hit count: StateComponent 0
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 555
+💥 ADC hit cell 555
+Current hit count: cellParameters 0
+Current hit count: StateComponent 0
+
+=== ADC Path Completion ===
+Final Progress: 0.9268288
+Total Distance Traveled: 1.673413
+Path Length: 1.8187456
+Start Position: SIMD3<Float>(0.08896073, 0.9282413, -0.19419146)
+Final Position: SIMD3<Float>(-0.16913563, 1.4495625, -1.6540416)
+Target Position: SIMD3<Float>(-0.18951179, 1.3598614, -1.7692938)
+✅ Found parent cancer cell - triggering hit animation
+
+=== ADC Attachment Process ===
+Attached ADC - Entity: Root, Position Relative to Target: SIMD3<Float>(-4.4703484e-08, -0.0800001, 0.0)
+✅ Applied landing transform successfully
+🔄 Reparented ADC:
+Previous Parent: AttackCancerRoot
+New Parent: attach_1
+✅ ADC state updated to attached
+📊 Cell 555: 1/4 hits
+📢 Posted UpdateCancerCell notification for cell 555
+
+=== ADC Path Completion ===
+Final Progress: 0.9268288
+Total Distance Traveled: 1.673413
+Path Length: 1.8187456
+Start Position: SIMD3<Float>(0.08896073, 0.9282413, -0.19419146)
+Final Position: SIMD3<Float>(-0.16913563, 1.4495625, -1.6540416)
+Target Position: SIMD3<Float>(-0.18951179, 1.3598614, -1.7692938)
+✅ ADC completion process finished successfully
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 555
+💥 ADC hit cell 555
+Current hit count: cellParameters 1
+Current hit count: StateComponent 1
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 555
+💥 ADC hit cell 555
+Current hit count: cellParameters 1
+Current hit count: StateComponent 1
+Failed to set override status for bind point component member.
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 555
+Found attach point: attach_13
+
+=== Spawning Natural ADC ===
+Start World Position: SIMD3<Float>(0.09527264, 0.93271863, -0.2084786)
+Target World Position: SIMD3<Float>(0.24928373, 1.1834055, -1.9559287)
+Target Cell ID: 555
+✅ ADC #17 Launched (Total Taps: 7)
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 555
+💥 ADC hit cell 555
+Current hit count: cellParameters 1
+Current hit count: StateComponent 1
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 555
+💥 ADC hit cell 555
+Current hit count: cellParameters 1
+Current hit count: StateComponent 1
+
+=== ADC Path Completion ===
+Final Progress: 0.9286068
+Total Distance Traveled: 1.6604217
+Path Length: 1.7862561
+Start Position: SIMD3<Float>(0.09891829, 0.9370668, -0.19522715)
+Final Position: SIMD3<Float>(0.018280845, 1.5045581, -1.6777335)
+Target Position: SIMD3<Float>(0.012081275, 1.4487615, -1.7917117)
+✅ Found parent cancer cell - triggering hit animation
+
+=== ADC Attachment Process ===
+Attached ADC - Entity: Root, Position Relative to Target: SIMD3<Float>(3.5762787e-07, -0.079999864, 2.9802322e-08)
+✅ Applied landing transform successfully
+🔄 Reparented ADC:
+Previous Parent: AttackCancerRoot
+New Parent: attach_6
+✅ ADC state updated to attached
+📊 Cell 555: 2/4 hits
+📢 Posted UpdateCancerCell notification for cell 555
+
+=== ADC Path Completion ===
+Final Progress: 0.9286068
+Total Distance Traveled: 1.6604217
+Path Length: 1.7862561
+Start Position: SIMD3<Float>(0.09891829, 0.9370668, -0.19522715)
+Final Position: SIMD3<Float>(0.018280845, 1.5045581, -1.6777335)
+Target Position: SIMD3<Float>(0.012081275, 1.4487615, -1.7917117)
+✅ ADC completion process finished successfully
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 555
+💥 ADC hit cell 555
+Current hit count: cellParameters 2
+Current hit count: StateComponent 2
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 555
+💥 ADC hit cell 555
+Current hit count: cellParameters 2
+Current hit count: StateComponent 2
+Failed to set override status for bind point component member.
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 555
+Found attach point: attach_10
+
+=== Spawning Natural ADC ===
+Start World Position: SIMD3<Float>(0.09673629, 0.9303169, -0.2140665)
+Target World Position: SIMD3<Float>(-0.27567878, 1.2470033, -1.96542)
+Target Cell ID: 555
+✅ ADC #18 Launched (Total Taps: 8)
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 555
+Found attach point: attach_12
+
+=== Spawning Natural ADC ===
+Start World Position: SIMD3<Float>(0.09542539, 0.92685205, -0.21614307)
+Target World Position: SIMD3<Float>(0.022848016, 1.0180604, -2.0354784)
+Target Cell ID: 555
+✅ ADC #19 Launched (Total Taps: 9)
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 555
+💥 ADC hit cell 555
+Current hit count: cellParameters 2
+Current hit count: StateComponent 2
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 555
+💥 ADC hit cell 555
+Current hit count: cellParameters 2
+Current hit count: StateComponent 2
+
+=== ADC Path Completion ===
+Final Progress: 0.9269121
+Total Distance Traveled: 1.6991067
+Path Length: 1.8465265
+Start Position: SIMD3<Float>(0.10154431, 0.9406047, -0.19413292)
+Final Position: SIMD3<Float>(0.020787537, 1.352647, -1.6311864)
+Target Position: SIMD3<Float>(0.014419793, 1.2690518, -1.7444994)
+✅ Found parent cancer cell - triggering hit animation
+
+=== ADC Attachment Process ===
+Attached ADC - Entity: Root, Position Relative to Target: SIMD3<Float>(0.0, -0.08000004, 0.0)
+✅ Applied landing transform successfully
+🔄 Reparented ADC:
+Previous Parent: AttackCancerRoot
+New Parent: attach_11
+✅ ADC state updated to attached
+📊 Cell 555: 3/4 hits
+📢 Posted UpdateCancerCell notification for cell 555
+
+=== ADC Path Completion ===
+Final Progress: 0.9269121
+Total Distance Traveled: 1.6991067
+Path Length: 1.8465265
+Start Position: SIMD3<Float>(0.10154431, 0.9406047, -0.19413292)
+Final Position: SIMD3<Float>(0.020787537, 1.352647, -1.6311864)
+Target Position: SIMD3<Float>(0.014419793, 1.2690518, -1.7444994)
+✅ ADC completion process finished successfully
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 555
+💥 ADC hit cell 555
+Current hit count: cellParameters 3
+Current hit count: StateComponent 3
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 555
+💥 ADC hit cell 555
+Current hit count: cellParameters 3
+Current hit count: StateComponent 3
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 555
+Found attach point: attach_4
+
+=== Spawning Natural ADC ===
+Start World Position: SIMD3<Float>(0.09426125, 0.9221402, -0.21561304)
+Target World Position: SIMD3<Float>(0.26257798, 1.2880524, -2.024106)
+Target Cell ID: 555
+✅ ADC #20 Launched (Total Taps: 10)
+Failed to set override status for bind point component member.
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 555
+Found attach point: attach_16
+
+=== Spawning Natural ADC ===
+Start World Position: SIMD3<Float>(0.09145773, 0.92023414, -0.21840608)
+Target World Position: SIMD3<Float>(0.0014666492, 1.5340787, -2.0225444)
+Target Cell ID: 555
+✅ ADC #21 Launched (Total Taps: 11)
+
+=== Tapped Entity ===
+Entity name: cancerCell_complex
+Right hand tap detected
+Found cancer cell with ID: 555
+Found attach point: attach_3
+
+=== Spawning Natural ADC ===
+Start World Position: SIMD3<Float>(0.084581755, 0.9173322, -0.21584918)
+Target World Position: SIMD3<Float>(0.172925, 1.1183964, -2.1130784)
+Target Cell ID: 555
+✅ ADC #22 Launched (Total Taps: 12)
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 555
+💥 ADC hit cell 555
+Current hit count: cellParameters 3
+Current hit count: StateComponent 3
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 555
+💥 ADC hit cell 555
+Current hit count: cellParameters 3
+Current hit count: StateComponent 3
+
+=== ADC Path Completion ===
+Final Progress: 0.89052063
+Total Distance Traveled: 1.7689983
+Path Length: 2.0040922
+Start Position: SIMD3<Float>(0.09527264, 0.93271863, -0.2084786)
+Final Position: SIMD3<Float>(0.15130185, 1.270541, -1.6782575)
+Target Position: SIMD3<Float>(0.15819001, 1.1404204, -1.85895)
+✅ Found parent cancer cell - triggering hit animation
+
+=== ADC Attachment Process ===
+Attached ADC - Entity: Root, Position Relative to Target: SIMD3<Float>(1.192093e-07, -0.08000005, 0.0)
+✅ Applied landing transform successfully
+🔄 Reparented ADC:
+Previous Parent: AttackCancerRoot
+New Parent: attach_13
+✅ ADC state updated to attached
+📊 Cell 555: 4/4 hits
+📢 Posted UpdateCancerCell notification for cell 555
+
+=== ADC Path Completion ===
+Final Progress: 0.89052063
+Total Distance Traveled: 1.7689983
+Path Length: 2.0040922
+Start Position: SIMD3<Float>(0.09527264, 0.93271863, -0.2084786)
+Final Position: SIMD3<Float>(0.15130185, 1.270541, -1.6782575)
+Target Position: SIMD3<Float>(0.15819001, 1.1404204, -1.85895)
+✅ ADC completion process finished successfully
+
+=== ADC RETARGET (Cell Complete) ===
+Cell ID: 555
+Hit Count: 4/4
+⚠️ Target no longer valid - attempting to find new target
+Retargeting ADC - Entity: Root, State: moving, Current Position: SIMD3<Float>(0.07080578, 1.1503639, -0.5878591)
+⚠️ No valid targets found for retargeting
+⚠️ No valid targets found - resetting ADC
+
+=== Resetting ADC ===
+Previous State: moving
+Previous Target Cell ID: Optional(555)
+✅ ADC Reset Complete
+New State: orbiting
+
+=== ADC RETARGET (Cell Complete) ===
+Cell ID: 555
+Hit Count: 4/4
+⚠️ Target no longer valid - attempting to find new target
+Retargeting ADC - Entity: Root, State: moving, Current Position: SIMD3<Float>(-0.104513966, 1.3945053, -1.319289)
+⚠️ No valid targets found for retargeting
+⚠️ No valid targets found - resetting ADC
+
+=== Resetting ADC ===
+Previous State: moving
+Previous Target Cell ID: Optional(555)
+✅ ADC Reset Complete
+New State: orbiting
+
+=== ADC RETARGET (Cell Complete) ===
+Cell ID: 555
+Hit Count: 4/4
+⚠️ Target no longer valid - attempting to find new target
+Retargeting ADC - Entity: Root, State: moving, Current Position: SIMD3<Float>(-0.005754929, 1.2890565, -1.5768754)
+⚠️ No valid targets found for retargeting
+⚠️ No valid targets found - resetting ADC
+
+=== Resetting ADC ===
+Previous State: moving
+Previous Target Cell ID: Optional(555)
+✅ ADC Reset Complete
+New State: orbiting
+
+=== ADC RETARGET (Cell Complete) ===
+Cell ID: 555
+Hit Count: 4/4
+⚠️ Target no longer valid - attempting to find new target
+Retargeting ADC - Entity: Root, State: moving, Current Position: SIMD3<Float>(0.00046817586, 1.3303766, -0.6934796)
+⚠️ No valid targets found for retargeting
+⚠️ No valid targets found - resetting ADC
+
+=== Resetting ADC ===
+Previous State: moving
+Previous Target Cell ID: Optional(555)
+✅ ADC Reset Complete
+New State: orbiting
+
+=== ADC RETARGET (Cell Complete) ===
+Cell ID: 555
+Hit Count: 4/4
+⚠️ Target no longer valid - attempting to find new target
+Retargeting ADC - Entity: Root, State: moving, Current Position: SIMD3<Float>(0.105334446, 1.0284127, -0.33880353)
+⚠️ No valid targets found for retargeting
+⚠️ No valid targets found - resetting ADC
+
+=== Resetting ADC ===
+Previous State: moving
+Previous Target Cell ID: Optional(555)
+✅ ADC Reset Complete
+New State: orbiting
+
+=== ADC RETARGET (Cell Complete) ===
+Cell ID: 555
+Hit Count: 4/4
+⚠️ Target no longer valid - attempting to find new target
+Retargeting ADC - Entity: Root, State: moving, Current Position: SIMD3<Float>(0.085648306, 1.1301411, -0.3646131)
+⚠️ No valid targets found for retargeting
+⚠️ No valid targets found - resetting ADC
+
+=== Resetting ADC ===
+Previous State: moving
+Previous Target Cell ID: Optional(555)
+✅ ADC Reset Complete
+New State: orbiting
+
+=== ADC RETARGET (Cell Complete) ===
+Cell ID: 555
+Hit Count: 4/4
+⚠️ Target no longer valid - attempting to find new target
+Retargeting ADC - Entity: Root, State: moving, Current Position: SIMD3<Float>(0.08489776, 0.92300004, -0.22265467)
+⚠️ No valid targets found for retargeting
+⚠️ No valid targets found - resetting ADC
+
+=== Resetting ADC ===
+Previous State: moving
+Previous Target Cell ID: Optional(555)
+✅ ADC Reset Complete
+New State: orbiting
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 555
+💥 ADC hit cell 555
+Current hit count: cellParameters 4
+Current hit count: StateComponent 4
+
+=== ADC-Cell Collision ===
+ADC: Root
+Cell: cancerCell_complex
+✅ ADC collision flag set for target cell 555
+💥 ADC hit cell 555
+Current hit count: cellParameters 4
+Current hit count: StateComponent 4
+=== Cancer Cell Death Triggered ===
+💀 Cell is destroyed
+Cell ID: Optional(555)
+Hit Count: 4
+Required Hits: 4
+✨ Updated particle emitter isEmitting to: false
+Incremented cellsDestroyed to 2
+
+Test fire cell (ID 555) was destroyed
+>>> Test fire complete - opening hope meter window...
+>>> Setting readyToStartGame to true...
+>>> Setting isTestFireActive to false...
+
+=== ADC RETARGET (Cell Destroyed) ===
+Cell ID: 555
+Hit Count: 4/4
+⚠️ Target no longer valid - attempting to find new target
+Retargeting ADC - Entity: Root, State: moving, Current Position: SIMD3<Float>(0.14463425, 1.67855, -1.1574724)
+⚠️ No valid targets found for retargeting
+⚠️ No valid targets found - resetting ADC
+
+=== Resetting ADC ===
+Previous State: moving
+Previous Target Cell ID: Optional(555)
+✅ ADC Reset Complete
+New State: orbiting
+Failed to set override status for bind point component member.
+Failed to set override status for bind point component member.
+🔄 Orbiting ADC checking for retarget - Entity: Root
+Retargeting ADC - Entity: Root, State: orbiting, Current Position: SIMD3<Float>(-1.0876043, 1.2771139, -1.1409688)
+⚠️ No valid targets found for retargeting
+⚠️ No valid targets found for orbiting ADC - Entity: Root
+🔄 Orbiting ADC checking for retarget - Entity: Root
+Retargeting ADC - Entity: Root, State: orbiting, Current Position: SIMD3<Float>(-1.0853056, 1.3959887, -0.4489016)
+⚠️ No valid targets found for retargeting
+⚠️ No valid targets found for orbiting ADC - Entity: Root
+🔄 Orbiting ADC checking for retarget - Entity: Root
+Retargeting ADC - Entity: Root, State: orbiting, Current Position: SIMD3<Float>(-0.60744506, 1.5220281, -2.0751019)
+⚠️ No valid targets found for retargeting
+⚠️ No valid targets found for orbiting ADC - Entity: Root
+🔄 Orbiting ADC checking for retarget - Entity: Root
+Retargeting ADC - Entity: Root, State: orbiting, Current Position: SIMD3<Float>(0.04891434, 1.4543047, -2.5202224)
+⚠️ No valid targets found for retargeting
+⚠️ No valid targets found for orbiting ADC - Entity: Root
+🔄 Orbiting ADC checking for retarget - Entity: Root
+Retargeting ADC - Entity: Root, State: orbiting, Current Position: SIMD3<Float>(-1.020106, 1.4368408, -0.24068972)
+⚠️ No valid targets found for retargeting
+⚠️ No valid targets found for orbiting ADC - Entity: Root
+🔄 Orbiting ADC checking for retarget - Entity: Root
+Retargeting ADC - Entity: Root, State: orbiting, Current Position: SIMD3<Float>(-0.92910564, 1.3117752, -1.43299)
+⚠️ No valid targets found for retargeting
+⚠️ No valid targets found for orbiting ADC - Entity: Root
+🔄 Orbiting ADC checking for retarget - Entity: Root
+Retargeting ADC - Entity: Root, State: orbiting, Current Position: SIMD3<Float>(-0.5243503, 1.3227288, 0.36161095)
+⚠️ No valid targets found for retargeting
+⚠️ No valid targets found for orbiting ADC - Entity: Root
+🔄 Orbiting ADC checking for retarget - Entity: Root
+Retargeting ADC - Entity: Root, State: orbiting, Current Position: SIMD3<Float>(1.3605313, 1.5776939, -0.4487025)
+⚠️ No valid targets found for retargeting
+⚠️ No valid targets found for orbiting ADC - Entity: Root
+🔄 Orbiting ADC checking for retarget - Entity: Root
+Retargeting ADC - Entity: Root, State: orbiting, Current Position: SIMD3<Float>(-2.4908426, 1.658329, -1.047688)
+⚠️ No valid targets found for retargeting
+⚠️ No valid targets found for orbiting ADC - Entity: Root
+🔄 Orbiting ADC checking for retarget - Entity: Root
+Retargeting ADC - Entity: Root, State: orbiting, Current Position: SIMD3<Float>(-1.9078108, 1.6141902, 0.35764766)
+⚠️ No valid targets found for retargeting
+⚠️ No valid targets found for orbiting ADC - Entity: Root
+🔄 Orbiting ADC checking for retarget - Entity: Root
+Retargeting ADC - Entity: Root, State: orbiting, Current Position: SIMD3<Float>(-1.9331431, 1.7071757, -1.9102243)
+⚠️ No valid targets found for retargeting
+⚠️ No valid targets found for orbiting ADC - Entity: Root
+🔄 Orbiting ADC checking for retarget - Entity: Root
+Retargeting ADC - Entity: Root, State: orbiting, Current Position: SIMD3<Float>(-1.2670746, 1.6193949, -3.114461)
+⚠️ No valid targets found for retargeting
+⚠️ No valid targets found for orbiting ADC - Entity: Root
+🔄 Orbiting ADC checking for retarget - Entity: Root
+Retargeting ADC - Entity: Root, State: orbiting, Current Position: SIMD3<Float>(-1.5768932, 1.5276284, 0.7697636)
+⚠️ No valid targets found for retargeting
+⚠️ No valid targets found for orbiting ADC - Entity: Root
+🔄 Orbiting ADC checking for retarget - Entity: Root
+Retargeting ADC - Entity: Root, State: orbiting, Current Position: SIMD3<Float>(-2.4227517, 1.5810678, -1.5440339)
+⚠️ No valid targets found for retargeting
+⚠️ No valid targets found for orbiting ADC - Entity: Root
+🔄 Orbiting ADC checking for retarget - Entity: Root
+Retargeting ADC - Entity: Root, State: orbiting, Current Position: SIMD3<Float>(-0.35322315, 1.5175493, 1.3478373)
+⚠️ No valid targets found for retargeting
+⚠️ No valid targets found for orbiting ADC - Entity: Root
+FINISH ✨ Stopped particle emitter
+🔄 Orbiting ADC checking for retarget - Entity: Root
+Retargeting ADC - Entity: Root, State: orbiting, Current Position: SIMD3<Float>(2.872602, 1.4906515, -0.94064564)
+⚠️ No valid targets found for retargeting
+⚠️ No valid targets found for orbiting ADC - Entity: Root
+🔄 Orbiting ADC checking for retarget - Entity: Root
+Retargeting ADC - Entity: Root, State: orbiting, Current Position: SIMD3<Float>(-2.2889867, 1.6839957, -0.029871404)
+⚠️ No valid targets found for retargeting
+⚠️ No valid targets found for orbiting ADC - Entity: Root
+🔄 Orbiting ADC checking for retarget - Entity: Root
+Retargeting ADC - Entity: Root, State: orbiting, Current Position: SIMD3<Float>(-1.3814011, 1.5873246, 0.8867259)
+⚠️ No valid targets found for retargeting
+⚠️ No valid targets found for orbiting ADC - Entity: Root
+🔄 Orbiting ADC checking for retarget - Entity: Root
+Retargeting ADC - Entity: Root, State: orbiting, Current Position: SIMD3<Float>(-2.1067214, 1.7550517, -0.6877113)
+⚠️ No valid targets found for retargeting
+⚠️ No valid targets found for orbiting ADC - Entity: Root
+🔄 Orbiting ADC checking for retarget - Entity: Root
+Retargeting ADC - Entity: Root, State: orbiting, Current Position: SIMD3<Float>(-2.217213, 1.6261523, -2.0666046)
+⚠️ No valid targets found for retargeting
+⚠️ No valid targets found for orbiting ADC - Entity: Root
+🔄 Orbiting ADC checking for retarget - Entity: Root
+Retargeting ADC - Entity: Root, State: orbiting, Current Position: SIMD3<Float>(-0.9665118, 1.5123423, 1.1616386)
+⚠️ No valid targets found for retargeting
+⚠️ No valid targets found for orbiting ADC - Entity: Root
+🔄 Orbiting ADC checking for retarget - Entity: Root
+Retargeting ADC - Entity: Root, State: orbiting, Current Position: SIMD3<Float>(-2.4178386, 1.5563155, -0.4588902)
+⚠️ No valid targets found for retargeting
+⚠️ No valid targets found for orbiting ADC - Entity: Root
+🔄 Orbiting ADC checking for retarget - Entity: Root
+Retargeting ADC - Entity: Root, State: orbiting, Current Position: SIMD3<Float>(0.46980476, 1.5239305, 1.3268174)
+⚠️ No valid targets found for retargeting
+⚠️ No valid targets found for orbiting ADC - Entity: Root
+FINISH ✨ Removed particle emitter component
+FINISH ✨ Removed cancer cell component
+✨ Removing entity from scene
+🔄 Orbiting ADC checking for retarget - Entity: Root
+Retargeting ADC - Entity: Root, State: orbiting, Current Position: SIMD3<Float>(2.636847, 1.5106289, -2.1547089)
+⚠️ No valid targets found for retargeting
+⚠️ No valid targets found for orbiting ADC - Entity: Root
+🔄 Orbiting ADC checking for retarget - Entity: Root
+Retargeting ADC - Entity: Root, State: orbiting, Current Position: SIMD3<Float>(-1.6897285, 1.7066228, 0.81723297)
+⚠️ No valid targets found for retargeting
+⚠️ No valid targets found for orbiting ADC - Entity: Root
+🔄 Orbiting ADC checking for retarget - Entity: Root
+Retargeting ADC - Entity: Root, State: orbiting, Current Position: SIMD3<Float>(-0.7155089, 1.5628587, 1.2238232)
+⚠️ No valid targets found for retargeting
+⚠️ No valid targets found for orbiting ADC - Entity: Root
+🔄 Orbiting ADC checking for retarget - Entity: Root
+Retargeting ADC - Entity: Root, State: orbiting, Current Position: SIMD3<Float>(-1.5728269, 1.7850385, 0.4256711)
+⚠️ No valid targets found for retargeting
+⚠️ No valid targets found for orbiting ADC - Entity: Root
+🔄 Orbiting ADC checking for retarget - Entity: Root
+Retargeting ADC - Entity: Root, State: orbiting, Current Position: SIMD3<Float>(-2.4309905, 1.6391727, -0.6683537)
+⚠️ No valid targets found for retargeting
+⚠️ No valid targets found for orbiting ADC - Entity: Root
+🔄 Orbiting ADC checking for retarget - Entity: Root
+Retargeting ADC - Entity: Root, State: orbiting, Current Position: SIMD3<Float>(1.236705, 1.533942, 1.0273508)
+⚠️ No valid targets found for retargeting
+⚠️ No valid targets found for orbiting ADC - Entity: Root
+🔄 Orbiting ADC checking for retarget - Entity: Root
+Retargeting ADC - Entity: Root, State: orbiting, Current Position: SIMD3<Float>(-1.9498518, 1.5256306, 0.5201663)
+⚠️ No valid targets found for retargeting
+⚠️ No valid targets found for orbiting ADC - Entity: Root
+🔄 Orbiting ADC checking for retarget - Entity: Root
+Retargeting ADC - Entity: Root, State: orbiting, Current Position: SIMD3<Float>(-0.26640427, 1.4979732, 1.3513263)
+⚠️ No valid targets found for retargeting
+⚠️ No valid targets found for orbiting ADC - Entity: Root
+🔄 Orbiting ADC checking for retarget - Entity: Root
+Retargeting ADC - Entity: Root, State: orbiting, Current Position: SIMD3<Float>(1.912906, 1.5350899, -3.1574264)
+⚠️ No valid targets found for retargeting
+⚠️ No valid targets found for orbiting ADC - Entity: Root
+✅ Set tutorial complete to true
+onChange: readyToStartGame changed to true
+
+>>> Playing start button VO...
+
+=== Playing Start Button VO ===
+AssetLoadingManager: loadAsset(withName: PressStart_VO, category: attackCancerEnvironment)
+✅ Retrieved start button VO
+🎯 Found VO parent
+✅ Added start button VO to scene
+Hope meter utility window open = true
+onChange: isHopeMeterUtilityWindowOpen changed to true
+🎮 Setting up cancer cells
+
+=== Initializing Game Content ===
+
+=== Starting Cancer Cell Spawning (Pooled) ===
+Target count: 2
+🎯 PositioningSystem B2DAD97B-F208-4743-801F-983C6C3A0A84 initializing...
+cannot add handler to 0 from 1 - dropping
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", ""
+cannot add handler to 0 from 1 - dropping
+Cannot find a BindPoint for any bind path: "", "", ""
+=== Finished Spawning ===
+Total cells spawned: 2
+🎯 Cell 0 initialized - Required hits: 4
+🎯 Cell 1 initialized - Required hits: 7
+Cell Parameters after setup:
+  Cell 0: isTutorialCell=false, isDestroyed=false
+  Cell 1: isTutorialCell=false, isDestroyed=false
+  Cell 2: isTutorialCell=true, isDestroyed=true
+  Cell 3: isTutorialCell=true, isDestroyed=true
+Failed to set override status for bind point component member.
+🔄 Orbiting ADC checking for retarget - Entity: Root
+Retargeting ADC - Entity: Root, State: orbiting, Current Position: SIMD3<Float>(-0.79718643, 1.7247641, 1.3464447)
+✨ New best target found - Score: 0.5732008
+✨ New best target found - Score: 1.0747366
+✨ New best target found - Score: 1.2905214
+✨ New best target found - Score: 1.5073423
+✨ New best target found - Score: 1.5904132
+🎯 Retargeting ADC to new cancer cell (ID: 0)
+
+✅ Target Distance Check Passed:
+Distance to new target: 2.3906534
+Current position: SIMD3<Float>(-0.79718643, 1.7247641, 1.3464447)
+Target position: SIMD3<Float>(0.5097497, 2.3616688, 3.244205)
+✅ Marked attachment point as occupied
+✅ Orbiting ADC retargeted to new target - Entity: Root, Target ID: 639506665264072209
+🔄 Orbiting ADC checking for retarget - Entity: Root
+Retargeting ADC - Entity: Root, State: orbiting, Current Position: SIMD3<Float>(0.022556847, 1.5424478, 1.3348528)
+✨ New best target found - Score: 0.6972155
+✨ New best target found - Score: 0.89572984
+✨ New best target found - Score: 1.287097
+✨ New best target found - Score: 1.438744
+✨ New best target found - Score: 1.6296978
+🎯 Retargeting ADC to new cancer cell (ID: 0)
+
+✅ Target Distance Check Passed:
+Distance to new target: 2.2121286
+Current position: SIMD3<Float>(0.022556847, 1.5424478, 1.3348528)
+Target position: SIMD3<Float>(0.5047209, 2.5507646, 3.243865)
+✅ Marked attachment point as occupied
+✅ Orbiting ADC retargeted to new target - Entity: Root, Target ID: 9957821271473979731
+🔄 Orbiting ADC checking for retarget - Entity: Root
+Retargeting ADC - Entity: Root, State: orbiting, Current Position: SIMD3<Float>(-0.51090115, 1.7920289, 1.0557252)
+✨ New best target found - Score: 0.51028854
+✨ New best target found - Score: 0.9206124
+✨ New best target found - Score: 1.1424156
+✨ New best target found - Score: 1.3976303
+🎯 Retargeting ADC to new cancer cell (ID: 0)
+
+✅ Target Distance Check Passed:
+Distance to new target: 2.5350444
+Current position: SIMD3<Float>(-0.51090115, 1.7920289, 1.0557252)
+Target position: SIMD3<Float>(0.3414477, 2.534626, 3.3247561)
+✅ Marked attachment point as occupied
+✅ Orbiting ADC retargeted to new target - Entity: Root, Target ID: 10525564273217878819
+🔄 Orbiting ADC checking for retarget - Entity: Root
+Retargeting ADC - Entity: Root, State: orbiting, Current Position: SIMD3<Float>(-1.8373395, 1.6571672, 0.61554086)
+✨ New best target found - Score: 0.37403685
+✨ New best target found - Score: 0.8051525
+✨ New best target found - Score: 0.8897551
+🎯 Retargeting ADC to new cancer cell (ID: 0)
+
+✅ Target Distance Check Passed:
+Distance to new target: 3.649506
+Current position: SIMD3<Float>(-1.8373395, 1.6571672, 0.61554086)
+Target position: SIMD3<Float>(0.3610772, 2.3156934, 3.4531813)
+✅ Marked attachment point as occupied
+✅ Orbiting ADC retargeted to new target - Entity: Root, Target ID: 10475320920549126025
+🔄 Orbiting ADC checking for retarget - Entity: Root
+Retargeting ADC - Entity: Root, State: orbiting, Current Position: SIMD3<Float>(1.8561878, 1.5467399, 0.485088)
+✨ New best target found - Score: 0.4798648
+✨ New best target found - Score: 0.9342146
+✨ New best target found - Score: 1.0599566
+✨ New best target found - Score: 1.1818115
+✨ New best target found - Score: 1.1883262
+🎯 Retargeting ADC to new cancer cell (ID: 1)
+
+✅ Target Distance Check Passed:
+Distance to new target: 3.3227835
+Current position: SIMD3<Float>(1.8561878, 1.5467399, 0.485088)
+Target position: SIMD3<Float>(2.4849901, 0.097617544, -2.438188)
+✅ Marked attachment point as occupied
+✅ Orbiting ADC retargeted to new target - Entity: Root, Target ID: 489141637428826866
+🔄 Orbiting ADC checking for retarget - Entity: Root
+Retargeting ADC - Entity: Root, State: orbiting, Current Position: SIMD3<Float>(-1.1084855, 1.4948661, 1.2054883)
+✨ New best target found - Score: 0.5466081
+✨ New best target found - Score: 0.9862658
+✨ New best target found - Score: 1.0581083
+🎯 Retargeting ADC to new cancer cell (ID: 0)
+
+✅ Target Distance Check Passed:
+Distance to new target: 2.8493168
+Current position: SIMD3<Float>(-1.1084855, 1.4948661, 1.2054883)
+Target position: SIMD3<Float>(0.54136515, 2.2463357, 3.4036453)
+✅ Marked attachment point as occupied
+✅ Orbiting ADC retargeted to new target - Entity: Root, Target ID: 955331336608266532
+🔄 Orbiting ADC checking for retarget - Entity: Root
+Retargeting ADC - Entity: Root, State: orbiting, Current Position: SIMD3<Float>(0.45831883, 1.485006, 1.321186)
+✨ New best target found - Score: 0.73671365
+✨ New best target found - Score: 0.737721
+✨ New best target found - Score: 0.9441203
+✨ New best target found - Score: 1.3507309
+✨ New best target found - Score: 1.4649647
+🎯 Retargeting ADC to new cancer cell (ID: 0)
+
+✅ Target Distance Check Passed:
+Distance to new target: 2.2233095
+Current position: SIMD3<Float>(0.45831883, 1.485006, 1.321186)
+Target position: SIMD3<Float>(0.68651724, 2.5436916, 3.26289)
+✅ Marked attachment point as occupied
+✅ Orbiting ADC retargeted to new target - Entity: Root, Target ID: 14575187870976734877
+🔄 Orbiting ADC checking for retarget - Entity: Root
+Retargeting ADC - Entity: Root, State: orbiting, Current Position: SIMD3<Float>(0.8347306, 1.5619891, -3.7632723)
+✨ New best target found - Score: 0.16548215
+✨ New best target found - Score: 0.2133197
+✨ New best target found - Score: 0.33585584
+✨ New best target found - Score: 0.3914102
+✨ New best target found - Score: 0.39366686
+✨ New best target found - Score: 1.3125988
+✨ New best target found - Score: 1.4893315
+✨ New best target found - Score: 1.6924086
+🎯 Retargeting ADC to new cancer cell (ID: 1)
+
+✅ Target Distance Check Passed:
+Distance to new target: 2.345348
+Current position: SIMD3<Float>(0.8347306, 1.5619891, -3.7632723)
+Target position: SIMD3<Float>(2.410855, 0.13012125, -2.7802958)
+✅ Marked attachment point as occupied
+✅ Orbiting ADC retargeted to new target - Entity: Root, Target ID: 9344473746619522547
+Failed to set override status for bind point component member.
+Message from debugger: killed

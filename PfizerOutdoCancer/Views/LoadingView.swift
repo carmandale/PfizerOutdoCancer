@@ -2,9 +2,11 @@ import SwiftUI
 
 struct LoadingView: View {
     @Environment(AppModel.self) private var appModel
+    @Environment(ADCDataModel.self) private var adcDataModel
     @Environment(\.dismissWindow) private var dismissWindow
     @State private var showTitle = false
     @State private var viewOpacity: Double = 1.0
+    @State private var hasStartedLoading = false
     @Namespace private var logoNamespace
     
     var body: some View {
@@ -24,7 +26,7 @@ struct LoadingView: View {
         .onChange(of: appModel.assetLoadingManager.loadingState) { oldState, newState in
             // print("Loading state changed from \(oldState) to \(newState)")
             // print("Loading progress: \(appModel.loadingProgress)")
-            withAnimation(.easeInOut(duration: 0.2)) {
+            withAnimation(.easeInOut(duration: 0.5)) {
                 appModel.displayedProgress = appModel.loadingProgress
             }
         }
@@ -37,6 +39,13 @@ struct LoadingView: View {
         }
         .onDisappear {
             print("🚨 LoadingView disappeared")
+        }
+        .task {
+            // Start loading when LoadingView appears
+            if !hasStartedLoading {
+                hasStartedLoading = true
+                await appModel.startLoading(adcDataModel: adcDataModel)
+            }
         }
         .onAppear {
             Task { @MainActor in
@@ -79,7 +88,7 @@ private struct LoadingBlock: View {
                     .padding()
                     .transition(.opacity)
                 
-                Text("build v51 - 2.20.25")
+                Text("build v54 - 2.21.25")
                     .foregroundStyle(.secondary)
                     .font(.caption)
                     .padding()

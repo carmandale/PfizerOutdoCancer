@@ -431,7 +431,7 @@ final class IntroViewModel {
                 
                 if let portalEnv = self.portal {
                     Logger.debug("\n 🔍 Inspecting portal hierarchy \n")
-                    self.appModel.assetLoadingManager.inspectEntityHierarchy(portalEnv)
+                    // self.appModel.assetLoadingManager.inspectEntityHierarchy(portalEnv)
                     portalEnv.removeFromParent()
                     self.portal = nil
                     Logger.debug("Removed portal completely from the scene as we transition to lab.")

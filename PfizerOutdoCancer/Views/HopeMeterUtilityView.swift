@@ -38,7 +38,7 @@ struct HopeMeterUtilityView: View {
                 .frame(width: 648)
                 
                 // Content section
-                if !appModel.gameState.isHopeMeterRunning {
+                if !appModel.gameState.isHopeMeterRunning && appModel.currentPhase != .completed {
                     NavigationButton(
                         title: "Start",
                         action: {
@@ -70,7 +70,10 @@ struct HopeMeterUtilityView: View {
                                 GeometryReader { geometry in
                                     RoundedRectangle(cornerRadius: height / 2)
                                         .frame(width: geometry.size.width * progress)
-                                        .animation(.linear(duration: 0.5), value: progress)
+                                        .animation(
+                                            .linear(duration: appModel.gameState.isHopeMeterRunning ? 1.0 : 2.0),
+                                            value: progress
+                                        )
                                 }
                             )
                         
@@ -80,6 +83,10 @@ struct HopeMeterUtilityView: View {
                             .bold()
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
+                            .animation(
+                                .linear(duration: appModel.gameState.isHopeMeterRunning ? 1.0 : 2.0),
+                                value: percentage
+                            )
                     }
                     .frame(width: 598)
                     .padding(.vertical, 30)

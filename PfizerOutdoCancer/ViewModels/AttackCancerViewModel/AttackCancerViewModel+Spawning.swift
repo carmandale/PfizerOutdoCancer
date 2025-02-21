@@ -70,7 +70,7 @@ extension AttackCancerViewModel {
             setupAttachmentPoints(for: cell, complexCell: complexCell, cellID: index)
 
             Logger.info("\n=== Cancer Cell Single Spawn \(index) Hierarchy ===")
-            appModel.assetLoadingManager.inspectEntityHierarchy(cell)
+            // appModel.assetLoadingManager.inspectEntityHierarchy(cell)
 
             // Fade in after setup
             await complexCell.fadeOpacity(to: 1.0, duration: 0.5)
@@ -338,7 +338,7 @@ extension AttackCancerViewModel {
                   await complexCell.fadeOpacity(to: 1.0, duration: 0.5)
                   Logger.info("✅ Successfully spawned cell \(index)")
 
-                  appModel.assetLoadingManager.inspectEntityHierarchy(testFireScene)
+                //   appModel.assetLoadingManager.inspectEntityHierarchy(testFireScene)
 
                   // set isTestFireActive to true
                   appModel.gameState.isTestFireActive = true

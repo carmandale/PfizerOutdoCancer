@@ -49,23 +49,21 @@ public class ADCMovementSystem: System {
 
             if adcComponent.state == .moving {
                 guard var adcComponent = entity.components[ADCComponent.self],
-                      adcComponent.state == .moving,
-                      let start = adcComponent.startWorldPosition,
-                      let targetID = adcComponent.targetEntityID else { continue }
+                    adcComponent.state == .moving,
+                    var start = adcComponent.startWorldPosition,
+                    let targetID = adcComponent.targetEntityID else { continue }
                 
-                // Find target entity by its ID.
                 let query = EntityQuery(where: .has(AttachmentPoint.self))
                 let entities = context.scene.performQuery(query)
                 guard let targetEntity = entities.first(where: { $0.id == Entity.ID(targetID) }) else {
                     #if DEBUG
-                    print("⚠️ Target entity not found - aborting ADC movement")
+                    print("⚠️ Target entity not found - transitioning to orbiting")
                     #endif
-                    adcComponent.state = .idle
+                    Self.resetADC(entity: entity, component: &adcComponent)
                     entity.components[ADCComponent.self] = adcComponent
                     continue
                 }
                 
-                // Validate target before proceeding.
                 if !Self.validateTarget(targetEntity, adcComponent, in: context.scene) {
                     #if DEBUG
                     print("⚠️ Target no longer valid - attempting to find new target")
@@ -75,15 +73,43 @@ public class ADCMovementSystem: System {
                         continue
                     } else {
                         #if DEBUG
-                        print("⚠️ No valid targets found - resetting ADC")
+                        print("⚠️ No valid targets found - extending trajectory before orbiting")
                         #endif
-                        Self.resetADC(entity: entity, component: &adcComponent)
-                        continue
+                        let extensionDistance: Float = Float.random(in: 1.5...4.0)
+                        adcComponent.pathLength = max(adcComponent.pathLength, adcComponent.traveledDistance + extensionDistance)
+                        adcComponent.hasCollided = false
+                        adcComponent.state = .moving
+                        adcComponent.wasRetargeted = false
+                        adcComponent.orbitTransitionStartPosition = entity.position(relativeTo: nil)
+                        adcComponent.orbitTransitionProgress = 0.0
+                        adcComponent.orbitTransitionDuration = 1.0
+                        entity.components[ADCComponent.self] = adcComponent
                     }
                 }
                 
-                // Get the target position, handling interpolation if needed
+                // Check for extended path completion to transition to orbiting, only if not recently retargeted
+                if adcComponent.traveledDistance >= adcComponent.pathLength && !adcComponent.hasCollided && !adcComponent.wasRetargeted {
+                    #if DEBUG
+                    print("✅ Extended trajectory complete - transitioning to orbiting")
+                    #endif
+                    Self.resetADC(entity: entity, component: &adcComponent)
+                    entity.components[ADCComponent.self] = adcComponent
+                    continue
+                }
+                
                 var targetPosition = targetEntity.position(relativeTo: nil)
+                
+                // Smooth transition from orbiting to moving
+                if adcComponent.wasRetargeted && adcComponent.orbitTransitionProgress < 1.0 {
+                    adcComponent.orbitTransitionProgress += Float(context.deltaTime) / adcComponent.orbitTransitionDuration
+                    let t = Self.smoothstep(0, 1, adcComponent.orbitTransitionProgress)
+                    start = Self.mix(adcComponent.orbitTransitionStartPosition, start, t: t)
+                    if adcComponent.orbitTransitionProgress >= 1.0 {
+                        adcComponent.wasRetargeted = false // Reset flag after transition
+                    }
+                }
+                
+                // ... (rest of your .moving block: target interpolation, path calc, etc.)
                 
                 // If we're interpolating between targets, blend the target position
                 if let previousTarget = adcComponent.previousTargetPosition,
@@ -332,8 +358,6 @@ public class ADCMovementSystem: System {
                         targetEntity.addChild(entity)
                         entity.transform = landingTransform
                         
-                        print("Attached ADC - Entity: \(entity.name), Position Relative to Target: \(entity.position(relativeTo: targetEntity))")
-                        
                         #if DEBUG
                         print("✅ Applied landing transform successfully")
                         #endif
@@ -358,7 +382,6 @@ public class ADCMovementSystem: System {
                         if var antigenComponent = offsetEntity.components[AntigenComponent.self] {
                             antigenComponent.isRetracting = true
                             offsetEntity.components[AntigenComponent.self] = antigenComponent
-                            print("✅ Antigen retraction triggered for \(offsetEntity.name)")
                         }
                     }
                     
@@ -467,36 +490,27 @@ public class ADCMovementSystem: System {
                 
                 if adcComponent.timeSinceLastTargetSearch >= Self.orbitingTargetSearchInterval {
                     adcComponent.timeSinceLastTargetSearch = 0
-                    
-                    #if DEBUG
-                    print("🔄 Orbiting ADC checking for retarget - Entity: \(entity.name)")
-                    #endif
-                    
                     if Self.retargetADC(entity, &adcComponent, currentPosition: entity.position(relativeTo: nil), in: context.scene) {
-                        #if DEBUG
-                        print("✅ Orbiting ADC retargeted to new target - Entity: \(entity.name), Target ID: \(adcComponent.targetEntityID ?? 0)")
-                        #endif
-                        adcComponent.state = .moving
-                        adcComponent.startWorldPosition = entity.position(relativeTo: nil)
-                        // Reset orientation to align with new target, like natural ADCs
-                        let targetPosition = context.scene.findEntity(id: adcComponent.targetEntityID!)!.position(relativeTo: nil)
-                        let direction = simd_normalize(targetPosition - adcComponent.startWorldPosition!)
-                        Self.setInitialRootOrientation(entity: entity, direction: direction)
                         entity.components[ADCComponent.self] = adcComponent
                         continue
                     } else {
                         #if DEBUG
-                        print("⚠️ No valid targets found for orbiting ADC - Entity: \(entity.name)")
+                        print("ℹ️ No new targets found for orbiting ADC - remaining in orbit")
                         #endif
                     }
                 }
                 
-                // --- Update orbit angle in reverse (for counter-clockwise movement)
-                // Use only orbitSpeed (no division by orbitRadius here unless you specifically want that effect).
-                adcComponent.orbitTheta -= Float(context.deltaTime) * adcComponent.orbitSpeed
+                // Stabilize orbiting parameters to prevent erratic motion
+                if adcComponent.orbitRadius <= 0 || adcComponent.orbitRadius > 10.0 {
+                    adcComponent.orbitRadius = Float.random(in: 2.0...4.0)
+                }
+                let orbitSpeedSign: Float = adcComponent.orbitSpeed >= 0 ? 1.0 : -1.0
+                adcComponent.orbitSpeed = orbitSpeedSign * Float.random(in: 0.3...0.6)
+                
+                // Update orbit angle with Float conversion
+                adcComponent.orbitTheta -= Float(context.deltaTime * Double(adcComponent.orbitSpeed))
                 
                 // --- Organic Vertical Oscillation
-                // Lower the amplitude by scaling it down (for example, multiply by 0.5).
                 let verticalOscillation = (adcComponent.verticalOscillationAmplitude * 0.5) *
                     sin(adcComponent.orbitTheta * adcComponent.verticalOscillationFrequency + adcComponent.verticalOscillationPhase)
                 
@@ -519,12 +533,10 @@ public class ADCMovementSystem: System {
                 }
                 
                 // --- Tumbling Rotation
-                // Update the tumble angle based on tumbleSpeed.
                 adcComponent.tumbleAngle += Float(context.deltaTime) * adcComponent.tumbleSpeed
-                // For tumbling, choose a fixed (or random per ADC) axis. Here we use a normalized axis [1, 1, 0].
                 let tumbleAxis = simd_normalize(SIMD3<Float>(1, 1, 0))
                 let tumbleRotation = simd_quatf(angle: adcComponent.tumbleAngle, axis: tumbleAxis)
-                
+                                
                 // --- Combine with Orbit Orientation
                 // Compute the orbit tangent for facing direction. (For a circle, tangent = (-sinθ, 0, cosθ))
                 let tangent = SIMD3<Float>(-sin(adcComponent.orbitTheta), 0, cos(adcComponent.orbitTheta))
@@ -599,6 +611,4 @@ public class ADCMovementSystem: System {
             entity.playAudio(droneSound)
         }
     }
-    
-    // (The resetADC function is defined in its separate extension file.)
 }

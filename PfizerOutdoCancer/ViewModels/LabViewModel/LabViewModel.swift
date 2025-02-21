@@ -238,7 +238,7 @@ final class LabViewModel {
             └─ hasBuiltADC: \(appModel.hasBuiltADC)
             """)
             Task {
-                try? await Task.sleep(for: .seconds(38))
+                try? await Task.sleep(for: .seconds(40.5))
                 Logger.info("⏲️ Timer complete - showing ADC button")
                 withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
                     shouldShowADCButton = true

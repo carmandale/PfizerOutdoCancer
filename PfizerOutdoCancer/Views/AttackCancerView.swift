@@ -65,7 +65,10 @@ struct AttackCancerView: View {
                 if let root = appModel.gameState.rootEntity {
                     Task {
                         // wait just a little to give it a breath...
-                        try? await Task.sleep(for: .milliseconds(300))
+                        try? await Task.sleep(for: .milliseconds(100))
+                        await appModel.gameState.playGreatJob()
+
+                        try? await Task.sleep(for: .seconds(5))
 
                         Logger.info("\n>>> Playing start button VO...\n")
                         await appModel.gameState.playStartButtonVO(in: root)

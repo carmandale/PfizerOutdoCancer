@@ -536,9 +536,9 @@ def Xform "Root"
             {
                 string actionKind = "show"
                 int blendLayer = 300
-                double duration = 5
+                double duration = 3
                 uniform token info:id = "579B6872-6F0C-4936-99DF-926FD6FC1D69"
-                double startTime = 5.931082465024625
+                double startTime = 7.193446989672473
                 rel target = </Root/outro_people_v01>
 
                 def RealityKitStruct "timingFunction"
@@ -569,7 +569,7 @@ def Xform "Root"
                 int blendLayer = 300
                 double duration = 4
                 uniform token info:id = "C8646A96-9530-4B4B-8AC9-2C40C48CF60C"
-                double startTime = 50.51837920999096
+                double startTime = 27.689552512772224
                 rel target = </Root/Particles_xform/ADC_particles2>
 
                 def RealityKitStruct "timingFunction"
@@ -598,9 +598,9 @@ def Xform "Root"
             {
                 string actionKind = "hide"
                 int blendLayer = 300
-                double duration = 5
+                double duration = 3.870227185655621
                 uniform token info:id = "3850AAE9-EF4F-4013-9E84-A5B42B033A9C"
-                double startTime = 49.93495988794009
+                double startTime = 25.412785785108657
                 rel target = </Root/Particles_xform/ADC_particles>
 
                 def RealityKitStruct "timingFunction"

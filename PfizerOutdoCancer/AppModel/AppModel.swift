@@ -35,8 +35,8 @@ extension AppModel {
         var position: SIMD3<Float> {
             switch self {
             case .intro:    return SIMD3<Float>(0.0, -1.5, -1.0)
-            case .building: return SIMD3<Float>(0.0, 0.88, -1.0)
-            case .playing:  return SIMD3<Float>(0.0, 1.5, -2.0)
+            case .building: return SIMD3<Float>(0.0, 1.2, -1.0)
+            case .playing:  return SIMD3<Float>(0.0, 1.5, -1.0)
             }
         }
     }
@@ -258,30 +258,45 @@ final class AppModel {
         hopeMeterTimer = nil
         gameState.isHopeMeterRunning = false
     }
+
+    // @MainActor // simplified version of accelerateHopeMeterToCompletion
+    // func accelerateHopeMeterToCompletion() async {
+    //     Logger.debug("🚀 Accelerating hope meter to completion")
+    //     Logger.debug("Initial state: hopeMeterTimeLeft=\(gameState.hopeMeterTimeLeft), isHopeMeterRunning=\(gameState.isHopeMeterRunning)")
+        
+    //     stopHopeMeter() // Ensure clean slate
+    //     gameState.hopeMeterTimeLeft = 0
+    //     Logger.debug("Accelerated to: hopeMeterTimeLeft=\(gameState.hopeMeterTimeLeft), isHopeMeterRunning=\(gameState.isHopeMeterRunning)")
+    // }
     
     @MainActor
     func accelerateHopeMeterToCompletion() async {
         Logger.debug("🚀 Accelerating hope meter to completion")
+        Logger.debug("Initial state: hopeMeterTimeLeft=\(gameState.hopeMeterTimeLeft), isHopeMeterRunning=\(gameState.isHopeMeterRunning)")
         
         // Stop the normal timer
         hopeMeterTimer?.invalidate()
         hopeMeterTimer = nil
+        Logger.debug("Stopped normal timer")
         
-        // Animate the hope meter to completion using SwiftUI's withAnimation over 2 seconds.
-        // This assumes that the UI is bound to gameState.hopeMeterTimeLeft.
-        await MainActor.run {
-            withAnimation(.easeInOut(duration: 2.0)) {
-                gameState.hopeMeterTimeLeft = 0
-            }
+        // Create a fast timer to quickly count down
+        let totalTime: TimeInterval = 2.0
+        let updateInterval: TimeInterval = 0.05
+        let totalSteps = Int(totalTime / updateInterval)
+        let timePerStep = gameState.hopeMeterTimeLeft / TimeInterval(totalSteps)
+        Logger.debug("Acceleration params: totalSteps=\(totalSteps), timePerStep=\(timePerStep)")
+        
+        for step in 0..<totalSteps {
+            gameState.hopeMeterTimeLeft = max(0, gameState.hopeMeterTimeLeft - timePerStep)
+            Logger.debug("Step \(step + 1)/\(totalSteps): hopeMeterTimeLeft=\(gameState.hopeMeterTimeLeft)")
+            try? await Task.sleep(for: .milliseconds(Int(updateInterval * 1000)))
         }
         
-        // Wait for 2 seconds after the animation completes.
-        try? await Task.sleep(nanoseconds: 2_000_000_000)
+        gameState.hopeMeterTimeLeft = 0
+        Logger.debug("Final state: hopeMeterTimeLeft=\(gameState.hopeMeterTimeLeft)")
         
-        // Mark the hope meter as finished.
-        await MainActor.run {
-            gameState.isHopeMeterRunning = false
-        }
+        gameState.isHopeMeterRunning = false
+        Logger.debug("Hope meter acceleration complete, isHopeMeterRunning=\(gameState.isHopeMeterRunning)")
     }
     
     deinit {
@@ -317,7 +332,10 @@ final class AppModel {
         ├─ To: \(newPhase)
         ├─ Current Tracking State: \(trackingManager.worldTrackingProvider.state)
         ├─ Has Hand Tracking: \(currentPhase.needsHandTracking)
-        └─ Will Need Hand Tracking: \(newPhase.needsHandTracking)
+        ├─ Will Need Hand Tracking: \(newPhase.needsHandTracking)
+        ├─ Immersive Space State: \(immersiveSpaceState)
+        ├─ Asset Loading State: \(assetLoadingManager.state)
+        └─ Is Transitioning: \(isTransitioning)
         """)
         
         Logger.debug("🔄 Phase transition: \(currentPhase) -> \(newPhase)")
@@ -356,10 +374,6 @@ final class AppModel {
         // 2. Pre-load assets for the new phase before cleanup
         await preloadAssets(for: newPhase, adcDataModel: adcDataModel)
 
-        if newPhase == .playing {
-            gameState.resetCleanupForNewSession()
-        }
-
         // 3. Clean up current phase
         await cleanupCurrentPhase(for: newPhase, adcDataModel: adcDataModel)
 
@@ -370,6 +384,26 @@ final class AppModel {
         if newPhase.needsHandTracking {
             await startTrackingWithRetry(for: newPhase)
         }
+
+        // After cleanup
+        Logger.info("""
+        
+        🧹 === Post-Cleanup State ===
+        ├─ Asset Manager State: \(assetLoadingManager.state)
+        ├─ Immersive Space: \(immersiveSpaceState)
+        ├─ Tracking State: \(trackingManager.worldTrackingProvider.state)
+        └─ Cached Assets: \(assetLoadingManager.entityTemplates.keys.joined(separator: ", "))
+        """)
+
+        // After phase set
+        Logger.info("""
+        
+        📍 === Phase Set Complete ===
+        ├─ New Phase: \(newPhase)
+        ├─ Asset State: \(assetLoadingManager.state)
+        ├─ Space State: \(immersiveSpaceState)
+        └─ Tracking Ready: \(newPhase.needsHandTracking)
+        """)
     }
 
     /// Attempts to start tracking with retry logic
@@ -489,11 +523,11 @@ final class AppModel {
             os_log(.debug, "AppModel: Preloading Building Phase Assets...")
             // Optionally trigger a preloading for building assets if needed (for example, loading "antibody_scene" here)
             do {
-                let scene = try await assetLoadingManager.instantiateAsset(
+                _ = try await assetLoadingManager.instantiateAsset(
                     withName: "antibody_scene",
                     category: .buildADCEnvironment
                 )
-                os_log(.debug, "AppModel: Preloaded antibody_scene for Building Phase: %@", String(describing: scene))
+                // os_log(.debug, "AppModel: Preloaded antibody_scene for Building Phase: %@", String(describing: scene))
             } catch {
                 os_log(.error, "AppModel: Failed to preload Building Phase asset 'antibody_scene': %@", error.localizedDescription)
             }

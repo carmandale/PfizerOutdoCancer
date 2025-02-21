@@ -52,8 +52,7 @@ struct PfizerOutdoCancerApp: App {
             }
         }
         .defaultSize(CGSize(width: 800, height: 600))
-
-        .persistentSystemOverlays(appModel.isLibraryWindowOpen ? .visible : .hidden)
+//        .persistentSystemOverlays(appModel.isLibraryWindowOpen ? .visible : .hidden)
 
 
         WindowGroup(id: AppModel.navWindowId) {
@@ -457,15 +456,16 @@ struct PfizerOutdoCancerApp: App {
 
     // MARK: - App State Management
     private func cleanupAppState() async {
-        print("🧹 Cleaning up app state")
         Logger.info("""
         
-        === Cleaning Up App State ===
+        🧹 === Starting App State Cleanup ===
         ├─ Current Phase: \(appModel.currentPhase)
-        ├─ Immersive Space: \(appModel.immersiveSpaceState)
-        └─ Tracking Active: \(appModel.trackingManager.worldTrackingProvider.state)
+        ├─ Previous Space: \(appModel.currentImmersiveSpace ?? "none")
+        ├─ Space State: \(appModel.immersiveSpaceState)
+        ├─ Asset State: \(appModel.assetLoadingManager.state)
+        └─ Tracking State: \(appModel.trackingManager.worldTrackingProvider.state)
         """)
-        
+
         // 1. Stop tracking first to ensure clean provider state
         await appModel.trackingManager.stopTracking()
         
@@ -505,9 +505,12 @@ struct PfizerOutdoCancerApp: App {
         
         Logger.info("""
         
-        === App State Cleanup Complete ===
-        ├─ Immersive Space: \(appModel.immersiveSpaceState)
-        └─ Tracking State: \(appModel.trackingManager.worldTrackingProvider.state)
+        ✅ === App State Cleanup Complete ===
+        ├─ Current Phase: \(appModel.currentPhase)
+        ├─ Space State: \(appModel.immersiveSpaceState)
+        ├─ Asset State: \(appModel.assetLoadingManager.state)
+        ├─ Tracking State: \(appModel.trackingManager.worldTrackingProvider.state)
+        └─ Ready for New Session: \(!appModel.isTransitioning)
         """)
     }
 
