@@ -95,16 +95,16 @@ struct AttackCancerView: View {
         .onAppear {
             dismissWindow(id: AppModel.navWindowId)
         }
-        .onDisappear {
-            // Only perform teardown if not transitioning to a preserving state (e.g., .completed)
-            if appModel.currentPhase != .completed {
-                Task {
-                    await appModel.gameState.tearDownGame()
-                }
-            } else {
-                Logger.info("🚫 Skipping tearDownGame() for completed phase to preserve immersive assets")
-            }
-        }
+        // .onDisappear {
+        //     // Only perform teardown if not transitioning to a preserving state (e.g., .completed)
+        //     if appModel.currentPhase != .completed {
+        //         Task {
+        //             await appModel.gameState.tearDownGame()
+        //         }
+        //     } else {
+        //         Logger.info("🚫 Skipping tearDownGame() for completed phase to preserve immersive assets")
+        //     }
+        // }
         .onChange(of: appModel.shouldStartGame) { _, shouldStart in
             if shouldStart, let root = appModel.gameState.rootEntity {
                 Task {

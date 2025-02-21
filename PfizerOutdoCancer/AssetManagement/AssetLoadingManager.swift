@@ -129,13 +129,13 @@ final class AssetLoadingManager {
     /// Releases intro environment assets asynchronously
     func releaseIntroEnvironment() async {
         print("\n=== Starting Intro Environment Cleanup ===")
-        
+         
         // Log initial state
         #if DEBUG
         print("📊 Current template cache size: \(entityTemplates.count) entities")
         print("📊 Current templates: \(entityTemplates.keys.joined(separator: ", "))")
         #endif
-        
+         
         // Remove from entity templates
         let keysToRemove = [
             "intro_environment",
@@ -162,7 +162,7 @@ final class AssetLoadingManager {
                 #endif
             }
         }
-        
+         
         // Log final state
         print("\n📊 Updated template cache size: \(entityTemplates.count) entities")
         if let remainingKeys = entityTemplates.keys.first {
@@ -171,41 +171,48 @@ final class AssetLoadingManager {
         print("✅ Completed intro environment cleanup\n")
     }
     
-    /// Releases an entity and all its resources
-    func releaseEntity(_ entity: Entity) {
-        // 1. Log the hierarchy before removal for debugging
+    /// Releases build ADC environment assets asynchronously
+    func releaseBuildADCEnvironment() async {
+        print("\n=== Starting Build ADC Environment Cleanup ===")
+         
+        // Log initial state
         #if DEBUG
-        print("\n📝 Releasing entity: \(entity.name)")
-        print("  - Child count: \(entity.children.count)")
-        print("  - Has components: \(entity.components.isEmpty ? "no" : "yes")")
+        print("📊 Current template cache size: \(entityTemplates.count) entities")
+        print("📊 Current templates: \(entityTemplates.keys.joined(separator: ", "))")
         #endif
-        // 2. Recursively release all children first
-        for child in entity.children {
-            releaseEntity(child)
-        }
-        
-        // 3. Stop any active audio playback
-        if let controller = audioControllers[entity.id] {
-            #if DEBUG
-            print("  - Stopping audio playback for entity: \(entity.name)")
-            #endif
-            controller.stop()
-            audioControllers.removeValue(forKey: entity.id)
-        }
-        
-        // 4. Remove all components
-        entity.components.removeAll()
-        
-        // 5. Remove from parent
-        if let parent = entity.parent {
-            #if DEBUG
-            print("  - Detaching from parent: \(parent.name)")
-            #endif
-            entity.removeFromParent()
-        }
+         
+        // Remove from entity templates
+        let keysToRemove = [
+            "antibody_scene"
+        ]
         #if DEBUG
-        print("✅ Released entity: \(entity.name)\n")
+        print("🗑️ Preparing to remove \(keysToRemove.count) build ADC assets:")
         #endif
+        for key in keysToRemove {
+            if let entity = entityTemplates[key] {
+                #if DEBUG
+                print("\n🗑️ Removing asset: \(key)")
+                #endif
+                // Use releaseEntity for thorough cleanup including audio
+                releaseEntity(entity)
+                // Remove from templates after release
+                entityTemplates.removeValue(forKey: key) // Remove immediately after release
+                #if DEBUG
+                print("✅ Released asset: \(key)")
+                #endif
+            } else {
+                #if DEBUG
+                print("⚠️ Asset not found in cache: \(key)")
+                #endif
+            }
+        }
+         
+        // Log final state
+        print("\n📊 Updated template cache size: \(entityTemplates.count) entities")
+        if let remainingKeys = entityTemplates.keys.first {
+            print("🔒 Remaining asset: \(remainingKeys)")
+        }
+        print("✅ Completed build ADC environment cleanup\n")
     }
     
     /// Releases lab environment assets asynchronously
@@ -546,5 +553,42 @@ final class AssetLoadingManager {
     func trackAudioController(_ controller: AudioPlaybackController, for entity: Entity) {
         audioControllers[entity.id] = controller
         print("📝 Tracking audio controller for entity: \(entity.name)")
+    }
+
+    /// Releases an entity and all its resources
+    func releaseEntity(_ entity: Entity) {
+        // 1. Log the hierarchy before removal for debugging
+        #if DEBUG
+        print("\n📝 Releasing entity: \(entity.name)")
+        print("  - Child count: \(entity.children.count)")
+        print("  - Has components: \(entity.components.isEmpty ? "no" : "yes")")
+        #endif
+        // 2. Recursively release all children first
+        for child in entity.children {
+            releaseEntity(child)
+        }
+         
+        // 3. Stop any active audio playback
+        if let controller = audioControllers[entity.id] {
+            #if DEBUG
+            print("  - Stopping audio playback for entity: \(entity.name)")
+            #endif
+            controller.stop()
+            audioControllers.removeValue(forKey: entity.id)
+        }
+         
+        // 4. Remove all components
+        entity.components.removeAll()
+         
+        // 5. Remove from parent
+        if let parent = entity.parent {
+            #if DEBUG
+            print("  - Detaching from parent: \(parent.name)")
+            #endif
+            entity.removeFromParent()
+        }
+        #if DEBUG
+        print("✅ Released entity: \(entity.name)\n")
+        #endif
     }
 }

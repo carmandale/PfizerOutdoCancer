@@ -361,7 +361,7 @@ final class AppModel {
         }
 
         // 3. Clean up current phase
-        await cleanupCurrentPhase(for: newPhase)
+        await cleanupCurrentPhase(for: newPhase, adcDataModel: adcDataModel)
 
         // 4. Set the new phase before starting tracking
         currentPhase = newPhase
@@ -501,10 +501,9 @@ final class AppModel {
     }
 
 
-    private func cleanupCurrentPhase(for newPhase: AppPhase) async {
+    private func cleanupCurrentPhase(for newPhase: AppPhase, adcDataModel: ADCDataModel?) async {
         switch currentPhase {
         case .intro:
-            // now that intro and lab are combined, we need to cleanup both
             introState.cleanup()
             await assetLoadingManager.releaseIntroEnvironment()
             labState.cleanup()
@@ -512,6 +511,12 @@ final class AppModel {
         case .lab:
             labState.cleanup()
             await assetLoadingManager.releaseLabEnvironment()
+        case .building:
+            Logger.debug("Cleaning up building phase")
+            if let adcDataModel = adcDataModel {
+                adcDataModel.cleanup()
+            }
+            await assetLoadingManager.releaseBuildADCEnvironment()
         case .playing:
             if newPhase != .completed {
                 Logger.debug("I am in the playing phase and I am not transitioning to completed so I am cleaning up")
@@ -524,7 +529,6 @@ final class AppModel {
             if newPhase == .outro {
                 await gameState.fadeOutScene()
                 try? await Task.sleep(for: .seconds(0.5))
-                // Note: We're already preserving assets for outro transition
             } else {
                 Logger.debug("I am in the completed phase and transitioning to \(newPhase); cleaning up normally.")
                 await gameState.cleanup()
@@ -533,7 +537,7 @@ final class AppModel {
         case .outro:
             outroState.cleanup()
             await assetLoadingManager.releaseOutroEnvironment()
-        case .ready, .loading, .building, .error:
+        case .ready, .loading, .error:
             break // No cleanup needed.
         }
     }

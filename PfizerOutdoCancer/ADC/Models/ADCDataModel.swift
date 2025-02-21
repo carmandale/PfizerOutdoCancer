@@ -167,39 +167,37 @@ class ADCDataModel {
     
     // MARK: - Cleanup
     func cleanup() {
-        // Reset selections
+        Logger.info("\n=== Starting ADCDataModel Cleanup ===")
+        
+        // 1. Stop any active systems/audio first
+        isVOPlaying = false
+        voiceOverProgress = 0.0
+        
+        // 2. Reset all selections (user choices)
         selectedADCAntibody = nil
         selectedADCLinker = nil
         selectedADCPayload = nil
         selectedLinkerType = nil
         selectedPayloadType = nil
         
-        // Reset indices
+        // 3. Reset working indices and counters
         linkersWorkingIndex = 0
         payloadsWorkingIndex = 0
-        
-        // Reset build step
-        adcBuildStep = 0
-        
-        // Reset counters
         placedLinkerCount = 0
         placedPayloadCount = 0
         
-        // Reset flags
-        isVOPlaying = false
+        // 4. Reset build step and state flags
+        adcBuildStep = 0
         hasInitialVOCompleted = false
         antibodyVOCompleted = false
         antibodyStepCompleted = false
         showSelector = false
         manualStepTransition = false
         
-        // Reset voice-over progress
-        voiceOverProgress = 0.0
-        
-        // Reset step states
+        // 5. Reset step states array
         stepStates = [StepState(), StepState(), StepState()]
         
-        // Reset positioning state
+        // 6. Reset positioning and environment state
         isRootSetupComplete = false
         isEnvironmentSetupComplete = false
         isHeadTrackingRootReady = false
@@ -208,8 +206,10 @@ class ADCDataModel {
         
         Logger.info("""
         🧹 ADCDataModel Cleanup Complete:
+        ├─ Stopped active systems
         ├─ Reset all selections and counters
-        ├─ Cleared all flags and states
+        ├─ Reset build step and flags
+        ├─ Reset step states
         ├─ Reset positioning state
         └─ Ready for new session
         """)

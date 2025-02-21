@@ -184,10 +184,10 @@ struct ADCOptimizedImmersive: View {
         }
         .onChange(of: appModel.currentPhase) { oldPhase, newPhase in
             if oldPhase == .building && newPhase != .building {
-                print("\n=== ADCOptimizedImmersive Phase Change Cleanup ===")
+                print("\n=== ADCOptimizedImmersive Phase Change ===")
                 print("Transitioning from .building to \(newPhase)")
-                cleanup()  // Perform complete cleanup
-                print("✅ ADCOptimizedImmersive cleanup complete\n")
+                // Cleanup is now handled by AppModel
+                print("✅ ADCOptimizedImmersive phase change complete\n")
             }
         }
         .onChange(of: dataModel.adcBuildStep) { oldValue, newValue in
@@ -356,8 +356,8 @@ struct ADCOptimizedImmersive: View {
                                     
                                     // Move main view back
                                     os_log(.debug, "ITR..Moving main view back to original position")
-                                    await mainViewEntity.animatePositionAndRotation(
-                                        position: SIMD3(0.5, 0, -0.2),
+                                    await mainViewEntity.performSpatialTransition(
+                                        toPosition: SIMD3(0.5, 0, -0.2),
                                         rotation: 0,
                                         duration: 1.0,
                                         timing: .easeInOut,
@@ -444,11 +444,12 @@ struct ADCOptimizedImmersive: View {
                         
 //                        try? await mainEntity.animatePosition(to: SIMD3(-0.125, 0, 0), duration: 1.0, delay: 0.0)
 //                        os_log(.debug, "ITR..Attempting to animate main view position")
-                        await mainViewEntity.animatePositionAndRotation(
-                            position: SIMD3(-0.5, 0, 0.2),
+                        await mainViewEntity.performSpatialTransition(
+                            toPosition: SIMD3(-0.5, 0, 0.2),
                             rotation: 30,
                             duration: 1.0,
-                            delay: 0.5
+                            delay: 0.5,
+                            timing: .easeInOut
                         )
                         
                         // After position animation, fade in antibody with delay
