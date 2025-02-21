@@ -35,8 +35,8 @@ extension AppModel {
         var position: SIMD3<Float> {
             switch self {
             case .intro:    return SIMD3<Float>(0.0, -1.5, -1.0)
-            case .building: return SIMD3<Float>(0.0, 1.2, -1.0)
-            case .playing:  return SIMD3<Float>(0.0, 1.5, -1.0)
+            case .building: return SIMD3<Float>(0.0, 0.88, -1.0)
+            case .playing:  return SIMD3<Float>(0.0, 1.5, -2.0)
             }
         }
     }
