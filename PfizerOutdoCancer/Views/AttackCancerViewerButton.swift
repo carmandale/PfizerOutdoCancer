@@ -79,7 +79,8 @@ struct AttackCancerViewerButton: View {
     #endif
     
     private var shouldShowButton: Bool {
-        isDebugMode || appModel.hasBuiltADC
+        // Only show in debug mode or when ADC is built AND lab is ready
+        isDebugMode || (appModel.hasBuiltADC && appModel.readyToStartLab)
     }
     
     private func cycleTheme() {
@@ -123,7 +124,7 @@ struct AttackCancerViewerButton: View {
                 .transition(Appear())
             }
         }
-        .animation(.spring(response: 0.5, dampingFraction: 0.7), value: shouldShowButton)
+        .animation(.spring(response: 0.5, dampingFraction: 0.7), value: shouldShowButton && appModel.readyToStartLab)
     }
 }
 

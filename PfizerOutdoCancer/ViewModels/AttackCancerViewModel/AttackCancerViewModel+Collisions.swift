@@ -71,7 +71,8 @@ extension AttackCancerViewModel {
         }
     }
     
-    private func handleADCToCellCollision(adc: Entity, cell: Entity, collision: CollisionEvents.Began) {
+    @MainActor
+    func handleADCToCellCollision(adc: Entity, cell: Entity, collision: CollisionEvents.Began) {
         print("\n=== ADC-Cell Collision ===")
         print("ADC: \(adc.name)")
         print("Cell: \(cell.name)")
@@ -95,11 +96,6 @@ extension AttackCancerViewModel {
         
         print("💥 ADC hit cell \(cellID)")
         print("Current hit count: cellParameters \(parameters.hitCount)")
-        
-        // Update parameters (source of truth) - but trying stateComponent.parameters.hitCount += 1 because it was double counting
-        // stateComponent.parameters.hitCount += 1
-        // stateComponent.parameters.wasJustHit = true
-
         print("Current hit count: StateComponent \(stateComponent.parameters.hitCount)")
         
         // Apply scaled physics impact if enabled
@@ -128,19 +124,6 @@ extension AttackCancerViewModel {
                 print("Tutorial cell impact - using scale: \(parameters.impactScale), impulse: \(scaledImpulse)")
             }
         }
-        
-        print("New hit count: \(parameters.hitCount)")
-        print("Required hits: \(parameters.requiredHits)")
-        
-        // Check if cell is destroyed
-//        if parameters.hitCount >= parameters.requiredHits {
-//            print("🎯 Cell \(cellID) destroyed!")
-//            parameters.isDestroyed = true
-//            // Let the CancerCellSystem handle the destruction effects
-//        }
-        
-        // Always remove the ADC
-        // adc.removeFromParent()
     }
     
     private func shouldHandleCollision(_ collision: CollisionEvents.Began) -> Bool {
@@ -173,4 +156,38 @@ extension AttackCancerViewModel {
         
         return hasCollision
     }
+
+    // @MainActor
+    // func handleADCToCellCollision(adcEntity: Entity, cellEntity: Entity) async {
+    //     guard let complexCell = cellEntity.findEntity(named: "cancerCell_complex"),
+    //           let stateComponent = complexCell.components[CancerCellStateComponent.self],
+    //           let cellID = stateComponent.parameters.cellID,
+    //           let cellParams = cellParameters.first(where: { $0.cellID == cellID }),
+    //           !cellParams.isDestroyed else {
+    //         return
+    //     }
+        
+    //     // Update hit count and check for destruction
+    //     stateComponent.parameters.currentHits += 1
+        
+    //     if stateComponent.parameters.currentHits >= stateComponent.parameters.requiredHits {
+    //         // Cell is destroyed
+    //         cellParams.isDestroyed = true
+    //         appModel.gameState.cellsDestroyed += 1
+            
+    //         // Recycle the cell back to the pool
+    //         if let pool = cancerCellPool {
+    //             await pool.recycleCell(cellEntity)
+    //         }
+            
+    //         // Play destruction effects
+    //         await playDestructionEffects(for: complexCell)
+            
+    //         Logger.info("🎯 Cell \(cellID) destroyed - Total destroyed: \(appModel.gameState.cellsDestroyed)")
+    //     } else {
+    //         // Cell was hit but not destroyed
+    //         await playHitEffects(for: complexCell)
+    //         Logger.info("🎯 Cell \(cellID) hit - Current hits: \(stateComponent.parameters.currentHits)/\(stateComponent.parameters.requiredHits)")
+    //     }
+    // }
 }

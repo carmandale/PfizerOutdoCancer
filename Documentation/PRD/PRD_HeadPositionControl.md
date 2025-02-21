@@ -3,14 +3,32 @@
 ## Overview
 The goal is to enhance control over head-based positioning within immersive scenes by enabling explicit on-demand updates. Currently, the `PositioningSystem` automatically updates an entity's position when the `needsPositioning` flag in its `PositioningComponent` is true. After an update, the flag resets to false. By introducing explicit control, developers can choose when any immersive view (e.g., Intro, Lab, AttackCancer) should re-evaluate and update its positioning relative to the user's head position.
 
+## System Setup
+### Component Registration
+```swift
+// In PfizerOutdoCancerApp.swift
+PositioningSystem.registerSystem()
+PositioningComponent.registerComponent()
+```
+
+### AppModel Reference Setup
+```swift
+// Required setup for PositioningSystem
+static func setAppModel(_ appModel: AppModel) {
+    Logger.debug("🔄 PositioningSystem.setAppModel called")
+    sharedAppModel = appModel
+}
+```
+
 ## Current Behavior
 - **Automatic Update:**  
   - Entities with a `PositioningComponent` having `needsPositioning` set to true are repositioned according to the user's current head position.
   - Once updated, the flag resets to false, preventing continuous updates.
   
 - **Usage in the Codebase:**  
-  - *IntroViewModel.swift* contains a `refreshPosition()` method that calculates the new position based on a device anchor.
-  - *LabViewModel.swift* and *AttackCancerViewModel.swift* set up their root entities with a `PositioningComponent` but currently rely on the initial setup, missing an explicit repositioning trigger.
+  - Views like *IntroView.swift*, *LabView.swift*, and *AttackCancerView.swift* set up their root entities with a `PositioningComponent` and use state management to trigger repositioning.
+  - Position updates are triggered through state changes (`shouldUpdateHeadPosition`) and handled by view modifiers.
+  - Each view implements proper state tracking for positioning progress and completion.
 
 ## Proposed Changes
 

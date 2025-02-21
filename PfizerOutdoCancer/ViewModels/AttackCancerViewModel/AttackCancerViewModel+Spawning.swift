@@ -3,6 +3,7 @@ import RealityKit
 import RealityKitContent
 
 extension AttackCancerViewModel {
+    // MARK: REGULAR SPAWN
     func spawnCancerCells(in root: Entity, from template: Entity, count: Int) async {
         Logger.info("\n=== Starting Cancer Cell Spawning ===")
         Logger.info("Target count: \(count)")
@@ -36,6 +37,7 @@ extension AttackCancerViewModel {
         Logger.info("Initial cellsDestroyed count: \(appModel.gameState.cellsDestroyed)")
     }
     
+    // MARK: SPAWN SINGLE CELL
     private func spawnSingleCancerCell(in root: Entity, from template: Entity, index: Int, preferFront: Bool) async -> Entity? {
         Logger.info("\n=== Spawning Cancer Cell \(index) ===")
         
@@ -67,6 +69,9 @@ extension AttackCancerViewModel {
             root.addChild(cell)
             setupAttachmentPoints(for: cell, complexCell: complexCell, cellID: index)
 
+            Logger.info("\n=== Cancer Cell Single Spawn \(index) Hierarchy ===")
+            appModel.assetLoadingManager.inspectEntityHierarchy(cell)
+
             // Fade in after setup
             await complexCell.fadeOpacity(to: 1.0, duration: 0.5)
             Logger.info("✅ Successfully spawned cell \(index)")
@@ -95,7 +100,7 @@ extension AttackCancerViewModel {
         return forceEntity
     }
     
-    private func configureCellPosition(_ cell: Entity, preferFront: Bool) {
+    func configureCellPosition(_ cell: Entity, preferFront: Bool) {
         // Generate random orbit parameters
         let radius = Float.random(in: 2.0...5.0)  // Increased radius range for more spread
         let height = Float.random(in: 0.0...3.5)  // Increased height range, starting from ground level
@@ -118,7 +123,7 @@ extension AttackCancerViewModel {
         ]
     }
     
-    private func configureCellPhysics(_ cell: Entity) {
+    func configureCellPhysics(_ cell: Entity) {
         // REF: Planet uses radius = 0.12 or 0.25 in reference project
         let shape2 = ShapeResource.generateSphere(radius: 0.32)  // Cancer cell size
         let collisionComponent2 = CollisionComponent(
@@ -141,7 +146,7 @@ extension AttackCancerViewModel {
         cell.components.set(PhysicsMotionComponent())
     }
     
-    private func configureCellMovement(_ cell: Entity) {
+    func configureCellMovement(_ cell: Entity) {
         // Calculate orbital parameters
         let radius = sqrt(cell.position.x * cell.position.x + cell.position.z * cell.position.z)
         let theta = atan2(cell.position.x, cell.position.z)
@@ -186,7 +191,7 @@ extension AttackCancerViewModel {
         cell.components.set(CancerCellMovementData(baseLinearVelocity: orbitDirection * orbitSpeed))
     }
     
-    private func setupCellIdentification(_ cell: Entity, cellID: Int) {
+    func setupCellIdentification(_ cell: Entity, cellID: Int) {
         // Verify we have the marker component from RCP
         if cell.components.has(CancerCellComponent.self) {
             // Only add state component if it doesn't already exist
@@ -199,7 +204,7 @@ extension AttackCancerViewModel {
         }
     }
     
-    private func setupAttachmentPoints(for cell: Entity, complexCell: Entity, cellID: Int) {
+    func setupAttachmentPoints(for cell: Entity, complexCell: Entity, cellID: Int) {
         if let scene = cell.scene {
             let attachPointQuery = EntityQuery(where: .has(AttachmentPoint.self))
             for entity in scene.performQuery(attachPointQuery) {
@@ -217,6 +222,50 @@ extension AttackCancerViewModel {
                 }
             }
         }
+    }
+    
+    // MARK: POOL SPAWN
+    // NEW: Pooled version of spawn
+    @MainActor
+    func spawnCancerCellsFromPool() async {
+        Logger.info("\n=== Starting Cancer Cell Spawning (Pooled) ===")
+        Logger.info("Target count: \(maxCancerCells)")
+        
+        guard let root = rootEntity else {
+            Logger.error("❌ Cannot spawn cells - root entity not found")
+            return
+        }
+        
+        // Create force entity with central gravity - same as original
+        let forceEntity = createForceEntity()
+        root.addChild(forceEntity)
+        
+        // Track front vs back spawns to ensure good distribution
+        var frontSpawnCount = 0
+        
+        // Spawn cells sequentially
+        for _ in 0..<maxCancerCells {
+            // Prefer front until we have enough there (50% in front)
+            let preferFront = frontSpawnCount < Int(Double(maxCancerCells) * 0.5)
+            
+            if let cell = acquireCell(preferFront: preferFront) {
+                // Track if this was a front spawn
+                if preferFront {
+                    frontSpawnCount += 1
+                }
+                
+                // Fade in the cell
+                if let complexCell = cell.findEntity(named: "cancerCell_complex") {
+                    await complexCell.fadeOpacity(to: 1.0, duration: 0.5)
+                }
+                
+                // Small delay between spawns
+                try? await Task.sleep(for: .seconds(0.2))
+            }
+        }
+        
+        Logger.info("=== Finished Spawning ===")
+        Logger.info("Total cells spawned: \(maxCancerCells)")
     }
     
     func setupTutorialCancerCell(_ cell: Entity) {
@@ -252,6 +301,8 @@ extension AttackCancerViewModel {
                 category: .attackCancerEnvironment
             )
             Logger.info("✅ Test Fire Cell: Retrieved test_fire_cell")
+            Logger.info("\n=== Test Fire Cell Hierarchy ===")
+            
              
              if let testFireCellParent = root.findEntity(named: "headTrackingRoot") {
                  testFireScene.position = testFireCellParent.position
@@ -286,6 +337,8 @@ extension AttackCancerViewModel {
                   // Fade in after setup
                   await complexCell.fadeOpacity(to: 1.0, duration: 0.5)
                   Logger.info("✅ Successfully spawned cell \(index)")
+
+                  appModel.assetLoadingManager.inspectEntityHierarchy(testFireScene)
 
                   // set isTestFireActive to true
                   appModel.gameState.isTestFireActive = true

@@ -209,22 +209,43 @@ extension ADCMovementSystem {
         let entities = scene.performQuery(query)
         
         for entity in entities {
-            guard let attachComponent = entity.components[AttachmentPoint.self],
+            // First check the attachment point itself
+            guard entity.isEnabled,
+                  let attachComponent = entity.components[AttachmentPoint.self],
                   !attachComponent.isOccupied else {
                 continue
             }
             
+            // Find and validate the cancer cell
             guard let cancerCell = findParentCancerCell(for: entity, in: scene),
+                cancerCell.isEnabled, // make sure it is enabled
                   let stateComponent = cancerCell.components[CancerCellStateComponent.self],
                   let cellID = stateComponent.parameters.cellID,
                   !stateComponent.parameters.isDestroyed else {
                 continue
             }
             
+            // Check hit count
             if stateComponent.parameters.hitCount >= stateComponent.parameters.requiredHits {
                 continue
             }
             
+            // NEW: Check the entire hierarchy is enabled
+            var isHierarchyEnabled = true
+            var current: Entity? = cancerCell
+            while let parent = current?.parent {
+                if !parent.isEnabled {
+                    isHierarchyEnabled = false
+                    break
+                }
+                current = parent
+            }
+            
+            // Skip if any parent is disabled
+            guard isHierarchyEnabled else {
+                continue
+            }
+
             let attachPosition = entity.position(relativeTo: nil)
             let cellCenter = cancerCell.position(relativeTo: nil)
             

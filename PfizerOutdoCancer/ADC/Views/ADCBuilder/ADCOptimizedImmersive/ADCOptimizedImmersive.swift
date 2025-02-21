@@ -625,6 +625,10 @@ struct ADCOptimizedImmersive: View {
     }
     
     private func setupEntitiesAndMaterials(in root: Entity) async {
+        // Reset main view entity transform explicitly
+        mainViewEntity.transform = .init(scale: .one, rotation: .init(), translation: .zero)
+        os_log(.debug, "ADCOptimizedImmersive: Reset mainViewEntity transform to default")
+        
         // Add IBL setup first
         do {
             try await IBLUtility

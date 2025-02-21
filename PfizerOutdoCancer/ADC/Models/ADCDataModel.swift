@@ -188,13 +188,31 @@ class ADCDataModel {
         // Reset flags
         isVOPlaying = false
         hasInitialVOCompleted = false
+        antibodyVOCompleted = false
+        antibodyStepCompleted = false
         showSelector = false
+        manualStepTransition = false
+        
+        // Reset voice-over progress
+        voiceOverProgress = 0.0
         
         // Reset step states
         stepStates = [StepState(), StepState(), StepState()]
         
         // Reset positioning state
+        isRootSetupComplete = false
+        isEnvironmentSetupComplete = false
+        isHeadTrackingRootReady = false
+        shouldUpdateHeadPosition = false
         isPositioningComplete = false
+        
+        Logger.info("""
+        🧹 ADCDataModel Cleanup Complete:
+        ├─ Reset all selections and counters
+        ├─ Cleared all flags and states
+        ├─ Reset positioning state
+        └─ Ready for new session
+        """)
     }
     
     // MARK: - Setup Methods

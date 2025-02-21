@@ -297,12 +297,18 @@ extension ADCOptimizedImmersive {
         currentVOController = nil
         popAudioPlaybackController?.stop()
         popAudioPlaybackController = nil
-//        audioStorage?.cleanup()
         
-        // Reset entities
+        // Reset saved positions
+        initialLinkerPosition = nil
+        initialPayloadPosition = nil
+        
+        // Reset entities and their transforms
         mainEntity?.removeFromParent()
         mainViewEntity.removeFromParent()
         antibodyRootEntity?.removeFromParent()
+        
+        // Reset transforms explicitly
+        mainViewEntity.transform = .init(scale: .one, rotation: .init(), translation: .zero)
         
         // Remove all components before removing entities
         antibodyEntity?.components.remove(ModelComponent.self)
@@ -311,13 +317,16 @@ extension ADCOptimizedImmersive {
         
         // Clear all entities
         mainEntity = nil
-        mainViewEntity = Entity()
+        mainViewEntity = Entity()  // Create fresh entity with default transform
         antibodyRootEntity = nil
         antibodyEntity = nil
         linkerEntity = nil
         payloadEntity = nil
         
-        // Clear working entities
+        // Clear working entities and reset their transforms
+        workingLinker?.transform = .init(scale: .one, rotation: .init(), translation: .zero)
+        workingPayloadInner?.transform = .init(scale: .one, rotation: .init(), translation: .zero)
+        workingPayloadOuter?.transform = .init(scale: .one, rotation: .init(), translation: .zero)
         workingLinker = nil
         workingPayloadInner = nil
         workingPayloadOuter = nil
@@ -355,6 +364,8 @@ extension ADCOptimizedImmersive {
             originalPayloadInnerMaterial = nil
             originalPayloadOuterMaterial = nil
             outlineMaterial = nil
+            
+            os_log(.debug, "ITR..cleanup(): ✅ All transforms and positions reset")
         }
     }
 }

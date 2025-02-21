@@ -473,8 +473,8 @@ public class ADCMovementSystem: System {
                     if Self.retargetADC(entity, &adcComponent, currentPosition: entity.position(relativeTo: nil), in: context.scene) {
                         // Valid target found, transition to moving state
                         adcComponent.state = .moving
-                        adcComponent.lookupTable = nil
-                        adcComponent.traveledDistance = 0.0
+                        // adcComponent.lookupTable = nil
+                        // adcComponent.traveledDistance = 0.0
                         adcComponent.startWorldPosition = entity.position(relativeTo: nil)
                         entity.components[ADCComponent.self] = adcComponent
                         continue

@@ -81,12 +81,31 @@ extension AttackCancerViewModel {
             // Set up the scene
             scene = root.scene
             
+            // Initialize cancer cell pool early
+            do {
+                Logger.info("🎯 Pre-initializing cancer cell pool...")
+                let cancerCellTemplate = try await appModel.assetLoadingManager.instantiateAsset(
+                    withName: "cancer_cell",
+                    category: .cancerCell
+                )
+                
+                let createdCount = await initializePool(in: root, template: cancerCellTemplate)
+                Logger.info("✅ Pool pre-initialized with \(createdCount) cells")
+            } catch {
+                Logger.error("❌ Failed to pre-initialize cancer cell pool: \(error)")
+            }
+
+            // prepare audio
+            await prepareEndGameAudio()
+            
             Logger.info("""
             
             ✅ Environment Setup Complete
             ├─ IBL: Configured
             ├─ Environment: Loaded
-            └─ Collisions: Setup
+            ├─ Collisions: Setup
+            ├─ Cell Pool: Pre-initialized
+            └─ End Game Audio: Loaded
             """)
             
             environmentLoaded = true
@@ -115,15 +134,8 @@ extension AttackCancerViewModel {
                     readyToStartGame = true
                     Logger.info(">>> Setting readyToStartGame to true...\n")
 
-                    // wait 2 seconds before setting isTestFireActive to false
-                    // try? await Task.sleep(for: .seconds(2))
-
                     isTestFireActive = false
                     Logger.info(">>> Setting isTestFireActive to false...\n")
-                    
-                    // only play the start button VO if the previous VO is finished.
-                    // moved this to the onChange
-                    
                 } else {
                     // For other cells, check game conditions
                     self.checkGameConditions()
@@ -267,6 +279,36 @@ extension AttackCancerViewModel {
 
     @MainActor
     func setupGameContent(in root: Entity, attachments: RealityViewAttachments? = nil) async {
+        Logger.info("\n=== Initializing Game Content ===")
+        
+        // Reset game state before starting main game
+        appModel.gameState.cellsDestroyed = 0
+        // cellParameters.removeAll()
+        
+        // Reset pool to ensure clean state
+        // Logger.info("Resetting cell pool to clean state...")
+        // resetPool()
+        
+        // Use pooled spawning
+        await spawnCancerCellsFromPool()
+        
+        // Verify and initialize each cell's state
+        for i in 0..<maxCancerCells {
+            if let cell = root.findEntity(named: "cancer_cell_\(i)")?.findEntity(named: "cancerCell_complex") {
+                if let stateComponent = cell.components[CancerCellStateComponent.self] {
+                    Logger.info("🎯 Cell \(i) initialized - Required hits: \(stateComponent.parameters.requiredHits)")
+                }
+            }
+        }
+        
+        Logger.info("Cell Parameters after setup:")
+        for (index, params) in cellParameters.enumerated() {
+            Logger.info("  Cell \(index): isTutorialCell=\(params.isTutorialCell), isDestroyed=\(params.isDestroyed)")
+        }
+    }
+
+    @MainActor
+    func setupGameContentOriginal(in root: Entity, attachments: RealityViewAttachments? = nil) async {
         Logger.info("\n=== Initializing Cell States ===")
         
         // Reset game state before starting main game

@@ -37,8 +37,9 @@ struct ADCBuilderViewerButton: View {
         )
         .fontWeight(.bold)
         .controlSize(.extraLarge)
-        .opacity(appModel.labState.shouldShowADCButton ? 1 : 0)
-        .animation(.spring(response: 0.5, dampingFraction: 0.7), value: appModel.labState.shouldShowADCButton)
+        .opacity(appModel.labState.shouldShowADCButton && appModel.readyToStartLab ? 1 : 0)
+        .animation(.spring(response: 0.5, dampingFraction: 0.7), 
+                  value: appModel.labState.shouldShowADCButton && appModel.readyToStartLab)
         .transition(Appear())
     }
 }

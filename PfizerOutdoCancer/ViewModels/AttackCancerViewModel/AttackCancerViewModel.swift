@@ -78,6 +78,9 @@ final class AttackCancerViewModel {
     var victorySequenceAudioSource: Entity?
     var endingSequenceController: AudioPlaybackController?
     var victorySequenceController: AudioPlaybackController?
+    // Add flags to track if sequences have played
+    var hasPlayedEndingSequence = false
+    var hasPlayedVictorySequence = false
     
     // MARK: - Transition Properties
     var isTransitioningOut = false
@@ -108,12 +111,17 @@ final class AttackCancerViewModel {
         tutorialComplete && testFireComplete && isHopeMeterRunning
     }
     
-    // MARK: - ADC Properties
+    // MARK: CELL PROPERTIES
+    // ADC Properties
     var adcTemplate: Entity?
     var hasFirstADCBeenFired = false
     
-    // MARK: - Cell State Properties
+    // Cell State Properties
     var cellParameters: [CancerCellParameters] = []
+    
+    // Pool Properties
+    var availableCells: [Entity] = []
+    var activeCells: [Entity] = []
     
     // Add after other private properties
     let tutorialADCDelays: [TimeInterval] = [
@@ -261,7 +269,6 @@ final class AttackCancerViewModel {
             }
         }
         
-        // await resetGameState()
         print("✅ Game tear down complete\n")
     }
 
@@ -324,6 +331,7 @@ final class AttackCancerViewModel {
         environmentLoaded = false
         isPositioningComplete = false
         
+        
         cleanupState = .complete
         isCleaningUp = false
         print("✅ Completed AttackCancerViewModel cleanup\n")
@@ -362,28 +370,7 @@ final class AttackCancerViewModel {
         return nil
     }
 
-    func validateCellAlignment() {
-        print("\n=== Validating Cell Alignment ===")
-        for (index, parameters) in cellParameters.enumerated() {
-            // Validate cellID matches index
-            assert(parameters.cellID == index, "Cell parameter ID mismatch: expected \(index), got \(String(describing: parameters.cellID))")
-            
-            // Validate entity exists and has matching state
-            guard let cell = findCancerCell(withID: index),
-                  let stateComponent = cell.components[CancerCellStateComponent.self] else {
-                assertionFailure("Missing cell or state component for index \(index)")
-                continue
-            }
-            
-            // Validate state component references same parameters
-            assert(stateComponent.parameters.cellID == parameters.cellID, 
-                   "State component parameter mismatch for cell \(index)")
-            
-            print("✅ Cell \(index) alignment validated")
-        }
-        print("=== Alignment Validation Complete ===\n")
-    }
-
+    // MARK: FADE OUT SCENE
     /// Fades out the entire scene gracefully
     /// - Returns: Void
     @MainActor
