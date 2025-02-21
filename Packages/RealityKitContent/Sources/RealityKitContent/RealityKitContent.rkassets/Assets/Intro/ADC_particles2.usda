@@ -46,7 +46,7 @@ def Xform "Root"
                     double particleLifeSpan = 10
                     float particleSize = 0.2
                     float particleSizeVariation = 0.1
-                    float3 radialGravityCenter = (0, 0, 0)
+                    float radialGravityStrength = 0
                     float sizeMultiplierAtEndOfLifespanPower = 2
                     float4 startColorA = (1, 1, 1, 1)
                     float4 startColorB = (0.10395561, 0.18016414, 1, 1)
@@ -71,6 +71,15 @@ def Xform "Root"
                     asset particleImage = @../../ParticleEmitterPresetTextures/twinkle.exr@
                     float spreadingAngle = 0
                 }
+            }
+        }
+
+        def RealityKitComponent "Anchoring"
+        {
+            uniform token info:id = "RealityKit.Anchoring"
+
+            def RealityKitStruct "descriptor"
+            {
             }
         }
     }
