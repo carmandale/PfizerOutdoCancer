@@ -155,6 +155,114 @@ class AudioSystemExample {
         // audioSystem.stopPlayback(sourceID: sourceID)
     }
     
+    // MARK: - Audio Fade Examples
+    
+    /// Play background music with fade-in
+    func playBackgroundMusicWithFade() async {
+        guard let audioSystem = audioSystem else { return }
+        
+        // First ensure the source exists
+        if audioSources(containsID: "backgroundMusic") == false {
+            audioSystem.createSource(
+                id: "backgroundMusic",
+                parent: rootEntity,
+                type: .ambient,
+                properties: SpatialAudioComponent(gain: -100.0) // Start silent
+            )
+        }
+        
+        // Play the music (looped)
+        audioSystem.playSound(
+            resourceID: "hope_restored",
+            sourceID: "backgroundMusic",
+            loop: true
+        )
+        
+        // Fade in over 3 seconds
+        Logger.audio("Fading in background music over 3 seconds...")
+        await audioSystem.fadeIn(
+            sourceID: "backgroundMusic",
+            targetGain: -10.0, // Not too loud
+            duration: 3.0
+        )
+        Logger.audio("Background music fade-in complete")
+    }
+    
+    /// Fade out and stop background music
+    func stopBackgroundMusicWithFade() async {
+        guard let audioSystem = audioSystem else { return }
+        
+        Logger.audio("Fading out background music over 2 seconds...")
+        await audioSystem.fadeOut(
+            sourceID: "backgroundMusic",
+            duration: 2.0,
+            stopAfterFade: true // Automatically stop after fade
+        )
+        Logger.audio("Background music fade-out complete")
+    }
+    
+    /// Demonstrate fade to a specific level
+    func adjustMusicVolumeWithFade() async {
+        guard let audioSystem = audioSystem else { return }
+        
+        // Fade to a quieter level for dialog
+        Logger.audio("Fading music to lower level for dialog...")
+        await audioSystem.fade(
+            sourceID: "backgroundMusic",
+            to: -20.0, // Very quiet but still audible
+            duration: 1.5
+        )
+        
+        // Simulate dialog happening
+        try? await Task.sleep(for: .seconds(5.0))
+        
+        // Fade back to normal level after dialog
+        Logger.audio("Fading music back to normal level...")
+        await audioSystem.fade(
+            sourceID: "backgroundMusic",
+            to: -10.0, // Normal background level
+            duration: 1.5
+        )
+    }
+    
+    /// Demonstrate using the convenience method to attach with fade-in
+    func playObjectAmbienceWithFade(entity: Entity) async {
+        guard let audioSystem = audioSystem else { return }
+        
+        Logger.audio("Attaching and fading in ambience to object...")
+        let (sourceID, _) = await audioSystem.attachAndFadeIn(
+            resourceID: "heartbeat",
+            to: entity,
+            loop: true,
+            gain: -5.0, // Final gain after fade
+            type: .spatial,
+            fadeDuration: 2.0
+        )
+        
+        Logger.audio("Object ambience attached with ID: \(sourceID)")
+    }
+    
+    // Helper method to check if a source exists
+    private func audioSources(containsID id: String) -> Bool {
+        guard let audioSystem = audioSystem else { return false }
+        
+        // We don't have direct access to audioSources dictionary, so we'll try to play a sound
+        // and see if we get a warning in the logs. This is a workaround for the example.
+        let controller = audioSystem.playSound(
+            resourceID: "tone_cross", // Use any loaded resource
+            sourceID: id,
+            loop: false
+        )
+        
+        // If we got a controller, the source exists; stop it immediately
+        if let controller = controller {
+            controller.stop()
+            return true
+        }
+        
+        return false
+    }
+    
     // MARK: - Audio Property Control Example
     
     /// Adjust spatial audio properties
