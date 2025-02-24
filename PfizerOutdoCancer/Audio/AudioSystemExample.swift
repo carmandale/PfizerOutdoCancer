@@ -2,9 +2,11 @@ import Foundation
 import RealityKit
 import SwiftUI
 import Combine
+import Observation
 
 /// Example class showing how to use the AudioSystem
 /// This is for reference only and is not meant to be used directly
+@Observable
 class AudioSystemExample {
     // Core properties
     private var audioSystem: AudioSystem?

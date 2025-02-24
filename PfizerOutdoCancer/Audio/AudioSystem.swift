@@ -2,9 +2,10 @@ import Foundation
 import RealityKit
 import SwiftUI
 import Combine
+import Observation
 
 /// A reusable system for managing spatial audio in visionOS
-@MainActor
+@Observable
 class AudioSystem {
     // MARK: - Properties
     
@@ -439,6 +440,111 @@ class AudioSystem {
         }
     }
     
+    // MARK: - Audio Fading
+    
+    /// Fade in audio playback from silence to the specified gain level
+    /// - Parameters:
+    ///   - sourceID: ID of the source to fade in
+    ///   - targetGain: Target gain level in decibels (defaults to current source gain)
+    ///   - duration: Duration of the fade in seconds
+    /// - Returns: True if fade was started, false if source not found
+    @discardableResult
+    func fadeIn(sourceID: String, targetGain: Float? = nil, duration: TimeInterval = 1.0) async -> Bool {
+        guard let source = audioSources[sourceID], !source.controllers.isEmpty else {
+            Logger.audioWarning("Attempted to fade in non-existent or silent source: \(sourceID)")
+            return false
+        }
+        
+        // Determine target gain (use existing or provided)
+        let finalGain = targetGain ?? (source.entity.spatialAudio?.gain ?? 0.0)
+        
+        Logger.audio("Fading in source '\(sourceID)' to \(finalGain) dB over \(duration) seconds")
+        
+        // Start with silence
+        if let spatialAudio = source.entity.spatialAudio {
+            let originalGain = spatialAudio.gain
+            spatialAudio.gain = -100.0 // Very quiet, but not -infinity to avoid potential issues
+            
+            // Apply fade to all active controllers
+            for controller in source.controllers {
+                // Fade in using built-in RealityKit functionality
+                await controller.fade(to: finalGain, duration: duration)
+            }
+            
+            // If no controllers (unusual case), just directly set the gain
+            if source.controllers.isEmpty, let spatialAudio = source.entity.spatialAudio {
+                // Simulate fade with direct gain changes
+                withAnimation(.linear(duration: duration)) {
+                    spatialAudio.gain = finalGain
+                }
+            }
+        }
+        
+        return true
+    }
+    
+    /// Fade out audio playback from current level to silence
+    /// - Parameters:
+    ///   - sourceID: ID of the source to fade out
+    ///   - duration: Duration of the fade in seconds
+    ///   - stopAfterFade: Whether to stop playback after fade completes
+    /// - Returns: True if fade was started, false if source not found
+    @discardableResult
+    func fadeOut(sourceID: String, duration: TimeInterval = 1.0, stopAfterFade: Bool = true) async -> Bool {
+        guard var source = audioSources[sourceID], !source.controllers.isEmpty else {
+            Logger.audioWarning("Attempted to fade out non-existent or silent source: \(sourceID)")
+            return false
+        }
+        
+        Logger.audio("Fading out source '\(sourceID)' over \(duration) seconds")
+        
+        // Store original gain for potential restoration
+        let originalGain = source.entity.spatialAudio?.gain ?? 0.0
+        
+        // Apply fade to all active controllers
+        for controller in source.controllers {
+            // Fade out using built-in RealityKit functionality
+            await controller.fade(to: -100.0, duration: duration) // Very quiet, not -infinity
+            
+            // Stop after fade if requested
+            if stopAfterFade {
+                controller.stop()
+            }
+        }
+        
+        // If stopAfterFade is true, remove controllers
+        if stopAfterFade {
+            source.controllers.removeAll()
+            audioSources[sourceID] = source
+        }
+        
+        return true
+    }
+    
+    /// Fade audio from current level to a target level
+    /// - Parameters:
+    ///   - sourceID: ID of the source to fade
+    ///   - targetGain: Target gain level in decibels
+    ///   - duration: Duration of the fade in seconds
+    /// - Returns: True if fade was started, false if source not found
+    @discardableResult
+    func fade(sourceID: String, to targetGain: Float, duration: TimeInterval = 1.0) async -> Bool {
+        guard let source = audioSources[sourceID], !source.controllers.isEmpty else {
+            Logger.audioWarning("Attempted to fade non-existent or silent source: \(sourceID)")
+            return false
+        }
+        
+        Logger.audio("Fading source '\(sourceID)' to \(targetGain) dB over \(duration) seconds")
+        
+        // Apply fade to all active controllers
+        for controller in source.controllers {
+            // Use built-in RealityKit fade
+            await controller.fade(to: targetGain, duration: duration)
+        }
+        
+        return true
+    }
+    
     // MARK: - Audio Properties
     
     /// Set the gain (volume) for a source
@@ -575,6 +681,55 @@ class AudioSystem {
             sourceID: sourceID,
             loop: loop
         )
+        
+        return (sourceID, controller)
+    }
+    
+    /// Convenience method to attach, play with fade-in
+    /// - Parameters:
+    ///   - resourceID: ID of the resource to play
+    ///   - entity: Entity to attach to
+    ///   - offset: Position offset from entity
+    ///   - rotation: Rotation offset from entity
+    ///   - loop: Whether to loop the sound
+    ///   - gain: Final gain after fade
+    ///   - type: Type of audio source
+    ///   - fadeDuration: Duration of fade-in in seconds
+    /// - Returns: Tuple containing sourceID and controller
+    func attachAndFadeIn(
+        resourceID: String,
+        to entity: Entity,
+        offset: SIMD3<Float> = .zero,
+        rotation: simd_quatf = .init(),
+        loop: Bool = false,
+        gain: Float = 0.0,
+        type: AudioType = .spatial,
+        fadeDuration: TimeInterval = 1.0
+    ) async -> (sourceID: String, controller: AudioPlaybackController?) {
+        // Generate a unique ID based on entity and resource
+        let sourceID = "attached_\(entity.id)_\(resourceID)_\(UUID().uuidString.prefix(8))"
+        
+        // Create a source attached to the entity with initial gain set very low
+        _ = createSource(
+            id: sourceID,
+            parent: entity,
+            position: offset,
+            rotation: rotation,
+            type: type,
+            properties: SpatialAudioComponent(gain: -100.0) // Start silent
+        )
+        
+        // Play the sound
+        let controller = playSound(
+            resourceID: resourceID,
+            sourceID: sourceID,
+            loop: loop
+        )
+        
+        // Fade in if controller was created
+        if let controller = controller {
+            await controller.fade(to: gain, duration: fadeDuration)
+        }
         
         return (sourceID, controller)
     }
