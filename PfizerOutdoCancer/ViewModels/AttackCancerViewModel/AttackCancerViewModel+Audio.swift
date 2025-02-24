@@ -11,10 +11,164 @@ enum AudioSequenceType {
 extension AttackCancerViewModel {
     // MARK: - Audio Setup
     
+    /// Initializes the new AudioSystem and prepares it for use
+    /// Call this during environment setup
+    func initializeAndPrepareAudioSystem() async {
+        Logger.audio("\n=== Initializing new AudioSystem ===\n")
+        
+        // Skip if already initialized
+        guard !isAudioSystemInitialized, let rootEntity = rootEntity else {
+            Logger.audioWarning("Cannot initialize AudioSystem: rootEntity missing or already initialized")
+            return
+        }
+        
+        // Create the audio system
+        audioSystem = AudioSystem(
+            sceneContent: rootEntity,
+            bundle: realityKitContentBundle,
+            enableDebug: isAudioDebugVisible
+        )
+        
+        isAudioSystemInitialized = true
+        Logger.audio("✅ AudioSystem initialized")
+        
+        // Load resources
+        await loadAudioResourcesWithNewSystem()
+        
+        // Set up sources
+        setupAudioSourcesWithNewSystem()
+        
+        Logger.audio("✅ Audio system fully prepared and ready for use")
+    }
+    
+    /// Loads all audio resources using the new audio system
+    private func loadAudioResourcesWithNewSystem() async {
+        guard let audioSystem = audioSystem else { return }
+        
+        Logger.audio("Loading audio resources with new AudioSystem...")
+        
+        do {
+            // Load tone_cross
+            _ = try await audioSystem.loadResource(
+                id: "tone_cross",
+                path: "/Root/tone_cross_wav",
+                assetFile: "Assets/Game/endGame.usda"
+            )
+            
+            // Load heartbeat
+            _ = try await audioSystem.loadResource(
+                id: "heartbeat",
+                path: "/Root/heartbeat_progressive_slow_to_fast_wav",
+                assetFile: "Assets/Game/endGame.usda"
+            )
+            
+            // Load smashed
+            _ = try await audioSystem.loadResource(
+                id: "smashed",
+                path: "/Root/smashed_wav",
+                assetFile: "Assets/Game/endGame.usda"
+            )
+            
+            // Load magic_zing
+            _ = try await audioSystem.loadResource(
+                id: "magic_zing",
+                path: "/Root/magic_zing_wav",
+                assetFile: "Assets/Game/endGame.usda"
+            )
+            
+            // Load hope meter restored
+            _ = try await audioSystem.loadResource(
+                id: "hope_restored",
+                path: "/Root/Hope_Meter_Restored_wav",
+                assetFile: "Assets/Game/endGame.usda"
+            )
+            
+            // Load great job
+            _ = try await audioSystem.loadResource(
+                id: "great_job",
+                path: "/Root/GreatJob_mp3",
+                assetFile: "PressStart_VO.usda"
+            )
+            
+            Logger.audio("✅ All audio resources loaded with new system")
+        } catch {
+            Logger.audioError("Failed to load audio resources with new system: \(error.localizedDescription)")
+        }
+    }
+    
+    /// Sets up audio sources using the new audio system
+    private func setupAudioSourcesWithNewSystem() {
+        guard let audioSystem = audioSystem, let root = rootEntity else { return }
+        
+        Logger.audio("Setting up audio sources with new AudioSystem...")
+        
+        // Find head tracking entity for spatial audio positioned relative to user
+        if let headTrackingRoot = root.findEntity(named: "headTrackingRoot") {
+            // Create ending sequence source (directional, in front of user)
+            audioSystem.createSource(
+                id: "endingSequence",
+                parent: headTrackingRoot,
+                position: SIMD3<Float>(0, 0, 0.75),
+                type: .spatial,
+                properties: SpatialAudioComponent(
+                    gain: 1.0,
+                    directivity: .beam(focus: 1.0)
+                )
+            )
+            
+            // Create victory sequence source
+            audioSystem.createSource(
+                id: "victorySequence",
+                parent: headTrackingRoot,
+                position: SIMD3<Float>(0, 0, 0.75),
+                type: .spatial,
+                properties: SpatialAudioComponent(
+                    gain: 1.0,
+                    directivity: .beam(focus: 1.0)
+                )
+            )
+            
+            // Create great job sequence source
+            audioSystem.createSource(
+                id: "greatJob",
+                parent: headTrackingRoot,
+                position: SIMD3<Float>(0, 0, 0.75),
+                type: .spatial,
+                properties: SpatialAudioComponent(
+                    gain: 0.0,
+                    directLevel: 0.0,
+                    reverbLevel: -7.1,
+                    directivity: .beam(focus: 0.3),
+                    distanceAttenuation: .rolloff(factor: 0.5)
+                )
+            )
+            
+            Logger.audio("✅ Created audio sources for spatial sequences")
+        }
+        
+        // Create ambient sources attached to root
+        audioSystem.createSource(
+            id: "backgroundAmbience",
+            parent: root,
+            type: .ambient,
+            properties: SpatialAudioComponent(gain: -10.0)
+        )
+        
+        Logger.audio("✅ All audio sources set up with new system")
+    }
+    
     /// Toggles the visibility of the audio debug cone
     func toggleAudioDebugVisuals() {
         isAudioDebugVisible.toggle()
-        audioDebugCone?.isEnabled = isAudioDebugVisible
+        
+        if useNewAudioSystem {
+            // Use new audio system to toggle debug visuals
+            audioSystem?.toggleDebugVisualization(enabled: isAudioDebugVisible)
+        } else {
+            // Legacy approach
+            audioDebugCone?.isEnabled = isAudioDebugVisible
+        }
+        
         Logger.audio("Audio debug visuals: \(isAudioDebugVisible ? "shown" : "hidden")")
     }
     
@@ -47,6 +201,13 @@ extension AttackCancerViewModel {
     }
     
     func prepareEndGameAudio() async {
+        if useNewAudioSystem {
+            // Use the new audio system approach
+            await initializeAndPrepareAudioSystem()
+            return
+        }
+        
+        // Legacy implementation continues below
         Logger.audio("\n=== Preparing end game audio ===\n")
         
         // First verify we can find our root entities
@@ -200,6 +361,11 @@ extension AttackCancerViewModel {
     
     /// Play hope_restored, wait 2 seconds, then play tone_cross
     func playVictorySequence() async {
+        if useNewAudioSystem {
+            await playVictorySequenceWithNewSystem()
+            return
+        }
+        
         await playAudioSequence([
             ("hope_restored", 2.0),
             ("tone_cross", 0.0)
@@ -208,6 +374,11 @@ extension AttackCancerViewModel {
     
     /// Play heartbeat, wait 19 seconds, then play magic_zing
     func playEndingSequence() async {
+        if useNewAudioSystem {
+            await playEndingSequenceWithNewSystem()
+            return
+        }
+        
         await playAudioSequence([
             ("heartbeat", 19.0),
             ("magic_zing", 0.0)
@@ -216,6 +387,17 @@ extension AttackCancerViewModel {
     
     /// Play the great job voice over
     func playGreatJob() async {
+        // Skip if already played
+        if hasPlayedGreatJob {
+            Logger.audio("Great job already played, skipping")
+            return
+        }
+
+        if useNewAudioSystem {
+            await playGreatJobWithNewSystem()
+            return
+        }
+        
         Logger.audio("\n=== Playing Great Job VO ===\n")
         
         // Stop any existing playback
@@ -234,5 +416,145 @@ extension AttackCancerViewModel {
         hasPlayedGreatJob = true
         
         Logger.audio("✅ Started playing great_job")
+    }
+    
+    // MARK: - New Audio System Playback Methods
+    
+    /// Play ending sequence using new audio system
+    func playEndingSequenceWithNewSystem() async {
+        // Skip if already played
+        if hasPlayedEndingSequence {
+            Logger.audio("Ending sequence already played, skipping")
+            return
+        }
+        
+        guard let audioSystem = audioSystem else {
+            Logger.audioWarning("Cannot play ending sequence - AudioSystem not initialized")
+            return
+        }
+        
+        Logger.audio("\n=== Playing ending sequence with new audio system ===\n")
+        
+        // Play the sequence
+        await audioSystem.playSequence(
+            [
+                ("heartbeat", 19.0),
+                ("magic_zing", 0.0)
+            ],
+            sourceID: "endingSequence"
+        )
+        
+        // Mark as played
+        hasPlayedEndingSequence = true
+        Logger.audio("✅ Ending sequence completed with new system")
+    }
+    
+    /// Play victory sequence using new audio system
+    func playVictorySequenceWithNewSystem() async {
+        // Skip if already played
+        if hasPlayedVictorySequence {
+            Logger.audio("Victory sequence already played, skipping")
+            return
+        }
+        
+        guard let audioSystem = audioSystem else {
+            Logger.audioWarning("Cannot play victory sequence - AudioSystem not initialized")
+            return
+        }
+        
+        Logger.audio("\n=== Playing victory sequence with new audio system ===\n")
+        
+        // Play the sequence
+        await audioSystem.playSequence(
+            [
+                ("hope_restored", 2.0),
+                ("tone_cross", 0.0)
+            ],
+            sourceID: "victorySequence"
+        )
+        
+        // Mark as played
+        hasPlayedVictorySequence = true
+        Logger.audio("✅ Victory sequence completed with new system")
+    }
+    
+    /// Play great job voice over using new audio system
+    func playGreatJobWithNewSystem() async {
+        // Skip if already played
+        if hasPlayedGreatJob {
+            Logger.audio("Great job already played, skipping")
+            return
+        }
+        
+        guard let audioSystem = audioSystem else {
+            Logger.audioWarning("Cannot play great job - AudioSystem not initialized")
+            return
+        }
+        
+        Logger.audio("\n=== Playing great job with new audio system ===\n")
+        
+        // Play the sound
+        audioSystem.playSound(
+            resourceID: "great_job",
+            sourceID: "greatJob",
+            loop: false
+        )
+        
+        // Mark as played
+        hasPlayedGreatJob = true
+        Logger.audio("✅ Great job started with new system")
+    }
+    
+    // MARK: - Audio System Control
+    
+    /// Enables the new audio system and disables the legacy implementation
+    /// Call this to switch to the new system
+    func enableNewAudioSystem() async {
+        // Skip if already using the new system
+        if useNewAudioSystem {
+            Logger.audio("New audio system already enabled")
+            return
+        }
+        
+        Logger.audio("\n=== Switching to new audio system ===\n")
+        
+        // Ensure new system is initialized first
+        if !isAudioSystemInitialized {
+            await initializeAndPrepareAudioSystem()
+        }
+        
+        // Stop any playback from legacy system
+        endingSequenceController?.stop()
+        victorySequenceController?.stop()
+        greatJobController?.stop()
+        
+        // Set flag to use new system
+        useNewAudioSystem = true
+        Logger.audio("✅ Now using new audio system for all audio playback")
+    }
+    
+    /// Updates or creates the appropriate methods to use the selected audio system
+    func updateSequencePlaybackMethods() {
+        // Update playEndingSequence
+        let originalPlayEndingSequence = playEndingSequence
+        playEndingSequence = {
+            if self.useNewAudioSystem {
+                await self.playEndingSequenceWithNewSystem()
+            } else {
+                await originalPlayEndingSequence()
+            }
+        }
+        
+        // Update playVictorySequence
+        let originalPlayVictorySequence = playVictorySequence
+        playVictorySequence = {
+            if self.useNewAudioSystem {
+                await self.playVictorySequenceWithNewSystem()
+            } else {
+                await originalPlayVictorySequence()
+            }
+        }
+        
+        // playGreatJob is already updated with the conditional check
     }
 }

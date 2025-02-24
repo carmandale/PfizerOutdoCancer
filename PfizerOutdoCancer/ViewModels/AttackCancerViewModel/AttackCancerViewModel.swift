@@ -146,6 +146,17 @@ final class AttackCancerViewModel {
     // NEW: Store a reference to the CancerCellSystem.
     var cancerCellSystem: CancerCellSystem?
     
+    // MARK: - New Audio System
+    // New audio system for managing all audio
+    private var audioSystem: AudioSystem?
+    
+    // Flag to track if we're using the new audio system or legacy approach
+    // This helps with safely migrating features one by one
+    private var useNewAudioSystem: Bool = false
+    
+    // Track if audio system is initialized
+    private var isAudioSystemInitialized: Bool = false
+    
     // MARK: - Initialization
     init() {
         // Initialize handTrackedEntity
@@ -209,39 +220,44 @@ final class AttackCancerViewModel {
         subscription?.cancel()
         subscription = nil
         
-        // Stop all audio playback
-        Logger.audio("Stopping all audio playback...")
-        
-        // Stop and clear end game audio
-        endGameAudioController?.stop()
-        endGameAudioController = nil
-        if let audioSource = endGameAudioSource {
-            audioSource.removeFromParent()
-            Logger.audio("Removed end game audio source")
-        }
-        
-        // Stop and clear ending sequence audio
-        endingSequenceController?.stop()
-        endingSequenceController = nil
-        if let audioSource = endingSequenceAudioSource {
-            audioSource.removeFromParent()
-            Logger.audio("Removed ending sequence audio source")
-        }
-        
-        // Stop and clear victory sequence audio
-        victorySequenceController?.stop()
-        victorySequenceController = nil
-        if let audioSource = victorySequenceAudioSource {
-            audioSource.removeFromParent()
-            Logger.audio("Removed victory sequence audio source")
-        }
-        
-        // Stop and clear great job audio
-        greatJobController?.stop()
-        greatJobController = nil
-        if let audioSource = greatJobAudioSource {
-            audioSource.removeFromParent()
-            Logger.audio("Removed great job audio source")
+        // Stop audio playback with new system if enabled
+        if useNewAudioSystem, let audioSystem = audioSystem {
+            Logger.audio("Using new AudioSystem to stop all playback")
+            audioSystem.stopAllPlayback()
+        } else {
+            // Stop and clear end game audio
+            endGameAudioController?.stop()
+            endGameAudioController = nil
+            if let audioSource = endGameAudioSource {
+                audioSource.removeFromParent()
+                Logger.audio("Removed end game audio source")
+            }
+            
+            // Stop and clear ending sequence audio
+            endingSequenceController?.stop()
+            endingSequenceController = nil
+            if let audioSource = endingSequenceAudioSource {
+                audioSource.removeFromParent()
+                Logger.audio("Removed ending sequence audio source")
+            }
+            
+            // Stop and clear victory sequence audio
+            victorySequenceController?.stop()
+            victorySequenceController = nil
+            if let audioSource = victorySequenceAudioSource {
+                audioSource.removeFromParent()
+                Logger.audio("Removed victory sequence audio source")
+            }
+            
+            // Stop and clear great job audio
+            greatJobController?.stop()
+            greatJobController = nil
+            if let audioSource = greatJobAudioSource {
+                audioSource.removeFromParent()
+                Logger.audio("Removed great job audio source")
+            }
+            
+            Logger.audio("✅ Stopped all audio playback with legacy system")
         }
         
         // Reset sequence flags
@@ -358,42 +374,48 @@ final class AttackCancerViewModel {
         instructionsRootEntity = nil
         adcTemplate = nil
         
-        // Clear audio system references with detailed logging
-        Logger.audio("\n=== Clearing All Audio Systems ===")
-        
-        // Clear end game audio
-        endGameAudioSource = nil
-        endGameAudioResource = nil
-        endGameAudioController = nil
-        Logger.audio("✅ Cleared end game audio system")
-        
-        // Clear sequence-specific audio
-        endingSequenceAudioSource = nil
-        endingSequenceController = nil
-        Logger.audio("✅ Cleared ending sequence audio system")
-        
-        victorySequenceAudioSource = nil
-        victorySequenceController = nil
-        Logger.audio("✅ Cleared victory sequence audio system")
-        
-        greatJobAudioSource = nil
-        greatJobController = nil
-        Logger.audio("✅ Cleared great job audio system")
-        
-        // Clear audio resources
-        loadedAudioResources.removeAll()
-        Logger.audio("✅ Cleared all loaded audio resources")
-        
-        // Clear audio flags
-        hasPlayedEndingSequence = false
-        hasPlayedVictorySequence = false
-        hasPlayedGreatJob = false
-        Logger.audio("✅ Reset all audio playback flags")
-        
-        // Clear debug visuals
-        audioDebugCone = nil
-        Logger.audio("✅ Cleared audio debug visuals")
-        Logger.audio("=== Audio System Cleanup Complete ===\n")
+        // Clean up new audio system if enabled
+        if useNewAudioSystem {
+            cleanupAudioSystem()
+            Logger.audio("✅ Cleaned up new AudioSystem")
+        } else {
+            // Clear audio system references with detailed logging (legacy)
+            Logger.audio("\n=== Clearing All Audio Systems ===")
+            
+            // Clear end game audio
+            endGameAudioSource = nil
+            endGameAudioResource = nil
+            endGameAudioController = nil
+            Logger.audio("✅ Cleared end game audio system")
+            
+            // Clear sequence-specific audio
+            endingSequenceAudioSource = nil
+            endingSequenceController = nil
+            Logger.audio("✅ Cleared ending sequence audio system")
+            
+            victorySequenceAudioSource = nil
+            victorySequenceController = nil
+            Logger.audio("✅ Cleared victory sequence audio system")
+            
+            greatJobAudioSource = nil
+            greatJobController = nil
+            Logger.audio("✅ Cleared great job audio system")
+            
+            // Clear audio resources
+            loadedAudioResources.removeAll()
+            Logger.audio("✅ Cleared all loaded audio resources")
+            
+            // Clear audio flags
+            hasPlayedEndingSequence = false
+            hasPlayedVictorySequence = false
+            hasPlayedGreatJob = false
+            Logger.audio("✅ Reset all audio playback flags")
+            
+            // Clear debug visuals
+            audioDebugCone = nil
+            Logger.audio("✅ Cleared audio debug visuals")
+            Logger.audio("=== Audio System Cleanup Complete ===\n")
+        }
         
         // Reset flags
         isSetupComplete = false
@@ -447,5 +469,133 @@ final class AttackCancerViewModel {
         )
         
         Logger.info("✨ Scene fade out complete")
+    }
+
+    // MARK: - Audio System Integration
+    
+    /// Initializes the new audio system
+    /// - This runs alongside the existing audio code until migration is complete
+    private func initializeAudioSystem() {
+        guard !isAudioSystemInitialized, let rootEntity = rootEntity else {
+            Logger.audio("Cannot initialize audio system: rootEntity is nil or already initialized")
+            return
+        }
+        
+        Logger.audio("Initializing new AudioSystem...")
+        audioSystem = AudioSystem(
+            sceneContent: rootEntity,
+            bundle: .main,
+            enableDebug: isAudioDebugVisible
+        )
+        
+        isAudioSystemInitialized = true
+        Logger.audio("AudioSystem initialized successfully")
+        
+        // Start preloading resources
+        Task {
+            await preloadAudioResources()
+        }
+    }
+    
+    /// Preloads audio resources with the new audio system
+    /// - Parallel implementation until migration is complete
+    private func preloadAudioResources() async {
+        guard let audioSystem = audioSystem else {
+            Logger.audioWarning("Cannot preload resources: AudioSystem not initialized")
+            return
+        }
+        
+        Logger.audio("Starting audio resource preloading with new system...")
+        
+        // Map current resources to new system
+        // Note: Adapt these paths to match your actual resource locations
+        await audioSystem.preloadResources([
+            // Example mappings - update these to match your actual resources
+            (id: "endGameAudio", path: "/Root/end_game_audio", assetFile: "Assets/Game/endGame.usda"),
+            (id: "endingSequence", path: "/Root/ending_sequence", assetFile: "Assets/Game/endGame.usda"),
+            (id: "victorySequence", path: "/Root/victory_sequence", assetFile: "Assets/Game/endGame.usda"),
+            (id: "greatJob", path: "/Root/great_job", assetFile: "Assets/Game/endGame.usda")
+            // Add other resources as needed
+        ])
+        
+        Logger.audio("Audio resource preloading completed with new system")
+    }
+    
+    /// Creates audio sources with the new audio system
+    /// - Parallel implementation until migration is complete
+    private func setupAudioSources() {
+        guard let audioSystem = audioSystem else {
+            Logger.audioWarning("Cannot setup audio sources: AudioSystem not initialized")
+            return
+        }
+        
+        Logger.audio("Setting up audio sources with new system...")
+        
+        // Find head tracking entity for spatial audio positioned relative to user
+        if let headTrackingRoot = rootEntity?.findEntity(named: "headTrackingRoot") {
+            // Create ending sequence source (front of user)
+            audioSystem.createSource(
+                id: "endingSequence",
+                parent: headTrackingRoot,
+                position: SIMD3<Float>(0, 0, 0.75),
+                type: .spatial,
+                properties: SpatialAudioComponent(
+                    gain: 1.0,
+                    directivity: .beam(focus: 1.0)
+                )
+            )
+            
+            // Create victory sequence source
+            audioSystem.createSource(
+                id: "victorySequence",
+                parent: headTrackingRoot,
+                position: SIMD3<Float>(0, 0, 0.5),
+                type: .spatial
+            )
+            
+            // Create great job source
+            audioSystem.createSource(
+                id: "greatJob",
+                parent: headTrackingRoot,
+                position: SIMD3<Float>(0, 0.1, 0.6),
+                type: .spatial
+            )
+        }
+        
+        // Create ambient sources attached to root
+        audioSystem.createSource(
+            id: "backgroundAmbience",
+            parent: rootEntity,
+            type: .ambient,
+            properties: SpatialAudioComponent(gain: -10.0)
+        )
+        
+        Logger.audio("Audio sources setup completed with new system")
+    }
+    
+    /// Updates the audio debug visualization state
+    /// - Parameter enabled: Whether debug visualization should be enabled
+    private func updateAudioDebugState(enabled: Bool) {
+        isAudioDebugVisible = enabled
+        
+        // Update new audio system if initialized
+        audioSystem?.toggleDebugVisualization(enabled: enabled)
+    }
+    
+    /// Cleans up the audio system
+    /// - Called during the main cleanup process
+    private func cleanupAudioSystem() {
+        guard let audioSystem = audioSystem, isAudioSystemInitialized else { return }
+        
+        Logger.audio("Cleaning up AudioSystem...")
+        
+        // Stop all playback and release resources
+        audioSystem.cleanup()
+        
+        // Clear reference
+        self.audioSystem = nil
+        isAudioSystemInitialized = false
+        
+        Logger.audio("AudioSystem cleanup complete")
     }
 }
