@@ -1,7 +1,6 @@
 import Foundation
 import RealityKit
 import SwiftUI
-import Combine
 
 /// Example class showing how to use the AudioSystem
 /// This is for reference only and is not meant to be used directly

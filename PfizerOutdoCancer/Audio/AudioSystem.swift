@@ -1,7 +1,6 @@
 import Foundation
 import RealityKit
 import SwiftUI
-import Combine
 
 /// A reusable system for managing spatial audio in visionOS
 /// Uses the modern @Observable pattern for efficient SwiftUI integration
@@ -23,9 +22,6 @@ class AudioSystem {
     
     /// Whether debug visualization is enabled globally
     private var isDebugEnabled: Bool = false
-    
-    /// Combine subscriptions
-    private var subscriptions = Set<AnyCancellable>()
     
     // MARK: - Initialization
     
@@ -877,9 +873,5 @@ class AudioSystem {
         
         // Clear resource cache
         resourceCache.removeAll()
-        
-        // Cancel subscriptions
-        subscriptions.forEach { $0.cancel() }
-        subscriptions.removeAll()
     }
 } 
