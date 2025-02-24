@@ -2,10 +2,10 @@ import Foundation
 import RealityKit
 import SwiftUI
 import Combine
-import Observation
 
 /// Example class showing how to use the AudioSystem
 /// This is for reference only and is not meant to be used directly
+/// Uses the modern @Observable pattern for efficient SwiftUI integration
 @Observable
 class AudioSystemExample {
     // Core properties
@@ -316,4 +316,73 @@ class AudioSystemExample {
         audioSystem.cleanup()
         audioSystem = nil
     }
-} 
+}
+
+// MARK: - SwiftUI Integration Examples
+
+/*
+ To use AudioSystem with SwiftUI in visionOS, you can leverage the @Observable pattern
+ for automatic view updates whenever relevant audio state changes.
+ 
+ Example SwiftUI view integration:
+ 
+ ```swift
+ struct AudioEnabledView: View {
+     // Store the audio system as a State property
+     @State private var audioSystem: AudioSystem
+     
+     init(sceneEntity: Entity) {
+         // Initialize the audio system
+         _audioSystem = State(initialValue: AudioSystem(sceneContent: sceneEntity))
+     }
+     
+     var body: some View {
+         VStack {
+             Text("Audio Controls")
+                 .font(.title)
+             
+             Toggle("Debug Visualization", isOn: toggleDebug)
+                 .padding()
+             
+             Button("Play Sound") {
+                 Task {
+                     // Load and play a sound
+                     try? await audioSystem.loadResource(
+                         id: "click",
+                         path: "/Root/click_sound",
+                         assetFile: "Assets/Sounds.usda"
+                     )
+                     
+                     audioSystem.playSound(
+                         resourceID: "click", 
+                         sourceID: "uiSound"
+                     )
+                 }
+             }
+             .padding()
+         }
+         .padding()
+         .onAppear {
+             setupAudio()
+         }
+         .onDisappear {
+             audioSystem.cleanup()
+         }
+     }
+     
+     private func setupAudio() {
+         // Create a UI sound source
+         audioSystem.createSource(
+             id: "uiSound",
+             type: .channel
+         )
+     }
+     
+     private var toggleDebug: Binding<Bool> {
+         Binding(
+             get: { audioSystem.isDebugEnabled },
+             set: { audioSystem.toggleDebugVisualization(enabled: $0) }
+         )
+     }
+ }
+ */ 

@@ -2,9 +2,9 @@ import Foundation
 import RealityKit
 import SwiftUI
 import Combine
-import Observation
 
 /// A reusable system for managing spatial audio in visionOS
+/// Uses the modern @Observable pattern for efficient SwiftUI integration
 @Observable
 class AudioSystem {
     // MARK: - Properties
