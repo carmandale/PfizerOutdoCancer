@@ -12,11 +12,11 @@ import RealityKitContent
 extension AttackCancerViewModel {
     // MARK: - ADC Setup
     func setADCTemplate(_ template: Entity, dataModel: ADCDataModel) {
-        print("\n🎯 Setting up ADC Template")
-        print("- Template entity: \(template.name)")
-        print("- Antibody Color: \(String(describing: dataModel.selectedADCAntibody ?? -1))")
-        print("- Linker Color: \(String(describing: dataModel.selectedLinkerType ?? -1))")
-        print("- Payload Color: \(String(describing: dataModel.selectedPayloadType ?? -1))")
+        Logger.debug("\n🎯 Setting up ADC Template")
+        Logger.debug("- Template entity: \(template.name)")
+        Logger.debug("- Antibody Color: \(String(describing: dataModel.selectedADCAntibody ?? -1))")
+        Logger.debug("- Linker Color: \(String(describing: dataModel.selectedLinkerType ?? -1))")
+        Logger.debug("- Payload Color: \(String(describing: dataModel.selectedPayloadType ?? -1))")
         
         // Find and apply antibody color
         if let antibody = template.findModelEntity(named: "ADC_complex") {
@@ -25,7 +25,7 @@ extension AttackCancerViewModel {
                 if modelComponent.materials.first is ShaderGraphMaterial {
                     antibody.updateShaderGraphColor(parameterName: "Basecolor_Tint", color: .adc[antibodyColor])
                     #if DEBUG
-                    print("✅ Applied antibody color: \(antibodyColor)")
+                    Logger.debug("✅ Applied antibody color: \(antibodyColor)")
                     #endif
                 }
             }
@@ -41,7 +41,7 @@ extension AttackCancerViewModel {
                     // new shaderGraph material
                     linker.updateShaderGraphColor(parameterName: "Basecolor_Tint", color: .adc[linkerColor])
                     #if DEBUG
-                    print("✅ Applied linker color \(linkerColor) to \(offsetName)")
+                    Logger.debug("✅ Applied linker color \(linkerColor) to \(offsetName)")
                     #endif
                 }
             }
@@ -56,15 +56,27 @@ extension AttackCancerViewModel {
                     inner.updatePBREmissiveColor(.adcEmissive[payloadColor])
                     outer.updateShaderGraphColor(parameterName: "glowColor", color: .adc[payloadColor])
                     #if DEBUG
-                    print("✅ Applied payload color \(payloadColor) to \(offsetName)")
+                    Logger.debug("✅ Applied payload color \(payloadColor) to \(offsetName)")
                     #endif
                 }
             }
         }
         
         adcTemplate = template
-        print("✅ ADC template stored in gameState")
-    }
+        Logger.debug("✅ ADC template stored in gameState")
+        
+        Logger.debug("""
+
+        === ADC TEMPLATE COLOR UPDATE ===
+        ├─ Template Instance: \(ObjectIdentifier(template))
+        ├─ Previous Template: \(adcTemplate.map { ObjectIdentifier($0) } ?? "none")
+        ├─ Colors:
+        │  ├─ Antibody: \(dataModel.selectedADCAntibody ?? -1)
+        │  ├─ Linker: \(dataModel.selectedLinkerType ?? -1)
+        │  └─ Payload: \(dataModel.selectedPayloadType ?? -1)
+        └─ Is Cached Template: \(template === assetLoadingManager.entityTemplates["adc"])
+        """)
+            }
     
     // MARK: - ADC Spawning
     func spawnADC(from position: SIMD3<Float>, targetPoint: Entity, forCellID cellID: Int) async {
@@ -75,11 +87,11 @@ extension AttackCancerViewModel {
         
         totalADCsDeployed += 1
         #if DEBUG
-        print("\n=== Spawning Natural ADC ===")
-        print("Start World Position: \(position)")
-        print("Target World Position: \(targetPoint.position(relativeTo: nil))")
-        print("Target Cell ID: \(cellID)")
-        print("✅ ADC #\(totalADCsDeployed) Launched (Total Taps: \(totalTaps))")
+        Logger.debug("\n=== Spawning Natural ADC ===")
+        Logger.debug("Start World Position: \(position)")
+        Logger.debug("Target World Position: \(targetPoint.position(relativeTo: nil))")
+        Logger.debug("Target Cell ID: \(cellID)")
+        Logger.debug("✅ ADC #\(totalADCsDeployed) Launched (Total Taps: \(totalTaps))")
         #endif
         
         // Set the flag for first ADC fired
@@ -123,7 +135,7 @@ extension AttackCancerViewModel {
     func spawnUntargetedADC(from position: SIMD3<Float>) async {
         guard let template = adcTemplate,
               let root = rootEntity else {
-            print("❌ Failed to spawn untargeted ADC: missing template or root")
+            Logger.debug("❌ Failed to spawn untargeted ADC: missing template or root")
             return
         }
         
@@ -160,24 +172,24 @@ extension AttackCancerViewModel {
         headPosition.components.set(attachPoint)
        
         // Add headPosition to the scene's root to avoid ADC root offset
-        print("DEBUG: Root entity details:")
-        print("- Name: \(root.name)")
-        print("- World position: \(root.position(relativeTo: nil))")
-        print("- Local position: \(root.position)")
+        Logger.debug("DEBUG: Root entity details:")
+        Logger.debug("- Name: \(root.name)")
+        Logger.debug("- World position: \(root.position(relativeTo: nil))")
+        Logger.debug("- Local position: \(root.position)")
         
         root.addChild(headPosition)
         
-        print("DEBUG: HeadPosition target details:")
-        print("- Local position set: \(headPosition.position)")
-        print("- World position after add: \(headPosition.position(relativeTo: nil))")
-        print("- Parent entity: \(headPosition.parent?.name ?? "none")")
+        Logger.debug("DEBUG: HeadPosition target details:")
+        Logger.debug("- Local position set: \(headPosition.position)")
+        Logger.debug("- World position after add: \(headPosition.position(relativeTo: nil))")
+        Logger.debug("- Parent entity: \(headPosition.parent?.name ?? "none")")
         
         totalADCsDeployed += 1
         #if DEBUG
-        print("\n=== Spawning Untargeted ADC ===")
-        print("Start World Position: \(position)")
-        print("Target World Position: \(headPosition.position(relativeTo: nil))")
-        print("✅ ADC #\(totalADCsDeployed) Launched (Total Taps: \(totalTaps))")
+        Logger.debug("\n=== Spawning Untargeted ADC ===")
+        Logger.debug("Start World Position: \(position)")
+        Logger.debug("Target World Position: \(headPosition.position(relativeTo: nil))")
+        Logger.debug("✅ ADC #\(totalADCsDeployed) Launched (Total Taps: \(totalTaps))")
         #endif
         
         // Set the flag for first ADC fired
@@ -218,6 +230,6 @@ extension AttackCancerViewModel {
         // Start movement using headPosition entity as target
         ADCMovementSystem.startMovement(entity: adc, from: position, to: headPosition)
         
-        print("✅ Untargeted ADC spawned successfully")
+        Logger.debug("✅ Untargeted ADC spawned successfully")
     }
 }

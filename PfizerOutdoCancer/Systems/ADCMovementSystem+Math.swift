@@ -191,10 +191,10 @@ extension ADCMovementSystem {
         // Check for near-zero length or NaN components
         if vectorLength < 1e-6 || vector.x.isNaN || vector.y.isNaN || vector.z.isNaN {
             #if DEBUG
-            // print("⚠️ Vector normalization failed:")
-            // print("Vector: \(vector)")
-            // print("Length: \(vectorLength)")
-            // print("Using default vector: \(defaultVector)")
+            // Logger.debug("⚠️ Vector normalization failed:")
+            // Logger.debug("Vector: \(vector)")
+            // Logger.debug("Length: \(vectorLength)")
+            // Logger.debug("Using default vector: \(defaultVector)")
             #endif
             return defaultVector
         }
@@ -207,9 +207,9 @@ extension ADCMovementSystem {
         let vector = surfacePoint - center
         
         #if DEBUG
-        // print("Surface Normal Calculation:")
-        // print("Vector: \(vector)")
-        // print("Vector Length: \(length(vector))")
+        // Logger.debug("Surface Normal Calculation:")
+        // Logger.debug("Vector: \(vector)")
+        // Logger.debug("Vector Length: \(length(vector))")
         #endif
         
         return safeNormalize(vector)
@@ -219,7 +219,7 @@ extension ADCMovementSystem {
     internal static func safeSlerp(from start: simd_quatf, to end: simd_quatf, t: Float) -> simd_quatf {
         guard validateQuaternion(start) && validateQuaternion(end) else {
             #if DEBUG
-            print("⚠️ Invalid quaternions in slerp - using start quaternion")
+            Logger.debug("⚠️ Invalid quaternions in slerp - using start quaternion")
             #endif
             return start
         }
@@ -264,7 +264,7 @@ extension ADCMovementSystem {
               let scene = antigen.scene,
               let cell = findParentCancerCell(for: antigen, in: scene) else {
             #if DEBUG
-            print("⚠️ No parent cell found for target - using target orientation")
+            Logger.debug("⚠️ No parent cell found for target - using target orientation")
             #endif
             return target.orientation(relativeTo: nil)
         }
@@ -274,25 +274,25 @@ extension ADCMovementSystem {
         let cellWorldPos = cell.position(relativeTo: nil)
         
         // #if DEBUG
-        // print("\n=== Landing Orientation Debug ===")
-        // print("Antigen Entity: \(antigen.name)")
-        // print("Antigen World Position: \(antigenWorldPos)")
-        // print("Cell World Position: \(cellWorldPos)")
-        // print("Vector between positions: \(antigenWorldPos - cellWorldPos)")
+        // Logger.debug("\n=== Landing Orientation Debug ===")
+        // Logger.debug("Antigen Entity: \(antigen.name)")
+        // Logger.debug("Antigen World Position: \(antigenWorldPos)")
+        // Logger.debug("Cell World Position: \(cellWorldPos)")
+        // Logger.debug("Vector between positions: \(antigenWorldPos - cellWorldPos)")
         // #endif
         
         // Compute surface normal and validate
         let normal = computeSurfaceNormal(surfacePoint: antigenWorldPos, center: cellWorldPos)
         
         // #if DEBUG
-        // print("Computed Normal: \(normal)")
-        // print("Normal length: \(length(normal))")
-        // print("Has NaN?: \(normal.x.isNaN || normal.y.isNaN || normal.z.isNaN)")
+        // Logger.debug("Computed Normal: \(normal)")
+        // Logger.debug("Normal length: \(length(normal))")
+        // Logger.debug("Has NaN?: \(normal.x.isNaN || normal.y.isNaN || normal.z.isNaN)")
         // #endif
         
         guard !normal.x.isNaN && !normal.y.isNaN && !normal.z.isNaN else {
             #if DEBUG
-            print("⚠️ Invalid surface normal computed - using target orientation")
+            Logger.debug("⚠️ Invalid surface normal computed - using target orientation")
             #endif
             return target.orientation(relativeTo: nil)
         }
@@ -301,7 +301,7 @@ extension ADCMovementSystem {
         let baseRotation = simd_quatf(from: SIMD3<Float>(0, 1, 0), to: normal)
         guard validateQuaternion(baseRotation) else {
             #if DEBUG
-            print("⚠️ Invalid base rotation - using target orientation")
+            Logger.debug("⚠️ Invalid base rotation - using target orientation")
             #endif
             return target.orientation(relativeTo: nil)
         }
@@ -314,7 +314,7 @@ extension ADCMovementSystem {
         let finalOrientation = normalizeQuaternion(randomRotation * baseRotation)
         if !validateQuaternion(finalOrientation) {
             #if DEBUG
-            print("⚠️ Invalid final orientation - using target orientation")
+            Logger.debug("⚠️ Invalid final orientation - using target orientation")
             #endif
             return target.orientation(relativeTo: nil)
         }
@@ -372,7 +372,7 @@ extension ADCMovementSystem {
         // Check for NaN values in direction vector
         if direction.x.isNaN || direction.y.isNaN || direction.z.isNaN {
             #if DEBUG
-            print("⚠️ Invalid direction vector in orientation calculation")
+            Logger.debug("⚠️ Invalid direction vector in orientation calculation")
             #endif
             return false
         }
@@ -380,7 +380,7 @@ extension ADCMovementSystem {
         // Validate current orientation
         if !validateQuaternion(currentOrientation) {
             #if DEBUG
-            print("⚠️ Invalid current orientation in calculation")
+            Logger.debug("⚠️ Invalid current orientation in calculation")
             #endif
             return false
         }
@@ -388,7 +388,7 @@ extension ADCMovementSystem {
         // Validate progress value
         if progress.isNaN || progress < 0 || progress > 1 {
             #if DEBUG
-            print("⚠️ Invalid progress value: \(progress)")
+            Logger.debug("⚠️ Invalid progress value: \(progress)")
             #endif
             return false
         }
@@ -396,7 +396,7 @@ extension ADCMovementSystem {
         // Validate entity has required components
         if entity.components[ADCComponent.self] == nil {
             #if DEBUG
-            print("⚠️ Entity missing ADC component")
+            Logger.debug("⚠️ Entity missing ADC component")
             #endif
             return false
         }
@@ -409,7 +409,7 @@ extension ADCMovementSystem {
                                                   blendFactor: Float,
                                                   currentOrientation: simd_quatf,
                                                   targetOrientation: simd_quatf) {
-        print("""
+        Logger.debug("""
         === ADC Orientation State ===
         Progress: \(String(format: "%.3f", progress))
         Blend Factor: \(String(format: "%.3f", blendFactor))
@@ -427,7 +427,7 @@ extension ADCMovementSystem {
         // Check position
         if transform.translation.x.isNaN || transform.translation.y.isNaN || transform.translation.z.isNaN {
             #if DEBUG
-            print("⚠️ Invalid landing position")
+            Logger.debug("⚠️ Invalid landing position")
             #endif
             return false
         }
@@ -435,7 +435,7 @@ extension ADCMovementSystem {
         // Check rotation
         if !validateQuaternion(transform.rotation) {
             #if DEBUG
-            print("⚠️ Invalid landing rotation")
+            Logger.debug("⚠️ Invalid landing rotation")
             #endif
             return false
         }
@@ -443,7 +443,7 @@ extension ADCMovementSystem {
         // Check scale (should be uniform)
         if transform.scale.x != transform.scale.y || transform.scale.y != transform.scale.z {
             #if DEBUG
-            print("⚠️ Non-uniform scale in landing transform")
+            Logger.debug("⚠️ Non-uniform scale in landing transform")
             #endif
             return false
         }

@@ -6,10 +6,24 @@
 //
 
 import SwiftUI
+import Darwin
+import Foundation
 
-// Define a generic error to use
-enum AppError: Error {
-    case genericLoadingError
+extension Int64 {
+    var bytesToMB: String {
+        String(format: "%.1f", Double(self) / 1_048_576)
+    }
+}
+
+private func getMemoryUsage() -> Int64? {
+    var taskInfo = task_vm_info_data_t()
+    var count = mach_msg_type_number_t(MemoryLayout<task_vm_info>.size) / 4
+    let result: kern_return_t = withUnsafeMutablePointer(to: &taskInfo) {
+        $0.withMemoryRebound(to: integer_t.self, capacity: 1) {
+            task_info(mach_task_self_, task_flavor_t(TASK_VM_INFO), $0, &count)
+        }
+    }
+    return result == KERN_SUCCESS ? Int64(taskInfo.phys_footprint) : nil
 }
 
 extension AppModel {
@@ -29,92 +43,53 @@ extension AppModel {
         return false
     }
     
-    struct AssetToLoad {
-        let name: String
-        let category: AssetCategory
-        let weight: Float  // Relative weight for progress calculation
-    }
-    
-    func startLoading(adcDataModel: ADCDataModel) async {
-        print("\n=== Starting Initial Asset Loading ===")
-        print("🔍 Current phase: \(currentPhase)")
-        print("🔍 Loading state: \(assetLoadingManager.loadingState)")
-        
-        // Initialize loading state and progress
+    func startLoading(adcDataModel: ADCDataModel) async throws {
+        Logger.debug("\n\n=== 🚀 STARTING ASSET LOAD ===")
         displayedProgress = 0.0
-        assetLoadingManager.loadingState = .loading(progress: 0.0)
         
-        print("🔄 Starting prepareIntroPhase...")
-        await prepareIntroPhase()
-        print("✅ prepareIntroPhase completed")
-        print("🔄 Transitioning to .intro...")
-        await transitionToPhase(.intro, adcDataModel: adcDataModel)
-        print("✅ Transition to .intro completed")
+        do {
+            // Load all assets using AssetLoadingManager
+            let template = try await assetLoadingManager.loadAppAssets(adcDataModel: adcDataModel)
+            
+            // Handle app-specific setup with loaded assets
+            gameState.setADCTemplate(template, dataModel: adcDataModel)
+            
+            // Continue with phase transition
+            await transitionToPhase(.intro, adcDataModel: adcDataModel)
+            Logger.debug("=== ✅ APP STATE AND GAME SETUP COMPLETE ===\n")
+            
+        } catch {
+            Logger.error("""
+            
+            ❌ ASSET LOAD FAILED
+            └─ Error: \(error.localizedDescription)
+            """)
+            throw error
+        }
+    }
+}
+
+struct AssetLoadLog {
+    let assetName: String
+    let category: AssetCategory
+    private let loadStart = Date()
+    private let initialMemory: Int64?
+    
+    init(assetName: String, category: AssetCategory) {
+        self.assetName = assetName
+        self.category = category
+        self.initialMemory = getMemoryUsage()
     }
     
-    func prepareIntroPhase() async {
-        print("\n=== Preparing Intro Phase ===")
-        print("🔍 Current phase before loading: \(currentPhase)")
-        print("🔍 Loading state: \(assetLoadingManager.loadingState)")
+    func finalizeLog() -> String {
+        let duration = -loadStart.timeIntervalSinceNow
+        let memoryDelta = getMemoryUsage().map { $0 - (initialMemory ?? 0) }
         
-        var introAssets: [String] = []
-        introAssets.append(contentsOf: [
-            "intro_environment",
-            "intro_warp",
-        ])
-        
-        var attackAssets: [String] = []
-        attackAssets.append(contentsOf: [
-            "attack_cancer_environment",
-            "adc",
-            "cancer_cell"
-        ])
-        
-        var labAssets: [String] = []
-        labAssets.append(contentsOf: [
-            "assembled_lab"
-        ])
-        
-        let allAssets = introAssets + attackAssets + labAssets
-        
-        var completedAssets = 0
-        
-        // Load intro environment assets
-        for key in allAssets {
-            print("📱 Loading asset: \(key)")
-            
-            let category: AssetCategory
-            if introAssets.contains(key) {
-                category = .introEnvironment
-            } else if attackAssets.contains(key) {
-                category = .attackCancerEnvironment
-            } else if labAssets.contains(key) {
-                category = .labEnvironment
-            } else {
-                // Default case, should not happen
-                print("⚠️ Unknown asset category for key: \(key)")
-                continue
-            }
-            
-            do {
-                _ = try await assetLoadingManager.loadAsset(withName: key, category: category)
-                completedAssets += 1
-                let progress = Float(completedAssets) / Float(allAssets.count)
-                print("✅ Loaded \(key) - Progress: \(progress)")
-                
-                // Update loading state based on progress
-                if progress >= 1.0 {
-                    assetLoadingManager.loadingState = .completed
-                } else {
-                    assetLoadingManager.loadingState = .loading(progress: progress)
-                }
-            } catch {
-                print("❌ Failed to load \(key): \(error)")
-                // Use the generic error here
-                assetLoadingManager.loadingState = .error(AppError.genericLoadingError)
-                return // Exit the function on error
-            }
-        }
-        print("✅ prepareIntroPhase completed")
+        return """
+        🧩 \(assetName)
+        ├─ Category: \(category.rawValue)
+        ├─ Duration: \(String(format: "%.2fs", duration))
+        └─ Memory: \(memoryDelta?.bytesToMB ?? "N/A") MB
+        """
     }
 }

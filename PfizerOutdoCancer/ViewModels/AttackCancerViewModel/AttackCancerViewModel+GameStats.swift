@@ -76,7 +76,7 @@ extension AttackCancerViewModel {
         appModel.isInstructionsWindowOpen = true
         appModel.isHopeMeterUtilityWindowOpen = false  // Let the tutorial sequence open this at 24s
 
-        print("🔄 Reset tutorial state: isTutorialStarted: \(appModel.isTutorialStarted), tutorialComplete: \(tutorialComplete), isTestFireActive: \(isTestFireActive), readyToStartGame: \(readyToStartGame)")
+        Logger.debug("🔄 Reset tutorial state: isTutorialStarted: \(appModel.isTutorialStarted), tutorialComplete: \(tutorialComplete), isTestFireActive: \(isTestFireActive), readyToStartGame: \(readyToStartGame)")
 
     }
     

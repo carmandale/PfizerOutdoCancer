@@ -173,12 +173,20 @@ def Xform "root" (
         customData = {
             float3 rotationEulerHint = (1.5707964, 0, 0)
         }
-        prepend references = @../Object_upgrades/Beaker.usdz@
+        references = @../Object_upgrades/Beaker/beaker.usdc@
     )
     {
         quatf xformOp:orient = (0.70710677, 0.70710677, 0, 0)
         float3 xformOp:scale = (0.70741606, 0.70741606, 0.70741606)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "geom" (
+            variants = {
+                string styles = "realistic"
+            }
+        )
+        {
+        }
     }
 }
 

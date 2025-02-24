@@ -20,21 +20,20 @@ public class PositioningSystem: System {
     
     // Static method to set AppModel
     static func setAppModel(_ appModel: AppModel) {
-        Logger.debug("🔄 PositioningSystem.setAppModel called")
+        Logger.debug("\n🔄 PositioningSystem.setAppModel called")
         sharedAppModel = appModel
     }
     
     // MARK: - System Initialization
     public required init(scene: RealityKit.Scene) {
-        Logger.debug("🎯 PositioningSystem \(systemId) initializing...")
+        Logger.debug("\n🎯 PositioningSystem \(systemId) initializing...")
     }
     
     // MARK: - System Update
     public func update(context: SceneUpdateContext) {
         // Get device anchor from TrackingSessionManager's worldTrackingProvider
         guard let appModel = Self.sharedAppModel else {
-            // Only log if AppModel is missing, as this indicates a setup issue
-            Logger.error("❌ PositioningSystem: Missing AppModel reference")
+            Logger.error("\n❌ PositioningSystem: Missing AppModel reference")
             return
         }
         
@@ -49,17 +48,6 @@ public class PositioningSystem: System {
             guard var positioningComponent = entity.components[PositioningComponent.self],
                   positioningComponent.needsPositioning,
                   !positioningComponent.isAnimating else { continue }
-            
-            // Only log if we're not already animating
-            if !positioningComponent.isAnimating {
-                Logger.debug("""
-                
-                🔄 Starting position update for entity '\(entity.name)'
-                ├─ Current Position: \(entity.position(relativeTo: nil))
-                ├─ Animated: \(positioningComponent.shouldAnimate ? "✅" : "❌")
-                └─ Duration: \(positioningComponent.animationDuration)s
-                """)
-            }
             
             Task {
                 // Set animating state immediately
@@ -77,12 +65,7 @@ public class PositioningSystem: System {
                     positioningComponent.needsPositioning = false
                     entity.components[PositioningComponent.self] = positioningComponent
                     
-                    Logger.debug("""
-                    
-                    ✨ Position update complete for '\(entity.name)'
-                    ├─ Final Position: \(entity.position(relativeTo: nil))
-                    └─ Status: Success
-                    """)
+                    Logger.info("\n✨ Head Position Update Complete\n└─ Position: \(entity.position(relativeTo: nil))")
                 }
             }
         }
@@ -97,6 +80,15 @@ public class PositioningSystem: System {
         let minValidDistance: Float = 0.3  // Minimum 0.3 meters from device
         let maxValidDistance: Float = 3.0   // Maximum 3 meters from device
         
+        // Calculate distance from device
+        let distance = sqrt(devicePosition.x * devicePosition.x + devicePosition.y * devicePosition.y + devicePosition.z * devicePosition.z)
+        let isValid = distance >= minValidDistance && distance <= maxValidDistance
+        
+        if !isValid {
+            Logger.debug("\n⚠️ Invalid Position:\n└─ Distance: \(String(format: "%.2f", distance))m (valid: \(minValidDistance)-\(maxValidDistance)m)")
+            return false
+        }
+        
         // Calculate the target position with offsets
         let targetPosition = SIMD3<Float>(
             devicePosition.x + component.offsetX,
@@ -110,13 +102,7 @@ public class PositioningSystem: System {
         // Validate and adjust position if needed
         let finalPosition: SIMD3<Float>
         if distanceFromDevice < minValidDistance || distanceFromDevice > maxValidDistance {
-            Logger.debug("""
-            
-            ⚠️ Invalid position detected for '\(entity.name)'
-            ├─ Distance from device: \(distanceFromDevice)m
-            ├─ Min allowed: \(minValidDistance)m
-            └─ Max allowed: \(maxValidDistance)m
-            """)
+            Logger.debug("\n⚠️ Invalid position detected for '\(entity.name)'\n└─ Distance from device: \(distanceFromDevice)m (valid: \(minValidDistance)-\(maxValidDistance)m)")
             
             // Calculate direction vector from device to target
             let direction = normalize(targetPosition - devicePosition)
@@ -127,20 +113,10 @@ public class PositioningSystem: System {
             // Calculate new position at clamped distance
             finalPosition = devicePosition + (direction * clampedDistance)
             
-            Logger.debug("✅ Adjusted to safe distance: \(clampedDistance)m")
+            Logger.debug("\n✅ Adjusted to safe distance: \(clampedDistance)m")
         } else {
             finalPosition = targetPosition
         }
-        
-        Logger.debug("""
-        
-        📍 Positioning entity '\(entity.name)'
-        ├─ From: \(entity.position)
-        ├─ To: \(finalPosition)
-        ├─ Offsets: [\(component.offsetX), \(component.offsetY), \(component.offsetZ)]
-        ├─ Distance: \(distanceFromDevice)m
-        └─ Method: \(component.shouldAnimate ? "Animated (\(component.animationDuration)s)" : "Immediate")
-        """)
         
         if component.shouldAnimate {
             await entity.animateAbsolutePosition(
@@ -153,14 +129,6 @@ public class PositioningSystem: System {
             entity.setPosition(finalPosition, relativeTo: nil)
         }
         
-        Logger.debug("""
-        
-        ✨ Position update complete for '\(entity.name)'
-        ├─ Final Position: \(entity.position(relativeTo: nil))
-        └─ Status: Success
-        """)
-        
         return true
     }
 }
-

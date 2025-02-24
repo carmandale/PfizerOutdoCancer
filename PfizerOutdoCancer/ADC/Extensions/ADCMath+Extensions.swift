@@ -45,7 +45,7 @@ extension SIMD3 where Scalar == Float {
 
     
     func findCollinearPoint(to other: SIMD3<Float>, distance: Float) -> SIMD3<Float> {
-        print("ITR..✅ findCollinearPoint(): PointA: \(self), PointB: \(other), distance: \(distance)")
+        Logger.debug("ITR..✅ findCollinearPoint(): PointA: \(self), PointB: \(other), distance: \(distance)")
         // Calculate the vector between the two points
         let directionVector = other - self
         

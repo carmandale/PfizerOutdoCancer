@@ -22,8 +22,8 @@ struct ADCBuilderViewerButton: View {
             title: "ADC Builder",
             action: {
                 Task {
-                    print("builder window status: \(appModel.isBuilderInstructionsOpen)")
-                    print("setting builder window status to true")
+                    Logger.debug("builder window status: \(appModel.isBuilderInstructionsOpen)")
+                    Logger.debug("setting builder window status to true")
                     appModel.isBuilderInstructionsOpen = true
                     await appModel.transitionToPhase(.building)
                 }

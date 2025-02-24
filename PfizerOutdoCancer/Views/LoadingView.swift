@@ -7,15 +7,23 @@ struct LoadingView: View {
     @State private var showTitle = false
     @State private var viewOpacity: Double = 1.0
     @State private var hasStartedLoading = false
+    @State private var loadingError: Error? = nil
     @Namespace private var logoNamespace
     
     var body: some View {
         ZStack {
-            if case .loading = appModel.assetLoadingManager.loadingState {
+            if let error = loadingError {
+                ErrorBlock(error: error, namespace: logoNamespace) {
+                    // Retry action
+                    Task {
+                        await startLoading()
+                    }
+                }
+                .environment(appModel)
+            } else if case .loading = appModel.assetLoadingManager.loadingState {
                 LoadingBlock(namespace: logoNamespace)
                     .environment(appModel)
-            }
-            if case .completed = appModel.assetLoadingManager.loadingState {
+            } else if case .completed = appModel.assetLoadingManager.loadingState {
                 CompletedBlock(namespace: logoNamespace)
                     .environment(appModel)
             }
@@ -24,8 +32,6 @@ struct LoadingView: View {
         .opacity(viewOpacity)
         .animation(.easeInOut(duration: 0.5), value: appModel.assetLoadingManager.loadingState)
         .onChange(of: appModel.assetLoadingManager.loadingState) { oldState, newState in
-            // print("Loading state changed from \(oldState) to \(newState)")
-            // print("Loading progress: \(appModel.loadingProgress)")
             withAnimation(.easeInOut(duration: 0.5)) {
                 appModel.displayedProgress = appModel.loadingProgress
             }
@@ -38,13 +44,13 @@ struct LoadingView: View {
             }
         }
         .onDisappear {
-            print("🚨 LoadingView disappeared")
+            Logger.debug("🚨 LoadingView disappeared")
         }
         .task {
             // Start loading when LoadingView appears
             if !hasStartedLoading {
                 hasStartedLoading = true
-                await appModel.startLoading(adcDataModel: adcDataModel)
+                await startLoading()
             }
         }
         .onAppear {
@@ -54,6 +60,19 @@ struct LoadingView: View {
                     showTitle = true
                 }
             }
+        }
+    }
+    
+    private func startLoading() async {
+        do {
+            loadingError = nil
+            try await appModel.startLoading(adcDataModel: adcDataModel)
+        } catch {
+            Logger.error("""
+            ❌ Failed to load assets
+            └─ Error: \(error.localizedDescription)
+            """)
+            loadingError = error
         }
     }
 }
@@ -141,6 +160,45 @@ private struct CompletedBlock: View {
                 withAnimation {
                     showTitle = true
                 }
+            }
+        }
+    }
+}
+
+private struct ErrorBlock: View {
+    let error: Error
+    let namespace: Namespace.ID
+    let onRetry: () -> Void
+    
+    var body: some View {
+        VStack {
+            Image("Pfizer_Logo_Color_RGB")
+                .resizable()
+                .scaledToFit()
+                .matchedGeometryEffect(id: "PfizerLogo", in: namespace)
+                .frame(width: 400)
+                .padding(80)
+            
+            VStack(spacing: 20) {
+                Image(systemName: "exclamationmark.triangle.fill")
+                    .font(.system(size: 40))
+                    .foregroundStyle(.red)
+                
+                Text("Loading Error")
+                    .font(.title)
+                    .foregroundStyle(.red)
+                
+                Text(error.localizedDescription)
+                    .multilineTextAlignment(.center)
+                    .foregroundStyle(.secondary)
+                    .padding(.horizontal)
+                
+                Button(action: onRetry) {
+                    Label("Retry", systemImage: "arrow.clockwise")
+                        .font(.headline)
+                }
+                .buttonStyle(.borderedProminent)
+                .padding()
             }
         }
     }

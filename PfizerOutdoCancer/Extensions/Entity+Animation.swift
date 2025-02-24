@@ -56,7 +56,7 @@ extension Entity {
                 try? await Task.sleep(for: .seconds(duration))
             }
         } catch {
-            print("⚠️ Could not generate scale animation: \(error.localizedDescription)")
+            Logger.debug("⚠️ Could not generate scale animation: \(error.localizedDescription)")
             // Fall back to immediate change
             var newTransform = transform
             newTransform.scale.x = end
@@ -113,7 +113,7 @@ extension Entity {
                 try? await Task.sleep(for: .seconds(duration))
             }
         } catch {
-            print("⚠️ Could not generate scale animation: \(error.localizedDescription)")
+            Logger.debug("⚠️ Could not generate scale animation: \(error.localizedDescription)")
             // Fall back to immediate change
             var newTransform = transform
             newTransform.scale = .init(repeating: end)
@@ -168,7 +168,7 @@ extension Entity {
                 try? await Task.sleep(for: .seconds(duration))
             }
         } catch {
-            print("⚠️ Could not generate position animation: \(error.localizedDescription)")
+            Logger.debug("⚠️ Could not generate position animation: \(error.localizedDescription)")
             // Fall back to immediate change
             transform = endTransform
         }
@@ -219,7 +219,7 @@ extension Entity {
                 try? await Task.sleep(for: .seconds(duration))
             }
         } catch {
-            print("⚠️ Could not generate position animation: \(error.localizedDescription)")
+            Logger.debug("⚠️ Could not generate position animation: \(error.localizedDescription)")
             // Fall back to immediate change
             transform = endTransform
         }
@@ -273,7 +273,7 @@ extension Entity {
                 try? await Task.sleep(for: .seconds(duration))
             }
         } catch {
-            print("⚠️ Could not generate rotation animation: \(error.localizedDescription)")
+            Logger.debug("⚠️ Could not generate rotation animation: \(error.localizedDescription)")
             // Fall back to immediate change
             transform = endTransform
         }
@@ -361,7 +361,7 @@ extension Entity {
                 try await Task.sleep(for: .seconds(returnDuration))
             }
         } catch {
-            print("Failed to create hit scale animation: \(error)")
+            Logger.debug("Failed to create hit scale animation: \(error)")
         }
     }
     
@@ -416,7 +416,7 @@ extension Entity {
                 try? await Task.sleep(for: .seconds(duration))
             }
         } catch {
-            print("⚠️ Could not generate combined animation: \(error.localizedDescription)")
+            Logger.debug("⚠️ Could not generate combined animation: \(error.localizedDescription)")
             // Fall back to immediate change
             transform = endTransform
         }
@@ -549,7 +549,7 @@ extension Entity {
                 try? await Task.sleep(for: .seconds(duration))
             }
         } catch {
-            print("⚠️ Could not generate absolute position and scale animation: \(error.localizedDescription)")
+            Logger.debug("⚠️ Could not generate absolute position and scale animation: \(error.localizedDescription)")
             // Fall back to directly setting the transform
             transform = endTransform
         }
@@ -601,7 +601,7 @@ extension Entity {
                 try? await Task.sleep(for: .seconds(duration))
             }
         } catch {
-            print("⚠️ Could not generate absolute position animation: \(error.localizedDescription)")
+            Logger.debug("⚠️ Could not generate absolute position animation: \(error.localizedDescription)")
             // Fall back to directly setting the transform
             transform = endTransform
         }

@@ -37,7 +37,7 @@ struct ADCSelectorView: View {
                                            isSelected: {
                         dataModel.selectedADCAntibody == 0
                     }) {
-                        print("ITR..Button 0 antibody pressed")
+                        Logger.debug("ITR..Button 0 antibody pressed")
                         dataModel.selectedADCAntibody = 0
                         dataModel.stepStates[0].colorSelected = true
                     }
@@ -48,7 +48,7 @@ struct ADCSelectorView: View {
                                            isSelected: {
                         dataModel.selectedADCAntibody == 1
                     }) {
-                        print("ITR..Button 1 antibody pressed")
+                        Logger.debug("ITR..Button 1 antibody pressed")
                         dataModel.selectedADCAntibody = 1
                         dataModel.stepStates[0].colorSelected = true
                     }
@@ -59,7 +59,7 @@ struct ADCSelectorView: View {
                                            isSelected: {
                         dataModel.selectedADCAntibody == 2
                     }) {
-                        print("ITR..Button 2 antibody pressed")
+                        Logger.debug("ITR..Button 2 antibody pressed")
                         dataModel.selectedADCAntibody = 2
                         dataModel.stepStates[0].colorSelected = true
                     }

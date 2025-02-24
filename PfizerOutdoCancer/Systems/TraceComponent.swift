@@ -66,7 +66,7 @@ struct TraceSystem: System {
                     anchor.addChild(model)
                 }
             } catch {
-                print("Failed to create or update trace mesh.")
+                Logger.debug("Failed to create or update trace mesh.")
             }
         }
     }

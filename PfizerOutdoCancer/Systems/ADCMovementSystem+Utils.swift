@@ -13,9 +13,9 @@ import RealityKitContent
 extension ADCMovementSystem {
     static func resetADC(entity: Entity, component: inout ADCComponent) {
         #if DEBUG
-        print("\n=== Resetting ADC ===")
-        print("Previous State: \(component.state)")
-        print("Previous Target Cell ID: \(String(describing: component.targetCellID))")
+        Logger.debug("\n=== Resetting ADC ===")
+        Logger.debug("Previous State: \(component.state)")
+        Logger.debug("Previous Target Cell ID: \(String(describing: component.targetCellID))")
         #endif
         
         // Reset ADC state and target information.
@@ -80,8 +80,8 @@ extension ADCMovementSystem {
         entity.components[ADCComponent.self] = component
         
         #if DEBUG
-        print("✅ ADC Reset Complete")
-        print("New State: \(component.state)")
+        Logger.debug("✅ ADC Reset Complete")
+        Logger.debug("New State: \(component.state)")
         #endif
     }
 }

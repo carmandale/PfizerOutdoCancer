@@ -41,7 +41,7 @@ public class AntigenSystem: System {
                     //    var emitter = emitterEntity.components[ParticleEmitterComponent.self] {
                     //     emitter.isEmitting = false
                     //     emitterEntity.components[ParticleEmitterComponent.self] = emitter
-                    //     print("💫 Stopped particle emission")
+                    //     Logger.debug("💫 Stopped particle emission")
                     // }
                 }
             }

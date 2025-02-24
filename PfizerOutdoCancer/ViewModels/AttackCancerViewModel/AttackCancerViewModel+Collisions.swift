@@ -13,7 +13,7 @@ import Combine
 extension AttackCancerViewModel {
     // MARK: - Collision Setup
     func setupCollisions(in entity: Entity) {
-        print("setting up collisions in \(entity.name)")
+        Logger.debug("setting up collisions in \(entity.name)")
         // Cancel any existing subscription first
         subscription?.cancel()
         subscription = nil
@@ -35,14 +35,14 @@ extension AttackCancerViewModel {
     
     // MARK: - Collision Subscription
     func setupCollisionSubscription(with scene: RealityKit.Scene) {
-        print("🎯 Setting up collision subscription")
+        Logger.debug("🎯 Setting up collision subscription")
         // Store the SceneEventSubscription
         subscription = scene.subscribe(to: CollisionEvents.Began.self) { [weak self] event in
-        //    print("💥 Collision event received")
+        //    Logger.debug("💥 Collision event received")
             guard let self = self else { return }
             self.handleCollisionBegan(event)
         }
-        print("✅ Collision subscription set up")
+        Logger.debug("✅ Collision subscription set up")
     }
     
     // MARK: - Collision Handling
@@ -52,7 +52,7 @@ extension AttackCancerViewModel {
         
         // Check for head-microscope collision - only play sound, no transition
         if hasHeadCollision(event) && hasMicroscopeCollision(event) {
-            print("Head collision with microscope detected")
+            Logger.debug("Head collision with microscope detected")
             Task {
                 await appModel.transitionToPhase(.building)
             }
@@ -73,14 +73,14 @@ extension AttackCancerViewModel {
     
     @MainActor
     func handleADCToCellCollision(adc: Entity, cell: Entity, collision: CollisionEvents.Began) {
-        print("\n=== ADC-Cell Collision ===")
-        print("ADC: \(adc.name)")
-        print("Cell: \(cell.name)")
+        Logger.debug("\n=== ADC-Cell Collision ===")
+        Logger.debug("ADC: \(adc.name)")
+        Logger.debug("Cell: \(cell.name)")
         
         guard let stateComponent = cell.components[CancerCellStateComponent.self],
               let cellID = stateComponent.parameters.cellID,
               let parameters = cellParameters.first(where: { $0.cellID == cellID }) else {
-            print("❌ Failed to handle collision - missing state component or parameters")
+            Logger.debug("❌ Failed to handle collision - missing state component or parameters")
             return
         }
         
@@ -91,12 +91,12 @@ extension AttackCancerViewModel {
             var updatedComponent = adcComponent
             updatedComponent.hasCollided = true
             adc.components[ADCComponent.self] = updatedComponent
-            print("✅ ADC collision flag set for target cell \(cellID)")
+            Logger.debug("✅ ADC collision flag set for target cell \(cellID)")
         }
         
-        print("💥 ADC hit cell \(cellID)")
-        print("Current hit count: cellParameters \(parameters.hitCount)")
-        print("Current hit count: StateComponent \(stateComponent.parameters.hitCount)")
+        Logger.debug("💥 ADC hit cell \(cellID)")
+        Logger.debug("Current hit count: cellParameters \(parameters.hitCount)")
+        Logger.debug("Current hit count: StateComponent \(stateComponent.parameters.hitCount)")
         
         // Apply scaled physics impact if enabled
         if parameters.physicsEnabled {
@@ -121,7 +121,7 @@ extension AttackCancerViewModel {
             cell.components.set(motion)
             
             if parameters.isTutorialCell {
-                print("Tutorial cell impact - using scale: \(parameters.impactScale), impulse: \(scaledImpulse)")
+                Logger.debug("Tutorial cell impact - using scale: \(parameters.impactScale), impulse: \(scaledImpulse)")
             }
         }
     }

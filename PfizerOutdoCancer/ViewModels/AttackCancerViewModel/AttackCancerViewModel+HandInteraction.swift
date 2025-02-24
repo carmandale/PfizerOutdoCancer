@@ -5,8 +5,8 @@ import RealityKitContent
 extension AttackCancerViewModel {
     // MARK: - Tap Handling
     func handleTap(on entity: Entity, location: SIMD3<Float>, in scene: RealityKit.Scene?) async {
-        print("\n=== Tapped Entity ===")
-        print("Entity name: \(entity.name)")
+        Logger.debug("\n=== Tapped Entity ===")
+        Logger.debug("Entity name: \(entity.name)")
 //        appModel.assetLoadingManager.inspectEntityHierarchy(entity)
         
         // Get pinch distances for both hands to determine which hand tapped
@@ -17,15 +17,15 @@ extension AttackCancerViewModel {
         let handPosition: SIMD3<Float>?
         if leftPinchDistance < rightPinchDistance {
             handPosition = handTracking.getFingerPosition(.left)
-            print("Left hand tap detected")
+            Logger.debug("Left hand tap detected")
         } else {
             handPosition = handTracking.getFingerPosition(.right)
-            print("Right hand tap detected")
+            Logger.debug("Right hand tap detected")
         }
         
         // Ensure we have a valid scene
         guard let scene = scene else {
-            print("No scene available")
+            Logger.debug("No scene available")
             return
         }
         
@@ -35,24 +35,24 @@ extension AttackCancerViewModel {
         // Check if we can target a cancer cell
         if let stateComponent = entity.components[CancerCellStateComponent.self],
            let cellID = stateComponent.parameters.cellID {
-            print("Found cancer cell with ID: \(cellID)")
+            Logger.debug("Found cancer cell with ID: \(cellID)")
             
             // Use the new approach-aware getAvailablePoint
             if let attachPoint = AttachmentSystem.getAvailablePoint(in: scene, forCellID: cellID, approachPosition: spawnPosition) {
-                print("Found attach point: \(attachPoint.name)")
+                Logger.debug("Found attach point: \(attachPoint.name)")
                 AttachmentSystem.markPointAsOccupied(attachPoint)
                 await spawnADC(from: spawnPosition, targetPoint: attachPoint, forCellID: cellID)
             } else {
-                print("No available attach point found")
+                Logger.debug("No available attach point found")
                 await spawnUntargetedADC(from: spawnPosition)
             }
         } else {
             // No valid cancer cell target - spawn untargeted ADC
         if Double.random(in: 0..<1) < hitProbability {
-            print("Spawning untargeted ADC based on random chance")
+            Logger.debug("Spawning untargeted ADC based on random chance")
             await spawnUntargetedADC(from: spawnPosition)
         } else {
-            print("Skipping untargeted ADC spawn due to random chance")
+            Logger.debug("Skipping untargeted ADC spawn due to random chance")
         }
         }
     }

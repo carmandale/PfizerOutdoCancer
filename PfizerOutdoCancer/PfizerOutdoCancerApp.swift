@@ -147,7 +147,7 @@ struct PfizerOutdoCancerApp: App {
                                 appModel.immersiveSpaceState = .closed
                             } else {
                                 // System dismissed it (Digital Crown), clean up
-                                print("I am in the outro space in the onDisappear else block and think that I have been dismissed")
+                                Logger.debug("I am in the outro space in the onDisappear else block and think that I have been dismissed")
                                  Task {
                                      await cleanupAppState()
                                  }
@@ -265,10 +265,10 @@ struct PfizerOutdoCancerApp: App {
                         if newPhase == .playing || newPhase == .outro {
                             // Add a short delay to allow asset preloading and state updates to settle.
                             try? await Task.sleep(nanoseconds: 150_000_000) // 150ms delay
-                            print("Transitioning into \(newPhase); delay elapsed. Proceeding to open immersive space.")
+                            Logger.debug("Transitioning into \(newPhase); delay elapsed. Proceeding to open immersive space.")
                         }
                         let result = await openImmersiveSpace(id: newPhase.spaceId)
-                        print("openImmersiveSpace result for \(newPhase): \(result)")
+                        Logger.debug("openImmersiveSpace result for \(newPhase): \(result)")
                     }
                     if newPhase == .building {
                         // Explicitly set the immersive space state to closed so that manual launch works.
@@ -283,13 +283,13 @@ struct PfizerOutdoCancerApp: App {
     }
 
     init() {
-        print("🏁 PfizerOutdoCancerApp init starting...")
+        Logger.debug("🏁 PfizerOutdoCancerApp init starting...")
         
         // Set AppModel before registering the system
-        print("📲 Setting AppModel in PositioningSystem...")
+        Logger.debug("📲 Setting AppModel in PositioningSystem...")
         PositioningSystem.setAppModel(appModel)
         
-        print("📝 Registering components and systems...")
+        Logger.debug("📝 Registering components and systems...")
         /// Register components and systems
         RealityKitContent.AttachmentPoint.registerComponent()
         RealityKitContent.CancerCellComponent.registerComponent()
@@ -328,7 +328,7 @@ struct PfizerOutdoCancerApp: App {
         RotationSystem.registerSystem()
 
         // Add PositioningSystem registration
-        print("⚙️ Registering PositioningSystem...")
+        Logger.debug("⚙️ Registering PositioningSystem...")
         PositioningSystem.registerSystem()
         PositioningComponent.registerComponent()
         
@@ -349,14 +349,14 @@ struct PfizerOutdoCancerApp: App {
         ADCSimpleBillboardSystem.registerSystem()
         ADCProximitySystem.registerSystem()
         
-        print("✅ PfizerOutdoCancerApp init completed")
+        Logger.debug("✅ PfizerOutdoCancerApp init completed")
     }
     
     // Helper function to handle window management
     @MainActor
     private func handleWindowsForPhase(_ phase: AppPhase) async {
-        print("🎯 Managing windows for phase: \(phase)")
-        print("📊 Before state update - nav window open: \(appModel.isNavWindowOpen)")
+        Logger.debug("🎯 Managing windows for phase: \(phase)")
+        Logger.debug("📊 Before state update - nav window open: \(appModel.isNavWindowOpen)")
         
         // First, update model state
         switch phase {
@@ -415,7 +415,7 @@ struct PfizerOutdoCancerApp: App {
 //            }
         case .building:
             if appModel.isNavWindowOpen {
-                print("closing nav window")
+                Logger.debug("closing nav window")
                 dismissWindow(id: AppModel.navWindowId)
                 appModel.isNavWindowOpen = false
             }
@@ -443,15 +443,15 @@ struct PfizerOutdoCancerApp: App {
 //            dismissWindow(id: AppModel.gameCompletedWindowId)
 //        }
         
-        print("📊 Window states after update:")
-        print("  Main: \(appModel.isMainWindowOpen)")
-        print("  Debug: \(appModel.isNavWindowOpen)")
-        print("  Library: \(appModel.isLibraryWindowOpen)")
-        print("  Builder: \(appModel.isBuilderWindowOpen)")
-        print("  Phases:")
-        print("    AppPhase: \(appModel.currentPhase)")
-        print("    ScenePhase: \(scenePhase)")
-        print("    LoadingPhase: \(appModel.assetLoadingManager.loadingState)")
+        Logger.debug("📊 Window states after update:")
+        Logger.debug("  Main: \(appModel.isMainWindowOpen)")
+        Logger.debug("  Debug: \(appModel.isNavWindowOpen)")
+        Logger.debug("  Library: \(appModel.isLibraryWindowOpen)")
+        Logger.debug("  Builder: \(appModel.isBuilderWindowOpen)")
+        Logger.debug("  Phases:")
+        Logger.debug("    AppPhase: \(appModel.currentPhase)")
+        Logger.debug("    ScenePhase: \(scenePhase)")
+        Logger.debug("    LoadingPhase: \(appModel.assetLoadingManager.loadingState)")
     }
 
     // MARK: - App State Management

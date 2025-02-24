@@ -37,24 +37,24 @@ enum WorldTrackingError: Error {
         
         // Check whether the device supports world tracking
         guard WorldTrackingProvider.isSupported else {
-            print("WorldTrackingProvider is not supported on this device")
+            Logger.debug("WorldTrackingProvider is not supported on this device")
             throw WorldTrackingError.trackingFailed
         }
         
         do {
             // Attempt to start an ARKit session with the world-tracking provider
             try await arSession.run([worldTracking])
-            print("Successfully started ARKit session with world tracking")
+            Logger.debug("Successfully started ARKit session with world tracking")
             
             // Wait a short moment for the world tracking to fully initialize
             try await Task.sleep(nanoseconds: 500_000_000) // 500ms
             
             isInitialized = true
         } catch let error as ARKitSession.Error {
-            print("Encountered an error while running providers: \(error.localizedDescription)")
+            Logger.debug("Encountered an error while running providers: \(error.localizedDescription)")
             throw error
         } catch {
-            print("Encountered an unexpected error: \(error.localizedDescription)")
+            Logger.debug("Encountered an unexpected error: \(error.localizedDescription)")
             throw error
         }
     }
@@ -77,7 +77,7 @@ enum WorldTrackingError: Error {
     func positionEntityRelativeToUser(_ entity: Entity?, offset: SIMD3<Float> = [0, 0, -1]) {
         if let deviceTransform = originFromDeviceTransform() {
             let translation = deviceTransform.translation()
-            print("positioning entity according to device transform")
+            Logger.debug("positioning entity according to device transform")
             entity?.setPosition([
                 translation.x + offset.x,
                 translation.y + offset.y,

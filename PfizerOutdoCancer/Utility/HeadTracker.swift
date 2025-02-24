@@ -61,16 +61,16 @@ class HeadTracker: ObservableObject {
     
     func startTracking() async {
         guard WorldTrackingProvider.isSupported else {
-            print("HeadTracker: WorldTrackingProvider not supported")
+            Logger.debug("HeadTracker: WorldTrackingProvider not supported")
             return
         }
         
         do {
             try await arSession.run([worldTracking])
             isTracking = true
-            print("HeadTracker: Started tracking")
+            Logger.debug("HeadTracker: Started tracking")
         } catch {
-            print("Error: \(error). Head-position mode will still work.")
+            Logger.debug("Error: \(error). Head-position mode will still work.")
         }
     }
     
@@ -87,7 +87,7 @@ class HeadTracker: ObservableObject {
     func updateHeadPosition() {
         guard let transform = worldTracking.queryDeviceAnchor(atTimestamp: CACurrentMediaTime())?.originFromAnchorTransform else {
             if isTracking {
-                print("HeadTracker: Failed to get head position")
+                Logger.debug("HeadTracker: Failed to get head position")
             }
             return
         }
@@ -95,11 +95,11 @@ class HeadTracker: ObservableObject {
         
         // Debug position
         // if let entity = headCollisionEntity {
-        //     print("\n=== Head Tracker Update ===")
-        //     print("Entity Name: \(entity.name)")
-        //     print("World Position: \(entity.position(relativeTo: nil))")
-        //     print("Local Position: \(entity.position)")
-        //     print("Has Collision Component: \(entity.components[CollisionComponent.self] != nil)")
+        //     Logger.debug("\n=== Head Tracker Update ===")
+        //     Logger.debug("Entity Name: \(entity.name)")
+        //     Logger.debug("World Position: \(entity.position(relativeTo: nil))")
+        //     Logger.debug("Local Position: \(entity.position)")
+        //     Logger.debug("Has Collision Component: \(entity.components[CollisionComponent.self] != nil)")
         // }
     }
 } 

@@ -10,7 +10,7 @@ public extension simd_quatf {
     // Return pitch, yaw, roll in radians
     func toEulerAngles() -> SIMD3<Float> {
         // Many ways to do this; here’s one typical approach
-        print("extracting euler angles from quaternion")
+        Logger.debug("extracting euler angles from quaternion")
         let ysqr = imag.y * imag.y
 
         // roll (x-axis rotation)

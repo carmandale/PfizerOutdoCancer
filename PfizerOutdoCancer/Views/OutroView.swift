@@ -8,6 +8,7 @@
 import SwiftUI
 import RealityKit
 import RealityKitContent
+import Foundation
 
 //extension Notification.Name {
 //    static let changeToLabNotification = Notification.Name("ChangeToLab")
@@ -30,7 +31,7 @@ struct OutroView: View {
     
     var body: some View {
         RealityView { content in
-            print("\n=== Setting up OutroView ===")
+            Logger.debug("\n=== Setting up OutroView ===")
             
             // Create and configure root
             let root = Entity()
@@ -40,43 +41,43 @@ struct OutroView: View {
                 offsetY: -1.5,
                 offsetZ: -1.0
             ))
-            print("✅ Created root entity: \(root.name)")
+            Logger.debug("✅ Created root entity: \(root.name)")
             
             // Add root to content
             content.add(root)
-            print("✅ Added root to content")
+            Logger.debug("✅ Added root to content")
             
             // Load environment
             do {
-                print("📱 OutroView: Loading environment")
+                Logger.debug("📱 OutroView: Loading environment")
                 let outroEnvironmentEntity = try await appModel.assetLoadingManager.instantiateAsset(
                     withName: "outro_environment",
                     category: .outroEnvironment
                 )
-                print("✅ OutroView: Successfully loaded outro environment")
+                Logger.debug("✅ OutroView: Successfully loaded outro environment")
                 
                 root.addChild(outroEnvironmentEntity)
-                print("✅ OutroView: Added environment to root")
+                Logger.debug("✅ OutroView: Added environment to root")
 
                 // IBL
-                print("📱 OutroViewModel: Setting up IBL lighting")
+                Logger.debug("📱 OutroViewModel: Setting up IBL lighting")
                 try await IBLUtility.addImageBasedLighting(to: root, imageName: "metro_noord_2k")
-                print("✅ OutroViewModel: Added IBL lighting")
+                Logger.debug("✅ OutroViewModel: Added IBL lighting")
             
 
             } catch {
-                print("❌ OutroView: Failed to load outro environment: \(error)")
+                Logger.debug("❌ OutroView: Failed to load outro environment: \(error)")
             }
         }
         .preferredSurroundingsEffect(surroundingsEffect)
         .task {
             // Wait for environment animation to complete
             try? await Task.sleep(for: .seconds(55))
-            print("🎯 OutroView: Transitioning to loading")
+            Logger.debug("🎯 OutroView: Transitioning to loading")
             await appModel.transitionToPhase(.loading)
         }
         .onAppear {
-            print("\n=== OutroView Appeared ===")
+            Logger.debug("\n=== OutroView Appeared ===")
             // Add tint animation
             withAnimation(.linear(duration: 30.0)) {
                 outroTintIntensity = 0.02

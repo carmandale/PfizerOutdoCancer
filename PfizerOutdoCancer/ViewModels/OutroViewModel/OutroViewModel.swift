@@ -35,7 +35,7 @@ final class OutroViewModel {
     
     // MARK: - Setup Methods
     func setupOutroRoot() -> Entity {
-        print("📱 OutroViewModel: Setting up root entity")
+        Logger.debug("📱 OutroViewModel: Setting up root entity")
         let root = Entity()
         root.name = "OutroRoot"
         root.components.set(PositioningComponent(
@@ -44,36 +44,36 @@ final class OutroViewModel {
             offsetZ: -1.0
         ))
         outroRootEntity = root
-        print("✅ OutroViewModel: Root entity configured")
+        Logger.debug("✅ OutroViewModel: Root entity configured")
         return root
     }
     
     func setupEnvironment(in root: Entity) async {
-        print("📱 OutroViewModel: Starting environment setup")
+        Logger.debug("📱 OutroViewModel: Starting environment setup")
         
         // Load environment
         do {
-            print("📱 OutroViewModel: Loading environment")
+            Logger.debug("📱 OutroViewModel: Loading environment")
             let environment = try await appModel.assetLoadingManager.instantiateAsset(
                 withName: "outro_environment",
                 category: .outroEnvironment
             )
-            print("✅ OutroViewModel: Successfully loaded outro environment")
+            Logger.debug("✅ OutroViewModel: Successfully loaded outro environment")
             
             root.addChild(environment)
             outroEnvironmentEntity = environment
-            print("✅ OutroViewModel: Added environment to root")
+            Logger.debug("✅ OutroViewModel: Added environment to root")
             
             // Setup sky dome
             setupSkyDome(in: environment)
             
             // IBL
             do {
-                print("📱 OutroViewModel: Setting up IBL lighting")
+                Logger.debug("📱 OutroViewModel: Setting up IBL lighting")
                 try await IBLUtility.addImageBasedLighting(to: root, imageName: "metro_noord_2k")
-                print("✅ OutroViewModel: Added IBL lighting")
+                Logger.debug("✅ OutroViewModel: Added IBL lighting")
             } catch {
-                print("❌ OutroViewModel: Failed to setup IBL: \(error)")
+                Logger.debug("❌ OutroViewModel: Failed to setup IBL: \(error)")
             }
             
             isSetupComplete = true
@@ -82,46 +82,46 @@ final class OutroViewModel {
             await startSkyAnimation()
             
         } catch {
-            print("❌ OutroViewModel: Failed to load outro environment: \(error)")
+            Logger.debug("❌ OutroViewModel: Failed to load outro environment: \(error)")
         }
     }
     
     private func setupSkyDome(in environment: Entity) {
         if let sky = environment.findEntity(named: "SkySphere") {
-            print("🔍 Found skyDome: \(sky.name)")
+            Logger.debug("🔍 Found skyDome: \(sky.name)")
             skyDome = sky
             sky.opacity = 0
-            print("✅ Set skyDome opacity to 0")
+            Logger.debug("✅ Set skyDome opacity to 0")
         } else {
-            print("❌ Could not find SkySphere in environment")
+            Logger.debug("❌ Could not find SkySphere in environment")
         }
     }
     
     // MARK: - Animation Methods
     func startSkyAnimation() async {
-        print("🌌 Sky: Starting animation")
+        Logger.debug("🌌 Sky: Starting animation")
         if shouldUseSky {
             if let s = skyDome {
-                print("🔍 Sky initial opacity: \(s.opacity)")
+                Logger.debug("🔍 Sky initial opacity: \(s.opacity)")
                 await s.fadeOpacity(to: skyDarkness, duration: 10.0)
-                print("🌌 Sky: Completed fade animation")
-                print("🔍 Sky final opacity: \(s.opacity)")
+                Logger.debug("🌌 Sky: Completed fade animation")
+                Logger.debug("🔍 Sky final opacity: \(s.opacity)")
             } else {
-                print("❌ Sky: skyDome not found")
+                Logger.debug("❌ Sky: skyDome not found")
             }
         }
     }
     
     // MARK: - Cleanup
     func cleanup() {
-        print("\n=== Starting OutroViewModel Cleanup ===")
+        Logger.debug("\n=== Starting OutroViewModel Cleanup ===")
         
         // Clear root entity and scene
         if let root = outroRootEntity {
-            print("🗑️ Removing outro root entity")
+            Logger.debug("🗑️ Removing outro root entity")
             // Reset positioning component before removal
             if var positioningComponent = root.components[PositioningComponent.self] {
-                print("🎯 Resetting positioning component")
+                Logger.debug("🎯 Resetting positioning component")
                 positioningComponent.needsPositioning = true
                 root.components[PositioningComponent.self] = positioningComponent
             }
@@ -132,7 +132,7 @@ final class OutroViewModel {
         
         // Clear environment entity
         if let environment = outroEnvironmentEntity {
-            print("🌍 Removing environment entity")
+            Logger.debug("🌍 Removing environment entity")
             environment.removeFromParent()
         }
         outroEnvironmentEntity = nil
@@ -140,6 +140,6 @@ final class OutroViewModel {
         // Reset state
         isSetupComplete = false
         
-        print("✅ Completed OutroViewModel cleanup\n")
+        Logger.debug("✅ Completed OutroViewModel cleanup\n")
     }
 } 

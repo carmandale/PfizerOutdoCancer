@@ -32,7 +32,7 @@ final class PortalManager {
         
         
         
-//        print("🎯 Created portal plane with name: \(portalPlane.name) and scale: \(portalPlane.transform.scale)")
+//        Logger.debug("🎯 Created portal plane with name: \(portalPlane.name) and scale: \(portalPlane.transform.scale)")
         
 
         // Create the entity that stores the content within the portal.

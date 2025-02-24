@@ -62,7 +62,7 @@ extension Entity {
                 try? await Task.sleep(for: .seconds(duration))
             }
         } catch {
-            print("⚠️ Could not generate opacity animation: \(error.localizedDescription)")
+            Logger.debug("⚠️ Could not generate opacity animation: \(error.localizedDescription)")
             // Fall back to immediate change
             self.opacity = targetOpacity
         }

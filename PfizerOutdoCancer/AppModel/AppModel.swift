@@ -271,8 +271,15 @@ final class AppModel {
     
     @MainActor
     func accelerateHopeMeterToCompletion() async {
-        Logger.debug("🚀 Accelerating hope meter to completion")
-        Logger.debug("Initial state: hopeMeterTimeLeft=\(gameState.hopeMeterTimeLeft), isHopeMeterRunning=\(gameState.isHopeMeterRunning)")
+        Logger.debug("""
+        
+        🚀 === ACCELERATING HOPE METER ===
+        ├─ Current Phase: \(currentPhase)
+        ├─ Initial Time Left: \(gameState.hopeMeterTimeLeft)
+        ├─ Is Running: \(gameState.isHopeMeterRunning)
+        ├─ Has Played Victory: \(gameState.hasPlayedVictorySequence)
+        └─ Has Played Ending: \(gameState.hasPlayedEndingSequence)
+        """)
         
         // Stop the normal timer
         hopeMeterTimer?.invalidate()
@@ -284,19 +291,25 @@ final class AppModel {
         let updateInterval: TimeInterval = 0.05
         let totalSteps = Int(totalTime / updateInterval)
         let timePerStep = gameState.hopeMeterTimeLeft / TimeInterval(totalSteps)
-        Logger.debug("Acceleration params: totalSteps=\(totalSteps), timePerStep=\(timePerStep)")
         
         for step in 0..<totalSteps {
             gameState.hopeMeterTimeLeft = max(0, gameState.hopeMeterTimeLeft - timePerStep)
-            Logger.debug("Step \(step + 1)/\(totalSteps): hopeMeterTimeLeft=\(gameState.hopeMeterTimeLeft)")
+            if step % 10 == 0 { // Log every 10th step to avoid spam
+                Logger.debug("Time remaining: \(gameState.hopeMeterTimeLeft)")
+            }
             try? await Task.sleep(for: .milliseconds(Int(updateInterval * 1000)))
         }
         
         gameState.hopeMeterTimeLeft = 0
-        Logger.debug("Final state: hopeMeterTimeLeft=\(gameState.hopeMeterTimeLeft)")
-        
         gameState.isHopeMeterRunning = false
-        Logger.debug("Hope meter acceleration complete, isHopeMeterRunning=\(gameState.isHopeMeterRunning)")
+        
+        Logger.debug("""
+        
+        ✅ === ACCELERATION COMPLETE ===
+        ├─ Final Time Left: \(gameState.hopeMeterTimeLeft)
+        ├─ Is Running: \(gameState.isHopeMeterRunning)
+        └─ Current Phase: \(currentPhase)
+        """)
     }
     
     deinit {
@@ -454,20 +467,18 @@ final class AppModel {
             Logger.debug("\n=== Preparing ADC for intro and playing ===")
             if let adcDataModel = adcDataModel {
                 do {
-                    // Load and configure ADC template
-                    Logger.debug("🎯 Loading ADC template...")
-                    let adcEntity = try await assetLoadingManager.instantiateAsset(
-                        withName: "adc",
-                        category: .adc
-                    )
-                    Logger.debug("✅ ADC entity loaded, applying colors...")
-                    gameState.setADCTemplate(adcEntity, dataModel: adcDataModel)
-                    Logger.debug("✅ ADC template configured with colors")
-                    
-                    // Pass template to lab state if we have built an ADC
-                    labState.adcTemplate = gameState.adcTemplate
-                    Logger.debug("✅ ADC template passed to lab state")
-                    
+                    // Use cached template and update colors
+                    if let cachedTemplate = assetLoadingManager.entityTemplates["adc"] {
+                        Logger.debug("🎯 Using cached ADC template...")
+                        gameState.setADCTemplate(cachedTemplate, dataModel: adcDataModel)
+                        Logger.debug("✅ Updated ADC template colors")
+                        
+                        // Pass template to lab state if we have built an ADC
+                        labState.adcTemplate = gameState.adcTemplate
+                        Logger.debug("✅ ADC template passed to lab state")
+                    } else {
+                        Logger.debug("❌ No cached ADC template found")
+                    }
 
                 } catch {
                     Logger.debug("❌ Failed to load playing phase assets: \(error)")
@@ -553,11 +564,28 @@ final class AppModel {
             await assetLoadingManager.releaseBuildADCEnvironment()
         case .playing:
             if newPhase != .completed {
-                Logger.debug("I am in the playing phase and I am not transitioning to completed so I am cleaning up")
+                Logger.debug("""
+                
+                🧹 === CLEANING UP PLAYING PHASE ===
+                ├─ Next Phase: \(newPhase)
+                ├─ Hope Meter Running: \(gameState.isHopeMeterRunning)
+                ├─ Hope Meter Time: \(gameState.hopeMeterTimeLeft)
+                └─ Audio States: Victory=\(gameState.hasPlayedVictorySequence), Ending=\(gameState.hasPlayedEndingSequence)
+                """)
+                
+                // Stop any running timers
+                stopHopeMeter()
+                
+                // Reset hope meter state
+                gameState.hopeMeterTimeLeft = gameState.hopeMeterDuration
+                gameState.isHopeMeterRunning = false
+                
                 await gameState.cleanup()
                 await assetLoadingManager.releaseAttackCancerEnvironment()
+                
+                Logger.debug("✅ Playing phase cleanup complete")
             } else {
-                Logger.debug("I am in the playing phase and transitioning to completed, so preserving immersive assets")
+                Logger.debug("Preserving immersive assets for completed phase")
             }
         case .completed:
             if newPhase == .outro {

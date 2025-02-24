@@ -7,11 +7,11 @@ extension AttackCancerViewModel {
     // MARK: - Notification Setup (This is now just for the timeline)
     func handleTimelineNotification(for entity: Entity) {
         // Add debug logging
-        print("📢 Timeline notification received from \(entity.name)")
+        Logger.debug("📢 Timeline notification received from \(entity.name)")
         
         // Main thread execution for UI updates
         DispatchQueue.main.async {
-            print("🎯 Opening hope meter utility window")
+            Logger.debug("🎯 Opening hope meter utility window")
             if !self.appModel.isHopeMeterUtilityWindowOpen {
                 self.appModel.isHopeMeterUtilityWindowOpen = true
             }
@@ -21,25 +21,30 @@ extension AttackCancerViewModel {
     // No longer needed: setupNotifications, handleCancerCellUpdate, notifyCellStateChanged, notifyGameStateChanged, notifyScoreChanged
 
     func checkGameConditions() {
-            let totalGameCells = cellParameters.filter { !$0.isTutorialCell }.count
-            
-            if totalGameCells > 0, cellsDestroyed >= totalGameCells {
-                print("✅✅✅ ALL GAME CELLS DESTROYED! Condition met!")
-                Task { @MainActor in
-                    // Only play if we haven't played the victory sequence yet
-                    if !self.hasPlayedVictorySequence {
-                        self.hasPlayedVictorySequence = true
-                        print("🎯 All game cells destroyed - accelerating hope meter")
-                        await appModel.accelerateHopeMeterToCompletion()
-                        try? await Task.sleep(for: .milliseconds(100))
-                        await self.playEndSound("magic_zing", forSequence: .ending)
-                        await self.playVictorySequence()
-                        try? await Task.sleep(for: .milliseconds(1000))
-                        await appModel.transitionToPhase(.completed)
-                    }
+        let totalGameCells = cellParameters.filter { !$0.isTutorialCell }.count
+        
+        if totalGameCells > 0, cellsDestroyed >= totalGameCells {
+            Logger.debug("✅✅✅ ALL GAME CELLS DESTROYED! Condition met!")
+            Task { @MainActor in
+                // Only play if we haven't played the victory sequence yet
+                if !self.hasPlayedVictorySequence {
+                    self.hasPlayedVictorySequence = true
+                    Logger.debug("🎯 All game cells destroyed - accelerating hope meter")
+                    
+                    // First accelerate the hope meter
+                    await appModel.accelerateHopeMeterToCompletion()
+                    
+                    // Then play victory sequence
+                    await self.playEndSound("magic_zing", forSequence: .ending)
+                    await self.playVictorySequence()
+                    
+                    // Finally transition to completed phase
+                    try? await Task.sleep(for: .milliseconds(2000))
+                    await appModel.transitionToPhase(.completed)
                 }
             }
         }
+    }
 
     // Optionally, if there's an area where the hope meter runs out, add a call there as well:
     func hopeMeterDidRunOut() async {

@@ -65,8 +65,8 @@ struct ADCCheckmarkButton: View {
 //    static var previews: some View {
 //        // Toggle isEnabled to see the pulsing effect in action.
 //        VStack(spacing: 40) {
-//            ADCCheckmarkButton(action: { print("Tapped!") }, isEnabled: true)
-//            ADCCheckmarkButton(action: { print("Tapped!") }, isEnabled: false)
+//            ADCCheckmarkButton(action: { Logger.debug("Tapped!") }, isEnabled: true)
+//            ADCCheckmarkButton(action: { Logger.debug("Tapped!") }, isEnabled: false)
 //        }
 //        .padding()
 //        .background(Color.gray.opacity(0.2))

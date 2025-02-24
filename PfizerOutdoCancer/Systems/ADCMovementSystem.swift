@@ -58,7 +58,7 @@ public class ADCMovementSystem: System {
                 let entities = context.scene.performQuery(query)
                 guard let targetEntity = entities.first(where: { $0.id == Entity.ID(targetID) }) else {
                     #if DEBUG
-                    print("⚠️ Target entity not found - aborting ADC movement")
+                    Logger.debug("⚠️ Target entity not found - aborting ADC movement")
                     #endif
                     adcComponent.state = .idle
                     entity.components[ADCComponent.self] = adcComponent
@@ -68,14 +68,14 @@ public class ADCMovementSystem: System {
                 // Validate target before proceeding.
                 if !Self.validateTarget(targetEntity, adcComponent, in: context.scene) {
                     #if DEBUG
-                    print("⚠️ Target no longer valid - attempting to find new target")
+                    Logger.debug("⚠️ Target no longer valid - attempting to find new target")
                     #endif
                     if Self.retargetADC(entity, &adcComponent, currentPosition: entity.position(relativeTo: nil), in: context.scene) {
                         entity.components[ADCComponent.self] = adcComponent
                         continue
                     } else {
                         #if DEBUG
-                        print("⚠️ No valid targets found - resetting ADC")
+                        Logger.debug("⚠️ No valid targets found - resetting ADC")
                         #endif
                         Self.resetADC(entity: entity, component: &adcComponent)
                         continue
@@ -96,13 +96,13 @@ public class ADCMovementSystem: System {
                         adcComponent.targetInterpolationProgress = 1.0
                         
                         #if DEBUG
-                        print("\n=== Path Update Before Recalculation ===")
-                        print("Current Position: \(entity.position(relativeTo: nil))")
-                        print("Start Position: \(start)")
-                        print("Previous Target: \(previousTarget)")
-                        print("New Target: \(newTarget)")
-                        print("Current Traveled Distance: \(adcComponent.traveledDistance)")
-                        print("Previous Path Length: \(adcComponent.pathLength)")
+                        Logger.debug("\n=== Path Update Before Recalculation ===")
+                        Logger.debug("Current Position: \(entity.position(relativeTo: nil))")
+                        Logger.debug("Start Position: \(start)")
+                        Logger.debug("Previous Target: \(previousTarget)")
+                        Logger.debug("New Target: \(newTarget)")
+                        Logger.debug("Current Traveled Distance: \(adcComponent.traveledDistance)")
+                        Logger.debug("Previous Path Length: \(adcComponent.pathLength)")
                         #endif
                         
                         // Calculate distances for scaling decision
@@ -110,9 +110,9 @@ public class ADCMovementSystem: System {
                         let newTargetDistance = length(newTarget - start)
                         
                         #if DEBUG
-                        print("\n=== Distance Comparison ===")
-                        print("Old target distance: \(oldTargetDistance)")
-                        print("New target distance: \(newTargetDistance)")
+                        Logger.debug("\n=== Distance Comparison ===")
+                        Logger.debug("Old target distance: \(oldTargetDistance)")
+                        Logger.debug("New target distance: \(newTargetDistance)")
                         #endif
                         
                         // Scale traveled distance if new target is closer
@@ -120,11 +120,11 @@ public class ADCMovementSystem: System {
                         if newTargetDistance < oldTargetDistance {
                             newTraveledDistance = (adcComponent.traveledDistance / oldTargetDistance) * newTargetDistance
                             #if DEBUG
-                            print("Scaling traveled distance: \(adcComponent.traveledDistance) -> \(newTraveledDistance)")
+                            Logger.debug("Scaling traveled distance: \(adcComponent.traveledDistance) -> \(newTraveledDistance)")
                             #endif
                         } else {
                             #if DEBUG
-                            print("New target is farther - preserving absolute traveled distance")
+                            Logger.debug("New target is farther - preserving absolute traveled distance")
                             #endif
                         }
                         
@@ -146,17 +146,17 @@ public class ADCMovementSystem: System {
                         let newPathLength = lookup.last ?? 0.0
                         
                         #if DEBUG
-                        print("\n=== Path Update After Recalculation ===")
-                        print("New Path Length: \(newPathLength)")
-                        print("Traveled Distance (updated): \(newTraveledDistance)")
-                        print("New Progress: \(newTraveledDistance / newPathLength)")
-                        print("Distance from start to target: \(distance)")
+                        Logger.debug("\n=== Path Update After Recalculation ===")
+                        Logger.debug("New Path Length: \(newPathLength)")
+                        Logger.debug("Traveled Distance (updated): \(newTraveledDistance)")
+                        Logger.debug("New Progress: \(newTraveledDistance / newPathLength)")
+                        Logger.debug("Distance from start to target: \(distance)")
                         #endif
                         
                         // Verify the new path is valid
                         if newPathLength <= 0.0 {
                             #if DEBUG
-                            print("⚠️ Invalid new path length!")
+                            Logger.debug("⚠️ Invalid new path length!")
                             #endif
                             continue
                         }
@@ -170,7 +170,7 @@ public class ADCMovementSystem: System {
                         adcComponent.newTargetPosition = nil
                         
                         #if DEBUG
-                        print("✅ Path update complete - ADC will continue to new target")
+                        Logger.debug("✅ Path update complete - ADC will continue to new target")
                         #endif
                     }
                     
@@ -221,10 +221,10 @@ public class ADCMovementSystem: System {
                     if let attachPoint = targetEntity.components[AttachmentPoint.self],
                        attachPoint.isUntargeted {
                         #if DEBUG
-                        print("\n=== ADC at 80% - Converting from Untargeted to Seeking ===")
-                        print("Current Progress: \(currentNormalizedProgress)")
-                        print("ADC World Position: \(entity.position(relativeTo: nil))")
-                        print("Target World Position: \(targetEntity.position(relativeTo: nil))")
+                        Logger.debug("\n=== ADC at 80% - Converting from Untargeted to Seeking ===")
+                        Logger.debug("Current Progress: \(currentNormalizedProgress)")
+                        Logger.debug("ADC World Position: \(entity.position(relativeTo: nil))")
+                        Logger.debug("Target World Position: \(targetEntity.position(relativeTo: nil))")
                         #endif
                         
                         // Mark the attachment point as no longer untargeted
@@ -234,7 +234,7 @@ public class ADCMovementSystem: System {
                         targetEntity.components[AttachmentPoint.self] = updatedAttachPoint
                         
                         #if DEBUG
-                        print("🎯 ADC at 80% - attempting to find cancer cell target")
+                        Logger.debug("🎯 ADC at 80% - attempting to find cancer cell target")
                         #endif
                         
                         if Self.retargetADC(entity, &adcComponent, currentPosition: entity.position(relativeTo: nil), in: context.scene) {
@@ -242,13 +242,13 @@ public class ADCMovementSystem: System {
                             // Remove the headPosition entity and its debug sphere.
                             targetEntity.removeFromParent()
                             #if DEBUG
-                            print("✨ Removed headPosition entity after successful retarget")
+                            Logger.debug("✨ Removed headPosition entity after successful retarget")
                             #endif
                             continue
                         }
                         // If retargeting fails, just continue to the headPosition
                         #if DEBUG
-                        print("⚠️ No suitable cancer cell targets found - continuing to headPosition")
+                        Logger.debug("⚠️ No suitable cancer cell targets found - continuing to headPosition")
                         #endif
                     }
                 }
@@ -290,19 +290,19 @@ public class ADCMovementSystem: System {
                 // Handle completion
                 if adcComponent.hasCollided {
                     #if DEBUG
-                    print("\n=== ADC Path Completion ===")
-                    print("Final Progress: \(tMapped)")
-                    print("Total Distance Traveled: \(adcComponent.traveledDistance)")
-                    print("Path Length: \(adcComponent.pathLength)")
-                    print("Start Position: \(start)")
-                    print("Final Position: \(position)")
-                    print("Target Position: \(targetPosition)")
+                    Logger.debug("\n=== ADC Path Completion ===")
+                    Logger.debug("Final Progress: \(tMapped)")
+                    Logger.debug("Total Distance Traveled: \(adcComponent.traveledDistance)")
+                    Logger.debug("Path Length: \(adcComponent.pathLength)")
+                    Logger.debug("Start Position: \(start)")
+                    Logger.debug("Final Position: \(position)")
+                    Logger.debug("Target Position: \(targetPosition)")
                     #endif
                     
                     // Trigger a hit-scale animation on the parent cancer cell
                     if let cancerCell = Self.findParentCancerCell(for: targetEntity, in: context.scene) {
                         #if DEBUG
-                        print("✅ Found parent cancer cell - triggering hit animation")
+                        Logger.debug("✅ Found parent cancer cell - triggering hit animation")
                         #endif
                         Task { @MainActor in
                             await cancerCell.hitScaleAnimation(
@@ -313,12 +313,12 @@ public class ADCMovementSystem: System {
                         }
                     } else {
                         #if DEBUG
-                        print("⚠️ Could not find parent cancer cell for hit animation")
+                        Logger.debug("⚠️ Could not find parent cancer cell for hit animation")
                         #endif
                     }
                     
                     #if DEBUG
-                    print("\n=== ADC Attachment Process ===")
+                    Logger.debug("\n=== ADC Attachment Process ===")
                     // Remove ADC from its current parent and prepare for attachment
                     let previousParent = entity.parent?.name ?? "none"
                     #endif
@@ -332,10 +332,10 @@ public class ADCMovementSystem: System {
                         targetEntity.addChild(entity)
                         entity.transform = landingTransform
                         
-                        print("Attached ADC - Entity: \(entity.name), Position Relative to Target: \(entity.position(relativeTo: targetEntity))")
+                        Logger.debug("Attached ADC - Entity: \(entity.name), Position Relative to Target: \(entity.position(relativeTo: targetEntity))")
                         
                         #if DEBUG
-                        print("✅ Applied landing transform successfully")
+                        Logger.debug("✅ Applied landing transform successfully")
                         #endif
                     } else {
                         // Fallback to simple attachment if transform is invalid
@@ -343,14 +343,14 @@ public class ADCMovementSystem: System {
                         entity.position = SIMD3<Float>(0, -0.08, 0)
                         entity.orientation = targetEntity.orientation(relativeTo: nil)
                         #if DEBUG
-                        print("⚠️ Using fallback attachment due to invalid landing transform")
+                        Logger.debug("⚠️ Using fallback attachment due to invalid landing transform")
                         #endif
                     }
                     
                     #if DEBUG
-                    print("🔄 Reparented ADC:")
-                    print("Previous Parent: \(previousParent)")
-                    print("New Parent: \(targetEntity.name)")
+                    Logger.debug("🔄 Reparented ADC:")
+                    Logger.debug("Previous Parent: \(previousParent)")
+                    Logger.debug("New Parent: \(targetEntity.name)")
                     #endif
                     
                     // Trigger antigen retraction
@@ -358,7 +358,7 @@ public class ADCMovementSystem: System {
                         if var antigenComponent = offsetEntity.components[AntigenComponent.self] {
                             antigenComponent.isRetracting = true
                             offsetEntity.components[AntigenComponent.self] = antigenComponent
-                            print("✅ Antigen retraction triggered for \(offsetEntity.name)")
+                            Logger.debug("✅ Antigen retraction triggered for \(offsetEntity.name)")
                         }
                     }
                     
@@ -400,7 +400,7 @@ public class ADCMovementSystem: System {
                     adcComponent.state = .attached
                     entity.components[ADCComponent.self] = adcComponent
                     #if DEBUG
-                    print("✅ ADC state updated to attached")
+                    Logger.debug("✅ ADC state updated to attached")
                     #endif
                     
                     // Update cell hit count
@@ -412,7 +412,7 @@ public class ADCMovementSystem: System {
                         stateComponent.parameters.wasJustHit = true
                         
                         // Only log the critical hit count updates
-                        print("📊 Cell \(cellID): \(stateComponent.parameters.hitCount)/\(stateComponent.parameters.requiredHits) hits")
+                        Logger.debug("📊 Cell \(cellID): \(stateComponent.parameters.hitCount)/\(stateComponent.parameters.requiredHits) hits")
                         
                         // Post notification for cell update
                         NotificationCenter.default.post(
@@ -421,23 +421,23 @@ public class ADCMovementSystem: System {
                             userInfo: ["entity": cancerCell]
                         )
                         #if DEBUG
-                        print("📢 Posted UpdateCancerCell notification for cell \(cellID)")
-                        print("\n=== ADC Path Completion ===")
-                        print("Final Progress: \(tMapped)")
-                        print("Total Distance Traveled: \(adcComponent.traveledDistance)")
-                        print("Path Length: \(adcComponent.pathLength)")
-                        print("Start Position: \(start)")
-                        print("Final Position: \(position)")
-                        print("Target Position: \(targetPosition)")
+                        Logger.debug("📢 Posted UpdateCancerCell notification for cell \(cellID)")
+                        Logger.debug("\n=== ADC Path Completion ===")
+                        Logger.debug("Final Progress: \(tMapped)")
+                        Logger.debug("Total Distance Traveled: \(adcComponent.traveledDistance)")
+                        Logger.debug("Path Length: \(adcComponent.pathLength)")
+                        Logger.debug("Start Position: \(start)")
+                        Logger.debug("Final Position: \(position)")
+                        Logger.debug("Target Position: \(targetPosition)")
                         #endif
                     } else {
                         #if DEBUG
-                        print("⚠️ Could not update hit count - missing required components")
+                        Logger.debug("⚠️ Could not update hit count - missing required components")
                         #endif
                     }
                     
                     #if DEBUG
-                    print("✅ ADC completion process finished successfully")
+                    Logger.debug("✅ ADC completion process finished successfully")
                     #endif
                     continue
                 }
@@ -469,12 +469,12 @@ public class ADCMovementSystem: System {
                     adcComponent.timeSinceLastTargetSearch = 0
                     
                     #if DEBUG
-                    print("🔄 Orbiting ADC checking for retarget - Entity: \(entity.name)")
+                    Logger.debug("🔄 Orbiting ADC checking for retarget - Entity: \(entity.name)")
                     #endif
                     
                     if Self.retargetADC(entity, &adcComponent, currentPosition: entity.position(relativeTo: nil), in: context.scene) {
                         #if DEBUG
-                        print("✅ Orbiting ADC retargeted to new target - Entity: \(entity.name), Target ID: \(adcComponent.targetEntityID ?? 0)")
+                        Logger.debug("✅ Orbiting ADC retargeted to new target - Entity: \(entity.name), Target ID: \(adcComponent.targetEntityID ?? 0)")
                         #endif
                         adcComponent.state = .moving
                         adcComponent.startWorldPosition = entity.position(relativeTo: nil)
@@ -486,7 +486,7 @@ public class ADCMovementSystem: System {
                         continue
                     } else {
                         #if DEBUG
-                        print("⚠️ No valid targets found for orbiting ADC - Entity: \(entity.name)")
+                        Logger.debug("⚠️ No valid targets found for orbiting ADC - Entity: \(entity.name)")
                         #endif
                     }
                 }
@@ -539,7 +539,7 @@ public class ADCMovementSystem: System {
                 entity.components[ADCComponent.self] = adcComponent
             } else {
                 #if DEBUG
-//                print("⚠️ Unknown ADC state - skipping update")
+//                Logger.debug("⚠️ Unknown ADC state - skipping update")
                 #endif
             }
         }
@@ -564,7 +564,7 @@ public class ADCMovementSystem: System {
     @MainActor
     public static func startMovement(entity: Entity, from start: SIMD3<Float>, to targetPoint: Entity) {
         guard var adcComponent = entity.components[ADCComponent.self] else {
-            print("ERROR: No ADCComponent found on entity")
+            Logger.debug("ERROR: No ADCComponent found on entity")
             return
         }
         

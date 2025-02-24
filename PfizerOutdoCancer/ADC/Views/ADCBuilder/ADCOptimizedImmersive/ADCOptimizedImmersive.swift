@@ -184,10 +184,10 @@ struct ADCOptimizedImmersive: View {
         }
         .onChange(of: appModel.currentPhase) { oldPhase, newPhase in
             if oldPhase == .building && newPhase != .building {
-                print("\n=== ADCOptimizedImmersive Phase Change ===")
-                print("Transitioning from .building to \(newPhase)")
+                Logger.debug("\n=== ADCOptimizedImmersive Phase Change ===")
+                Logger.debug("Transitioning from .building to \(newPhase)")
                 // Cleanup is now handled by AppModel
-                print("✅ ADCOptimizedImmersive phase change complete\n")
+                Logger.debug("✅ ADCOptimizedImmersive phase change complete\n")
             }
         }
         .onChange(of: dataModel.adcBuildStep) { oldValue, newValue in
@@ -237,23 +237,23 @@ struct ADCOptimizedImmersive: View {
                     }
                     adcLinkers[dataModel.linkersWorkingIndex].components.set(ADCProximitySourceComponent())
                     
-                    print("going to look for linker entity")
+                    Logger.debug("going to look for linker entity")
                     if let linkerEntity = linkerEntity {
-                        print("case 1, found linker entity")
+                        Logger.debug("case 1, found linker entity")
                         if dataModel.isCurrentStepComplete {
-                            print("current step is complete, linker entity = \(linkerEntity.isEnabled)")
+                            Logger.debug("current step is complete, linker entity = \(linkerEntity.isEnabled)")
 //                            linkerEntity.opacity = 1
                             linkerEntity.isEnabled = false
                         } else {
-                            print("linker step is not complete, enabling linker entity dataModel.isCurrentStepComplete = \(dataModel.isCurrentStepComplete)")
+                            Logger.debug("linker step is not complete, enabling linker entity dataModel.isCurrentStepComplete = \(dataModel.isCurrentStepComplete)")
                             linkerEntity.isEnabled = true
                             linkerEntity.opacity = 1
-                            print("setting linker opacity to \(linkerEntity.opacity)")
+                            Logger.debug("setting linker opacity to \(linkerEntity.opacity)")
                         }
                         if !dataModel.manualStepTransition {
-                            print("manualStepTransition = \(dataModel.manualStepTransition)")
+                            Logger.debug("manualStepTransition = \(dataModel.manualStepTransition)")
                             linkerEntity.opacity = 0
-                            print("setting linker opacity to \(linkerEntity.opacity)")
+                            Logger.debug("setting linker opacity to \(linkerEntity.opacity)")
                         }
                     }
                     self.linkerAttachmentEntity?.isEnabled = true
@@ -296,22 +296,22 @@ struct ADCOptimizedImmersive: View {
 //                        payloadEntity.opacity = 0
 //                    }
                     
-                    print("going to look for payload entity")
+                    Logger.debug("going to look for payload entity")
                     if let payloadEntity = payloadEntity {
-                        print("case 1, found payloadEntity entity")
+                        Logger.debug("case 1, found payloadEntity entity")
                         if dataModel.isCurrentStepComplete {
-                            print("current step is complete, payloadEntity entity = \(payloadEntity.isEnabled)")
+                            Logger.debug("current step is complete, payloadEntity entity = \(payloadEntity.isEnabled)")
                             payloadEntity.isEnabled = false
                         } else {
-                            print("payloadEntity step is not complete, enabling payloadEntity  dataModel.isCurrentStepComplete = \(dataModel.isCurrentStepComplete)")
+                            Logger.debug("payloadEntity step is not complete, enabling payloadEntity  dataModel.isCurrentStepComplete = \(dataModel.isCurrentStepComplete)")
                             payloadEntity.isEnabled = true
                             payloadEntity.opacity = 1
-                            print("setting payloadEntity opacity to \(payloadEntity.opacity)")
+                            Logger.debug("setting payloadEntity opacity to \(payloadEntity.opacity)")
                         }
                         if !dataModel.manualStepTransition {
-                            print("manualStepTransition = \(dataModel.manualStepTransition)")
+                            Logger.debug("manualStepTransition = \(dataModel.manualStepTransition)")
                             payloadEntity.opacity = 0
-                            print("setting payloadEntity opacity to \(payloadEntity.opacity)")
+                            Logger.debug("setting payloadEntity opacity to \(payloadEntity.opacity)")
                         }
                     }
                     
@@ -331,7 +331,7 @@ struct ADCOptimizedImmersive: View {
                     // If we came from checkmark button (all payloads filled)
                     // play animation sequence
                     if !dataModel.manualStepTransition {
-                        print("dataModel.manualStepTransition = \(dataModel.manualStepTransition) Must play animation sequence")
+                        Logger.debug("dataModel.manualStepTransition = \(dataModel.manualStepTransition) Must play animation sequence")
                         Task { @MainActor in
                             if let antibodyRootEntity = antibodyRootEntity {
                                 os_log(.debug, "ITR..🔍 Starting ADC animation sequence")
@@ -623,7 +623,7 @@ struct ADCOptimizedImmersive: View {
     }
 
     private func updateAttachmentEntities() {
-        print("dataModel.isCurrentStepComplete: \(dataModel.isCurrentStepComplete)")
+        Logger.debug("dataModel.isCurrentStepComplete: \(dataModel.isCurrentStepComplete)")
         let currentStepComplete = dataModel.isCurrentStepComplete
         linkerAttachmentEntity?.isEnabled = !currentStepComplete
         payloadAttachmentEntity?.isEnabled = !currentStepComplete

@@ -11,7 +11,7 @@ struct IntroView: View {
     
     @State private var introTintIntensity: Double = 0.2 {
         didSet {
-            print("introTintIntensity changed to: \(introTintIntensity)")
+            Logger.debug("introTintIntensity changed to: \(introTintIntensity)")
             // Consider adding a breakpoint here to inspect the call stack
         }
     }
@@ -32,53 +32,63 @@ struct IntroView: View {
         @Bindable var appModel = appModel
         
         RealityView { content, attachments in
-            print("\n=== Setting up IntroView ===")
-            print("\n=== hasBuiltSDC = \(appModel.hasBuiltADC) ===")
-            
+            Logger.debug("=== Setting up IntroView ===")
+            Logger.debug("hasBuiltSDC = \(appModel.hasBuiltADC)")
+
             // Create fresh root entity
             let root = appModel.introState.setupRoot()
             content.add(root)
-            print("✅ Added root to content")
+            Logger.debug("✅ Added root to content")
             
-             if showNavToggle {
-                 content.add(handTrackedEntity)
-                 if let attachmentEntity = attachments.entity(for: "navToggle") {
-                     attachmentEntity.components[BillboardComponent.self] = .init()
-                     handTrackedEntity.addChild(attachmentEntity)
-                 }
-             }
+            if showNavToggle {
+                content.add(handTrackedEntity)
+                if let attachmentEntity = attachments.entity(for: "navToggle") {
+                    attachmentEntity.components[BillboardComponent.self] = .init()
+                    handTrackedEntity.addChild(attachmentEntity)
+                }
+            }
+            
+            // Store root entity reference
+            appModel.introState.introRootEntity = root
             
             // Handle environment and attachments in Task
             Task { @MainActor in
                 // Load environment first
-                print("📱 IntroView: Starting environment setup")
+                Logger.debug("📱 Starting environment setup")
                 await appModel.introState.setupEnvironment(in: root)
                 
                 appModel.introState.environmentLoaded = true
-                print("✅ Environment setup complete")
-
+                Logger.info("\n=== Environment Setup Complete ===")
+                Logger.info("""
+                ✨ Environment Details
+                ├─ Phase: \(appModel.currentPhase)
+                ├─ Root Entity: \(root.name)
+                └─ Environment: \(appModel.introState.introEnvironment?.name ?? "")
+                """)
+                
                 // set up the lab attachments
-                // Now that environment is loaded, set up attachments
-                if let adcButton = attachments.entity(for: "ADCBuilderViewerButton"),
-                   let attackButton = attachments.entity(for: "AttackCancerViewerButton") {
-                    
+                if appModel.currentPhase == .intro {
                     // Find attachment points and set up buttons
                     if let builderTarget = root.findEntity(named: "ADCBuilderAttachment") {
-                        print("🎯 Found ADCBuilderAttachment target")
-                        builderTarget.addChild(adcButton)
-                        adcButton.components.set(BillboardComponent())
-                        appModel.labState.adcBuilderViewerButtonEntity = adcButton
+                        Logger.debug("🎯 Found ADCBuilderAttachment target")
+                        if let adcButton = attachments.entity(for: "ADCBuilderViewerButton") {
+                            builderTarget.addChild(adcButton)
+                            adcButton.components.set(BillboardComponent())
+                            appModel.labState.adcBuilderViewerButtonEntity = adcButton
+                        }
                     } else {
-                        print("❌ ADCBuilderAttachment target not found")
+                        Logger.debug("❌ ADCBuilderAttachment target not found")
                     }
                     
                     if let attackTarget = root.findEntity(named: "AttackCancerAttachment") {
-                        print("🎯 Found AttackCancerAttachment target")
-                        attackTarget.addChild(attackButton)
-                        attackButton.components.set(BillboardComponent())
-                        appModel.labState.attackCancerViewerButtonEntity = attackButton
+                        Logger.debug("🎯 Found AttackCancerAttachment target")
+                        if let attackButton = attachments.entity(for: "AttackCancerViewerButton") {
+                            attackTarget.addChild(attackButton)
+                            attackButton.components.set(BillboardComponent())
+                            appModel.labState.attackCancerViewerButtonEntity = attackButton
+                        }
                     } else {
-                        print("❌ AttackCancerAttachment target not found")
+                        Logger.debug("❌ AttackCancerAttachment target not found")
                     }
                 }
             }
@@ -111,11 +121,11 @@ struct IntroView: View {
         .preferredSurroundingsEffect(surroundingsEffect)
         .onChange(of: appModel.labState.isLibraryOpen) { _, isOpen in
             if isOpen {
-                print(">>> Library window opened 🚪")
+                Logger.debug(">>> Library window opened 🚪")
                 openWindow(id: AppModel.libraryWindowId)
                 appModel.updateLibraryWindowState(isOpen: true)
             } else {
-                print(">>> Library window closed")
+                Logger.debug(">>> Library window closed")
                 dismissWindow(id: AppModel.libraryWindowId)
                 appModel.updateLibraryWindowState(isOpen: false)
             }
@@ -140,30 +150,21 @@ struct IntroView: View {
         // Add head position update handler
         .onChange(of: appModel.introState.shouldUpdateHeadPosition) { _, shouldUpdate in
             if shouldUpdate {
-                Logger.info("""
-                
-                🎯 Head Position Update Triggered
-                ├─ shouldUpdate: \(shouldUpdate)
-                ├─ isReadyForHeadTracking: \(appModel.introState.isReadyForHeadTracking)
-                ├─ isPositioningInProgress: \(appModel.introState.isPositioningInProgress)
-                ├─ Current Phase: \(appModel.currentPhase)
-                ├─ Tracking State: \(appModel.trackingManager.worldTrackingProvider.state)
-                └─ Has Device Anchor: \(appModel.trackingManager.worldTrackingProvider.queryDeviceAnchor(atTimestamp: CACurrentMediaTime()) != nil)
-                """)
+                // Log any blocking conditions
+                if !appModel.introState.isReadyForHeadTracking || appModel.introState.isPositioningInProgress {
+                    Logger.debug("""
+                    🎯 Head Position Update Blocked
+                    └─ Reason: \(!appModel.introState.isReadyForHeadTracking ? "Not ready for tracking" : "Positioning in progress")
+                    """)
+                } else {
+                    Logger.info("🎯 Head Position Update Ready")
+                }
             }
             
             if shouldUpdate && appModel.introState.isReadyForHeadTracking && !appModel.introState.isPositioningInProgress {
                 if let root = appModel.introState.introRootEntity {
-                    // Ensure we're on MainActor
                     Task { @MainActor in
-                        Logger.info("""
-                        
-                        🎯 Starting Head Position Update
-                        ├─ Current Position: \(root.position(relativeTo: nil))
-                        ├─ Tracking State: \(appModel.trackingManager.worldTrackingProvider.state)
-                        ├─ isPositioningInProgress: \(appModel.introState.isPositioningInProgress)
-                        └─ isPositioningComplete: \(appModel.introState.isPositioningComplete)
-                        """)
+                        Logger.info("\n=== Head Position Update Started ===")
                         
                         // Set positioning state first
                         appModel.introState.isPositioningInProgress = true
@@ -177,15 +178,6 @@ struct IntroView: View {
                             
                             // Wait for animation plus a small buffer
                             try? await Task.sleep(for: .seconds(0.6))
-                            
-                            Logger.info("""
-                            
-                            ✨ Head Position Update Complete
-                            ├─ Final Position: \(root.position(relativeTo: nil))
-                            ├─ Tracking State: \(appModel.trackingManager.worldTrackingProvider.state)
-                            ├─ isPositioningInProgress: \(appModel.introState.isPositioningInProgress)
-                            └─ isPositioningComplete: \(appModel.introState.isPositioningComplete)
-                            """)
                             
                             // Reset states
                             appModel.introState.shouldUpdateHeadPosition = false
@@ -203,7 +195,6 @@ struct IntroView: View {
                     if let root = appModel.introState.introRootEntity,
                        let environment = appModel.introState.introEnvironment {
                         Logger.info("""
-                        
                         ✨ Positioning Complete
                         ├─ Phase: \(appModel.currentPhase)
                         ├─ ImmersiveSpaceState: \(appModel.immersiveSpaceState)
@@ -216,7 +207,7 @@ struct IntroView: View {
 
                         // Get portal and set up attachments
                         if let portal = appModel.introState.getPortal() {
-                            print("✅ Found portal for attachments")
+                            Logger.debug("✅ Found portal for attachments")
                             
                             // Set up attachments on portal
                             appModel.introState.setupAttachments(
@@ -244,7 +235,6 @@ struct IntroView: View {
         .onChange(of: appModel.readyToStartLab) { _, newValue in
             if newValue {
                 Logger.info("""
-                
                 🔄 Starting Lab Setup in IntroView
                 ├─ hasBuiltADC: \(appModel.hasBuiltADC)
                 ├─ Current Phase: \(appModel.currentPhase)
@@ -257,11 +247,11 @@ struct IntroView: View {
                             try await appModel.labState.setupInitialLabEnvironment(in: root, isIntro: true)
                             // try await appModel.labState.setupLabEnvironment(in: root, isIntro: true)
                         } catch {
-                            print("❌ Error setting up lab environment: \(error)")
+                            Logger.debug("❌ Error setting up lab environment: \(error)")
                         }
                     }
                 } else {
-                    print("❌ Intro root entity not available for lab setup")
+                    Logger.debug("❌ Intro root entity not available for lab setup")
                 }
             }
         }

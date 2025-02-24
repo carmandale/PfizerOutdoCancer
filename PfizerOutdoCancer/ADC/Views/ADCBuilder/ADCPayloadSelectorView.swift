@@ -43,7 +43,7 @@ struct ADCPayloadSelectorView: View {
                                         isSelected: {
                                             dataModel.selectedPayloadType == 0
                                         }) {
-                    print("ITR..Button 0 pressed")
+                    Logger.debug("ITR..Button 0 pressed")
                     dataModel.selectedPayloadType = 0
                     dataModel.stepStates[2].colorSelected = true
                 }
@@ -54,7 +54,7 @@ struct ADCPayloadSelectorView: View {
                                         isSelected: {
                                             dataModel.selectedPayloadType == 1
                                         }) {
-                    print("ITR..Button 1 pressed")
+                    Logger.debug("ITR..Button 1 pressed")
                     dataModel.selectedPayloadType = 1
                     dataModel.stepStates[2].colorSelected = true
                 }
@@ -65,7 +65,7 @@ struct ADCPayloadSelectorView: View {
                                         isSelected: {
                                             dataModel.selectedPayloadType == 2
                                         }) {
-                    print("ITR..Button 2 pressed")
+                    Logger.debug("ITR..Button 2 pressed")
                     dataModel.selectedPayloadType = 2
                     dataModel.stepStates[2].colorSelected = true
                 }

@@ -10,7 +10,7 @@
 
 def Xform "Root"
 {
-    reorder nameChildren = ["IntroAnimation", "sh0100_v01", "Audio", "RCP_BehaviorsContainer", "OnAddedToScene", "materials", "Orchestra", "SFX", "Voice", "Model_Sorting_Group", "AudioMixGroups", "SkySphere", "logo", "ExtraItems", "Narrator"]
+    reorder nameChildren = ["IntroAnimation", "sh0100_v01", "Audio", "RCP_BehaviorsContainer", "OnAddedToScene", "materials", "Orchestra", "SFX", "Voice", "Model_Sorting_Group", "AudioMixGroups", "SkySphere", "logo", "HeadTracker", "ExtraItems"]
     def RealityKitTimeline "IntroAnimation"
     {
         reorder nameChildren = ["Track12", "Track2", "Track13", "Track16", "Track3", "Track4", "Track", "Track5", "Track6", "Track7", "Track8"]
@@ -3295,7 +3295,7 @@ def Xform "Root"
         references = @SkySphere.usdz@
     )
     {
-        float3 xformOp:scale = (1, 1, 1)
+        float3 xformOp:scale = (10, 10, 10)
 
         over "SkySphere_mat"
         {
@@ -3358,7 +3358,7 @@ def Xform "Root"
 
         def "outdoCancer" (
             active = true
-            prepend references = @outdoCancer.usda@
+            references = @outdoCancer.usda@
         )
         {
             quatf xformOp:orient = (0.99999994, 0, 0, 0)
@@ -3388,6 +3388,11 @@ def Xform "Root"
         active = true
     )
     {
+        quatf xformOp:orient = (1, 0, 0, 0)
+        float3 xformOp:scale = (1, 1, 1)
+        float3 xformOp:translate = (0, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
         def "ADC_particles" (
             active = true
             references = @Assets/Intro/ADC_particles.usda@

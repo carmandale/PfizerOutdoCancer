@@ -12,22 +12,22 @@ extension ADCMovementSystem {
                             currentPosition: SIMD3<Float>,
                             in scene: Scene) -> Bool {
         // Find new target
-        print("Retargeting ADC - Entity: \(entity.name), State: \(adcComponent.state), Current Position: \(currentPosition)")
+        Logger.debug("Retargeting ADC - Entity: \(entity.name), State: \(adcComponent.state), Current Position: \(currentPosition)")
         guard let (newTarget, newCellID) = findNewTarget(for: entity, currentPosition: currentPosition, in: scene) else {
             #if DEBUG
-            print("⚠️ No valid targets found for retargeting")
+            Logger.debug("⚠️ No valid targets found for retargeting")
             #endif
             return false
         }
         
         #if DEBUG
-        print("🎯 Retargeting ADC to new cancer cell (ID: \(newCellID))")
+        Logger.debug("🎯 Retargeting ADC to new cancer cell (ID: \(newCellID))")
         #endif
         
         // Skip if targeting same cell
         if adcComponent.targetCellID == newCellID {
             #if DEBUG
-            print("⚠️ Attempting to retarget to same cell - skipping")
+            Logger.debug("⚠️ Attempting to retarget to same cell - skipping")
             #endif
             return false
         }
@@ -39,18 +39,18 @@ extension ADCMovementSystem {
         
         if distanceToNewTarget < minRequiredDistance {
             #if DEBUG
-            print("\n⚠️ Target Distance Check Failed:")
-            print("New target \(newTarget.name) is too close to current position")
-            print("Distance to target: \(distanceToNewTarget)")
-            print("Required minimum distance: \(minRequiredDistance)")
+            Logger.debug("\n⚠️ Target Distance Check Failed:")
+            Logger.debug("New target \(newTarget.name) is too close to current position")
+            Logger.debug("Distance to target: \(distanceToNewTarget)")
+            Logger.debug("Required minimum distance: \(minRequiredDistance)")
             #endif
             return false
         } else {
             #if DEBUG
-            print("\n✅ Target Distance Check Passed:")
-            print("Distance to new target: \(distanceToNewTarget)")
-            print("Current position: \(currentPosition)")
-            print("Target position: \(newTargetPos)")
+            Logger.debug("\n✅ Target Distance Check Passed:")
+            Logger.debug("Distance to new target: \(distanceToNewTarget)")
+            Logger.debug("Current position: \(currentPosition)")
+            Logger.debug("Target position: \(newTargetPos)")
             #endif
         }
         
@@ -61,11 +61,11 @@ extension ADCMovementSystem {
             adcComponent.previousPathLength = adcComponent.pathLength
             
             #if DEBUG
-            print("\n=== Previous Path Info ===")
-            print("Previous Path Length: \(adcComponent.pathLength)")
-            print("Previous Progress: \(adcComponent.traveledDistance / adcComponent.pathLength)")
-            print("Previous Target Position: \(currentTarget.position(relativeTo: nil))")
-            print("Previous Target Distance: \(length(currentTarget.position(relativeTo: nil) - currentPosition))")
+            Logger.debug("\n=== Previous Path Info ===")
+            Logger.debug("Previous Path Length: \(adcComponent.pathLength)")
+            Logger.debug("Previous Progress: \(adcComponent.traveledDistance / adcComponent.pathLength)")
+            Logger.debug("Previous Target Position: \(currentTarget.position(relativeTo: nil))")
+            Logger.debug("Previous Target Distance: \(length(currentTarget.position(relativeTo: nil) - currentPosition))")
             #endif
             
             // Set up target interpolation using transform snapshots
@@ -77,13 +77,13 @@ extension ADCMovementSystem {
             adcComponent.targetInterpolationProgress = 0
             
             #if DEBUG
-            print("\n=== Starting Retarget ===")
-            print("From: \(currentTarget.name) to: \(newTarget.name)")
-            print("Current Distance Traveled: \(adcComponent.traveledDistance)")
-            print("Current Path Length: \(adcComponent.pathLength)")
-            print("Current Progress: \(adcComponent.traveledDistance / adcComponent.pathLength)")
-            print("New Target Distance: \(length(newTarget.position(relativeTo: nil) - currentPosition))")
-            print("Interpolation Start Position: \(currentPosition)")
+            Logger.debug("\n=== Starting Retarget ===")
+            Logger.debug("From: \(currentTarget.name) to: \(newTarget.name)")
+            Logger.debug("Current Distance Traveled: \(adcComponent.traveledDistance)")
+            Logger.debug("Current Path Length: \(adcComponent.pathLength)")
+            Logger.debug("Current Progress: \(adcComponent.traveledDistance / adcComponent.pathLength)")
+            Logger.debug("New Target Distance: \(length(newTarget.position(relativeTo: nil) - currentPosition))")
+            Logger.debug("Interpolation Start Position: \(currentPosition)")
             #endif
         }
         
@@ -97,7 +97,7 @@ extension ADCMovementSystem {
             updatedAttachPoint.isOccupied = true
             newTarget.components[AttachmentPoint.self] = updatedAttachPoint
             #if DEBUG
-            print("✅ Marked attachment point as occupied")
+            Logger.debug("✅ Marked attachment point as occupied")
             #endif
         }
         
@@ -114,8 +114,8 @@ extension ADCMovementSystem {
         // The rest of the validation is for cancer cell targets
         if targetEntity.parent == nil {
             #if DEBUG
-            print("\n=== ADC RETARGET (Target Lost) ===")
-            print("Target attachment point has been removed from scene")
+            Logger.debug("\n=== ADC RETARGET (Target Lost) ===")
+            Logger.debug("Target attachment point has been removed from scene")
             #endif
             return false
         }
@@ -125,8 +125,8 @@ extension ADCMovementSystem {
               let stateComponent = cancerCell.components[CancerCellStateComponent.self],
               let cellID = adcComponent.targetCellID else {
             #if DEBUG
-            print("\n=== ADC RETARGET (Invalid State) ===")
-            print("Missing required components or target cell ID")
+            Logger.debug("\n=== ADC RETARGET (Invalid State) ===")
+            Logger.debug("Missing required components or target cell ID")
             #endif
             return false
         }
@@ -135,18 +135,18 @@ extension ADCMovementSystem {
         
         if parameters.isDestroyed {
             #if DEBUG
-            print("\n=== ADC RETARGET (Cell Destroyed) ===")
-            print("Cell ID: \(cellID)")
-            print("Hit Count: \(parameters.hitCount)/\(parameters.requiredHits)")
+            Logger.debug("\n=== ADC RETARGET (Cell Destroyed) ===")
+            Logger.debug("Cell ID: \(cellID)")
+            Logger.debug("Hit Count: \(parameters.hitCount)/\(parameters.requiredHits)")
             #endif
             return false
         }
         
         if parameters.hitCount >= parameters.requiredHits {
             #if DEBUG
-            print("\n=== ADC RETARGET (Cell Complete) ===")
-            print("Cell ID: \(cellID)")
-            print("Hit Count: \(parameters.hitCount)/\(parameters.requiredHits)")
+            Logger.debug("\n=== ADC RETARGET (Cell Complete) ===")
+            Logger.debug("Cell ID: \(cellID)")
+            Logger.debug("Hit Count: \(parameters.hitCount)/\(parameters.requiredHits)")
             #endif
             return false
         }
@@ -158,10 +158,10 @@ extension ADCMovementSystem {
         }
         
         #if DEBUG
-        print("\n=== ADC RETARGET (Target Invalid) ===")
-        print("Cell ID: \(cellID)")
-        print("Hit Count: \(parameters.hitCount)/\(parameters.requiredHits)")
-        print("Is Destroyed: \(parameters.isDestroyed)")
+        Logger.debug("\n=== ADC RETARGET (Target Invalid) ===")
+        Logger.debug("Cell ID: \(cellID)")
+        Logger.debug("Hit Count: \(parameters.hitCount)/\(parameters.requiredHits)")
+        Logger.debug("Is Destroyed: \(parameters.isDestroyed)")
         #endif
         return false
     }
@@ -257,24 +257,24 @@ extension ADCMovementSystem {
             ) else { continue }
             
             #if DEBUG
-            // print("📊 Antigen Score - Distance: \(length(attachPosition - currentPosition)), Score: \(score)")
+            // Logger.debug("📊 Antigen Score - Distance: \(length(attachPosition - currentPosition)), Score: \(score)")
             #endif
             
             if score > bestScore {
                 bestScore = score
                 bestTarget = (entity, cellID)
                 #if DEBUG
-                print("✨ New best target found - Score: \(score)")
+                Logger.debug("✨ New best target found - Score: \(score)")
                 #endif
             }
         }
         
         #if DEBUG
         if bestTarget != nil {
-            // print("\n🎯 Selected target:")
-            // print("Cell ID: \(target.1)")
-            // print("Attachment Point: \(target.0.name)")
-            // print("Final Score: \(bestScore)")
+            // Logger.debug("\n🎯 Selected target:")
+            // Logger.debug("Cell ID: \(target.1)")
+            // Logger.debug("Attachment Point: \(target.0.name)")
+            // Logger.debug("Final Score: \(bestScore)")
         }
         #endif
         

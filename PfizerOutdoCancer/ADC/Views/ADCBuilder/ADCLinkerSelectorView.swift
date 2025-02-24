@@ -43,7 +43,7 @@ struct ADCLinkerSelectorView: View {
                                             isSelected: {
                         dataModel.selectedLinkerType == 0
                     }) {
-                        print("ITR..Button 0 pressed")
+                        Logger.debug("ITR..Button 0 pressed")
                         dataModel.selectedLinkerType = 0
                         dataModel.stepStates[1].colorSelected = true
                     }
@@ -54,7 +54,7 @@ struct ADCLinkerSelectorView: View {
                                             isSelected: {
                         dataModel.selectedLinkerType == 1
                     }) {
-                        print("ITR..Button 1 pressed")
+                        Logger.debug("ITR..Button 1 pressed")
                         dataModel.selectedLinkerType = 1
                         dataModel.stepStates[1].colorSelected = true
                     }
@@ -65,7 +65,7 @@ struct ADCLinkerSelectorView: View {
                                             isSelected: {
                         dataModel.selectedLinkerType == 2
                     }) {
-                        print("ITR..Button 2 pressed")
+                        Logger.debug("ITR..Button 2 pressed")
                         dataModel.selectedLinkerType = 2
                         dataModel.stepStates[1].colorSelected = true
                     }

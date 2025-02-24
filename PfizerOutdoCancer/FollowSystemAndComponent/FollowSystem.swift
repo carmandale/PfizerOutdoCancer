@@ -24,7 +24,7 @@ public struct FollowSystem: System {
             do {
                 try await arkitSession.run([worldTrackingProvider])
             } catch {
-                print("Error: \(error). Head-position mode will still work.")
+                Logger.debug("Error: \(error). Head-position mode will still work.")
             }
         }
     }

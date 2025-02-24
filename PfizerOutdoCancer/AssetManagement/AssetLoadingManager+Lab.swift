@@ -24,13 +24,13 @@ extension AssetLoadingManager {
         for assetName in labAssets {
             group.addTask {
                 let fullPath = "\(self.labObjectsPath)/\(assetName)"
-                print("Starting to load asset: \(fullPath)")
+                Logger.debug("Starting to load asset: \(fullPath)")
                 do {
                     let entity = try await Entity(named: fullPath, in: realityKitContentBundle)
-                    print("Successfully loaded asset: \(fullPath)")
+                    Logger.debug("Successfully loaded asset: \(fullPath)")
                     return .success(entity: entity, key: fullPath, category: .labEquipment)
                 } catch {
-                    print("Failed to load asset: \(fullPath), error: \(error)")
+                    Logger.debug("Failed to load asset: \(fullPath), error: \(error)")
                     return .failure(key: fullPath, category: .labEquipment, error: error)
                 }
             }
@@ -122,36 +122,47 @@ extension AssetLoadingManager {
     
     /// Loads and assembles the complete lab environment on demand
     func loadAssembledLab() async throws -> Entity {
-        print("📱 Starting lab environment assembly")
+        Logger.debug("📱 Starting lab environment assembly")
         
-        // Check if we already have it cached
+        // Check cache first
         if let cached = entityTemplates["assembled_lab"] {
-            print("✅ Using cached assembled lab")
+            Logger.debug("✅ Using cached assembled lab")
             return cached.clone(recursive: true)
         }
         loadingState = .loading(progress: 0.0)
 
         let assetRoot = Entity()
         
-        // Use existing assembly logic
-        let labEnvironmentScene = try await loadEntity(named: "LabEnvironment")
-        assetRoot.addChild(labEnvironmentScene)
-        
-        // Use existing equipment population
-        let equipmentScene = try await loadPopulatedLabScene()
-        assetRoot.addChild(equipmentScene)
-        
-        // Use existing IBL setup
-        try await IBLUtility
-            .addImageBasedLighting(
-                to: assetRoot,
-                imageName: "lab_v005",
-                intensity: 1.0
-            )
-        
-        // Cache the assembled lab
-        entityTemplates["assembled_lab"] = assetRoot
-        print("✅ Completed lab environment assembly")
-        return assetRoot.clone(recursive: true)
+        do {
+            // Load base environment
+            Logger.debug("🔄 Loading lab environment scene...")
+            let labEnvironmentScene = try await loadEntity(named: "LabEnvironment")
+            assetRoot.addChild(labEnvironmentScene)
+            Logger.debug("✅ Lab environment scene loaded")
+            
+            // Load and populate equipment
+            Logger.debug("🔄 Loading lab equipment...")
+            let equipmentScene = try await loadPopulatedLabScene()
+            assetRoot.addChild(equipmentScene)
+            Logger.debug("✅ Lab equipment loaded")
+            
+            // Setup IBL
+            Logger.debug("🔄 Setting up Image Based Lighting...")
+            try await IBLUtility
+                .addImageBasedLighting(
+                    to: assetRoot,
+                    imageName: "lab_v005",
+                    intensity: 1.0
+                )
+            Logger.debug("✅ Image Based Lighting configured")
+            
+            // Cache only after everything succeeds
+            entityTemplates["assembled_lab"] = assetRoot
+            Logger.debug("✅ Lab assembly complete and cached")
+            return assetRoot.clone(recursive: true)
+        } catch {
+            Logger.error("❌ Failed to assemble lab: \(error)")
+            throw error
+        }
     }
 } 

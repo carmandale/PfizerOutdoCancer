@@ -197,12 +197,12 @@ final class AttackCancerViewModel {
         }
         
         cleanupState = .gameOnly
-        print("\n=== Tearing Down Game [Detailed] ===")
-        print("📊 Initial State:")
-        print("  - Hope Meter Running: \(isHopeMeterRunning)")
-        print("  - Tutorial Started: \(appModel.isTutorialStarted)")
-        print("  - Current Phase: \(appModel.currentPhase)")
-        print("  - Test Fire Active: \(isTestFireActive)")
+        Logger.debug("\n=== Tearing Down Game [Detailed] ===")
+        Logger.debug("📊 Initial State:")
+        Logger.debug("  - Hope Meter Running: \(isHopeMeterRunning)")
+        Logger.debug("  - Tutorial Started: \(appModel.isTutorialStarted)")
+        Logger.debug("  - Current Phase: \(appModel.currentPhase)")
+        Logger.debug("  - Test Fire Active: \(isTestFireActive)")
         
         // Stop systems first
         appModel.stopHopeMeter()
@@ -262,7 +262,7 @@ final class AttackCancerViewModel {
 
         // Remove gameplay entities
         if let root = rootEntity {
-            print("\n🔍 Examining root entity: \(root.name)")
+            Logger.debug("\n🔍 Examining root entity: \(root.name)")
             
             // Remove cancer cells
             var removedCells = 0
@@ -277,7 +277,7 @@ final class AttackCancerViewModel {
                 testFireCell.removeFromParent()
                 removedCells += 1
             }
-            print("🗑️ Removed cancer cells: \(removedCells)")
+            Logger.debug("🗑️ Removed cancer cells: \(removedCells)")
             
             // Remove ADCs
             if let scene = root.scene {
@@ -308,7 +308,7 @@ final class AttackCancerViewModel {
             }
         }
         
-        print("✅ Game tear down complete\n")
+        Logger.debug("✅ Game tear down complete\n")
     }
 
     /// Performs complete system cleanup and shutdown.
@@ -331,14 +331,14 @@ final class AttackCancerViewModel {
             return
         }
         guard cleanupState != .complete else {
-            print("⚠️ Cleanup already completed")
+            Logger.debug("⚠️ Cleanup already completed")
             return
         }
         
         isCleaningUp = true
-        print("\n=== Starting AttackCancerViewModel Cleanup ===")
-        print("Current Phase: \(appModel.currentPhase)")
-        print("Is Transitioning: \(appModel.isTransitioning)")
+        Logger.debug("\n=== Starting AttackCancerViewModel Cleanup ===")
+        Logger.debug("Current Phase: \(appModel.currentPhase)")
+        Logger.debug("Is Transitioning: \(appModel.isTransitioning)")
         
         // First tear down the game if not already done
         if cleanupState != .gameOnly {
@@ -347,7 +347,7 @@ final class AttackCancerViewModel {
         
         // Clear entity references
         if let root = rootEntity {
-            print("🗑️ Removing root entity")
+            Logger.debug("🗑️ Removing root entity")
             root.removeFromParent()
         }
         
@@ -403,7 +403,7 @@ final class AttackCancerViewModel {
         
         cleanupState = .complete
         isCleaningUp = false
-        print("✅ Completed AttackCancerViewModel cleanup\n")
+        Logger.debug("✅ Completed AttackCancerViewModel cleanup\n")
     }
 
     func findCancerCell(withID id: Int) -> Entity? {
@@ -417,13 +417,13 @@ final class AttackCancerViewModel {
             // Validate it has correct state component
             guard let stateComponent = cell.components[CancerCellStateComponent.self],
                   stateComponent.parameters.cellID == id else {
-                print("⚠️ Found cell \(id) but state component mismatch")
+                Logger.debug("⚠️ Found cell \(id) but state component mismatch")
                 return nil
             }
             return cell
         }
         
-        print("⚠️ Could not find cancer cell with ID: \(id)")
+        Logger.debug("⚠️ Could not find cancer cell with ID: \(id)")
         return nil
     }
 

@@ -170,7 +170,7 @@ extension AttackCancerViewModel {
             if let VO_parent = root.findEntity(named: "headTrackingRoot") {
                 Logger.info("🎯 Tutorial: Found VO parent")
                 VO_parent.addChild(gameStartVO)
-                print("gameStartVO world position = \(gameStartVO.position(relativeTo: nil))")
+                Logger.debug("gameStartVO world position = \(gameStartVO.position(relativeTo: nil))")
                 root.addChild(VO_parent)
                 Logger.info("✅ Tutorial: Added VO to scene")
                 

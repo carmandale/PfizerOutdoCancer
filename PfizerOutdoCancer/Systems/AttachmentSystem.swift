@@ -74,21 +74,21 @@ public struct AttachmentSystem: System {
                 approachPosition: approachPosition!
             ) else { continue }
             #if DEBUG
-//            print("📊 Attachment Point Score - Point: \(entity.name), Score: \(score)")
+//            Logger.debug("📊 Attachment Point Score - Point: \(entity.name), Score: \(score)")
             #endif
             
             if score > bestScore {
                 bestScore = score
                 bestPoint = entity
                 #if DEBUG
-//                print("✨ New best attachment point - Score: \(score)")
+//                Logger.debug("✨ New best attachment point - Score: \(score)")
                 #endif
             }
         }
         
         if bestPoint != nil {
             #if DEBUG
-//            print("🎯 Selected attachment point: \(bestPoint.name) with score: \(bestScore)")
+//            Logger.debug("🎯 Selected attachment point: \(bestPoint.name) with score: \(bestScore)")
             #endif
         }
         
@@ -98,7 +98,7 @@ public struct AttachmentSystem: System {
     @MainActor
     public static func markPointAsOccupied(_ point: Entity) {
         guard var attachPoint = point.components[AttachmentPoint.self] else {
-            print("No AttachmentPoint component found")
+            Logger.debug("No AttachmentPoint component found")
             return
         }
         

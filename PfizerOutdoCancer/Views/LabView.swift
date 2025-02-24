@@ -19,7 +19,7 @@ struct LabView: View {
     var body: some View {
         
         RealityView { content, attachments in
-            print("📱 LabView: Setting up RealityView")
+            Logger.debug("📱 LabView: Setting up RealityView")
             // Set up root entity
             let root = appModel.labState.setupRoot()
             content.add(root)
@@ -39,21 +39,21 @@ struct LabView: View {
                 
                 // Find attachment points and set up buttons
                 if let builderTarget = root.findEntity(named: "ADCBuilderAttachment") {
-                    print("🎯 Found ADCBuilderAttachment target")
+                    Logger.debug("🎯 Found ADCBuilderAttachment target")
                     builderTarget.addChild(adcButton)
                     adcButton.components.set(BillboardComponent())
                     appModel.labState.adcBuilderViewerButtonEntity = adcButton
                 } else {
-                    print("❌ ADCBuilderAttachment target not found")
+                    Logger.debug("❌ ADCBuilderAttachment target not found")
                 }
                 
                 if let attackTarget = root.findEntity(named: "AttackCancerAttachment") {
-                    print("🎯 Found AttackCancerAttachment target")
+                    Logger.debug("🎯 Found AttackCancerAttachment target")
                     attackTarget.addChild(attackButton)
                     attackButton.components.set(BillboardComponent())
                     appModel.labState.attackCancerViewerButtonEntity = attackButton
                 } else {
-                    print("❌ AttackCancerAttachment target not found")
+                    Logger.debug("❌ AttackCancerAttachment target not found")
                 }
             }
         } attachments: {
