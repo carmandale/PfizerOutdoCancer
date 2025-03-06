@@ -175,11 +175,53 @@ def Xform "root" (
         {
             over "M_baseObjectMaterial"
             {
-                asset inputs:diffuse = @textures/flasks_mat_BaseColor.jpg@
+                asset inputs:diffuse = None
                 asset inputs:metallic = @textures/flasks_mat_Metallic.jpg@
                 asset inputs:normal = @textures/flasks_mat_Normal.jpg@
-                float inputs:OpacityValue = 0.05
-                asset inputs:roughness = @textures/flasks_mat_Roughness.jpg@
+                float inputs:OpacityValue = 0.2 (
+                    customData = {
+                        dictionary realitykit = {
+                            float2 positionInSubgraph = (-306.09592, 779.80255)
+                            int stackingOrderInSubgraph = 1189
+                        }
+                    }
+                )
+                asset inputs:roughness = None (
+                    customData = {
+                        dictionary realitykit = {
+                            float2 positionInSubgraph = (-1435.0006, 270.8395)
+                            int stackingOrderInSubgraph = 1229
+                        }
+                    }
+                )
+
+                over "Image"
+                {
+                    int ui:nodegraph:node:stackingOrder = 1177
+                }
+
+                over "PBRSurface"
+                {
+                    color3f inputs:baseColor = (0.20521791, 0.20521791, 0.20521791) (
+                        colorSpace = "lin_srgb"
+                    )
+                    delete color3f inputs:baseColor.connect = </root/M_flaskObjectMaterial/M_baseObjectMaterial/M_baseObjectMaterial/Image.outputs:out>
+                    float inputs:clearcoat = 1
+                    float inputs:clearcoatRoughness = 0.5
+                    float inputs:clearcoatRoughness.connect = </root/M_flaskObjectMaterial/M_baseObjectMaterial/M_baseObjectMaterial/Range.outputs:out>
+                    int ui:nodegraph:node:stackingOrder = 1187
+                }
+
+                over "fingerPrintAmount"
+                {
+                    float inputs:value = 0.21078125
+                    int ui:nodegraph:node:stackingOrder = 1188
+                }
+
+                over "Image_3"
+                {
+                    string inputs:uaddressmode
+                }
             }
         }
     }

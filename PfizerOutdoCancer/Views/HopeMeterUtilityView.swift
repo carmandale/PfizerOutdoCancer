@@ -38,7 +38,9 @@ struct HopeMeterUtilityView: View {
                 .frame(width: 648)
                 
                 // Content section
-                if !appModel.gameState.isHopeMeterRunning && appModel.currentPhase != .completed {
+                if !appModel.gameState.isHopeMeterRunning && appModel.currentPhase == .playing && appModel.gameState.hopeMeterTimeLeft == appModel.gameState.hopeMeterDuration {
+                    // Only show Start button when in playing phase, hope meter isn't running, 
+                    // and timer is at full duration (not transitioning to completed)
                     NavigationButton(
                         title: "Start",
                         action: {

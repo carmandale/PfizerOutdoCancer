@@ -153,6 +153,18 @@ def Xform "root" (
             asset inputs:metallic = @textures/labBoxes_mat_Metallic.jpg@
             asset inputs:normal = @textures/labBoxes_mat_Normal.jpg@
             asset inputs:roughness = @textures/labBoxes_mat_Roughness.jpg@
+
+            over "fingerPrintAmount"
+            {
+                float inputs:value = 0.4
+                int ui:nodegraph:node:stackingOrder = 1176
+            }
+
+            over "PBRSurface"
+            {
+                float3 inputs:normal.connect = </root/M_baseObjectMaterial/M_baseObjectMaterial/NormalMapDecode.outputs:out>
+                float inputs:roughness.connect = </root/M_baseObjectMaterial/M_baseObjectMaterial/Multiply.outputs:out>
+            }
         }
     }
 }

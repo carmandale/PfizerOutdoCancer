@@ -39,19 +39,19 @@ extension ADCOptimizedImmersive {
             os_log(.error, "ITR..ADCOptimizedImmersive: ❌ Error loading pop sound from antibodyScene.usda")
         }
 
-        if let resource = try? await AudioFileResource(named: "/Root/BuildADC_VO_1_mp3", from: "BuildADC_VO.usda", in: realityKitContentBundle) {
+        if let resource = try? await AudioFileResource(named: "/Root/BuildADC_VO_1_v03_wav", from: "BuildADC_VO.usda", in: realityKitContentBundle) {
             vo1Audio = resource
             os_log(.debug, "ITR..ADCOptimizedImmersive: ✅ Successfully loaded VO1")
         }
-        if let resource = try? await AudioFileResource(named: "/Root/BuildADC_VO_2_mp3", from: "BuildADC_VO.usda", in: realityKitContentBundle) {
+        if let resource = try? await AudioFileResource(named: "/Root/BuildADC_VO_2_v02_wav", from: "BuildADC_VO.usda", in: realityKitContentBundle) {
             vo2Audio = resource
             os_log(.debug, "ITR..ADCOptimizedImmersive: ✅ Successfully loaded VO2")
         }
-        if let resource = try? await AudioFileResource(named: "/Root/BuildADC_VO_3_mp3", from: "BuildADC_VO.usda", in: realityKitContentBundle) {
+        if let resource = try? await AudioFileResource(named: "/Root/BuildADC_VO_3_v02_wav", from: "BuildADC_VO.usda", in: realityKitContentBundle) {
             vo3Audio = resource
             os_log(.debug, "ITR..ADCOptimizedImmersive: ✅ Successfully loaded VO3")
         }
-        if let resource = try? await AudioFileResource(named: "/Root/BuildADC_VO_4_mp3", from: "BuildADC_VO.usda", in: realityKitContentBundle) {
+        if let resource = try? await AudioFileResource(named: "/Root/BuildADC_VO_4_v02_wav", from: "BuildADC_VO.usda", in: realityKitContentBundle) {
             vo4Audio = resource
             os_log(.debug, "ITR..ADCOptimizedImmersive: ✅ Successfully loaded VO4")
         }
@@ -59,7 +59,7 @@ extension ADCOptimizedImmersive {
             completionAudio = resource
             os_log(.debug, "ITR..ADCOptimizedImmersive: ✅ Successfully loaded completion sound")
         }
-        if let resource = try? await AudioFileResource(named: "/Root/niceJob_mp3", from: "BuildADC_VO.usda", in: realityKitContentBundle) {
+        if let resource = try? await AudioFileResource(named: "/Root/niceJob_v02_wav", from: "BuildADC_VO.usda", in: realityKitContentBundle) {
             niceJobAudio = resource
             os_log(.debug, "ITR..ADCOptimizedImmersive: ✅ Successfully loaded nice job sound")
         }

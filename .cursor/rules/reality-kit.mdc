@@ -1,6 +1,7 @@
 ---
 description: info about RealityKit
-globs: 
+globs: *.swift
+alwaysApply: false
 ---
 
 ---

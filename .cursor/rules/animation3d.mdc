@@ -1,6 +1,7 @@
 ---
 description: realityKit 3D animation
-globs: 
+globs: *.swift
+alwaysApply: false
 ---
 
 ---

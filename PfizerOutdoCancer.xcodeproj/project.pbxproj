@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		888606D02D4D98EE00EE5EC5 /* RealityKitContent in Frameworks */ = {isa = PBXBuildFile; productRef = 888606CF2D4D98EE00EE5EC5 /* RealityKitContent */; };
+		88B97D002D76561200362DE7 /* RiveRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = 88B97CFF2D76561200362DE7 /* RiveRuntime */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +60,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				888606D02D4D98EE00EE5EC5 /* RealityKitContent in Frameworks */,
+				88B97D002D76561200362DE7 /* RiveRuntime in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -121,6 +123,7 @@
 			name = PfizerOutdoCancer;
 			packageProductDependencies = (
 				888606CF2D4D98EE00EE5EC5 /* RealityKitContent */,
+				88B97CFF2D76561200362DE7 /* RiveRuntime */,
 			);
 			productName = PfizerOutdoCancer;
 			productReference = 883ED1542D15E5C80015B5FD /* PfizerOutdoCancer.app */;
@@ -179,6 +182,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				888606CE2D4D98EE00EE5EC5 /* XCLocalSwiftPackageReference "Packages/RealityKitContent" */,
+				88B97CFE2D76561200362DE7 /* XCRemoteSwiftPackageReference "rive-ios" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 883ED1552D15E5C80015B5FD /* Products */;
@@ -508,10 +512,26 @@
 		};
 /* End XCLocalSwiftPackageReference section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		88B97CFE2D76561200362DE7 /* XCRemoteSwiftPackageReference "rive-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/rive-app/rive-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.7.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
 		888606CF2D4D98EE00EE5EC5 /* RealityKitContent */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = RealityKitContent;
+		};
+		88B97CFF2D76561200362DE7 /* RiveRuntime */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 88B97CFE2D76561200362DE7 /* XCRemoteSwiftPackageReference "rive-ios" */;
+			productName = RiveRuntime;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

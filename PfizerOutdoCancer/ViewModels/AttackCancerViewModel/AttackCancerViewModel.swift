@@ -12,6 +12,8 @@ final class AttackCancerViewModel {
     var shouldUpdateHeadPosition: Bool = false
     var isHeadTrackingRootReady: Bool = false
     var isPositioningComplete: Bool = false
+    var isTutorialAlertVisible: Bool = false
+    var isPinchAnimationVisible: Bool = false
     
     // Track when we're fully ready for interactions
     var isReadyForInteraction: Bool {
@@ -356,7 +358,14 @@ final class AttackCancerViewModel {
         scene = nil
         tutorialCancerCell = nil
         instructionsRootEntity = nil
-        adcTemplate = nil
+        
+        // Only clear ADC template if we're not preserving a custom one
+        if !appModel.hasBuiltADC {
+            adcTemplate = nil
+            Logger.debug("🔄 Clearing temporary ADC template")
+        } else {
+            Logger.debug("✅ Preserving custom ADC template")
+        }
         
         // Clear audio system references with detailed logging
         Logger.audio("\n=== Clearing All Audio Systems ===")

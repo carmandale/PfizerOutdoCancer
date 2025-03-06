@@ -48,6 +48,10 @@ extension ADCOptimizedImmersive {
             shouldAddADCAttachment = false
             shouldAddLinkerAttachment = false
             shouldAddPayloadAttachment = false
+            
+            // Hide the coaching overlay when user starts dragging
+            dataModel.isCoachingOverlayPresent = false
+            Logger.debug("Hiding coaching overlay as user started dragging linker")
         }
         gestureComponent.onDragEnded = { entity in
             if let finishedEntity = entity {

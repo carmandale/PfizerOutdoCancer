@@ -7,6 +7,12 @@ extension AttackCancerViewModel {
     func handleTap(on entity: Entity, location: SIMD3<Float>, in scene: RealityKit.Scene?) async {
         print("\n=== Tapped Entity ===")
         print("Entity name: \(entity.name)")
+        
+        // Log the state at the beginning of handleTap
+        Logger.info("🔍 PINCH DEBUG (handleTap): hasFirstADCBeenFired: \(hasFirstADCBeenFired), isPinchAnimationVisible: \(isPinchAnimationVisible), totalADCsDeployed: \(totalADCsDeployed)")
+        
+        // Note: totalTaps is already incremented in AttackCancerView.swift
+        Logger.info("🔍 PINCH DEBUG (handleTap): Current tap count: \(totalTaps)")
 //        appModel.assetLoadingManager.inspectEntityHierarchy(entity)
         
         // Get pinch distances for both hands to determine which hand tapped

@@ -1,6 +1,7 @@
 ---
 description: Immersive Spaces
-globs: 
+globs: *.swift
+alwaysApply: false
 ---
 
 ---

@@ -170,9 +170,74 @@ def Xform "root" (
             over "M_baseObjectMaterial"
             {
                 asset inputs:diffuse = @textures/flasks_mat_BaseColor.jpg@
+                float inputs:fingerPrintSize = 8
                 asset inputs:metallic = @textures/flasks_mat_Metallic.jpg@
                 asset inputs:normal = @textures/flasks_mat_Normal.jpg@
-                asset inputs:roughness = @textures/flasks_mat_Roughness.jpg@
+                float inputs:OpacityValue = 0.1
+                asset inputs:roughness = None (
+                    customData = {
+                        dictionary realitykit = {
+                            float2 positionInSubgraph = (-1652.125, 207.96484)
+                            int stackingOrderInSubgraph = 1209
+                        }
+                    }
+                )
+
+                over "Image_2"
+                {
+                    float inputs:default = 0
+                    float2 ui:nodegraph:node:pos = (-1395.3821, 248.74252)
+                    int ui:nodegraph:node:stackingOrder = 1209
+                }
+
+                over "Multiply"
+                {
+                    float2 ui:nodegraph:node:pos = (-929.4209, 410.76056)
+                    int ui:nodegraph:node:stackingOrder = 1211
+                }
+
+                def Shader "Add"
+                {
+                    uniform token info:id = "ND_add_float"
+                    float inputs:in1.connect = </root/M_flaskObjectMaterial/M_baseObjectMaterial/M_baseObjectMaterial/Multiply.outputs:out>
+                    float inputs:in2 = 0
+                    float outputs:out
+                    float2 ui:nodegraph:node:pos = (-769.90234, 334.83984)
+                    int ui:nodegraph:node:stackingOrder = 1214
+                }
+
+                over "PBRSurface"
+                {
+                    color3f inputs:baseColor = (0.49876875, 0.6287431, 0.7213276) (
+                        colorSpace = "srgb_texture"
+                    )
+                    delete color3f inputs:baseColor.connect = </root/M_flaskObjectMaterial/M_baseObjectMaterial/M_baseObjectMaterial/Image.outputs:out>
+                    float inputs:clearcoat = 1
+                    float inputs:clearcoatRoughness.connect = </root/M_flaskObjectMaterial/M_baseObjectMaterial/M_baseObjectMaterial/Range.outputs:out>
+                    float inputs:roughness.connect = </root/M_flaskObjectMaterial/M_baseObjectMaterial/M_baseObjectMaterial/Multiply.outputs:out>
+                    int ui:nodegraph:node:stackingOrder = 1233
+                }
+
+                def Shader "Multiply_3"
+                {
+                    uniform token info:id = "ND_multiply_float"
+                    float inputs:in1.connect = </root/M_flaskObjectMaterial/M_baseObjectMaterial/M_baseObjectMaterial/Add.outputs:out>
+                    float inputs:in2 = 0.2
+                    float outputs:out
+                    float2 ui:nodegraph:node:pos = (-631.9414, 382.98828)
+                    int ui:nodegraph:node:stackingOrder = 1230
+                }
+
+                over "fingerPrintAmount"
+                {
+                    float inputs:value = 0.2266797
+                    int ui:nodegraph:node:stackingOrder = 1232
+                }
+
+                over "Image_3"
+                {
+                    string inputs:uaddressmode
+                }
             }
         }
     }

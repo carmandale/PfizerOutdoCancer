@@ -1,6 +1,7 @@
 ---
 description: information about using spatial audio
-globs: 
+globs: *.swift
+alwaysApply: false
 ---
 
 ---

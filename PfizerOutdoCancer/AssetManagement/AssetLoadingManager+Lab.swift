@@ -39,7 +39,7 @@ extension AssetLoadingManager {
     }
     
     /// Load and populate a complete lab scene
-    func loadPopulatedLabScene() async throws -> Entity {
+    func loadPopulatedLabScene(progressCallback: ((Float) -> Void)? = nil) async throws -> Entity {
         // Load the empty lab scene
         let emptyScene = try await Entity(named: "\(labObjectsPath)/lab_empties", in: realityKitContentBundle)
         
@@ -63,7 +63,9 @@ extension AssetLoadingManager {
                 // Update progress
                 loadedCount += 1
                 let progress = Float(loadedCount) / Float(totalCount)
-                loadingState = .loading(progress: progress)
+                print("🔄 Lab scene loading progress: \(progress)")
+                // Report progress through callback
+                progressCallback?(progress)
             }
         }
         
@@ -121,24 +123,29 @@ extension AssetLoadingManager {
     }
     
     /// Loads and assembles the complete lab environment on demand
-    func loadAssembledLab() async throws -> Entity {
+    func loadAssembledLab(progressCallback: ((Float) -> Void)? = nil) async throws -> Entity {
         print("📱 Starting lab environment assembly")
         
         // Check if we already have it cached
         if let cached = entityTemplates["assembled_lab"] {
             print("✅ Using cached assembled lab")
+            progressCallback?(1.0) // Report complete if using cached
             return cached.clone(recursive: true)
         }
-        loadingState = .loading(progress: 0.0)
 
         let assetRoot = Entity()
         
         // Use existing assembly logic
         let labEnvironmentScene = try await loadEntity(named: "LabEnvironment")
         assetRoot.addChild(labEnvironmentScene)
-        
-        // Use existing equipment population
-        let equipmentScene = try await loadPopulatedLabScene()
+        progressCallback?(0.2) // Report progress after loading environment
+
+        // Use existing equipment population but with progress reporting
+        let equipmentScene = try await loadPopulatedLabScene(progressCallback: { progress in
+            // Scale the progress from 0.2-0.9 range
+            let scaledProgress = 0.2 + (progress * 0.7)
+            progressCallback?(scaledProgress)
+        })
         assetRoot.addChild(equipmentScene)
         
         // Use existing IBL setup
@@ -146,12 +153,13 @@ extension AssetLoadingManager {
             .addImageBasedLighting(
                 to: assetRoot,
                 imageName: "lab_v005",
-                intensity: 1.0
+                intensity: 0.5
             )
         
         // Cache the assembled lab
         entityTemplates["assembled_lab"] = assetRoot
         print("✅ Completed lab environment assembly")
+        progressCallback?(1.0) // Report complete
         return assetRoot.clone(recursive: true)
     }
 } 

@@ -1,6 +1,7 @@
 ---
 description: creating custom hover effects
-globs: 
+globs: *.swift
+alwaysApply: false
 ---
 # Custom Hover Effects Best Practices
 

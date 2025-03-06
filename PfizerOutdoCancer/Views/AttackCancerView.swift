@@ -26,6 +26,14 @@ struct AttackCancerView: View {
             appModel.gameState.storedAttachments = attachments
             appModel.gameState.setupHandTracking(in: content, attachments: attachments)
             
+            // Setup tutorial alert attachment
+            if let tutorialAlert = attachments.entity(for: "TutorialAlert") {
+                Logger.info("✅ Found tutorial alert attachment")
+                
+                // We'll position it in the headTrackingRoot when the tutorial starts
+                // The actual positioning happens in startTutorial function
+            }
+            
             // Setup environment in a task after root is configured
             Task { @MainActor in
                 Logger.info("\n=== Setting up Environment ===")
@@ -33,7 +41,17 @@ struct AttackCancerView: View {
                 Logger.info("✅ Environment setup complete")
             }
         } attachments: {
-
+            Attachment(id: "TutorialAlert") {
+                AttackCancerTutorialAlert()
+                    .opacity(appModel.gameState.isTutorialAlertVisible ? 1 : 0)
+                    .animation(.easeInOut(duration: 0.5), value: appModel.gameState.isTutorialAlertVisible)
+            }
+            
+            Attachment(id: "PinchAnimation") {
+                Coaching()
+                    .opacity(appModel.gameState.isPinchAnimationVisible ? 1 : 0)
+                    .animation(.easeInOut(duration: 0.5), value: appModel.gameState.isPinchAnimationVisible)
+            }
         }
         .task {
             await appModel.trackingManager.processWorldTrackingUpdates()
@@ -65,10 +83,10 @@ struct AttackCancerView: View {
                 if let root = appModel.gameState.rootEntity {
                     Task {
                         // wait just a little to give it a breath...
-                        try? await Task.sleep(for: .milliseconds(100))
+                        // try? await Task.sleep(for: .milliseconds(100))
                         await appModel.gameState.playGreatJob()
 
-                        try? await Task.sleep(for: .seconds(5))
+                        try? await Task.sleep(for: .seconds(4.05))
 
                         Logger.info("\n>>> Playing start button VO...\n")
                         await appModel.gameState.playStartButtonVO(in: root)

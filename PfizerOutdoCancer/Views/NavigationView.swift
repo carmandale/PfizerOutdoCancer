@@ -7,7 +7,7 @@ struct NavigationView: View {
     @Environment(\.openWindow) private var openWindow
     @Environment(\.scenePhase) private var scenePhase
     
-    private let buttonTitles = ["Lab", "Building", "Attack", "Outro"]
+    private let buttonTitles = ["ADC Builder", "Attack Cancer"]
     
     var body: some View {
         HStack(spacing: 30) {
@@ -15,7 +15,7 @@ struct NavigationView: View {
                 NavigationButton(
                     title: title,
                     action: { await handleNavigation(for: title) },
-                    width: 150
+                    width: 200
                 )
                 .fontWeight(.bold)
             }
@@ -37,10 +37,10 @@ struct NavigationView: View {
     
     private func handleNavigation(for title: String) async {
         switch title {
-        case "Building":
+        case "ADC Builder":
             appModel.isBuilderInstructionsOpen = true
             await appModel.transitionToPhase(.building)
-        case "Attack":
+        case "Attack Cancer":
             appModel.isInstructionsWindowOpen = true
             await appModel.transitionToPhase(.playing, adcDataModel: dataModel)
         default:
@@ -50,10 +50,8 @@ struct NavigationView: View {
     
     private func phaseFor(_ title: String) -> AppPhase {
         switch title {
-        case "Lab": return .lab
-        case "Building": return .building
-        case "Attack": return .playing
-        case "Outro": return .outro
+        case "ADC Builder": return .building
+        case "Attack Cancer": return .playing
         default: return .lab
         }
     }

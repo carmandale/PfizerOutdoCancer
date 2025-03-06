@@ -131,7 +131,7 @@ extension AttackCancerViewModel {
             Logger.audio("✅ Successfully loaded hope_restored")
             
             // Load great job
-            let greatJobResource = try await AudioFileResource(named: "/Root/GreatJob_mp3", from: "PressStart_VO.usda", in: realityKitContentBundle)
+            let greatJobResource = try await AudioFileResource(named: "/Root/GreatJob_v02_wav", from: "PressStart_VO.usda", in: realityKitContentBundle)
             loadedAudioResources["great_job"] = greatJobResource
             Logger.audio("✅ Successfully loaded great_job")
             

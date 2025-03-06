@@ -174,6 +174,33 @@ extension AttackCancerViewModel {
                 root.addChild(VO_parent)
                 Logger.info("✅ Tutorial: Added VO to scene")
                 
+                // Add the tutorial alert to the VO parent if it exists
+                if let tutorialAlert = attachments?.entity(for: "TutorialAlert") {
+                    Logger.info("🎯 Tutorial: Positioning tutorial alert")
+                    
+                    // Position it in front of the cancer cell, slightly above
+                    tutorialAlert.position = SIMD3<Float>(0, -0.25, 0.25)
+                    
+                    // Add it to the VO parent
+                    VO_parent.addChild(tutorialAlert)
+                    
+                    Logger.info("✅ Tutorial: Added tutorial alert to scene")
+                }
+                
+                // Position the pinch animation entity if it exists
+                if let pinchAnimation = attachments?.entity(for: "PinchAnimation") {
+                    Logger.info("🎯 Tutorial: Positioning pinch animation")
+                    
+                    // Position it exactly like the tutorial alert
+                    pinchAnimation.position = SIMD3<Float>(0, -0.25, 0.25)
+                    
+                    // Add it to the VO parent but keep it hidden initially
+                    VO_parent.addChild(pinchAnimation)
+                    isPinchAnimationVisible = false // Will be set to true when test fire cell is spawned
+                    
+                    Logger.info("✅ Tutorial: Added pinch animation to scene (initially hidden)")
+                }
+                
                 // Find tutorial cancer cell using existing pattern
                 if let cell = gameStartVO.findEntity(named: "CancerCell_spawn") {
                     Logger.info("✅ Tutorial: Found tutorial cancer cell")
@@ -224,6 +251,10 @@ extension AttackCancerViewModel {
     private func fireTutorialADCs(in root: Entity, attachments: RealityViewAttachments? = nil) async {
         Logger.info("\n=== Starting Tutorial ADC Sequence ===")
         
+        // Show the tutorial alert before starting
+        isTutorialAlertVisible = true
+        Logger.info("✅ Tutorial alert visible")
+        
         // Launch position is slightly offset to the right and above
         _ = SIMD3<Float>(0.25, 0.5, -0.25)
         
@@ -237,7 +268,8 @@ extension AttackCancerViewModel {
             return
         }
         
-        for (index, delay) in tutorialADCDelays.enumerated() {
+        // Fire the first 8 ADCs with the alert visible
+        for (index, delay) in tutorialADCDelays.prefix(6).enumerated() {
             try? await Task.sleep(for: .seconds(delay))
             Logger.info("🚀 Firing tutorial ADC \(index + 1)/10")
             await handleTap(
@@ -246,10 +278,33 @@ extension AttackCancerViewModel {
                 in: scene
             )
         }
+        
+        // Hide the tutorial alert when there are 2 shots left
+        isTutorialAlertVisible = false
+        Logger.info("✅ Tutorial alert hidden after 6 shots")
+        
+        // Fire the remaining 2 ADCs
+        for (index, delay) in tutorialADCDelays.suffix(4).enumerated() {
+            try? await Task.sleep(for: .seconds(delay))
+            Logger.info("🚀 Firing tutorial ADC \(index + 9)/10")
+            await handleTap(
+                on: complexCell,
+                location: approachPosition,  // Use approach position for targeting
+                in: scene
+            )
+        }
+        
         Logger.info("✅ Tutorial ADC sequence complete")
         
         Logger.info("⏱️ small delay before the test fire cell is spawned")
-        try? await Task.sleep(for: .seconds(4.2))  
+        try? await Task.sleep(for: .seconds(2.2))  
+        
+        // Check current state before spawning test fire cell
+        Logger.info("🔍 PINCH DEBUG (Before Test Fire): hasFirstADCBeenFired: \(hasFirstADCBeenFired), isPinchAnimationVisible: \(isPinchAnimationVisible), totalADCsDeployed: \(totalADCsDeployed)")
+        
+        // Reset the hasFirstADCBeenFired flag since tutorial ADCs shouldn't count for hiding the pinch animation
+        hasFirstADCBeenFired = false
+        Logger.info("🔍 PINCH DEBUG (Test Fire Reset): Set hasFirstADCBeenFired = false to ensure pinch animation works properly")
         
         // MARK: SPAWN TEST FIRE CELL
         Logger.info("\n🎯 Starting test fire sequence...\n")

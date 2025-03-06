@@ -16,7 +16,7 @@ struct IntroView: View {
         }
     }
     
-    @State private var showNavToggle: Bool = false
+    @State private var showNavToggle: Bool = true
     
     var surroundingsEffect: SurroundingsEffect? {
         let tintColor = Color(red: introTintIntensity, green: introTintIntensity, blue: introTintIntensity)
@@ -44,6 +44,7 @@ struct IntroView: View {
                  content.add(handTrackedEntity)
                  if let attachmentEntity = attachments.entity(for: "navToggle") {
                      attachmentEntity.components[BillboardComponent.self] = .init()
+                     attachmentEntity.scale = SIMD3<Float>(0.75,0.75,0.75)
                      handTrackedEntity.addChild(attachmentEntity)
                  }
              }
@@ -83,7 +84,7 @@ struct IntroView: View {
                 }
             }
         } attachments: {
-            if showNavToggle {
+            if showNavToggle && appModel.hasBuiltADC  { 
                 Attachment(id: "navToggle") {
                     NavToggleView()
                 }

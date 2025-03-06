@@ -506,11 +506,11 @@ final class AssetLoadingManager {
     }
 
     /// Loads an asset by name on demand and caches it.
-    func loadAsset(withName name: String, category: AssetCategory) async throws -> Entity {
+    func loadAsset(withName name: String, category: AssetCategory, progressCallback: ((Float) -> Void)? = nil) async throws -> Entity {
         print("AssetLoadingManager: loadAsset(withName: \(name), category: \(category))")
         // For the assembled lab, use the specialized loader
         if name == "assembled_lab" {
-            return try await loadAssembledLab()
+            return try await loadAssembledLab(progressCallback: progressCallback)
         }
         
         // If already cached, return a clone of the cached asset

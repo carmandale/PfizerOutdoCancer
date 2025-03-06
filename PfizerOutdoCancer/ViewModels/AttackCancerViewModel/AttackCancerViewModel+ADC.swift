@@ -83,8 +83,27 @@ extension AttackCancerViewModel {
         #endif
         
         // Set the flag for first ADC fired
+        Logger.info("🔍 PINCH DEBUG: Before check - hasFirstADCBeenFired: \(hasFirstADCBeenFired), isPinchAnimationVisible: \(isPinchAnimationVisible)")
+        
         if !hasFirstADCBeenFired {
             hasFirstADCBeenFired = true
+            Logger.info("🔍 PINCH DEBUG: First ADC fired! Setting hasFirstADCBeenFired to true")
+            
+            // Hide the pinch animation when first ADC is fired
+            if isPinchAnimationVisible {
+                Logger.info("🔍 PINCH DEBUG: Animation is visible, creating task to hide it")
+                Task { @MainActor in
+                    Logger.info("🔍 PINCH DEBUG: Starting delay before hiding animation")
+                    try? await Task.sleep(for: .seconds(0.5))
+                    Logger.info("🎭 Hiding pinch animation after first ADC fired")
+                    isPinchAnimationVisible = false
+                    Logger.info("🔍 PINCH DEBUG: After hiding - isPinchAnimationVisible: \(isPinchAnimationVisible)")
+                }
+            } else {
+                Logger.info("🔍 PINCH DEBUG: Animation is NOT visible at first ADC firing")
+            }
+        } else {
+            Logger.info("🔍 PINCH DEBUG: Not first ADC (hasFirstADCBeenFired already true)")
         }
         
         // Clone the template (colors will be cloned with it)
@@ -181,8 +200,27 @@ extension AttackCancerViewModel {
         #endif
         
         // Set the flag for first ADC fired
+        Logger.info("🔍 PINCH DEBUG (Untargeted): Before check - hasFirstADCBeenFired: \(hasFirstADCBeenFired), isPinchAnimationVisible: \(isPinchAnimationVisible)")
+        
         if !hasFirstADCBeenFired {
             hasFirstADCBeenFired = true
+            Logger.info("🔍 PINCH DEBUG (Untargeted): First ADC fired! Setting hasFirstADCBeenFired to true")
+            
+            // Hide the pinch animation when first ADC is fired
+            if isPinchAnimationVisible {
+                Logger.info("🔍 PINCH DEBUG (Untargeted): Animation is visible, creating task to hide it")
+                Task { @MainActor in
+                    Logger.info("🔍 PINCH DEBUG (Untargeted): Starting delay before hiding animation")
+                    try? await Task.sleep(for: .seconds(0.5))
+                    Logger.info("🎭 Hiding pinch animation after first untargeted ADC fired")
+                    isPinchAnimationVisible = false
+                    Logger.info("🔍 PINCH DEBUG (Untargeted): After hiding - isPinchAnimationVisible: \(isPinchAnimationVisible)")
+                }
+            } else {
+                Logger.info("🔍 PINCH DEBUG (Untargeted): Animation is NOT visible at first ADC firing")
+            }
+        } else {
+            Logger.info("🔍 PINCH DEBUG (Untargeted): Not first ADC (hasFirstADCBeenFired already true)")
         }
         
         // Clone the template (colors will be cloned with it)

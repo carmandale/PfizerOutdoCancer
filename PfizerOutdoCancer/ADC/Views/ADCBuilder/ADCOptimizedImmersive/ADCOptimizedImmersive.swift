@@ -123,6 +123,11 @@ struct ADCOptimizedImmersive: View {
             Attachment(id: ADCUIAttachments.mainADCView) {
                 ADCBuilderView()
             }
+            Attachment(id: ADCUIAttachments.coachingOverlay) {
+                ADCcoaching()
+                    .opacity(dataModel.isCoachingOverlayPresent ? 1 : 0)
+                    .animation(.easeInOut(duration: 0.5), value: dataModel.isCoachingOverlayPresent)
+            }
         }
         .installGestures()
         .onAppear {
@@ -190,6 +195,7 @@ struct ADCOptimizedImmersive: View {
                 print("✅ ADCOptimizedImmersive phase change complete\n")
             }
         }
+        // MARK: Build Step
         .onChange(of: dataModel.adcBuildStep) { oldValue, newValue in
             Task { @MainActor in
                 // Log color summary at each step
@@ -230,6 +236,7 @@ struct ADCOptimizedImmersive: View {
 //                    self.adcPayloadsOuter.forEach { $0.isEnabled = false }
                 case 1:
                     os_log(.debug, "ITR.. ✅ ADC build step 1 - checkmark to move past antibody to linker")
+
                     self.antibodyRootEntity?.components.remove(ADCGestureComponent.self)
                     for (index, element) in adcLinkers.enumerated() {
                         element.isEnabled = index <= dataModel.linkersWorkingIndex
@@ -258,6 +265,8 @@ struct ADCOptimizedImmersive: View {
                     }
                     self.linkerAttachmentEntity?.isEnabled = true
                     self.payloadEntity?.isEnabled = false
+                    
+                    
                 case 2:
                     // clicked checkmark to apply the material to all of the linkers
                     os_log(.debug, "ITR.. ✅ ADC build step 2 - checkmark to fill all linkers")
@@ -428,12 +437,14 @@ struct ADCOptimizedImmersive: View {
             os_log(.debug, "ITR..onChange(of: selectedADCAntibody): new value: \(newValue ?? -1)")
             handleAntibodyColorChange(newValue: newValue)
         }
+        // MARK: When VO Plays
         .onChange(of: dataModel.isVOPlaying) { oldValue, newValue in
             if !newValue {  // VO finished playing
                 Task { @MainActor in
                     os_log(.debug, "ITR..VO finished playing, current step: \(dataModel.adcBuildStep)")
                     // Fade in the appropriate entities based on current step
                     switch dataModel.adcBuildStep {
+                    // MARK: Fade in Antibody
                     case 0:  // Initial fade in of antibody
                         // if dataModel.adcBuildStep == 0 && !dataModel.hasInitialVOCompleted {
                         //     dataModel.hasInitialVOCompleted = true
@@ -459,10 +470,11 @@ struct ADCOptimizedImmersive: View {
                         // After position animation, fade in antibody with delay
                         if let antibodyEntity = antibodyEntity {
                             os_log(.debug, "ITR..antibodyEntity exists, fading in")
-                            await antibodyEntity.fadeOpacity(to: 1, duration: 1.0, delay: 1.0)
+                            await antibodyEntity.fadeOpacity(to: 1, duration: 1.0)
                             antibodyEntity.isEnabled = true
                             os_log(.debug, "ITR..antibodyEntity fade complete, isEnabled set to true")
                         }
+                    // MARK: Fade in Linker
                     case 1:  // Fade in linker
                         // dataModel.showSelector = true
                         os_log(.debug, "ITR..Attempting to fade in linker entities")
@@ -470,11 +482,17 @@ struct ADCOptimizedImmersive: View {
                             os_log(.debug, "ITR..linkerEntity exists, isEnabled: \(linkerEntity.isEnabled)")
                             // Fade in entities
                             await linkerEntity.fadeOpacity(to: 1, duration: 1.0)
+                            
+                            // show the coaching Overlay
+                            dataModel.isCoachingOverlayPresent = true
+                            Logger.debug("\nShowing coaching overlay\n")
+                            
                             linkerEntity.isEnabled = true
                             os_log(.debug, "ITR..linkerEntity fade complete, isEnabled set to true")
                         } else {
                             os_log(.error, "ITR..❌ linkerEntity is nil")
                         }
+                    // MARK: Fade in Payload
                     case 2:  // Fade in payload
                         // dataModel.showSelector = true
                         if let payloadEntity = payloadEntity {

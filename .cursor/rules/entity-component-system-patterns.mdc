@@ -1,6 +1,7 @@
 ---
 description: use these patterns when creating components and systems and working with entities
-globs: 
+globs: *.swift
+alwaysApply: false
 ---
 
 ---

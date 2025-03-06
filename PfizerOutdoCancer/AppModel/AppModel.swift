@@ -122,7 +122,7 @@ final class AppModel {
     let trackingManager = TrackingSessionManager()
     
     var shouldDimSurroundings: Bool = false
-    var hasBuiltADC: Bool = false
+    var hasBuiltADC: Bool = true
     
     /// Current phase of the app
     var currentPhase: AppPhase = .loading
@@ -182,6 +182,10 @@ final class AppModel {
         }
     }
     var displayedProgress: Float = 0.0 // Displayed progress for animation
+    
+    // Progress tracking for detailed loading
+    var regularAssetsProgress: Float = 0.0 // Track progress of non-lab assets
+    var labLoadingProgress: Float = 0.0 // Track progress of the lab asset loading
     
     func toggleLibrary() {
         // Single source of truth for library state
@@ -452,28 +456,49 @@ final class AppModel {
     private func preloadAssets(for phase: AppPhase, adcDataModel: ADCDataModel?) async {
         if phase == .intro || phase == .playing {
             Logger.debug("\n=== Preparing ADC for intro and playing ===")
-            if let adcDataModel = adcDataModel {
+            
+            // PRIORITY CHANGE: Check for existing template FIRST
+            if hasBuiltADC && gameState.adcTemplate != nil {
+                // We already have a custom ADC template - prioritize using it
+                Logger.debug("✅ Reusing existing custom ADC template")
+                
+                // Safely unwrap both optionals
+                if let template = gameState.adcTemplate, let dataModel = adcDataModel {
+                    Logger.debug("applying the colors to the existing template")
+                    gameState.setADCTemplate(template, dataModel: dataModel)
+                    Logger.debug("✅ ADC template stored in gameState")
+                    Logger.debug("✅ ADC template configured with colors")
+                } else {
+                    Logger.debug("⚠️ Could not apply colors - template or data model is nil")
+                }
+                
+                // Ensure labState has the updated template
+                labState.adcTemplate = gameState.adcTemplate
+                Logger.debug("✅ Custom ADC template passed to lab state")
+            } 
+            // ONLY if we don't have a custom template, create a new one
+            else if let adcDataModel = adcDataModel {
                 do {
-                    // Load and configure ADC template
-                    Logger.debug("🎯 Loading ADC template...")
+                    Logger.debug("🎯 Loading fresh ADC template...")
                     let adcEntity = try await assetLoadingManager.instantiateAsset(
                         withName: "adc",
                         category: .adc
                     )
-                    Logger.debug("✅ ADC entity loaded, applying colors...")
+                    Logger.debug("✅ ADC template loaded (using inner Root with audio)")
+                    
+                    Logger.debug("🎯 Setting up ADC Template")
                     gameState.setADCTemplate(adcEntity, dataModel: adcDataModel)
+                    Logger.debug("✅ ADC template stored in gameState")
                     Logger.debug("✅ ADC template configured with colors")
                     
-                    // Pass template to lab state if we have built an ADC
+                    // Pass template to lab state
                     labState.adcTemplate = gameState.adcTemplate
                     Logger.debug("✅ ADC template passed to lab state")
-                    
-
                 } catch {
                     Logger.debug("❌ Failed to load playing phase assets: \(error)")
                 }
             } else {
-                Logger.debug("❌ No ADCDataModel available for playing phase")
+                Logger.debug("❌ No custom ADC template and no ADCDataModel available")
             }
         }
         if phase == .playing {

@@ -340,8 +340,17 @@ extension AttackCancerViewModel {
 
                 //   appModel.assetLoadingManager.inspectEntityHierarchy(testFireScene)
 
-                  // set isTestFireActive to true
+                  // Set isTestFireActive to true
                   appModel.gameState.isTestFireActive = true
+                  
+                  // Show pinch animation
+                  Logger.info("🔍 PINCH DEBUG (Test Fire): Before setting visible - isPinchAnimationVisible: \(isPinchAnimationVisible), hasFirstADCBeenFired: \(hasFirstADCBeenFired)")
+                  isPinchAnimationVisible = true
+                  Logger.info("✅ Test Fire: Pinch animation now visible")
+                  Logger.info("🔍 PINCH DEBUG (Test Fire): After setting visible - isPinchAnimationVisible: \(isPinchAnimationVisible)")
+                  
+                  // Save reference to test fire cell for later use
+                  appModel.gameState.testFireCell = testFireScene
              }
         } catch {
             Logger.error("❌ Test Fire: Failed to instantiate cancer cell template: \(error)")

@@ -1,6 +1,7 @@
 ---
 description: info on using the new text render effects
-globs: 
+globs: *.swift
+alwaysApply: false
 ---
 
 ---

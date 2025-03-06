@@ -1153,21 +1153,21 @@ def Xform "Root"
 
         def RealityKitAudioMixGroup "conversation"
         {
-            float gain = -24.426685
+            float gain = -18.803421
             bool mute = 0
             float speed = 1
         }
 
         def RealityKitAudioMixGroup "beakers"
         {
-            float gain = -8.139951
+            float gain = -6.9054303
             bool mute = 0
             float speed = 1
         }
 
         def RealityKitAudioMixGroup "Paperwork"
         {
-            float gain = -18.04777
+            float gain = -14.313657
             bool mute = 0
             float speed = 1
         }
@@ -1181,14 +1181,14 @@ def Xform "Root"
 
         def RealityKitAudioMixGroup "podcast"
         {
-            float gain = -21.26752
+            float gain = -17.664862
             bool mute = 0
             float speed = 1
         }
 
         def RealityKitAudioMixGroup "ventHood"
         {
-            float gain = -19.624544
+            float gain = -18.280783
             bool mute = 0
             float speed = 1
         }

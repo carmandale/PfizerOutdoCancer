@@ -20,8 +20,8 @@ def Xform "Root"
         asset inputs:ao = @@ (
             customData = {
                 dictionary realitykit = {
-                    float2 positionInSubgraph = (-743.19617, 693.9848)
-                    int stackingOrderInSubgraph = 267
+                    float2 positionInSubgraph = (-1106.844, 927.20465)
+                    int stackingOrderInSubgraph = 314
                 }
             }
         )
@@ -49,11 +49,19 @@ def Xform "Root"
                 }
             }
         )
+        float inputs:fingerPrintSize = 8 (
+            customData = {
+                dictionary realitykit = {
+                    float2 positionInSubgraph = (-1938.2625, 586.13245)
+                    int stackingOrderInSubgraph = 1174
+                }
+            }
+        )
         asset inputs:metallic = @@ (
             customData = {
                 dictionary realitykit = {
-                    float2 positionInSubgraph = (-744.3368, 483.15662)
-                    int stackingOrderInSubgraph = 267
+                    float2 positionInSubgraph = (-1107.9846, 716.37646)
+                    int stackingOrderInSubgraph = 314
                 }
             }
         )
@@ -68,16 +76,16 @@ def Xform "Root"
         asset inputs:opacity = @@ (
             customData = {
                 dictionary realitykit = {
-                    float2 positionInSubgraph = (-739.329, 900.8363)
-                    int stackingOrderInSubgraph = 267
+                    float2 positionInSubgraph = (-1102.9768, 1134.0562)
+                    int stackingOrderInSubgraph = 314
                 }
             }
         )
         asset inputs:roughness = @@ (
             customData = {
                 dictionary realitykit = {
-                    float2 positionInSubgraph = (-741.14844, 266.48047)
-                    int stackingOrderInSubgraph = 267
+                    float2 positionInSubgraph = (-1489.6992, 366.7165)
+                    int stackingOrderInSubgraph = 350
                 }
             }
         )
@@ -95,10 +103,10 @@ def Xform "Root"
             color3f inputs:emissiveColor.connect = </Root/M_baseObjectMaterial/Multiply_1.outputs:out>
             bool inputs:hasPremultipliedAlpha
             float inputs:metallic.connect = </Root/M_baseObjectMaterial/Image_3.outputs:out>
-            float3 inputs:normal.connect = </Root/M_baseObjectMaterial/Subtract.outputs:out>
+            float3 inputs:normal.connect = </Root/M_baseObjectMaterial/NormalMapDecode.outputs:out>
             float inputs:opacity.connect = </Root/M_baseObjectMaterial/Image_5.outputs:out>
             float inputs:opacityThreshold
-            float inputs:roughness.connect = </Root/M_baseObjectMaterial/Image_2.outputs:out>
+            float inputs:roughness.connect = </Root/M_baseObjectMaterial/Multiply.outputs:out>
             float inputs:specular
             token outputs:out
             float2 ui:nodegraph:node:pos = (3.7539062, 494.0703)
@@ -134,11 +142,12 @@ def Xform "Root"
             uniform token info:id = "ND_image_float"
             float inputs:default
             asset inputs:file.connect = </Root/M_baseObjectMaterial.inputs:roughness>
+            string inputs:filtertype
             float2 inputs:texcoord
             string inputs:uaddressmode
             float outputs:out
-            float2 ui:nodegraph:node:pos = (-435.90625, 201.1289)
-            int ui:nodegraph:node:stackingOrder = 93
+            float2 ui:nodegraph:node:pos = (-1131.718, 278.62534)
+            int ui:nodegraph:node:stackingOrder = 953
         }
 
         def Shader "Image_3"
@@ -150,8 +159,8 @@ def Xform "Root"
             float2 inputs:texcoord
             string inputs:vaddressmode
             float outputs:out
-            float2 ui:nodegraph:node:pos = (-439.0946, 417.80508)
-            int ui:nodegraph:node:stackingOrder = 117
+            float2 ui:nodegraph:node:pos = (-802.7424, 651.02496)
+            int ui:nodegraph:node:stackingOrder = 314
         }
 
         def Shader "Image_4"
@@ -163,8 +172,8 @@ def Xform "Root"
             float2 inputs:texcoord
             string inputs:vaddressmode
             float outputs:out
-            float2 ui:nodegraph:node:pos = (-437.95398, 628.6333)
-            int ui:nodegraph:node:stackingOrder = 185
+            float2 ui:nodegraph:node:pos = (-801.60175, 861.85315)
+            int ui:nodegraph:node:stackingOrder = 314
         }
 
         def Shader "Image_5"
@@ -176,8 +185,8 @@ def Xform "Root"
             float2 inputs:texcoord
             string inputs:vaddressmode
             float outputs:out
-            float2 ui:nodegraph:node:pos = (-434.0868, 835.48486)
-            int ui:nodegraph:node:stackingOrder = 188
+            float2 ui:nodegraph:node:pos = (-797.73456, 1068.7047)
+            int ui:nodegraph:node:stackingOrder = 314
         }
 
         def Shader "Multiply_2"
@@ -224,6 +233,84 @@ def Xform "Root"
             float2 ui:nodegraph:node:pos = (-485.71478, -25.011955)
             float2 ui:nodegraph:node:size = (60, 36)
             int ui:nodegraph:node:stackingOrder = 265
+        }
+
+        def Shader "NormalMapDecode"
+        {
+            uniform token info:id = "ND_normal_map_decode"
+            float3 inputs:in.connect = </Root/M_baseObjectMaterial/Image_1.outputs:out>
+            float3 outputs:out
+            float2 ui:nodegraph:node:pos = (-678.84375, 163.17969)
+            int ui:nodegraph:node:stackingOrder = 317
+        }
+
+        def Shader "ConstantImageFile"
+        {
+            uniform token info:id = "ND_constant_filename"
+            asset inputs:value = @../Assets/Lab/Object_upgrades/textures/scattered isolated fingerprints5 (fingerprints & dirt)_roughness.png@
+            asset outputs:out
+            float2 ui:nodegraph:node:pos = (-1807.1396, 378.44153)
+            int ui:nodegraph:node:stackingOrder = 1175
+        }
+
+        def Shader "TiledImage"
+        {
+            uniform token info:id = "ND_tiledimage_float"
+            float inputs:default
+            asset inputs:file.connect = </Root/M_baseObjectMaterial/ConstantImageFile.outputs:out>
+            string inputs:filtertype
+            float2 inputs:realworldimagesize
+            float2 inputs:realworldtilesize
+            float2 inputs:texcoord
+            float2 inputs:uvoffset
+            float2 inputs:uvtiling.connect = </Root/M_baseObjectMaterial/Swizzle.outputs:out>
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (-1470.2375, 554.9845)
+            int ui:nodegraph:node:stackingOrder = 962
+        }
+
+        def Shader "Multiply"
+        {
+            uniform token info:id = "ND_multiply_float"
+            float inputs:in1.connect = </Root/M_baseObjectMaterial/Image_2.outputs:out>
+            float inputs:in2.connect = </Root/M_baseObjectMaterial/Range.outputs:out>
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (-889.2178, 402.82697)
+            int ui:nodegraph:node:stackingOrder = 948
+        }
+
+        def Shader "Swizzle"
+        {
+            uniform token info:id = "ND_swizzle_float_vector2"
+            prepend float inputs:in.connect = </Root/M_baseObjectMaterial.inputs:fingerPrintSize>
+            float2 outputs:out
+            float2 ui:nodegraph:node:pos = (-1710.1978, 562.2428)
+            int ui:nodegraph:node:stackingOrder = 960
+        }
+
+        def Shader "Range"
+        {
+            uniform token info:id = "ND_range_float"
+            bool inputs:doclamp
+            float inputs:gamma = 0.26304686
+            float inputs:gamma.connect = </Root/M_baseObjectMaterial/fingerPrintAmount.outputs:out>
+            float inputs:in.connect = </Root/M_baseObjectMaterial/TiledImage.outputs:out>
+            float inputs:inhigh
+            float inputs:inlow
+            float inputs:outhigh
+            float inputs:outlow
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (-1120.8698, 539.4485)
+            int ui:nodegraph:node:stackingOrder = 1166
+        }
+
+        def Shader "fingerPrintAmount"
+        {
+            uniform token info:id = "ND_constant_float"
+            float inputs:value = 0.4
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (-1422.2911, 736.76733)
+            int ui:nodegraph:node:stackingOrder = 1171
         }
     }
 }

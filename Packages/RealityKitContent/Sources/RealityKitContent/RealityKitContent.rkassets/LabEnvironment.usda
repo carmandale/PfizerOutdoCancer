@@ -127,7 +127,6 @@ def Xform "Root"
     }
 
     def "_3D_people_scene" (
-        active = true
         references = @Assets/Lab/People/3D_people_scene.usda@
     )
     {

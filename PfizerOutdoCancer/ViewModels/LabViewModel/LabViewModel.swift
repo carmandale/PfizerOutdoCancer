@@ -53,7 +53,7 @@ final class LabViewModel {
     // MARK: extra ADCs
     func setupExtraADCs(in root: Entity) async {
         // Ensure ADC template exists
-        guard let template = appModel.gameState.adcTemplate else {
+        guard let template = adcTemplate ?? appModel.gameState.adcTemplate else {
             Logger.info("❌ ADC Template not found, skipping extra ADC placements")
             return
         }
@@ -99,21 +99,25 @@ final class LabViewModel {
         
         🎯 Setting up ADC Placer
         ├─ hasBuiltADC: \(appModel.hasBuiltADC)
-        └─ Root Entity: \(root.name)
+        ├─ Root Entity: \(root.name)
+        ├─ adcTemplate: \(adcTemplate != nil)
+        └─ gameState.adcTemplate: \(appModel.gameState.adcTemplate != nil)
         """)
         
-        // Only proceed if we have a built ADC
-        let shouldProceed = true // appModel.hasBuiltADC
+        // Always show the ADC placer in the lab scene regardless of hasBuiltADC
+        // This is for the interactive exhibit
+        let shouldProceed = true
         
+        // Prioritize using labState.adcTemplate if available, then try gameState.adcTemplate
         guard shouldProceed,
               let placerEntity = root.findEntity(named: "ADC_placer"),
-              let template = appModel.gameState.adcTemplate else {
+              let template = adcTemplate ?? appModel.gameState.adcTemplate else {
             Logger.info("""
             
             ❌ ADC Placer Setup Failed
             ├─ shouldProceed: \(shouldProceed)
             ├─ Found Placer: \(root.findEntity(named: "ADC_placer") != nil)
-            └─ Has Template: \(appModel.gameState.adcTemplate != nil)
+            └─ Has Template: \(adcTemplate ?? appModel.gameState.adcTemplate != nil)
             """)
             return
         }
@@ -238,7 +242,7 @@ final class LabViewModel {
             └─ hasBuiltADC: \(appModel.hasBuiltADC)
             """)
             Task {
-                try? await Task.sleep(for: .seconds(40.5))
+                try? await Task.sleep(for: .seconds(42.77))
                 Logger.info("⏲️ Timer complete - showing ADC button")
                 withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
                     shouldShowADCButton = true

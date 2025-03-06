@@ -444,7 +444,7 @@ def Xform "root" (
         customData = {
             float3 rotationEulerHint = (1.5707964, 0, 0)
         }
-        references = @../Object_upgrades/TestTubeRack.usdz@
+        references = @../Object_upgrades/TestTubeRack/test_tube_rack.usdc@
     )
     {
         reorder nameChildren = ["geom", "TestTube", "TestTube_1", "TestTube_2"]
@@ -457,7 +457,7 @@ def Xform "root" (
             customData = {
                 float3 rotationEulerHint = (1.5707964, 0, 0)
             }
-            references = @../Object_upgrades/TestTube.usdz@
+            references = @../Object_upgrades/TestTube/test_tube.usdc@
         )
         {
             quatf xformOp:orient = (0.99999994, -6.595578e-17, 0, 0)
@@ -471,7 +471,7 @@ def Xform "root" (
             customData = {
                 float3 rotationEulerHint = (1.5707964, 0, 0)
             }
-            references = @../Object_upgrades/TestTube.usdz@
+            references = @../Object_upgrades/TestTube/test_tube.usdc@
         )
         {
             float2 ui:nodegraph:node:pos = (20, 20)
@@ -487,14 +487,14 @@ def Xform "root" (
             customData = {
                 float3 rotationEulerHint = (1.5707964, 0, 0)
             }
-            references = @../Object_upgrades/TestTube.usdz@
+            references = @../Object_upgrades/TestTube/test_tube.usdc@
         )
         {
             float2 ui:nodegraph:node:pos = (40, 40)
             int ui:nodegraph:node:stackingOrder = 2
             quatf xformOp:orient = (0.99999994, -6.595578e-17, 0, 0)
             float3 xformOp:scale = (0.99999994, 0.99999994, 0.99999994)
-            float3 xformOp:translate = (0.049703307, 0.00886162, 0.0038334876)
+            float3 xformOp:translate = (0.053442635, 0.008861619, 0.0033104136)
             uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
         }
     }

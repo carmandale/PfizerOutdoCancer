@@ -50,6 +50,9 @@ extension AttackCancerViewModel {
         isEnvironmentSetupComplete = false
         isHeadTrackingRootReady = false
         shouldUpdateHeadPosition = false
+        isPositioningComplete = false
+        isTutorialAlertVisible = false
+        isPinchAnimationVisible = false
         
         Logger.debug("""
         

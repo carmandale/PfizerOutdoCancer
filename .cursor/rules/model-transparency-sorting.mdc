@@ -1,6 +1,7 @@
 ---
 description: ModelSortGroupComponent A component that configures the rendering order for an entity’s model.
-globs: 
+globs: *.swift
+alwaysApply: false
 ---
 ModelSortGroupComponent
 A component that configures the rendering order for an entity’s model.

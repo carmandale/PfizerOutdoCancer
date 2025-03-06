@@ -135,12 +135,40 @@ extension ADCOptimizedImmersive {
     }
     
     func setupAttachments(attachments: RealityViewAttachments) {
+        Logger.debug("=== Setting up Attachments ===")
+        Logger.debug("mainEntity exists: \(mainEntity != nil)")
+        Logger.debug("mainEntity position: \(mainEntity?.position(relativeTo: nil) ?? .zero)")
+        
         if let viewAttachment = attachments.entity(for: ADCUIAttachments.mainADCView) {
             viewAttachment.name = ADCUIAttachments.mainADCView
 //            viewAttachment.scale = SIMD3<Float>(0.6, 0.6, 0.6)
             viewAttachment.scale = .one
             //  viewAttachment.components[BillboardComponent.self] = BillboardComponent()
             mainViewEntity.addChild(viewAttachment)
+            Logger.debug("✅ Added mainADCView to mainViewEntity")
+        } else {
+            Logger.error("❌ Could not find mainADCView attachment")
+        }
+        
+        // Handle coaching overlay - attach to mainEntity which is our headTrackingRoot equivalent
+        if let coachingViewAttachment = attachments.entity(for: ADCUIAttachments.coachingOverlay) {
+            Logger.debug("✅ Found coaching overlay attachment")
+            Logger.debug("Coaching attachment initial position: \(coachingViewAttachment.position)")
+            Logger.debug("Coaching attachment initial scale: \(coachingViewAttachment.scale)")
+            
+            // Position it exactly like the tutorial alert in AttackCancerView
+            coachingViewAttachment.position = SIMD3<Float>(0, -0.25, 0.25)
+            
+            // Make sure it's visible by setting opacity and isEnabled
+            coachingViewAttachment.isEnabled = true
+            
+            // Add to the main entity, which is our headTrackingRoot equivalent
+            mainEntity?.addChild(coachingViewAttachment)
+            Logger.debug("✅ Added coaching overlay to mainEntity at position (0, -0.25, 0.25)")
+            Logger.debug("Coaching overlay is now child of: \(coachingViewAttachment.parent?.name ?? "unknown")")
+            Logger.debug("Coaching overlay world position: \(coachingViewAttachment.position(relativeTo: nil))")
+        } else {
+            Logger.error("❌ Could not find coaching overlay attachment")
         }
     }
 }

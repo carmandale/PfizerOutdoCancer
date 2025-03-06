@@ -177,7 +177,28 @@ def Xform "root" (
                 asset inputs:diffuse = @textures/flasks_mat_BaseColor.jpg@
                 asset inputs:metallic = @textures/flasks_mat_Metallic.jpg@
                 asset inputs:normal = @textures/flasks_mat_Normal.jpg@
-                asset inputs:roughness = @textures/flasks_mat_Roughness.jpg@
+                float inputs:OpacityValue = 0.1
+                asset inputs:roughness = None (
+                    customData = {
+                        dictionary realitykit = {
+                            float2 positionInSubgraph = (-1372.0509, 238.41054)
+                            int stackingOrderInSubgraph = 1177
+                        }
+                    }
+                )
+
+                over "PBRSurface"
+                {
+                    float inputs:clearcoat = 1
+                    float inputs:clearcoatRoughness.connect = </root/M_flaskObjectMaterial/M_baseObjectMaterial/M_baseObjectMaterial/Range.outputs:out>
+                    int ui:nodegraph:node:stackingOrder = 1176
+                }
+
+                over "fingerPrintAmount"
+                {
+                    float inputs:value = 0.2238672
+                    int ui:nodegraph:node:stackingOrder = 1177
+                }
             }
         }
     }

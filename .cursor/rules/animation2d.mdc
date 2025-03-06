@@ -1,6 +1,7 @@
 ---
 description: swiftUI 2d animation guidelines
-globs: 
+globs: *.swift
+alwaysApply: false
 ---
 # SwiftUI Animation Guide
 

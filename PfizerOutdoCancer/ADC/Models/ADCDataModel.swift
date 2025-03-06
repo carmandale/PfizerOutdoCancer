@@ -17,6 +17,9 @@ class ADCDataModel {
         isHeadTrackingRootReady
     }
     
+    // coaching overlay
+    var isCoachingOverlayPresent: Bool = false
+    
     // New Step State Management
     struct StepState {
         var colorSelected: Bool = false
@@ -58,9 +61,9 @@ class ADCDataModel {
     public var voiceOverProgress: Double = 0.0
     let voiceOverDurations: [Int: TimeInterval] = [
         0: 18.0,  // VO1
-        1: 22.0,  // VO2
-        2: 28.0,  // VO3
-        3: 16.0   // VO4
+        1: 21.0,  // VO2
+        2: 27.0,  // VO3
+        3: 15.0   // VO4
     ]
     
     // Updated Navigation Control
@@ -258,4 +261,5 @@ public enum ADCUIAttachments {
     static let linkerSelectorView = "linkerSelectorAttachment"
     static let payloadSelectorView = "payloadSelectorAttachment"
     static let mainADCView = "mainADCView"
+    static let coachingOverlay = "coachingOverlay"
 }

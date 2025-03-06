@@ -195,6 +195,12 @@ final class IntroViewModel {
             p.position = [0, -0.25, 0]
             root.addChild(p)
             
+            // Ensure the ADC template is up-to-date in labState before setting up ADCs
+            if appModel.hasBuiltADC && appModel.gameState.adcTemplate != nil {
+                Logger.debug("🔄 Updating labState.adcTemplate with latest custom ADC")
+                appModel.labState.adcTemplate = appModel.gameState.adcTemplate
+            }
+            
             Logger.debug("Attempting to setup interactive ADC for user")
             await appModel.labState.setupADCPlacer(in: root)
             await appModel.labState.setupExtraADCs(in: root)

@@ -1,6 +1,7 @@
 ---
 description: info about using the World Tracking Provider
-globs: 
+globs: *.swift
+alwaysApply: false
 ---
 
 ---
