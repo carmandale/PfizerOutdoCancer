@@ -27,7 +27,7 @@ struct AttackCancerView: View {
             appModel.gameState.setupHandTracking(in: content, attachments: attachments)
             
             // Setup tutorial alert attachment
-            if let tutorialAlert = attachments.entity(for: "TutorialAlert") {
+            if attachments.entity(for: "TutorialAlert") != nil {
                 Logger.info("✅ Found tutorial alert attachment")
                 
                 // We'll position it in the headTrackingRoot when the tutorial starts

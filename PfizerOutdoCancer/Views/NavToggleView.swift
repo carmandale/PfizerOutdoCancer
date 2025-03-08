@@ -22,7 +22,7 @@ struct NavToggleView: View {
                 Image(systemName: "sidebar.left")
                     .font(.system(size: iconSize))
                     .fontWeight(.bold)
-                    .shadow(radius: 2)
+//                    .shadow(radius: 2)
             }
         })
         .buttonStyle(ScalableButtonStyle())

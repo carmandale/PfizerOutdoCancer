@@ -23,11 +23,10 @@ def Xform "Root" (
 
         def RealityKitDict "resources"
         {
-            string[] keys = ["Drones_01.wav", "Sonic_Pulse_Hit_01.wav", "SpinBus.wav", "ADC_Attach.wav"]
+            string[] keys = ["Drones_01.wav", "Sonic_Pulse_Hit_01.wav", "ADC_Attach.wav"]
             rel values = [
                 </Root/Drones_01_wav>,
                 </Root/Sonic_Pulse_Hit_01_wav>,
-                </Root/SpinBus_wav>,
                 </Root/ADC_Attach_wav>,
             ]
         }
@@ -57,12 +56,6 @@ def Xform "Root" (
     def RealityKitCustomComponent "RealityKitContent_ADCComponent"
     {
         uniform token info:id = "RealityKitContent.ADCComponent"
-    }
-
-    def RealityKitAudioFile "SpinBus_wav"
-    {
-        uniform asset file = @Audio/SFX_12042024/SpinBus.wav@
-        uniform bool shouldLoop = 0
     }
 
     def RealityKitAudioFile "ADC_Attach_wav"

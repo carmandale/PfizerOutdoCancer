@@ -44,7 +44,7 @@ struct HopeMeterView: View {
                     Text("\(percentage)%")
                         .font(.system(size: fontSize / 2))
                         .bold()
-                        .shadow(color: .black, radius: 10, x: 0, y: 0)
+//                        .shadow(color: .black, radius: 10, x: 0, y: 0)
                         .monospacedDigit()
                         .foregroundColor(.white)
                 }

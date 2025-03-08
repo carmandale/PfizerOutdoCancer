@@ -411,6 +411,15 @@ def Xform "Root"
                 double startTime = 0
                 rel target = </Root/ExtraItems/ADC_particles>
             }
+
+            def RealityKitAction "Disable_Entity2"
+            {
+                string actionKind = "disable"
+                double duration = 0
+                uniform token info:id = "3269A326-2B8D-41EC-AB14-FDF681775B6C"
+                double startTime = 118.4167762540832
+                rel target = </Root/ExtraItems/ADC_particles>
+            }
         }
 
         def RealityKitTrack "Track8"
@@ -458,6 +467,15 @@ def Xform "Root"
                 double startTime = 80
                 rel target = </Root/ExtraItems/ADC_particles2>
             }
+
+            def RealityKitAction "Disable_Entity2"
+            {
+                string actionKind = "disable"
+                double duration = 0
+                uniform token info:id = "E6C3DEF5-D42E-4AA4-B54D-43FE5421D405"
+                double startTime = 118.56277818812805
+                rel target = </Root/ExtraItems/ADC_particles2>
+            }
         }
 
         def RealityKitTrack "Track2"
@@ -471,19 +489,6 @@ def Xform "Root"
                 bool isActive = 1
                 double startTime = 0
                 rel timeline = </Root/SFX>
-            }
-        }
-
-        def RealityKitTrack "Track12"
-        {
-            def RealityKitAction "Play_Timeline"
-            {
-                string actionKind = "timeline"
-                int blendLayer = 500
-                double duration = 96.1500015258789
-                uniform token info:id = "1E2B1862-BC8A-402C-8ED0-F7D018F94BAA"
-                double startTime = 0
-                rel timeline = </Root/sh0100_v01/sh0100_animation>
             }
         }
 
@@ -512,6 +517,19 @@ def Xform "Root"
                 bool isActive = 1
                 double startTime = 0
                 rel timeline = </Root/Orchestra>
+            }
+        }
+
+        def RealityKitTrack "Track12"
+        {
+            def RealityKitAction "Play_Timeline"
+            {
+                string actionKind = "timeline"
+                int blendLayer = 500
+                double duration = 96.1500015258789
+                uniform token info:id = "1E2B1862-BC8A-402C-8ED0-F7D018F94BAA"
+                double startTime = 0
+                rel timeline = </Root/sh0100_v01/sh0100_animation>
             }
         }
     }
@@ -1126,6 +1144,12 @@ def Xform "Root"
                                     }
                                 }
                             }
+
+                            def RealityKitComponent "Billboard"
+                            {
+                                float blendFactor = 1
+                                uniform token info:id = "RealityKit.Billboard"
+                            }
                         }
 
                         over "p4" (
@@ -1192,6 +1216,12 @@ def Xform "Root"
                                         int priorityInGroup = 6
                                     }
                                 }
+                            }
+
+                            def RealityKitComponent "Billboard"
+                            {
+                                float blendFactor = 1
+                                uniform token info:id = "RealityKit.Billboard"
                             }
                         }
 
@@ -1260,6 +1290,12 @@ def Xform "Root"
                                     }
                                 }
                             }
+
+                            def RealityKitComponent "Billboard"
+                            {
+                                float blendFactor = 1
+                                uniform token info:id = "RealityKit.Billboard"
+                            }
                         }
 
                         over "p8" (
@@ -1287,6 +1323,12 @@ def Xform "Root"
                                         int priorityInGroup = 10
                                     }
                                 }
+                            }
+
+                            def RealityKitComponent "Billboard"
+                            {
+                                float blendFactor = 1
+                                uniform token info:id = "RealityKit.Billboard"
                             }
                         }
 
@@ -1316,6 +1358,12 @@ def Xform "Root"
                                     }
                                 }
                             }
+
+                            def RealityKitComponent "Billboard"
+                            {
+                                float blendFactor = 1
+                                uniform token info:id = "RealityKit.Billboard"
+                            }
                         }
 
                         over "p10" (
@@ -1343,6 +1391,12 @@ def Xform "Root"
                                         int priorityInGroup = 12
                                     }
                                 }
+                            }
+
+                            def RealityKitComponent "Billboard"
+                            {
+                                float blendFactor = 1
+                                uniform token info:id = "RealityKit.Billboard"
                             }
                         }
 
@@ -1372,6 +1426,12 @@ def Xform "Root"
                                     }
                                 }
                             }
+
+                            def RealityKitComponent "Billboard"
+                            {
+                                float blendFactor = 1
+                                uniform token info:id = "RealityKit.Billboard"
+                            }
                         }
 
                         over "p12" (
@@ -1400,6 +1460,12 @@ def Xform "Root"
                                     }
                                 }
                             }
+
+                            def RealityKitComponent "Billboard"
+                            {
+                                float blendFactor = 1
+                                uniform token info:id = "RealityKit.Billboard"
+                            }
                         }
 
                         over "p13" (
@@ -1427,6 +1493,12 @@ def Xform "Root"
                                         int priorityInGroup = 14
                                     }
                                 }
+                            }
+
+                            def RealityKitComponent "Billboard"
+                            {
+                                float blendFactor = 1
+                                uniform token info:id = "RealityKit.Billboard"
                             }
                         }
 
@@ -1501,6 +1573,12 @@ def Xform "Root"
                                     }
                                 }
                             }
+
+                            def RealityKitComponent "Billboard"
+                            {
+                                float blendFactor = 1
+                                uniform token info:id = "RealityKit.Billboard"
+                            }
                         }
 
                         over "p2" (
@@ -1525,8 +1603,9 @@ def Xform "Root"
                                 }
                             )
                             {
-                                reorder nameChildren = ["Man_v4_wav", "Man_v5_wav", "ChannelAudio", "AudioLibrary"]
+                                reorder nameChildren = ["Man_v5_wav", "Man_v6_2_wav", "Man_v7_2_wav", "ChannelAudio", "AudioLibrary"]
                                 quatf xformOp:orient = (-4.371139e-8, 0, 1, 0)
+                                float3 xformOp:translate = (0, 0, 13.5)
                                 uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
                                 def RealityKitComponent "AudioLibrary"
@@ -1535,8 +1614,12 @@ def Xform "Root"
 
                                     def RealityKitDict "resources"
                                     {
-                                        string[] keys = ["Man_v5_wav"]
-                                        rel values = </Root/sh0100_v01/sh0100_v01/PicturesRoot/intro/People_MSR/p2/p2_audio/Man_v5_wav>
+                                        string[] keys = ["Man_v5_wav", "Man_v6_2_wav", "Man_v7_2_wav"]
+                                        rel values = [
+                                            </Root/sh0100_v01/sh0100_v01/PicturesRoot/intro/People_MSR/p2/p2_audio/Man_v5_wav>,
+                                            </Root/sh0100_v01/sh0100_v01/PicturesRoot/intro/People_MSR/p2/p2_audio/Man_v6_2_wav>,
+                                            </Root/sh0100_v01/sh0100_v01/PicturesRoot/intro/People_MSR/p2/p2_audio/Man_v7_2_wav>,
+                                        ]
                                     }
                                 }
 
@@ -1546,9 +1629,24 @@ def Xform "Root"
                                     uniform bool shouldLoop = 0
                                 }
 
-                                def RealityKitComponent "ChannelAudio"
+                                def RealityKitAudioFile "Man_v6_2_wav"
                                 {
-                                    uniform token info:id = "RealityKit.ChannelAudio"
+                                    uniform asset file = @Assets/Intro/SpatialStems12122024/re_record/Man_v6.2.wav@
+                                    uniform bool shouldLoop = 0
+                                }
+
+                                def RealityKitAudioFile "Man_v7_2_wav"
+                                {
+                                    uniform asset file = @Assets/Intro/SpatialStems12122024/re_record/Man_v7.2.wav@
+                                    uniform bool shouldLoop = 0
+                                }
+
+                                def RealityKitComponent "SpatialAudio"
+                                {
+                                    float directivityFocus = 1
+                                    uniform token info:id = "RealityKit.SpatialAudio"
+                                    float reverbLevel = -10.004464
+                                    float rolloffFactor = 1
                                 }
                             }
 
@@ -1569,6 +1667,12 @@ def Xform "Root"
                                         int priorityInGroup = 4
                                     }
                                 }
+                            }
+
+                            def RealityKitComponent "Billboard"
+                            {
+                                float blendFactor = 1
+                                uniform token info:id = "RealityKit.Billboard"
                             }
                         }
 
@@ -1635,6 +1739,12 @@ def Xform "Root"
                                     }
                                 }
                             }
+
+                            def RealityKitComponent "Billboard"
+                            {
+                                float blendFactor = 1
+                                uniform token info:id = "RealityKit.Billboard"
+                            }
                         }
 
                         over "p7" (
@@ -1662,6 +1772,12 @@ def Xform "Root"
                                         int priorityInGroup = 9
                                     }
                                 }
+                            }
+
+                            def RealityKitComponent "Billboard"
+                            {
+                                float blendFactor = 1
+                                uniform token info:id = "RealityKit.Billboard"
                             }
                         }
                     }
@@ -3202,9 +3318,9 @@ def Xform "Root"
             def RealityKitAction "Man"
             {
                 string actionKind = "audio"
-                string audioResourceName = "Man_v5_wav"
+                string audioResourceName = "Man_v7_2_wav"
                 bool controlPlayback = 1
-                double duration = 144
+                double duration = 143.97716666666668
                 uniform token info:id = "AF66B533-E527-4C45-A206-DC55D2CC4A78"
                 double startTime = 0
                 rel target = </Root/sh0100_v01/sh0100_v01/PicturesRoot/intro/People_MSR/p2/p2_audio>
@@ -3352,7 +3468,7 @@ def Xform "Root"
 
         def "outdoCancer" (
             active = true
-            prepend references = @outdoCancer.usda@
+            references = @outdoCancer.usda@
         )
         {
             quatf xformOp:orient = (0.99999994, 0, 0, 0)

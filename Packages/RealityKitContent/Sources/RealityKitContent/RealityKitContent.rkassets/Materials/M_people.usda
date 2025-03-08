@@ -1,0 +1,68 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 2.0 (448.100.13)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    def Material "Material"
+    {
+        asset inputs:BaseColor = @@ (
+            customData = {
+                dictionary realitykit = {
+                    float2 positionInSubgraph = (-904.3211, -238.44965)
+                    int stackingOrderInSubgraph = 197
+                }
+            }
+        )
+        token outputs:mtlx:surface.connect = </Root/Material/PBRSurface.outputs:out>
+        token outputs:realitykit:vertex
+        float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (335.25, 100.5)
+
+        def Shader "PBRSurface"
+        {
+            uniform token info:id = "ND_realitykit_pbr_surfaceshader"
+            float inputs:ambientOcclusion
+            color3f inputs:baseColor.connect = </Root/Material/Image.outputs:out>
+            float3 inputs:clearcoatNormal
+            color3f inputs:emissiveColor.connect = </Root/Material/Multiply.outputs:out>
+            bool inputs:hasPremultipliedAlpha
+            float inputs:metallic
+            float3 inputs:normal.connect = None
+            float inputs:roughness.connect = None
+            token outputs:out
+            float2 ui:nodegraph:node:pos = (54.003906, 63.984375)
+            int ui:nodegraph:node:stackingOrder = 6
+        }
+
+        def Shader "Image"
+        {
+            uniform token info:id = "ND_image_color3"
+            color3f inputs:default
+            asset inputs:file.connect = </Root/Material.inputs:BaseColor>
+            string inputs:filtertype
+            float2 inputs:texcoord
+            color3f outputs:out
+            float2 ui:nodegraph:node:pos = (-659.34454, -189.49261)
+            int ui:nodegraph:node:stackingOrder = 197
+        }
+
+        def Shader "Multiply"
+        {
+            uniform token info:id = "ND_multiply_color3"
+            color3f inputs:in1.connect = </Root/Material/Image.outputs:out>
+            color3f inputs:in2 = (0.5, 0.5, 0.5) (
+                colorSpace = "lin_srgb"
+            )
+            color3f outputs:out
+            float2 ui:nodegraph:node:pos = (-375.50763, -168.9396)
+            int ui:nodegraph:node:stackingOrder = 199
+        }
+    }
+}
+

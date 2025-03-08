@@ -140,12 +140,12 @@ def Xform "root" (
     def "medical_jar" (
         active = true
         customData = {
-            float3 rotationEulerHint = (1.5707963, 0, 0)
+            float3 rotationEulerHint = (0, 0, 0)
         }
         prepend references = @../Object_upgrades/MedicalJar/medical_jar.usdc@
     )
     {
-        quatf xformOp:orient = (0.70710677, 0.7071067, 0, 0)
+        quatf xformOp:orient = (1, 0, 0, 0)
         float3 xformOp:scale = (0.68381524, 0.68381524, 0.68381524)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }

@@ -35,7 +35,7 @@ def Xform "Root"
                 {
                     float3 acceleration = (0, 0, 0.2)
                     token billboardMode = "BillboardYAligned"
-                    float birthRate = 5
+                    float birthRate = 2
                     token blendMode = "Additive"
                     float4 endColorA = (0.0013006331, 0.032195132, 1, 1)
                     float4 endColorB = (0.18205251, 0.31924036, 1, 1)

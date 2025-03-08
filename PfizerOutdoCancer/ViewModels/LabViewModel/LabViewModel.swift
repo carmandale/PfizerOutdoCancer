@@ -37,7 +37,7 @@ final class LabViewModel {
     
     // MARK: - Setup Methods
     func setupRoot() -> Entity {
-        print("📱 LabViewModel: Setting up root entity")
+        Logger.debug("📱 LabViewModel: Setting up root entity")
         let root = Entity()
         root.name = "MainEntity"
         root.components.set(PositioningComponent(
@@ -46,7 +46,7 @@ final class LabViewModel {
             offsetZ: -0.25
         ))
         mainEntity = root
-        print("✅ LabViewModel: Root entity configured")
+        Logger.debug("✅ LabViewModel: Root entity configured")
         return root
     }
     
@@ -165,7 +165,7 @@ final class LabViewModel {
     }
     
     func setupInitialLabEnvironment(in root: Entity, isIntro: Bool? = nil) async throws {
-        print("📱 LabViewModel: Setting up initial environment")
+        Logger.debug("📱 LabViewModel: Setting up initial environment")
         
         if isIntro != nil {
             // Intro mode - find existing lab and configure devices
@@ -182,16 +182,16 @@ final class LabViewModel {
         } else {
             // Lab mode - load and set up the complete lab
 //            guard let root = mainEntity else {
-//                print("❌ LabViewModel: No root entity for initial environment")
+//                Logger.debug("❌ LabViewModel: No root entity for initial environment")
 //                return
 //            }
 //            
 //            // Load the complete assembled lab
-//            print("📱 Loading assembled lab environment")
+//            Logger.debug("📱 Loading assembled lab environment")
 //            let labEnvironment = try await appModel.assetLoadingManager.loadAssembledLab()
 //            root.addChild(labEnvironment)
-//            print("🏢 Assembled Lab Environment added to MainEntity")
-//            print("📍 Lab Environment position: \(labEnvironment.position)")
+//            Logger.debug("🏢 Assembled Lab Environment added to MainEntity")
+//            Logger.debug("📍 Lab Environment position: \(labEnvironment.position)")
 //            
 //            // Configure the interactive devices
 //            configureInteractiveDevices(in: labEnvironment)
@@ -298,22 +298,22 @@ final class LabViewModel {
     func setupAttachments(attachments: RealityViewAttachments) {
         // Setup ADC Builder Button
         if let adbBuilderView = attachments.entity(for: "ADCBuilderViewerButton") {
-            print("🔧 ADCBuilderViewerButton attachment created")
+            Logger.debug("🔧 ADCBuilderViewerButton attachment created")
             if let builderTarget = mainEntity?.findEntity(named: "ADCBuilderAttachment") {
-                print("🔧 Found ADCBuilderAttachment entity at position: \(builderTarget.position)")
+                Logger.debug("🔧 Found ADCBuilderAttachment entity at position: \(builderTarget.position)")
                 builderTarget.addChild(adbBuilderView)
                 adbBuilderView.components.set(BillboardComponent())
                 adcBuilderViewerButtonEntity = adbBuilderView
             } else {
-                print("❌ ADCBuilderAttachment entity not found in scene")
+                Logger.debug("❌ ADCBuilderAttachment entity not found in scene")
             }
         }
         
         // Setup Attack Cancer Button
         if let attackCancerView = attachments.entity(for: "AttackCancerViewerButton") {
-            print("🎯 AttackCancerViewerButton attachment created")
+            Logger.debug("🎯 AttackCancerViewerButton attachment created")
             if let attackTarget = mainEntity?.findEntity(named: "AttackCancerAttachment") {
-                print("🎯 Found AttackCancerAttachment entity at position: \(attackTarget.position)")
+                Logger.debug("🎯 Found AttackCancerAttachment entity at position: \(attackTarget.position)")
                 attackTarget.addChild(attackCancerView)
                 attackCancerView.components.set(BillboardComponent())
                 attackCancerViewerButtonEntity = attackCancerView
@@ -353,11 +353,10 @@ final class LabViewModel {
     private func configureInteractiveDevices(in entity: Entity) {
         // Find and configure all interactive devices
         let devices = findInteractiveDevices(in: entity)
-        print("\n=== Configuring Interactive Devices ===")
-        print("🔍 Found \(devices.count) potential interactive devices")
+        Logger.debug("\n=== Configuring Interactive Devices ===")
+        Logger.debug("🔍 Found \(devices.count) potential interactive devices")
         
         for (device, meshEntity) in devices {
-            print("⚙️ Adding hover effect to: \(device.name) with mesh: \(meshEntity.name)")
             
             // Find M_screen material in the mesh entity
             if let modelComponent = meshEntity.components[ModelComponent.self],
@@ -377,24 +376,24 @@ final class LabViewModel {
     
     // MARK: - Interactive Device Handling
     func handleTap(on entity: Entity) {
-        print("🎯 Tap detected on entity: \(entity.name)")
+        Logger.debug("🎯 Tap detected on entity: \(entity.name)")
         
         if entity.components[InteractiveDeviceComponent.self] != nil {
-            print("📱 Found InteractiveDeviceComponent, toggling library...")
+            Logger.debug("📱 Found InteractiveDeviceComponent, toggling library...")
             isLibraryOpen.toggle()
         }
     }
     
     // MARK: - Cleanup
     func cleanup() {
-        print("\n=== Starting LabViewModel Cleanup ===")
+        Logger.debug("\n=== Starting LabViewModel Cleanup ===")
         
         // Clear main entity and scene
         if let root = mainEntity {
-            print("🗑️ Removing main entity")
+            Logger.debug("🗑️ Removing main entity")
             // Reset positioning component before removal
             if var positioningComponent = root.components[PositioningComponent.self] {
-                print("🎯 Resetting positioning component")
+                Logger.debug("🎯 Resetting positioning component")
                 positioningComponent.needsPositioning = true
                 root.components[PositioningComponent.self] = positioningComponent
             }
@@ -406,20 +405,20 @@ final class LabViewModel {
         
         // Clear audio entity
         if let audio = labAudioEntity {
-            print("🔊 Removing lab audio entity")
+            Logger.debug("🔊 Removing lab audio entity")
             audio.removeFromParent()
         }
         labAudioEntity = nil
         
         // Clear attachment entities
         if let builder = adcBuilderViewerButtonEntity {
-            print("🔧 Removing ADC builder button")
+            Logger.debug("🔧 Removing ADC builder button")
             builder.removeFromParent()
         }
         adcBuilderViewerButtonEntity = nil
         
         if let attack = attackCancerViewerButtonEntity {
-            print("🎯 Removing Attack Cancer button")
+            Logger.debug("🎯 Removing Attack Cancer button")
             attack.removeFromParent()
         }
         attackCancerViewerButtonEntity = nil
@@ -433,6 +432,6 @@ final class LabViewModel {
             shouldShowADCButton = false
         }
         
-        print("✅ Completed LabViewModel cleanup\n")
+        Logger.debug("✅ Completed LabViewModel cleanup\n")
     }
 }

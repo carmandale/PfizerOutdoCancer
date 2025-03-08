@@ -20,7 +20,7 @@ struct ADCcoaching: View {
     @State private var viewOpacity: Double = 0
     
     // Disable autoPlay so we can manually control when the animation begins
-    @State private var riveViewModel = RiveViewModel(fileName: "adc_coaching_linker_v01", autoPlay: false)
+    @State private var riveViewModel = RiveViewModel(fileName: "pinch", autoPlay: false)
     
     // Keep track of the task so we can cancel it if the view disappears quickly
     @State private var animationTask: Task<Void, Never>? = nil
@@ -98,7 +98,7 @@ struct ADCcoaching: View {
             }
             .padding(30)
             .frame(width: 600)
-            .glassBackgroundEffect(in: RoundedRectangle(cornerRadius: 20))
+//            .glassBackgroundEffect(in: RoundedRectangle(cornerRadius: 20))
 //            .background(
 //                    Color.white
 //                        .opacity(0.5)

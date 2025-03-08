@@ -331,7 +331,17 @@ extension TrackingSessionManager {
 // MARK: - Enhanced Logging
 extension TrackingSessionManager {
     func logTrackingState(context: String) async {
-        Logger.info("""
+        // Check if detailed tracking logs are enabled
+        guard Logger.shouldLogTracking() else {
+            // If detailed tracking is disabled, just log a simplified state
+            if context.contains("Error") || providersStoppedWithError {
+                Logger.error("⚠️ Tracking error detected: \(context)")
+            }
+            return
+        }
+        
+        // Use verbose level for the most detailed tracking info
+        Logger.verbose("""
         
         === Tracking State [\(context)] ===
         ├─ Tracking Enabled: \(isTracking)
@@ -339,8 +349,9 @@ extension TrackingSessionManager {
         └─ Current Provider State: \(currentState)
         """)
         
+        // Only log device anchor details at verbose level
         if let deviceAnchor = worldTrackingProvider.queryDeviceAnchor(atTimestamp: CACurrentMediaTime()) {
-            Logger.info("""
+            Logger.verbose("""
             
             📍 Device Anchor Info
             ├─ Head Transform: \(deviceAnchor.originFromAnchorTransform)
@@ -349,15 +360,20 @@ extension TrackingSessionManager {
             └─ Position Z: \(deviceAnchor.originFromAnchorTransform.columns.3.z)
             """)
         } else {
-            Logger.info("⚠️ No device anchor available")
+            Logger.debug("⚠️ No device anchor available")
         }
         
-        Logger.info("""
+        // Log provider states at debug level for troubleshooting
+        let allProvidersRunning = worldTrackingProvider.state == .running && 
+                                 (handTrackingProvider?.state ?? .running) == .running
+        
+        Logger.debug("""
         
         🌐 Provider States
         ├─ World Provider: \(worldTrackingProvider.state)
         ├─ Hand Provider: \(handTrackingProvider?.state ?? DataProviderState.initialized)
         └─ Stopped with Error: \(providersStoppedWithError)
+        \(allProvidersRunning ? "✅ Providers running" : "⚠️ Some providers not running")
         """)
     }
     
@@ -368,6 +384,9 @@ extension TrackingSessionManager {
         ├─ From: \(from)
         └─ To: \(to)
         """)
-        await logTrackingState(context: "Pre-Transition")
+        // Only log tracking state during transitions if tracking logs are enabled
+        if Logger.shouldLogTracking() {
+            await logTrackingState(context: "Pre-Transition")
+        }
     }
 }

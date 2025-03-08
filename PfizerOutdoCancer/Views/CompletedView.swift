@@ -84,12 +84,12 @@ struct CompletedView: View {
             }
             .frame(width: 648)
             .frame(alignment: .top)
-//            .glassBackgroundEffect()
-            .background(
-                    Color.white
-                        .opacity(0.5)
-                        .cornerRadius(20)
-                )
+            .glassBackgroundEffect()
+//            .background(
+//                    Color.white
+//                        .opacity(0.5)
+//                        .cornerRadius(20)
+//                )
             .clipShape(RoundedRectangle(cornerRadius: 20))
             .opacity(opacity) 
             .onAppear {

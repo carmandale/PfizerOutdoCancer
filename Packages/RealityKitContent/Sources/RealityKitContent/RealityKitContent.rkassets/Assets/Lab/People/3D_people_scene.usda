@@ -29,71 +29,136 @@ def Xform "Root"
 
         def "Shane" (
             active = true
+            prepend apiSchemas = ["MaterialBindingAPI"]
             customData = {
                 float3 rotationEulerHint = (1.5707955, 1.9451913, 3.1415923)
             }
             references = @3D_people/decimated/Shane/Shane.usdc@
         )
         {
+            rel material:binding = </Root/M_people/Material> (
+                bindMaterialAs = "strongerThanDescendants"
+            )
             quatf xformOp:orient = (0.5843178, -0.58431786, 0.3982118, 0.39821172)
             float3 xformOp:scale = (0.9999997, 0.9999997, 0.99999976)
             float3 xformOp:translate = (-1.8297305, 0.0000018981668, 4.9379067)
             uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            over "ObjectCapture" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = </Root/M_people/Material> (
+                    bindMaterialAs = "strongerThanDescendants"
+                )
+            }
         }
 
         def "Andrea" (
             active = true
+            prepend apiSchemas = ["MaterialBindingAPI"]
             customData = {
                 float3 rotationEulerHint = (-1.570796, 2.8746006, 0)
             }
             references = @3D_people/decimated/Andrea/Andrea.usdc@
         )
         {
+            rel material:binding = </Root/M_people/Material_2> (
+                bindMaterialAs = "weakerThanDescendants"
+            )
             quatf xformOp:orient = (0.09411575, -0.09411575, 0.70081544, 0.7008154)
             float3 xformOp:scale = (1.1140397, 1.1140397, 1.1140397)
             float3 xformOp:translate = (0.9377568, 0.0000010540912, -6.3362412)
             uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            over "ObjectCapture" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = </Root/M_people/Material_2> (
+                    bindMaterialAs = "strongerThanDescendants"
+                )
+            }
         }
 
         def "Ashton_002" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
             customData = {
                 float3 rotationEulerHint = (1.5707966, 3.687507, 3.141593)
             }
             references = @3D_people/decimated/Ashton_002/Ashton_002.usdc@
         )
         {
+            rel material:binding = </Root/M_people/Material_3> (
+                bindMaterialAs = "weakerThanDescendants"
+            )
             quatf xformOp:orient = (0.68092823, -0.68092805, -0.19062224, -0.1906223)
             float3 xformOp:scale = (0.93254197, 0.93254197, 0.932542)
             float3 xformOp:translate = (-0.83483493, 0.22415899, -2.5163743)
             uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            over "Mesh" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = </Root/M_people/Material_3> (
+                    bindMaterialAs = "strongerThanDescendants"
+                )
+            }
         }
 
         def "Armando" (
             active = true
+            prepend apiSchemas = ["MaterialBindingAPI"]
             customData = {
                 float3 rotationEulerHint = (-4.7123885, -0.5157596, 3.1415925)
             }
             references = @3D_people/decimated/Armando/Armando.usdc@
         )
         {
+            rel material:binding = </Root/M_people/Material_4> (
+                bindMaterialAs = "weakerThanDescendants"
+            )
             quatf xformOp:orient = (0.18033418, -0.18033418, -0.6837248, -0.6837248)
             float3 xformOp:scale = (0.99999976, 0.99999976, 0.99999976)
             float3 xformOp:translate = (-3.1201735, 0.24267289, -6.413249)
             uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            over "ObjectCapture" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = </Root/M_people/Material_4> (
+                    bindMaterialAs = "strongerThanDescendants"
+                )
+            }
         }
 
         def "Scott_002" (
             active = true
+            prepend apiSchemas = ["MaterialBindingAPI"]
             customData = {
                 float3 rotationEulerHint = (-3.5527137e-15, -8.940697e-8, 1.918428)
             }
             references = @3D_people/decimated/Scott_002/Scott_002.usdc@
         )
         {
+            rel material:binding = </Root/M_people/Material_5> (
+                bindMaterialAs = "weakerThanDescendants"
+            )
             quatf xformOp:orient = (0.40599513, -0.4059951, 0.57893693, 0.57893693)
             float3 xformOp:scale = (0.99999976, 0.99999976, 0.99999976)
             float3 xformOp:translate = (-2.419148, -1.1920929e-7, -6.280088)
             uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            over "ObjectCapture" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = </Root/M_people/Material_5> (
+                    bindMaterialAs = "strongerThanDescendants"
+                )
+            }
         }
 
         def "Gary" (
@@ -108,6 +173,15 @@ def Xform "Root"
             float3 xformOp:scale = (0.99999994, 0.99999994, 1)
             float3 xformOp:translate = (3.1125083, 0.46602315, 3.600565)
             uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            over "ObjectCapture" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = </Root/M_people/Material_6> (
+                    bindMaterialAs = "strongerThanDescendants"
+                )
+            }
         }
 
         def "Andrew_002" (
@@ -122,6 +196,15 @@ def Xform "Root"
             float3 xformOp:scale = (0.99999994, 0.99999994, 0.99999994)
             float3 xformOp:translate = (2.8083034, 0.0000010169175, 8.043147)
             uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            over "ObjectCapture" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = </Root/M_people/Material_7> (
+                    bindMaterialAs = "strongerThanDescendants"
+                )
+            }
         }
 
         def "AshtonAndCat" (
@@ -136,6 +219,15 @@ def Xform "Root"
             float3 xformOp:scale = (0.99999994, 0.99999994, 0.99999994)
             float3 xformOp:translate = (3.4167542, 5.086013e-7, 8.109446)
             uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            over "ObjectCapture" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = </Root/M_people/Material_8> (
+                    bindMaterialAs = "strongerThanDescendants"
+                )
+            }
         }
 
         def "Ethan_002" (
@@ -150,6 +242,15 @@ def Xform "Root"
             float3 xformOp:scale = (0.99999994, 0.99999994, 0.99999994)
             float3 xformOp:translate = (-0.58419216, -1.1808538e-8, 3.674346)
             uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            over "ObjectCapture" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = </Root/M_people/Material_9> (
+                    bindMaterialAs = "strongerThanDescendants"
+                )
+            }
         }
 
         def "Monte_1" (
@@ -164,6 +265,15 @@ def Xform "Root"
             float3 xformOp:scale = (0.8590886, 0.8590886, 0.85908854)
             float3 xformOp:translate = (-1.429341, -9.822544e-7, -2.3583677)
             uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            over "Mesh" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = </Root/M_people/Material_10> (
+                    bindMaterialAs = "strongerThanDescendants"
+                )
+            }
         }
 
         def "DanAndGabi_003" (
@@ -177,6 +287,15 @@ def Xform "Root"
             float3 xformOp:scale = (0.9999999, 0.9999999, 0.9999999)
             float3 xformOp:translate = (0.7676265, 8.195639e-8, -2.5805485)
             uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            over "Mesh_001" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = </Root/M_people/Material_11> (
+                    bindMaterialAs = "strongerThanDescendants"
+                )
+            }
         }
 
         def "Ahsan_002" (
@@ -191,6 +310,15 @@ def Xform "Root"
             float3 xformOp:scale = (1, 1, 1)
             float3 xformOp:translate = (3.0219462, 2.153921e-7, -3.6787066)
             uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            over "ObjectCapture" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = </Root/M_people/Material_12> (
+                    bindMaterialAs = "strongerThanDescendants"
+                )
+            }
         }
     }
 
@@ -201,32 +329,6 @@ def Xform "Root"
         reorder nameChildren = ["ADC_hover", "Sphere"]
         float3 xformOp:translate = (0.50262004, 1.3680885, -2.3324833)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-        def Sphere "Sphere" (
-            active = false
-            prepend apiSchemas = ["MaterialBindingAPI"]
-        )
-        {
-            rel material:binding = </Root/ADC_xform/Sphere/DefaultMaterial>
-            double radius = 0.1
-            quatf xformOp:orient = (1, 0, 0, 0)
-            float3 xformOp:scale = (1, 1, 1)
-            float3 xformOp:translate = (0, 0, 0)
-            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-            def Material "DefaultMaterial"
-            {
-                token outputs:surface.connect = </Root/ADC_xform/Sphere/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
-
-                def Shader "DefaultSurfaceShader"
-                {
-                    uniform token info:id = "UsdPreviewSurface"
-                    color3f inputs:diffuseColor = (1, 1, 1)
-                    float inputs:roughness = 0.75
-                    token outputs:surface
-                }
-            }
-        }
     }
 
     def Xform "ADC_xform_1" (
@@ -239,32 +341,6 @@ def Xform "Root"
         float3 xformOp:scale = (1, 1, 1)
         float3 xformOp:translate = (-1.1545639, 1.0817765, -1.9889246)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-        def Sphere "Sphere" (
-            active = false
-            prepend apiSchemas = ["MaterialBindingAPI"]
-        )
-        {
-            rel material:binding = </Root/ADC_xform_1/Sphere/DefaultMaterial>
-            double radius = 0.1
-            quatf xformOp:orient = (1, 0, 0, 0)
-            float3 xformOp:scale = (1, 1, 1)
-            float3 xformOp:translate = (0, 0, 0)
-            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-            def Material "DefaultMaterial"
-            {
-                token outputs:surface.connect = </Root/ADC_xform_1/Sphere/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
-
-                def Shader "DefaultSurfaceShader"
-                {
-                    uniform token info:id = "UsdPreviewSurface"
-                    color3f inputs:diffuseColor = (1, 1, 1)
-                    float inputs:roughness = 0.75
-                    token outputs:surface
-                }
-            }
-        }
     }
 
     def Xform "ADC_xform_2" (
@@ -277,32 +353,6 @@ def Xform "Root"
         float3 xformOp:scale = (1, 1, 1)
         float3 xformOp:translate = (-2.656083, 1.3499292, -5.285157)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-        def Sphere "Sphere" (
-            active = false
-            prepend apiSchemas = ["MaterialBindingAPI"]
-        )
-        {
-            rel material:binding = </Root/ADC_xform_2/Sphere/DefaultMaterial>
-            double radius = 0.1
-            quatf xformOp:orient = (1, 0, 0, 0)
-            float3 xformOp:scale = (1, 1, 1)
-            float3 xformOp:translate = (0, 0, 0)
-            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-            def Material "DefaultMaterial"
-            {
-                token outputs:surface.connect = </Root/ADC_xform_2/Sphere/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
-
-                def Shader "DefaultSurfaceShader"
-                {
-                    uniform token info:id = "UsdPreviewSurface"
-                    color3f inputs:diffuseColor = (1, 1, 1)
-                    float inputs:roughness = 0.75
-                    token outputs:surface
-                }
-            }
-        }
     }
 
     def Xform "ADC_xform_3" (
@@ -315,32 +365,6 @@ def Xform "Root"
         float3 xformOp:scale = (1, 1, 1)
         float3 xformOp:translate = (-0.7819277, 1.3499292, 3.0882382)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-        def Sphere "Sphere" (
-            active = false
-            prepend apiSchemas = ["MaterialBindingAPI"]
-        )
-        {
-            rel material:binding = </Root/ADC_xform_3/Sphere/DefaultMaterial>
-            double radius = 0.1
-            quatf xformOp:orient = (1, 0, 0, 0)
-            float3 xformOp:scale = (1, 1, 1)
-            float3 xformOp:translate = (0, 0, 0)
-            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-            def Material "DefaultMaterial"
-            {
-                token outputs:surface.connect = </Root/ADC_xform_3/Sphere/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
-
-                def Shader "DefaultSurfaceShader"
-                {
-                    uniform token info:id = "UsdPreviewSurface"
-                    color3f inputs:diffuseColor = (1, 1, 1)
-                    float inputs:roughness = 0.75
-                    token outputs:surface
-                }
-            }
-        }
     }
 
     def Xform "ADC_xform_4" (
@@ -353,32 +377,6 @@ def Xform "Root"
         float3 xformOp:scale = (1, 1, 1)
         float3 xformOp:translate = (2.5965927, 1.1336815, 3.0882382)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-        def Sphere "Sphere" (
-            active = false
-            prepend apiSchemas = ["MaterialBindingAPI"]
-        )
-        {
-            rel material:binding = </Root/ADC_xform_4/Sphere/DefaultMaterial>
-            double radius = 0.1
-            quatf xformOp:orient = (1, 0, 0, 0)
-            float3 xformOp:scale = (1, 1, 1)
-            float3 xformOp:translate = (0, 0, 0)
-            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-            def Material "DefaultMaterial"
-            {
-                token outputs:surface.connect = </Root/ADC_xform_4/Sphere/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
-
-                def Shader "DefaultSurfaceShader"
-                {
-                    uniform token info:id = "UsdPreviewSurface"
-                    color3f inputs:diffuseColor = (1, 1, 1)
-                    float inputs:roughness = 0.75
-                    token outputs:surface
-                }
-            }
-        }
     }
 
     def Xform "ADC_xform_5" (
@@ -391,31 +389,143 @@ def Xform "Root"
         float3 xformOp:scale = (1, 1, 1)
         float3 xformOp:translate = (3.036822, 1.2551818, 6.7841215)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+    }
 
-        def Sphere "Sphere" (
-            active = false
-            prepend apiSchemas = ["MaterialBindingAPI"]
+    def "M_people" (
+        active = true
+        references = @../../../Materials/M_people.usda@
+    )
+    {
+        reorder nameChildren = ["Material", "Material_2", "Material_3", "Material_4", "Material_5", "Material_6", "Material_7", "Material_8", "Material_9", "Material_10", "Material_11", "Material_12"]
+        float3 xformOp:scale = (1, 1, 1)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def "Material_2" (
+            active = true
+            instanceable = true
+            references = </Root/M_people/Material>
         )
         {
-            rel material:binding = </Root/ADC_xform_5/Sphere/DefaultMaterial>
-            double radius = 0.1
-            quatf xformOp:orient = (1, 0, 0, 0)
-            float3 xformOp:scale = (1, 1, 1)
-            float3 xformOp:translate = (0, 0, 0)
-            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            asset inputs:BaseColor = @3D_people/decimated/Andrea/textures/baked_mesh_20aaad98_tex0_2k.jpg@
+            asset inputs:Normal = @3D_people/decimated/Andrea/textures/baked_mesh_20aaad98_norm0_2k.jpg@
+            asset inputs:Roughness = @3D_people/decimated/Andrea/textures/baked_mesh_20aaad98_roughness0_2k.jpg@
+        }
 
-            def Material "DefaultMaterial"
-            {
-                token outputs:surface.connect = </Root/ADC_xform_5/Sphere/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
+        def "Material_3" (
+            active = true
+            instanceable = true
+            references = </Root/M_people/Material_2>
+        )
+        {
+            asset inputs:BaseColor = @3D_people/decimated/Ashton_002/textures/baked_mesh_3211924e_tex0_2k.jpg@
+            asset inputs:Normal = @3D_people/decimated/Ashton_002/textures/baked_mesh_3211924e_norm0_2k.jpg@
+            asset inputs:Roughness = @3D_people/decimated/Ashton_002/textures/baked_mesh_3211924e_roughness0_2k.jpg@
+        }
 
-                def Shader "DefaultSurfaceShader"
-                {
-                    uniform token info:id = "UsdPreviewSurface"
-                    color3f inputs:diffuseColor = (1, 1, 1)
-                    float inputs:roughness = 0.75
-                    token outputs:surface
-                }
-            }
+        def "Material_4" (
+            active = true
+            instanceable = true
+            references = </Root/M_people/Material_3>
+        )
+        {
+            asset inputs:BaseColor = @3D_people/decimated/Armando/textures/baked_mesh_5c18f33e_tex0_2k.jpg@
+            asset inputs:Normal = @3D_people/decimated/Armando/textures/baked_mesh_5c18f33e_norm0_2k.jpg@
+            asset inputs:Roughness = @3D_people/decimated/Armando/textures/baked_mesh_5c18f33e_roughness0_2k.jpg@
+        }
+
+        def "Material_5" (
+            active = true
+            instanceable = true
+            references = </Root/M_people/Material_4>
+        )
+        {
+            asset inputs:BaseColor = @3D_people/decimated/Scott_002/textures/baked_mesh_7426e6ec_tex0_2k.jpg@
+            asset inputs:Normal = @3D_people/decimated/Scott_002/textures/baked_mesh_7426e6ec_norm0_2k.jpg@
+            asset inputs:Roughness = @3D_people/decimated/Scott_002/textures/baked_mesh_7426e6ec_roughness0_2k.jpg@
+        }
+
+        def "Material_6" (
+            active = true
+            instanceable = true
+            references = </Root/M_people/Material_5>
+        )
+        {
+            asset inputs:BaseColor = @3D_people/decimated/Gary/textures/baked_mesh_2c30b22a_tex0_2k.jpg@
+            asset inputs:Normal = @3D_people/decimated/Gary/textures/baked_mesh_2c30b22a_norm0_2k.jpg@
+            asset inputs:Roughness = @3D_people/decimated/Gary/textures/baked_mesh_2c30b22a_roughness0_2k.jpg@
+        }
+
+        def "Material_7" (
+            active = true
+            instanceable = true
+            references = </Root/M_people/Material_6>
+        )
+        {
+            asset inputs:BaseColor = @3D_people/decimated/Andrew_002/textures/baked_mesh_18580cde_tex0_2k.jpg@
+            asset inputs:Normal = @3D_people/decimated/Andrew_002/textures/baked_mesh_18580cde_norm0_2k.jpg@
+            asset inputs:Roughness = @3D_people/decimated/Andrew_002/textures/baked_mesh_18580cde_roughness0_2k.jpg@
+        }
+
+        def "Material_8" (
+            active = true
+            instanceable = true
+            references = </Root/M_people/Material_7>
+        )
+        {
+            asset inputs:BaseColor = @3D_people/decimated/AshtonAndCat/textures/baked_mesh_35e7733d_tex0_2k.jpg@
+            asset inputs:Normal = @3D_people/decimated/AshtonAndCat/textures/baked_mesh_35e7733d_norm0_2k.jpg@
+            asset inputs:Roughness = @3D_people/decimated/AshtonAndCat/textures/baked_mesh_35e7733d_roughness0_2k.jpg@
+        }
+
+        def "Material_9" (
+            active = true
+            instanceable = true
+            references = </Root/M_people/Material_8>
+        )
+        {
+            asset inputs:BaseColor = @3D_people/decimated/Ethan_002/textures/baked_mesh_20ac1fa7_tex0_2k.jpg@
+            asset inputs:Normal = @3D_people/decimated/Ethan_002/textures/baked_mesh_20ac1fa7_norm0_2k.jpg@
+            asset inputs:Roughness = @3D_people/decimated/Ethan_002/textures/baked_mesh_20ac1fa7_roughness0_2k.jpg@
+        }
+
+        def "Material_10" (
+            active = true
+            instanceable = true
+            references = </Root/M_people/Material_9>
+        )
+        {
+            asset inputs:BaseColor = @3D_people/decimated/Monte/textures/baked_mesh_20a1ba40_tex0_2k.jpg@
+            asset inputs:Normal = @3D_people/decimated/Monte/textures/baked_mesh_20a1ba40_norm0_2k.jpg@
+            asset inputs:Roughness = @3D_people/decimated/Monte/textures/baked_mesh_20a1ba40_roughness0_2k.jpg@
+        }
+
+        def "Material_11" (
+            active = true
+            instanceable = true
+            references = </Root/M_people/Material_10>
+        )
+        {
+            asset inputs:BaseColor = @3D_people/decimated/DanAndGabi_003/textures/baked_mesh_fe1ae488_tex0_2k.jpg@
+            asset inputs:Normal = @3D_people/decimated/DanAndGabi_003/textures/baked_mesh_fe1ae488_norm0_2k.jpg@
+            asset inputs:Roughness = @3D_people/decimated/DanAndGabi_003/textures/baked_mesh_fe1ae488_roughness0_2k.jpg@
+        }
+
+        def "Material_12" (
+            active = true
+            instanceable = true
+            references = </Root/M_people/Material_11>
+        )
+        {
+            asset inputs:BaseColor = @3D_people/decimated/Ahsan_002/textures/baked_mesh_b878235c_tex0_2k.jpg@
+            asset inputs:Normal = @3D_people/decimated/Ahsan_002/textures/baked_mesh_b878235c_norm0_2k.jpg@
+            asset inputs:Roughness = @3D_people/decimated/Ahsan_002/textures/baked_mesh_b878235c_roughness0_2k.jpg@
+        }
+
+        over "Material"
+        {
+            asset inputs:BaseColor = @3D_people/decimated/Shane/textures/baked_mesh_6400ce66_tex0_2k.jpg@
+            asset inputs:Normal = @3D_people/decimated/Shane/textures/baked_mesh_6400ce66_norm0_2k.jpg@
+            asset inputs:Roughness = @3D_people/decimated/Shane/textures/baked_mesh_6400ce66_roughness0_2k.jpg@
         }
     }
 }

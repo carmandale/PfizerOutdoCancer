@@ -24,17 +24,13 @@ struct LoadingView: View {
         .opacity(viewOpacity)
         .animation(.easeInOut(duration: 0.5), value: appModel.assetLoadingManager.loadingState)
         .onChange(of: appModel.assetLoadingManager.loadingState) { oldState, newState in
-            print("📊 Loading state changed: \(oldState) → \(newState)")
-            print("📊 Loading progress: \(appModel.loadingProgress), Displayed: \(appModel.displayedProgress)")
             
             if appModel.loadingProgress >= appModel.displayedProgress {
-                print("📈 Progress increasing - animating update")
                 withAnimation(.easeInOut(duration: 0.5)) {
                     appModel.displayedProgress = appModel.loadingProgress
                 }
             } else {
                 // If progress goes backward (resets to 0), update without animation
-                print("📉 Progress decreasing - updating without animation")
                 appModel.displayedProgress = appModel.loadingProgress
             }
         }

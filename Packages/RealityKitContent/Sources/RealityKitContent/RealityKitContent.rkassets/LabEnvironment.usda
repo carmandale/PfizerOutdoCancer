@@ -334,5 +334,19 @@ def Xform "Root"
             }
         }
     }
+
+    def "manilaFolder_closed3" (
+        active = true
+        customData = {
+            float3 rotationEulerHint = (-0.7010803, 2.5546556, -0.7074736)
+        }
+        prepend references = @Assets/Lab/Objects/manilaFolder_closed3.usdc@
+    )
+    {
+        quatf xformOp:orient = (0.36873302, 0.2182427, 0.87778103, 0.21425787)
+        float3 xformOp:scale = (1, 1, 1)
+        float3 xformOp:translate = (-1.9575596, 1.3093287, 5.0518417)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+    }
 }
 

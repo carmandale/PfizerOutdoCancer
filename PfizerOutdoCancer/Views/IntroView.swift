@@ -11,7 +11,7 @@ struct IntroView: View {
     
     @State private var introTintIntensity: Double = 0.2 {
         didSet {
-            print("introTintIntensity changed to: \(introTintIntensity)")
+            Logger.debug("introTintIntensity changed to: \(introTintIntensity)")
             // Consider adding a breakpoint here to inspect the call stack
         }
     }
@@ -32,31 +32,86 @@ struct IntroView: View {
         @Bindable var appModel = appModel
         
         RealityView { content, attachments in
-            print("\n=== Setting up IntroView ===")
-            print("\n=== hasBuiltSDC = \(appModel.hasBuiltADC) ===")
+            Logger.debug("\n=== Setting up IntroView ===")
+            Logger.debug("\n=== hasBuiltSDC = \(appModel.hasBuiltADC) ===")
             
             // Create fresh root entity
             let root = appModel.introState.setupRoot()
             content.add(root)
-            print("✅ Added root to content")
-            
-             if showNavToggle {
-                 content.add(handTrackedEntity)
-                 if let attachmentEntity = attachments.entity(for: "navToggle") {
-                     attachmentEntity.components[BillboardComponent.self] = .init()
-                     attachmentEntity.scale = SIMD3<Float>(0.75,0.75,0.75)
-                     handTrackedEntity.addChild(attachmentEntity)
-                 }
-             }
+            Logger.debug("✅ Added root to content")
+
+            // Create the menu container entity
+            let smoothedMenuEntity = Entity()
+            smoothedMenuEntity.name = "HandMenuContainer"
+            content.add(smoothedMenuEntity)
+            Logger.debug("✅ Created hand menu container entity")
+
+            if showNavToggle {
+                Logger.debug("✅ Should show nav toggle")
+                
+                if let navToggleEntity = attachments.entity(for: "navToggle") {
+                    Logger.debug("✅ Found navToggle attachment")
+                    navToggleEntity.components[BillboardComponent.self] = .init()
+                    navToggleEntity.scale = SIMD3<Float>(0.75, 0.75, 0.75)
+                    navToggleEntity.position = SIMD3<Float>(-0.035, 0.07, 0.0125)
+                    
+                    // Properly capture smoothedMenuEntity and add verbose logging
+                    let capturedMenuEntity = smoothedMenuEntity // Create strong reference to capture
+                    
+                    // Track time for less frequent logging
+                    var lastLogTime: TimeInterval = 0
+                    let logInterval: TimeInterval = 5.0 // Log only every 5 seconds
+                    
+                    navToggleEntity.components.set(
+                        ClosureComponent { [weak appModel, capturedMenuEntity] deltaTime in
+                            // Log less frequently to avoid spam
+                            let currentTime = CACurrentMediaTime()
+                            let shouldLog = currentTime - lastLogTime >= logInterval
+                            
+                            if shouldLog {
+                                lastLogTime = currentTime
+                            }
+                            
+                            // Use weak reference to avoid memory issues
+                            guard let appModel = appModel else {
+                                if shouldLog { Logger.debug("⚠️ AppModel is nil in hand menu closure") }
+                                return
+                            }
+                            
+                            // Use the handTracking from gameState instead of the undefined property
+                            guard let target = appModel.gameState.handTracking.getHandPosition(.left) else {
+                                if shouldLog { Logger.debug("ℹ️ No left hand position available") }
+                                return
+                            }
+                            
+                            let current = capturedMenuEntity.position
+                            
+                            // Smoother, more stable factor
+                            let smoothingFactor: Float = 5.0 // Reduced from 10.0 for stability
+                            let newPosition = current + (target - current) * min(smoothingFactor * Float(deltaTime), 1.0)
+                            
+                            // Update the position of the smoothed entity
+                            capturedMenuEntity
+                                .setPosition(newPosition, relativeTo: nil)
+                        }
+                    )
+                    
+                    // Add child AFTER setting up the component
+                    capturedMenuEntity.addChild(navToggleEntity)
+                    Logger.debug("✅ Added navToggle to smoothed entity")
+                } else {
+                    Logger.debug("⚠️ navToggle attachment not found")
+                }
+            }
             
             // Handle environment and attachments in Task
             Task { @MainActor in
                 // Load environment first
-                print("📱 IntroView: Starting environment setup")
+                Logger.debug("📱 IntroView: Starting environment setup")
                 await appModel.introState.setupEnvironment(in: root)
                 
                 appModel.introState.environmentLoaded = true
-                print("✅ Environment setup complete")
+                Logger.debug("✅ Environment setup complete")
 
                 // set up the lab attachments
                 // Now that environment is loaded, set up attachments
@@ -65,21 +120,21 @@ struct IntroView: View {
                     
                     // Find attachment points and set up buttons
                     if let builderTarget = root.findEntity(named: "ADCBuilderAttachment") {
-                        print("🎯 Found ADCBuilderAttachment target")
+                        Logger.debug("🎯 Found ADCBuilderAttachment target")
                         builderTarget.addChild(adcButton)
                         adcButton.components.set(BillboardComponent())
                         appModel.labState.adcBuilderViewerButtonEntity = adcButton
                     } else {
-                        print("❌ ADCBuilderAttachment target not found")
+                        Logger.debug("❌ ADCBuilderAttachment target not found")
                     }
                     
                     if let attackTarget = root.findEntity(named: "AttackCancerAttachment") {
-                        print("🎯 Found AttackCancerAttachment target")
+                        Logger.debug("🎯 Found AttackCancerAttachment target")
                         attackTarget.addChild(attackButton)
                         attackButton.components.set(BillboardComponent())
                         appModel.labState.attackCancerViewerButtonEntity = attackButton
                     } else {
-                        print("❌ AttackCancerAttachment target not found")
+                        Logger.debug("❌ AttackCancerAttachment target not found")
                     }
                 }
             }
@@ -112,11 +167,11 @@ struct IntroView: View {
         .preferredSurroundingsEffect(surroundingsEffect)
         .onChange(of: appModel.labState.isLibraryOpen) { _, isOpen in
             if isOpen {
-                print(">>> Library window opened 🚪")
+                Logger.debug(">>> Library window opened 🚪")
                 openWindow(id: AppModel.libraryWindowId)
                 appModel.updateLibraryWindowState(isOpen: true)
             } else {
-                print(">>> Library window closed")
+                Logger.debug(">>> Library window closed")
                 dismissWindow(id: AppModel.libraryWindowId)
                 appModel.updateLibraryWindowState(isOpen: false)
             }
@@ -157,14 +212,6 @@ struct IntroView: View {
                 if let root = appModel.introState.introRootEntity {
                     // Ensure we're on MainActor
                     Task { @MainActor in
-                        Logger.info("""
-                        
-                        🎯 Starting Head Position Update
-                        ├─ Current Position: \(root.position(relativeTo: nil))
-                        ├─ Tracking State: \(appModel.trackingManager.worldTrackingProvider.state)
-                        ├─ isPositioningInProgress: \(appModel.introState.isPositioningInProgress)
-                        └─ isPositioningComplete: \(appModel.introState.isPositioningComplete)
-                        """)
                         
                         // Set positioning state first
                         appModel.introState.isPositioningInProgress = true
@@ -203,21 +250,13 @@ struct IntroView: View {
                 Task { @MainActor in
                     if let root = appModel.introState.introRootEntity,
                        let environment = appModel.introState.introEnvironment {
-                        Logger.info("""
-                        
-                        ✨ Positioning Complete
-                        ├─ Phase: \(appModel.currentPhase)
-                        ├─ ImmersiveSpaceState: \(appModel.immersiveSpaceState)
-                        ├─ Root Entity: \(root.name)
-                        └─ Environment Ready: \(environment.name)
-                        """)
                         
                         // Now add environment to scene
                         root.addChild(environment)
 
                         // Get portal and set up attachments
                         if let portal = appModel.introState.getPortal() {
-                            print("✅ Found portal for attachments")
+                            Logger.debug("✅ Found portal for attachments")
                             
                             // Set up attachments on portal
                             appModel.introState.setupAttachments(
@@ -258,11 +297,11 @@ struct IntroView: View {
                             try await appModel.labState.setupInitialLabEnvironment(in: root, isIntro: true)
                             // try await appModel.labState.setupLabEnvironment(in: root, isIntro: true)
                         } catch {
-                            print("❌ Error setting up lab environment: \(error)")
+                            Logger.debug("❌ Error setting up lab environment: \(error)")
                         }
                     }
                 } else {
-                    print("❌ Intro root entity not available for lab setup")
+                    Logger.debug("❌ Intro root entity not available for lab setup")
                 }
             }
         }

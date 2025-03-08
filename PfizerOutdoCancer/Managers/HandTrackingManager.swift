@@ -122,6 +122,17 @@ final class HandTrackingManager {
         leftHandAnchor = left
         rightHandAnchor = right
     }
+    
+    func getHandPosition(_ chirality: HandAnchor.Chirality) -> SIMD3<Float>? {
+        // Select the appropriate hand anchor
+        let handAnchor = chirality == .left ? leftHandAnchor : rightHandAnchor
+        // Ensure the hand is tracked
+        guard let handAnchor = handAnchor, handAnchor.isTracked else { return nil }
+        
+        // Extract the translation from the 4x4 transform.
+        let transform = handAnchor.originFromAnchorTransform
+        return SIMD3<Float>(transform.columns.3.x, transform.columns.3.y, transform.columns.3.z)
+    }
 }
 
 // MARK: - ModelEntity Extensions

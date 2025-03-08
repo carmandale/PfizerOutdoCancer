@@ -122,7 +122,7 @@ final class AppModel {
     let trackingManager = TrackingSessionManager()
     
     var shouldDimSurroundings: Bool = false
-    var hasBuiltADC: Bool = true
+    var hasBuiltADC: Bool = false
     
     /// Current phase of the app
     var currentPhase: AppPhase = .loading

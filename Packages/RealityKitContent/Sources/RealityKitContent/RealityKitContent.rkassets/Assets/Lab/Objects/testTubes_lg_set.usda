@@ -442,13 +442,13 @@ def Xform "root" (
     def "TestTubeRack" (
         active = true
         customData = {
-            float3 rotationEulerHint = (1.5707964, 0, 0)
+            float3 rotationEulerHint = (0, 0, 0)
         }
         references = @../Object_upgrades/TestTubeRack/test_tube_rack.usdc@
     )
     {
         reorder nameChildren = ["geom", "TestTube", "TestTube_1", "TestTube_2"]
-        quatf xformOp:orient = (0.70710677, 0.70710677, 0, 0)
+        quatf xformOp:orient = (1, 0, 0, 0)
         float3 xformOp:scale = (0.82582414, 0.82582414, 0.82582414)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
@@ -462,7 +462,7 @@ def Xform "root" (
         {
             quatf xformOp:orient = (0.99999994, -6.595578e-17, 0, 0)
             float3 xformOp:scale = (0.99999994, 0.99999994, 0.99999994)
-            float3 xformOp:translate = (-0.016641654, 0.009302542, -7.801442e-9)
+            float3 xformOp:translate = (-0.01760735, 0.00048606895, 0.009210802)
             uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
         }
 
@@ -478,14 +478,14 @@ def Xform "root" (
             int ui:nodegraph:node:stackingOrder = 1
             quatf xformOp:orient = (0.99999994, -6.595578e-17, 0, 0)
             float3 xformOp:scale = (0.99999994, 0.99999994, 0.99999994)
-            float3 xformOp:translate = (-0.051133238, 0.008861542, -1.1243571e-10)
+            float3 xformOp:translate = (-0.05275972, 0.0016456433, 0.0096619325)
             uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
         }
 
         def "TestTube_2" (
             active = true
             customData = {
-                float3 rotationEulerHint = (1.5707964, 0, 0)
+                float3 rotationEulerHint = (-1.3191156e-16, 0, 0)
             }
             references = @../Object_upgrades/TestTube/test_tube.usdc@
         )
@@ -494,7 +494,7 @@ def Xform "root" (
             int ui:nodegraph:node:stackingOrder = 2
             quatf xformOp:orient = (0.99999994, -6.595578e-17, 0, 0)
             float3 xformOp:scale = (0.99999994, 0.99999994, 0.99999994)
-            float3 xformOp:translate = (0.053442635, 0.008861619, 0.0033104136)
+            float3 xformOp:translate = (0.051473737, 0.0006885044, 0.008755908)
             uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
         }
     }

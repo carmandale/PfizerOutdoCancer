@@ -26,20 +26,6 @@ extension AppModel {
         }
     }
     
-    // Helper method to log detailed progress visualization
-    private func logProgressVisualization(regular: Float, lab: Float, combined: Float) {
-        let regularBar = String(repeating: "█", count: Int(regular * 20))
-        let labBar = String(repeating: "█", count: Int(lab * 20))
-        let combinedBar = String(repeating: "█", count: Int(combined * 20))
-        
-        print("""
-        📊 Progress Visualization:
-        Regular: [\(regularBar.padding(toLength: 20, withPad: " ", startingAt: 0))] \(Int(regular * 100))%
-        Lab:     [\(labBar.padding(toLength: 20, withPad: " ", startingAt: 0))] \(Int(lab * 100))%
-        TOTAL:   [\(combinedBar.padding(toLength: 20, withPad: " ", startingAt: 0))] \(Int(combined * 100))%
-        """)
-    }
-    
     var isLoadingAssets: Bool {
         if case .loading = assetLoadingManager.state {
             return true
@@ -61,31 +47,24 @@ extension AppModel {
     }
     
     func startLoading(adcDataModel: ADCDataModel) async {
-        print("\n=== Starting Initial Asset Loading ===")
-        print("🔍 Current phase: \(currentPhase)")
-        print("🔍 Loading state: \(assetLoadingManager.loadingState)")
+        Logger.debug("\n=== Starting Initial Asset Loading ===")
         
         // Initialize loading state and progress
         displayedProgress = 0.0
         assetLoadingManager.loadingState = .loading(progress: 0.0)
         
-        print("🔄 Starting prepareIntroPhase...")
         await prepareIntroPhase()
-        print("✅ prepareIntroPhase completed")
-        print("🔄 Transitioning to .intro...")
         await transitionToPhase(.intro, adcDataModel: adcDataModel)
-        print("✅ Transition to .intro completed")
+        Logger.debug("=== Asset Loading Complete ===")
     }
     
     func prepareIntroPhase() async {
-        print("\n=== Preparing Intro Phase ===")
-        print("🔍 Current phase before loading: \(currentPhase)")
-        print("🔍 Loading state: \(assetLoadingManager.loadingState)")
+        Logger.debug("=== Preparing Intro Phase Assets ===")
         
         var introAssets: [String] = []
         introAssets.append(contentsOf: [
-            "intro_environment",
-            "intro_warp",
+            "intro_environment"
+            // "intro_warp",
         ])
         
         var attackAssets: [String] = []
@@ -110,8 +89,6 @@ extension AppModel {
         
         // Load intro environment assets
         for key in allAssets {
-            print("📱 Loading asset: \(key)")
-            
             let category: AssetCategory
             if introAssets.contains(key) {
                 category = .introEnvironment
@@ -121,7 +98,7 @@ extension AppModel {
                 category = .labEnvironment
             } else {
                 // Default case, should not happen
-                print("⚠️ Unknown asset category for key: \(key)")
+                Logger.debug("⚠️ Unknown asset category for key: \(key)")
                 continue
             }
             
@@ -143,15 +120,7 @@ extension AppModel {
                                 labProgress: self.labLoadingProgress
                             )
                             
-                            // Log progress visualization
-                            self.logProgressVisualization(
-                                regular: self.regularAssetsProgress,
-                                lab: self.labLoadingProgress,
-                                combined: combinedProgress
-                            )
-                            
-                            // Update loading state with combined progress
-                            print("🔄 Combined progress update: \(combinedProgress)")
+                            // Update loading state with combined progress (no logging)
                             if combinedProgress >= 1.0 {
                                 self.assetLoadingManager.loadingState = .completed
                             } else {
@@ -159,6 +128,7 @@ extension AppModel {
                             }
                         }
                     )
+                    Logger.debug("✅ Loaded lab environment")
                 } else {
                     // Regular asset loading
                     _ = try await assetLoadingManager.loadAsset(withName: key, category: category)
@@ -174,17 +144,7 @@ extension AppModel {
                         labProgress: self.labLoadingProgress
                     )
                     
-                    print("✅ Loaded \(key) - Regular Progress: \(self.regularAssetsProgress)")
-                    
-                    // Log progress visualization
-                    self.logProgressVisualization(
-                        regular: self.regularAssetsProgress,
-                        lab: self.labLoadingProgress,
-                        combined: combinedProgress
-                    )
-                    
-                    // Update loading state based on combined progress
-                    print("🔄 Combined progress update: \(combinedProgress)")
+                    // Update loading state based on combined progress (no logging)
                     if combinedProgress >= 1.0 {
                         assetLoadingManager.loadingState = .completed
                     } else {
@@ -192,12 +152,12 @@ extension AppModel {
                     }
                 }
             } catch {
-                print("❌ Failed to load \(key): \(error)")
+                Logger.debug("❌ Failed to load \(key): \(error)")
                 // Use the generic error here
                 assetLoadingManager.loadingState = .error(AppError.genericLoadingError)
                 return // Exit the function on error
             }
         }
-        print("✅ prepareIntroPhase completed")
+        Logger.debug("=== All Assets Loaded Successfully ===")
     }
 }

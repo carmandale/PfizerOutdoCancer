@@ -1,0 +1,149 @@
+#usda 1.0
+(
+    defaultPrim = "root"
+    doc = "Blender v4.2.0"
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+def Xform "root" (
+    customData = {
+        dictionary Blender = {
+            bool generated = 1
+        }
+    }
+)
+{
+    def RealityKitMeshSortingGroup "Model_Sorting_Group" (
+        active = true
+    )
+    {
+        token depthPass = "prePass"
+    }
+
+    def "M_flaskObjectMaterial" (
+        active = true
+        prepend references = @../../../Materials/M_flaskObjectMaterial.usda@
+    )
+    {
+        float2 ui:nodegraph:node:pos = (20, 20)
+        int ui:nodegraph:node:stackingOrder = 1
+        float3 xformOp:scale = (1, 1, 1)
+
+        over "M_baseObjectMaterial"
+        {
+            over "M_baseObjectMaterial"
+            {
+                asset inputs:diffuse = @textures/flasks_mat_BaseColor.jpg@
+                asset inputs:metallic = @textures/flasks_mat_Metallic.jpg@
+                asset inputs:normal = @textures/flasks_mat_Normal.jpg@
+                asset inputs:roughness = @textures/flasks_mat_Roughness.jpg@
+            }
+        }
+    }
+
+    def "ErlenmeyerFlask" (
+        active = true
+        customData = {
+            float3 rotationEulerHint = (0, 0, 0)
+        }
+        references = @../Object_upgrades/ErlenmeyerFlask/erlenmeyer_flask.usdc@
+    )
+    {
+        quatf xformOp:orient = (1, 0, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "geom"
+        {
+            over "realistic"
+            {
+                over "materials"
+                {
+                    over "erlenmeyer_flask_realistic_mat"
+                    {
+                        string inputs:erlenmeyer_flask_realistic_mat_bc_1:varname (
+                            customData = {
+                                dictionary realitykit = {
+                                    float2 positionInSubgraph = (334.25, 709.5)
+                                }
+                            }
+                        )
+                        string inputs:erlenmeyer_flask_realistic_mat_n_1:varname (
+                            customData = {
+                                dictionary realitykit = {
+                                    float2 positionInSubgraph = (621.25, 709.5)
+                                }
+                            }
+                        )
+                        string inputs:erlenmeyer_flask_realistic_mat_o_1:varname (
+                            customData = {
+                                dictionary realitykit = {
+                                    float2 positionInSubgraph = (908.25, 709.5)
+                                }
+                            }
+                        )
+                        string inputs:erlenmeyer_flask_realistic_mat_r_1:varname (
+                            customData = {
+                                dictionary realitykit = {
+                                    float2 positionInSubgraph = (1195.25, 709.5)
+                                }
+                            }
+                        )
+                        token outputs:realitykit:vertex
+                        float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (1737.0863, 306.2274)
+                        int ui:nodegraph:realitykit:subgraphOutputs:stackingOrder = 2
+
+                        over "Lookup_st"
+                        {
+                            float2 ui:nodegraph:node:pos = (-250.04364, 302.69037)
+                            int ui:nodegraph:node:stackingOrder = 10
+                        }
+
+                        over "erlenmeyer_flask_realistic_mat_bc_1_mtlx"
+                        {
+                            float2 ui:nodegraph:node:pos = (820.6242, 168.60402)
+                            int ui:nodegraph:node:stackingOrder = 33
+                        }
+
+                        over "erlenmeyer_flask_realistic_mat_n_1_mtlx_scale"
+                        {
+                            float2 ui:nodegraph:node:pos = (476.13272, -68.51668)
+                            int ui:nodegraph:node:stackingOrder = 30
+                        }
+
+                        over "erlenmeyer_flask_realistic_01_mat_mtlx"
+                        {
+                            float2 ui:nodegraph:node:pos = (1449.6002, 310.7135)
+                            int ui:nodegraph:node:stackingOrder = 4
+                        }
+
+                        over "erlenmeyer_flask_realistic_mat_n_1_mtlx_offset"
+                        {
+                            float2 ui:nodegraph:node:pos = (875.02844, -105.901596)
+                            int ui:nodegraph:node:stackingOrder = 28
+                        }
+
+                        over "erlenmeyer_flask_realistic_mat_n_1_mtlx"
+                        {
+                            float2 ui:nodegraph:node:pos = (195.26642, 18.135595)
+                            int ui:nodegraph:node:stackingOrder = 12
+                        }
+
+                        over "erlenmeyer_flask_realistic_mat_o_1_mtlx"
+                        {
+                            float2 ui:nodegraph:node:pos = (70.24164, 593.8457)
+                            int ui:nodegraph:node:stackingOrder = 14
+                        }
+
+                        over "erlenmeyer_flask_realistic_mat_r_1_mtlx"
+                        {
+                            float2 ui:nodegraph:node:pos = (553.6146, 295.54678)
+                            int ui:nodegraph:node:stackingOrder = 24
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+

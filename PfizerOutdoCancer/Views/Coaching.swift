@@ -11,7 +11,7 @@ struct Coaching: View {
     @State private var viewOpacity: Double = 0
     
     // Disable autoPlay so we can manually control when the animation begins
-    @State private var riveViewModel = RiveViewModel(fileName: "coaching_v01", autoPlay: false)
+    @State private var riveViewModel = RiveViewModel(fileName: "tap", autoPlay: false)
     
     // Keep track of the task so we can cancel it if the view disappears quickly
     @State private var animationTask: Task<Void, Never>? = nil
@@ -56,14 +56,14 @@ struct Coaching: View {
                     .frame(width: width, height: height)
                     .padding(.bottom, 20)
                 
-                Text("Look at the Cancer Cell")
+                Text("Look at the cancer cell,")
                     .font(.title2)
                     .fontWeight(.bold)
                     .foregroundColor(.white)
                     .multilineTextAlignment(.center)
                     .opacity(firstLineOpacity)
                 
-                Text("Pinch your thumb and finger")
+                Text("and tap your thumb and finger")
                     .font(.title2)
                     .fontWeight(.bold)
                     .foregroundColor(.white)
@@ -87,7 +87,7 @@ struct Coaching: View {
             }
             .padding(30)
             .frame(width: 600)
-            .glassBackgroundEffect(in: RoundedRectangle(cornerRadius: 20))
+//            .glassBackgroundEffect(in: RoundedRectangle(cornerRadius: 20))
             
             
             // Debug reset button for testing the animation restart
@@ -112,6 +112,6 @@ struct Coaching: View {
     }
 }
 
-#Preview {
-    Coaching()
-}
+//#Preview {
+//    Coaching()
+//}
