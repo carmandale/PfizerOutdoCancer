@@ -22,7 +22,12 @@ struct StartButton: View {
                     Logger.info("Current Phase: \(appModel.currentPhase)")
                     Logger.info("isReadyForInteraction: \(appModel.introState.isReadyForHeadTracking)")
                     Logger.info("Setting shouldUpdateHeadPosition = true")
+                    
+                    // Play the start button sound
+                    appModel.playStartButtonSound()
+                    
                     appModel.introState.shouldUpdateHeadPosition = true
+                    appModel.introState.startButtonPressed = true
                 }
             },
             font: .title,

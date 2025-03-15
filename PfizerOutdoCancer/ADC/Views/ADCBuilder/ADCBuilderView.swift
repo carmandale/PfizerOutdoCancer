@@ -10,6 +10,8 @@ struct ADCBuilderView: View {
     
     @FocusState private var isFocused: Bool
 
+    @State private var opacity: Double = 0  // Add state for opacity
+
 
     let titles = ["Antibodies", "Linker", "Payload", "ADC Ready"]
     
@@ -189,6 +191,8 @@ struct ADCBuilderView: View {
                             os_log(.debug, "- Antibody Color: \(dataModel.selectedADCAntibody ?? -1)")
                             os_log(.debug, "- Linker Color: \(dataModel.selectedLinkerType ?? -1)")
                             os_log(.debug, "- Payload Color: \(dataModel.selectedPayloadType ?? -1)")
+
+                            appModel.playMenuSelect2Sound()
                             
                             appModel.hasBuiltADC = true
                             
@@ -199,6 +203,7 @@ struct ADCBuilderView: View {
                             }
                             await dismissImmersiveSpace()
                             await appModel.transitionToPhase(.playing, adcDataModel: dataModel)
+                            dataModel.showMainView = false
                         }
                     },
                     font: .title,
@@ -217,6 +222,12 @@ struct ADCBuilderView: View {
         .frame(alignment: .top) // height: dataModel.isVOPlaying ? 350 : 700,
         .glassBackgroundEffect() // must have this for the background glass and rounded corners
         .animation(.spring(response: 0.5, dampingFraction: 0.7), value: dataModel.isVOPlaying)
+        .opacity(opacity)
+        .onChange(of: dataModel.showMainView) { _, newValue in
+            withAnimation(.easeIn(duration: 1.0)) {
+                opacity = newValue ? 1.0 : 0.0
+            }
+        }
     }
 }
 

@@ -112,6 +112,18 @@ final class OutroViewModel {
         }
     }
     
+    @MainActor
+    func fadeInScene() async {
+        print("🎬 Starting outro scene fade in")
+        guard let root = outroRootEntity else {
+            print("⚠️ No outro root entity found for fade in")
+            return
+        }
+        // Animate the root entity's opacity from 0 to 1 over 2 seconds.
+        await root.fadeOpacity(to: 1.0, duration: 2.0, timing: .easeInOut, waitForCompletion: true)
+        print("✨ Outro scene fade in complete")
+    }
+    
     // MARK: - Cleanup
     func cleanup() {
         print("\n=== Starting OutroViewModel Cleanup ===")

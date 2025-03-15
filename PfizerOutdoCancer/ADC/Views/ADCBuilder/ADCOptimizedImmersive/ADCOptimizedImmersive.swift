@@ -177,6 +177,8 @@ struct ADCOptimizedImmersive: View {
                     antibodyEntity?.isEnabled = false
                     antibodyEntity?.opacity = 0
                     dataModel.adcBuildStep = 0
+
+                    dataModel.showMainView = true
                     
                     // Play audio for initial step
                     do {

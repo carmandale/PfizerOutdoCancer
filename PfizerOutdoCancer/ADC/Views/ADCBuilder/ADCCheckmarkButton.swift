@@ -1,4 +1,5 @@
 import SwiftUI
+import RiveRuntime
 
 struct ADCCheckmarkButton: View {
     let action: () -> Void
@@ -6,23 +7,35 @@ struct ADCCheckmarkButton: View {
 
     // State variable to drive the pulsing scale effect
     @State private var pulseScale: CGFloat = 1.0
+    @State private var riveModel = RiveViewModel(
+        fileName: "checkmark",
+        stateMachineName: "StateMachine"
+        )
 
     var body: some View {
         Button(action: action) {
             ZStack {
                 // Circle that changes appearance based on isEnabled
-                Image(systemName: "circle")
-                    .font(.system(size: 60))
-                    .symbolVariant(isEnabled ? .fill : .none)
-                    .foregroundStyle(isEnabled ? .green : .white.opacity(0.3))
-                    .animation(.easeInOut(duration: 0.3), value: isEnabled)
+                riveModel.view()
+                    .frame(width: 80, height: 80)
+                    .onChange(of: isEnabled) { oldValue, newValue in
+                        Task { @MainActor in
+                            riveModel.setInput("Check", value: isEnabled)
+                            riveModel.setInput("Next", value: isEnabled)
+                        }
+                    }
+//                Image(systemName: "circle")
+//                    .font(.system(size: 60))
+//                    .symbolVariant(isEnabled ? .fill : .none)
+//                    .foregroundStyle(isEnabled ? .green : .white.opacity(0.3))
+//                    .animation(.easeInOut(duration: 0.3), value: isEnabled)
                 
                 // Checkmark that appears when enabled, with a pulsing scale effect
-                Image(systemName: "checkmark")
-                    .font(.system(size: 30))
-                    .bold()
-                    .foregroundStyle(.white)
-                    .opacity(isEnabled ? 1 : 0.3)
+//                Image(systemName: "checkmark")
+//                    .font(.system(size: 30))
+//                    .bold()
+//                    .foregroundStyle(.white)
+//                    .opacity(isEnabled ? 1 : 0.3)
                     // .scaleEffect(isEnabled ? pulseScale : 0.9)
                     // We handle pulsing via pulseScale, so no extra animation modifier here.
             }

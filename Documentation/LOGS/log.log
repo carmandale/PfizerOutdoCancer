@@ -1,19 +1,21 @@
-AppModel init() - Instance: ObjectIdentifier(0x00000001035cbae0)
+AppModel init() - Instance: ObjectIdentifier(0x00000001011dbad0)
 🏁 PfizerOutdoCancerApp init starting...
 📲 Setting AppModel in PositioningSystem...
 🔄 PositioningSystem.setAppModel called
 📝 Registering components and systems...
 ⚙️ Registering PositioningSystem...
 ✅ PfizerOutdoCancerApp init completed
-🎯 PositioningSystem AF874270-5D17-4161-869E-12A97E6D2C73 initializing...
+🎯 PositioningSystem D836EE3A-8BC0-44BA-92C9-1A554CF92CEC initializing...
 nw_socket_initialize_socket [C1:2] setsockopt SO_NECP_CLIENTUUID failed [22: Invalid argument]
 nw_socket_initialize_socket setsockopt SO_NECP_CLIENTUUID failed [22: Invalid argument]
 nw_socket_copy_info [C1:2] getsockopt TCP_INFO failed [102: Operation not supported on socket]
 nw_socket_copy_info getsockopt TCP_INFO failed [102: Operation not supported on socket]
+Loading UI sound resources
 
 === Starting Initial Asset Loading ===
 === Preparing Intro Phase Assets ===
 AssetLoadingManager: loadAsset(withName: intro_environment, category: introEnvironment)
+✅ Successfully loaded sonic_pulse sound
 Registering library (/System/Library/PrivateFrameworks/CoreRE.framework/default.metallib) that already exists in shader manager. Library will be overwritten.
 AssetLoadingManager: loadAsset(withName: attack_cancer_environment, category: attackCancerEnvironment)
 AssetLoadingManager: loadAsset(withName: adc, category: attackCancerEnvironment)
@@ -30,7 +32,7 @@ Invalid Material input type token
 Invalid Material input type token
 Applying final scene rotation
 Populated lab scene assembly complete
-IBL URL: file:///private/var/containers/Bundle/Application/93F77292-FD2D-4FA5-9A06-16163925C954/PfizerOutdoCancer.app/lab_v005.exr
+IBL URL: file:///private/var/containers/Bundle/Application/87337ADD-8C35-40E0-BD58-A470E52C4444/PfizerOutdoCancer.app/lab_v005.exr
 Completed lab environment assembly
 ✅ Loaded lab environment
 === All Assets Loaded Successfully ===
@@ -80,7 +82,7 @@ AssetLoadingManager: loadAsset(withName: adc, category: adc)
     AppPhase: intro
     ScenePhase: active
     LoadingPhase: completed
-🎯 PositioningSystem 523E5DB4-635C-427C-BD35-E6BEFEA4851F initializing...
+🎯 PositioningSystem 6CB7B974-74B9-41E2-A20A-6A7805F60DFB initializing...
 Initializing hosting entity without a context
 Initializing hosting entity without a context
 Initializing hosting entity without a context
@@ -117,6 +119,7 @@ openImmersiveSpace result for intro: opened
 ✅ Should show nav toggle
 ✅ Found navToggle attachment
 ✅ Added navToggle to smoothed entity
+ℹ️ No left hand position available
 📱 IntroView: Starting environment setup
 📱 IntroViewModel: Starting environment setup
 📱 IntroViewModel: Attempting to load intro environment
@@ -156,10 +159,6 @@ Attempting to setup interactive ADC for user
 ✅ Environment setup complete
 🎯 Found ADCBuilderAttachment target
 🎯 Found AttackCancerAttachment target
-ℹ️ No left hand position available
-Cannot find a BindPoint for any bind path: "", "", "", "", ""
-Cannot find a BindPoint for any bind path: "", ""
-Cannot find a BindPoint for any bind path: "", ""
 🔍 Provider State Verification
 ├─ Expected State: Running
 ├─ World Provider: ✅ [running]
@@ -176,7 +175,7 @@ Cannot find a BindPoint for any bind path: "", ""
 ├─ Asset Manager State: completed
 ├─ Immersive Space: open
 ├─ Tracking State: running
-└─ Cached Assets: intro_environment, adc, attack_cancer_environment, cancer_cell, assembled_lab
+└─ Cached Assets: adc, intro_environment, attack_cancer_environment, cancer_cell, assembled_lab
 
 📍 === Phase Set Complete ===
 ├─ New Phase: intro
@@ -200,4 +199,439 @@ Cannot find a BindPoint for any bind path: "", ""
 ├─ Error: none
 └─ Current Phase: intro
 ✅ Providers running
+Cannot find a BindPoint for any bind path: "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", ""
+Cannot find a BindPoint for any bind path: "", ""
 Failed to set override status for bind point component member.
+
+=== Start Button Pressed ===
+Current Phase: intro
+isReadyForInteraction: true
+Setting shouldUpdateHeadPosition = true
+Playing start button sound
+✅ Playing start button sound
+
+🎯 Head Position Update Triggered
+├─ shouldUpdate: true
+├─ isReadyForHeadTracking: true
+├─ isPositioningInProgress: false
+├─ Current Phase: intro
+├─ Tracking State: running
+└─ Has Device Anchor: true
+Start Button Pressed
+
+🔄 Starting position update for entity 'IntroRoot'
+├─ Current Position: SIMD3<Float>(0.0, -1.5, -1.0)
+├─ Animated: ✅
+└─ Duration: 0.5s
+
+📍 Positioning entity 'IntroRoot'
+├─ From: SIMD3<Float>(0.0, -1.5, -1.0)
+├─ To: SIMD3<Float>(-0.017407823, -0.2596619, -1.1014802)
+├─ Offsets: [0.0, -1.5, -1.0]
+├─ Distance: 1.8027756m
+└─ Method: Animated (0.5s)
+
+✨ Position update complete for 'IntroRoot'
+├─ Final Position: SIMD3<Float>(0.0, -1.5, -1.0)
+└─ Status: Success
+
+✨ Position update complete for 'IntroRoot'
+├─ Final Position: SIMD3<Float>(-0.017391417, -0.26083088, -1.1013846)
+└─ Status: Success
+Failed to set override status for bind point component member.
+
+✨ Head Position Update Complete
+├─ Final Position: SIMD3<Float>(-0.017407823, -0.2596619, -1.1014802)
+├─ Tracking State: running
+├─ isPositioningInProgress: true
+└─ isPositioningComplete: false
+✅ Found portal for attachments
+🔍 Found logo: logo
+✅ Set logo scale to 0.5 and opacity to 0
+Found title: outdoCancer
+Set title opacity to 0
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", ""
+Intro Setup Complete
+🎬 Animation Sequence: Starting at 2025-03-13 21:25:51 +0000
+🔍 Entity Check - skyDome: true, logo: true, portal: true
+🌌 Sky: Starting at +0.00010001659393310547s
+🔍 Sky initial opacity: 0.0
+🌌 Sky: Completed fade animation
+⏰ Sleeping for 29s before portal warp
+ℹ️ No left hand position available
+ℹ️ No left hand position available
+Failed to set override status for bind point component member.
+ℹ️ No left hand position available
+⏰ Sleeping for 75s before logo
+ℹ️ No left hand position available
+ℹ️ No left hand position available
+ℹ️ No left hand position available
+ℹ️ No left hand position available
+ℹ️ No left hand position available
+🎯 Logo and Title Sequence: Starting at +105.04292905330658s
+🔍 Logo initial state - opacity: 0.0, scale: SIMD3<Float>(0.5, 0.5, 0.5)
+✨ Logo fade completed - final opacity: 0.0
+⏰ Waiting 5s before title animation
+ℹ️ No left hand position available
+🔍 Title initial state - opacity: 0.0
+✨ Title fade completed - final opacity: 0.0
+✅ Logo and Title sequence complete
+🌐 Portal: Starting at +110.04752099514008s
+🔍 Portal reference check: true
+🔍 Portal initial opacity: 0.0
+🌐 Portal: Completed fade animation
+🔍 Portal final opacity: 0.0
+Failed to set override status for bind point component member.
+ℹ️ No left hand position available
+Failed to set override status for bind point component member.
+Failed to set override status for bind point component member.
+🌐 Portal plane: Starting X scale animation at +115.3513480424881s
+🌐 Portal plane: Completed X scale animation
+Failed to set override status for bind point component member.
+🌐 Starting concurrent animations for PortalRoot, World, and PortalPlane scale
+Failed to set override status for bind point component member.
+Failed to set override status for bind point component member.
+ℹ️ No left hand position available
+ℹ️ No left hand position available
+Failed to set override status for bind point component member.
+ℹ️ No left hand position available
+Failed to set override status for bind point component member.
+Failed to set override status for bind point component member.
+Failed to set override status for bind point component member.
+🌐 Completed concurrent animations for PortalRoot, World, and PortalPlane scale
+ℹ️ No left hand position available
+🛑 assembledLab position in world space PRE-TRANSFORM FIX is SIMD3<Float>(-0.017407823, -0.2596619, -1.1014802)
+✅ assembledLab position in world space is SIMD3<Float>(-0.017407823, -0.2596619, -0.101480246)
+
+ 🔍 Inspecting portal hierarchy
+Removed portal completely from the scene as we transition to lab.
+Removed introEnvironment completely from the scene as we transition to lab.
+readyToStartLab set to true
+🎬 Animation Sequence: Completed at +143.6366000175476s
+
+🔄 Starting Lab Setup in IntroView
+├─ hasBuiltADC: true
+├─ Current Phase: intro
+└─ readyToStartLab: true
+📱 LabViewModel: Setting up initial environment
+
+=== Configuring Interactive Devices ===
+🔍 Found 19 potential interactive devices
+calling setupLabEnvironment
+
+=== Lab Environment Setup ===
+📱 LabViewModel: Starting environment setup
+🔍 isIntro parameter: Optional(true)
+
+🔍 ADC Button State Check
+├─ hasBuiltADC: true
+├─ Current shouldShowADCButton: false
+└─ isIntro Mode: Optional(true)
+🎯 ADC Button visibility set to: true
+
+🎯 Skipping ADC button timer
+├─ Current shouldShowADCButton: true
+└─ hasBuiltADC: true
+
+🎙️ Attempting to load lab VO...
+AssetLoadingManager: loadAsset(withName: lab_vo, category: labEnvironment)
+Cannot find a BindPoint for any bind path: "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", ""
+Cannot find a BindPoint for any bind path: "", ""
+✅ Lab VO asset loaded successfully
+✅ Lab VO added to root entity
+
+🔊 Loading lab audio Spatial Ambience...
+AssetLoadingManager: loadAsset(withName: lab_audio, category: labEnvironment)
+✅ Lab Audio added to MainEntity
+
+✅ Lab Environment Setup Complete
+├─ isSetupComplete: true
+├─ shouldShowADCButton: true
+└─ hasBuiltADC: true
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", "", "", "", "", ""
+Cannot find a BindPoint for any bind path: "", "", "", ""
+builder window status: false
+setting builder window status to true
+
+🔄 === PHASE TRANSITION START ===
+├─ From: intro
+├─ To: building
+├─ Current Tracking State: running
+├─ Has Hand Tracking: true
+├─ Will Need Hand Tracking: true
+├─ Immersive Space State: open
+├─ Asset Loading State: completed
+└─ Is Transitioning: false
+🔄 Phase transition: intro -> building
+🔍 isTransitioning: false
+🔍 immersiveSpaceState: open
+🛑 Stopping tracking for phase transition
+🛑 Stopping Tracking Session
+🔍 Provider State Verification
+├─ Expected State: Stopped
+├─ World Provider: ✅ [stopped]
+├─ Hand Tracking Needed: true
+└─ Hand Provider: ✅ [stopped]
+📊 Post-Stop Tracking State: stopped
+AppModel: Preloading Building Phase Assets...
+AssetLoadingManager: loadAsset(withName: antibody_scene, category: buildADCEnvironment)
+🎬 Starting scene fade out
+Failed to set override status for bind point component member.
+✨ Scene fade out complete
+
+🔄 === INTRO VIEW CLEANUP STATE ===
+├─ Root Setup: true
+├─ Environment Setup: true
+├─ Head Tracking Ready: true
+├─ Should Update Position: false
+├─ Positioning Complete: true
+├─ Positioning In Progress: false
+├─ Has Root Entity: true
+└─ Has Positioning Component: true
+
+=== Starting IntroViewModel Cleanup ===
+🛑 Cancelling animation sequence
+🗑️ Removing intro root entity
+🎯 Resetting positioning component
+✅ Completed IntroViewModel cleanup
+
+🔄 === INTRO VIEW FINAL STATE ===
+├─ Root Setup: false
+├─ Environment Setup: false
+├─ Head Tracking Ready: false
+├─ Should Update Position: false
+├─ Positioning Complete: false
+├─ Positioning In Progress: false
+├─ Has Root Entity: false
+└─ Has Positioning Component: false
+
+=== Starting Intro Environment Cleanup ===
+
+📊 Updated template cache size: 7 entities
+🔒 Remaining asset: lab_audio
+✅ Completed intro environment cleanup
+
+
+=== Starting LabViewModel Cleanup ===
+🔊 Removing lab audio entity
+🔧 Removing ADC builder button
+🎯 Removing Attack Cancer button
+✅ Completed LabViewModel cleanup
+
+=== Starting Lab Environment Cleanup ===
+🗑️ Preparing to remove 6 assets after lab phase:
+
+📊 Updated template cache size: 1 entities
+🔒 Remaining asset: assembled_lab
+✅ Completed aggressive lab cleanup
+
+
+🖐️ Configuring Tracking Session
+├─ World Tracking: Enabled
+├─ Hand Tracking: Enabled
+├─ Provider State: running
+└─ Previous Tracking: Inactive
+🚨 LoadingView disappeared
+🔍 Provider State Verification
+├─ Expected State: Running
+├─ World Provider: ✅ [running]
+├─ Hand Tracking Needed: true
+└─ Hand Provider: ✅ [running]
+🔍 Provider State Verification
+├─ Expected State: Running
+├─ World Provider: ✅ [running]
+├─ Hand Tracking Needed: true
+└─ Hand Provider: ✅ [running]
+✅ Tracking started successfully on attempt 1
+
+🧹 === Post-Cleanup State ===
+├─ Asset Manager State: completed
+├─ Immersive Space: open
+├─ Tracking State: running
+└─ Cached Assets: assembled_lab
+
+📍 === Phase Set Complete ===
+├─ New Phase: building
+├─ Asset State: completed
+├─ Space State: open
+└─ Tracking Ready: true
+✅ Phase transition completed: building
+🧹 **onChange Function**: Immersive space dismissed successfully.
+🎯 Managing windows for phase: building
+📊 Before state update - nav window open: false
+📊 Window states after update:
+  Main: true
+  Debug: false
+  Library: false
+  Builder: false
+  Phases:
+    AppPhase: building
+    ScenePhase: active
+    LoadingPhase: completed
+ADCView: Immersive space currently closed. Attempting to open with id: BuildingSpace
+🎯 PositioningSystem 224EA2CD-9E88-4C1D-B8EC-7A505C179163 initializing...
+ADCView: immersive space open returned .opened
+Initializing hosting entity without a context
+Initializing hosting entity without a context
+🔄 Starting new ADC session: tracking states reset
+📱 ADCDataModel: Setting up root
+
+✅ Root Setup Complete
+├─ Root Entity: MainEntity
+├─ Position: SIMD3<Float>(0.0, 1.2, -1.0)
+└─ Positioning: Ready for explicit updates
+ADCOptimizedImmersive: Reset mainViewEntity transform to default
+IBL URL: file:///private/var/containers/Bundle/Application/87337ADD-8C35-40E0-BD58-A470E52C4444/PfizerOutdoCancer.app/metro_noord_2k.exr
+
+🔄 Provider State Change
+├─ Provider: World Tracking
+├─ From: running
+├─ To: running
+├─ Error: none
+└─ Current Phase: building
+
+🔄 Provider State Change
+├─ Provider: Hand Tracking
+├─ From: running
+├─ To: running
+├─ Error: none
+└─ Current Phase: building
+✅ Providers running
+ADCOptimizedImmersive: Successfully setup IBL lighting
+ADCOptimizedImmersive: Successfully loaded outline material
+AssetLoadingManager: loadAsset(withName: antibody_scene, category: buildADCEnvironment)
+ADCOptimizedImmersive: Antibody scene loaded successfully
+ADCOptimizedImmersive: Antibody scene name: Root
+ITR..prepareAntibodyEntities(): ✅ Stored original antibody material
+ITR..prepareAntibodyEntities(): ✅ Applied outline material
+ITR..prepareLinkerEntities(): ✅ Stored original ShaderGraphMaterial
+ITR..prepareLinkerEntities(): Applying outline material to linker
+ITR..prepareLinkerEntities(): Applying outline material to linker
+ITR..prepareLinkerEntities(): Applying outline material to linker
+ITR..prepareLinkerEntities(): Applying outline material to linker
+ITR..prepareLinkerEntities(): ✅ Added sort components to linkers with order 20
+ITR..preparePayloadEntities(): ✅ Stored original inner PBR material for payload InnerSphere
+ITR..preparePayloadEntities(): ✅ Stored original outer shader material for payload OuterSphere
+ITR..preparePayloadEntities(): 📝 Available shader parameters for OuterSphere: glowColor
+ITR..preparePayloadEntities(): ✅ Stored original inner PBR material for payload InnerSphere
+ITR..preparePayloadEntities(): ✅ Stored original outer shader material for payload OuterSphere
+ITR..preparePayloadEntities(): 📝 Available shader parameters for OuterSphere: glowColor
+ITR..preparePayloadEntities(): ✅ Stored original inner PBR material for payload InnerSphere
+ITR..preparePayloadEntities(): ✅ Stored original outer shader material for payload OuterSphere
+ITR..preparePayloadEntities(): 📝 Available shader parameters for OuterSphere: glowColor
+ITR..preparePayloadEntities(): ✅ Stored original inner PBR material for payload InnerSphere
+ITR..preparePayloadEntities(): ✅ Stored original outer shader material for payload OuterSphere
+ITR..preparePayloadEntities(): 📝 Available shader parameters for OuterSphere: glowColor
+ITR..preparePayloadEntities(): ✅ Found 4 inner payloads and 4 outer payloads
+ITR..attachPopSoundToTarget(): No pop sound entity available
+ITR..attachPopSoundToTarget(): No pop sound entity available
+ITR..prepareTargetEntities(): ✅ Applied outline material to draggable linker
+ITR..prepareTargetEntities(): ✅ Applied outline material to draggable payload
+ADCOptimizedImmersive: Created ADC sort group successfully
+=== Setting up Attachments ===
+mainEntity exists: true
+mainEntity position: SIMD3<Float>(0.0, 1.2, -1.0)
+✅ Added mainADCView to mainViewEntity
+✅ Found coaching overlay attachment
+Coaching attachment initial position: SIMD3<Float>(0.0, 0.0, 0.0)
+Coaching attachment initial scale: SIMD3<Float>(1.0, 1.0, 1.0)
+✅ Added coaching overlay to mainEntity at position (0, -0.25, 0.25)
+Coaching overlay is now child of: MainEntity
+Coaching overlay world position: SIMD3<Float>(0.0, 0.95000005, -0.75)
+ITR..ADCOptimizedImmersive: ✅ Successfully loaded pop sound
+ITR..ADCOptimizedImmersive: ✅ Successfully prepared pop sound controller
+ITR..ADCOptimizedImmersive: ✅ Successfully detached pop sound from main entity
+ITR..ADCOptimizedImmersive: ✅ Successfully loaded VO1
+ITR..ADCOptimizedImmersive: ✅ Successfully loaded VO2
+ITR..ADCOptimizedImmersive: ✅ Successfully loaded VO3
+ITR..ADCOptimizedImmersive: ✅ Successfully loaded VO4
+ITR..ADCOptimizedImmersive: ✅ Successfully loaded completion sound
+ITR..ADCOptimizedImmersive: ✅ Successfully loaded nice job sound
+ITR..ADCOptimizedImmersive: ✅ Successfully set up voice over entity
+
+🎯 Head Position Update Requested
+├─ Current World Position: SIMD3<Float>(0.0, 1.2, -1.0)
+├─ Root Setup: ✅
+├─ Environment: ✅
+└─ HeadTracking: ✅
+
+🎯 Requesting head position update for entity 'MainEntity'
+├─ Current World Position: SIMD3<Float>(0.0, 1.2, -1.0)
+├─ Offsets: [0.0, 0.0, -1.0]
+├─ Animated: ✅
+└─ Duration: 0.5s
+ITR..playSpatialAudio(): Playing spatial audio for step 0
+ITR..playSpatialAudio(): Started playing VO for step 0
+
+🔄 Starting position update for entity 'MainEntity'
+├─ Current Position: SIMD3<Float>(0.0, 1.2, -1.0)
+├─ Animated: ✅
+└─ Duration: 0.5s
+
+📍 Positioning entity 'MainEntity'
+├─ From: SIMD3<Float>(0.0, 1.2, -1.0)
+├─ To: SIMD3<Float>(-0.0005252459, 1.2457186, -1.0966575)
+├─ Offsets: [0.0, 0.0, -1.0]
+├─ Distance: 1.0m
+└─ Method: Animated (0.5s)
+
+✨ Position update complete for 'MainEntity'
+├─ Final Position: SIMD3<Float>(0.0, 1.2, -1.0)
+└─ Status: Success
+
+✨ Position update complete for 'MainEntity'
+├─ Final Position: SIMD3<Float>(-0.00052475085, 1.2456754, -1.0965664)
+└─ Status: Success
+Failed to set override status for bind point component member.
+ITR..VO finished playing, current step: 0
+Reset to Pos: SIMD3<Float>(0.0, 0.0, 0.0), Rot: 0.0°
+Start - Pos: SIMD3<Float>(0.0, 0.0, 0.0), Rot: 0.0° around SIMD3<Float>(nan, nan, nan)
+End - Pos: SIMD3<Float>(-0.5, 0.0, 0.2), Rot: 30.0° around SIMD3<Float>(0.0, 1.0, 0.0)
+Animation started with duration: 1.0s
+Failed to set override status for bind point component member.
+ITR..antibodyEntity exists, fading in
+ITR..antibodyEntity fade complete, isEnabled set to true
+Failed to set override status for bind point component member.
+ITR..Button 2 antibody pressed
+ITR..onChange(of: selectedADCAntibody): new value: 2
+ITR..handleAntibodyColorChange: ✅ Restored original material
+ITR..updateShaderGraphColor(): ✅ Successfully updated Basecolor_Tint with color: UIExtendedSRGBColorSpace 1 0.81 0.233 1
+ITR..handleAntibodyColorChange: ✅ Applied color 2
+ADC Build Step 1 - Color Summary:
+- Antibody Color: 2
+- Linker Color: -1
+- Payload Color: -1
+ITR.. ✅ ADC build step 1 - checkmark to move past antibody to linker
+going to look for linker entity
+case 1, found linker entity
+linker step is not complete, enabling linker entity dataModel.isCurrentStepComplete = false
+setting linker opacity to 1.0
+manualStepTransition = false
+setting linker opacity to 0.0
+ITR..playSpatialAudio(): Playing spatial audio for step 1
+ITR..playSpatialAudio(): Started playing VO for step 1
+
+🔄 Provider State Change
+├─ Provider: World Tracking
+├─ From: running
+├─ To: paused
+├─ Error: none
+└─ Current Phase: building
+
+🔄 Provider State Change
+├─ Provider: Hand Tracking
+├─ From: running
+├─ To: paused
+├─ Error: none
+└─ Current Phase: building
+⏸️ Providers paused

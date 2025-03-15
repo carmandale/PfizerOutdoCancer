@@ -1,0 +1,48 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 2.0 (448.100.13)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    def Material "M_lab_unlit"
+    {
+        asset inputs:Color = @@ (
+            customData = {
+                dictionary realitykit = {
+                    float2 positionInSubgraph = (-492.4375, -102.578125)
+                }
+            }
+        )
+        token outputs:mtlx:surface.connect = </Root/M_lab_unlit/UnlitSurface.outputs:out>
+        token outputs:realitykit:vertex
+        float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (335.25, 100.5)
+
+        def Shader "UnlitSurface"
+        {
+            uniform token info:id = "ND_realitykit_unlit_surfaceshader"
+            color3f inputs:color.connect = </Root/M_lab_unlit/Image.outputs:out>
+            bool inputs:hasPremultipliedAlpha
+            float inputs:opacity
+            token outputs:out
+            float2 ui:nodegraph:node:pos = (40.859375, 43.851562)
+            int ui:nodegraph:node:stackingOrder = 1
+        }
+
+        def Shader "Image"
+        {
+            uniform token info:id = "ND_image_color3"
+            color3f inputs:default
+            asset inputs:file.connect = </Root/M_lab_unlit.inputs:Color>
+            color3f outputs:out
+            float2 ui:nodegraph:node:pos = (-236.7539, -29.046875)
+            int ui:nodegraph:node:stackingOrder = 8
+        }
+    }
+}
+

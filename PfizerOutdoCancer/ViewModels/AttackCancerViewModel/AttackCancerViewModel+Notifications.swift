@@ -32,7 +32,10 @@ extension AttackCancerViewModel {
                         print("🎯 All game cells destroyed - accelerating hope meter")
                         await appModel.accelerateHopeMeterToCompletion()
                         try? await Task.sleep(for: .milliseconds(100))
-                        await self.playEndSound("magic_zing", forSequence: .ending)
+                        // Only play magic_zing if it hasn't already been played as part of the ending sequence
+                        if !self.hasPlayedEndingSequence {
+                            await self.playEndSound("magic_zing", forSequence: .ending)
+                        }
                         await self.playVictorySequence()
                         try? await Task.sleep(for: .milliseconds(1000))
                         await appModel.transitionToPhase(.completed)

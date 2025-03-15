@@ -75,6 +75,12 @@ extension AttackCancerViewModel {
         readyToStartGame = false
         isSetupComplete = false
         
+        // Reset audio sequence flags
+        hasPlayedEndingSequence = false
+        hasPlayedVictorySequence = false
+        hasPlayedGreatJob = false
+        Logger.audio("✅ Reset all audio sequence flags")
+        
         appModel.currentPhase = .playing
         appModel.isInstructionsWindowOpen = true
         appModel.isHopeMeterUtilityWindowOpen = false  // Let the tutorial sequence open this at 24s

@@ -35,6 +35,7 @@ final class IntroViewModel {
     var showTitleText = false
     var shouldDimSurroundings = false
     var isSetupComplete = false
+    var startButtonPressed = false
     
     // New flag to prevent duplicate environment loading
     var environmentLoaded = false
@@ -307,6 +308,11 @@ final class IntroViewModel {
                 
                 // Start title animation
                 Logger.debug("🔍 Title initial state - opacity: \(t.opacity)")
+                
+                // Set showTitleText to true to trigger the OutdoCancer animation
+                showTitleText = true
+                Logger.debug("✅ Set showTitleText to true, triggering OutdoCancer animation")
+                
                 let titleAnimation = Task {
                     await t.fadeOpacity(to: 1.0, duration: 5.0)
                     Logger.debug("✨ Title fade completed - final opacity: \(t.opacity)")
@@ -554,6 +560,7 @@ final class IntroViewModel {
         shouldUpdateHeadPosition = false
         isPositioningComplete = false
         isPositioningInProgress = false  // Add positioning progress flag
+        startButtonPressed = false
         
         appModel.readyToStartLab = false
         
@@ -568,5 +575,27 @@ final class IntroViewModel {
         } else {
             Logger.debug("❌ No ModelSortGroupComponent found on \(parent.name) to apply to \(child.name)")
         }
+    }
+
+    // MARK: FADE OUT SCENE
+    /// Fades out the entire scene gracefully
+    /// - Returns: Void
+    @MainActor
+    func fadeOutScene() async {
+        Logger.info("🎬 Starting scene fade out")
+        
+        guard let root = introRootEntity else {
+            Logger.debug("⚠️ No root entity found for fade out")
+            return
+        }
+        
+        await root.fadeOpacity(
+            to: 0.0,
+            duration: 2.0,
+            timing: .easeInOut,
+            waitForCompletion: true
+        )
+        
+        Logger.info("✨ Scene fade out complete")
     }
 }

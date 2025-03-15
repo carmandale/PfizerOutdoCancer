@@ -1,0 +1,283 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 2.0 (448.100.13)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    quatf xformOp:orient = (1, 0, 0, 0)
+    float3 xformOp:scale = (1, 1, 1)
+    float3 xformOp:translate = (0, 0, 0)
+    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+    def Material "M_bloodVessel"
+    {
+        reorder nameChildren = ["Image", "baseColor", "PBRSurface", "Image_1", "Normal", "NormalMapDecode", "Image_2", "Roughness", "Range", "Multiply_5", "Constant_1", "Texcoord", "Sin_2", "Divide", "Multiply_7", "Combine3_2", "Multiply_3", "Noise3D", "Separate2", "Combine3", "Multiply", "Combine3_1", "Multiply_6", "Remap", "Separate2_2", "Sin_1", "Multiply_1", "GeometryModifier", "Position", "CameraPosition", "Mix", "MTLDistance", "Clamp", "Multiply_2", "Multiply_4", "Multiply_8", "Clamp_1", "Multiply_9", "Mix_1", "WorleyNoise2D", "Swizzle", "TextureCoordinates", "CellNoise3D", "Swizzle_1", "Fractal3D", "Swizzle_2", "Time_1", "Divide_1", "Add", "Sin", "Time", "Transform2D", "Combine2", "Multiply_10", "Swizzle_3"]
+        token outputs:mtlx:surface.connect = </Root/M_bloodVessel/PBRSurface.outputs:out>
+        token outputs:realitykit:vertex.connect = None
+        float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (1953.0419, -466.45074)
+        int ui:nodegraph:realitykit:subgraphOutputs:stackingOrder = 2264
+
+        def Shader "Image"
+        {
+            uniform token info:id = "ND_image_color3"
+            color3f inputs:default
+            asset inputs:file.connect = </Root/M_bloodVessel/baseColor.outputs:out>
+            string inputs:filtertype
+            float2 inputs:texcoord
+            string inputs:vaddressmode
+            color3f outputs:out
+            float2 ui:nodegraph:node:pos = (-538.5121, -423.6962)
+            int ui:nodegraph:node:stackingOrder = 2264
+        }
+
+        def Shader "baseColor"
+        {
+            uniform token info:id = "ND_constant_filename"
+            asset inputs:value = @../Assets/Blood Vessel/textures/Baked.png@
+            asset outputs:out
+            float2 ui:nodegraph:node:pos = (-853.61755, -503.27823)
+            int ui:nodegraph:node:stackingOrder = 2501
+        }
+
+        def Shader "PBRSurface"
+        {
+            uniform token info:id = "ND_realitykit_pbr_surfaceshader"
+            float inputs:ambientOcclusion
+            color3f inputs:baseColor.connect = </Root/M_bloodVessel/Mix_1.outputs:out>
+            float inputs:clearcoat
+            float inputs:clearcoatRoughness
+            color3f inputs:emissiveColor.connect = </Root/M_bloodVessel/Mix_1.outputs:out>
+            bool inputs:hasPremultipliedAlpha
+            float inputs:metallic
+            float3 inputs:normal.connect = </Root/M_bloodVessel/NormalMapDecode.outputs:out>
+            float inputs:opacity
+            float inputs:opacityThreshold
+            float inputs:roughness.connect = </Root/M_bloodVessel/Mix_2.outputs:out>
+            float inputs:specular
+            token outputs:out
+            float2 ui:nodegraph:node:pos = (1405.5712, -473.8651)
+            int ui:nodegraph:node:stackingOrder = 2264
+        }
+
+        def Shader "Image_1"
+        {
+            uniform token info:id = "ND_image_vector3"
+            float3 inputs:default
+            asset inputs:file.connect = </Root/M_bloodVessel/Normal.outputs:out>
+            string inputs:filtertype
+            float2 inputs:texcoord
+            string inputs:uaddressmode
+            string inputs:vaddressmode
+            float3 outputs:out
+            float2 ui:nodegraph:node:pos = (-524.48083, -97.91886)
+            int ui:nodegraph:node:stackingOrder = 2264
+        }
+
+        def Shader "Normal"
+        {
+            uniform token info:id = "ND_constant_filename"
+            asset inputs:value = @../Assets/Blood Vessel/textures/txt_bloodVessel_mat_Normal_baked.png@
+            asset outputs:out
+            float2 ui:nodegraph:node:pos = (-787.5394, -151.28214)
+            int ui:nodegraph:node:stackingOrder = 2500
+        }
+
+        def Shader "NormalMapDecode"
+        {
+            uniform token info:id = "ND_normal_map_decode"
+            float3 inputs:in.connect = </Root/M_bloodVessel/Image_1.outputs:out>
+            float3 outputs:out
+            float2 ui:nodegraph:node:pos = (-224.25424, -137.96182)
+            int ui:nodegraph:node:stackingOrder = 2264
+        }
+
+        def Shader "Image_2"
+        {
+            uniform token info:id = "ND_image_float"
+            float inputs:default
+            asset inputs:file.connect = </Root/M_bloodVessel/Roughness.outputs:out>
+            string inputs:filtertype
+            float2 inputs:texcoord
+            string inputs:vaddressmode
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (-391.4105, 124.460045)
+            int ui:nodegraph:node:stackingOrder = 2264
+        }
+
+        def Shader "Roughness"
+        {
+            uniform token info:id = "ND_constant_filename"
+            asset inputs:value = @../Assets/Blood Vessel/textures/txt_bloodVessel_mat_Roughness_baked.jpg@
+            asset outputs:out
+            float2 ui:nodegraph:node:pos = (-744.67224, 89.47176)
+            int ui:nodegraph:node:stackingOrder = 2499
+        }
+
+        def Shader "Range"
+        {
+            uniform token info:id = "ND_range_color3"
+            bool inputs:doclamp
+            color3f inputs:gamma = (1, 1, 1) (
+                colorSpace = "lin_srgb"
+            )
+            color3f inputs:in.connect = </Root/M_bloodVessel/Image.outputs:out>
+            color3f outputs:out
+            float2 ui:nodegraph:node:pos = (-257.17612, -473.6376)
+            int ui:nodegraph:node:stackingOrder = 2264
+        }
+
+        def Shader "Position"
+        {
+            uniform token info:id = "ND_position_vector3"
+            string inputs:space = "world"
+            float3 outputs:out
+            float2 ui:nodegraph:node:pos = (-543.0219, -821.465)
+            int ui:nodegraph:node:stackingOrder = 2264
+        }
+
+        def Shader "CameraPosition"
+        {
+            uniform token info:id = "ND_realitykit_cameraposition_vector3"
+            float3 outputs:out
+            float2 ui:nodegraph:node:pos = (-519.18146, -683.9934)
+            int ui:nodegraph:node:stackingOrder = 2264
+        }
+
+        def Shader "Mix"
+        {
+            uniform token info:id = "ND_mix_color3"
+            color3f inputs:bg.connect = </Root/M_bloodVessel/Multiply_4.outputs:out>
+            color3f inputs:fg.connect = </Root/M_bloodVessel/Multiply_8.outputs:out>
+            float inputs:mix.connect = </Root/M_bloodVessel/Clamp.outputs:out>
+            color3f outputs:out
+            float2 ui:nodegraph:node:pos = (659.7001, -560.4061)
+            int ui:nodegraph:node:stackingOrder = 2264
+        }
+
+        def Shader "MTLDistance"
+        {
+            uniform token info:id = "ND_MTL_distance_vector3_float"
+            float3 inputs:x.connect = </Root/M_bloodVessel/Position.outputs:out>
+            float3 inputs:y.connect = </Root/M_bloodVessel/CameraPosition.outputs:out>
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (-242.12883, -782.136)
+            int ui:nodegraph:node:stackingOrder = 2264
+        }
+
+        def Shader "Clamp"
+        {
+            uniform token info:id = "ND_clamp_float"
+            float inputs:high
+            float inputs:in.connect = </Root/M_bloodVessel/Multiply_2.outputs:out>
+            float inputs:low
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (123.18727, -706.6309)
+            int ui:nodegraph:node:stackingOrder = 2264
+        }
+
+        def Shader "Multiply_2"
+        {
+            uniform token info:id = "ND_multiply_float"
+            float inputs:in1.connect = </Root/M_bloodVessel/MTLDistance.outputs:out>
+            float inputs:in2 = 0.01
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (-36.2309, -667.46893)
+            int ui:nodegraph:node:stackingOrder = 2264
+        }
+
+        def Shader "Multiply_4"
+        {
+            uniform token info:id = "ND_multiply_color3"
+            color3f inputs:in1.connect = </Root/M_bloodVessel/Range.outputs:out>
+            color3f inputs:in2 = (0.36447704, 0.36447704, 0.36447704) (
+                colorSpace = "lin_srgb"
+            )
+            color3f outputs:out
+            float2 ui:nodegraph:node:pos = (492.4302, -428.18094)
+            int ui:nodegraph:node:stackingOrder = 2264
+        }
+
+        def Shader "Multiply_8"
+        {
+            uniform token info:id = "ND_multiply_color3"
+            color3f inputs:in1.connect = </Root/M_bloodVessel/Range.outputs:out>
+            color3f inputs:in2
+            color3f outputs:out
+            float2 ui:nodegraph:node:pos = (430.88626, -502.93356)
+            int ui:nodegraph:node:stackingOrder = 2264
+        }
+
+        def Shader "Clamp_1"
+        {
+            uniform token info:id = "ND_clamp_float"
+            float inputs:high
+            float inputs:in.connect = </Root/M_bloodVessel/Multiply_9.outputs:out>
+            float inputs:low
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (429.6136, -867.9828)
+            int ui:nodegraph:node:stackingOrder = 2264
+        }
+
+        def Shader "Multiply_9"
+        {
+            uniform token info:id = "ND_multiply_float"
+            float inputs:in1.connect = </Root/M_bloodVessel/MTLDistance.outputs:out>
+            float inputs:in2 = 0.1
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (270.1954, -828.8208)
+            int ui:nodegraph:node:stackingOrder = 2264
+        }
+
+        def Shader "Mix_1"
+        {
+            uniform token info:id = "ND_mix_color3"
+            color3f inputs:bg.connect = None
+            color3f inputs:fg.connect = </Root/M_bloodVessel/Mix.outputs:out>
+            float inputs:mix.connect = </Root/M_bloodVessel/Clamp_1.outputs:out>
+            color3f outputs:out
+            float2 ui:nodegraph:node:pos = (890.54913, -651.31213)
+            int ui:nodegraph:node:stackingOrder = 2264
+        }
+
+        def Shader "Fractal3D_1"
+        {
+            uniform token info:id = "ND_fractal3d_float"
+            float inputs:amplitude = 1
+            float inputs:diminish = 0.6
+            float inputs:lacunarity = 3
+            int inputs:octaves = 10
+            float3 inputs:position
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (92.26613, -416.5899)
+            int ui:nodegraph:node:stackingOrder = 2264
+        }
+
+        def Shader "Add_1"
+        {
+            uniform token info:id = "ND_add_float"
+            float inputs:in1.connect = </Root/M_bloodVessel/Fractal3D_1.outputs:out>
+            float inputs:in2.connect = </Root/M_bloodVessel/Image_2.outputs:out>
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (654.90063, -252.36449)
+            int ui:nodegraph:node:stackingOrder = 2264
+        }
+
+        def Shader "Mix_2"
+        {
+            uniform token info:id = "ND_mix_float"
+            float inputs:bg.connect = </Root/M_bloodVessel/Image_2.outputs:out>
+            float inputs:fg.connect = </Root/M_bloodVessel/Add_1.outputs:out>
+            float inputs:mix = 0.4
+            float outputs:out
+            float2 ui:nodegraph:node:pos = (919.8382, -237.66565)
+            int ui:nodegraph:node:stackingOrder = 2264
+        }
+    }
+}
+

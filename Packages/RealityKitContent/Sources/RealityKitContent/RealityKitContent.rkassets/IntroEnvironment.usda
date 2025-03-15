@@ -1603,7 +1603,7 @@ def Xform "Root"
                                 }
                             )
                             {
-                                reorder nameChildren = ["Man_v5_wav", "Man_v6_2_wav", "Man_v7_2_wav", "ChannelAudio", "AudioLibrary"]
+                                reorder nameChildren = ["Man_v8_wav", "Man_v5_wav", "Man_v6_2_wav", "Man_v7_2_wav", "SpatialAudio", "AudioLibrary"]
                                 quatf xformOp:orient = (-4.371139e-8, 0, 1, 0)
                                 float3 xformOp:translate = (0, 0, 13.5)
                                 uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
@@ -1614,11 +1614,12 @@ def Xform "Root"
 
                                     def RealityKitDict "resources"
                                     {
-                                        string[] keys = ["Man_v5_wav", "Man_v6_2_wav", "Man_v7_2_wav"]
+                                        string[] keys = ["Man_v5_wav", "Man_v6_2_wav", "Man_v7_2_wav", "Man_v8_wav"]
                                         rel values = [
                                             </Root/sh0100_v01/sh0100_v01/PicturesRoot/intro/People_MSR/p2/p2_audio/Man_v5_wav>,
                                             </Root/sh0100_v01/sh0100_v01/PicturesRoot/intro/People_MSR/p2/p2_audio/Man_v6_2_wav>,
                                             </Root/sh0100_v01/sh0100_v01/PicturesRoot/intro/People_MSR/p2/p2_audio/Man_v7_2_wav>,
+                                            </Root/sh0100_v01/sh0100_v01/PicturesRoot/intro/People_MSR/p2/p2_audio/Man_v8_wav>,
                                         ]
                                     }
                                 }
@@ -1645,8 +1646,14 @@ def Xform "Root"
                                 {
                                     float directivityFocus = 1
                                     uniform token info:id = "RealityKit.SpatialAudio"
-                                    float reverbLevel = -10.004464
-                                    float rolloffFactor = 1
+                                    float reverbLevel = 0
+                                    float rolloffFactor = 0
+                                }
+
+                                def RealityKitAudioFile "Man_v8_wav"
+                                {
+                                    uniform asset file = @Assets/Intro/SpatialStems12122024/re_record/Man_v8.wav@
+                                    uniform bool shouldLoop = 0
                                 }
                             }
 
@@ -3318,9 +3325,9 @@ def Xform "Root"
             def RealityKitAction "Man"
             {
                 string actionKind = "audio"
-                string audioResourceName = "Man_v7_2_wav"
+                string audioResourceName = "Man_v8_wav"
                 bool controlPlayback = 1
-                double duration = 143.97716666666668
+                double duration = 29.363666666666667
                 uniform token info:id = "AF66B533-E527-4C45-A206-DC55D2CC4A78"
                 double startTime = 0
                 rel target = </Root/sh0100_v01/sh0100_v01/PicturesRoot/intro/People_MSR/p2/p2_audio>
@@ -3458,6 +3465,16 @@ def Xform "Root"
                         int priorityInGroup = 17
                     }
                 }
+
+                over "MeshPlane"
+                {
+                    def RealityKitComponent "MeshSorting"
+                    {
+                        rel group = </Root/Model_Sorting_Group>
+                        token info:id = "RealityKit.MeshSorting"
+                        int priorityInGroup = 17
+                    }
+                }
             }
         }
 
@@ -3481,6 +3498,19 @@ def Xform "Root"
                 over "Plane"
                 {
                     over "Plane"
+                    {
+                        float3 xformOp:translate = (0, 0, 0)
+                        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                        def RealityKitComponent "MeshSorting"
+                        {
+                            rel group = </Root/Model_Sorting_Group>
+                            token info:id = "RealityKit.MeshSorting"
+                            int priorityInGroup = 16
+                        }
+                    }
+
+                    over "MeshPlane"
                     {
                         def RealityKitComponent "MeshSorting"
                         {

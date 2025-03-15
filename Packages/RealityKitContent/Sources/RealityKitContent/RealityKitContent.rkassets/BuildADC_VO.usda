@@ -99,5 +99,17 @@ def Xform "Root"
         uniform asset file = @Audio/BuildADC_VO/pickups/VO_Pickup_03032025/BuildADC_VO_1_v03.wav@
         uniform bool shouldLoop = 0
     }
+
+    def RealityKitAudioFile "BuildADC_VO_1_v04_wav"
+    {
+        uniform asset file = @Audio/BuildADC_VO/pickups/BuildADC_VO_1_v04.wav@
+        uniform bool shouldLoop = 0
+    }
+
+    def RealityKitAudioFile "BuildADC_VO_3_v03_wav"
+    {
+        uniform asset file = @Audio/BuildADC_VO/pickups/BuildADC_VO_3_v03.wav@
+        uniform bool shouldLoop = 0
+    }
 }
 

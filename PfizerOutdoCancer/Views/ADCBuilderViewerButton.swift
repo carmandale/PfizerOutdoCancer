@@ -24,6 +24,9 @@ struct ADCBuilderViewerButton: View {
                 Task {
                     print("builder window status: \(appModel.isBuilderInstructionsOpen)")
                     print("setting builder window status to true")
+
+                    appModel.playMenuSelectSound()
+
                     appModel.isBuilderInstructionsOpen = true
                     await appModel.transitionToPhase(.building)
                 }

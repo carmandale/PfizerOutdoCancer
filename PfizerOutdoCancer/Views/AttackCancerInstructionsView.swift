@@ -88,6 +88,7 @@ struct AttackCancerInstructionsView: View {
                     NavigationButton(
                         title: appModel.isTutorialStarted ? "Attack Cancer!" : "Start Tutorial",
                         action: {
+                            appModel.playMenuSelectSound()
                             if !appModel.isTutorialStarted {
                                 Logger.info("\n🎓 Initiating tutorial sequence...")
                                 // Request head position update when ready

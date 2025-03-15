@@ -10,7 +10,7 @@
 
 def Xform "Root"
 {
-    reorder nameChildren = ["antibodyProtein_complex_assembled", "targetLinker", "targetPayload"]
+    reorder nameChildren = ["antibodyProtein_complex_assembled", "targetLinker", "targetPayload", "bubblepop_mp3", "EnvironmentLightingConfiguration", "bubblePop", "ADC_Builder_Attach_1_wav", "ADC_Builder_Attach_2_wav", "ADC_Builder_Attach_3_wav", "ADC_Builder_Attach_4_wav"]
     def "antibodyProtein_complex_assembled" (
         active = true
         references = @Assets/ADC/antibodyProtein_complex_assembled.usda@
@@ -244,6 +244,75 @@ def Xform "Root"
     {
         float environmentLightingWeight = 0
         uniform token info:id = "RealityKit.EnvironmentLightingConfiguration"
+    }
+
+    def RealityKitAudioFileGroup "bubblePop"
+    {
+        def RealityKitAudioFile "ADC_Builder_Attach_1_wav"
+        {
+            uniform asset file = @Audio/BuildADC_VO/ADC_Builder_Attach_1.wav@
+            uniform bool shouldLoop = 0
+        }
+
+        def RealityKitAudioFile "ADC_Builder_Attach_3_wav"
+        {
+            uniform asset file = @Audio/BuildADC_VO/ADC_Builder_Attach_3.wav@
+            uniform bool shouldLoop = 0
+        }
+
+        def RealityKitAudioFile "ADC_Builder_Attach_2_wav"
+        {
+            uniform asset file = @Audio/BuildADC_VO/ADC_Builder_Attach_2.wav@
+            uniform bool shouldLoop = 0
+        }
+
+        def RealityKitAudioFile "ADC_Builder_Attach_4_wav"
+        {
+            uniform asset file = @Audio/BuildADC_VO/ADC_Builder_Attach_4.wav@
+            uniform bool shouldLoop = 0
+        }
+    }
+
+    def RealityKitAudioFile "ADC_Builder_Attach_1_wav"
+    {
+        uniform asset file = @Audio/BuildADC_VO/ADC_Builder_Attach_1.wav@
+        uniform bool shouldLoop = 0
+    }
+
+    def RealityKitAudioFile "ADC_Builder_Attach_2_wav"
+    {
+        uniform asset file = @Audio/BuildADC_VO/ADC_Builder_Attach_2.wav@
+        uniform bool shouldLoop = 0
+    }
+
+    def RealityKitAudioFile "ADC_Builder_Attach_3_wav"
+    {
+        uniform asset file = @Audio/BuildADC_VO/ADC_Builder_Attach_3.wav@
+        uniform bool shouldLoop = 0
+    }
+
+    def RealityKitAudioFile "ADC_Builder_Attach_4_wav"
+    {
+        uniform asset file = @Audio/BuildADC_VO/ADC_Builder_Attach_4.wav@
+        uniform bool shouldLoop = 0
+    }
+
+    def RealityKitAudioFile "clickPop_wav"
+    {
+        uniform asset file = @Audio/BuildADC_VO/clickPop.wav@
+        uniform bool shouldLoop = 0
+    }
+
+    def RealityKitAudioFile "clickPop2_wav"
+    {
+        uniform asset file = @Audio/BuildADC_VO/clickPop2.wav@
+        uniform bool shouldLoop = 0
+    }
+
+    def RealityKitAudioFile "clickPop3_wav"
+    {
+        uniform asset file = @Audio/BuildADC_VO/clickPop3.wav@
+        uniform bool shouldLoop = 0
     }
 }
 

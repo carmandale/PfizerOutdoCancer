@@ -36,9 +36,13 @@ struct LoadingView: View {
         }
         .onChange(of: appModel.introState.isSetupComplete) { _, complete in
             if complete {
-                withAnimation(.easeOut(duration: 1.0)) {
-                    viewOpacity = 0.0
-                }
+                Logger.debug("Intro Setup Complete")
+            }
+        }
+        .onChange(of: appModel.introState.startButtonPressed) { _, complete in
+            Logger.debug("Start Button Pressed")
+            withAnimation(.easeOut(duration: 0.25)) {
+                viewOpacity = 0.0
             }
         }
         .onDisappear {
@@ -92,7 +96,7 @@ private struct LoadingBlock: View {
                     .padding()
                     .transition(.opacity)
                 
-                Text("build v54 - 2.21.25")
+                Text("build v55 - 3.14.25")
                     .foregroundStyle(.secondary)
                     .font(.caption)
                     .padding()

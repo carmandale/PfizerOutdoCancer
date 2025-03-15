@@ -39,7 +39,14 @@ extension AssetLoadingManager {
     // }
     
     /// Load and populate a complete lab scene
-    func loadPopulatedLabScene(progressCallback: ((Float) -> Void)? = nil) async throws -> Entity {
+    /// - Parameters:
+    ///   - progressCallback: Optional callback for tracking loading progress
+    ///   - excludeAssets: Array of asset name substrings to exclude (case-insensitive)
+    /// - Returns: A fully populated lab scene
+    func loadPopulatedLabScene(
+        progressCallback: ((Float) -> Void)? = nil,
+        excludeAssets: [String] = [] // ["beaker", "flask", "testtube"]
+    ) async throws -> Entity {
         Logger.debug("Starting to load populated lab scene")
         
         // Load the empty lab scene
@@ -51,10 +58,25 @@ extension AssetLoadingManager {
         let (emptyTransforms, totalCount) = findEmptyTransforms(in: emptyScene)
         Logger.debug("Found \(totalCount) empty transforms to populate")
         var loadedCount = 0
+        var skippedCount = 0
         
         // Process each empty transform
         for empty in emptyTransforms {
             if let assetName = extractAssetName(from: empty.name) {
+                // Check if the asset should be excluded
+                let shouldExclude = excludeAssets.contains { excludeName in
+                    assetName.lowercased().contains(excludeName.lowercased())
+                }
+                
+                if shouldExclude {
+                    Logger.debug("Excluding asset: \(assetName)")
+                    skippedCount += 1
+                    loadedCount += 1
+                    let progress = Float(loadedCount) / Float(totalCount)
+                    progressCallback?(progress)
+                    continue
+                }
+                
                 // Load or get cached asset
                 let asset = try await loadLabAsset(named: assetName)
                 
@@ -80,7 +102,7 @@ extension AssetLoadingManager {
             emptyScene.orientation = simd_quatf(angle: -.pi/2, axis: [1, 0, 0])
         }
         
-        Logger.debug("Populated lab scene assembly complete")
+        Logger.debug("Populated lab scene assembly complete. Excluded \(skippedCount) assets.")
         return emptyScene
     }
     
@@ -131,7 +153,14 @@ extension AssetLoadingManager {
     }
     
     /// Loads and assembles the complete lab environment on demand
-    func loadAssembledLab(progressCallback: ((Float) -> Void)? = nil) async throws -> Entity {
+    /// - Parameters:
+    ///   - progressCallback: Optional callback for tracking loading progress
+    ///   - excludeAssets: Array of asset name substrings to exclude (case-insensitive)
+    /// - Returns: A fully assembled lab environment
+    func loadAssembledLab(
+        progressCallback: ((Float) -> Void)? = nil,
+        excludeAssets: [String] = []
+    ) async throws -> Entity {
         Logger.debug("Starting lab environment assembly")
         
         // Check if we already have it cached
@@ -149,11 +178,14 @@ extension AssetLoadingManager {
         progressCallback?(0.2) // Report progress after loading environment
 
         // Use existing equipment population but with progress reporting
-        let equipmentScene = try await loadPopulatedLabScene(progressCallback: { progress in
-            // Scale the progress from 0.2-0.9 range
-            let scaledProgress = 0.2 + (progress * 0.7)
-            progressCallback?(scaledProgress)
-        })
+        let equipmentScene = try await loadPopulatedLabScene(
+            progressCallback: { progress in
+                // Scale the progress from 0.2-0.9 range
+                let scaledProgress = 0.2 + (progress * 0.7)
+                progressCallback?(scaledProgress)
+            },
+            excludeAssets: excludeAssets
+        )
         assetRoot.addChild(equipmentScene)
         
         // Use existing IBL setup

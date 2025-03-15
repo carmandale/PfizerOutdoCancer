@@ -16,6 +16,7 @@ struct ADCSelectorView: View {
                 
                 ADCCheckmarkButton(
                     action: {
+                        appModel.playMenuSelectSound()
                         // Update step state and advance
                         dataModel.stepStates[0].checkmarkClicked = true
                         dataModel.adcBuildStep = 1
@@ -40,6 +41,7 @@ struct ADCSelectorView: View {
                         print("ITR..Button 0 antibody pressed")
                         dataModel.selectedADCAntibody = 0
                         dataModel.stepStates[0].colorSelected = true
+                        dataModel.stepStates[0].checkmarkClicked = false
                     }
                     ADCButtonSquareWithOutline(imageName: "antibody1",
                                            outlineColor: Color.white,
@@ -51,6 +53,7 @@ struct ADCSelectorView: View {
                         print("ITR..Button 1 antibody pressed")
                         dataModel.selectedADCAntibody = 1
                         dataModel.stepStates[0].colorSelected = true
+                        dataModel.stepStates[0].checkmarkClicked = false
                     }
                     ADCButtonSquareWithOutline(imageName: "antibody2",
                                            outlineColor: Color.white,
@@ -62,6 +65,7 @@ struct ADCSelectorView: View {
                         print("ITR..Button 2 antibody pressed")
                         dataModel.selectedADCAntibody = 2
                         dataModel.stepStates[0].colorSelected = true
+                        dataModel.stepStates[0].checkmarkClicked = false
                     }
                 }
                 .padding(.bottom, 30)

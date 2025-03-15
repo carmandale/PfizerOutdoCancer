@@ -103,6 +103,9 @@ struct AttackCancerViewerButton: View {
                                 //     openWindow(id: AppModel.mainWindowId)
                                 //     appModel.isMainWindowOpen = true
                                 // }
+
+                                appModel.playMenuSelect2Sound()
+
                                 appModel.isInstructionsWindowOpen = true
                                 await appModel.transitionToPhase(.playing, adcDataModel: dataModel)
                             }

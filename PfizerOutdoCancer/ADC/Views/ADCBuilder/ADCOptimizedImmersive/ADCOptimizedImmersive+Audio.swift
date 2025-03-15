@@ -9,7 +9,7 @@ extension ADCOptimizedImmersive {
     
     func prepareAudioEntities() async {
         // Load audio resources
-        if let resource = try? await AudioFileResource(named: "/Root/bubblepop_mp3", from: "antibodyScene.usda", in: realityKitContentBundle) {
+        if let resource = try? await AudioFileResource(named: "/Root/clickPop3_wav", from: "antibodyScene.usda", in: realityKitContentBundle) {
             popAudioFileResource = resource
             os_log(.debug, "ITR..ADCOptimizedImmersive: ✅ Successfully loaded pop sound")
             
@@ -17,11 +17,11 @@ extension ADCOptimizedImmersive {
             let popSource = Entity()
             popSource.name = "PopSource"
             popSource.components.set(SpatialAudioComponent(
-                gain: 0.5,  // Reduce volume to 50%
+                gain: -6.0,  
                 directivity: .beam(focus: 1.0)
             ))
             if let popAudioFileResource = popAudioFileResource {
-                popAudioPlaybackController = popSource.prepareAudio(popAudioFileResource)
+                    popAudioPlaybackController = popSource.prepareAudio(popAudioFileResource)
                 if popAudioPlaybackController != nil {
                     os_log(.debug, "ITR..ADCOptimizedImmersive: ✅ Successfully prepared pop sound controller")
                 } else {
@@ -36,10 +36,10 @@ extension ADCOptimizedImmersive {
                 os_log(.debug, "ITR..ADCOptimizedImmersive: ✅ Successfully detached pop sound from main entity")
             }
         } else {
-            os_log(.error, "ITR..ADCOptimizedImmersive: ❌ Error loading pop sound from antibodyScene.usda")
+            os_log(.error, "ITR..ADCOptimizedImmersive: ❌ Error loading bubblePop file group from antibodyScene.usda")
         }
 
-        if let resource = try? await AudioFileResource(named: "/Root/BuildADC_VO_1_v03_wav", from: "BuildADC_VO.usda", in: realityKitContentBundle) {
+        if let resource = try? await AudioFileResource(named: "/Root/BuildADC_VO_1_v04_wav", from: "BuildADC_VO.usda", in: realityKitContentBundle) {
             vo1Audio = resource
             os_log(.debug, "ITR..ADCOptimizedImmersive: ✅ Successfully loaded VO1")
         }
@@ -47,7 +47,7 @@ extension ADCOptimizedImmersive {
             vo2Audio = resource
             os_log(.debug, "ITR..ADCOptimizedImmersive: ✅ Successfully loaded VO2")
         }
-        if let resource = try? await AudioFileResource(named: "/Root/BuildADC_VO_3_v02_wav", from: "BuildADC_VO.usda", in: realityKitContentBundle) {
+        if let resource = try? await AudioFileResource(named: "/Root/BuildADC_VO_3_v03_wav", from: "BuildADC_VO.usda", in: realityKitContentBundle) {
             vo3Audio = resource
             os_log(.debug, "ITR..ADCOptimizedImmersive: ✅ Successfully loaded VO3")
         }

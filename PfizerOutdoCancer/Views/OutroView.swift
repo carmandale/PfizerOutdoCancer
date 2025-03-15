@@ -62,13 +62,16 @@ struct OutroView: View {
                 print("📱 OutroViewModel: Setting up IBL lighting")
                 try await IBLUtility.addImageBasedLighting(to: root, imageName: "metro_noord_2k")
                 print("✅ OutroViewModel: Added IBL lighting")
+
+                root.opacity = 0.0
+                await root.fadeOpacity(to: 1.0, duration: 3.0, timing: .easeInOut)
             
 
             } catch {
                 print("❌ OutroView: Failed to load outro environment: \(error)")
             }
         }
-        .preferredSurroundingsEffect(surroundingsEffect)
+         .preferredSurroundingsEffect(surroundingsEffect)
         .task {
             // Wait for environment animation to complete
             try? await Task.sleep(for: .seconds(64))
@@ -78,9 +81,9 @@ struct OutroView: View {
         .onAppear {
             print("\n=== OutroView Appeared ===")
             // Add tint animation
-            withAnimation(.linear(duration: 30.0)) {
-                outroTintIntensity = 0.02
-            }
+            // withAnimation(.linear(duration: 30.0)) {
+            //     outroTintIntensity = 0.02
+            // }
         }
         .task {
             await appModel.trackingManager.processWorldTrackingUpdates()

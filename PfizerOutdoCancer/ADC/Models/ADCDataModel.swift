@@ -10,6 +10,8 @@ class ADCDataModel {
     var isHeadTrackingRootReady = false
     var shouldUpdateHeadPosition = false
     var isPositioningComplete = false
+
+    var showMainView = false
     
     var isReadyForInteraction: Bool {
         isRootSetupComplete && 
@@ -206,6 +208,8 @@ class ADCDataModel {
         isHeadTrackingRootReady = false
         shouldUpdateHeadPosition = false
         isPositioningComplete = false
+
+        showMainView = false
         
         Logger.info("""
         🧹 ADCDataModel Cleanup Complete:

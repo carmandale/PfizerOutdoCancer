@@ -136,6 +136,41 @@ struct IntroView: View {
                     } else {
                         Logger.debug("❌ AttackCancerAttachment target not found")
                     }
+                    
+                    // Set up the OutdoCancer title attachment
+                    // if let introEnvironment = appModel.introState.introEnvironment,
+                    //    let titleTarget = introEnvironment.findEntity(named: "outdoCancer") {
+                    //     Logger.debug("🎯 Found outdoCancer title target")
+                        
+                    //     // Hide the original title entity since we'll use our attachment instead
+                    //     titleTarget.isEnabled = false
+                        
+                    //     // Position the attachment at the same location as the title entity
+                    //     outdoCancerTitle.position    = titleTarget.position
+                    //     outdoCancerTitle.orientation = titleTarget.orientation
+                    //     outdoCancerTitle.scale       = SIMD3<Float>(5.0, 5.0, 5.0)  // Adjust scale as needed
+                        
+                    //     // Add to the same parent as the original title
+                    //     if let titleParent = titleTarget.parent {
+                    //         titleParent.addChild(outdoCancerTitle)
+                    //         Logger.debug("✅ Added outdoCancerTitle to title parent")
+                            
+                    //         // **Join the existing ModelSortGroup and set higher order for top rendering**
+                    //         if let meshPlane = introEnvironment.findEntity(named: "MeshPlane"),
+                    //            let sortGroupComp = meshPlane.components[ModelSortGroupComponent.self] {
+                    //             let existingGroup = sortGroupComp.group
+                    //             let higherOrder   = sortGroupComp.order + 1   // one above the plane’s order
+                    //             outdoCancerTitle.components.set(ModelSortGroupComponent(group: existingGroup, order: higherOrder))
+                    //             Logger.debug("✅ Assigned outdoCancerTitle to ModelSortGroup with higher sorting order")
+                    //         }
+                    //     } else {
+                    //         // Fallback: add to root if original parent not found
+                    //         root.addChild(outdoCancerTitle)
+                    //         Logger.debug("⚠️ Title parent not found, added outdoCancerTitle to root")
+                    //     }
+                    // } else {
+                    //     Logger.debug("❌ OutdoCancer title target not found")
+                    // }
                 }
             }
         } attachments: {
@@ -143,6 +178,10 @@ struct IntroView: View {
                 Attachment(id: "navToggle") {
                     NavToggleView()
                 }
+            }
+            // Add OutdoCancerWrapper attachment
+            Attachment(id: "outdoCancerTitle") {
+                OutdoCancerWrapper(showTitle: $appModel.introState.showTitleText)
             }
             Attachment(id: "ADCBuilderViewerButton") {
                 ADCBuilderViewerButton()

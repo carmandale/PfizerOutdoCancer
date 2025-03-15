@@ -1146,56 +1146,56 @@ def Xform "Root"
 
         def RealityKitAudioMixGroup "keyboard"
         {
-            float gain = -18.354097
+            float gain = -9.883119
             bool mute = 0
             float speed = 1
         }
 
         def RealityKitAudioMixGroup "conversation"
         {
-            float gain = -18.803421
+            float gain = -12.123757
             bool mute = 0
             float speed = 1
         }
 
         def RealityKitAudioMixGroup "beakers"
         {
-            float gain = -6.9054303
+            float gain = -5.5044656
             bool mute = 0
             float speed = 1
         }
 
         def RealityKitAudioMixGroup "Paperwork"
         {
-            float gain = -14.313657
+            float gain = -7.2506123
             bool mute = 0
             float speed = 1
         }
 
         def RealityKitAudioMixGroup "ambience"
         {
-            float gain = -13.232587
+            float gain = -9.300873
             bool mute = 0
             float speed = 1
         }
 
         def RealityKitAudioMixGroup "podcast"
         {
-            float gain = -17.664862
+            float gain = -10.222664
             bool mute = 0
             float speed = 1
         }
 
         def RealityKitAudioMixGroup "ventHood"
         {
-            float gain = -18.280783
+            float gain = -11.940761
             bool mute = 0
             float speed = 1
         }
 
         def RealityKitAudioMixGroup "fileCabinet"
         {
-            float gain = -16.49928
+            float gain = -9.2028475
             bool mute = 0
             float speed = 1
         }

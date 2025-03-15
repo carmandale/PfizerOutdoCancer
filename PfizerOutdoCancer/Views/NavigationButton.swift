@@ -127,7 +127,7 @@ struct NavigationButton: View {
 }
 
 struct ScalableButtonStyle: ButtonStyle {
-    var scaleFactor: CGFloat = AppModel.UIConstants.buttonExpandScale
+    var scaleFactor: CGFloat = AppModel.UIConstants.buttonPressScale
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
@@ -137,7 +137,7 @@ struct ScalableButtonStyle: ButtonStyle {
 }
 
 struct ScalableGlassButtonStyle: ButtonStyle {
-    var scaleFactor: CGFloat = AppModel.UIConstants.buttonExpandScale
+    var scaleFactor: CGFloat = AppModel.UIConstants.buttonPressScale
     var cornerRadius: CGFloat = AppModel.UIConstants.buttonCornerRadius
 
     func makeBody(configuration: Configuration) -> some View {

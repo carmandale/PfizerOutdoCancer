@@ -9,7 +9,7 @@ reorder rootPrims = ["Root", "GridMaterial"]
 
 def Xform "Root"
 {
-    reorder nameChildren = ["BloodVesselAudio", "RCP_BehaviorsContainer", "OnAddedToScene", "bloodVessel_v004_clean", "SFX", "Colliders", "VO"]
+    reorder nameChildren = ["BloodVesselAudio", "RCP_BehaviorsContainer", "OnAddedToScene", "bloodVessel_v004_clean", "SFX", "Colliders", "AudioMixGroups", "Particulate", "M_bloodVessel"]
     rel material:binding = None (
         bindMaterialAs = "weakerThanDescendants"
     )
@@ -26,7 +26,7 @@ def Xform "Root"
                 bool controlPlayback = 1
                 double duration = 157.78227083333334
                 uniform token info:id = "06E47B31-9ACA-4B2B-B3F9-6B1EFED449DA"
-                double loopCount = 1
+                double loopCount = 0
                 double startTime = 0
                 rel target = </Root/SFX/Left>
 
@@ -45,6 +45,7 @@ def Xform "Root"
                 bool controlPlayback = 1
                 double duration = 157.78227083333334
                 uniform token info:id = "B524334B-AE64-41AB-A050-C2466CE416AB"
+                double loopCount = 0
                 double startTime = 0
                 rel target = </Root/SFX/Right>
 
@@ -63,6 +64,7 @@ def Xform "Root"
                 bool controlPlayback = 1
                 double duration = 157.78227083333334
                 uniform token info:id = "3FA49A09-9F34-48C9-81A2-B0D795FB12EE"
+                double loopCount = 0
                 double startTime = 0
                 rel target = </Root/SFX/Front_Right_Upper>
 
@@ -81,6 +83,7 @@ def Xform "Root"
                 bool controlPlayback = 1
                 double duration = 157.78227083333334
                 uniform token info:id = "16BE7026-4956-44B9-AE1D-43C4CD1A2222"
+                double loopCount = 0
                 double startTime = 0
                 rel target = </Root/SFX/Front_Left_Upper>
 
@@ -99,6 +102,7 @@ def Xform "Root"
                 bool controlPlayback = 1
                 double duration = 157.78227083333334
                 uniform token info:id = "45BE8435-1B89-4BC4-8777-E74CE39CAF9E"
+                double loopCount = 0
                 double startTime = 0
                 rel target = </Root/SFX/Rear_Left>
 
@@ -117,6 +121,7 @@ def Xform "Root"
                 bool controlPlayback = 1
                 double duration = 157.78227083333334
                 uniform token info:id = "B9F1673E-78E8-4792-8463-7ED27749973F"
+                double loopCount = 0
                 double startTime = 0
                 rel target = </Root/SFX/Rear_Right>
 
@@ -135,6 +140,7 @@ def Xform "Root"
                 bool controlPlayback = 1
                 double duration = 157.78227083333334
                 uniform token info:id = "D2A29602-6B86-4AE4-8191-4AD312192D73"
+                double loopCount = 0
                 double startTime = 0
                 rel target = </Root/SFX/Front_Right_Lower>
 
@@ -153,6 +159,7 @@ def Xform "Root"
                 bool controlPlayback = 1
                 double duration = 157.78227083333334
                 uniform token info:id = "A5563B30-C2A0-4189-ABB9-9419EF03E708"
+                double loopCount = 0
                 double startTime = 0
                 rel target = </Root/SFX/Front_Left_Lower>
 
@@ -211,6 +218,41 @@ def Xform "Root"
         {
             uniform token info:id = "RealityKit.InputTarget"
         }
+
+        over "_materials"
+        {
+            over "bloodVessel_mat_002"
+            {
+                token outputs:mtlx:surface
+                token outputs:realitykit:vertex
+                float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (0, 110.5)
+            }
+        }
+
+        over "bloodVessel_curvedEnds"
+        {
+            over "bloodVessel_low_001" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = </Root/bloodVessel_v004_clean/_materials/bloodVessel_mat_002> (
+                    bindMaterialAs = "weakerThanDescendants"
+                )
+                uniform token subdivisionScheme = "none"
+            }
+        }
+
+        over "bloodVessel_low_001"
+        {
+            over "bloodVessel_low_001" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = </Root/M_bloodVessel> (
+                    bindMaterialAs = "weakerThanDescendants"
+                )
+            }
+        }
     }
 
     def Xform "SFX" (
@@ -244,7 +286,7 @@ def Xform "Root"
             {
                 float directivityFocus = 0
                 uniform token info:id = "RealityKit.SpatialAudio"
-                float rolloffFactor = 1
+                float rolloffFactor = 0
             }
         }
 
@@ -275,7 +317,7 @@ def Xform "Root"
             {
                 float directivityFocus = 0
                 uniform token info:id = "RealityKit.SpatialAudio"
-                float rolloffFactor = 1
+                float rolloffFactor = 0
             }
         }
 
@@ -304,9 +346,9 @@ def Xform "Root"
 
             def RealityKitComponent "SpatialAudio"
             {
-                float directivityFocus = 1
+                float directivityFocus = 0
                 uniform token info:id = "RealityKit.SpatialAudio"
-                float rolloffFactor = 1
+                float rolloffFactor = 0
             }
         }
 
@@ -335,9 +377,9 @@ def Xform "Root"
 
             def RealityKitComponent "SpatialAudio"
             {
-                float directivityFocus = 1
+                float directivityFocus = 0
                 uniform token info:id = "RealityKit.SpatialAudio"
-                float rolloffFactor = 1
+                float rolloffFactor = 0
             }
         }
 
@@ -366,9 +408,9 @@ def Xform "Root"
 
             def RealityKitComponent "SpatialAudio"
             {
-                float directivityFocus = 1
+                float directivityFocus = 0
                 uniform token info:id = "RealityKit.SpatialAudio"
-                float rolloffFactor = 1
+                float rolloffFactor = 0
             }
         }
 
@@ -397,9 +439,9 @@ def Xform "Root"
 
             def RealityKitComponent "SpatialAudio"
             {
-                float directivityFocus = 1
+                float directivityFocus = 0
                 uniform token info:id = "RealityKit.SpatialAudio"
-                float rolloffFactor = 1
+                float rolloffFactor = 0
             }
         }
 
@@ -407,28 +449,28 @@ def Xform "Root"
         {
             uniform asset file = @Audio/Blood_Vessel_Ambience_11252024/Ambience 1.cm.L.wav@
             rel mixGroup = </Root/AudioMixGroups/MixGroup>
-            uniform bool shouldLoop = 0
+            uniform bool shouldLoop = 1
         }
 
         def RealityKitAudioFile "Ambience_1_cm_R_wav"
         {
             uniform asset file = @Audio/Blood_Vessel_Ambience_11252024/Ambience 1.cm.R.wav@
             rel mixGroup = </Root/AudioMixGroups/MixGroup>
-            uniform bool shouldLoop = 0
+            uniform bool shouldLoop = 1
         }
 
         def RealityKitAudioFile "Ambience_2_cm_L_wav"
         {
             uniform asset file = @Audio/Blood_Vessel_Ambience_11252024/Ambience 2.cm.L.wav@
             rel mixGroup = </Root/AudioMixGroups/MixGroup>
-            uniform bool shouldLoop = 0
+            uniform bool shouldLoop = 1
         }
 
         def RealityKitAudioFile "Ambience_2_cm_R_wav"
         {
             uniform asset file = @Audio/Blood_Vessel_Ambience_11252024/Ambience 2.cm.R.wav@
             rel mixGroup = </Root/AudioMixGroups/MixGroup>
-            uniform bool shouldLoop = 0
+            uniform bool shouldLoop = 1
         }
 
         def Xform "Front_Right_Lower" (
@@ -460,7 +502,7 @@ def Xform "Root"
             {
                 float directivityFocus = 1
                 uniform token info:id = "RealityKit.SpatialAudio"
-                float rolloffFactor = 1
+                float rolloffFactor = 0
             }
         }
 
@@ -493,7 +535,7 @@ def Xform "Root"
             {
                 float directivityFocus = 1
                 uniform token info:id = "RealityKit.SpatialAudio"
-                float rolloffFactor = 1
+                float rolloffFactor = 0
             }
         }
 
@@ -501,28 +543,28 @@ def Xform "Root"
         {
             uniform asset file = @Audio/Blood_Vessel_Ambience_11252024/Ambience 3.cm.L.wav@
             rel mixGroup = </Root/AudioMixGroups/MixGroup>
-            uniform bool shouldLoop = 0
+            uniform bool shouldLoop = 1
         }
 
         def RealityKitAudioFile "Ambience_3_cm_R_wav"
         {
             uniform asset file = @Audio/Blood_Vessel_Ambience_11252024/Ambience 3.cm.R.wav@
             rel mixGroup = </Root/AudioMixGroups/MixGroup>
-            uniform bool shouldLoop = 0
+            uniform bool shouldLoop = 1
         }
 
         def RealityKitAudioFile "Heartbeat_cm_L_wav"
         {
             uniform asset file = @Audio/Blood_Vessel_Ambience_11252024/Heartbeat.cm.L.wav@
             rel mixGroup = </Root/AudioMixGroups/MixGroup>
-            uniform bool shouldLoop = 0
+            uniform bool shouldLoop = 1
         }
 
         def RealityKitAudioFile "Heartbeat_cm_R_wav"
         {
             uniform asset file = @Audio/Blood_Vessel_Ambience_11252024/Heartbeat.cm.R.wav@
             rel mixGroup = </Root/AudioMixGroups/MixGroup>
-            uniform bool shouldLoop = 0
+            uniform bool shouldLoop = 1
         }
     }
 
@@ -1031,6 +1073,88 @@ def Xform "Root"
             bool mute = 0
             float speed = 1
         }
+    }
+
+    def Xform "Particulate" (
+        active = true
+    )
+    {
+        def Xform "ParticleEmitter" (
+            customData = {
+                float3 rotationEulerHint = (1.5707964, 0, 0)
+            }
+        )
+        {
+            quatf xformOp:orient = (0.70710677, 0.70710677, 0, 0)
+            float3 xformOp:scale = (1, 1, 1)
+            float3 xformOp:translate = (-4.7683716e-7, 0, -1)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            def RealityKitComponent "VFXEmitter"
+            {
+                token info:id = "RealityKit.VFXEmitter"
+
+                def RealityKitStruct "currentState"
+                {
+                    token emitterShape = "Plane"
+                    float particleSpeed = 0.03
+                    float particleSpeedVariation = 0.05
+                    float3 shapeSize = (2, 2, 2)
+                    double warmupDuration = 30
+
+                    def RealityKitStruct "mainEmitter"
+                    {
+                        float birthRate = 25
+                        float4 endColorA = (0.50232375, 0.11842708, 0.114736095, 1)
+                        float noiseScale = 0.5
+                        float noiseStrength = 0.1
+                        token opacityOverLife = "GradualFadeInOut"
+                        double particleLifeSpan = 20
+                        float particleSize = 0.005
+                        float sizeMultiplierAtEndOfLifespan = 0.001
+                        float4 startColorA = (0.37192374, 0.21935011, 0.21836881, 1)
+                        bool useEndColor = 1
+                        bool useEndColorRange = 0
+                        bool useStartColorRange = 0
+                        float vortexStrength = 0.01
+                    }
+
+                    def RealityKitStruct "spawnedEmitter"
+                    {
+                    }
+                }
+            }
+        }
+    }
+
+    def Cube "Cube" (
+        active = false
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = </Root/Cube/DefaultMaterial>
+        double size = 2
+
+        def Material "DefaultMaterial"
+        {
+            prepend token outputs:surface.connect = </Root/Cube/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
+
+            def Shader "DefaultSurfaceShader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (1, 1, 1)
+                float inputs:roughness = 0.75
+                token outputs:surface
+            }
+        }
+    }
+
+    def "M_bloodVessel" (
+        active = true
+        prepend references = @Materials/M_bloodVessel.usda@
+    )
+    {
+        float3 xformOp:scale = (1, 1, 1)
     }
 }
 

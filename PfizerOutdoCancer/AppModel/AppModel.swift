@@ -10,6 +10,7 @@ import RealityKit
 import RealityKitContent
 import ARKit
 import os
+import AVFoundation
 
 // MARK: - App Constants
 extension AppModel {
@@ -48,7 +49,7 @@ extension AppModel {
         static let buttonPaddingHorizontal: CGFloat = 24
         static let buttonPaddingVertical: CGFloat = 16
         static let buttonExpandScale: CGFloat = 1.1
-        static let buttonPressScale: CGFloat = 0.85
+        static let buttonPressScale: CGFloat = 0.75
         
         // Animation Durations
         static let buttonHoverDuration: CGFloat = 0.2
@@ -308,7 +309,10 @@ final class AppModel {
         hopeMeterTimer?.invalidate()
         hopeMeterTimer = nil
     }
-    
+
+    // MARK: - Audio Properties
+    var avAudioPlayers: [String: AVAudioPlayer] = [:]
+
     // MARK: - Initialization
     init() {
         self.gameState = AttackCancerViewModel()
@@ -324,6 +328,11 @@ final class AppModel {
         self.gameState.handTracking = self.trackingManager.handTrackingManager
         self.trackingManager.appModel = self  // Set the reference to AppModel
         Logger.debug("AppModel init() - Instance: \(ObjectIdentifier(self))")
+        
+        // Load UI sounds
+        Task {
+            loadAVSounds()  // Load AVFoundation sounds too
+        }
     }
     
     // MARK: - Phase Management
@@ -563,6 +572,9 @@ final class AppModel {
     private func cleanupCurrentPhase(for newPhase: AppPhase, adcDataModel: ADCDataModel?) async {
         switch currentPhase {
         case .intro:
+            await introState.fadeOutScene()
+            try? await Task.sleep(for: .seconds(0.5))
+
             introState.cleanup()
             await assetLoadingManager.releaseIntroEnvironment()
             labState.cleanup()

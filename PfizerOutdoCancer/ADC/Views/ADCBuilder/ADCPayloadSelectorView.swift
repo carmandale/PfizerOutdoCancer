@@ -22,6 +22,7 @@ struct ADCPayloadSelectorView: View {
                 
                 ADCCheckmarkButton(
                     action: {
+                        appModel.playMenuSelectSound()
                         // Update step state and advance
                         dataModel.stepStates[2].checkmarkClicked = true
                         dataModel.adcBuildStep = 3
@@ -46,6 +47,7 @@ struct ADCPayloadSelectorView: View {
                     print("ITR..Button 0 pressed")
                     dataModel.selectedPayloadType = 0
                     dataModel.stepStates[2].colorSelected = true
+                    dataModel.stepStates[2].checkmarkClicked = false
                 }
                 ADCButtonSquareWithOutline(imageName: "payload1",
                                         outlineColor: Color.white,
@@ -57,6 +59,7 @@ struct ADCPayloadSelectorView: View {
                     print("ITR..Button 1 pressed")
                     dataModel.selectedPayloadType = 1
                     dataModel.stepStates[2].colorSelected = true
+                    dataModel.stepStates[2].checkmarkClicked = false
                 }
                 ADCButtonSquareWithOutline(imageName: "payload2",
                                         outlineColor: Color.white,
@@ -68,6 +71,7 @@ struct ADCPayloadSelectorView: View {
                     print("ITR..Button 2 pressed")
                     dataModel.selectedPayloadType = 2
                     dataModel.stepStates[2].colorSelected = true
+                    dataModel.stepStates[2].checkmarkClicked = false
                 }
                 
                 }
