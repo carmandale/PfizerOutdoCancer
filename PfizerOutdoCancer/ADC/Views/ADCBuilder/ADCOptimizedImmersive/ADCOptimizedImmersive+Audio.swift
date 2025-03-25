@@ -39,19 +39,19 @@ extension ADCOptimizedImmersive {
             os_log(.error, "ITR..ADCOptimizedImmersive: ❌ Error loading bubblePop file group from antibodyScene.usda")
         }
 
-        if let resource = try? await AudioFileResource(named: "/Root/BuildADC_VO_1_v04_wav", from: "BuildADC_VO.usda", in: realityKitContentBundle) {
+        if let resource = try? await AudioFileResource(named: "/Root/v07_785793_buildADC_VO_1_wav", from: "BuildADC_VO.usda", in: realityKitContentBundle) {
             vo1Audio = resource
             os_log(.debug, "ITR..ADCOptimizedImmersive: ✅ Successfully loaded VO1")
         }
-        if let resource = try? await AudioFileResource(named: "/Root/BuildADC_VO_2_v02_wav", from: "BuildADC_VO.usda", in: realityKitContentBundle) {
+        if let resource = try? await AudioFileResource(named: "/Root/v07_785793_buildADC_VO_2_wav", from: "BuildADC_VO.usda", in: realityKitContentBundle) {
             vo2Audio = resource
             os_log(.debug, "ITR..ADCOptimizedImmersive: ✅ Successfully loaded VO2")
         }
-        if let resource = try? await AudioFileResource(named: "/Root/BuildADC_VO_3_v03_wav", from: "BuildADC_VO.usda", in: realityKitContentBundle) {
+        if let resource = try? await AudioFileResource(named: "/Root/v07_785793_buildADC_VO_3_wav", from: "BuildADC_VO.usda", in: realityKitContentBundle) {
             vo3Audio = resource
             os_log(.debug, "ITR..ADCOptimizedImmersive: ✅ Successfully loaded VO3")
         }
-        if let resource = try? await AudioFileResource(named: "/Root/BuildADC_VO_4_v02_wav", from: "BuildADC_VO.usda", in: realityKitContentBundle) {
+        if let resource = try? await AudioFileResource(named: "/Root/v07_785793_buildADC_VO_4_wav", from: "BuildADC_VO.usda", in: realityKitContentBundle) {
             vo4Audio = resource
             os_log(.debug, "ITR..ADCOptimizedImmersive: ✅ Successfully loaded VO4")
         }
@@ -59,7 +59,7 @@ extension ADCOptimizedImmersive {
             completionAudio = resource
             os_log(.debug, "ITR..ADCOptimizedImmersive: ✅ Successfully loaded completion sound")
         }
-        if let resource = try? await AudioFileResource(named: "/Root/niceJob_v02_wav", from: "BuildADC_VO.usda", in: realityKitContentBundle) {
+        if let resource = try? await AudioFileResource(named: "/Root/v07_785793_nice_job_wav", from: "BuildADC_VO.usda", in: realityKitContentBundle) {
             niceJobAudio = resource
             os_log(.debug, "ITR..ADCOptimizedImmersive: ✅ Successfully loaded nice job sound")
         }
@@ -69,8 +69,14 @@ extension ADCOptimizedImmersive {
         voiceOverSource.name = "VoiceOverSource"
 
         // Conditionally set up the audio entity to be spatial or channel-based
-        if !useChannelAudioForVO { // Only add the spatial component if NOT using channel audio
+        if useChannelAudioForVO {
+            voiceOverSource.components.set(ChannelAudioComponent(
+                gain: 0.0  // 0 dB = unity gain
+            ))
+            os_log(.debug, "ITR..ADCOptimizedImmersive: ✅ Using channel audio for voice over")
+        } else {
             voiceOverSource.components.set(SpatialAudioComponent(directivity: .beam(focus: 1.0)))
+            os_log(.debug, "ITR..ADCOptimizedImmersive: ✅ Using spatial audio for voice over")
         }
 
         if let mainEntity {
@@ -104,6 +110,29 @@ extension ADCOptimizedImmersive {
         }
     }
 
+    func toggleVOAudioMode() {
+        // Update the audio component
+        if let voEntity = voiceOverAudioEntity {
+            // Remove existing audio components using proper syntax
+            voEntity.components[SpatialAudioComponent.self] = nil
+            voEntity.components[ChannelAudioComponent.self] = nil
+            
+            // Toggle the property in the main class
+            useChannelAudioForVO.toggle()
+            
+            // Add the appropriate component
+            if useChannelAudioForVO {
+                voEntity.components.set(ChannelAudioComponent(
+                    gain: 0.0  // 0 dB = unity gain
+                ))
+                os_log(.debug, "ITR..toggleVOAudioMode: Switched to channel audio")
+            } else {
+                voEntity.components.set(SpatialAudioComponent(directivity: .beam(focus: 1.0)))
+                os_log(.debug, "ITR..toggleVOAudioMode: Switched to spatial audio")
+            }
+        }
+    }
+
     func playPopSound() {
         os_log(.debug, "ITR..playPopSound(): Starting pop sound playback...")
         
@@ -124,8 +153,12 @@ extension ADCOptimizedImmersive {
     }
 
     @MainActor
-    func playSpatialAudio(step: Int) async throws {
-        os_log(.debug, "ITR..playSpatialAudio(): Playing spatial audio for step \(step)")
+    /// Plays voice over audio for the specified step.
+    /// Uses channel-based audio if `useChannelAudioForVO` is true, 
+    /// otherwise uses spatial audio.
+    /// - Parameter step: The step index (0-3) to play voice over for
+    func playVoiceOver(step: Int) async throws {
+        os_log(.debug, "ITR..playVoiceOver(): Playing voice over for step \(step) (using channel audio: \(useChannelAudioForVO))")
         
         // Only check VO played state for steps 0-2
         if step != 3 {  // Skip check for step 3
@@ -149,7 +182,7 @@ extension ADCOptimizedImmersive {
                   let niceJobAudio,
                   let vo4Audio,
                   let voEntity = voiceOverAudioEntity else {
-                os_log(.error, "ITR..playSpatialAudio(): Missing required audio or entity for step 3")
+                os_log(.error, "ITR..playVoiceOver(): Missing required audio or entity for step 3")
                 throw NSError(domain: "ADCOptimizedImmersive", code: -1, userInfo: [NSLocalizedDescriptionKey: "Missing required audio or entity for step 3"])
             }
             
@@ -157,22 +190,22 @@ extension ADCOptimizedImmersive {
             await withCheckedContinuation { continuation in
                 let completionController = voEntity.prepareAudio(completionAudio)
                 completionController.completionHandler = {
-                    os_log(.debug, "ITR..playSpatialAudio(): Completion sound finished")
+                    os_log(.debug, "ITR..playVoiceOver(): Completion sound finished")
                     continuation.resume()
                 }
                 completionController.play()
-                os_log(.debug, "ITR..playSpatialAudio(): Started playing completion sound")
+                os_log(.debug, "ITR..playVoiceOver(): Started playing completion sound")
             }
             
             // 2. Play nice job audio and wait for it to finish
             await withCheckedContinuation { continuation in
                 let niceJobController = voEntity.prepareAudio(niceJobAudio)
                 niceJobController.completionHandler = {
-                    os_log(.debug, "ITR..playSpatialAudio(): Nice job audio finished")
+                    os_log(.debug, "ITR..playVoiceOver(): Nice job audio finished")
                     continuation.resume()
                 }
                 niceJobController.play()
-                os_log(.debug, "ITR..playSpatialAudio(): Started playing nice job audio")
+                os_log(.debug, "ITR..playVoiceOver(): Started playing nice job audio")
             }
             
             // 3. Play VO 4 with progress
@@ -197,7 +230,7 @@ extension ADCOptimizedImmersive {
                     }
                 }
                 
-                os_log(.debug, "ITR..playSpatialAudio(): Started playing VO 4")
+                os_log(.debug, "ITR..playVoiceOver(): Started playing VO 4")
             }
         }
         
@@ -211,7 +244,7 @@ extension ADCOptimizedImmersive {
         
         guard let voResource,
               let voEntity = voiceOverAudioEntity else {
-            os_log(.error, "ITR..playSpatialAudio(): Missing VO resource or entity for step \(step)")
+            os_log(.error, "ITR..playVoiceOver(): Missing VO resource or entity for step \(step)")
             throw NSError(domain: "ADCOptimizedImmersive", code: -1, userInfo: [NSLocalizedDescriptionKey: "Missing VO resource or entity"])
         }
         
@@ -237,7 +270,7 @@ extension ADCOptimizedImmersive {
                 }
             }
             
-            os_log(.debug, "ITR..playSpatialAudio(): Started playing VO for step \(step)")
+            os_log(.debug, "ITR..playVoiceOver(): Started playing VO for step \(step)")
         }
     }
 

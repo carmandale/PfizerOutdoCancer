@@ -62,10 +62,10 @@ class ADCDataModel {
     // Voice-over progress tracking
     public var voiceOverProgress: Double = 0.0
     let voiceOverDurations: [Int: TimeInterval] = [
-        0: 18.0,  // VO1
-        1: 21.0,  // VO2
-        2: 27.0,  // VO3
-        3: 15.0   // VO4
+        0: 21.0,  // VO1
+        1: 22.0,  // VO2
+        2: 30.0,  // VO3
+        3: 16.0   // VO4
     ]
     
     // Updated Navigation Control

@@ -1828,7 +1828,7 @@ def Xform "Root"
             }
         )
         {
-            reorder nameChildren = ["Narrator_wav", "SpatialAudio", "AudioLibrary"]
+            reorder nameChildren = ["v07_785793_outro_wav", "Narrator_wav", "ChannelAudio", "AudioLibrary"]
             float2 ui:nodegraph:node:pos = (60, 60)
             int ui:nodegraph:node:stackingOrder = 3
             quatf xformOp:orient = (-4.371139e-8, 0, 1, 0)
@@ -1842,21 +1842,20 @@ def Xform "Root"
 
                 def RealityKitDict "resources"
                 {
-                    string[] keys = ["Narrator_wav"]
-                    rel values = </Root/AUDIO/Narrator/Narrator_wav>
+                    string[] keys = ["v07_785793_outro_wav"]
+                    rel values = </Root/AUDIO/Narrator/v07_785793_outro_wav>
                 }
-            }
-
-            def RealityKitAudioFile "Narrator_wav"
-            {
-                uniform asset file = @Audio/outro/030125_new_record/Narrator.wav@
-                rel mixGroup = </Root/AudioMixGroups/VO>
-                uniform bool shouldLoop = 0
             }
 
             def RealityKitComponent "ChannelAudio"
             {
                 uniform token info:id = "RealityKit.ChannelAudio"
+            }
+
+            def RealityKitAudioFile "v07_785793_outro_wav"
+            {
+                uniform asset file = @Assets/Intro/SpatialStems12122024/032425/v07_785793_outro.wav@
+                uniform bool shouldLoop = 0
             }
         }
 
@@ -2274,7 +2273,7 @@ def Xform "Root"
             def RealityKitAction "Narrator"
             {
                 string actionKind = "audio"
-                string audioResourceName = "Narrator_wav"
+                string audioResourceName = "v07_785793_outro_wav"
                 bool controlPlayback = 1
                 double duration = 61
                 uniform token info:id = "3CC5AABC-E1ED-4E2A-9475-36218B95CDEA"

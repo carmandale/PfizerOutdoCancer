@@ -102,6 +102,21 @@ extension AttackCancerViewModel {
         self.greatJobAudioSource = greatJobSource
         Logger.audio("✅ Created great job sequence source")
         
+        // Create alert sequence source with same settings as great job
+        let alertSource = Entity()
+        alertSource.name = "AlertSequenceSource"
+        alertSource.position = SIMD3<Float>(0, 0, 0.75)
+        alertSource.components.set(SpatialAudioComponent(
+            gain: .init(-20.0),           // -20.0 dB
+            directLevel: .init(0.0),    // 0.0 dB
+            reverbLevel: .init(-7.1),   // -7.1 dB
+            directivity: .beam(focus: 0.3),
+            distanceAttenuation: .rolloff(factor: 1.0)  // Rolloff Factor: 0.5
+        ))
+        headTrackingRoot.addChild(alertSource)
+        self.alertAudioSource = alertSource
+        Logger.audio("✅ Created alert sequence source")
+        
         // Load all audio resources
         do {
             // Load tone_cross
@@ -131,9 +146,14 @@ extension AttackCancerViewModel {
             Logger.audio("✅ Successfully loaded hope_restored")
             
             // Load great job
-            let greatJobResource = try await AudioFileResource(named: "/Root/GreatJob_v02_wav", from: "PressStart_VO.usda", in: realityKitContentBundle)
+            let greatJobResource = try await AudioFileResource(named: "/Root/v07_785793_great_job_wav", from: "PressStart_VO.usda", in: realityKitContentBundle)
             loadedAudioResources["great_job"] = greatJobResource
             Logger.audio("✅ Successfully loaded great_job")
+            
+            // Load alert sound
+            let alertResource = try await AudioFileResource(named: "/Root/alert_wav", from: "PressStart_VO.usda", in: realityKitContentBundle)
+            loadedAudioResources["alert"] = alertResource
+            Logger.audio("✅ Successfully loaded alert")
             
             Logger.audio("✅ End game audio fully prepared with \(loadedAudioResources.count) sounds")
         } catch {
@@ -234,5 +254,26 @@ extension AttackCancerViewModel {
         hasPlayedGreatJob = true
         
         Logger.audio("✅ Started playing great_job")
+    }
+    
+    /// Play the alert sound when tutorial becomes visible
+    func playAlert() async {
+        Logger.audio("\n=== Playing Alert Sound ===\n")
+        
+        // Stop any existing playback
+        alertController?.stop()
+        
+        guard let source = alertAudioSource,
+              let resource = loadedAudioResources["alert"] else {
+            Logger.error("❌ Required resources not found for alert")
+            return
+        }
+        
+        // Create new controller and store it
+        let newController = source.prepareAudio(resource)
+        newController.play()
+        alertController = newController
+        
+        Logger.audio("✅ Started playing alert sound")
     }
 }

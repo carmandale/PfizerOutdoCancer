@@ -168,6 +168,14 @@ struct AttackCancerView: View {
                 }
             }
         }
+        .onChange(of: appModel.gameState.isTutorialAlertVisible) { _, isVisible in
+            if isVisible {
+                Logger.info("📣 Tutorial alert became visible - playing alert sound")
+                Task {
+                    await appModel.gameState.playAlert()
+                }
+            }
+        }
         .onChange(of: appModel.gameState.isHopeMeterRunning) { _, isRunning in
             if !isRunning {
                 Logger.info("Hope meter stopped - closing utility window")

@@ -104,7 +104,7 @@ extension AppModel {
     func playStartButtonSound() {
         Logger.info("Playing start button sound")
         if let player = avAudioPlayers["startSound"] {
-            player.volume = 0.5
+            player.volume = 0.125 // 0.25
         }
         playAVSound(named: "startSound")
     }
@@ -114,7 +114,7 @@ extension AppModel {
     func playMenuSelectSound() {
         Logger.info("Playing Menu Select sound")
         if let player = avAudioPlayers["menuSelect"] {
-            player.volume = 0.125
+            player.volume = 0.0625
         }
         playAVSound(named: "menuSelect")
     }
@@ -124,7 +124,7 @@ extension AppModel {
     func playMenuSelect2Sound() {
         Logger.info("Playing Menu Select2 sound")
         if let player = avAudioPlayers["menuSelect2"] {
-            player.volume = 0.5
+            player.volume = 0.125
         }
         playAVSound(named: "menuSelect2")
     }

@@ -79,9 +79,11 @@ final class AttackCancerViewModel {
     var endingSequenceAudioSource: Entity?
     var victorySequenceAudioSource: Entity?
     var greatJobAudioSource: Entity?
+    var alertAudioSource: Entity?
     var endingSequenceController: AudioPlaybackController?
     var victorySequenceController: AudioPlaybackController?
     var greatJobController: AudioPlaybackController?
+    var alertController: AudioPlaybackController?
     // Add flags to track if sequences have played
     var hasPlayedEndingSequence = false
     var hasPlayedVictorySequence = false
@@ -244,6 +246,14 @@ final class AttackCancerViewModel {
         if let audioSource = greatJobAudioSource {
             audioSource.removeFromParent()
             Logger.audio("Removed great job audio source")
+        }
+        
+        // Stop and clear alert audio
+        alertController?.stop()
+        alertController = nil
+        if let audioSource = alertAudioSource {
+            audioSource.removeFromParent()
+            Logger.audio("Removed alert audio source")
         }
         
         // Reset sequence flags

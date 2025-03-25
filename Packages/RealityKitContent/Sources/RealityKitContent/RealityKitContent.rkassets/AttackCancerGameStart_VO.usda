@@ -33,13 +33,8 @@ def Xform "Root"
 
             def RealityKitDict "resources"
             {
-                string[] keys = ["tutorial_01_mp3", "yourTurn_mp3", "tutorial_01_v02_wav", "yourTurn_v02_wav"]
-                rel values = [
-                    </Root/tutorial_01_mp3>,
-                    </Root/yourTurn_mp3>,
-                    </Root/tutorial_01_v02_wav>,
-                    </Root/yourTurn_v02_wav>,
-                ]
+                string[] keys = ["v07_785793_AttackCancerGameStart_VO_wav"]
+                rel values = </Root/v07_785793_AttackCancerGameStart_VO_wav>
             }
         }
 
@@ -67,9 +62,9 @@ def Xform "Root"
             def RealityKitAction "tutorial_01"
             {
                 string actionKind = "audio"
-                string audioResourceName = "tutorial_01_v02_wav"
+                string audioResourceName = "v07_785793_AttackCancerGameStart_VO_wav"
                 bool controlPlayback = 1
-                double duration = 23.5
+                double duration = 29.142458333333334
                 uniform token info:id = "473D07A5-43D3-4D7B-BAB2-FB0433899B16"
                 double startTime = 0.490132622092407
                 rel target = </Root/VO>
@@ -141,24 +136,6 @@ def Xform "Root"
                 string notificationName = "readyToStart"
                 double startTime = 32.502064121367916
                 rel target = </Root/VO>
-            }
-        }
-
-        def RealityKitTrack "Track6"
-        {
-            def RealityKitAction "your_turn"
-            {
-                string actionKind = "audio"
-                string audioResourceName = "yourTurn_v02_wav"
-                bool controlPlayback = 1
-                double duration = 6.057979166666667
-                uniform token info:id = "018665A8-329A-4A66-97E9-D5D9B55595C1"
-                double startTime = 22.5
-                rel target = </Root/VO>
-
-                def RealityKitStruct "handoffType"
-                {
-                }
             }
         }
     }
@@ -334,15 +311,9 @@ def Xform "Root"
         }
     }
 
-    def RealityKitAudioFile "tutorial_01_v02_wav"
+    def RealityKitAudioFile "v07_785793_AttackCancerGameStart_VO_wav"
     {
-        uniform asset file = @Audio/AttackCancerGameInstructions/pickups/tutorial_01_v02.wav@
-        uniform bool shouldLoop = 0
-    }
-
-    def RealityKitAudioFile "yourTurn_v02_wav"
-    {
-        uniform asset file = @Audio/AttackCancerGameInstructions/pickups/yourTurn_v02.wav@
+        uniform asset file = @Assets/Intro/SpatialStems12122024/032425/v07_785793_AttackCancerGameStart_VO.wav@
         uniform bool shouldLoop = 0
     }
 }

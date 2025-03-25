@@ -34,18 +34,11 @@ def Xform "Root"
 
             def RealityKitDict "resources"
             {
-                string[] keys = ["tutorial_01_mp3", "tutorial_02_mp3", "gameStart_01_mp3", "gameStart_02_mp3", "yourTurn_mp3", "PressStart_mp3", "GreatJob_mp3", "PressStart_v02_wav", "GameStart_v03_wav", "PressStart_v03_wav"]
+                string[] keys = ["v07_785793_press_start_wav", "alert_wav", "v07_785793_great_job_wav"]
                 rel values = [
-                    </Root/tutorial_01_mp3>,
-                    </Root/tutorial_02_mp3>,
-                    </Root/gameStart_01_mp3>,
-                    </Root/gameStart_02_mp3>,
-                    </Root/yourTurn_mp3>,
-                    </Root/PressStart_mp3>,
-                    </Root/GreatJob_mp3>,
-                    </Root/PressStart_v02_wav>,
-                    </Root/GameStart_v03_wav>,
-                    </Root/PressStart_v03_wav>,
+                    </Root/v07_785793_press_start_wav>,
+                    </Root/alert_wav>,
+                    </Root/v07_785793_great_job_wav>,
                 ]
             }
         }
@@ -97,32 +90,17 @@ def Xform "Root"
 
     def RealityKitTimeline "GameStart"
     {
-        reorder nameChildren = ["Track", "Track2"]
-        def RealityKitTrack "Track2"
+        reorder nameChildren = ["Track2", "Track"]
+        def RealityKitTrack "Track"
         {
             def RealityKitAction "PressStart"
             {
                 string actionKind = "audio"
-                string audioResourceName = "PressStart_v03_wav"
+                string audioResourceName = "v07_785793_press_start_wav"
                 bool controlPlayback = 1
-                double duration = 2.2613333333333334
+                double duration = 15.125125
                 uniform token info:id = "850A037A-DF7D-4684-9920-1D05CD8574F9"
-                double startTime = 0
-                rel target = </Root/VO>
-
-                def RealityKitStruct "handoffType"
-                {
-                }
-            }
-
-            def RealityKitAction "gameStart02"
-            {
-                string actionKind = "audio"
-                string audioResourceName = "GameStart_v03_wav"
-                bool controlPlayback = 1
-                double duration = 13.61
-                uniform token info:id = "0A907687-3C73-4A41-92B6-72C5828D8FEE"
-                double startTime = 2.5752611895438995
+                double startTime = 0.4789508399537442
                 rel target = </Root/VO>
 
                 def RealityKitStruct "handoffType"
@@ -132,27 +110,21 @@ def Xform "Root"
         }
     }
 
-    def RealityKitAudioFile "PressStart_v02_wav"
+    def RealityKitAudioFile "v07_785793_great_job_wav"
     {
-        uniform asset file = @Audio/AttackCancerGameInstructions/pickups/PressStart_v02.wav@
+        uniform asset file = @Assets/Intro/SpatialStems12122024/032425/v07_785793_great_job.wav@
         uniform bool shouldLoop = 0
     }
 
-    def RealityKitAudioFile "GameStart_v03_wav"
+    def RealityKitAudioFile "v07_785793_press_start_wav"
     {
-        uniform asset file = @Audio/AttackCancerGameInstructions/pickups/GameStart_v03.wav@
+        uniform asset file = @Assets/Intro/SpatialStems12122024/032425/v07_785793_press_start.wav@
         uniform bool shouldLoop = 0
     }
 
-    def RealityKitAudioFile "GreatJob_v02_wav"
+    def RealityKitAudioFile "alert_wav"
     {
-        uniform asset file = @Audio/AttackCancerGameInstructions/pickups/GreatJob_v02.wav@
-        uniform bool shouldLoop = 0
-    }
-
-    def RealityKitAudioFile "PressStart_v03_wav"
-    {
-        uniform asset file = @Audio/BuildADC_VO/pickups/VO_Pickup_03032025/PressStart_v03.wav@
+        uniform asset file = @Audio/alert.wav@
         uniform bool shouldLoop = 0
     }
 }

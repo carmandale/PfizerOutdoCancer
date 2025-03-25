@@ -278,8 +278,8 @@ final class IntroViewModel {
             }
             
             // Logo and title sequence
-            Logger.debug("⏰ Sleeping for 75s before logo")
-            try? await Task.sleep(for: .seconds(75))
+            Logger.debug("⏰ Sleeping for 58s before logo")
+            try? await Task.sleep(for: .seconds(58))
             
             // Verify both entities before starting animation sequence
             guard ensureValidEntity(logo, with: "logo") else {
@@ -414,7 +414,7 @@ final class IntroViewModel {
                 
 
                 // Wait for 5 seconds
-                try? await Task.sleep(for: .seconds(5))
+                try? await Task.sleep(for: .seconds(8))
                 
                 // Unparent the portalWorld from the portal and reparent it to the root while preserving its transform
                 if let lab = assembledLab {

@@ -325,7 +325,7 @@ def Xform "Root"
                 int blendLayer = 300
                 double duration = 5
                 uniform token info:id = "315ED212-D57C-4A59-8B89-FF98B3285970"
-                double startTime = 112.85075878253188
+                double startTime = 102
                 rel target = </Root/ExtraItems>
 
                 def RealityKitStruct "timingFunction"
@@ -1255,6 +1255,7 @@ def Xform "Root"
                                 def RealityKitComponent "SpatialAudio"
                                 {
                                     float directivityFocus = 1
+                                    float gain = -6
                                     uniform token info:id = "RealityKit.SpatialAudio"
                                     float rolloffFactor = 0
                                 }
@@ -1532,6 +1533,7 @@ def Xform "Root"
                                 def RealityKitComponent "SpatialAudio"
                                 {
                                     float directivityFocus = 1
+                                    float gain = -6
                                     uniform token info:id = "RealityKit.SpatialAudio"
                                     float rolloffFactor = 0
                                 }
@@ -1603,7 +1605,7 @@ def Xform "Root"
                                 }
                             )
                             {
-                                reorder nameChildren = ["Man_v8_wav", "Man_v5_wav", "Man_v6_2_wav", "Man_v7_2_wav", "SpatialAudio", "AudioLibrary"]
+                                reorder nameChildren = ["v07_785793_Man_alt1_wav", "Man_v8_wav", "Man_v5_wav", "Man_v6_2_wav", "Man_v7_2_wav", "SpatialAudio", "AudioLibrary"]
                                 quatf xformOp:orient = (-4.371139e-8, 0, 1, 0)
                                 float3 xformOp:translate = (0, 0, 13.5)
                                 uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
@@ -1614,45 +1616,23 @@ def Xform "Root"
 
                                     def RealityKitDict "resources"
                                     {
-                                        string[] keys = ["Man_v5_wav", "Man_v6_2_wav", "Man_v7_2_wav", "Man_v8_wav"]
-                                        rel values = [
-                                            </Root/sh0100_v01/sh0100_v01/PicturesRoot/intro/People_MSR/p2/p2_audio/Man_v5_wav>,
-                                            </Root/sh0100_v01/sh0100_v01/PicturesRoot/intro/People_MSR/p2/p2_audio/Man_v6_2_wav>,
-                                            </Root/sh0100_v01/sh0100_v01/PicturesRoot/intro/People_MSR/p2/p2_audio/Man_v7_2_wav>,
-                                            </Root/sh0100_v01/sh0100_v01/PicturesRoot/intro/People_MSR/p2/p2_audio/Man_v8_wav>,
-                                        ]
+                                        string[] keys = ["v07_785793_Man_alt1_wav"]
+                                        rel values = </Root/sh0100_v01/sh0100_v01/PicturesRoot/intro/People_MSR/p2/p2_audio/v07_785793_Man_alt1_wav>
                                     }
-                                }
-
-                                def RealityKitAudioFile "Man_v5_wav"
-                                {
-                                    uniform asset file = @Assets/Intro/SpatialStems12122024/re_record/Man_v5.wav@
-                                    uniform bool shouldLoop = 0
-                                }
-
-                                def RealityKitAudioFile "Man_v6_2_wav"
-                                {
-                                    uniform asset file = @Assets/Intro/SpatialStems12122024/re_record/Man_v6.2.wav@
-                                    uniform bool shouldLoop = 0
-                                }
-
-                                def RealityKitAudioFile "Man_v7_2_wav"
-                                {
-                                    uniform asset file = @Assets/Intro/SpatialStems12122024/re_record/Man_v7.2.wav@
-                                    uniform bool shouldLoop = 0
                                 }
 
                                 def RealityKitComponent "SpatialAudio"
                                 {
                                     float directivityFocus = 1
+                                    float gain = -6
                                     uniform token info:id = "RealityKit.SpatialAudio"
                                     float reverbLevel = 0
                                     float rolloffFactor = 0
                                 }
 
-                                def RealityKitAudioFile "Man_v8_wav"
+                                def RealityKitAudioFile "v07_785793_Man_alt1_wav"
                                 {
-                                    uniform asset file = @Assets/Intro/SpatialStems12122024/re_record/Man_v8.wav@
+                                    uniform asset file = @Assets/Intro/SpatialStems12122024/032425/v07_785793_Man_alt1.wav@
                                     uniform bool shouldLoop = 0
                                 }
                             }
@@ -1712,6 +1692,7 @@ def Xform "Root"
                                 def RealityKitComponent "SpatialAudio"
                                 {
                                     float directivityFocus = 1
+                                    float gain = -6
                                     uniform token info:id = "RealityKit.SpatialAudio"
                                     float rolloffFactor = 0
                                 }
@@ -1837,7 +1818,7 @@ def Xform "Root"
 
                 def RealityKitAudioFile "PianoBusL_wav"
                 {
-                    uniform asset file = @Assets/Intro/SpatialStems12122024/PianoBusL.wav@
+                    uniform asset file = @Assets/Intro/SpatialStems12122024/PianoBus.L.wav@
                     rel mixGroup = </Root/AudioMixGroups/Piano>
                     uniform bool shouldLoop = 0
                 }
@@ -1879,7 +1860,7 @@ def Xform "Root"
 
                 def RealityKitAudioFile "PianoBusR_wav"
                 {
-                    uniform asset file = @Assets/Intro/SpatialStems12122024/PianoBusR.wav@
+                    uniform asset file = @Assets/Intro/SpatialStems12122024/PianoBus.R.wav@
                     rel mixGroup = </Root/AudioMixGroups/Piano>
                     uniform bool shouldLoop = 0
                 }
@@ -2239,7 +2220,7 @@ def Xform "Root"
 
                 def RealityKitAudioFile "BreathRiser_cm_cm_cm_cm_R_wav"
                 {
-                    uniform asset file = @Assets/Intro/SpatialStems12122024/BreathRiser.cm.cm.cm.cm.R.wav@
+                    uniform asset file = @Assets/Intro/SpatialStems12122024/BreathRiser.R.wav@
                     rel mixGroup = </Root/AudioMixGroups/SFX>
                     uniform bool shouldLoop = 0
                 }
@@ -2379,16 +2360,16 @@ def Xform "Root"
             def Xform "Reverb1L" (
                 active = true
                 customData = {
-                    float3 rotationEulerHint = (0, 4.317369, 0)
+                    float3 rotationEulerHint = (0, 4.712389, 0)
                 }
             )
             {
                 reorder nameChildren = ["Reverb1L_wav", "SpatialAudio", "AudioLibrary"]
                 float2 ui:nodegraph:node:pos = (-572.57, 2.2850456)
                 int ui:nodegraph:node:stackingOrder = 1
-                quatf xformOp:orient = (-0.554605, 0, 0.8321137, 0)
+                quatf xformOp:orient = (0.7056892, 0, -0.7085215, 0)
                 float3 xformOp:scale = (1, 1, 1)
-                float3 xformOp:translate = (-7.246358, 1.9999964, -2.526934)
+                float3 xformOp:translate = (-1.143078, 2.0000246, 0.017748386)
                 uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
                 def RealityKitComponent "SpatialAudio"
@@ -2410,7 +2391,7 @@ def Xform "Root"
 
                 def RealityKitAudioFile "Reverb1L_wav"
                 {
-                    uniform asset file = @Assets/Intro/SpatialStems12122024/Reverb1L.wav@
+                    uniform asset file = @Assets/Intro/SpatialStems12122024/Reverb1.L.wav@
                     rel mixGroup = </Root/AudioMixGroups/SFX>
                     uniform bool shouldLoop = 0
                 }
@@ -2419,16 +2400,16 @@ def Xform "Root"
             def Xform "Reverb1R" (
                 active = true
                 customData = {
-                    float3 rotationEulerHint = (0, -4.317421, 0)
+                    float3 rotationEulerHint = (0, -4.712389, 0)
                 }
             )
             {
                 reorder nameChildren = ["Reverb1R_wav", "SpatialAudio", "AudioLibrary"]
                 float2 ui:nodegraph:node:pos = (-552.57, 22.285046)
                 int ui:nodegraph:node:stackingOrder = 2
-                quatf xformOp:orient = (0.5546266, 0, 0.8320994, 0)
+                quatf xformOp:orient = (0.6986403, 0, 0.7154731, 0)
                 float3 xformOp:scale = (1, 1, 1)
-                float3 xformOp:translate = (7.246, 1.9999964, -2.526934)
+                float3 xformOp:translate = (1.1659045, 1.9999964, 0.010220256)
                 uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
                 def RealityKitComponent "SpatialAudio"
@@ -2450,7 +2431,7 @@ def Xform "Root"
 
                 def RealityKitAudioFile "Reverb1R_wav"
                 {
-                    uniform asset file = @Assets/Intro/SpatialStems12122024/Reverb1R.wav@
+                    uniform asset file = @Assets/Intro/SpatialStems12122024/Reverb1.R.wav@
                     rel mixGroup = </Root/AudioMixGroups/SFX>
                     uniform bool shouldLoop = 0
                 }
@@ -2459,16 +2440,16 @@ def Xform "Root"
             def Xform "Reverb2L" (
                 active = true
                 customData = {
-                    float3 rotationEulerHint = (0, 4.317369, 0)
+                    float3 rotationEulerHint = (0, 4.194195, 0)
                 }
             )
             {
                 reorder nameChildren = ["Reverb2L_wav", "SpatialAudio", "AudioLibrary"]
                 float2 ui:nodegraph:node:pos = (-552.57, 22.285046)
                 int ui:nodegraph:node:stackingOrder = 2
-                quatf xformOp:orient = (0.5546049, 0, -0.8321139, 0)
+                quatf xformOp:orient = (0.50233835, 0, -0.8646712, 0)
                 float3 xformOp:scale = (1, 1, 1)
-                float3 xformOp:translate = (-2.3253896, 1.9999964, -0.4752196)
+                float3 xformOp:translate = (-0.73736656, 1.9999962, -0.5016209)
                 uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
                 def RealityKitComponent "SpatialAudio"
@@ -2490,7 +2471,7 @@ def Xform "Root"
 
                 def RealityKitAudioFile "Reverb2L_wav"
                 {
-                    uniform asset file = @Assets/Intro/SpatialStems12122024/Reverb2L.wav@
+                    uniform asset file = @Assets/Intro/SpatialStems12122024/Reverb2.L.wav@
                     rel mixGroup = </Root/AudioMixGroups/SFX>
                     uniform bool shouldLoop = 0
                 }
@@ -2499,16 +2480,16 @@ def Xform "Root"
             def Xform "Reverb2R" (
                 active = true
                 customData = {
-                    float3 rotationEulerHint = (0, -4.317421, 0)
+                    float3 rotationEulerHint = (0, -4.264286, 0)
                 }
             )
             {
                 reorder nameChildren = ["Reverb2R_wav", "SpatialAudio", "AudioLibrary"]
                 float2 ui:nodegraph:node:pos = (-532.57, 42.285046)
                 int ui:nodegraph:node:stackingOrder = 3
-                quatf xformOp:orient = (0.5546266, 0, 0.8320994, 0)
+                quatf xformOp:orient = (0.53232706, 0, 0.84653884, 0)
                 float3 xformOp:scale = (1, 1.0000002, 1)
-                float3 xformOp:translate = (2.325, 1.9999964, -0.4752196)
+                float3 xformOp:translate = (1.021559, 1.9999967, -0.48339796)
                 uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
                 def RealityKitComponent "SpatialAudio"
@@ -2530,7 +2511,7 @@ def Xform "Root"
 
                 def RealityKitAudioFile "Reverb2R_wav"
                 {
-                    uniform asset file = @Assets/Intro/SpatialStems12122024/Reverb2R.wav@
+                    uniform asset file = @Assets/Intro/SpatialStems12122024/Reverb2.R.wav@
                     rel mixGroup = </Root/AudioMixGroups/SFX>
                     uniform bool shouldLoop = 0
                 }
@@ -2570,7 +2551,7 @@ def Xform "Root"
 
                 def RealityKitAudioFile "Reverb3L_wav"
                 {
-                    uniform asset file = @Assets/Intro/SpatialStems12122024/Reverb3L.wav@
+                    uniform asset file = @Assets/Intro/SpatialStems12122024/Reverb3.L.wav@
                     rel mixGroup = </Root/AudioMixGroups/SFX>
                     uniform bool shouldLoop = 0
                 }
@@ -2610,7 +2591,7 @@ def Xform "Root"
 
                 def RealityKitAudioFile "Reverb3R_wav"
                 {
-                    uniform asset file = @Assets/Intro/SpatialStems12122024/Reverb3R.wav@
+                    uniform asset file = @Assets/Intro/SpatialStems12122024/Reverb3.R.wav@
                     rel mixGroup = </Root/AudioMixGroups/SFX>
                     uniform bool shouldLoop = 0
                 }
@@ -2744,7 +2725,7 @@ def Xform "Root"
             }
         )
         {
-            reorder nameChildren = ["Narator_wav", "Andrew_Narrator_wav", "SpatialAudio", "AudioLibrary"]
+            reorder nameChildren = ["v07_785793_narrator_intro_wav", "Narator_wav", "ChannelAudio", "AudioLibrary"]
             quatf xformOp:orient = (-4.371139e-8, 0, 1, 0)
             float3 xformOp:scale = (1, 1, 1)
             float3 xformOp:translate = (1.2665987e-7, 1, -0.5)
@@ -2756,20 +2737,20 @@ def Xform "Root"
 
                 def RealityKitDict "resources"
                 {
-                    string[] keys = ["Narator_wav"]
-                    rel values = </Root/Audio/Narrator/Narator_wav>
+                    string[] keys = ["v07_785793_narrator_intro_wav"]
+                    rel values = </Root/Audio/Narrator/v07_785793_narrator_intro_wav>
                 }
-            }
-
-            def RealityKitAudioFile "Narator_wav"
-            {
-                uniform asset file = @Assets/Intro/SpatialStems12122024/re_record/Narator.wav@
-                uniform bool shouldLoop = 0
             }
 
             def RealityKitComponent "ChannelAudio"
             {
                 uniform token info:id = "RealityKit.ChannelAudio"
+            }
+
+            def RealityKitAudioFile "v07_785793_narrator_intro_wav"
+            {
+                uniform asset file = @Assets/Intro/SpatialStems12122024/032425/v07_785793_narrator_intro.wav@
+                uniform bool shouldLoop = 0
             }
         }
     }
@@ -3325,9 +3306,9 @@ def Xform "Root"
             def RealityKitAction "Man"
             {
                 string actionKind = "audio"
-                string audioResourceName = "Man_v8_wav"
+                string audioResourceName = "v07_785793_Man_alt1_wav"
                 bool controlPlayback = 1
-                double duration = 29.363666666666667
+                double duration = 144
                 uniform token info:id = "AF66B533-E527-4C45-A206-DC55D2CC4A78"
                 double startTime = 0
                 rel target = </Root/sh0100_v01/sh0100_v01/PicturesRoot/intro/People_MSR/p2/p2_audio>
@@ -3345,7 +3326,7 @@ def Xform "Root"
             def RealityKitAction "Andrew_Narrator"
             {
                 string actionKind = "audio"
-                string audioResourceName = "Narator_wav"
+                string audioResourceName = "v07_785793_narrator_intro_wav"
                 bool controlPlayback = 1
                 double duration = 144
                 uniform token info:id = "C2574DA6-6DED-482F-ABCD-6588270D72D2"
@@ -3374,14 +3355,14 @@ def Xform "Root"
 
         def RealityKitAudioMixGroup "Piano"
         {
-            float gain = -12.169633
+            float gain = -14
             bool mute = 0
             float speed = 1
         }
 
         def RealityKitAudioMixGroup "Strings"
         {
-            float gain = -8.812519
+            float gain = -10
             bool mute = 0
             float speed = 1
         }
@@ -3395,14 +3376,14 @@ def Xform "Root"
 
         def RealityKitAudioMixGroup "SFX"
         {
-            float gain = -11.103039
+            float gain = -12
             bool mute = 0
             float speed = 1
         }
 
         def RealityKitAudioMixGroup "Percussion"
         {
-            float gain = -5.9792724
+            float gain = -8
             bool mute = 0
             float speed = 1
         }

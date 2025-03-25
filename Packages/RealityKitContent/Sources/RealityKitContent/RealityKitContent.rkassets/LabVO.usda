@@ -29,8 +29,8 @@ def Xform "Root"
 
             def RealityKitDict "resources"
             {
-                string[] keys = ["Lab_revised_v02_wav"]
-                rel values = </Root/Lab_revised_v02_wav>
+                string[] keys = ["v07_785793_lab_vo_wav"]
+                rel values = </Root/v07_785793_lab_vo_wav>
             }
         }
 
@@ -89,7 +89,7 @@ def Xform "Root"
                 double duration = 6.9375
                 double gain = -13.302106900452493
                 uniform token info:id = "95766467-0283-4DF6-9791-167B2A33DC78"
-                double startTime = 42.76958263692599
+                double startTime = 46.05856947878166
                 rel target = </Root/VO_3>
 
                 def RealityKitStruct "handoffType"
@@ -103,42 +103,15 @@ def Xform "Root"
             def RealityKitAction "Lab_rerecord"
             {
                 string actionKind = "audio"
-                string audioResourceName = "Lab_revised_v02_wav"
+                string audioResourceName = "v07_785793_lab_vo_wav"
                 bool controlPlayback = 1
-                double duration = 41.870666666666665
+                double duration = 45.692875
                 uniform token info:id = "44084363-A44C-4FFD-93AF-FFD26C3F4BA2"
                 double startTime = 0.7786158819945094
                 rel target = </Root/VO_1>
 
                 def RealityKitStruct "handoffType"
                 {
-                }
-            }
-        }
-
-        def RealityKitTrack "Track"
-        {
-            def RealityKitAction "Transform_To"
-            {
-                string actionKind = "moveTo"
-                int blendLayer = 300
-                double duration = 31.73424497728397
-                uniform token info:id = "18CEF74B-F405-4868-B6D2-B3BC438E2D64"
-                float3 position = (0.42216027, 1.3961658, -0.25)
-                quatf rotation = (-0.32519886, 0, 0.9456457, 0)
-                float3 scale = (1, 1, 1)
-                double startTime = 5.485742480139436
-                rel target = </Root/VO_1>
-
-                def RealityKitStruct "transformMode"
-                {
-                    rel referenceEntity = </Root>
-                    token type = "parent"
-                }
-
-                def RealityKitStruct "timingFunction"
-                {
-                    token type = "easeInOut"
                 }
             }
         }
@@ -241,11 +214,8 @@ def Xform "Root"
 
             def RealityKitDict "resources"
             {
-                string[] keys = ["labVOalt_1_mp3", "Sonic_Pulse_Hit_03_wav"]
-                rel values = [
-                    </Root/labVOalt_1_mp3>,
-                    </Root/Sonic_Pulse_Hit_03_wav>,
-                ]
+                string[] keys = ["Sonic_Pulse_Hit_03_wav"]
+                rel values = </Root/Sonic_Pulse_Hit_03_wav>
             }
         }
 
@@ -259,9 +229,9 @@ def Xform "Root"
         }
     }
 
-    def RealityKitAudioFile "Lab_revised_v02_wav"
+    def RealityKitAudioFile "v07_785793_lab_vo_wav"
     {
-        uniform asset file = @Audio/LabVO2/pickups/Lab_revised_v02.wav@
+        uniform asset file = @Assets/Intro/SpatialStems12122024/032425/v07_785793_lab_vo.wav@
         uniform bool shouldLoop = 0
     }
 }

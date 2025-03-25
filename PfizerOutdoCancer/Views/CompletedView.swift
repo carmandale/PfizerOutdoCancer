@@ -67,6 +67,7 @@ struct CompletedView: View {
                                 
                                 // After window fades, transition to outro
                                 Task {
+                                    appModel.playMenuSelectSound()
                                     try? await Task.sleep(for: .seconds(1.0))
                                     await appModel.transitionToPhase(.outro)
                                 }

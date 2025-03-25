@@ -182,7 +182,7 @@ struct ADCOptimizedImmersive: View {
                     
                     // Play audio for initial step
                     do {
-                        try await playSpatialAudio(step: 0)
+                        try await playVoiceOver(step: 0)
                     } catch {
                         os_log(.error, "ITR..ADCOptimizedImmersive: ❌ Failed to play initial VO: \(error)")
                     }
@@ -210,7 +210,7 @@ struct ADCOptimizedImmersive: View {
                 if !dataModel.manualStepTransition {
                     Task { @MainActor in
                         do {
-                            try await playSpatialAudio(step: newValue)
+                            try await playVoiceOver(step: newValue)
                         } catch {
                             os_log(.error, "ITR..createLinkerGestureComponent(): ❌ Failed to play VO: \(error)")
                         }

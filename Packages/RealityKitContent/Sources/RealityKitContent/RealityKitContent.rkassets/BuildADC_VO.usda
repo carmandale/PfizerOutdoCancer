@@ -64,51 +64,33 @@ def Xform "Root"
         uniform bool shouldLoop = 0
     }
 
-    def RealityKitAudioFile "BuildADC_VO_1_v02_wav"
+    def RealityKitAudioFile "v07_785793_buildADC_VO_1_wav"
     {
-        uniform asset file = @Audio/BuildADC_VO/pickups/BuildADC_VO_1_v02.wav@
+        uniform asset file = @Assets/Intro/SpatialStems12122024/032425/v07_785793_buildADC_VO_1.wav@
         uniform bool shouldLoop = 0
     }
 
-    def RealityKitAudioFile "BuildADC_VO_2_v02_wav"
+    def RealityKitAudioFile "v07_785793_buildADC_VO_2_wav"
     {
-        uniform asset file = @Audio/BuildADC_VO/pickups/BuildADC_VO_2_v02.wav@
+        uniform asset file = @Assets/Intro/SpatialStems12122024/032425/v07_785793_buildADC_VO_2.wav@
         uniform bool shouldLoop = 0
     }
 
-    def RealityKitAudioFile "BuildADC_VO_3_v02_wav"
+    def RealityKitAudioFile "v07_785793_buildADC_VO_3_wav"
     {
-        uniform asset file = @Audio/BuildADC_VO/pickups/BuildADC_VO_3_v02.wav@
+        uniform asset file = @Assets/Intro/SpatialStems12122024/032425/v07_785793_buildADC_VO_3.wav@
         uniform bool shouldLoop = 0
     }
 
-    def RealityKitAudioFile "BuildADC_VO_4_v02_wav"
+    def RealityKitAudioFile "v07_785793_buildADC_VO_4_wav"
     {
-        uniform asset file = @Audio/BuildADC_VO/pickups/BuildADC_VO_4_v02.wav@
+        uniform asset file = @Assets/Intro/SpatialStems12122024/032425/v07_785793_buildADC_VO_4.wav@
         uniform bool shouldLoop = 0
     }
 
-    def RealityKitAudioFile "niceJob_v02_wav"
+    def RealityKitAudioFile "v07_785793_nice_job_wav"
     {
-        uniform asset file = @Audio/BuildADC_VO/pickups/niceJob_v02.wav@
-        uniform bool shouldLoop = 0
-    }
-
-    def RealityKitAudioFile "BuildADC_VO_1_v03_wav"
-    {
-        uniform asset file = @Audio/BuildADC_VO/pickups/VO_Pickup_03032025/BuildADC_VO_1_v03.wav@
-        uniform bool shouldLoop = 0
-    }
-
-    def RealityKitAudioFile "BuildADC_VO_1_v04_wav"
-    {
-        uniform asset file = @Audio/BuildADC_VO/pickups/BuildADC_VO_1_v04.wav@
-        uniform bool shouldLoop = 0
-    }
-
-    def RealityKitAudioFile "BuildADC_VO_3_v03_wav"
-    {
-        uniform asset file = @Audio/BuildADC_VO/pickups/BuildADC_VO_3_v03.wav@
+        uniform asset file = @Assets/Intro/SpatialStems12122024/032425/v07_785793_nice_job.wav@
         uniform bool shouldLoop = 0
     }
 }
