@@ -148,6 +148,9 @@ extension ADCOptimizedImmersive {
                     modelComponent.materials = [outlineMaterial].compactMap { $0 }
                     innerPayload.components[ModelComponent.self] = modelComponent
                     
+                    // Set inner payload to invisible when in wireframe/outline material
+                    innerPayload.opacity = 0
+                    
                     // Add sort component for inner payload
                     if let sortGroup = adcSortGroup {
                         let sortComponent = ModelSortGroupComponent(group: sortGroup, order: 30)
@@ -255,6 +258,10 @@ extension ADCOptimizedImmersive {
                     outerComponent.materials = [material]
                     workingPayloadInner.components[ModelComponent.self] = innerComponent
                     workingPayloadOuter.components[ModelComponent.self] = outerComponent
+                    
+                    // Set inner payload to invisible when in wireframe/outline material
+                    workingPayloadInner.opacity = 0
+                    
                     os_log(.debug, "ITR..prepareTargetEntities(): ✅ Applied outline material to draggable payload")
                 }
             }

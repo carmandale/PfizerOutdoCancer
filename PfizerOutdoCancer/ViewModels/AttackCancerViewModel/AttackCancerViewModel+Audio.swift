@@ -69,10 +69,10 @@ extension AttackCancerViewModel {
         endingSource.components.set(SpatialAudioComponent(gain: 1.0, directivity: .beam(focus: 1.0)))
         
         // Create and add debug cone for ending sequence
-        let endingDebugCone = createAudioDebugCone()
-        endingSource.addChild(endingDebugCone)
-        self.audioDebugCone = endingDebugCone
-        Logger.audio("Added debug cone to ending sequence source")
+        // let endingDebugCone = createAudioDebugCone()
+        // endingSource.addChild(endingDebugCone)
+        // self.audioDebugCone = endingDebugCone
+        // Logger.audio("Added debug cone to ending sequence source")
         
         headTrackingRoot.addChild(endingSource)
         self.endingSequenceAudioSource = endingSource
@@ -91,13 +91,9 @@ extension AttackCancerViewModel {
         let greatJobSource = Entity()
         greatJobSource.name = "GreatJobSequenceSource"
         greatJobSource.position = SIMD3<Float>(0, 0, 0.75)
-        greatJobSource.components.set(SpatialAudioComponent(
-            gain: .init(0.0),           // 0.0 dB
-            directLevel: .init(0.0),    // 0.0 dB
-            reverbLevel: .init(-7.1),   // -7.1 dB
-            directivity: .beam(focus: 0.3),
-            distanceAttenuation: .rolloff(factor: 0.5)  // Rolloff Factor: 0.5
-        ))
+        greatJobSource.components.set(ChannelAudioComponent(
+                gain: 0.0  // 0 dB = unity gain
+            ))
         headTrackingRoot.addChild(greatJobSource)
         self.greatJobAudioSource = greatJobSource
         Logger.audio("✅ Created great job sequence source")
@@ -107,7 +103,7 @@ extension AttackCancerViewModel {
         alertSource.name = "AlertSequenceSource"
         alertSource.position = SIMD3<Float>(0, 0, 0.75)
         alertSource.components.set(SpatialAudioComponent(
-            gain: .init(-20.0),           // -20.0 dB
+            gain: .init(-25.0),           // -20.0 dB
             directLevel: .init(0.0),    // 0.0 dB
             reverbLevel: .init(-7.1),   // -7.1 dB
             directivity: .beam(focus: 0.3),

@@ -18,10 +18,26 @@ public class PositioningSystem: System {
     private static var sharedAppModel: AppModel?
     private let systemId = UUID()
     
+    // Simulator fallback values
+    private static var isSimulatorMode: Bool = false
+    private static var fallbackPosition: SIMD3<Float> = SIMD3<Float>(-0.0002527883, 0.9118354, 0.20180774)
+    
     // Static method to set AppModel
     static func setAppModel(_ appModel: AppModel) {
         Logger.debug("🔄 PositioningSystem.setAppModel called")
         sharedAppModel = appModel
+    }
+    
+    // Set simulator mode
+    static func setSimulatorMode(_ enabled: Bool) {
+        isSimulatorMode = enabled
+        Logger.info("🧪 PositioningSystem simulator mode \(enabled ? "enabled" : "disabled")")
+    }
+    
+    // Set fallback position for simulator
+    static func setFallbackPosition(_ position: SIMD3<Float>) {
+        fallbackPosition = position
+        Logger.info("🧪 PositioningSystem fallback position set to \(position)")
     }
     
     // MARK: - System Initialization
@@ -31,17 +47,29 @@ public class PositioningSystem: System {
     
     // MARK: - System Update
     public func update(context: SceneUpdateContext) {
-        // Get device anchor from TrackingSessionManager's worldTrackingProvider
-        guard let appModel = Self.sharedAppModel else {
-            // Only log if AppModel is missing, as this indicates a setup issue
-            Logger.error("❌ PositioningSystem: Missing AppModel reference")
-            return
-        }
+        // Get current device position - either from tracking or fallback
+        let devicePosition: SIMD3<Float>
         
-        // Skip silently if tracking isn't running or no device anchor available
-        guard case .running = appModel.trackingManager.worldTrackingProvider.state,
-              let deviceAnchor = appModel.trackingManager.worldTrackingProvider.queryDeviceAnchor(atTimestamp: CACurrentMediaTime()) else {
-            return
+        if Self.isSimulatorMode {
+            // Use fallback position for simulator
+            devicePosition = Self.fallbackPosition
+            // Logger.debug("🧪 Using simulator fallback position: \(devicePosition)")
+        } else {
+            // Get device anchor from TrackingSessionManager's worldTrackingProvider
+            guard let appModel = Self.sharedAppModel else {
+                // Only log if AppModel is missing, as this indicates a setup issue
+                Logger.error("❌ PositioningSystem: Missing AppModel reference")
+                return
+            }
+            
+            // Skip silently if tracking isn't running or no device anchor available
+            guard case .running = appModel.trackingManager.worldTrackingProvider.state,
+                  let deviceAnchor = appModel.trackingManager.worldTrackingProvider.queryDeviceAnchor(atTimestamp: CACurrentMediaTime()) else {
+                return
+            }
+            
+            let deviceTransform = deviceAnchor.originFromAnchorTransform
+            devicePosition = deviceTransform.translation()
         }
         
         // Position entities that need positioning
@@ -66,7 +94,7 @@ public class PositioningSystem: System {
                 positioningComponent.isAnimating = true
                 entity.components[PositioningComponent.self] = positioningComponent
                 
-                if await tryPositionEntity(entity: entity, component: &positioningComponent, deviceAnchor: deviceAnchor) {
+                if await tryPositionEntity(entity: entity, component: &positioningComponent, devicePosition: devicePosition) {
                     // Wait for animation
                     if positioningComponent.shouldAnimate {
                         try? await Task.sleep(for: .seconds(positioningComponent.animationDuration))
@@ -89,10 +117,7 @@ public class PositioningSystem: System {
     }
     
     // MARK: - Entity Positioning
-    private func tryPositionEntity(entity: Entity, component: inout PositioningComponent, deviceAnchor: DeviceAnchor) async -> Bool {
-        let deviceTransform = deviceAnchor.originFromAnchorTransform
-        let devicePosition = deviceTransform.translation()
-        
+    private func tryPositionEntity(entity: Entity, component: inout PositioningComponent, devicePosition: SIMD3<Float>) async -> Bool {
         // Validate translation values
         let minValidDistance: Float = 0.3  // Minimum 0.3 meters from device
         let maxValidDistance: Float = 3.0   // Maximum 3 meters from device

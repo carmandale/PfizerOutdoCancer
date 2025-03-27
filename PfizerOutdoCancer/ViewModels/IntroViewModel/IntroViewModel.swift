@@ -358,6 +358,7 @@ final class IntroViewModel {
                 guard let portalRoot = p.findEntity(named: "portalRoot"),
                       let portalWorld = p.findEntity(named: "world"),
                       let portalPlane2 = p.findEntity(named: "portalPlane"),
+                      let SkySphere = p.findEntity(named: "SkySphere"),
                       ensureValidEntity(introEnvironment, with: "introEnvironment"),
                       ensureValidEntity(introRootEntity, with: "introRootEntity"),
                       let _ = introRootEntity?.findEntity(named: "ExtraItems"),
@@ -415,23 +416,63 @@ final class IntroViewModel {
 
                 // Wait for 5 seconds
                 try? await Task.sleep(for: .seconds(8))
+
+                // get the SkySphere world position
+                let skySpherePosition = SkySphere.position(relativeTo: nil)
+                Logger.debug("🔍 IntroViewModel: SkySphere position is \(skySpherePosition)")
+                // clone the SkySphere
+                let skySphereClone = SkySphere.clone(recursive: true)
+                // add the SkySphere to the introRootEntity
+                introRootEntity!.addChild(skySphereClone)
+                // set the SkySphere position to the SkySphere position
+                skySphereClone.position = skySpherePosition
                 
                 // Unparent the portalWorld from the portal and reparent it to the root while preserving its transform
-                if let lab = assembledLab {
-                    // Capture the current transform of the lab in world space
-                    let worldTransform = lab.transformMatrix(relativeTo: nil)
+                // if let lab = assembledLab {
+                //     // Capture the current transform of the lab in world space
+                //     let worldTransform = lab.transformMatrix(relativeTo: nil)
+                //     Logger.debug("🔍 IntroViewModel: World transform of lab is \(worldTransform)")
                     
-                    // Remove the lab from its current parent
-                    lab.removeFromParent()
+                //     // add the lab to the introRootEntity
+                //     // introRootEntity!.addChild(lab)
+                //     // lab.setTransformMatrix(worldTransform, relativeTo: nil)
                     
-                    // Reparent the lab to the intro root entity
-                    introRootEntity!.addChild(lab)
-                    Logger.debug("🛑 assembledLab position in world space PRE-TRANSFORM FIX is \(lab.position(relativeTo: nil))")
+                //     // Remove the lab from its current parent
+                //     // lab.removeFromParent()
                     
-                    // Restore the lab's transform
-                    lab.setTransformMatrix(worldTransform, relativeTo: nil)
-                    Logger.debug("✅ assembledLab position in world space is \(lab.position(relativeTo: nil))")
-                }
+                //     // Reparent the lab to the intro root entity
+                //     // introRootEntity!.addChild(lab)
+                //     // Logger.debug("🛑 assembledLab position in world space PRE-TRANSFORM FIX is \(lab.position(relativeTo: nil))")
+                    
+                //     // Restore the lab's transform
+                //     // lab.setTransformMatrix(worldTransform, relativeTo: nil)
+                //     // Logger.debug("✅ assembledLab position in world space is \(lab.position(relativeTo: nil))")
+                // }
+
+                // test changing the immersion style to full
+                // appModel.introStyle = .full
+                // Logger.debug("🔍 IntroViewModel: Changed immersion style to full")
+                
+                // Coordinate IBL and immersion style animations
+                // await performCoordinatedTransitionToFullImmersion(duration: 4.0)
+                // Logger.debug("🔍 IntroViewModel: Completed coordinated IBL and immersion style transition")
+                
+                // Apply movement fading component to enhance safety during full immersion
+                // if let lab = assembledLab {
+                //     var fadingComponent = MovementFadingComponent()
+                //     // Configure with appropriate values for lab scale
+                //     fadingComponent.fadeRadiusStart = 1.2
+                //     fadingComponent.fadeRadiusEnd = 2.5
+                //     fadingComponent.minOpacity = 0.3  // Don't fully fade out for lab visibility
+                //     fadingComponent.transitionDuration = 0.7  // Slightly slower for smoother feel
+                    
+                //     // Apply to assembled lab
+                //     lab.components[MovementFadingComponent.self] = fadingComponent
+                //     Logger.debug("✅ Added movement fading component to assembled lab")
+                // }
+
+                // fade in the portalPlaneReverse
+                // await portalPlaneReverse.fadeOpacity(to: 1.0, duration: 5.0)
 
                 // Change the portal component to spill out into the world
                 if var portalComponent = portalPlane2.components[PortalComponent.self] {
@@ -441,22 +482,22 @@ final class IntroViewModel {
                     Logger.debug("❌ PortalComponent not found on portalPlane2.")
                 }
                 
-                if let portalEnv = self.portal {
-                    Logger.debug("\n 🔍 Inspecting portal hierarchy \n")
-                    // self.appModel.assetLoadingManager.inspectEntityHierarchy(portalEnv)
-                    portalEnv.removeFromParent()
-                    self.portal = nil
-                    Logger.debug("Removed portal completely from the scene as we transition to lab.")
-                }
+                // if let portalEnv = self.portal {
+                //     Logger.debug("\n 🔍 Inspecting portal hierarchy \n")
+                //     // self.appModel.assetLoadingManager.inspectEntityHierarchy(portalEnv)
+                //     // portalEnv.removeFromParent()
+                //     // self.portal = nil
+                //     // Logger.debug("Removed portal completely from the scene as we transition to lab.")
+                // }
 
-                if let introEnv = introEnvironment {
-                    introEnv.removeFromParent()
-                    introEnvironment = nil
-                    Logger.debug("Removed introEnvironment completely from the scene as we transition to lab.")
-                }
+                // if let introEnv = introEnvironment {
+                //     introEnv.removeFromParent()
+                //     introEnvironment = nil
+                //     Logger.debug("Removed introEnvironment completely from the scene as we transition to lab.")
+                // }
                 
                 // Enable large room reverb and inspect hierarchy
-                introRootEntity!.enableLargeRoomReverb()
+                // introRootEntity!.enableLargeRoomReverb()
                 // appModel.assetLoadingManager.inspectEntityHierarchy(introRootEntity!)
 
                 appModel.readyToStartLab = true
@@ -597,5 +638,88 @@ final class IntroViewModel {
         )
         
         Logger.info("✨ Scene fade out complete")
+    }
+
+    // MARK: - IBL and Immersion Style Animation
+    
+    /// Animates the IBL intensity on the lab entity
+    /// - Parameters:
+    ///   - targetIntensity: Target intensity value (typically 0.0-8.0)
+    ///   - duration: Animation duration in seconds
+    private func animateLabIBLIntensity(
+        to targetIntensity: Float,
+        duration: TimeInterval
+    ) async {
+        guard let lab = assembledLab else {
+            Logger.error("Cannot animate IBL: lab entity not available")
+            return
+        }
+        
+        // Find the IBL entity through the receiver component
+        guard let (iblEntity, _) = findEntityWithIBLComponent(in: lab) else {
+            Logger.error("Cannot animate IBL: ImageBasedLightComponent not found in lab hierarchy")
+            return
+        }
+        
+        Logger.debug("Found IBL entity: \(iblEntity.name)")
+        Logger.debug("Using direct method to animate IBL intensity from 0.5 to \(targetIntensity)")
+        
+        // Create a new IBL component with the updated intensity and replace the existing one
+        // This ensures RealityKit properly notices the change rather than just updating a property
+        try? await IBLUtility.addImageBasedLighting(
+            to: lab,
+            imageName: "lab_v005",
+            intensity: targetIntensity
+        )
+        
+        Logger.debug("✅ Updated IBL component with new intensity: \(targetIntensity)")
+    }
+    
+    /// Finds the entity with the IBL component
+    /// - Parameter entity: The root entity (which should be assembledLab)
+    /// - Returns: Tuple containing the entity with the IBL component and the component itself, or nil if not found
+    private func findEntityWithIBLComponent(in entity: Entity) -> (Entity, ImageBasedLightComponent)? {
+        // The correct approach: The IBL entity is a direct child of assembledLab (assetRoot)
+        // because IBLUtility adds it directly as a child in addImageBasedLighting
+        
+        // ✓ First, verify that the root has an ImageBasedLightReceiverComponent
+        //   This confirms that IBLUtility.addImageBasedLighting was called on this entity
+        guard let receiverComponent = entity.components[ImageBasedLightReceiverComponent.self] else {
+            Logger.debug("Root entity doesn't have ImageBasedLightReceiverComponent")
+            return nil
+        }
+        
+        // ✓ Check if the receiver references an IBL entity
+        // Note: imageBasedLight is a direct reference, not optional
+        let iblEntity = receiverComponent.imageBasedLight
+        if let iblComponent = iblEntity.components[ImageBasedLightComponent.self] {
+            Logger.debug("Found IBL entity directly from receiver reference: \(iblEntity.name)")
+            return (iblEntity, iblComponent)
+        }
+        
+        // ✓ As a fallback, check if any direct children have the IBL component
+        //   (which is how IBLUtility.addImageBasedLighting works)
+        for child in entity.children {
+            if let iblComponent = child.components[ImageBasedLightComponent.self] {
+                Logger.debug("Found IBL component on direct child: \(child.name)")
+                return (child, iblComponent)
+            }
+        }
+        
+        Logger.debug("Could not find IBL entity in the correct structure")
+        return nil
+    }
+    
+    /// Performs a transition to increase IBL intensity only without changing immersion style
+    /// - Parameter duration: Duration for the transition animations
+    private func performCoordinatedTransitionToFullImmersion(
+        duration: TimeInterval = 4.0
+    ) async {
+        Logger.debug("Starting IBL intensity increase")
+        
+        // Only update IBL intensity - no immersion style change
+        await animateLabIBLIntensity(to: 1.0, duration: 0)
+        
+        Logger.debug("Completed IBL intensity increase")
     }
 }

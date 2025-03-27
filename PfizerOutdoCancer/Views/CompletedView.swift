@@ -60,6 +60,8 @@ struct CompletedView: View {
                                 Logger.info("Current Phase: \(appModel.currentPhase)")
                                 Logger.info("Immersive Space State: \(appModel.immersiveSpaceState)")
                                 
+                                appModel.playMenuSelect2Sound()
+
                                 // Start fade out sequence
                                 withAnimation(.easeOut(duration: 1.0)) {
                                     opacity = 0.0
@@ -94,7 +96,7 @@ struct CompletedView: View {
             .clipShape(RoundedRectangle(cornerRadius: 20))
             .opacity(opacity) 
             .onAppear {
-                    withAnimation(.easeIn(duration: 2.0)) {
+                    withAnimation(.easeIn(duration: 0.75)) {
                         opacity = 1.0
                     }
                 }

@@ -44,6 +44,8 @@ struct HopeMeterUtilityView: View {
                     NavigationButton(
                         title: "Start",
                         action: {
+                            appModel.playMenuSelect2Sound()
+                            
                             withAnimation(.easeInOut(duration: 0.5)) {
                                 appModel.startAttackCancerGame()
                             }

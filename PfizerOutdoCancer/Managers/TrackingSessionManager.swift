@@ -44,6 +44,25 @@ final class TrackingSessionManager {
     func startTracking(needsHandTracking: Bool = false) async throws {
         await logTrackingState(context: "Start Tracking Request")
         
+        // Check for simulator environment
+        #if targetEnvironment(simulator)
+        Logger.info("""
+        
+        === TRACKING SESSION IN SIMULATOR ===
+        ├─ Detected simulator environment
+        ├─ Using fallback positioning instead of active tracking
+        """)
+        // Just mark tracking as active without starting real tracking
+        worldTrackingProvider = WorldTrackingProvider()
+        if needsHandTracking {
+            handTrackingProvider = HandTrackingProvider()
+            shouldProcessHandTracking = true
+        }
+        currentState = .running
+        isTracking = true
+        return
+        #endif
+        
         // If already tracking with the same state, skip starting a new session.
         if isTracking && shouldProcessHandTracking == needsHandTracking {
             Logger.info("⚠️ Already tracking with same state - skipping")

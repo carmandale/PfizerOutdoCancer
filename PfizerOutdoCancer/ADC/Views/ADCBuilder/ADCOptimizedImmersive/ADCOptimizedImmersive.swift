@@ -555,7 +555,7 @@ struct ADCOptimizedImmersive: View {
             }
             Task { @MainActor in
                 if let newValue {
-                    // Update working (target) payload first
+                    // Update working (draggable) payload first
                     if let workingPayloadInner,
                        let workingPayloadOuter {
                         // First restore original materials
@@ -574,12 +574,18 @@ struct ADCOptimizedImmersive: View {
                         // Then apply colors
                         workingPayloadInner.updatePBREmissiveColor(.adcEmissive[newValue])
                         workingPayloadOuter.updateShaderGraphColor(parameterName: "glowColor", color: .adc[newValue])
+                        
+                        // Make inner payload of the DRAGGABLE one visible when color is selected
+                        workingPayloadInner.opacity = 1
                     }
                     
-                    // Change all payloads to the same color
+                    // Apply colors to target payloads, but keep inner ones invisible
                     for (inner, outer) in zip(adcPayloadsInner, adcPayloadsOuter) {
                         inner.updatePBREmissiveColor(.adcEmissive[newValue])
                         outer.updateShaderGraphColor(parameterName: "glowColor", color: .adc[newValue])
+                        
+                        // Keep inner payloads invisible until they're placed
+                        // (No change to opacity here - they stay at 0)
                     }
                 }
             }

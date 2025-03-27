@@ -23,7 +23,21 @@ final class PortalManager {
             mesh: .generatePlane(width: 2.0, height: 1.0, cornerRadius: 0.3),
             materials: [PortalMaterial()]
         )
+        portalPlane.transform.rotation = simd_quatf(angle: 0, axis: [0, 1, 0])  // Face forward
         portalPlane.name = "portalPlane"
+
+        // make the inverse of the portal plane
+        // let portalPlaneReverse = ModelEntity(
+        //     mesh: .generatePlane(width: 2.0, height: 1.0, cornerRadius: 0.3),
+        //     materials: [PortalMaterial()] // [SimpleMaterial(color: .blue, isMetallic: false)]
+        // )
+        // portalPlaneReverse.position.z = 0.02
+        // portalPlaneReverse.transform.rotation = simd_quatf(angle: .pi, axis: [0, 1, 0])  // Rotate 180 degrees to face back
+        // portalPlaneReverse.name = "portalPlaneReverse"
+        // portalPlaneReverse.opacity = 0
+
+        // portalPlane.addChild(portalPlaneReverse)
+        // portalPlaneReverse.position.z = 0.005
         
         // Set initial x-scale to 0
         var transform = portalPlane.transform
@@ -58,10 +72,15 @@ final class PortalManager {
         portalComp.clippingMode = .disabled
         portalComp.crossingMode = .disabled
         portalPlane.components.set(portalComp)
+        // var portalCompReverse = PortalComponent(target: world)
+        // portalCompReverse.clippingMode = .disabled
+        // portalCompReverse.crossingMode = .plane(PortalComponent.Plane(position: [0, 0, 0], normal: [0, 0, -1]))
+        // portalPlaneReverse.components.set(portalCompReverse)
         
         world.components[PortalCrossingComponent.self] = .init()
         
         portalRoot.addChild(portalPlane)
+
         root.addChild(portalRoot)
 
         return root

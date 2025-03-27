@@ -45,7 +45,7 @@ struct IntroView: View {
             smoothedMenuEntity.name = "HandMenuContainer"
             content.add(smoothedMenuEntity)
             Logger.debug("✅ Created hand menu container entity")
-
+            
             if showNavToggle {
                 Logger.debug("✅ Should show nav toggle")
                 

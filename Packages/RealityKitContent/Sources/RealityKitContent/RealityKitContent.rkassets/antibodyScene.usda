@@ -93,6 +93,200 @@ def Xform "Root"
                                                         rel material:binding = </Root/antibodyProtein_complex_assembled/antibodyProtein_complex_base/ADC_complex_001/ADC_complex/antibodyProtein_complex_assembled_clean/M_linker> (
                                                             bindMaterialAs = "weakerThanDescendants"
                                                         )
+
+                                                        def RealityKitComponent "MeshSorting"
+                                                        {
+                                                            token info:id = "RealityKit.MeshSorting"
+                                                            int priorityInGroup = 0
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    over "payload02_xform"
+                                    {
+                                        over "payload"
+                                        {
+                                            over "Transform"
+                                            {
+                                                over "OuterSphere"
+                                                {
+                                                    def RealityKitComponent "MeshSorting"
+                                                    {
+                                                        rel group = </Root/Model_Sorting_Group>
+                                                        token info:id = "RealityKit.MeshSorting"
+                                                        int priorityInGroup = 7
+                                                    }
+                                                }
+
+                                                over "InnerSphere"
+                                                {
+                                                    def RealityKitComponent "MeshSorting"
+                                                    {
+                                                        rel group = </Root/Model_Sorting_Group>
+                                                        token info:id = "RealityKit.MeshSorting"
+                                                        int priorityInGroup = 1
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                over "linker03_offset"
+                                {
+                                    over "payload03_xform"
+                                    {
+                                        over "payload"
+                                        {
+                                            over "Transform"
+                                            {
+                                                over "OuterSphere"
+                                                {
+                                                    def RealityKitComponent "MeshSorting"
+                                                    {
+                                                        rel group = </Root/Model_Sorting_Group>
+                                                        token info:id = "RealityKit.MeshSorting"
+                                                        int priorityInGroup = 6
+                                                    }
+                                                }
+
+                                                over "InnerSphere"
+                                                {
+                                                    def RealityKitComponent "MeshSorting"
+                                                    {
+                                                        rel group = </Root/Model_Sorting_Group>
+                                                        token info:id = "RealityKit.MeshSorting"
+                                                        int priorityInGroup = 2
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    over "linker03_xform"
+                                    {
+                                        over "linker"
+                                        {
+                                            over "linkerMesh_001"
+                                            {
+                                                over "linker"
+                                                {
+                                                    over "linker"
+                                                    {
+                                                        def RealityKitComponent "MeshSorting"
+                                                        {
+                                                            token info:id = "RealityKit.MeshSorting"
+                                                            int priorityInGroup = 3
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                over "linker01_offset"
+                                {
+                                    over "payload01_xform"
+                                    {
+                                        over "payload"
+                                        {
+                                            over "Transform"
+                                            {
+                                                over "OuterSphere"
+                                                {
+                                                    def RealityKitComponent "MeshSorting"
+                                                    {
+                                                        rel group = </Root/Model_Sorting_Group>
+                                                        token info:id = "RealityKit.MeshSorting"
+                                                        int priorityInGroup = 9
+                                                    }
+                                                }
+
+                                                over "InnerSphere"
+                                                {
+                                                    def RealityKitComponent "MeshSorting"
+                                                    {
+                                                        rel group = </Root/Model_Sorting_Group>
+                                                        token info:id = "RealityKit.MeshSorting"
+                                                        int priorityInGroup = 3
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    over "linker01_xform"
+                                    {
+                                        over "linker"
+                                        {
+                                            over "linkerMesh_001"
+                                            {
+                                                over "linker"
+                                                {
+                                                    over "linker"
+                                                    {
+                                                        def RealityKitComponent "MeshSorting"
+                                                        {
+                                                            token info:id = "RealityKit.MeshSorting"
+                                                            int priorityInGroup = 2
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                over "linker04_offset"
+                                {
+                                    over "linker04_xform"
+                                    {
+                                        over "linker"
+                                        {
+                                            over "linkerMesh_001"
+                                            {
+                                                over "linker"
+                                                {
+                                                    over "linker"
+                                                    {
+                                                        def RealityKitComponent "MeshSorting"
+                                                        {
+                                                            token info:id = "RealityKit.MeshSorting"
+                                                            int priorityInGroup = 1
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    over "payload04_xform"
+                                    {
+                                        over "payload"
+                                        {
+                                            over "Transform"
+                                            {
+                                                over "OuterSphere"
+                                                {
+                                                    def RealityKitComponent "MeshSorting"
+                                                    {
+                                                        rel group = </Root/Model_Sorting_Group>
+                                                        token info:id = "RealityKit.MeshSorting"
+                                                        int priorityInGroup = 8
+                                                    }
+                                                }
+
+                                                over "InnerSphere"
+                                                {
+                                                    def RealityKitComponent "MeshSorting"
+                                                    {
+                                                        rel group = </Root/Model_Sorting_Group>
+                                                        token info:id = "RealityKit.MeshSorting"
+                                                        int priorityInGroup = 4
                                                     }
                                                 }
                                             }
@@ -162,6 +356,7 @@ def Xform "Root"
             bindMaterialAs = "strongerThanDescendants"
         )
         float3 xformOp:scale = (1, 1, 1)
+        float3 xformOp:translate = (0, 0, 0)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
         def RealityKitComponent "InputTarget"
@@ -194,6 +389,18 @@ def Xform "Root"
             float3 xformOp:scale = (10, 9.999999, 9.999996)
             double3 xformOp:translate = (0, 0, 0)
             uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            over "linker"
+            {
+                over "linker"
+                {
+                    def RealityKitComponent "MeshSorting"
+                    {
+                        token info:id = "RealityKit.MeshSorting"
+                        int priorityInGroup = 4
+                    }
+                }
+            }
         }
     }
 
@@ -231,6 +438,26 @@ def Xform "Root"
         over "Transform"
         {
             float3 xformOp:scale = (0.02, 0.02, 0.02)
+
+            over "OuterSphere"
+            {
+                def RealityKitComponent "MeshSorting"
+                {
+                    rel group = </Root/Model_Sorting_Group>
+                    uniform token info:id = "RealityKit.MeshSorting"
+                    int priorityInGroup = 5
+                }
+            }
+
+            over "InnerSphere"
+            {
+                def RealityKitComponent "MeshSorting"
+                {
+                    rel group = </Root/Model_Sorting_Group>
+                    uniform token info:id = "RealityKit.MeshSorting"
+                    int priorityInGroup = 0
+                }
+            }
         }
     }
 
@@ -313,6 +540,13 @@ def Xform "Root"
     {
         uniform asset file = @Audio/BuildADC_VO/clickPop3.wav@
         uniform bool shouldLoop = 0
+    }
+
+    def RealityKitMeshSortingGroup "Model_Sorting_Group" (
+        active = true
+    )
+    {
+        token depthPass = "postPass"
     }
 }
 

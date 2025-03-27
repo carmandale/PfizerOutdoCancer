@@ -96,7 +96,7 @@ private struct LoadingBlock: View {
                     .padding()
                     .transition(.opacity)
                 
-                Text("build v56 - 3.24.25")
+                Text("build v57 - 3.26.25")
                     .foregroundStyle(.secondary)
                     .font(.caption)
                     .padding()
@@ -110,6 +110,7 @@ private struct CompletedBlock: View {
     @Environment(AppModel.self) private var appModel
     let namespace: Namespace.ID
     @State private var showTitle = false
+    @State private var showButton = false
     
     var body: some View {
         VStack {
@@ -120,7 +121,7 @@ private struct CompletedBlock: View {
                 .frame(width: 400)
                 .padding(40)
             
-            // Add a fixed height container for the title
+            // Title container with placeholder
             ZStack {
                 // Invisible placeholder text to maintain consistent layout
                 Text("Let's Outdo Cancer")
@@ -139,15 +140,32 @@ private struct CompletedBlock: View {
             }
             .padding()
             
-            StartButton()
-                .padding(.top, 50)
+            // Button container with placeholder
+            ZStack {
+                // Invisible placeholder to maintain layout
+                StartButton()
+                    .opacity(0)
+                
+                if showButton {
+                    StartButton()
+                        .transition(.opacity)
+                }
+            }
+            .padding(.top, 50)
         }
         .onAppear {
-            // Delay the title animation slightly to let the logo transition complete
+            // Sequence animations
             Task { @MainActor in
-                try? await Task.sleep(for: .seconds(0.3))
+                // First animate title
+                try? await Task.sleep(for: .seconds(1.0))
                 withAnimation {
                     showTitle = true
+                }
+                
+                // Then fade in button after title animation starts
+                try? await Task.sleep(for: .seconds(1.0))
+                withAnimation(.easeInOut(duration: 0.5)) {
+                    showButton = true
                 }
             }
         }

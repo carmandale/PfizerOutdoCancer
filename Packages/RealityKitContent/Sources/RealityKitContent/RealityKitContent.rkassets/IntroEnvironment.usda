@@ -23,7 +23,7 @@ def Xform "Root"
                 int blendLayer = 300
                 double duration = 3
                 uniform token info:id = "D62E63EB-E6D0-440F-8FD5-EA57A4DB5626"
-                double startTime = 21.283197075669186
+                double startTime = 22.283
                 rel target = </Root/sh0100_v01/sh0100_v01/PicturesRoot/intro/People_MSR/p2>
 
                 def RealityKitStruct "timingFunction"
@@ -125,7 +125,7 @@ def Xform "Root"
                 int blendLayer = 300
                 double duration = 3
                 uniform token info:id = "7A997941-2188-4BB7-A9DE-66FF76319BEA"
-                double startTime = 19.22
+                double startTime = 20.22
                 rel target = </Root/sh0100_v01/sh0100_v01/PicturesRoot/intro/People_MSR/p1>
 
                 def RealityKitStruct "timingFunction"
@@ -1624,7 +1624,7 @@ def Xform "Root"
                                 def RealityKitComponent "SpatialAudio"
                                 {
                                     float directivityFocus = 1
-                                    float gain = -6
+                                    float gain = -8
                                     uniform token info:id = "RealityKit.SpatialAudio"
                                     float reverbLevel = 0
                                     float rolloffFactor = 0
@@ -3355,14 +3355,14 @@ def Xform "Root"
 
         def RealityKitAudioMixGroup "Piano"
         {
-            float gain = -14
+            float gain = -18
             bool mute = 0
             float speed = 1
         }
 
         def RealityKitAudioMixGroup "Strings"
         {
-            float gain = -10
+            float gain = -16
             bool mute = 0
             float speed = 1
         }
@@ -3376,14 +3376,14 @@ def Xform "Root"
 
         def RealityKitAudioMixGroup "SFX"
         {
-            float gain = -12
+            float gain = -16
             bool mute = 0
             float speed = 1
         }
 
         def RealityKitAudioMixGroup "Percussion"
         {
-            float gain = -8
+            float gain = -12
             bool mute = 0
             float speed = 1
         }

@@ -52,6 +52,9 @@ struct PfizerOutdoCancerApp: App {
             }
         }
         .defaultSize(CGSize(width: 800, height: 600))
+        .defaultWindowPlacement { _, context in
+            return WindowPlacement(.utilityPanel)
+        }
 //        .persistentSystemOverlays(appModel.isLibraryWindowOpen ? .visible : .hidden)
 
 
@@ -130,7 +133,7 @@ struct PfizerOutdoCancerApp: App {
 //            .immersionStyle(selection: $appModel.introStyle, in: .progressive)
 //            .immersionStyle(selection: $immersionStyle,
 //                                in: .progressive(0.0...1.0, initialAmount: 0.5))
-            .immersionStyle(selection: $appModel.introStyle, in: .mixed)
+            .immersionStyle(selection: $appModel.introStyle, in: .mixed, .full)
             
 
             ImmersiveSpace(id: "OutroSpace") {
@@ -285,9 +288,26 @@ struct PfizerOutdoCancerApp: App {
     init() {
         print("🏁 PfizerOutdoCancerApp init starting...")
         
+        // Set up simulator mode if running in simulator
+        #if targetEnvironment(simulator)
+        print("🧪 Running in simulator - using fallback position values")
+        PositioningSystem.setSimulatorMode(true)
+        
+        // Use fallback positions from logs
+        let introPosition = SIMD3<Float>(0.0, -1.5, -1.0)  // IntroRoot position
+        let mainPosition = SIMD3<Float>(0.0, 1.2, -1.0)    // MainEntity position
+        
+        // Set default fallback position
+        PositioningSystem.setFallbackPosition(mainPosition)
+        #endif
+        
         // Set AppModel before registering the system
         print("📲 Setting AppModel in PositioningSystem...")
         PositioningSystem.setAppModel(appModel)
+        
+        // Set AppModel for MovementFadingSystem as well
+        print("📲 Setting AppModel in MovementFadingSystem...")
+        MovementFadingSystem.setAppModel(appModel)
         
         print("📝 Registering components and systems...")
         /// Register components and systems
@@ -340,7 +360,9 @@ struct PfizerOutdoCancerApp: App {
         FollowSystem.registerSystem()
         FollowComponent.registerComponent()
         
-        
+        // Add MovementFadingSystem for scene opacity control
+        MovementFadingSystem.registerSystem()
+        MovementFadingComponent.registerComponent()
         
         // for ADC Builder
         ADCGestureComponent.registerComponent()

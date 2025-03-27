@@ -44,12 +44,9 @@ def Xform "Root"
             uniform token info:id = "RealityKit.Billboard"
         }
 
-        def RealityKitComponent "SpatialAudio"
+        def RealityKitComponent "ChannelAudio"
         {
-            float directivityFocus = 0.28886506
-            uniform token info:id = "RealityKit.SpatialAudio"
-            float reverbLevel = -7.0828633
-            float rolloffFactor = 0
+            uniform token info:id = "RealityKit.ChannelAudio"
         }
     }
 

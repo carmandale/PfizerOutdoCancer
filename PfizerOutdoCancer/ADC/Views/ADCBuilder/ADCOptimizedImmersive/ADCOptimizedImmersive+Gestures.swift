@@ -225,6 +225,9 @@ extension ADCOptimizedImmersive {
                                 }
                                 adcPayloadsInner[index].updatePBREmissiveColor(.adcEmissive[selectedType])
                                 
+                                // Make inner payload visible ONLY when successfully placed at target
+                                adcPayloadsInner[index].opacity = 1
+                                
                                 // Outer sphere
                                 if let originalOuterMaterial = originalPayloadOuterMaterial {
                                     if var modelComponent = adcPayloadsOuter[index].components[ModelComponent.self] {
@@ -248,6 +251,9 @@ extension ADCOptimizedImmersive {
                             }
                             adcPayloadsInner[dataModel.payloadsWorkingIndex].updatePBREmissiveColor(.adcEmissive[selectedType])
                             adcPayloadsOuter[dataModel.payloadsWorkingIndex].updateShaderGraphColor(parameterName: "glowColor", color: .adc[selectedType])
+                            
+                            // Make inner payload visible ONLY when successfully placed at target
+                            adcPayloadsInner[dataModel.payloadsWorkingIndex].opacity = 1
                         }
                         
                         // If there's a next payload, give it the outline material
@@ -256,6 +262,9 @@ extension ADCOptimizedImmersive {
                             if let material = outlineMaterial {
                                 adcPayloadsInner[nextIndex].model?.materials = [material]
                                 adcPayloadsOuter[nextIndex].model?.materials = [material]
+                                
+                                // Ensure next inner payload is invisible when using outline material
+                                adcPayloadsInner[nextIndex].opacity = 0
                             }
                         }
                         

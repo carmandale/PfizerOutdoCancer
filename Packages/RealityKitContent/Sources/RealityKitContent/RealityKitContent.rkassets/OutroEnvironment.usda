@@ -66,49 +66,49 @@ def Xform "Root"
 
         def RealityKitAudioMixGroup "Bells"
         {
-            float gain = -14.352861
+            float gain = -13.710657
             bool mute = 0
             float speed = 1
         }
 
         def RealityKitAudioMixGroup "Piano"
         {
-            float gain = -10.633871
+            float gain = -18.530348
             bool mute = 0
             float speed = 1
         }
 
         def RealityKitAudioMixGroup "VO"
         {
-            float gain = -1.0492731
+            float gain = 0
             bool mute = 0
             float speed = 1
         }
 
         def RealityKitAudioMixGroup "Strings"
         {
-            float gain = -6.437675
+            float gain = -16.04068
             bool mute = 0
             float speed = 1
         }
 
         def RealityKitAudioMixGroup "Reverb"
         {
-            float gain = -8.290723
+            float gain = -17.140291
             bool mute = 0
             float speed = 1
         }
 
         def RealityKitAudioMixGroup "Percussion"
         {
-            float gain = -7.611043
+            float gain = -12.276835
             bool mute = 0
             float speed = 1
         }
 
         def RealityKitAudioMixGroup "Xylophone"
         {
-            float gain = -9.273314
+            float gain = -10
             bool mute = 0
             float speed = 1
         }
