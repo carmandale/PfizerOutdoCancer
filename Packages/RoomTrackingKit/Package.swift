@@ -5,8 +5,6 @@ let package = Package(
     name: "RoomTrackingKit",
     platforms: [
         .visionOS(.v2),
-        .macOS(.v15),
-        .iOS(.v18)
     ],
     products: [
         .library(name: "RoomTrackingKit", targets: ["RoomTrackingKit"])

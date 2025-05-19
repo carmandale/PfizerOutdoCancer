@@ -1,22 +1,52 @@
 import ARKit
 import Foundation
 import simd
-
+/// Manages a room-tracking ARKit session.
+@MainActor
 public final class RoomTrackingManager {
-    private let anchorStore: RoomAnchorStore
+    private var arSession = ARKitSession()
+    private var roomProvider = RoomTrackingProvider()
 
-    public init(store: RoomAnchorStore = RoomAnchorStore()) {
-        self.anchorStore = store
+    /// Called whenever the provider outputs a new `RoomAnchor`.
+    public var roomAnchorUpdateHandler: ((RoomAnchor) -> Void)?
+
+    /// Called when the provider's `DataProviderState` changes.
+    public var stateChangeHandler: ((DataProviderState) -> Void)?
+
+    public init() {}
+
+    /// Starts the ARKit session and begins collecting room updates.
+    public func startTracking() async throws {
+        guard RoomTrackingProvider.isSupported else { return }
+        try await arSession.run([roomProvider])
+
+        Task { await processAnchorUpdates() }
+        Task { await monitorProviderState() }
     }
 
-    /// Locks the current room transform and saves it to disk.
-    /// - Parameter transform: Current world transform to persist.
-    public func lock(transform: simd_float4x4) {
-        try? anchorStore.save(transform: transform)
+    /// Stops the ARKit session and resets the provider.
+    public func stopTracking() {
+        arSession.stop()
+        arSession = ARKitSession()
+        roomProvider = RoomTrackingProvider()
     }
 
-    /// Loads a previously saved room transform if available.
-    public func loadSavedTransform() -> simd_float4x4? {
-        try? anchorStore.load()
+    // MARK: - Private helpers
+    private func processAnchorUpdates() async {
+        for await update in roomProvider.anchorUpdates {
+            roomAnchorUpdateHandler?(update.anchor)
+        }
+    }
+
+    private func monitorProviderState() async {
+        for await event in arSession.events {
+            switch event {
+            case .dataProviderStateChanged(let providers, let newState, _):
+                guard providers.contains(where: { $0 === roomProvider }) else { continue }
+                stateChangeHandler?(newState)
+            default:
+                break
+            }
+        }
     }
 }
