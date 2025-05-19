@@ -1,6 +1,6 @@
 import ARKit
 import Foundation
-
+import simd
 /// Manages a room-tracking ARKit session.
 @MainActor
 public final class RoomTrackingManager {

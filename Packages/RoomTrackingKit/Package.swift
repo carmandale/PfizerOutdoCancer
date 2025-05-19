@@ -4,17 +4,13 @@ import PackageDescription
 let package = Package(
     name: "RoomTrackingKit",
     platforms: [
-        .visionOS(.v2)
+        .visionOS(.v2),
     ],
     products: [
-        .library(
-            name: "RoomTrackingKit",
-            targets: ["RoomTrackingKit"])
+        .library(name: "RoomTrackingKit", targets: ["RoomTrackingKit"])
     ],
-    dependencies: [],
     targets: [
-        .target(
-            name: "RoomTrackingKit",
-            dependencies: [])
+        .target(name: "RoomTrackingKit", dependencies: []),
+        .testTarget(name: "RoomTrackingKitTests", dependencies: ["RoomTrackingKit"])
     ]
 )
